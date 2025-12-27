@@ -344,6 +344,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     {
                         MedicineTypeADO ado = new MedicineTypeADO();
                         ado.MEDICINE_TYPE_CODE = item.MEDICINE_TYPE_CODE;
+                        ado.MEDICINE_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                         ado.TIME = item.EXP_TIME;
                         ado.MEST_ID = item.EXP_MEST_ID ?? 0;
                         ado.MEST_CODE = item.EXP_MEST_CODE;
@@ -408,6 +409,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     ado.CREATE_TIME = item.CREATE_TIME;
                     ado.TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME;
                     ado.MEDICINE_TYPE_CODE = item.MEDICINE_TYPE_CODE;
+                    ado.MEDICINE_TYPE_NAME = item.MEDICINE_TYPE_NAME;
                     ado.AMOUNT = item.AMOUNT;
                     ado.TIME = item.TIME;
                     ado.MEST_CODE = item.MEST_CODE;
@@ -458,6 +460,10 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 gridControlFormList.EndUpdate();
                 //gridviewFormList.EndUpdate();
                 //
+                if (listAdo != null && listAdo.Count > 0)
+                {
+                    gridViewHistoryMedicine.BestFitColumns();
+                }
                 #region Process has exception
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost((CommonParam)param);
                 #endregion

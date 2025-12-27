@@ -24,6 +24,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate
     {
         public long ID { get; set; }
         public string MEDICINE_TYPE_CODE { get; set; }
+        public string MEDICINE_TYPE_NAME { get; internal set; }
 
         public MedicineTypeADO() { }
 

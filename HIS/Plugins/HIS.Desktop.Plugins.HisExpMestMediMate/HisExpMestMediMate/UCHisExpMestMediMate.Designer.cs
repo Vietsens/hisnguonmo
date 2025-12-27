@@ -45,29 +45,28 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCHisExpMestMediMate));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SuperToolTip superToolTip3 = new DevExpress.Utils.SuperToolTip();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject53 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject57 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject58 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject59 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject60 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkHistoryMedicine = new DevExpress.XtraEditors.CheckEdit();
@@ -103,14 +102,41 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.txtSearch = new DevExpress.XtraEditors.TextEdit();
             this.gridControlFormList = new DevExpress.XtraGrid.GridControl();
+            this.gridViewHistoryMedicine = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButton_View = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.STT = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnEdit = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.btnGEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumn36 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+            this.grdColCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColCreator = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.btnGunLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.btnGLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridViewHistoryMaterial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemButton_View = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.btnGEdit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn35 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -128,30 +154,6 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn32 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn33 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn34 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.btnGunLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.btnGLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.gridViewHistoryMedicine = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.STT = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnEdit = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColName = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grdColCreator = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup6 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -160,7 +162,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.radialMenu1 = new DevExpress.XtraBars.Ribbon.RadialMenu(this.components);
+            this.radialMenu1 = new DevExpress.XtraBars.Ribbon.RadialMenu();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -199,13 +201,14 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.layoutControl7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlFormList)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewHistoryMaterial)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHistoryMedicine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGEdit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGunLock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGLock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewHistoryMedicine)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHistoryMaterial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -661,336 +664,13 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.btnGunLock,
             this.btnGLock,
             this.repositoryItemButtonEdit1,
-            this.repositoryItemButton_View});
+            this.repositoryItemButton_View,
+            this.repositoryItemMemoEdit1});
             this.gridControlFormList.Size = new System.Drawing.Size(1072, 377);
             this.gridControlFormList.TabIndex = 9;
             this.gridControlFormList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewHistoryMaterial,
-            this.gridViewHistoryMedicine});
-            // 
-            // gridViewHistoryMaterial
-            // 
-            this.gridViewHistoryMaterial.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn15,
-            this.gridColumn16,
-            this.gridColumn17,
-            this.gridColumn18,
-            this.gridColumn19,
-            this.gridColumn20,
-            this.gridColumn21,
-            this.gridColumn22,
-            this.gridColumn23,
-            this.gridColumn24,
-            this.gridColumn25,
-            this.gridColumn26,
-            this.gridColumn27,
-            this.gridColumn28,
-            this.grdColModifyTime,
-            this.grdColModifier,
-            this.gridColumn29,
-            this.gridColumn30,
-            this.gridColumn31,
-            this.gridColumn32,
-            this.gridColumn33,
-            this.gridColumn34});
-            this.gridViewHistoryMaterial.GridControl = this.gridControlFormList;
-            this.gridViewHistoryMaterial.Name = "gridViewHistoryMaterial";
-            this.gridViewHistoryMaterial.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
-            this.gridViewHistoryMaterial.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.True;
-            this.gridViewHistoryMaterial.OptionsFind.AllowFindPanel = false;
-            this.gridViewHistoryMaterial.OptionsView.ColumnAutoWidth = false;
-            this.gridViewHistoryMaterial.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
-            this.gridViewHistoryMaterial.OptionsView.ShowGroupPanel = false;
-            this.gridViewHistoryMaterial.OptionsView.ShowIndicator = false;
-            this.gridViewHistoryMaterial.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridviewHistoryMaterial_RowCellStyle);
-            this.gridViewHistoryMaterial.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridviewHistoryMaterial_CustomUnboundColumnData);
-            // 
-            // gridColumn15
-            // 
-            this.gridColumn15.Caption = "Chi tiết";
-            this.gridColumn15.ColumnEdit = this.repositoryItemButton_View;
-            this.gridColumn15.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gridColumn15.Name = "gridColumn15";
-            this.gridColumn15.OptionsColumn.ShowCaption = false;
-            this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 0;
-            this.gridColumn15.Width = 28;
-            // 
-            // repositoryItemButton_View
-            // 
-            this.repositoryItemButton_View.AutoHeight = false;
-            this.repositoryItemButton_View.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton_View.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Xem chi tiết", null, null, true)});
-            this.repositoryItemButton_View.Name = "repositoryItemButton_View";
-            this.repositoryItemButton_View.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.repositoryItemButton_View.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButton_View_ButtonClick);
-            // 
-            // gridColumn16
-            // 
-            this.gridColumn16.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumn16.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn16.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumn16.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.gridColumn16.Caption = "STT";
-            this.gridColumn16.FieldName = "STT";
-            this.gridColumn16.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gridColumn16.ImageAlignment = System.Drawing.StringAlignment.Far;
-            this.gridColumn16.Name = "gridColumn16";
-            this.gridColumn16.OptionsColumn.AllowEdit = false;
-            this.gridColumn16.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 1;
-            this.gridColumn16.Width = 40;
-            // 
-            // gridColumn17
-            // 
-            this.gridColumn17.Caption = "gridColumnisLock";
-            this.gridColumn17.FieldName = "isLock";
-            this.gridColumn17.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gridColumn17.Name = "gridColumn17";
-            this.gridColumn17.OptionsColumn.ShowCaption = false;
-            this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn17.Width = 20;
-            // 
-            // gridColumn18
-            // 
-            this.gridColumn18.AppearanceCell.Options.UseTextOptions = true;
-            this.gridColumn18.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn18.AppearanceHeader.Options.UseTextOptions = true;
-            this.gridColumn18.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
-            this.gridColumn18.ColumnEdit = this.btnGEdit;
-            this.gridColumn18.FieldName = "Delete";
-            this.gridColumn18.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
-            this.gridColumn18.ImageAlignment = System.Drawing.StringAlignment.Center;
-            this.gridColumn18.Name = "gridColumn18";
-            this.gridColumn18.OptionsColumn.ShowCaption = false;
-            this.gridColumn18.ToolTip = "Sửa";
-            this.gridColumn18.Width = 20;
-            // 
-            // btnGEdit
-            // 
-            this.btnGEdit.AutoHeight = false;
-            this.btnGEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "Xóa", null, superToolTip3, true)});
-            this.btnGEdit.Name = "btnGEdit";
-            this.btnGEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
-            // gridColumn19
-            // 
-            this.gridColumn19.Caption = "Mã vật tư";
-            this.gridColumn19.FieldName = "MATERIAL_TYPE_CODE";
-            this.gridColumn19.Name = "gridColumn19";
-            this.gridColumn19.OptionsColumn.AllowEdit = false;
-            this.gridColumn19.ToolTip = "Mã thuốc";
-            this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 2;
-            this.gridColumn19.Width = 90;
-            // 
-            // gridColumn20
-            // 
-            this.gridColumn20.Caption = "Thời gian xuất";
-            this.gridColumn20.FieldName = "TIME_STR";
-            this.gridColumn20.Name = "gridColumn20";
-            this.gridColumn20.OptionsColumn.AllowEdit = false;
-            this.gridColumn20.ToolTip = "Thời gian nhập/xuất";
-            this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 6;
-            this.gridColumn20.Width = 132;
-            // 
-            // gridColumn21
-            // 
-            this.gridColumn21.Caption = "Mã phiếu xuất";
-            this.gridColumn21.FieldName = "MEST_CODE";
-            this.gridColumn21.Name = "gridColumn21";
-            this.gridColumn21.OptionsColumn.AllowEdit = false;
-            this.gridColumn21.ToolTip = "Mã phiếu nhập/xuất";
-            this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 7;
-            this.gridColumn21.Width = 134;
-            // 
-            // gridColumn22
-            // 
-            this.gridColumn22.Caption = "Loại xuất";
-            this.gridColumn22.FieldName = "MEST_TYPE";
-            this.gridColumn22.Name = "gridColumn22";
-            this.gridColumn22.OptionsColumn.AllowEdit = false;
-            this.gridColumn22.ToolTip = "Loại nhập/xuất";
-            this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 8;
-            this.gridColumn22.Width = 115;
-            // 
-            // gridColumn23
-            // 
-            this.gridColumn23.Caption = "Đối tượng xuất";
-            this.gridColumn23.CustomizationCaption = "Đối tượng nhập/xuất";
-            this.gridColumn23.FieldName = "MEDI_STOCK_NAME_STR";
-            this.gridColumn23.Name = "gridColumn23";
-            this.gridColumn23.OptionsColumn.AllowEdit = false;
-            this.gridColumn23.ToolTip = "Đối tượng nhập/xuất";
-            this.gridColumn23.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 9;
-            this.gridColumn23.Width = 127;
-            // 
-            // gridColumn24
-            // 
-            this.gridColumn24.Caption = "Số chứng từ";
-            this.gridColumn24.FieldName = "DOCUMENT_NUMBER";
-            this.gridColumn24.Name = "gridColumn24";
-            this.gridColumn24.OptionsColumn.AllowEdit = false;
-            this.gridColumn24.Visible = true;
-            this.gridColumn24.VisibleIndex = 10;
-            this.gridColumn24.Width = 82;
-            // 
-            // gridColumn25
-            // 
-            this.gridColumn25.Caption = "Số lượng";
-            this.gridColumn25.FieldName = "AMOUNT";
-            this.gridColumn25.Name = "gridColumn25";
-            this.gridColumn25.OptionsColumn.AllowEdit = false;
-            this.gridColumn25.ToolTip = "Số lượng";
-            this.gridColumn25.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn25.Visible = true;
-            this.gridColumn25.VisibleIndex = 11;
-            this.gridColumn25.Width = 63;
-            // 
-            // gridColumn26
-            // 
-            this.gridColumn26.Caption = "Giá";
-            this.gridColumn26.DisplayFormat.FormatString = "##,00";
-            this.gridColumn26.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.gridColumn26.FieldName = "PRICE";
-            this.gridColumn26.Name = "gridColumn26";
-            this.gridColumn26.OptionsColumn.AllowEdit = false;
-            this.gridColumn26.ToolTip = "Giá";
-            this.gridColumn26.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn26.Visible = true;
-            this.gridColumn26.VisibleIndex = 12;
-            this.gridColumn26.Width = 62;
-            // 
-            // gridColumn27
-            // 
-            this.gridColumn27.Caption = "Số lô";
-            this.gridColumn27.FieldName = "PACKAGE_NUMBER";
-            this.gridColumn27.Name = "gridColumn27";
-            this.gridColumn27.OptionsColumn.AllowEdit = false;
-            this.gridColumn27.Visible = true;
-            this.gridColumn27.VisibleIndex = 13;
-            // 
-            // gridColumn28
-            // 
-            this.gridColumn28.Caption = "Kỳ kiểm kê";
-            this.gridColumn28.FieldName = "MEDI_STOCK_PERIOD_NAME";
-            this.gridColumn28.Name = "gridColumn28";
-            this.gridColumn28.OptionsColumn.AllowEdit = false;
-            this.gridColumn28.ToolTip = "Kỳ kiểm kê";
-            this.gridColumn28.Visible = true;
-            this.gridColumn28.VisibleIndex = 14;
-            this.gridColumn28.Width = 68;
-            // 
-            // grdColModifyTime
-            // 
-            this.grdColModifyTime.Caption = "Thời gian sửa";
-            this.grdColModifyTime.FieldName = "MODIFY_TIME_STR";
-            this.grdColModifyTime.Name = "grdColModifyTime";
-            this.grdColModifyTime.OptionsColumn.AllowEdit = false;
-            this.grdColModifyTime.ToolTip = "Thời gian sửa";
-            this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.grdColModifyTime.Width = 120;
-            // 
-            // grdColModifier
-            // 
-            this.grdColModifier.Caption = "Người sửa";
-            this.grdColModifier.FieldName = "MODIFIER";
-            this.grdColModifier.Name = "grdColModifier";
-            this.grdColModifier.OptionsColumn.AllowEdit = false;
-            this.grdColModifier.ToolTip = "Người sửa";
-            // 
-            // gridColumn29
-            // 
-            this.gridColumn29.Caption = "Trạng thái";
-            this.gridColumn29.FieldName = "STT_NAME";
-            this.gridColumn29.Name = "gridColumn29";
-            this.gridColumn29.OptionsColumn.AllowEdit = false;
-            this.gridColumn29.Visible = true;
-            this.gridColumn29.VisibleIndex = 3;
-            this.gridColumn29.Width = 81;
-            // 
-            // gridColumn30
-            // 
-            this.gridColumn30.Caption = "Thời gian tạo";
-            this.gridColumn30.FieldName = "CREATE_TIME_STR";
-            this.gridColumn30.Name = "gridColumn30";
-            this.gridColumn30.OptionsColumn.AllowEdit = false;
-            this.gridColumn30.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn30.Visible = true;
-            this.gridColumn30.VisibleIndex = 4;
-            this.gridColumn30.Width = 105;
-            // 
-            // gridColumn31
-            // 
-            this.gridColumn31.Caption = "Thời gian y lệnh";
-            this.gridColumn31.FieldName = "TDL_INTRUCTION_TIME_STR";
-            this.gridColumn31.Name = "gridColumn31";
-            this.gridColumn31.OptionsColumn.AllowEdit = false;
-            this.gridColumn31.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn31.Visible = true;
-            this.gridColumn31.VisibleIndex = 5;
-            this.gridColumn31.Width = 105;
-            // 
-            // gridColumn32
-            // 
-            this.gridColumn32.Caption = "Khoa yêu cầu";
-            this.gridColumn32.FieldName = "REQ_DEPARTMENT_NAME";
-            this.gridColumn32.Name = "gridColumn32";
-            this.gridColumn32.OptionsColumn.AllowEdit = false;
-            this.gridColumn32.Visible = true;
-            this.gridColumn32.VisibleIndex = 15;
-            this.gridColumn32.Width = 89;
-            // 
-            // gridColumn33
-            // 
-            this.gridColumn33.Caption = "Kho nhập";
-            this.gridColumn33.FieldName = "IMP_MEDI_STOCK_NAME";
-            this.gridColumn33.Name = "gridColumn33";
-            this.gridColumn33.OptionsColumn.AllowEdit = false;
-            this.gridColumn33.Width = 113;
-            // 
-            // gridColumn34
-            // 
-            this.gridColumn34.Caption = "Kho xuất";
-            this.gridColumn34.FieldName = "EXP_MEDI_STOCK_NAME";
-            this.gridColumn34.Name = "gridColumn34";
-            this.gridColumn34.OptionsColumn.AllowEdit = false;
-            this.gridColumn34.Visible = true;
-            this.gridColumn34.VisibleIndex = 16;
-            this.gridColumn34.Width = 106;
-            // 
-            // btnGunLock
-            // 
-            this.btnGunLock.AutoHeight = false;
-            this.btnGunLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGunLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "", null, null, true)});
-            this.btnGunLock.Name = "btnGunLock";
-            this.btnGunLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
-            // btnGLock
-            // 
-            this.btnGLock.AutoHeight = false;
-            this.btnGLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "", null, null, true)});
-            this.btnGLock.Name = "btnGLock";
-            this.btnGLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
-            // repositoryItemButtonEdit1
-            // 
-            this.repositoryItemButtonEdit1.AutoHeight = false;
-            this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "", null, null, true)});
-            this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
-            this.repositoryItemButtonEdit1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.gridViewHistoryMedicine,
+            this.gridViewHistoryMaterial});
             // 
             // gridViewHistoryMedicine
             // 
@@ -999,6 +679,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.STT,
             this.gridColumn1,
             this.gridColumnEdit,
+            this.gridColumn36,
             this.grdColCode,
             this.grdColName,
             this.gridColumn4,
@@ -1033,11 +714,21 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn10.Caption = "Chi tiết";
             this.gridColumn10.ColumnEdit = this.repositoryItemButton_View;
             this.gridColumn10.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn10.MaxWidth = 25;
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.ShowCaption = false;
             this.gridColumn10.Visible = true;
             this.gridColumn10.VisibleIndex = 0;
             this.gridColumn10.Width = 25;
+            // 
+            // repositoryItemButton_View
+            // 
+            this.repositoryItemButton_View.AutoHeight = false;
+            this.repositoryItemButton_View.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButton_View.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xem chi tiết", null, null, true)});
+            this.repositoryItemButton_View.Name = "repositoryItemButton_View";
+            this.repositoryItemButton_View.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButton_View.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButton_View_ButtonClick);
             // 
             // STT
             // 
@@ -1082,6 +773,29 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumnEdit.ToolTip = "Sửa";
             this.gridColumnEdit.Width = 20;
             // 
+            // btnGEdit
+            // 
+            this.btnGEdit.AutoHeight = false;
+            this.btnGEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Xóa", null, superToolTip1, true)});
+            this.btnGEdit.Name = "btnGEdit";
+            this.btnGEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // gridColumn36
+            // 
+            this.gridColumn36.Caption = "Tên thuốc";
+            this.gridColumn36.ColumnEdit = this.repositoryItemMemoEdit1;
+            this.gridColumn36.FieldName = "MEDICINE_TYPE_NAME";
+            this.gridColumn36.MaxWidth = 250;
+            this.gridColumn36.Name = "gridColumn36";
+            this.gridColumn36.Visible = true;
+            this.gridColumn36.VisibleIndex = 3;
+            this.gridColumn36.Width = 250;
+            // 
+            // repositoryItemMemoEdit1
+            // 
+            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
+            // 
             // grdColCode
             // 
             this.grdColCode.Caption = "Mã thuốc";
@@ -1102,7 +816,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.grdColName.ToolTip = "Thời gian nhập/xuất";
             this.grdColName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColName.Visible = true;
-            this.grdColName.VisibleIndex = 6;
+            this.grdColName.VisibleIndex = 7;
             this.grdColName.Width = 150;
             // 
             // gridColumn4
@@ -1113,7 +827,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.ToolTip = "Mã phiếu nhập/xuất";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 7;
+            this.gridColumn4.VisibleIndex = 8;
             this.gridColumn4.Width = 119;
             // 
             // gridColumn3
@@ -1124,7 +838,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.ToolTip = "Loại nhập/xuất";
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 8;
+            this.gridColumn3.VisibleIndex = 9;
             this.gridColumn3.Width = 150;
             // 
             // gridColumn5
@@ -1137,7 +851,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn5.ToolTip = "Đối tượng nhập/xuất";
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 9;
+            this.gridColumn5.VisibleIndex = 10;
             this.gridColumn5.Width = 150;
             // 
             // gridColumn11
@@ -1147,7 +861,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 10;
+            this.gridColumn11.VisibleIndex = 11;
             this.gridColumn11.Width = 109;
             // 
             // gridColumn2
@@ -1159,7 +873,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn2.ToolTip = "Số lượng";
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 11;
+            this.gridColumn2.VisibleIndex = 12;
             // 
             // grdColCreateTime
             // 
@@ -1172,7 +886,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.grdColCreateTime.ToolTip = "Giá";
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 12;
+            this.grdColCreateTime.VisibleIndex = 13;
             this.grdColCreateTime.Width = 120;
             // 
             // gridColumn14
@@ -1182,7 +896,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 13;
+            this.gridColumn14.VisibleIndex = 14;
             // 
             // grdColCreator
             // 
@@ -1192,7 +906,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.grdColCreator.OptionsColumn.AllowEdit = false;
             this.grdColCreator.ToolTip = "Kỳ kiểm kê";
             this.grdColCreator.Visible = true;
-            this.grdColCreator.VisibleIndex = 14;
+            this.grdColCreator.VisibleIndex = 15;
             // 
             // gridColumn6
             // 
@@ -1201,7 +915,8 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 3;
+            this.gridColumn6.VisibleIndex = 4;
+            this.gridColumn6.Width = 91;
             // 
             // gridColumn7
             // 
@@ -1210,7 +925,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 15;
+            this.gridColumn7.VisibleIndex = 16;
             this.gridColumn7.Width = 118;
             // 
             // gridColumn8
@@ -1228,7 +943,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 16;
+            this.gridColumn9.VisibleIndex = 17;
             this.gridColumn9.Width = 117;
             // 
             // gridColumn13
@@ -1239,7 +954,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 4;
+            this.gridColumn13.VisibleIndex = 5;
             this.gridColumn13.Width = 128;
             // 
             // gridColumn12
@@ -1250,8 +965,327 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 5;
+            this.gridColumn12.VisibleIndex = 6;
             this.gridColumn12.Width = 128;
+            // 
+            // btnGunLock
+            // 
+            this.btnGunLock.AutoHeight = false;
+            this.btnGunLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGunLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            this.btnGunLock.Name = "btnGunLock";
+            this.btnGunLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // btnGLock
+            // 
+            this.btnGLock.AutoHeight = false;
+            this.btnGLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            this.btnGLock.Name = "btnGLock";
+            this.btnGLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // repositoryItemButtonEdit1
+            // 
+            this.repositoryItemButtonEdit1.AutoHeight = false;
+            this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
+            this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
+            this.repositoryItemButtonEdit1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // gridViewHistoryMaterial
+            // 
+            this.gridViewHistoryMaterial.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn15,
+            this.gridColumn16,
+            this.gridColumn17,
+            this.gridColumn18,
+            this.gridColumn19,
+            this.gridColumn35,
+            this.gridColumn20,
+            this.gridColumn21,
+            this.gridColumn22,
+            this.gridColumn23,
+            this.gridColumn24,
+            this.gridColumn25,
+            this.gridColumn26,
+            this.gridColumn27,
+            this.gridColumn28,
+            this.grdColModifyTime,
+            this.grdColModifier,
+            this.gridColumn29,
+            this.gridColumn30,
+            this.gridColumn31,
+            this.gridColumn32,
+            this.gridColumn33,
+            this.gridColumn34});
+            this.gridViewHistoryMaterial.GridControl = this.gridControlFormList;
+            this.gridViewHistoryMaterial.Name = "gridViewHistoryMaterial";
+            this.gridViewHistoryMaterial.OptionsBehavior.AllowAddRows = DevExpress.Utils.DefaultBoolean.False;
+            this.gridViewHistoryMaterial.OptionsBehavior.AllowDeleteRows = DevExpress.Utils.DefaultBoolean.True;
+            this.gridViewHistoryMaterial.OptionsFind.AllowFindPanel = false;
+            this.gridViewHistoryMaterial.OptionsView.ColumnAutoWidth = false;
+            this.gridViewHistoryMaterial.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+            this.gridViewHistoryMaterial.OptionsView.ShowGroupPanel = false;
+            this.gridViewHistoryMaterial.OptionsView.ShowIndicator = false;
+            this.gridViewHistoryMaterial.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridviewHistoryMaterial_RowCellStyle);
+            this.gridViewHistoryMaterial.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridviewHistoryMaterial_CustomUnboundColumnData);
+            // 
+            // gridColumn15
+            // 
+            this.gridColumn15.Caption = "Chi tiết";
+            this.gridColumn15.ColumnEdit = this.repositoryItemButton_View;
+            this.gridColumn15.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn15.MaxWidth = 25;
+            this.gridColumn15.Name = "gridColumn15";
+            this.gridColumn15.OptionsColumn.ShowCaption = false;
+            this.gridColumn15.Visible = true;
+            this.gridColumn15.VisibleIndex = 0;
+            this.gridColumn15.Width = 25;
+            // 
+            // gridColumn16
+            // 
+            this.gridColumn16.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn16.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gridColumn16.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn16.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.gridColumn16.Caption = "STT";
+            this.gridColumn16.FieldName = "STT";
+            this.gridColumn16.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn16.ImageAlignment = System.Drawing.StringAlignment.Far;
+            this.gridColumn16.Name = "gridColumn16";
+            this.gridColumn16.OptionsColumn.AllowEdit = false;
+            this.gridColumn16.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn16.Visible = true;
+            this.gridColumn16.VisibleIndex = 1;
+            this.gridColumn16.Width = 40;
+            // 
+            // gridColumn17
+            // 
+            this.gridColumn17.Caption = "gridColumnisLock";
+            this.gridColumn17.FieldName = "isLock";
+            this.gridColumn17.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.OptionsColumn.ShowCaption = false;
+            this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn17.Width = 20;
+            // 
+            // gridColumn18
+            // 
+            this.gridColumn18.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn18.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn18.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn18.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn18.ColumnEdit = this.btnGEdit;
+            this.gridColumn18.FieldName = "Delete";
+            this.gridColumn18.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumn18.ImageAlignment = System.Drawing.StringAlignment.Center;
+            this.gridColumn18.Name = "gridColumn18";
+            this.gridColumn18.OptionsColumn.ShowCaption = false;
+            this.gridColumn18.ToolTip = "Sửa";
+            this.gridColumn18.Width = 20;
+            // 
+            // gridColumn19
+            // 
+            this.gridColumn19.Caption = "Mã vật tư";
+            this.gridColumn19.FieldName = "MATERIAL_TYPE_CODE";
+            this.gridColumn19.Name = "gridColumn19";
+            this.gridColumn19.OptionsColumn.AllowEdit = false;
+            this.gridColumn19.ToolTip = "Mã thuốc";
+            this.gridColumn19.Visible = true;
+            this.gridColumn19.VisibleIndex = 2;
+            this.gridColumn19.Width = 108;
+            // 
+            // gridColumn35
+            // 
+            this.gridColumn35.Caption = "Tên vật tư";
+            this.gridColumn35.ColumnEdit = this.repositoryItemMemoEdit1;
+            this.gridColumn35.FieldName = "MATERIAL_TYPE_NAME";
+            this.gridColumn35.Name = "gridColumn35";
+            this.gridColumn35.Visible = true;
+            this.gridColumn35.VisibleIndex = 3;
+            this.gridColumn35.Width = 250;
+            // 
+            // gridColumn20
+            // 
+            this.gridColumn20.Caption = "Thời gian xuất";
+            this.gridColumn20.FieldName = "TIME_STR";
+            this.gridColumn20.Name = "gridColumn20";
+            this.gridColumn20.OptionsColumn.AllowEdit = false;
+            this.gridColumn20.ToolTip = "Thời gian nhập/xuất";
+            this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn20.Visible = true;
+            this.gridColumn20.VisibleIndex = 7;
+            this.gridColumn20.Width = 132;
+            // 
+            // gridColumn21
+            // 
+            this.gridColumn21.Caption = "Mã phiếu xuất";
+            this.gridColumn21.FieldName = "MEST_CODE";
+            this.gridColumn21.Name = "gridColumn21";
+            this.gridColumn21.OptionsColumn.AllowEdit = false;
+            this.gridColumn21.ToolTip = "Mã phiếu nhập/xuất";
+            this.gridColumn21.Visible = true;
+            this.gridColumn21.VisibleIndex = 8;
+            this.gridColumn21.Width = 134;
+            // 
+            // gridColumn22
+            // 
+            this.gridColumn22.Caption = "Loại xuất";
+            this.gridColumn22.FieldName = "MEST_TYPE";
+            this.gridColumn22.Name = "gridColumn22";
+            this.gridColumn22.OptionsColumn.AllowEdit = false;
+            this.gridColumn22.ToolTip = "Loại nhập/xuất";
+            this.gridColumn22.Visible = true;
+            this.gridColumn22.VisibleIndex = 9;
+            this.gridColumn22.Width = 115;
+            // 
+            // gridColumn23
+            // 
+            this.gridColumn23.Caption = "Đối tượng xuất";
+            this.gridColumn23.CustomizationCaption = "Đối tượng nhập/xuất";
+            this.gridColumn23.FieldName = "MEDI_STOCK_NAME_STR";
+            this.gridColumn23.Name = "gridColumn23";
+            this.gridColumn23.OptionsColumn.AllowEdit = false;
+            this.gridColumn23.ToolTip = "Đối tượng nhập/xuất";
+            this.gridColumn23.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn23.Visible = true;
+            this.gridColumn23.VisibleIndex = 10;
+            this.gridColumn23.Width = 127;
+            // 
+            // gridColumn24
+            // 
+            this.gridColumn24.Caption = "Số chứng từ";
+            this.gridColumn24.FieldName = "DOCUMENT_NUMBER";
+            this.gridColumn24.Name = "gridColumn24";
+            this.gridColumn24.OptionsColumn.AllowEdit = false;
+            this.gridColumn24.Visible = true;
+            this.gridColumn24.VisibleIndex = 11;
+            this.gridColumn24.Width = 82;
+            // 
+            // gridColumn25
+            // 
+            this.gridColumn25.Caption = "Số lượng";
+            this.gridColumn25.FieldName = "AMOUNT";
+            this.gridColumn25.Name = "gridColumn25";
+            this.gridColumn25.OptionsColumn.AllowEdit = false;
+            this.gridColumn25.ToolTip = "Số lượng";
+            this.gridColumn25.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn25.Visible = true;
+            this.gridColumn25.VisibleIndex = 12;
+            this.gridColumn25.Width = 63;
+            // 
+            // gridColumn26
+            // 
+            this.gridColumn26.Caption = "Giá";
+            this.gridColumn26.DisplayFormat.FormatString = "##,00";
+            this.gridColumn26.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.gridColumn26.FieldName = "PRICE";
+            this.gridColumn26.Name = "gridColumn26";
+            this.gridColumn26.OptionsColumn.AllowEdit = false;
+            this.gridColumn26.ToolTip = "Giá";
+            this.gridColumn26.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn26.Visible = true;
+            this.gridColumn26.VisibleIndex = 13;
+            this.gridColumn26.Width = 62;
+            // 
+            // gridColumn27
+            // 
+            this.gridColumn27.Caption = "Số lô";
+            this.gridColumn27.FieldName = "PACKAGE_NUMBER";
+            this.gridColumn27.Name = "gridColumn27";
+            this.gridColumn27.OptionsColumn.AllowEdit = false;
+            this.gridColumn27.Visible = true;
+            this.gridColumn27.VisibleIndex = 14;
+            // 
+            // gridColumn28
+            // 
+            this.gridColumn28.Caption = "Kỳ kiểm kê";
+            this.gridColumn28.FieldName = "MEDI_STOCK_PERIOD_NAME";
+            this.gridColumn28.Name = "gridColumn28";
+            this.gridColumn28.OptionsColumn.AllowEdit = false;
+            this.gridColumn28.ToolTip = "Kỳ kiểm kê";
+            this.gridColumn28.Visible = true;
+            this.gridColumn28.VisibleIndex = 15;
+            this.gridColumn28.Width = 68;
+            // 
+            // grdColModifyTime
+            // 
+            this.grdColModifyTime.Caption = "Thời gian sửa";
+            this.grdColModifyTime.FieldName = "MODIFY_TIME_STR";
+            this.grdColModifyTime.Name = "grdColModifyTime";
+            this.grdColModifyTime.OptionsColumn.AllowEdit = false;
+            this.grdColModifyTime.ToolTip = "Thời gian sửa";
+            this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColModifyTime.Width = 120;
+            // 
+            // grdColModifier
+            // 
+            this.grdColModifier.Caption = "Người sửa";
+            this.grdColModifier.FieldName = "MODIFIER";
+            this.grdColModifier.Name = "grdColModifier";
+            this.grdColModifier.OptionsColumn.AllowEdit = false;
+            this.grdColModifier.ToolTip = "Người sửa";
+            // 
+            // gridColumn29
+            // 
+            this.gridColumn29.Caption = "Trạng thái";
+            this.gridColumn29.FieldName = "STT_NAME";
+            this.gridColumn29.Name = "gridColumn29";
+            this.gridColumn29.OptionsColumn.AllowEdit = false;
+            this.gridColumn29.Visible = true;
+            this.gridColumn29.VisibleIndex = 4;
+            this.gridColumn29.Width = 103;
+            // 
+            // gridColumn30
+            // 
+            this.gridColumn30.Caption = "Thời gian tạo";
+            this.gridColumn30.FieldName = "CREATE_TIME_STR";
+            this.gridColumn30.Name = "gridColumn30";
+            this.gridColumn30.OptionsColumn.AllowEdit = false;
+            this.gridColumn30.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn30.Visible = true;
+            this.gridColumn30.VisibleIndex = 5;
+            this.gridColumn30.Width = 108;
+            // 
+            // gridColumn31
+            // 
+            this.gridColumn31.Caption = "Thời gian y lệnh";
+            this.gridColumn31.FieldName = "TDL_INTRUCTION_TIME_STR";
+            this.gridColumn31.Name = "gridColumn31";
+            this.gridColumn31.OptionsColumn.AllowEdit = false;
+            this.gridColumn31.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn31.Visible = true;
+            this.gridColumn31.VisibleIndex = 6;
+            this.gridColumn31.Width = 105;
+            // 
+            // gridColumn32
+            // 
+            this.gridColumn32.Caption = "Khoa yêu cầu";
+            this.gridColumn32.FieldName = "REQ_DEPARTMENT_NAME";
+            this.gridColumn32.Name = "gridColumn32";
+            this.gridColumn32.OptionsColumn.AllowEdit = false;
+            this.gridColumn32.Visible = true;
+            this.gridColumn32.VisibleIndex = 16;
+            this.gridColumn32.Width = 89;
+            // 
+            // gridColumn33
+            // 
+            this.gridColumn33.Caption = "Kho nhập";
+            this.gridColumn33.FieldName = "IMP_MEDI_STOCK_NAME";
+            this.gridColumn33.Name = "gridColumn33";
+            this.gridColumn33.OptionsColumn.AllowEdit = false;
+            this.gridColumn33.Width = 113;
+            // 
+            // gridColumn34
+            // 
+            this.gridColumn34.Caption = "Kho xuất";
+            this.gridColumn34.FieldName = "EXP_MEDI_STOCK_NAME";
+            this.gridColumn34.Name = "gridColumn34";
+            this.gridColumn34.OptionsColumn.AllowEdit = false;
+            this.gridColumn34.Visible = true;
+            this.gridColumn34.VisibleIndex = 17;
+            this.gridColumn34.Width = 106;
             // 
             // layoutControlItem3
             // 
@@ -1377,13 +1411,14 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             this.layoutControl7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlFormList)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewHistoryMaterial)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHistoryMedicine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGEdit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGunLock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnGLock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewHistoryMedicine)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewHistoryMaterial)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -1491,5 +1526,8 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
         private DevExpress.XtraEditors.CheckEdit chkHistoryMaterial;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn36;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn35;
+        private DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit repositoryItemMemoEdit1;
     }
 }
