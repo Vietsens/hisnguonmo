@@ -6498,7 +6498,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             if (checkLengthConfig == "1")
             {
                 var result = XtraMessageBox.Show(
-                    "Dữ liệu trường quá trình bệnh lý, tóm tắt kết quả vượt quá ký tự. Bạn có muốn tiếp tục không?",
+                    "Dữ liệu trường quá trình bệnh lý, tóm tắt kết quả vượt quá ký tự. Bạn có muốn sửa không?",
                     "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
                 if (result == DialogResult.No)
