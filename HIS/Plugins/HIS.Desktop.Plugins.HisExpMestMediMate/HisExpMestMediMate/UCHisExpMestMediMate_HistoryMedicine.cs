@@ -460,10 +460,6 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 gridControlFormList.EndUpdate();
                 //gridviewFormList.EndUpdate();
                 //
-                if (listAdo != null && listAdo.Count > 0)
-                {
-                    gridViewHistoryMedicine.BestFitColumns();
-                }
                 #region Process has exception
                 HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost((CommonParam)param);
                 #endregion

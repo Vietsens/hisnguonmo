@@ -418,10 +418,6 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 gridControlFormList.BeginUpdate();
                 gridControlFormList.DataSource = listAdo;
                 gridControlFormList.EndUpdate();
-                if (listAdo != null && listAdo.Count > 0)
-                {
-                    gridViewHistoryMaterial.BestFitColumns();
-                }
             }
             catch (Exception ex)
             {
