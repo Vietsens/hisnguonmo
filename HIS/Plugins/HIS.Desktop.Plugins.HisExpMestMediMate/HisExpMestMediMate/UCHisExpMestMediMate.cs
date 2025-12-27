@@ -142,8 +142,6 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 InitCheck(cboExpMestType, SelectionGrid__ExpMestType);
                 InitCombo(cboExpMestType, BackendDataWorker.Get<HIS_EXP_MEST_TYPE>().Where(p => p.IS_ACTIVE == 1).ToList(), "EXP_MEST_TYPE_NAME", "ID");
                 //
-                gridViewHistoryMedicine.OptionsView.ColumnAutoWidth = true;
-                gridViewHistoryMaterial.OptionsView.ColumnAutoWidth = true;
                 this.InitControlState();
             }
             catch (Exception ex)
@@ -180,6 +178,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 ////Khoi tao doi tuong resource
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.HisExpMestMediMate.Resources.Lang", typeof(UCHisExpMestMediMate).Assembly);
 
+
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -205,12 +204,42 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.layoutControlItem13.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl7.Text = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.layoutControl7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtSearch.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.txtSearch.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn10.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn10.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.STT.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.STT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumnEdit.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumnEdit.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn36.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn36.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColCode.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColCode.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCode.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColName.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColName.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn4.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn4.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn3.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn3.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn5.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn5.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn11.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn11.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn2.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn2.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColCreateTime.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCreateTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColCreateTime.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCreateTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn14.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn14.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColCreator.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCreator.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColCreator.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCreator.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn7.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn7.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn8.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn8.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn9.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn9.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn13.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn13.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn12.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn12.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn15.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn15.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn16.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn16.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn17.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn17.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn18.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn18.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn19.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn19.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn19.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn19.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn35.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn35.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn20.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn20.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn20.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn20.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn21.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn21.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -237,40 +266,15 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 this.gridColumn32.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn32.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn33.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn33.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn34.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn34.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn10.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn10.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.STT.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.STT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnEdit.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumnEdit.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCode.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCode.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCode.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColName.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColName.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn4.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn4.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn3.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn3.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn5.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn5.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn11.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn11.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn2.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn2.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCreateTime.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCreateTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCreateTime.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCreateTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn14.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn14.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCreator.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCreator.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCreator.ToolTip = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.grdColCreator.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn7.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn7.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn8.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn8.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn9.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn9.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn13.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn13.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn12.Caption = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.gridColumn12.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+
+
 
         int rowCount = 0;
         int dataTotal = 0;

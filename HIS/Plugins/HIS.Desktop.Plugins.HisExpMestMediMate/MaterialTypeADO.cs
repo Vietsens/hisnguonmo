@@ -24,6 +24,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate
     {
         public string MATERIAL_TYPE_CODE { get; set; }
         public long EXP_MEST_ID { get; set; }
+        public string MATERIAL_TYPE_NAME { get; internal set; }
 
         public MaterialTypeADO() { }
 

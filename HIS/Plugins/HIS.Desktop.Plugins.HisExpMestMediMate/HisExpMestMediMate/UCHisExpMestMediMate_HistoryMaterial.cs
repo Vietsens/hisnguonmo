@@ -311,6 +311,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     {
                         MaterialTypeADO ado = new MaterialTypeADO();
                         ado.MATERIAL_TYPE_CODE = item.MATERIAL_TYPE_CODE;
+                        ado.MATERIAL_TYPE_NAME = item.MATERIAL_TYPE_NAME;
                         ado.TIME = item.EXP_TIME;
                         ado.CREATE_TIME = item.CREATE_TIME;
                         ado.TDL_INTRUCTION_TIME = item.TDL_INTRUCTION_TIME;
@@ -375,6 +376,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     MaterialTypeADO ado = new MaterialTypeADO();
                     ado.MEST_ID = item.MEST_ID;
                     ado.MATERIAL_TYPE_CODE = item.MATERIAL_TYPE_CODE;
+                    ado.MATERIAL_TYPE_NAME = item.MATERIAL_TYPE_NAME;
                     ado.AMOUNT = item.AMOUNT;
                     ado.TIME = item.TIME;
                     ado.CREATE_TIME = item.CREATE_TIME;

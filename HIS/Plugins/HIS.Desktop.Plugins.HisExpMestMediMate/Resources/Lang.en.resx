@@ -405,6 +405,12 @@
   <data name="UCHisExpMestMediMate.gridColumn34.Caption" xml:space="preserve">
     <value>Export warehouse</value>
   </data>
+  <data name="UCHisExpMestMediMate.gridColumn35.Caption" xml:space="preserve">
+    <value>Material name</value>
+  </data>
+  <data name="UCHisExpMestMediMate.gridColumn36.Caption" xml:space="preserve">
+    <value>Drug name</value>
+  </data>
   <data name="UCHisExpMestMediMate.gridColumn4.Caption" xml:space="preserve">
     <value>Export ticket code</value>
   </data>
