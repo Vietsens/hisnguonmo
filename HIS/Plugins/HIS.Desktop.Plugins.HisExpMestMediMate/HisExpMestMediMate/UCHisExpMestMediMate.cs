@@ -176,7 +176,8 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
             try
             {
                 ////Khoi tao doi tuong resource
-                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager(".Resources.Lang", typeof(UCHisExpMestMediMate).Assembly);
+                Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.HisExpMestMediMate.Resources.Lang", typeof(UCHisExpMestMediMate).Assembly);
+
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("UCHisExpMestMediMate.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
