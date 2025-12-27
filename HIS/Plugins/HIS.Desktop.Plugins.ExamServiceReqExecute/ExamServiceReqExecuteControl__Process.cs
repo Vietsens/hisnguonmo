@@ -55,6 +55,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -619,11 +620,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 subclinicalResult = txtSubclinical.Text;
             }
 
-            if (!string.IsNullOrEmpty(clinicalNote) && clinicalNote.Length > MAX_CLINICAL_LENGTH)
+            if (!string.IsNullOrEmpty(clinicalNote) && Encoding.UTF8.GetByteCount(clinicalNote) > MAX_CLINICAL_LENGTH)
             {
                 overField = "CLINICAL_NOTE";
             }
-            else if (!string.IsNullOrEmpty(subclinicalResult) && subclinicalResult.Length > MAX_CLINICAL_LENGTH)
+            else if (!string.IsNullOrEmpty(subclinicalResult) && Encoding.UTF8.GetByteCount(subclinicalResult) > MAX_CLINICAL_LENGTH)
             {
                 overField = "SUBCLINICAL_RESULT";
             }
