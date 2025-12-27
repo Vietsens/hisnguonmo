@@ -15,32 +15,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Views.Base;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.PrepareAndExport.Popup;
+using HIS.Desktop.Plugins.PrepareAndExport.Validate;
 using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.Core;
-using Inventec.Desktop.Common.Message;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using DevExpress.Data;
-using DevExpress.XtraGrid.Views.Base;
-using System.Collections;
-using System.Threading;
-using HIS.Desktop.Plugins.PrepareAndExport.Validate;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.ViewInfo;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Plugins.PrepareAndExport.Popup;
 
 namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 {
@@ -249,6 +250,27 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             try
             {
                 WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csNotPrint =
+                (currentControlStateRDO != null && currentControlStateRDO.Count > 0)
+                ? currentControlStateRDO.Where(o => o.KEY == chkNotPrint.Name && o.MODULE_LINK == moduleLink).FirstOrDefault()
+                : null;
+
+                if (csNotPrint != null)
+                {
+                    csNotPrint.VALUE = chkNotPrint.Checked ? "1" : "0";
+                }
+                else
+                {
+                    csNotPrint = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csNotPrint.KEY = chkNotPrint.Name;
+                    csNotPrint.VALUE = chkNotPrint.Checked ? "1" : "0";
+                    csNotPrint.MODULE_LINK = moduleLink;
+                    if (currentControlStateRDO == null)
+                        currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    currentControlStateRDO.Add(csNotPrint);
+                }
+                controlStateWorker.SetData(currentControlStateRDO);
+                WaitingManager.Hide();
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (currentControlStateRDO != null && currentControlStateRDO.Count > 0) ? currentControlStateRDO.Where(o => o.KEY == chkAutoLoadTab.Name && o.MODULE_LINK == "HIS.Desktop.Plugins.PrepareAndExport").FirstOrDefault() : null;
                 if (csAddOrUpdate != null)
                 {
@@ -350,6 +372,39 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                         gvPrinted.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle;
                     }
                 }
+                else if (xtraTabControl1.SelectedTabPageIndex == 2)
+                {
+                    gcPrepareMedicine.BeginInvoke(new Action(() =>
+                    {
+                        gvPrepareMedicine.Focus();
+                        gvPrepareMedicine.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle;
+                        gvPrepareMedicine.FocusedColumn = gridColumn26; // cột Mã điều trị
+                        gvPrepareMedicine.ShowEditor();
+                        (gvPrepareMedicine.ActiveEditor as DevExpress.XtraEditors.BaseEdit)?.SelectAll();
+                    }));
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == 3)
+                {
+                    gcAbssentN.BeginInvoke(new Action(() =>
+                    {
+                        gvAbssentN.Focus();
+                        gvAbssentN.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle;
+                        gvAbssentN.FocusedColumn = gridColumn35; // cột Mã điều trị
+                        gvAbssentN.ShowEditor();
+                        (gvAbssentN.ActiveEditor as DevExpress.XtraEditors.BaseEdit)?.SelectAll();
+                    }));
+                }
+                else if (xtraTabControl1.SelectedTabPageIndex == 4)
+                {
+                    gcPassMedicine.BeginInvoke(new Action(() =>
+                    {
+                        gvPassMedicine.Focus();
+                        gvPassMedicine.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle;
+                        gvPassMedicine.FocusedColumn = gridColumn45; // cột Mã điều trị
+                        gvPassMedicine.ShowEditor();
+                        (gvPassMedicine.ActiveEditor as DevExpress.XtraEditors.BaseEdit)?.SelectAll();
+                    }));
+                }
             }
             catch (Exception ex)
             {
@@ -387,6 +442,10 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                         else if (item.KEY == spnSecondLoadTab.Name)
                         {
                             spnSecondLoadTab.Value = Decimal.Parse(item.VALUE);
+                        }
+                        else if (item.KEY == chkNotPrint.Name)
+                        {
+                            chkNotPrint.Checked = item.VALUE == "1";
                         }
                     }
                     if (!chkAutoLoadTab.Checked)
@@ -616,6 +675,94 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             {
                     Requirements popup = new Requirements(lstAll);
                     popup.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkNotPrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveState();      
+                LoadTab2();          
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gcPrepareMedicine_ProcessGridKey(object sender, KeyEventArgs e)
+       {
+            try
+            {
+                if (e.KeyCode != Keys.Enter) return;
+
+                if (gvPrepareMedicine.FocusedRowHandle != DevExpress.XtraGrid.GridControl.AutoFilterRowHandle) return;
+
+                if (gvPrepareMedicine.FocusedColumn != gridColumn26) return;
+
+                if (gvPrepareMedicine.RowCount != 1) return;
+
+                int rowHandle = gvPrepareMedicine.GetVisibleRowHandle(0);
+                var one = gvPrepareMedicine.GetRow(rowHandle) as HIS_EXP_MEST;
+                if (one == null) return;
+                currentCall = one;
+                CallSpecific(one);
+                //btnCall_Click(null, null);
+
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void CallSpecific(HIS_EXP_MEST one)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(txtGateCodeString))
+                {
+                    frmConfig frm = new frmConfig(IsOpen, GateConfig, IpConfig);
+                    frm.ShowDialog();
+                    return;
+                }
+
+                currentCall = one;
+                txtCurrentCall.Text = currentCall.NUM_ORDER + " - " + currentCall.TDL_PATIENT_NAME + " - " + currentCall.TDL_TREATMENT_CODE;
+
+                if (this.clienttManager == null)
+                    this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
+
+                bool rsRecall = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString());
+                Inventec.Common.Logging.LogSystem.Error("GỌI THEO SEARCH ___ " + rsRecall);
+
+                if (txtGateCodeString != currentCall.GATE_CODE)   
+                {
+                    CommonParam param = new CommonParam();
+                    ExpMestCallSDO sdo = new ExpMestCallSDO();
+                    sdo.ExpMestId = currentCall.ID;
+                    sdo.GateCode = txtGateCodeString;
+
+                    WaitingManager.Show();
+                    bool success = new Inventec.Common.Adapter.BackendAdapter(param)
+                        .Post<bool>("api/HisExpMest/Call", ApiConsumers.MosConsumer, sdo, param);
+                    WaitingManager.Hide();
+
+                    if (success)
+                    {
+                        var item = lstAll.FirstOrDefault(x => x.ID == currentCall.ID);
+                        if (item != null) item.GATE_CODE = txtGateCodeString;
+
+                        LoadTab3();
+                    }
+                    MessageManager.Show(this.ParentForm, param, success);
+                }
             }
             catch (Exception ex)
             {

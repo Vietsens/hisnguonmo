@@ -855,7 +855,7 @@
   <data name="UCExecuteRoom.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Treatment code (F3)</value>
   </data>
-	<data name="UCExecuteRoom.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+  <data name="UCExecuteRoom.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Patient Code (F8)</value>
   </data>
   <data name="UCExecuteRoom.xtraTabDocumentReq.Text" xml:space="preserve">
@@ -935,5 +935,8 @@
   </data>
   <data name="UCExecuteRoom.btnHivTreatment.Text" xml:space="preserve">
     <value>HIV/AIDS treatment information</value>
+  </data>
+  <data name="UCExecuteRoom.layoutControlItem70.Text" xml:space="preserve">
+    <value>Blood type:</value>
   </data>
 </root>

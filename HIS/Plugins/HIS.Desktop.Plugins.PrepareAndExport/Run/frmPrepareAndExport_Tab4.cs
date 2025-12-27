@@ -57,7 +57,23 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 				{
 					gcAbssentN.DataSource = lstTab4;
 				}
-			}
+                gcAbssentN.BeginInvoke(new Action(() =>
+                {
+                    try
+                    {
+                        gvAbssentN.Focus();
+                        gvAbssentN.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle;
+                        gvAbssentN.FocusedColumn = gridColumn35;
+                        gvAbssentN.ShowEditor();
+                        var ed = gvAbssentN.ActiveEditor as DevExpress.XtraEditors.BaseEdit;
+                        ed?.SelectAll();
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }));
+            }
 			catch (Exception ex)
 			{
 				Inventec.Common.Logging.LogSystem.Error(ex);

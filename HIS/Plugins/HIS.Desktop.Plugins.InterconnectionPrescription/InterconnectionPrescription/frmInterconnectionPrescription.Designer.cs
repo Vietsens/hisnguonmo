@@ -45,14 +45,18 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnUpdateSale = new DevExpress.XtraEditors.SimpleButton();
             this.cboStatus = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnRefresh = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.chkAll = new DevExpress.XtraEditors.CheckEdit();
             this.btnPost = new DevExpress.XtraEditors.SimpleButton();
@@ -90,14 +94,9 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciStatus = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.btnUpdateSale = new DevExpress.XtraEditors.SimpleButton();
-            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -124,9 +123,9 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -162,6 +161,18 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
+            // btnUpdateSale
+            // 
+            this.btnUpdateSale.Enabled = false;
+            this.btnUpdateSale.Location = new System.Drawing.Point(1579, 3);
+            this.btnUpdateSale.Name = "btnUpdateSale";
+            this.btnUpdateSale.Size = new System.Drawing.Size(165, 27);
+            this.btnUpdateSale.StyleController = this.layoutControl2;
+            this.btnUpdateSale.TabIndex = 15;
+            this.btnUpdateSale.Text = "Cập nhật SL bán";
+            this.btnUpdateSale.ToolTip = "Cập nhật số lượng đã bán";
+            this.btnUpdateSale.Click += new System.EventHandler(this.btnUpdateSale_Click);
+            // 
             // cboStatus
             // 
             this.cboStatus.Location = new System.Drawing.Point(411, 3);
@@ -180,6 +191,10 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnSearch,
@@ -213,6 +228,34 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.barBtnRefresh.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R));
             this.barBtnRefresh.Name = "barBtnRefresh";
             this.barBtnRefresh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barBtnRefresh_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1753, 38);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 699);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1753, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 661);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1753, 38);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 661);
             // 
             // gridLookUpEdit1View
             // 
@@ -634,6 +677,15 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.lciStatus.TextSize = new System.Drawing.Size(110, 20);
             this.lciStatus.TextToControlDistance = 5;
             // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.Control = this.btnUpdateSale;
+            this.layoutControlItem5.Location = new System.Drawing.Point(1576, 0);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Size = new System.Drawing.Size(171, 33);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem5.TextVisible = false;
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.False;
@@ -653,55 +705,6 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             this.layoutControlItem1.Size = new System.Drawing.Size(1753, 661);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlTop.Size = new System.Drawing.Size(1753, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 699);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1753, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 661);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1753, 38);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 661);
-            // 
-            // btnUpdateSale
-            // 
-            this.btnUpdateSale.Enabled = false;
-            this.btnUpdateSale.Location = new System.Drawing.Point(1579, 3);
-            this.btnUpdateSale.Name = "btnUpdateSale";
-            this.btnUpdateSale.Size = new System.Drawing.Size(165, 27);
-            this.btnUpdateSale.StyleController = this.layoutControl2;
-            this.btnUpdateSale.TabIndex = 15;
-            this.btnUpdateSale.Text = "Cập nhật SL bán";
-            this.btnUpdateSale.ToolTip = "Cập nhật số lượng đã bán";
-            this.btnUpdateSale.Click += new System.EventHandler(this.btnUpdateSale_Click);
-            // 
-            // layoutControlItem5
-            // 
-            this.layoutControlItem5.Control = this.btnUpdateSale;
-            this.layoutControlItem5.Location = new System.Drawing.Point(1576, 0);
-            this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(171, 33);
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem5.TextVisible = false;
             // 
             // frmInterconnectionPrescription
             // 
@@ -749,9 +752,9 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

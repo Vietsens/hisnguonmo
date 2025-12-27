@@ -236,6 +236,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private bool isRequiredPathologicalProcessTransferPatientBHYT = false;
         private int pathologicalProcessOption = 0;
         bool isLoadedMLCT;
+        private const int MAX_CLINICAL_LENGTH = 4000;
 
         Library.ConnectWhoCnd.ConnectWhoCndProcessor whoCndProcessor;
         #endregion
@@ -2423,7 +2424,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (chkTreatmentFinish.Checked)
                 {
-
+                    ExamTreatmentFinishResult finishResult = null;
+                    if (treatmentFinishProcessor != null && ucTreatmentFinish != null)
+                    {
+                        finishResult = treatmentFinishProcessor.GetValue(ucTreatmentFinish) as ExamTreatmentFinishResult;
+                    }
+                    if (!ValidateTreatmentExtMaxLength(finishResult))
+                    {
+                        chkTreatmentFinish.Checked = false;
+                        return;
+                    }
                     if (!this.ValidForButtonOtherClick())
                     {
                         chkTreatmentFinish.Checked = false;
@@ -3099,6 +3109,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 EventsCausesDeaths = new List<HIS_EVENTS_CAUSES_DEATH>();
                 if (!ValidAddress())
                     return;
+                ExamTreatmentFinishResult finishResult = null;
+                if (chkTreatmentFinish.Checked && ucTreatmentFinish != null)
+                {
+                    finishResult = treatmentFinishProcessor.GetValue(ucTreatmentFinish) as ExamTreatmentFinishResult;
+                    if (!ValidateTreatmentExtMaxLength(finishResult))
+                    {
+                        isClickSaveFinish = false;
+                        return;
+                    }
+                }
                 if ((HisConfigCFG.RequiredWeightHeight_Option == "1" || (chkHospitalize.Checked && HisConfigCFG.RequiredWeightHeight_Option == "2") || HisConfigCFG.RequiredWeightHeight_Option == "3") && !ValidDhstOption())
                     return;
                 ValiTemperatureOption();

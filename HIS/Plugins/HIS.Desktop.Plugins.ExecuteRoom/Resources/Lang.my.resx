@@ -855,7 +855,7 @@
   <data name="UCExecuteRoom.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>သတ်မှတ်ကုဒ် (F3)</value>
   </data>
-	<data name="UCExecuteRoom.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+  <data name="UCExecuteRoom.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>လူနာအမှတ် (F8)</value>
   </data>
   <data name="UCExecuteRoom.xtraTabDocumentReq.Text" xml:space="preserve">
