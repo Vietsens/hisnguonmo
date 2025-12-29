@@ -20,7 +20,9 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 
                 // Tab 3: Sinh đẻ
                 ConfigDateEditFormat(dteExam3);
-                
+
+                ConfigDateEditFormat(dteBirthCertificateDate3);
+
                 // Tab 4: Tránh thai
                 ConfigDateEditFormat(dteExam4);
                 
