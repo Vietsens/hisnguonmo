@@ -677,9 +677,9 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
 
         private void ParseClientAppConfig(string value,
     out string url, out string appKey, out string appName,
-    out string maCoSo, out string tenCoSo, out string sdt, out string diaChi)
+    out string maCoSo, out string tenCoSo, out string sdt, out string diaChi, out string UrlQuantitySold)
         {
-            url = appKey = appName = maCoSo = tenCoSo = sdt = diaChi = "";
+            url = appKey = appName = maCoSo = tenCoSo = sdt = diaChi = UrlQuantitySold = "";
 
             string[] p = (value ?? "").Split('|');
             if (p.Length < 7) throw new Exception("ClientAppConfig không đúng định dạng");
@@ -691,6 +691,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             tenCoSo = (p[4] ?? "").Trim();
             sdt = (p[5] ?? "").Trim();
             diaChi = (p[6] ?? "").Trim();
+            UrlQuantitySold = (p[7] ?? "").Trim();
         }
         private DataInput BuildSendQuantitySoldInput(
     string sysConfigValue,
@@ -704,13 +705,14 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             string sysUrl, hospitalLogin, hospitalPass;
             ParseSysConfig(sysConfigValue, out sysUrl, out hospitalLogin, out hospitalPass);
 
-            string appUrl, appKey, appName, maCoSo, tenCoSo, sdt, diaChi;
-            ParseClientAppConfig(clientAppConfigValue, out appUrl, out appKey, out appName, out maCoSo, out tenCoSo, out sdt, out diaChi);
+            string appUrl, appKey, appName, maCoSo, tenCoSo, sdt, diaChi, UrlQuantitySold;
+            ParseClientAppConfig(clientAppConfigValue, out appUrl, out appKey, out appName, out maCoSo, out tenCoSo, out sdt, out diaChi, out UrlQuantitySold);
 
             DataInput input = new DataInput();
 
             // Url lấy theo ClientAppConfig (đúng mô tả key mới)
             input.Url = appUrl;
+            input.UrlQuantitySold = UrlQuantitySold;
 
             input.HospitalLoginname = hospitalLogin;
             input.HospitalPassword = hospitalPass;
