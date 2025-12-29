@@ -150,6 +150,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_TreatmentEndTypeIsTransfer = "HIS.Desktop.Plugins.TreatmentFinish.TreatmentEndTypeIsTransfer";
         private const string KEY_TuberculosisOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.TuberculosisOption";
         private const string KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
+        private const string KEY_IsCheckValueMaxlengthOption = "HIS.Desktop.Plugins.TreatmentFinish.IsCheckValueMaxlengthOption";
         private const string KEY_ASSIGN_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION";
         private const string KEY_CheckSoNgay = "His.Desktop.Plugins.AssignPrescriptionPK.CheckSoNgay";
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
@@ -179,6 +180,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string AcinInteractiveOption;
         internal static string OptionSubIcdWhenFinish;
         internal static bool IsServiceReqIcdOption;
+        internal static string IsCheckValueMaxlengthOption;
         internal static string ModuleLinkApply;
         internal static string MODULELINKS;
         internal static string ASSIGNPRESCRIPTION_EGFROPTION;
@@ -488,6 +490,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 ExecuteRoomPaymentOption = GetValue(KEY__EXECUTE_ROOM_PAYMENT_OPTION);
                 MustChooseSeviceExamOption = GetValue(KEY__MustChooseSeviceExam);
                 CheckIcdWhenSave = GetValue(CHECK_ICD_WHEN_SAVE);
+                IsCheckValueMaxlengthOption = GetValue(KEY_IsCheckValueMaxlengthOption);
                 IsShowServerTimeByDefault = GetValue(CONFIG__ShowServerTimeByDefault) == GlobalVariables.CommonStringTrue;
                 IsDrugStoreComboboxOption = GetValue(CONFIG__DrugStoreComboboxOption) == GlobalVariables.CommonStringTrue;
                 AcinInteractiveOption = GetValue(CONFIG__AcinInteractiveOption);

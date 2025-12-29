@@ -50,5 +50,11 @@ namespace MPS.Processor.Mps000248
         internal const string SERIOUS_LEVEL__NhapVienKeoDai = "SERIOUS_LEVEL__NhapVienKeoDai";
         internal const string SERIOUS_LEVEL__TanTatVinhVien = "SERIOUS_LEVEL__TanTatVinhVien";
         internal const string SERIOUS_LEVEL__TuVong = "SERIOUS_LEVEL__TuVong";
+
+
+       
+
+
+
     }
 }

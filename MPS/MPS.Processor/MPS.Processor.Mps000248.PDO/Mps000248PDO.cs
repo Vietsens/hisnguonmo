@@ -31,25 +31,35 @@ namespace MPS.Processor.Mps000248.PDO
         public V_HIS_ADR _ADR { get; set; }
         public List<V_HIS_ADR_MEDICINE_TYPE> _MedicineIsAdrs { get; set; }
         public List<V_HIS_ADR_MEDICINE_TYPE> _Medicines { get; set; }
+        public List<V_HIS_ADR_MEDICINE_TYPE> _MedicinesType { get; set; }
+       
+
+
         public Mps000248PDO(
             HIS_TREATMENT _treatment,
             V_HIS_ADR _adr,
             List<V_HIS_ADR_MEDICINE_TYPE> _medicineIsAdrs,
             List<V_HIS_ADR_MEDICINE_TYPE> _medicines
+          
+           
             )
-        {
+        { 
             try
             {
                 this._Treatment = _treatment;
                 this._ADR = _adr;
                 this._MedicineIsAdrs = _medicineIsAdrs;
                 this._Medicines = _medicines;
+               
+                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+    
 
     }
 }
