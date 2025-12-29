@@ -3080,6 +3080,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 }
                 if (HisConfigCFG.IsEnableEditStartTime == "1")
                 {
+                    isCheckAssignServiceSimultaneityOption = isCheckAssignSimultaneityOption = true;
                     CheckAssignServiceSimultaneityOption();
                     if (isCheckAssignServiceSimultaneityOption == false || isCheckAssignSimultaneityOption == false)
                     {

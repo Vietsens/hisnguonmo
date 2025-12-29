@@ -493,6 +493,9 @@
   <ItemGroup>
     <None Include="Resources\dau tích-02.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="HIS.UC.ExamTreatmentFinish.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies</PostBuildEvent>
