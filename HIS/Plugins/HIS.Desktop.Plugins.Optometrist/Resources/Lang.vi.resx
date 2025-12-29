@@ -117,20 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="UCOptometrist.layoutControl1.Text" xml:space="preserve">
+  <data name="frmOptometrist.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmOptometrist.barOptometristPrintDon.Caption" xml:space="preserve">
+    <value>In đơn (Ctrl P)</value>
+  </data>
+  <data name="frmOptometrist.barOptometristPrintKham.Caption" xml:space="preserve">
+    <value>In phiếu khám (Ctrl I)</value>
+  </data>
+  <data name="frmOptometrist.barOptometristSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctr S)</value>
+  </data>
+  <data name="frmOptometrist.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
-  </data>
-  <data name="UCOptometrist.layoutControl3.Text" xml:space="preserve">
-    <value>layoutControl3</value>
-  </data>
-  <data name="UCOptometrist.chkEnd.Properties.Caption" xml:space="preserve">
-    <value>Kết thúc</value>
-  </data>
-  <data name="UCOptometrist.chkPrint.Properties.Caption" xml:space="preserve">
-    <value>In đơn</value>
-  </data>
-  <data name="UCOptometrist.btnSave.Text" xml:space="preserve">
-    <value>Lưu (Ctrl S)</value>
   </data>
   <data name="UCOptometrist.btnEndReq.Text" xml:space="preserve">
     <value>Kết thúc</value>
@@ -138,11 +138,263 @@
   <data name="UCOptometrist.btnPrint.Text" xml:space="preserve">
     <value>In đơn (Ctrl P)</value>
   </data>
-  <data name="UCOptometrist.labelControl9.Text" xml:space="preserve">
-    <value>tháng</value>
+  <data name="UCOptometrist.btnPrintPhieuKham.Text" xml:space="preserve">
+    <value>In phiếu khám (Ctrl I)</value>
   </data>
-  <data name="UCOptometrist.labelControl8.Text" xml:space="preserve">
-    <value>Lưu ý:</value>
+  <data name="UCOptometrist.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="UCOptometrist.chkAgain.Properties.Caption" xml:space="preserve">
+    <value>Đo lại</value>
+  </data>
+  <data name="UCOptometrist.chkEnd.Properties.Caption" xml:space="preserve">
+    <value>Kết thúc</value>
+  </data>
+  <data name="UCOptometrist.chkFirst.Properties.Caption" xml:space="preserve">
+    <value>Lần đầu</value>
+  </data>
+  <data name="UCOptometrist.chkOptometristPrintDon.Properties.Caption" xml:space="preserve">
+    <value>In đơn</value>
+  </data>
+  <data name="UCOptometrist.chkOptometristPrintKham.Properties.Caption" xml:space="preserve">
+    <value>In phiếu khám</value>
+  </data>
+  <data name="UCOptometrist.chkPrint.Properties.Caption" xml:space="preserve">
+    <value>In đơn</value>
+  </data>
+  <data name="UCOptometrist.Gc_Amount.Caption" xml:space="preserve">
+    <value>Lần đo</value>
+  </data>
+  <data name="UCOptometrist.Gc_Phong.Caption" xml:space="preserve">
+    <value>Phòng đo thị lực</value>
+  </data>
+  <data name="UCOptometrist.Gc_ServiceCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="UCOptometrist.Gc_ServiceName.Caption" xml:space="preserve">
+    <value>Dịch vụ</value>
+  </data>
+  <data name="UCOptometrist.Gc_ServiceUnitName.Caption" xml:space="preserve">
+    <value>ĐVT</value>
+  </data>
+  <data name="UCOptometrist.Gc_ServiceUnitName.ToolTip" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="UCOptometrist.gridColumn1.Caption" xml:space="preserve">
+    <value>Thời gian đo</value>
+  </data>
+  <data name="UCOptometrist.IS_BIFOCAL_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Kính 2 tròng (bifocal)</value>
+  </data>
+  <data name="UCOptometrist.IS_CONTACT_LENSE.Properties.Caption" xml:space="preserve">
+    <value>Kính áp tròng (contact len)</value>
+  </data>
+  <data name="UCOptometrist.IS_GLASS_SCRATCHED.Properties.Caption" xml:space="preserve">
+    <value>Kính xước</value>
+  </data>
+  <data name="UCOptometrist.IS_PHOTOCHROMIC_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Kính đổi màu (photochromic)</value>
+  </data>
+  <data name="UCOptometrist.IS_POLYCARBONATE_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Kính polycarbonate</value>
+  </data>
+  <data name="UCOptometrist.IS_PROGRESSIVE_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Kính đa tròng (progressive)</value>
+  </data>
+  <data name="UCOptometrist.IS_READING_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Kính nhìn gần (reading)</value>
+  </data>
+  <data name="UCOptometrist.label1.Text" xml:space="preserve">
+    <value>SPH (Cầu)</value>
+  </data>
+  <data name="UCOptometrist.label10.Text" xml:space="preserve">
+    <value>Kính cũ</value>
+  </data>
+  <data name="UCOptometrist.label11.Text" xml:space="preserve">
+    <value>OD (Mắt phải)</value>
+  </data>
+  <data name="UCOptometrist.label12.Text" xml:space="preserve">
+    <value>OS (Mắt trái)</value>
+  </data>
+  <data name="UCOptometrist.label13.Text" xml:space="preserve">
+    <value>AXE (Trục)</value>
+  </data>
+  <data name="UCOptometrist.label14.Text" xml:space="preserve">
+    <value>SPH (Cầu)</value>
+  </data>
+  <data name="UCOptometrist.label15.Text" xml:space="preserve">
+    <value>CYL (Trụ)</value>
+  </data>
+  <data name="UCOptometrist.label16.Text" xml:space="preserve">
+    <value>Sau liệt điều tiết</value>
+  </data>
+  <data name="UCOptometrist.label17.Text" xml:space="preserve">
+    <value>OD (Mắt phải)</value>
+  </data>
+  <data name="UCOptometrist.label18.Text" xml:space="preserve">
+    <value>OS (Mắt trái)</value>
+  </data>
+  <data name="UCOptometrist.label19.Text" xml:space="preserve">
+    <value>AXE (Trục)</value>
+  </data>
+  <data name="UCOptometrist.label2.Text" xml:space="preserve">
+    <value>SPH (Cầu)</value>
+  </data>
+  <data name="UCOptometrist.label20.Text" xml:space="preserve">
+    <value>SPH (Cầu)</value>
+  </data>
+  <data name="UCOptometrist.label21.Text" xml:space="preserve">
+    <value>CYL (Trụ)</value>
+  </data>
+  <data name="UCOptometrist.label22.Text" xml:space="preserve">
+    <value>Khúc xạ máy</value>
+  </data>
+  <data name="UCOptometrist.label23.Text" xml:space="preserve">
+    <value>OD (Mắt phải)</value>
+  </data>
+  <data name="UCOptometrist.label24.Text" xml:space="preserve">
+    <value>OS (Mắt trái)</value>
+  </data>
+  <data name="UCOptometrist.label25.Text" xml:space="preserve">
+    <value>AXE (Trục)</value>
+  </data>
+  <data name="UCOptometrist.label26.Text" xml:space="preserve">
+    <value>OD (Mắt phải)</value>
+  </data>
+  <data name="UCOptometrist.label27.Text" xml:space="preserve">
+    <value>OS (Mắt trái)</value>
+  </data>
+  <data name="UCOptometrist.label29.Text" xml:space="preserve">
+    <value>Skiascopy (trước liệt)    </value>
+  </data>
+  <data name="UCOptometrist.label3.Text" xml:space="preserve">
+    <value>CYL (Trụ)</value>
+  </data>
+  <data name="UCOptometrist.label30.Text" xml:space="preserve">
+    <value>Skiascopy (sau liệt) </value>
+  </data>
+  <data name="UCOptometrist.label31.Text" xml:space="preserve">
+    <value>TL có kính</value>
+  </data>
+  <data name="UCOptometrist.label32.Text" xml:space="preserve">
+    <value>OD (Mắt phải)</value>
+  </data>
+  <data name="UCOptometrist.label33.Text" xml:space="preserve">
+    <value>OS (Mắt trái)</value>
+  </data>
+  <data name="UCOptometrist.label35.Text" xml:space="preserve">
+    <value>Vận nhãn</value>
+  </data>
+  <data name="UCOptometrist.label36.Text" xml:space="preserve">
+    <value>Sắc giác</value>
+  </data>
+  <data name="UCOptometrist.label37.Text" xml:space="preserve">
+    <value>TL có kính</value>
+  </data>
+  <data name="UCOptometrist.label38.Text" xml:space="preserve">
+    <value>TL không kính</value>
+  </data>
+  <data name="UCOptometrist.label39.Text" xml:space="preserve">
+    <value>TL kính lỗ</value>
+  </data>
+  <data name="UCOptometrist.label4.Text" xml:space="preserve">
+    <value>Khúc xạ hiện tại</value>
+  </data>
+  <data name="UCOptometrist.label40.Text" xml:space="preserve">
+    <value>TL không kính</value>
+  </data>
+  <data name="UCOptometrist.label41.Text" xml:space="preserve">
+    <value>TL có kính</value>
+  </data>
+  <data name="UCOptometrist.label42.Text" xml:space="preserve">
+    <value>Thị giác lập thể</value>
+  </data>
+  <data name="UCOptometrist.label43.Text" xml:space="preserve">
+    <value>Nhãn áp (mmHg)</value>
+  </data>
+  <data name="UCOptometrist.label44.Text" xml:space="preserve">
+    <value>Bề dày giác mạc (um)  </value>
+  </data>
+  <data name="UCOptometrist.label45.Text" xml:space="preserve">
+    <value>K1 (Ds)</value>
+  </data>
+  <data name="UCOptometrist.label46.Text" xml:space="preserve">
+    <value>K2 (Ds)</value>
+  </data>
+  <data name="UCOptometrist.label47.Text" xml:space="preserve">
+    <value>Độ lác</value>
+  </data>
+  <data name="UCOptometrist.label48.Text" xml:space="preserve">
+    <value>Trục nhãn cầu</value>
+  </data>
+  <data name="UCOptometrist.label49.Text" xml:space="preserve">
+    <value>CYL (Trụ)</value>
+  </data>
+  <data name="UCOptometrist.label5.Text" xml:space="preserve">
+    <value>OD (Mắt phải)</value>
+  </data>
+  <data name="UCOptometrist.label50.Text" xml:space="preserve">
+    <value>Nhìn xa</value>
+  </data>
+  <data name="UCOptometrist.label51.Text" xml:space="preserve">
+    <value>OD (Mắt phải)</value>
+  </data>
+  <data name="UCOptometrist.label52.Text" xml:space="preserve">
+    <value>OS (Mắt trái)</value>
+  </data>
+  <data name="UCOptometrist.label53.Text" xml:space="preserve">
+    <value>Thị lực</value>
+  </data>
+  <data name="UCOptometrist.label54.Text" xml:space="preserve">
+    <value>AXE (Trục)</value>
+  </data>
+  <data name="UCOptometrist.label55.Text" xml:space="preserve">
+    <value>SPH (Cầu)</value>
+  </data>
+  <data name="UCOptometrist.label56.Text" xml:space="preserve">
+    <value>CYL (Trụ)</value>
+  </data>
+  <data name="UCOptometrist.label57.Text" xml:space="preserve">
+    <value>Nhìn gần</value>
+  </data>
+  <data name="UCOptometrist.label58.Text" xml:space="preserve">
+    <value>OD (Mắt phải)</value>
+  </data>
+  <data name="UCOptometrist.label59.Text" xml:space="preserve">
+    <value>OS (Mắt trái)</value>
+  </data>
+  <data name="UCOptometrist.label6.Text" xml:space="preserve">
+    <value>OS (Mắt trái)</value>
+  </data>
+  <data name="UCOptometrist.label60.Text" xml:space="preserve">
+    <value>Thị lực</value>
+  </data>
+  <data name="UCOptometrist.label61.Text" xml:space="preserve">
+    <value>AXE (Trục)</value>
+  </data>
+  <data name="UCOptometrist.label62.Text" xml:space="preserve">
+    <value>ADD</value>
+  </data>
+  <data name="UCOptometrist.label63.Text" xml:space="preserve">
+    <value>Khoảng cách đồng tử (BP):</value>
+  </data>
+  <data name="UCOptometrist.label7.Text" xml:space="preserve">
+    <value>AXE (Trục)</value>
+  </data>
+  <data name="UCOptometrist.label8.Text" xml:space="preserve">
+    <value>SPH (Cầu)</value>
+  </data>
+  <data name="UCOptometrist.label9.Text" xml:space="preserve">
+    <value>CYL (Trụ)</value>
+  </data>
+  <data name="UCOptometrist.labelControl1.Text" xml:space="preserve">
+    <value>1. Thị lực nhìn xa:</value>
+  </data>
+  <data name="UCOptometrist.labelControl2.Text" xml:space="preserve">
+    <value>2. Kết quả khám khúc xạ:</value>
+  </data>
+  <data name="UCOptometrist.labelControl5.Text" xml:space="preserve">
+    <value>4. Kính nhìn gần:</value>
   </data>
   <data name="UCOptometrist.labelControl6.Text" xml:space="preserve">
     <value>cm</value>
@@ -150,89 +402,65 @@
   <data name="UCOptometrist.labelControl7.Text" xml:space="preserve">
     <value>mm</value>
   </data>
-  <data name="UCOptometrist.labelControl5.Text" xml:space="preserve">
-    <value>4. Kính nhìn gần:</value>
+  <data name="UCOptometrist.labelControl8.Text" xml:space="preserve">
+    <value>Lưu ý:</value>
   </data>
-  <data name="UCOptometrist.labelControl2.Text" xml:space="preserve">
-    <value>2. Kết quả khám khúc xạ:</value>
+  <data name="UCOptometrist.labelControl9.Text" xml:space="preserve">
+    <value>tháng</value>
   </data>
-  <data name="UCOptometrist.labelControl1.Text" xml:space="preserve">
-    <value>1. Thị lực nhìn xa:</value>
+  <data name="UCOptometrist.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
   </data>
-  <data name="UCOptometrist.chkAgain.Properties.Caption" xml:space="preserve">
-    <value>Đo lại</value>
+  <data name="UCOptometrist.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
   </data>
-  <data name="UCOptometrist.chkFirst.Properties.Caption" xml:space="preserve">
-    <value>Lần đầu</value>
+  <data name="UCOptometrist.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
   </data>
-  <data name="UCOptometrist.lciTimeType.Text" xml:space="preserve">
-    <value>Thời điểm đo:</value>
+  <data name="UCOptometrist.layoutControlItem1.Text" xml:space="preserve">
+    <value>II. Đơn kính:</value>
   </data>
-  <data name="UCOptometrist.lciOptometristTime.Text" xml:space="preserve">
-    <value>Thời gian đeo:</value>
+  <data name="UCOptometrist.layoutControlItem17.Text" xml:space="preserve">
+    <value>I. Kết quả khám khúc xạ:</value>
   </data>
-  <data name="UCOptometrist.lciThiLuc.Text" xml:space="preserve">
-    <value>1. Thị lực nhìn xa:</value>
+  <data name="UCOptometrist.layoutControlItem2.Text" xml:space="preserve">
+    <value>Lần đo:</value>
   </data>
-  <data name="UCOptometrist.lciForesightRight.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Mắt phải</value>
+  <data name="UCOptometrist.layoutControlItem20.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
   </data>
-  <data name="UCOptometrist.lciForesightRight.Text" xml:space="preserve">
-    <value>MP:</value>
+  <data name="UCOptometrist.layoutControlItem21.Text" xml:space="preserve">
+    <value>Trạng thái kính:</value>
   </data>
-  <data name="UCOptometrist.lciForesightRightGlass.Text" xml:space="preserve">
-    <value>Kính lỗ:</value>
+  <data name="UCOptometrist.layoutControlItem22.Text" xml:space="preserve">
+    <value>Thời gian tra:</value>
   </data>
-  <data name="UCOptometrist.lciForesightRightUsingGlass.Text" xml:space="preserve">
-    <value>Kính đang đeo:</value>
+  <data name="UCOptometrist.layoutControlItem23.Text" xml:space="preserve">
+    <value>Thời gian dùng:</value>
   </data>
-  <data name="UCOptometrist.lciGlassDegreeR.Text" xml:space="preserve">
-    <value>Độ kính:</value>
+  <data name="UCOptometrist.layoutControlItem24.Text" xml:space="preserve">
+    <value>Thời gian đo:</value>
   </data>
-  <data name="UCOptometrist.lciForesightLeft.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Mắt trái:</value>
+  <data name="UCOptometrist.layoutControlItem25.Text" xml:space="preserve">
+    <value>Số lượng:</value>
   </data>
-  <data name="UCOptometrist.lciForesightLeft.Text" xml:space="preserve">
-    <value>MT:</value>
+  <data name="UCOptometrist.layoutControlItem27.Text" xml:space="preserve">
+    <value>Phòng đo thị lực:</value>
   </data>
-  <data name="UCOptometrist.lciForesightLeftGlass.Text" xml:space="preserve">
-    <value>Kính lỗ:</value>
+  <data name="UCOptometrist.layoutControlItem3.Text" xml:space="preserve">
+    <value>Người xử lý:</value>
   </data>
-  <data name="UCOptometrist.lciForesightLeftUsingGlass.Text" xml:space="preserve">
-    <value>Kính đang đeo:</value>
+  <data name="UCOptometrist.layoutControlItem4.Text" xml:space="preserve">
+    <value>Người đo:</value>
   </data>
-  <data name="UCOptometrist.lciGlassDegreeL.Text" xml:space="preserve">
-    <value>Độ kính:</value>
+  <data name="UCOptometrist.layoutControlItem6.Text" xml:space="preserve">
+    <value>Xa:</value>
   </data>
-  <data name="UCOptometrist.lciRefractometer.Text" xml:space="preserve">
-    <value>2. Kết quả khám khúc xạ:</value>
+  <data name="UCOptometrist.layoutControlItem7.Text" xml:space="preserve">
+    <value>Gần:</value>
   </data>
-  <data name="UCOptometrist.lciRefractometry.Text" xml:space="preserve">
-    <value>Đo khúc xạ máy</value>
-  </data>
-  <data name="UCOptometrist.lciMicroscopy.Text" xml:space="preserve">
-    <value>Soi bóng đồng tử</value>
-  </data>
-  <data name="UCOptometrist.lciRefractometryRight.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Mắt phải</value>
-  </data>
-  <data name="UCOptometrist.lciRefractometryRight.Text" xml:space="preserve">
-    <value>MP:</value>
-  </data>
-  <data name="UCOptometrist.lciRefractometryLeft.Text" xml:space="preserve">
-    <value>MT:</value>
-  </data>
-  <data name="UCOptometrist.lciBeforeLightReflectionR.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Trước liệt đồng tử mắt phải</value>
-  </data>
-  <data name="UCOptometrist.lciBeforeLightReflectionR.Text" xml:space="preserve">
-    <value>Trước liệt ĐT   MP:</value>
-  </data>
-  <data name="UCOptometrist.lciBeforeLightReflectionL.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Trước liệt đồng tử mắt trái</value>
-  </data>
-  <data name="UCOptometrist.lciBeforeLightReflectionL.Text" xml:space="preserve">
-    <value>MT:</value>
+  <data name="UCOptometrist.lciAddress.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
   </data>
   <data name="UCOptometrist.lciAfterLightReflectionL.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Sau liệt đồng tử mắt trái</value>
@@ -249,26 +477,68 @@
   <data name="UCOptometrist.lciAjustableGlass.Text" xml:space="preserve">
     <value>3. Kính điều chỉnh và thị lực nhìn xa:</value>
   </data>
-  <data name="UCOptometrist.lciAjustableGlassR.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Mắt phải:</value>
-  </data>
-  <data name="UCOptometrist.lciAjustableGlassR.Text" xml:space="preserve">
-    <value>MP:</value>
-  </data>
   <data name="UCOptometrist.lciAjustableGlassL.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Mắt trái</value>
   </data>
   <data name="UCOptometrist.lciAjustableGlassL.Text" xml:space="preserve">
     <value>MT:</value>
   </data>
-  <data name="UCOptometrist.lciNearsightGlass.Text" xml:space="preserve">
-    <value>4. Kính nhìn gần:</value>
+  <data name="UCOptometrist.lciAjustableGlassR.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mắt phải:</value>
   </data>
-  <data name="UCOptometrist.lciNearsightGlassRight.OptionsToolTip.ToolTip" xml:space="preserve">
+  <data name="UCOptometrist.lciAjustableGlassR.Text" xml:space="preserve">
+    <value>MP:</value>
+  </data>
+  <data name="UCOptometrist.lciBeforeLightReflectionL.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Trước liệt đồng tử mắt trái</value>
+  </data>
+  <data name="UCOptometrist.lciBeforeLightReflectionL.Text" xml:space="preserve">
+    <value>MT:</value>
+  </data>
+  <data name="UCOptometrist.lciBeforeLightReflectionR.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Trước liệt đồng tử mắt phải</value>
+  </data>
+  <data name="UCOptometrist.lciBeforeLightReflectionR.Text" xml:space="preserve">
+    <value>Trước liệt ĐT   MP:</value>
+  </data>
+  <data name="UCOptometrist.lciDob.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightLeft.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mắt trái:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightLeft.Text" xml:space="preserve">
+    <value>MT:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightLeftGlass.Text" xml:space="preserve">
+    <value>Kính lỗ:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightLeftUsingGlass.Text" xml:space="preserve">
+    <value>Kính đang đeo:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightRight.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Mắt phải</value>
   </data>
-  <data name="UCOptometrist.lciNearsightGlassRight.Text" xml:space="preserve">
+  <data name="UCOptometrist.lciForesightRight.Text" xml:space="preserve">
     <value>MP:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightRightGlass.Text" xml:space="preserve">
+    <value>Kính lỗ:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightRightUsingGlass.Text" xml:space="preserve">
+    <value>Kính đang đeo:</value>
+  </data>
+  <data name="UCOptometrist.lciGlassDegreeL.Text" xml:space="preserve">
+    <value>Độ kính:</value>
+  </data>
+  <data name="UCOptometrist.lciGlassDegreeR.Text" xml:space="preserve">
+    <value>Độ kính:</value>
+  </data>
+  <data name="UCOptometrist.lciMicroscopy.Text" xml:space="preserve">
+    <value>Soi bóng đồng tử</value>
+  </data>
+  <data name="UCOptometrist.lciNearsightGlass.Text" xml:space="preserve">
+    <value>4. Kính nhìn gần:</value>
   </data>
   <data name="UCOptometrist.lciNearsightGlassLeft.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Mắt trái:</value>
@@ -276,38 +546,23 @@
   <data name="UCOptometrist.lciNearsightGlassLeft.Text" xml:space="preserve">
     <value>MT:</value>
   </data>
-  <data name="UCOptometrist.lciNearsightGlassReadingDist.Text" xml:space="preserve">
-    <value>Cự ly đọc sách:</value>
-  </data>
   <data name="UCOptometrist.lciNearsightGlassPupilDist.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Khoảng cách đồng tử</value>
   </data>
   <data name="UCOptometrist.lciNearsightGlassPupilDist.Text" xml:space="preserve">
     <value>Khoảng cách ĐT:</value>
   </data>
-  <data name="UCOptometrist.lciReoptometristAppointment.Text" xml:space="preserve">
-    <value>Hẹn tái khám sau:</value>
+  <data name="UCOptometrist.lciNearsightGlassReadingDist.Text" xml:space="preserve">
+    <value>Cự ly đọc sách:</value>
   </data>
-  <data name="UCOptometrist.layoutControl2.Text" xml:space="preserve">
-    <value>layoutControl2</value>
+  <data name="UCOptometrist.lciNearsightGlassRight.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mắt phải</value>
   </data>
-  <data name="UCOptometrist.Gc_ServiceCode.Caption" xml:space="preserve">
-    <value>Mã dịch vụ</value>
+  <data name="UCOptometrist.lciNearsightGlassRight.Text" xml:space="preserve">
+    <value>MP:</value>
   </data>
-  <data name="UCOptometrist.Gc_ServiceName.Caption" xml:space="preserve">
-    <value>Tên dịch vụ</value>
-  </data>
-  <data name="UCOptometrist.Gc_ServiceUnitName.Caption" xml:space="preserve">
-    <value>ĐVT</value>
-  </data>
-  <data name="UCOptometrist.Gc_ServiceUnitName.ToolTip" xml:space="preserve">
-    <value>Đơn vị tính</value>
-  </data>
-  <data name="UCOptometrist.Gc_Amount.Caption" xml:space="preserve">
-    <value>Số lượng</value>
-  </data>
-  <data name="UCOptometrist.cboExecuteName.Properties.NullText" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.lciOptometristTime.Text" xml:space="preserve">
+    <value>Thời gian đeo:</value>
   </data>
   <data name="UCOptometrist.lciPatientCode.Text" xml:space="preserve">
     <value>Mã bệnh nhân:</value>
@@ -315,19 +570,34 @@
   <data name="UCOptometrist.lciPatientName.Text" xml:space="preserve">
     <value>Tên bệnh nhân:</value>
   </data>
-  <data name="UCOptometrist.lciDob.Text" xml:space="preserve">
-    <value>Ngày sinh:</value>
+  <data name="UCOptometrist.lciRefractometer.Text" xml:space="preserve">
+    <value>2. Kết quả khám khúc xạ:</value>
   </data>
-  <data name="UCOptometrist.lciAddress.Text" xml:space="preserve">
-    <value>Địa chỉ:</value>
+  <data name="UCOptometrist.lciRefractometry.Text" xml:space="preserve">
+    <value>Đo khúc xạ máy</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometryLeft.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mắt trái</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometryLeft.Text" xml:space="preserve">
+    <value>MT:</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometryRight.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mắt phải</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometryRight.Text" xml:space="preserve">
+    <value>MP:</value>
+  </data>
+  <data name="UCOptometrist.lciReoptometristAppointment.Text" xml:space="preserve">
+    <value>Hẹn tái khám sau:</value>
   </data>
   <data name="UCOptometrist.lciReqName.Text" xml:space="preserve">
     <value>Người chỉ định:</value>
   </data>
-  <data name="UCOptometrist.layoutControlItem3.Text" xml:space="preserve">
-    <value>Người xử lý:</value>
+  <data name="UCOptometrist.lciThiLuc.Text" xml:space="preserve">
+    <value>1. Thị lực nhìn xa:</value>
   </data>
-  <data name="UCOptometrist.lciRefractometryLeft.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Mắt trái</value>
+  <data name="UCOptometrist.lciTimeType.Text" xml:space="preserve">
+    <value>Thời điểm đo:</value>
   </data>
 </root>
