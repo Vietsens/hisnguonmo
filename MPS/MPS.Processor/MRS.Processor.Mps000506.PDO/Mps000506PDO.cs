@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRS.Processor.Mps000506.PDO
+namespace MPS.Processor.Mps000506.PDO
 {
     public class Mps000506PDO : RDOBase
     {

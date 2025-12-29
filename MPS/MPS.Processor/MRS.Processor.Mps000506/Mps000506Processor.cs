@@ -1,14 +1,14 @@
 ﻿using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.ProcessorBase.Core;
-using MRS.Processor.Mps000506.PDO;
+using MPS.Processor.Mps000506.PDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MRS.Processor.Mps000506
+namespace MPS.Processor.Mps000506
 {
     public class Mps000506Processor : AbstractProcessor
     {

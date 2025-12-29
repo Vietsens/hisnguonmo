@@ -36,7 +36,8 @@
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000506.PDO">
+    <Reference Include="MPS.Processor.Mps000506.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\MRS.Processor.Mps000506.PDO\bin\Debug\MPS.Processor.Mps000506.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
