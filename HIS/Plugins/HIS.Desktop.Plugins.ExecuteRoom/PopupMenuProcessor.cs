@@ -42,7 +42,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             NhapThongTinPhim,
             KeThuocVatTu,
             ChonMayXuLy,
-            DoiDichVu
+            DoiDichVu,
+            DoThiLuc
         }
 
         internal PopupMenuProcessor(V_HIS_SERE_SERV_6 ss, BarManager barmanager, TransactionMouseRightClick mouseRightClick, ADO.ServiceReqADO currentHisServiceReq)
@@ -98,6 +99,16 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     btnChonmayxl.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
                     this._PopupMenu.AddItems(new BarItem[] { btnChonmayxl });
                 }
+                // Chỉ hiển thị Đo thị lực khi y lệnh là khám
+                if (this._sereServRowMenu != null
+                    && this._sereServRowMenu.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH)
+                {
+                    BarButtonItem btnOptometrist = new BarButtonItem(this._BarManager, "Đo thị lực");
+                    btnOptometrist.Tag = ItemType.DoThiLuc;
+                    btnOptometrist.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                    this._PopupMenu.ItemLinks.Add(btnOptometrist);
+                }
+
                 this._PopupMenu.ShowPopup(Cursor.Position);
             }
             catch (Exception ex)

@@ -78,6 +78,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 DXPopupMenu menu = new DXPopupMenu();
                 //DXMenuItem itemTruyenDich = new DXMenuItem("Truyền dịch", new EventHandler(onClickTruyenDich));
                 //menu.Items.Add(itemTruyenDich);
+                DXMenuItem itemOptometrist = new DXMenuItem("Đo thị lực", new EventHandler(onClickOptometrist));
+                menu.Items.Add(itemOptometrist);
                 //qtcode
                 DXMenuItem itemTraSoatHoSoBenhAn = new DXMenuItem("Tra soát hồ sơ bệnh án", new EventHandler(onClickTraSoatHoSoBenhAn));
                 menu.Items.Add(itemTraSoatHoSoBenhAn);

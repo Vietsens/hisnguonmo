@@ -212,6 +212,105 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void onClickOptometrist(object sender, EventArgs e)
+        {
+            try
+            {
+                var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.Optometrist");
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.Optometrist");
+                    return;
+                }
+
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                {
+                    return;
+                }
+
+                moduleData.RoomId = this.moduleData.RoomId;
+                moduleData.RoomTypeId = this.moduleData.RoomTypeId;
+
+                HIS_SERE_SERV sereServDetail = TryGetExamSereServFromCache();
+                if (sereServDetail == null)
+                {
+                    sereServDetail = LoadExamSereServByApi(this.HisServiceReqView?.TREATMENT_ID);
+                }
+
+                if (sereServDetail == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("onClickOptometrist: khong tim thay SERE_SERV kham de truyen sang module do thi luc");
+                    return;
+                }
+
+                List<object> listArgs = new List<object> { sereServDetail };
+
+                var moduleWithRoom = PluginInstance.GetModuleWithWorkingRoom(moduleData, moduleData.RoomId, moduleData.RoomTypeId);
+                var extenceInstance = PluginInstance.GetPluginInstance(moduleWithRoom, listArgs);
+                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                ((Form)extenceInstance).ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private HIS_SERE_SERV TryGetExamSereServFromCache()
+        {
+            try
+            {
+                if (this.SereServsCurrentTreatment == null || this.SereServsCurrentTreatment.Count == 0)
+                {
+                    return null;
+                }
+
+                var sereServKh = this.SereServsCurrentTreatment
+                    .FirstOrDefault(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                                         || o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH);
+                if (sereServKh == null)
+                {
+                    return null;
+                }
+
+                var data = new HIS_SERE_SERV();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(data, sereServKh);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+        private HIS_SERE_SERV LoadExamSereServByApi(long? treatmentId)
+        {
+            try
+            {
+                if (!treatmentId.HasValue)
+                {
+                    return null;
+                }
+
+                CommonParam param = new CommonParam();
+                var filter = new MOS.Filter.HisSereServFilter
+                {
+                    TREATMENT_ID = treatmentId.Value,
+                    TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                };
+
+                var sereServs = new BackendAdapter(param)
+                    .Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, filter, param);
+
+                var sereServ = sereServs?.FirstOrDefault();
+                return sereServ;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
         //qtcode
         private void onClickChiTietBenhAn(object sender, EventArgs e)
         {
