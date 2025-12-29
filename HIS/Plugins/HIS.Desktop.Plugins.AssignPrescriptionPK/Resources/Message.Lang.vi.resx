@@ -646,5 +646,12 @@
   </data>
   <data name="TrongTruongHopCoVuiLongNhapLyDo" xml:space="preserve">
     <value>Trong trường hợp chọn “Có”, vui lòng nhập lý do.”</value>
+  </data>  <data name="BanNhapQuaKyTuChoTruongDauHieuLamSang" xml:space="preserve">
+    <value>Bạn nhập quá ký tự cho trường Dấu hiệu lâm sàng</value>
   </data>
-</root>
+  <data name="DuLieuTruongQuaTrinhBenhLyTomTatKetQuaVuotQuaKyTu" xml:space="preserve">
+    <value>Dữ liệu trường quá trình bệnh lý, tóm tắt kết quả vượt quá ký tự</value>
+  </data>
+  <data name="BanCoMuonTiepTucKhong" xml:space="preserve">
+    <value>Bạn có muốn tiếp tục không</value>
+  </data></root>
