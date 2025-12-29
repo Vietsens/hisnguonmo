@@ -130,11 +130,35 @@ namespace HIS.Desktop.Plugins.HisAdr
                 this._AdrMedicineTypes = new List<V_HIS_ADR_MEDICINE_TYPE>();
                 this._AdrMedicineTypeNNs = new List<V_HIS_ADR_MEDICINE_TYPE>();
                 this.RefeshControl();
+                LoadComboUser();
+                LoadComboNgheNghiep();                
                 if (this.action == 1)
                 {
                     this.spinWeight.EditValue = null;
                     this.dtNgayXuatHien.DateTime = DateTime.Now;
+                    var USER = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                    var lstEmployee2 = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                    if (USER != null && lstEmployee2 != null)
+                    {
+                        var selectedInviteDoctor = lstEmployee2.FirstOrDefault(o => o.LOGINNAME == USER);
+                        if (selectedInviteDoctor != null)
+                        {
+                            cboHoten.EditValue = selectedInviteDoctor.LOGINNAME;
+                            //var carreer = BackendDataWorker.Get<HIS_CAREER_TITLE>().FirstOrDefault(o => o.ID == selectedInviteDoctor.CAREER_TITLE_ID);
+                            //if (carreer != null)
+                            //{
+                            //    cboNgheNghiep.EditValue = carreer.ID;
+                            //}
+                        }
+                    }
                 }
+
+                // Thiết lập giá trị tối thiểu cho spin Lần đầu và Bổ sung
+                this.spinLanDau.Properties.MinValue = 0;
+                this.spinLanDau.Properties.MaxValue = 999999;
+                this.spinBoSung.Properties.MinValue = 0;
+                this.spinBoSung.Properties.MaxValue = 999999;
+
                 this.ValidationSingleControl(dtNgayXuatHien);
                 this.GetDataAdrMedicineTypes();
                 WaitingManager.Hide();
@@ -143,6 +167,80 @@ namespace HIS.Desktop.Plugins.HisAdr
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadComboNgheNghiep()
+        {
+            try
+            {
+                var lstCareer = BackendDataWorker.Get<HIS_CAREER_TITLE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                cboNgheNghiep.Properties.DataSource = lstCareer;
+                cboNgheNghiep.Properties.DisplayMember = "CAREER_TITLE_NAME";
+                cboNgheNghiep.Properties.ValueMember = "ID";
+                cboNgheNghiep.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboNgheNghiep.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboNgheNghiep.Properties.ImmediatePopup = true;
+                cboNgheNghiep.ForceInitialize();
+                cboNgheNghiep.Properties.View.Columns.Clear();
+                cboNgheNghiep.Properties.PopupFormSize = new Size(300, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cboNgheNghiep.Properties.View.Columns.AddField("CAREER_TITLE_CODE");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 100;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cboNgheNghiep.Properties.View.Columns.AddField("CAREER_TITLE_NAME");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 150;
+
+                cboHoten.Properties.View.OptionsView.ColumnAutoWidth = false;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        private void LoadComboUser()
+        {
+            try
+            {
+                var lstEmployee2 = BackendDataWorker.Get<V_HIS_EMPLOYEE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                cboHoten.Properties.DataSource = lstEmployee2;
+                cboHoten.Properties.DisplayMember = "TDL_USERNAME";
+                cboHoten.Properties.ValueMember = "LOGINNAME";
+                cboHoten.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboHoten.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboHoten.Properties.ImmediatePopup = true;
+                cboHoten.ForceInitialize();
+                cboHoten.Properties.View.Columns.Clear();
+                cboHoten.Properties.PopupFormSize = new Size(300, 250);
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnCode = cboHoten.Properties.View.Columns.AddField("LOGINNAME");
+                aColumnCode.Caption = "Mã";
+                aColumnCode.Visible = true;
+                aColumnCode.VisibleIndex = 1;
+                aColumnCode.Width = 100;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnName = cboHoten.Properties.View.Columns.AddField("TDL_USERNAME");
+                aColumnName.Caption = "Tên";
+                aColumnName.Visible = true;
+                aColumnName.VisibleIndex = 2;
+                aColumnName.Width = 200;
+
+                cboHoten.Properties.View.OptionsView.ColumnAutoWidth = false;
+
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
@@ -164,7 +262,12 @@ namespace HIS.Desktop.Plugins.HisAdr
                 txtTienSu.Text = this._ADROld.PATHOLOGICAL_HISTORY;
                 txtCachXuTriPhanUng.Text = this._ADROld.REACTION_METHOD;
                 txtMotaBieuHien.Text = this._ADROld.DESCRIPTION;
-
+                cboHoten.EditValue = this._ADROld.REPORT_LOGINNAME;
+                cboNgheNghiep.EditValue = this._ADROld.REPORT_CAREER_TITLE_ID;
+                txtPhone.Text = this._ADROld.REPORT_MOBILE;
+                txtEmail.Text = this._ADROld.REPORT_EMAIL;
+                spinLanDau.EditValue = this._ADROld.REPORT_TYPE_FIRST;
+                spinBoSung.EditValue = this._ADROld.REPORT_TYPE_ADD;
                 if (this._ADROld.SERIOUS_LEVEL.HasValue)
                 {
                     if (this._ADROld.SERIOUS_LEVEL == IMSys.DbConfig.HIS_RS.HIS_ADR.SERIOUS_LEVEL__DiTatThai)
@@ -381,7 +484,7 @@ namespace HIS.Desktop.Plugins.HisAdr
                     if (isShowContainerMediMaty)
                     {
                         Rectangle buttonBounds = new Rectangle(txtMedicine.Bounds.X, txtMedicine.Bounds.Y, txtMedicine.Bounds.Width, txtMedicine.Bounds.Height);
-                        popupControlContainerMediMaty.ShowPopup(new Point(buttonBounds.X, buttonBounds.Bottom + 418));
+                        popupControlContainerMediMaty.ShowPopup(new Point(buttonBounds.X, buttonBounds.Bottom + 318));
 
                         if (this.currentMedicineTypeADOForEdit != null)
                         {
@@ -465,6 +568,8 @@ namespace HIS.Desktop.Plugins.HisAdr
                 {
                     this.txtMedicine.Text = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
                     this.lblDuongDung.Text = this.currentMedicineTypeADOForEdit.MEDICINE_USE_FORM_NAME;
+                    this.lblDangBc.Text = this.currentMedicineTypeADOForEdit.DOSAGE_FORM;
+                    this.lblHamLuong.Text = this.currentMedicineTypeADOForEdit.CONCENTRA;
                     this.txtSoLo.Text = this.currentMedicineTypeADOForEdit.PACKAGE_NUMBER;
 
                     this.btnAdd.Enabled = true;
@@ -792,8 +897,8 @@ namespace HIS.Desktop.Plugins.HisAdr
                 txtSoLo.Enabled = key;
                 spinLieuDung.Enabled = key;
                 spinSoLanDung.Enabled = key;
-                dtBatDau.Enabled = key;
-                dtKetThuc.Enabled = key;
+                //dtBatDau.Enabled = key;
+                //dtKetThuc.Enabled = key;
                 txtLyDoDung.Enabled = key;
                 chkCo14.Enabled = key;
                 chkKhong14.Enabled = key;
@@ -910,6 +1015,24 @@ namespace HIS.Desktop.Plugins.HisAdr
                         Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_ADR_MEDICINE_TYPE>(type, this.currentMedicineTypeADOForEdit);
                         type.MEDICINE_TYPE_ID = this.currentMedicineTypeADOForEdit.ID;
                         type.ID = 0;
+                        if (dtBatDau.EditValue != null)
+                        {
+                            type.START_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBatDau.DateTime) ?? 0;
+                        }
+                        if (dtKetThuc.EditValue != null)
+                        {
+                            type.FINISH_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtKetThuc.DateTime) ?? 0;
+                        }
+                        if (dtBatDau.EditValue != null && dtKetThuc.EditValue != null)
+                        {
+                            if (type.START_TIME.HasValue && type.FINISH_TIME.HasValue && type.START_TIME > type.FINISH_TIME)
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.ThoiGianBatDauKhongDuocThoiGianKetThuc,
+                    HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao));
+                                dtBatDau.Focus();
+                                return;
+                            }
+                        }
                         this._AdrMedicineTypes.Add(type);
                         gridControlKhongNghiNgo.DataSource = null;
                         gridControlKhongNghiNgo.DataSource = this._AdrMedicineTypes;
@@ -934,6 +1057,8 @@ namespace HIS.Desktop.Plugins.HisAdr
                 spinLieuDung.EditValue = null;
                 spinSoLanDung.EditValue = null;
                 lblDuongDung.Text = "";
+                lblDangBc.Text = "";
+                lblHamLuong.Text = "";
                 dtBatDau.EditValue = null;
                 dtKetThuc.EditValue = null;
                 txtLyDoDung.Text = "";
@@ -1031,6 +1156,14 @@ namespace HIS.Desktop.Plugins.HisAdr
                         if (e.Column.FieldName == "STT")
                         {
                             e.Value = e.ListSourceRowIndex + 1;
+                        }
+                        else if (e.Column.FieldName == "START_TIME_DISPLAY" && data.START_TIME.HasValue)
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.START_TIME ?? 0);
+                        }
+                        else if (e.Column.FieldName == "FINISH_TIME_DISPLAY" && data.FINISH_TIME.HasValue)
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.FINISH_TIME ?? 0);
                         }
                     }
                 }
@@ -1172,7 +1305,26 @@ namespace HIS.Desktop.Plugins.HisAdr
                     }
                     _adr.EXPERTISE_STANDER_OTHER = txtThangKhac18.Text.Trim();
                 }
-
+                _adr.REPORT_LOGINNAME = cboHoten.EditValue.ToString();
+                _adr.REPORT_CAREER_TITLE_ID = cboNgheNghiep.EditValue != null ? Convert.ToInt32(cboNgheNghiep.EditValue) : (int?)null;
+                _adr.REPORT_MOBILE = txtPhone.Text.Trim();
+                _adr.REPORT_EMAIL = txtEmail.Text.Trim();
+                if (spinLanDau.EditValue != null)
+                {
+                    _adr.REPORT_TYPE_FIRST = spinLanDau.Value.ToString();
+                }
+                else
+                {
+                    _adr.REPORT_TYPE_FIRST = null;
+                }
+                if (spinBoSung.EditValue != null)
+                {
+                    _adr.REPORT_TYPE_ADD = spinBoSung.Value.ToString();
+                }
+                else
+                {
+                    _adr.REPORT_TYPE_ADD = null;
+                }
                 _adr.BYT_COMMENT = txtBinhLuanCuaBoYTe.Text.Trim();
                 sdo.Adr = _adr;
 
@@ -2185,6 +2337,33 @@ namespace HIS.Desktop.Plugins.HisAdr
             }
 
             return result;
+        }
+
+        private void spinLanDau_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboHoten_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboHoten.EditValue != null)
+                {
+                    var employee = BackendDataWorker.Get<HIS_EMPLOYEE>().Where(x => x.LOGINNAME == cboHoten.EditValue.ToString()).FirstOrDefault();
+                    if (employee != null)
+                    {
+                        txtEmail.Text = employee.TDL_EMAIL;
+                        txtPhone.Text = employee.TDL_MOBILE;
+                        cboNgheNghiep.EditValue = employee.CAREER_TITLE_ID ?? null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void Mps000248(string printTypeCode, string fileName, ref bool result)
