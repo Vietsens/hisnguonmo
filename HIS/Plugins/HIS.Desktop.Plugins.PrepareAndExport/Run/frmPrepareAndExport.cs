@@ -738,9 +738,8 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 
                 if (this.clienttManager == null)
                     this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
-
-                bool rsRecall = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString());
-                Inventec.Common.Logging.LogSystem.Error("GỌI THEO SEARCH ___ " + rsRecall);
+                bool rs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString(), txtGateCodeString);
+                Inventec.Common.Logging.LogSystem.Error("GỌI ___" + rs);
 
                 if (txtGateCodeString != currentCall.GATE_CODE)   
                 {

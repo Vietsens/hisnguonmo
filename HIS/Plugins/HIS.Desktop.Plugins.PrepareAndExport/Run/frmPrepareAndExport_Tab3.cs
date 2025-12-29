@@ -258,7 +258,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             //    else
             //    {
             //        Inventec.Common.Logging.LogSystem.Error("KẾT NỐI ___ ");
-            //        //CreateThreadCallPatientCPA();
+            //        CreateThreadCallPatientCPA();
             //        CallPatientCPA();
             //    }
             //}
@@ -279,11 +279,11 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                     if (currentCall == null || currentCall.ID != target.ID)
                     {
                         currentCall = target;
-                        CallSpecific(currentCall);  
+                        CallSpecific(currentCall);
                         return;
                     }
 
-                    bool recallRs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString());
+                    bool recallRs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString(), currentCall.GATE_CODE);
                     Inventec.Common.Logging.LogSystem.Error("GỌI LẠI ___ " + recallRs);
                     return;
                 }
@@ -488,7 +488,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                 HIS_EXP_MEST data = (HIS_EXP_MEST)gvPrepareMedicine.GetFocusedRow();
                 if (this.clienttManager == null)
                     this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
-                bool rs = this.clienttManager.RecallOrderDataClientBool(data.NUM_ORDER.ToString());
+                bool rs = this.clienttManager.RecallOrderDataClientBool(data.NUM_ORDER.ToString(), txtGateCodeString);
                 Inventec.Common.Logging.LogSystem.Error("GỌI LẠI TRÊN LƯỚI ___ " + rs);
                 currentCall = data;
                 txtCurrentCall.Text = currentCall.NUM_ORDER + " - " + currentCall.TDL_PATIENT_NAME + " - " + currentCall.TDL_TREATMENT_CODE;
