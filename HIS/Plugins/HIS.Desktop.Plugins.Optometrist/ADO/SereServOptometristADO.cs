@@ -15,10 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace HIS.Desktop.Plugins.Optometrist.Optometrist
+using MOS.EFMODEL.DataModels;
+
+namespace HIS.Desktop.Plugins.Optometrist.ADO
 {
-    interface IOptometrist
+    class SereServOptometristADO : HIS_SERE_SERV
     {
-        object Run();
+        public long? VISION_TEST_TIME { get; set; }
+        public string VISION_TEST_ROOM_NAME { get; set; }
+        public long? VISION_TEST_NUM { get; set; }
     }
 }
