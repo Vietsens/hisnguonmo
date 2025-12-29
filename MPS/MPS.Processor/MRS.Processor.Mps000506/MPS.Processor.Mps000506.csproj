@@ -7,8 +7,8 @@
     <ProjectGuid>{78C62FAB-AB00-498D-90DC-2F9416DA62C9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MRS.Processor.Mps000506</RootNamespace>
-    <AssemblyName>MRS.Processor.Mps000506</AssemblyName>
+    <RootNamespace>MPS.Processor.Mps000506</RootNamespace>
+    <AssemblyName>MPS.Processor.Mps000506</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -36,11 +36,11 @@
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
+    <Reference Include="MPS.Processor.Mps000506.PDO">
+      <HintPath>..\MRS.Processor.Mps000506.PDO\bin\Debug\MPS.Processor.Mps000506.PDO.dll</HintPath>
+    </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
-    </Reference>
-    <Reference Include="MRS.Processor.Mps000506.PDO">
-      <HintPath>..\MRS.Processor.Mps000506.PDO\bin\Debug\MRS.Processor.Mps000506.PDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

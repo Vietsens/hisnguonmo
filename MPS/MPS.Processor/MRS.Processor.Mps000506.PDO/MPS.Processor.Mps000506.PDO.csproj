@@ -7,8 +7,8 @@
     <ProjectGuid>{F0699EF4-7953-4E36-A655-37DE381BC91E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MRS.Processor.Mps000506.PDO</RootNamespace>
-    <AssemblyName>MRS.Processor.Mps000506.PDO</AssemblyName>
+    <RootNamespace>MPS.Processor.Mps000506.PDO</RootNamespace>
+    <AssemblyName>MPS.Processor.Mps000506.PDO</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
