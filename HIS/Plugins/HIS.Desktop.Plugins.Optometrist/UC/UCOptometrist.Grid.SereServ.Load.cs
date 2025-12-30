@@ -140,7 +140,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
 
                     if (e.Column.FieldName == "VISION_TEST_TIME_STR" && dataRow.VISION_TEST_TIME.HasValue)
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(dataRow.CREATE_TIME ?? 0);
+                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(dataRow.VISION_TEST_TIME.Value);
                     }
                 }
             }
