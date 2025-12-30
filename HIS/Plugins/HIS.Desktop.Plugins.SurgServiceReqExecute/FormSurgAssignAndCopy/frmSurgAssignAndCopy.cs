@@ -349,7 +349,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
         {
             try
             {
-               
+                
                 V_HIS_SERVICE currentVHisService = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
                 if (currentVHisService.ALLOW_SIMULTANEITY != 1)
                 {
@@ -372,6 +372,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                     if (Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1"
                         || Config.HisConfigKeys.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                     {
+                        ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
                         HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
                         
                         CommonParam paramHisServiceReq = new CommonParam();
@@ -497,11 +498,12 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                     if (Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "1"
                         || Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "2")
                     {
+                        ekipUsers = new List<MOS.EFMODEL.DataModels.HIS_EKIP_USER>();
                         HisSurgServiceReqUpdateListSDO hisSurgResultSDO = new MOS.SDO.HisSurgServiceReqUpdateListSDO();
                         hisSurgResultSDO.SurgUpdateSDOs = new List<SurgUpdateSDO>();
-                        SurgUpdateSDO singleData = new SurgUpdateSDO();
-                        singleData.SereServExt = new HIS_SERE_SERV_EXT();
-                        singleData.SereServId = sereServ.ID;
+                        //SurgUpdateSDO singleData = new SurgUpdateSDO();
+                        //singleData.SereServExt = new HIS_SERE_SERV_EXT();
+                        //singleData.SereServId = sereServ.ID;
 
                         var Login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         var dataGrid = ekipAdo;
@@ -513,13 +515,16 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                                 if (ekipUser != null && ekipUser.EXECUTE_ROLE_ID != 0)
                                     ekipUsers.Add(ekipUser);
                             }
-                        singleData.EkipUsers = ekipUsers;
+                        //singleData.EkipUsers = ekipUsers;
                         
 
                         LogSystem.Info("lay api 3 :api/HisServiceReq/CheckSurgSimultaneily");
                         foreach (long item in mergedList)
                         {
-                            CommonParam paramSurgUpdates = new CommonParam();
+                            SurgUpdateSDO singleData = new SurgUpdateSDO();
+                            singleData.SereServExt = new HIS_SERE_SERV_EXT();
+                            singleData.SereServId = sereServ.ID;
+                            singleData.EkipUsers = ekipUsers;
                             DateTime? begin = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item);
                             DateTime? begin_BD = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(BEGINTIME);
 
@@ -546,25 +551,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute.FormSurgAssignAndCopy
                                 END_TIME = timeAsLong1,     
                             };
                             hisSurgResultSDO.SurgUpdateSDOs.Add(singleData);
-
-                            bool resultCheckSurgSimultaneily = new BackendAdapter(paramSurgUpdates).Post<bool>("api/HisServiceReq/CheckSurgSimultaneily", 
+                        }
+                        CommonParam paramSurgUpdates = new CommonParam();
+                        bool resultCheckSurgSimultaneily = new BackendAdapter(paramSurgUpdates).Post<bool>("api/HisServiceReq/CheckSurgSimultaneily",
                                 ApiConsumers.MosConsumer, hisSurgResultSDO, paramSurgUpdates);
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"api/HisServiceReq/CheckSurgSimultaneily", hisSurgResultSDO));
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"api/HisServiceReq/CheckSurgSimultaneily", resultCheckSurgSimultaneily.ToString()));
-                            if (resultCheckSurgSimultaneily == false)
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"api/HisServiceReq/CheckSurgSimultaneily", hisSurgResultSDO));
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData($"api/HisServiceReq/CheckSurgSimultaneily", resultCheckSurgSimultaneily.ToString()));
+                        if (resultCheckSurgSimultaneily == false)
+                        {
+                            if (Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "1")
                             {
-                                if (Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "1")
+                                XtraMessageBox.Show(paramSurgUpdates.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return false;
+                            }
+                            else if (Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "2")
+                            {
+                                DialogResult result = XtraMessageBox.Show(paramSurgUpdates.GetMessage(), "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                if (result == DialogResult.No)
                                 {
-                                    XtraMessageBox.Show(paramSurgUpdates.GetMessage(), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     return false;
-                                }
-                                else if (Config.HisConfigKeys.CHECK_SIMULTANEITY_OPTION == "2")
-                                {
-                                    DialogResult result = XtraMessageBox.Show(paramSurgUpdates.GetMessage(), "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                                    if (result == DialogResult.No)
-                                    {
-                                        return false;
-                                    }
                                 }
                             }
                         }

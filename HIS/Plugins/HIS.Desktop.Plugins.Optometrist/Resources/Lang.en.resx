@@ -117,214 +117,487 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="UCOptometrist.layoutControl1.Text" xml:space="preserve">
-    <value />
+  <data name="frmOptometrist.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
   </data>
-  <data name="UCOptometrist.layoutControl3.Text" xml:space="preserve">
-    <value />
+  <data name="frmOptometrist.barOptometristPrintDon.Caption" xml:space="preserve">
+    <value>Print single (Ctrl P)</value>
   </data>
-  <data name="UCOptometrist.chkEnd.Properties.Caption" xml:space="preserve">
-    <value />
+  <data name="frmOptometrist.barOptometristPrintKham.Caption" xml:space="preserve">
+    <value>Print examination form (Ctrl I)</value>
   </data>
-  <data name="UCOptometrist.chkPrint.Properties.Caption" xml:space="preserve">
-    <value />
+  <data name="frmOptometrist.barOptometristSave.Caption" xml:space="preserve">
+    <value>Save (Ctr S)</value>
   </data>
-  <data name="UCOptometrist.btnSave.Text" xml:space="preserve">
-    <value />
+  <data name="frmOptometrist.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
   </data>
   <data name="UCOptometrist.btnEndReq.Text" xml:space="preserve">
-    <value />
+    <value>End</value>
   </data>
   <data name="UCOptometrist.btnPrint.Text" xml:space="preserve">
-    <value />
+    <value>Print single (Ctrl P)</value>
   </data>
-  <data name="UCOptometrist.labelControl9.Text" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.btnPrintPhieuKham.Text" xml:space="preserve">
+    <value>Print examination form (Ctrl I)</value>
   </data>
-  <data name="UCOptometrist.labelControl8.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.labelControl6.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.labelControl7.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.labelControl5.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.labelControl2.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.labelControl1.Text" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
   </data>
   <data name="UCOptometrist.chkAgain.Properties.Caption" xml:space="preserve">
-    <value />
+    <value>Measure again</value>
+  </data>
+  <data name="UCOptometrist.chkEnd.Properties.Caption" xml:space="preserve">
+    <value>End</value>
   </data>
   <data name="UCOptometrist.chkFirst.Properties.Caption" xml:space="preserve">
-    <value />
+    <value>First time</value>
   </data>
-  <data name="UCOptometrist.lciTimeType.Text" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.chkOptometristPrintDon.Properties.Caption" xml:space="preserve">
+    <value>Print application</value>
   </data>
-  <data name="UCOptometrist.lciOptometristTime.Text" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.chkOptometristPrintKham.Properties.Caption" xml:space="preserve">
+    <value>Print examination form</value>
   </data>
-  <data name="UCOptometrist.lciThiLuc.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciForesightRight.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciForesightRight.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciForesightRightGlass.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciForesightRightUsingGlass.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciGlassDegreeR.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciForesightLeft.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciForesightLeft.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciForesightLeftGlass.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciForesightLeftUsingGlass.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciGlassDegreeL.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciRefractometer.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciRefractometry.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciMicroscopy.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciRefractometryRight.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciRefractometryRight.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciRefractometryLeft.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciBeforeLightReflectionR.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciBeforeLightReflectionR.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciBeforeLightReflectionL.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciBeforeLightReflectionL.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciAfterLightReflectionL.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciAfterLightReflectionL.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciAfterLightReflectionR.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciAfterLightReflectionR.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciAjustableGlass.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciAjustableGlassR.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciAjustableGlassR.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciAjustableGlassL.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciAjustableGlassL.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciNearsightGlass.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciNearsightGlassRight.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciNearsightGlassRight.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciNearsightGlassLeft.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciNearsightGlassLeft.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciNearsightGlassReadingDist.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciNearsightGlassPupilDist.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciNearsightGlassPupilDist.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.lciReoptometristAppointment.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.layoutControl2.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.Gc_ServiceCode.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.Gc_ServiceName.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.Gc_ServiceUnitName.Caption" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UCOptometrist.Gc_ServiceUnitName.ToolTip" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.chkPrint.Properties.Caption" xml:space="preserve">
+    <value>Print application</value>
   </data>
   <data name="UCOptometrist.Gc_Amount.Caption" xml:space="preserve">
-    <value />
+    <value>Measurement times</value>
   </data>
-  <data name="UCOptometrist.cboExecuteName.Properties.NullText" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.Gc_Phong.Caption" xml:space="preserve">
+    <value>Optometry room</value>
   </data>
-  <data name="UCOptometrist.lciPatientCode.Text" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.Gc_ServiceCode.Caption" xml:space="preserve">
+    <value>Service code</value>
   </data>
-  <data name="UCOptometrist.lciPatientName.Text" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.Gc_ServiceName.Caption" xml:space="preserve">
+    <value>Service</value>
   </data>
-  <data name="UCOptometrist.lciDob.Text" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.Gc_ServiceUnitName.Caption" xml:space="preserve">
+    <value>Unit</value>
   </data>
-  <data name="UCOptometrist.lciAddress.Text" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.Gc_ServiceUnitName.ToolTip" xml:space="preserve">
+    <value>Unit of calculation</value>
   </data>
-  <data name="UCOptometrist.lciReqName.Text" xml:space="preserve">
-    <value />
+  <data name="UCOptometrist.gridColumn1.Caption" xml:space="preserve">
+    <value>Measurement time</value>
+  </data>
+  <data name="UCOptometrist.IS_BIFOCAL_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Bifocal glasses</value>
+  </data>
+  <data name="UCOptometrist.IS_CONTACT_LENSE.Properties.Caption" xml:space="preserve">
+    <value>Contact lenses</value>
+  </data>
+  <data name="UCOptometrist.IS_GLASS_SCRATCHED.Properties.Caption" xml:space="preserve">
+    <value>Scratched glass</value>
+  </data>
+  <data name="UCOptometrist.IS_PHOTOCHROMIC_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Photochromic glasses</value>
+  </data>
+  <data name="UCOptometrist.IS_POLYCARBONATE_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Polycarbonate glass</value>
+  </data>
+  <data name="UCOptometrist.IS_PROGRESSIVE_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Progressive glasses</value>
+  </data>
+  <data name="UCOptometrist.IS_READING_GLASS.Properties.Caption" xml:space="preserve">
+    <value>Reading glasses</value>
+  </data>
+  <data name="UCOptometrist.label1.Text" xml:space="preserve">
+    <value>SPH (Bridge)</value>
+  </data>
+  <data name="UCOptometrist.label10.Text" xml:space="preserve">
+    <value>Old glasses</value>
+  </data>
+  <data name="UCOptometrist.label11.Text" xml:space="preserve">
+    <value>OD (Right Eye)</value>
+  </data>
+  <data name="UCOptometrist.label12.Text" xml:space="preserve">
+    <value>OS (Left eye)</value>
+  </data>
+  <data name="UCOptometrist.label13.Text" xml:space="preserve">
+    <value>AX</value>
+  </data>
+  <data name="UCOptometrist.label14.Text" xml:space="preserve">
+    <value>SPH (Bridge)</value>
+  </data>
+  <data name="UCOptometrist.label15.Text" xml:space="preserve">
+    <value>CYL (Head)</value>
+  </data>
+  <data name="UCOptometrist.label16.Text" xml:space="preserve">
+    <value>Accommodative paralysis follows</value>
+  </data>
+  <data name="UCOptometrist.label17.Text" xml:space="preserve">
+    <value>OD (Right Eye)</value>
+  </data>
+  <data name="UCOptometrist.label18.Text" xml:space="preserve">
+    <value>OS (Left eye)</value>
+  </data>
+  <data name="UCOptometrist.label19.Text" xml:space="preserve">
+    <value>AX</value>
+  </data>
+  <data name="UCOptometrist.label2.Text" xml:space="preserve">
+    <value>SPH (Bridge)</value>
+  </data>
+  <data name="UCOptometrist.label20.Text" xml:space="preserve">
+    <value>SPH (Bridge)</value>
+  </data>
+  <data name="UCOptometrist.label21.Text" xml:space="preserve">
+    <value>CYL (Head)</value>
+  </data>
+  <data name="UCOptometrist.label22.Text" xml:space="preserve">
+    <value>Refraction machine</value>
+  </data>
+  <data name="UCOptometrist.label23.Text" xml:space="preserve">
+    <value>OD (Right Eye)</value>
+  </data>
+  <data name="UCOptometrist.label24.Text" xml:space="preserve">
+    <value>OS (Left eye)</value>
+  </data>
+  <data name="UCOptometrist.label25.Text" xml:space="preserve">
+    <value>AX</value>
+  </data>
+  <data name="UCOptometrist.label26.Text" xml:space="preserve">
+    <value>OD (Right Eye)</value>
+  </data>
+  <data name="UCOptometrist.label27.Text" xml:space="preserve">
+    <value>OS (Left eye)</value>
+  </data>
+  <data name="UCOptometrist.label29.Text" xml:space="preserve">
+    <value>Skiascopy (pre-paralysis)</value>
+  </data>
+  <data name="UCOptometrist.label3.Text" xml:space="preserve">
+    <value>CYL (Head)</value>
+  </data>
+  <data name="UCOptometrist.label30.Text" xml:space="preserve">
+    <value>Skiascopy (post-paralysis)</value>
+  </data>
+  <data name="UCOptometrist.label31.Text" xml:space="preserve">
+    <value>TL has glasses</value>
+  </data>
+  <data name="UCOptometrist.label32.Text" xml:space="preserve">
+    <value>OD (Right Eye)</value>
+  </data>
+  <data name="UCOptometrist.label33.Text" xml:space="preserve">
+    <value>OS (Left eye)</value>
+  </data>
+  <data name="UCOptometrist.label35.Text" xml:space="preserve">
+    <value>Eye of luck</value>
+  </data>
+  <data name="UCOptometrist.label36.Text" xml:space="preserve">
+    <value>Color perception</value>
+  </data>
+  <data name="UCOptometrist.label37.Text" xml:space="preserve">
+    <value>TL has glasses</value>
+  </data>
+  <data name="UCOptometrist.label38.Text" xml:space="preserve">
+    <value>TL without glasses</value>
+  </data>
+  <data name="UCOptometrist.label39.Text" xml:space="preserve">
+    <value>TL glass hole</value>
+  </data>
+  <data name="UCOptometrist.label4.Text" xml:space="preserve">
+    <value>Current refraction</value>
+  </data>
+  <data name="UCOptometrist.label40.Text" xml:space="preserve">
+    <value>TL without glasses</value>
+  </data>
+  <data name="UCOptometrist.label41.Text" xml:space="preserve">
+    <value>TL has glasses</value>
+  </data>
+  <data name="UCOptometrist.label42.Text" xml:space="preserve">
+    <value>Stereoscopic vision</value>
+  </data>
+  <data name="UCOptometrist.label43.Text" xml:space="preserve">
+    <value>Intraocular pressure (mmHg)</value>
+  </data>
+  <data name="UCOptometrist.label44.Text" xml:space="preserve">
+    <value>Corneal thickness (um)</value>
+  </data>
+  <data name="UCOptometrist.label45.Text" xml:space="preserve">
+    <value>K1 (Ds)</value>
+  </data>
+  <data name="UCOptometrist.label46.Text" xml:space="preserve">
+    <value>K2 (Ds)</value>
+  </data>
+  <data name="UCOptometrist.label47.Text" xml:space="preserve">
+    <value>Strabismus</value>
+  </data>
+  <data name="UCOptometrist.label48.Text" xml:space="preserve">
+    <value>Eyeball axis</value>
+  </data>
+  <data name="UCOptometrist.label49.Text" xml:space="preserve">
+    <value>CYL (Head)</value>
+  </data>
+  <data name="UCOptometrist.label5.Text" xml:space="preserve">
+    <value>OD (Right Eye)</value>
+  </data>
+  <data name="UCOptometrist.label50.Text" xml:space="preserve">
+    <value>Look away</value>
+  </data>
+  <data name="UCOptometrist.label51.Text" xml:space="preserve">
+    <value>OD (Right Eye)</value>
+  </data>
+  <data name="UCOptometrist.label52.Text" xml:space="preserve">
+    <value>OS (Left eye)</value>
+  </data>
+  <data name="UCOptometrist.label53.Text" xml:space="preserve">
+    <value>Vision</value>
+  </data>
+  <data name="UCOptometrist.label54.Text" xml:space="preserve">
+    <value>AX</value>
+  </data>
+  <data name="UCOptometrist.label55.Text" xml:space="preserve">
+    <value>SPH (Bridge)</value>
+  </data>
+  <data name="UCOptometrist.label56.Text" xml:space="preserve">
+    <value>CYL (Head)</value>
+  </data>
+  <data name="UCOptometrist.label57.Text" xml:space="preserve">
+    <value>Look close</value>
+  </data>
+  <data name="UCOptometrist.label58.Text" xml:space="preserve">
+    <value>OD (Right Eye)</value>
+  </data>
+  <data name="UCOptometrist.label59.Text" xml:space="preserve">
+    <value>OS (Left eye)</value>
+  </data>
+  <data name="UCOptometrist.label6.Text" xml:space="preserve">
+    <value>OS (Left eye)</value>
+  </data>
+  <data name="UCOptometrist.label60.Text" xml:space="preserve">
+    <value>Vision</value>
+  </data>
+  <data name="UCOptometrist.label61.Text" xml:space="preserve">
+    <value>AX</value>
+  </data>
+  <data name="UCOptometrist.label62.Text" xml:space="preserve">
+    <value>ADD</value>
+  </data>
+  <data name="UCOptometrist.label63.Text" xml:space="preserve">
+    <value>Pupil distance (BP):</value>
+  </data>
+  <data name="UCOptometrist.label7.Text" xml:space="preserve">
+    <value>AX</value>
+  </data>
+  <data name="UCOptometrist.label8.Text" xml:space="preserve">
+    <value>SPH (Bridge)</value>
+  </data>
+  <data name="UCOptometrist.label9.Text" xml:space="preserve">
+    <value>CYL (Head)</value>
+  </data>
+  <data name="UCOptometrist.labelControl1.Text" xml:space="preserve">
+    <value>1. Far vision:</value>
+  </data>
+  <data name="UCOptometrist.labelControl2.Text" xml:space="preserve">
+    <value>2. Refraction examination results:</value>
+  </data>
+  <data name="UCOptometrist.labelControl5.Text" xml:space="preserve">
+    <value>4. Near sight glasses:</value>
+  </data>
+  <data name="UCOptometrist.labelControl6.Text" xml:space="preserve">
+    <value>cm</value>
+  </data>
+  <data name="UCOptometrist.labelControl7.Text" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="UCOptometrist.labelControl8.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+  <data name="UCOptometrist.labelControl9.Text" xml:space="preserve">
+    <value>month</value>
+  </data>
+  <data name="UCOptometrist.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCOptometrist.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCOptometrist.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem1.Text" xml:space="preserve">
+    <value>II.</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem17.Text" xml:space="preserve">
+    <value>I. Results of refraction examination:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem2.Text" xml:space="preserve">
+    <value>Measurement times:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem20.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem21.Text" xml:space="preserve">
+    <value>Glass status:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem22.Text" xml:space="preserve">
+    <value>Investigation time:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem23.Text" xml:space="preserve">
+    <value>Usage time:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem24.Text" xml:space="preserve">
+    <value>Measurement time:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem25.Text" xml:space="preserve">
+    <value>Quantity:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem27.Text" xml:space="preserve">
+    <value>Optometry room:</value>
   </data>
   <data name="UCOptometrist.layoutControlItem3.Text" xml:space="preserve">
-    <value />
+    <value>Handler:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem4.Text" xml:space="preserve">
+    <value>Measuring person:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem6.Text" xml:space="preserve">
+    <value>Distant:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem7.Text" xml:space="preserve">
+    <value>Near the:</value>
+  </data>
+  <data name="UCOptometrist.lciAddress.Text" xml:space="preserve">
+    <value>Address:</value>
+  </data>
+  <data name="UCOptometrist.lciAfterLightReflectionL.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Afterwards, left eye pupil paralysis</value>
+  </data>
+  <data name="UCOptometrist.lciAfterLightReflectionL.Text" xml:space="preserve">
+    <value>MT:</value>
+  </data>
+  <data name="UCOptometrist.lciAfterLightReflectionR.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>After right eye pupil paralysis</value>
+  </data>
+  <data name="UCOptometrist.lciAfterLightReflectionR.Text" xml:space="preserve">
+    <value>After paralysis of MP:</value>
+  </data>
+  <data name="UCOptometrist.lciAjustableGlass.Text" xml:space="preserve">
+    <value>3. Corrective glasses and distance vision:</value>
+  </data>
+  <data name="UCOptometrist.lciAjustableGlassL.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Left eye</value>
+  </data>
+  <data name="UCOptometrist.lciAjustableGlassL.Text" xml:space="preserve">
+    <value>MT:</value>
+  </data>
+  <data name="UCOptometrist.lciAjustableGlassR.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Right eye:</value>
+  </data>
+  <data name="UCOptometrist.lciAjustableGlassR.Text" xml:space="preserve">
+    <value>MP:</value>
+  </data>
+  <data name="UCOptometrist.lciBeforeLightReflectionL.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Before left eye pupil paralysis</value>
+  </data>
+  <data name="UCOptometrist.lciBeforeLightReflectionL.Text" xml:space="preserve">
+    <value>MT:</value>
+  </data>
+  <data name="UCOptometrist.lciBeforeLightReflectionR.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Before right eye pupil paralysis</value>
+  </data>
+  <data name="UCOptometrist.lciBeforeLightReflectionR.Text" xml:space="preserve">
+    <value>Before paralysis of MP:</value>
+  </data>
+  <data name="UCOptometrist.lciDob.Text" xml:space="preserve">
+    <value>Date of birth:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightLeft.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Left eye:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightLeft.Text" xml:space="preserve">
+    <value>MT:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightLeftGlass.Text" xml:space="preserve">
+    <value>Glass hole:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightLeftUsingGlass.Text" xml:space="preserve">
+    <value>Glasses being worn:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightRight.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Right eye</value>
+  </data>
+  <data name="UCOptometrist.lciForesightRight.Text" xml:space="preserve">
+    <value>MP:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightRightGlass.Text" xml:space="preserve">
+    <value>Glass hole:</value>
+  </data>
+  <data name="UCOptometrist.lciForesightRightUsingGlass.Text" xml:space="preserve">
+    <value>Glasses being worn:</value>
+  </data>
+  <data name="UCOptometrist.lciGlassDegreeL.Text" xml:space="preserve">
+    <value>Glass degree:</value>
+  </data>
+  <data name="UCOptometrist.lciGlassDegreeR.Text" xml:space="preserve">
+    <value>Glass degree:</value>
+  </data>
+  <data name="UCOptometrist.lciMicroscopy.Text" xml:space="preserve">
+    <value>Reflect the pupil</value>
+  </data>
+  <data name="UCOptometrist.lciNearsightGlass.Text" xml:space="preserve">
+    <value>4. Near sight glasses:</value>
+  </data>
+  <data name="UCOptometrist.lciNearsightGlassLeft.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Left eye:</value>
+  </data>
+  <data name="UCOptometrist.lciNearsightGlassLeft.Text" xml:space="preserve">
+    <value>MT:</value>
+  </data>
+  <data name="UCOptometrist.lciNearsightGlassPupilDist.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Pupillary distance</value>
+  </data>
+  <data name="UCOptometrist.lciNearsightGlassPupilDist.Text" xml:space="preserve">
+    <value>Telephone distance:</value>
+  </data>
+  <data name="UCOptometrist.lciNearsightGlassReadingDist.Text" xml:space="preserve">
+    <value>Reading distance:</value>
+  </data>
+  <data name="UCOptometrist.lciNearsightGlassRight.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Right eye</value>
+  </data>
+  <data name="UCOptometrist.lciNearsightGlassRight.Text" xml:space="preserve">
+    <value>MP:</value>
+  </data>
+  <data name="UCOptometrist.lciOptometristTime.Text" xml:space="preserve">
+    <value>Wearing time:</value>
+  </data>
+  <data name="UCOptometrist.lciPatientCode.Text" xml:space="preserve">
+    <value>Patient code:</value>
+  </data>
+  <data name="UCOptometrist.lciPatientName.Text" xml:space="preserve">
+    <value>Patient name:</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometer.Text" xml:space="preserve">
+    <value>2. Refraction examination results:</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometry.Text" xml:space="preserve">
+    <value>Measuring machine refraction</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometryLeft.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Left eye</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometryLeft.Text" xml:space="preserve">
+    <value>MT:</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometryRight.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Right eye</value>
+  </data>
+  <data name="UCOptometrist.lciRefractometryRight.Text" xml:space="preserve">
+    <value>MP:</value>
+  </data>
+  <data name="UCOptometrist.lciReoptometristAppointment.Text" xml:space="preserve">
+    <value>Make a follow-up appointment later:</value>
+  </data>
+  <data name="UCOptometrist.lciReqName.Text" xml:space="preserve">
+    <value>Designator:</value>
+  </data>
+  <data name="UCOptometrist.lciThiLuc.Text" xml:space="preserve">
+    <value>1. Far vision:</value>
+  </data>
+  <data name="UCOptometrist.lciTimeType.Text" xml:space="preserve">
+    <value>Measurement time:</value>
   </data>
 </root>

@@ -116,10 +116,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         private const string KEY_AllowBhxhLeaveOver30days = "His.LeaveDay.AllowBhxhLeaveOver30days";
         internal static string AllowBhxhLeaveOver30days;
         internal static string AllowManyTreatmentOpeningOption;
+        private const string KEY_IsCheckValueMaxlengthOption = "HIS.Desktop.Plugins.TreatmentFinish.IsCheckValueMaxlengthOption";
+        internal static string IsCheckValueMaxlengthOption;
         internal static void LoadConfig()
         {
             try
             {
+                IsCheckValueMaxlengthOption = GetValue(KEY_IsCheckValueMaxlengthOption);
                 IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY_IsCheckServiceFollowWhenOut) == GlobalVariables.CommonStringTrue;
                 AutoCreatePaymentTransactions = GetValue(KEY__AutoCreatePaymentTransactions);
                 OptionTreatmentEndTypeIsTransfer = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_TreatmentEndTypeIsTransfer);

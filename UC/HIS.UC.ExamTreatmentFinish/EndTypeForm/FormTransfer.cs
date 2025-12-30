@@ -621,8 +621,8 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                 ValidationControlMaxLength(txtPhuongTienVanChuyen, 3000);
                 //ValidationControlMaxLength(txtNguoiHoTong, 200);
                 ValidationControlMaxLength(txtUsedMedicine, 3000);
-                ValidationControlMaxLength(txtClinicalNote, 3000);
-                ValidationControlMaxLength(txtSubclinicalResult, 3000);
+                ValidationControlMaxLength(txtClinicalNote, 4000);
+                ValidationControlMaxLength(txtSubclinicalResult, 4000);
 
                 ValidationRequired(txtClinicalNote);
                 ValidationRequired(txtHuongDieuTri);
@@ -1036,6 +1036,11 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
             {
                 buttonEdit1_Validated(buttonEdit1, null);
                 this.positionHandle = -1;
+                ValidationControlMaxLength(txtClinicalNote, 4000);
+                ValidationControlMaxLength(txtPPKTThuoc, 3000);
+                ValidationControlMaxLength(txtHuongDieuTri, 3000);
+                ValidationControlMaxLength(txtPhuongTienVanChuyen, 3000);
+                ValidationControlMaxLength(txtUsedMedicine, 3000);
                 if (!dxValidationProvider.Validate()) return;
                 if (!string.IsNullOrEmpty(memPttt.Text)
                 && Inventec.Common.String.CountVi.Count(memPttt.Text) > 3000)
@@ -1046,7 +1051,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                     memPttt.SelectAll();
                     return;
                 }
-
+                
                 if (actEdited == null) return;
 
                 HisTreatmentFinishSDO currentTreatmentFinishSDO = new HisTreatmentFinishSDO();

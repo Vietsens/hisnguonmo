@@ -2179,7 +2179,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             return;
                         }
                     }
-
+                    currentHisTreatment.TREATMENT_METHOD = txtMethod.Text;
+                    hisTreatmentFinishSDO_process.TreatmentMethod = txtMethod.Text; 
                     FormTransfer = new CloseTreatment.FormTransfer(this.module, currentHisTreatment);
                     FormTransfer.MyGetData = new CloseTreatment.FormTransfer.GetString(TranPatiDataTreatmentFinish);
 
@@ -2774,6 +2775,18 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 IsContinue = IsContinue && CheckBedLog(true);
                 if (!IsContinue)
                     return;
+
+                if (!ValidateTextLength(this.txtDauHieuLamSang.Text))
+                {
+                    this.txtDauHieuLamSang.Focus();
+                    return;
+                }
+
+                if (!ValidateTextLength(this.txtKetQuaXetNghiem.Text))
+                {
+                    this.txtKetQuaXetNghiem.Focus();
+                    return;
+                }
 
                 GetValueUC();
                 if (Inventec.Common.String.CountVi.Count(codeCheckCD) > 100)
@@ -3424,6 +3437,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
 
                 if (!this.CheckWarnNotRequiredCompleteHasNoSample(ValidationDataType.PopupMessage, ref warningADONew))
                 {
+                    return;
+                }
+                if (!ValidateTextLength(this.txtDauHieuLamSang.Text))
+                {
+                    this.txtDauHieuLamSang.Focus();
+                    return;
+                }
+
+                if (!ValidateTextLength(this.txtKetQuaXetNghiem.Text))
+                {
+                    this.txtKetQuaXetNghiem.Focus();
                     return;
                 }
                 GetValueUC();
@@ -6459,6 +6483,39 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private bool ValidateTextLength(string text, int maxChars = 4000)
+        {
+            var checkLengthConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs
+                .Get<string>("HIS.Desktop.Plugins.TreatmentFinish.IsCheckValueMaxlengthOption");
+
+            if (string.IsNullOrEmpty(text))
+                return true; 
+
+            if (Inventec.Common.String.CountVi.Count(text) <= maxChars)
+                return true; 
+
+            if (checkLengthConfig == "1")
+            {
+                var result = XtraMessageBox.Show(
+                    "Dữ liệu trường quá trình bệnh lý, tóm tắt kết quả vượt quá ký tự. Bạn có muốn sửa không?",
+                    "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No)
+                    return true;
+
+                return false;
+            }
+            else if (checkLengthConfig == "2")
+            {
+                XtraMessageBox.Show(
+                    "Dữ liệu trường quá trình bệnh lý, tóm tắt kết quả vượt quá ký tự",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

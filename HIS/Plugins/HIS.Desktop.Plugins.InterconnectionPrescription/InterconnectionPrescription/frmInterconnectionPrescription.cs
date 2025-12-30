@@ -30,19 +30,14 @@ using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
-using Inventec.UC.Paging;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescription
@@ -50,13 +45,14 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
     public partial class frmInterconnectionPrescription : HIS.Desktop.Utility.FormBase
     {
         #region Declare
-        const int MaxReq = 100;
+        const int MaxReq = 500;
         int rowCount = 0;
         int dataTotal = 0;
         int startPage = 0;
         Inventec.Desktop.Common.Modules.Module currentModule = null;
         List<HIS_EMPLOYEE> ListEmployee;
         string SysConfigValue;
+        string ClientAppConfigValue;
         string LoginName;
         HIS_BRANCH CurrBranch;
         #endregion
@@ -118,7 +114,11 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                 chkAll.Enabled = employee != null && employee.IS_ADMIN == (short)1;
                 CurrBranch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
                 SysConfigValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.InterconnectionPrescription.SysConfig");
+                // Key cũ: dùng cho SendPrescription (Url|HospitalLogin|HospitalPass)
 
+                // Key mới: dùng cho SendQuantitySold (Url|AppKey|AppName|MaCoSo|TenCoSo|SDT|DiaChi)
+                ClientAppConfigValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(
+                    "HIS.Desktop.Plugins.InterconnectionPrescription.ClientAppConfig");
                 if (String.IsNullOrWhiteSpace(CurrBranch.HEIN_MEDI_ORG_CODE))
                 {
                     XtraMessageBox.Show(ResourceLanguageManager.ChuaKhaiBaoThongTinMaCoSo, ResourceLanguageManager.ThongBao);
@@ -601,5 +601,510 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void gridView1_SelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if (btnUpdateSale == null) return;
+                int[] rows = gridView1.GetSelectedRows();
+                btnUpdateSale.Enabled = (rows != null && rows.Length > 0);
+                btnUpdateSale.ToolTip = "Cập nhật số lượng đã bán";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private string ValidateSysConfig(string sysConfig)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(sysConfig))
+                    return "Chưa khai báo cấu hình HIS.Desktop.Plugins.InterconnectionPrescription.SysConfig";
+
+                string[] p = sysConfig.Split('|');
+                if (p.Length < 3)
+                    return "Cấu hình HIS.Desktop.Plugins.InterconnectionPrescription.SysConfig không đúng định dạng: <Url>|<Mã liên thông BV>|<Mật khẩu>";
+
+                if (String.IsNullOrWhiteSpace(p[0])) return "Thiếu Url hệ thống liên thông (SysConfig)";
+                if (String.IsNullOrWhiteSpace(p[1])) return "Thiếu mã liên thông bệnh viện (SysConfig)";
+                if (String.IsNullOrWhiteSpace(p[2])) return "Thiếu mật khẩu liên thông (SysConfig)";
+
+                return "";
+            }
+            catch
+            {
+                return "Cấu hình HIS.Desktop.Plugins.InterconnectionPrescription.SysConfig không hợp lệ";
+            }
+        }
+
+        private string ValidateClientAppConfig(string clientAppConfig)
+        {
+            try
+            {
+                if (String.IsNullOrWhiteSpace(clientAppConfig))
+                    return "Chưa khai báo cấu hình HIS.Desktop.Plugins.InterconnectionPrescription.ClientAppConfig";
+
+                string[] p = clientAppConfig.Split('|');
+                if (p.Length < 7)
+                    return "Cấu hình HIS.Desktop.Plugins.InterconnectionPrescription.ClientAppConfig không đúng định dạng: <Url>|<App-Key>|<App-Name>|<Mã cơ sở>|<Tên cơ sở>|<SĐT>|<Địa chỉ>";
+
+                if (String.IsNullOrWhiteSpace(p[0])) return "Thiếu Url hệ thống liên thông (ClientAppConfig)";
+                if (String.IsNullOrWhiteSpace(p[1])) return "Thiếu App-Key (ClientAppConfig)";
+                if (String.IsNullOrWhiteSpace(p[2])) return "Thiếu App-Name (ClientAppConfig)";
+                if (String.IsNullOrWhiteSpace(p[3])) return "Thiếu Mã cơ sở cung ứng (ClientAppConfig)";
+
+                return "";
+            }
+            catch
+            {
+                return "Cấu hình HIS.Desktop.Plugins.InterconnectionPrescription.ClientAppConfig không hợp lệ";
+            }
+        }
+
+        private void ParseSysConfig(string value, out string url, out string hospitalLogin, out string hospitalPass)
+        {
+            url = hospitalLogin = hospitalPass = "";
+
+            string[] p = (value ?? "").Split('|');
+            if (p.Length < 3) throw new Exception("SysConfig không đúng định dạng");
+
+            url = (p[0] ?? "").Trim();
+            hospitalLogin = (p[1] ?? "").Trim();
+            hospitalPass = (p[2] ?? "").Trim();
+        }
+
+        private void ParseClientAppConfig(string value,
+    out string url, out string appKey, out string appName,
+    out string maCoSo, out string tenCoSo, out string sdt, out string diaChi, out string UrlQuantitySold)
+        {
+            url = appKey = appName = maCoSo = tenCoSo = sdt = diaChi = UrlQuantitySold = "";
+
+            string[] p = (value ?? "").Split('|');
+            if (p.Length < 7) throw new Exception("ClientAppConfig không đúng định dạng");
+
+            url = (p[0] ?? "").Trim();
+            appKey = (p[1] ?? "").Trim();
+            appName = (p[2] ?? "").Trim();
+            maCoSo = (p[3] ?? "").Trim();
+            tenCoSo = (p[4] ?? "").Trim();
+            sdt = (p[5] ?? "").Trim();
+            diaChi = (p[6] ?? "").Trim();
+            UrlQuantitySold = (p[7] ?? "").Trim();
+        }
+        private DataInput BuildSendQuantitySoldInput(
+    string sysConfigValue,
+    string clientAppConfigValue,
+    HIS_BRANCH branch,
+    List<HIS_EXP_MEST> listExpMest,
+    List<HIS_TRANSACTION> listTransaction,
+    List<HIS_SERVICE_REQ> listServiceReq,
+    List<HIS_SERVICE_REQ_METY> listReqMety)
+        {
+            string sysUrl, hospitalLogin, hospitalPass;
+            ParseSysConfig(sysConfigValue, out sysUrl, out hospitalLogin, out hospitalPass);
+
+            string appUrl, appKey, appName, maCoSo, tenCoSo, sdt, diaChi, UrlQuantitySold;
+            ParseClientAppConfig(clientAppConfigValue, out appUrl, out appKey, out appName, out maCoSo, out tenCoSo, out sdt, out diaChi, out UrlQuantitySold);
+
+            DataInput input = new DataInput();
+
+            // Url lấy theo ClientAppConfig (đúng mô tả key mới)
+            input.Url = appUrl;
+            input.UrlQuantitySold = UrlQuantitySold;
+
+            input.HospitalLoginname = hospitalLogin;
+            input.HospitalPassword = hospitalPass;
+
+            input.MediOrgCode = (branch != null ? (branch.HEIN_MEDI_ORG_CODE ?? "") : "");
+
+            input.AppKey = appKey;
+            input.AppName = appName;
+
+            input.MaCoSoCungUng = maCoSo;
+            input.TenCoSoCungUng = tenCoSo;
+            input.SDTCoSoCungUng = sdt;
+            input.DiaChiCoSoCungUng = diaChi;
+
+            input.ListExpMest = listExpMest ?? new List<HIS_EXP_MEST>();
+            input.ListTransaction = listTransaction ?? new List<HIS_TRANSACTION>();
+            input.ListServiceReq = listServiceReq ?? new List<HIS_SERVICE_REQ>();
+            input.ListReqMety = listReqMety ?? new List<HIS_SERVICE_REQ_METY>();
+
+            input.ListMedicineType = BackendDataWorker.Get<HIS_MEDICINE_TYPE>() ?? new List<HIS_MEDICINE_TYPE>();
+            input.ListEmplyee = BackendDataWorker.Get<HIS_EMPLOYEE>() ?? new List<HIS_EMPLOYEE>();
+
+            return input;
+        }
+
+        private List<HIS_EXP_MEST> GetExpMestByTdlServiceReqCodes(List<string> serviceReqCodes)
+        {
+            List<HIS_EXP_MEST> result = new List<HIS_EXP_MEST>();
+            if (serviceReqCodes == null || serviceReqCodes.Count == 0) return result;
+
+            List<string> codes = serviceReqCodes
+                .Where(x => !String.IsNullOrWhiteSpace(x))
+                .Select(x => x.Trim())
+                .Distinct()
+                .ToList();
+
+            HashSet<string> fetched = new HashSet<string>();
+
+            for (int i = 0; i < codes.Count; i++)
+            {
+                string code = codes[i];
+                if (String.IsNullOrWhiteSpace(code)) continue;
+                if (fetched.Contains(code)) continue;
+
+                fetched.Add(code);
+
+                HisExpMestFilter ft = new HisExpMestFilter();
+                ft.TDL_SERVICE_REQ_CODE = code;
+
+                List<HIS_EXP_MEST> data = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>(
+                    "api/HisExpMest/Get", ApiConsumers.MosConsumer, ft, null);
+
+                if (data != null && data.Count > 0)
+                    result.AddRange(data);
+            }
+
+            // ✅ loại trùng theo ID
+            result = result.Where(x => x != null)
+                           .GroupBy(x => x.ID)
+                           .Select(g => g.First())
+                           .ToList();
+
+            return result;
+        }
+
+
+
+        private List<HIS_TRANSACTION> GetTransactionsAByEligibleExpMest(List<HIS_EXP_MEST> eligible)
+        {
+            List<HIS_TRANSACTION> result = new List<HIS_TRANSACTION>();
+            if (eligible == null || eligible.Count == 0) return result;
+
+            List<long> billIds = eligible
+                .Where(x => x != null && x.BILL_ID != null)
+                .Select(x => x.BILL_ID.Value)
+                .Distinct()
+                .ToList();
+
+            if (billIds.Count == 0) return result;
+
+            int step = 0;
+            while (billIds.Count - step > 0)
+            {
+                List<long> ids = billIds.Skip(step).Take(MaxReq).ToList();
+                step += MaxReq;
+
+                HisTransactionFilter ft = new HisTransactionFilter();
+                ft.IDs = ids;
+
+                List<HIS_TRANSACTION> data = new BackendAdapter(new CommonParam()).Get<List<HIS_TRANSACTION>>(
+                    "api/HisTransaction/Get", ApiConsumers.MosConsumer, ft, null);
+
+                if (data != null && data.Count > 0) result.AddRange(data);
+            }
+
+            result = result
+                .Where(t => t != null
+                    && t.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT
+                    && (t.IS_CANCEL == null || t.IS_CANCEL != 1)
+                    && (t.IS_DELETE == null || t.IS_DELETE != 1)
+                    && !String.IsNullOrWhiteSpace(t.INVOICE_CODE)
+                    && !String.IsNullOrWhiteSpace(t.INVOICE_SYS))
+                .GroupBy(t => t.ID)
+                .Select(g => g.First())
+                .ToList();
+
+            return result;
+        }
+
+        private List<HIS_SERVICE_REQ_METY> GetServiceReqMetyByServiceReqIds(List<long> serviceReqIds)
+        {
+            List<HIS_SERVICE_REQ_METY> result = new List<HIS_SERVICE_REQ_METY>();
+            if (serviceReqIds == null || serviceReqIds.Count == 0) return result;
+
+            int step = 0;
+            while (serviceReqIds.Count - step > 0)
+            {
+                List<long> ids = serviceReqIds.Skip(step).Take(MaxReq).ToList();
+                step += MaxReq;
+
+                HisServiceReqMetyFilter ft = new HisServiceReqMetyFilter();
+                ft.SERVICE_REQ_IDs = ids;
+
+                List<HIS_SERVICE_REQ_METY> data = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ_METY>>(
+                    "api/HisServiceReqMety/Get", ApiConsumers.MosConsumer, ft, null);
+
+                if (data != null && data.Count > 0) result.AddRange(data);
+            }
+
+            return result;
+        }
+        private string BuildXxxFromExpMest(List<HIS_EXP_MEST> expMests, List<string> selectedServiceReqCodes)
+        {
+            if (expMests == null || expMests.Count == 0)
+            {
+                if (selectedServiceReqCodes == null) return "";
+                return String.Join(", ", selectedServiceReqCodes.Where(s => !String.IsNullOrWhiteSpace(s)).Distinct().ToList());
+            }
+
+            List<string> codes = expMests
+                .Where(x => x != null && !String.IsNullOrWhiteSpace(x.TDL_SERVICE_REQ_CODE))
+                .Select(x => x.TDL_SERVICE_REQ_CODE.Trim())
+                .Distinct()
+                .ToList();
+
+            if (codes.Count == 0 && selectedServiceReqCodes != null)
+                codes = selectedServiceReqCodes.Where(s => !String.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).Distinct().ToList();
+
+            return String.Join(", ", codes);
+        }
+
+        private void btnUpdateSale_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string msgSys = ValidateSysConfig(SysConfigValue);
+                if (!String.IsNullOrEmpty(msgSys))
+                {
+                    XtraMessageBox.Show(msgSys, ResourceLanguageManager.ThongBao);
+                    return;
+                }
+
+                string msgApp = ValidateClientAppConfig(ClientAppConfigValue);
+                if (!String.IsNullOrEmpty(msgApp))
+                {
+                    XtraMessageBox.Show(msgApp, ResourceLanguageManager.ThongBao);
+                    return;
+                }
+
+                int[] rowHandles = gridView1.GetSelectedRows();
+                if (rowHandles == null || rowHandles.Length <= 0) return;
+
+                // 1) lấy y lệnh từ grid
+                List<HIS_SERVICE_REQ> selectedServiceReqs = new List<HIS_SERVICE_REQ>();
+                List<long> selectedServiceReqIds = new List<long>();
+                List<string> selectedServiceReqCodes = new List<string>();
+
+                for (int i = 0; i < rowHandles.Length; i++)
+                {
+                    ServiceReqADO ado = gridView1.GetRow(rowHandles[i]) as ServiceReqADO;
+                    if (ado == null) continue;
+                    if (String.IsNullOrWhiteSpace(ado.SERVICE_REQ_CODE)) continue;
+
+                    HIS_SERVICE_REQ sr = new HIS_SERVICE_REQ();
+                    sr.ID = ado.ID;
+                    sr.SERVICE_REQ_CODE = ado.SERVICE_REQ_CODE;
+                    sr.REQUEST_LOGINNAME = ado.REQUEST_LOGINNAME;
+
+                    selectedServiceReqs.Add(sr);
+                    selectedServiceReqIds.Add(sr.ID);
+                    selectedServiceReqCodes.Add(ado.SERVICE_REQ_CODE.Trim());
+                }
+
+                selectedServiceReqCodes = selectedServiceReqCodes.Distinct().ToList();
+                selectedServiceReqIds = selectedServiceReqIds.Distinct().ToList();
+
+                if (selectedServiceReqCodes.Count == 0) return;
+
+                WaitingManager.Show();
+
+                // 2) Lấy exp_mest theo TDL_SERVICE_REQ_CODE
+                List<HIS_EXP_MEST> expMests = GetExpMestByTdlServiceReqCodes(selectedServiceReqCodes);
+                if (expMests == null || expMests.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show("Không tìm thấy phiếu xuất theo y lệnh đã chọn.", ResourceLanguageManager.ThongBao);
+                    return;
+                }
+
+                // 3) eligible base: phiếu xuất bán + có BILL_ID (HĐĐT)
+                List<HIS_EXP_MEST> eligibleBase = expMests
+                    .Where(x => x != null && x.EXP_MEST_TYPE_ID == 8 && x.BILL_ID != null)
+                    .ToList();
+
+                List<HIS_EXP_MEST> ineligible = expMests.Except(eligibleBase).ToList();
+
+                if (eligibleBase.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    string xxx0 = BuildXxxFromExpMest(expMests, selectedServiceReqCodes);
+                    XtraMessageBox.Show(
+                        String.Format("Đơn thuốc {0} không phải phiếu xuất bán hoặc là phiếu xuất bán nhưng chưa được xuất hóa đơn điện tử hoặc chưa đẩy đơn thuốc sang hệ thống liên thông đơn thuốc không cho phép cập nhật số lượng bán", xxx0),
+                        ResourceLanguageManager.ThongBao);
+                    return;
+                }
+
+                // 4) nếu đã cập nhật SL bán -> hỏi tiếp tục
+                List<HIS_EXP_MEST> alreadySent = eligibleBase.Where(x => x.IS_SENT_SOLD_QTY_ERX == 1).ToList();
+                if (alreadySent.Count > 0)
+                {
+                    string xxxWarn = BuildXxxFromExpMest(alreadySent, selectedServiceReqCodes);
+                    string warnMsg = String.Format("Các y lệnh {0} đã được cập nhật số lượng bán sang hệ thống liên thông đơn thuốc. Bạn có muốn tiếp tục?", xxxWarn);
+                    if (XtraMessageBox.Show(warnMsg, "Thông báo", MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        WaitingManager.Hide();
+                        return;
+                    }
+                }
+
+                // 5) Transactions A
+                List<HIS_TRANSACTION> listTranA = GetTransactionsAByEligibleExpMest(eligibleBase);
+
+                // ✅ lọc lại eligible theo transaction (tránh gọi thư viện khi thiếu hóa đơn)
+                HashSet<long> tranIds = new HashSet<long>(listTranA.Select(t => t.ID));
+                List<HIS_EXP_MEST> eligibleTran = eligibleBase
+                    .Where(x => x.BILL_ID != null && tranIds.Contains(x.BILL_ID.Value))
+                    .ToList();
+
+                List<HIS_EXP_MEST> noTran = eligibleBase.Except(eligibleTran).ToList();
+                if (noTran.Count > 0) ineligible.AddRange(noTran);
+
+                if (eligibleTran.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    string xxx0 = BuildXxxFromExpMest(eligibleBase, selectedServiceReqCodes);
+                    XtraMessageBox.Show(
+                        String.Format("Đơn thuốc {0} không đủ điều kiện hóa đơn điện tử để cập nhật số lượng bán.", xxx0),
+                        ResourceLanguageManager.ThongBao);
+                    return;
+                }
+
+                // 6) serviceReq theo exp_mest (TDL_SERVICE_REQ_CODE)
+                List<string> eligibleReqCodes = eligibleTran
+                    .Where(x => !String.IsNullOrWhiteSpace(x.TDL_SERVICE_REQ_CODE))
+                    .Select(x => x.TDL_SERVICE_REQ_CODE.Trim())
+                    .Distinct()
+                    .ToList();
+
+                List<HIS_SERVICE_REQ> serviceReqForEligible = selectedServiceReqs
+                    .Where(sr => sr != null && !String.IsNullOrWhiteSpace(sr.SERVICE_REQ_CODE)
+                                 && eligibleReqCodes.Contains(sr.SERVICE_REQ_CODE.Trim()))
+                    .ToList();
+
+                List<long> eligibleReqIds = serviceReqForEligible.Select(x => x.ID).Distinct().ToList();
+
+                // 7) mety B
+                List<HIS_SERVICE_REQ_METY> listReqMety = GetServiceReqMetyByServiceReqIds(eligibleReqIds);
+
+                // ✅ lọc eligible theo mety (tránh crash First() trong thư viện)
+                HashSet<long> metyReqIds = new HashSet<long>(listReqMety.Select(m => m.SERVICE_REQ_ID));
+                List<HIS_SERVICE_REQ> serviceReqHasMety = serviceReqForEligible.Where(r => metyReqIds.Contains(r.ID)).ToList();
+                List<long> finalReqIds = serviceReqHasMety.Select(r => r.ID).ToList();
+
+                List<HIS_EXP_MEST> eligibleFinal = eligibleTran
+                    .Where(x => !String.IsNullOrWhiteSpace(x.TDL_SERVICE_REQ_CODE)
+                        && serviceReqHasMety.Any(r => r.SERVICE_REQ_CODE == x.TDL_SERVICE_REQ_CODE))
+                    .ToList();
+
+                List<HIS_EXP_MEST> noMety = eligibleTran.Except(eligibleFinal).ToList();
+                if (noMety.Count > 0) ineligible.AddRange(noMety);
+
+                if (eligibleFinal.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    string xxx0 = BuildXxxFromExpMest(eligibleTran, selectedServiceReqCodes);
+                    XtraMessageBox.Show(
+                        String.Format("Đơn thuốc {0} không có chi tiết thuốc để cập nhật số lượng bán.", xxx0),
+                        ResourceLanguageManager.ThongBao);
+                    return;
+                }
+
+                // lọc lại listReqMety theo finalReqIds
+                listReqMety = listReqMety.Where(m => finalReqIds.Contains(m.SERVICE_REQ_ID)).ToList();
+
+                // 8) Build input & gọi thư viện
+                DataInput input = BuildSendQuantitySoldInput(SysConfigValue, ClientAppConfigValue, CurrBranch,
+                    eligibleFinal, listTranA, serviceReqHasMety, listReqMety);
+
+                DataResult rs = new ERXConnectProcessor().SendQuantitySold(input);
+
+                // 9) map reqCode -> exp_mest để update IS_SENT_SOLD_QTY_ERX
+                Dictionary<string, List<HIS_EXP_MEST>> dicExpByReqCode = new Dictionary<string, List<HIS_EXP_MEST>>();
+                foreach (var em in eligibleFinal)
+                {
+                    string code = (em.TDL_SERVICE_REQ_CODE ?? "").Trim();
+                    if (String.IsNullOrWhiteSpace(code)) continue;
+
+                    if (!dicExpByReqCode.ContainsKey(code))
+                        dicExpByReqCode[code] = new List<HIS_EXP_MEST>();
+
+                    dicExpByReqCode[code].Add(em);
+                }
+
+                if (rs != null && rs.Datas != null && rs.Datas.Count > 0)
+                {
+                    List<HIS_EXP_MEST> updates = new List<HIS_EXP_MEST>();
+
+                    foreach (var pr in rs.Datas)
+                    {
+                        if (pr == null) continue;
+                        string reqCode = (pr.ServiceReqCode ?? "").Trim();
+                        if (String.IsNullOrWhiteSpace(reqCode)) continue;
+                        if (!dicExpByReqCode.ContainsKey(reqCode)) continue;
+
+                        foreach (var found in dicExpByReqCode[reqCode])
+                        {
+                            updates.Add(new HIS_EXP_MEST
+                            {
+                                ID = found.ID,
+                                IS_SENT_SOLD_QTY_ERX = pr.Success ? (short)1 : (short)2
+                            });
+                        }
+                    }
+
+                    updates = updates.GroupBy(x => x.ID).Select(g => g.Last()).ToList();
+
+                    if (updates.Count > 0)
+                    {
+                        CommonParam p = new CommonParam();
+                        int step = 0;
+                        while (updates.Count - step > 0)
+                        {
+                            List<HIS_EXP_MEST> batch = updates.Skip(step).Take(MaxReq).ToList();
+                            step += MaxReq;
+
+                            new BackendAdapter(p).Post<List<HIS_EXP_MEST>>(
+                                "api/HisExpMest/UpdateSentErx", ApiConsumers.MosConsumer, batch, p);
+                        }
+                    }
+
+                    if (rs.Messages != null && rs.Messages.Count > 0)
+                        LogSystem.Error("SendQuantitySold Messages: " + String.Join(" | ", rs.Messages.Distinct().ToList()));
+                }
+                else
+                {
+                    string xxx = BuildXxxFromExpMest(eligibleFinal, selectedServiceReqCodes);
+                    XtraMessageBox.Show(
+                        String.Format("Đơn thuốc {0} không đủ điều kiện để cập nhật số lượng bán.", xxx),
+                        ResourceLanguageManager.ThongBao);
+                }
+
+                WaitingManager.Hide();
+
+                // 10) thông báo đơn không đủ điều kiện (nhưng đơn đủ điều kiện vẫn chạy)
+                if (ineligible != null && ineligible.Count > 0)
+                {
+                    string notOk = BuildXxxFromExpMest(ineligible, selectedServiceReqCodes);
+                    XtraMessageBox.Show(
+                        String.Format("Các đơn/y lệnh sau không đủ điều kiện để cập nhật số lượng bán: {0}", notOk),
+                        ResourceLanguageManager.ThongBao);
+                }
+
+                LoadDataToGridControl();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                LogSystem.Error(ex);
+            }
+        }
+
+
+
     }
 }

@@ -35,6 +35,7 @@ using MOS.SDO;
 using DevExpress.XtraGrid.Views.Base;
 using System.Collections;
 using DevExpress.Data;
+using DevExpress.XtraBars.Utils;
 
 namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 {
@@ -56,6 +57,24 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                 {
                     gcPrepareMedicine.DataSource = lstTab3;
                 }
+                gcPrepareMedicine.BeginInvoke(new Action(() =>
+                {
+                    try
+                    {
+                        gvPrepareMedicine.Focus();
+                        gvPrepareMedicine.FocusedRowHandle = DevExpress.XtraGrid.GridControl.AutoFilterRowHandle;
+
+                        gvPrepareMedicine.FocusedColumn = gridColumn26;
+
+                        gvPrepareMedicine.ShowEditor(); 
+                        var ed = gvPrepareMedicine.ActiveEditor as DevExpress.XtraEditors.BaseEdit;
+                        ed?.SelectAll();
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }));
                 Inventec.Common.Logging.LogSystem.Debug("QUẦY __" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => txtGateCodeString), txtGateCodeString));
                 Inventec.Common.Logging.LogSystem.Debug("IP __" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => txtIpCPA), txtIpCPA));
                 if (!string.IsNullOrEmpty(txtGateCodeString) && dteStt.DateTime.ToString("yyyyMMdd") == DateTime.Now.ToString("yyyyMMdd"))
@@ -221,27 +240,56 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 
         private void btnCall_Click(object sender, EventArgs e)
         {
+            //try
+            //{
+            //    if (string.IsNullOrEmpty(txtGateCodeString))
+            //    {
+            //        frmConfig frm = new frmConfig(IsOpen, GateConfig, IpConfig);
+            //        frm.ShowDialog();
+            //        return;
+            //    }
+            //    if (currentCall != null)
+            //    {
+            //        if (this.clienttManager == null)
+            //            this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
+            //        bool rs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString());
+            //        Inventec.Common.Logging.LogSystem.Error("GỌI LẠI ___ " + rs);
+            //    }
+            //    else
+            //    {
+            //        Inventec.Common.Logging.LogSystem.Error("KẾT NỐI ___ ");
+            //        CreateThreadCallPatientCPA();
+            //        CallPatientCPA();
+            //    }
+            //}
             try
             {
                 if (string.IsNullOrEmpty(txtGateCodeString))
                 {
-                    frmConfig frm = new frmConfig(IsOpen, GateConfig, IpConfig);
-                    frm.ShowDialog();
+                    new frmConfig(IsOpen, GateConfig, IpConfig).ShowDialog();
                     return;
                 }
-                if (currentCall != null)
+
+                if (this.clienttManager == null)
+                    this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
+
+                var target = GetTargetFromPrepareGrid();
+                if (target != null)
                 {
-                    if (this.clienttManager == null)
-                        this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
-                    bool rs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString());
-                    Inventec.Common.Logging.LogSystem.Error("GỌI LẠI ___ " + rs);
+                    if (currentCall == null || currentCall.ID != target.ID)
+                    {
+                        currentCall = target;
+                        CallSpecific(currentCall);
+                        return;
+                    }
+
+                    bool recallRs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString(), currentCall.GATE_CODE);
+                    Inventec.Common.Logging.LogSystem.Error("GỌI LẠI ___ " + recallRs);
+                    return;
                 }
-                else
-                {
-                    Inventec.Common.Logging.LogSystem.Error("KẾT NỐI ___ ");
-                    //CreateThreadCallPatientCPA();
-                    CallPatientCPA();
-                }
+
+                currentCall = null;
+                CallPatientCPA();
             }
             catch (Exception ex)
             {
@@ -440,7 +488,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                 HIS_EXP_MEST data = (HIS_EXP_MEST)gvPrepareMedicine.GetFocusedRow();
                 if (this.clienttManager == null)
                     this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
-                bool rs = this.clienttManager.RecallOrderDataClientBool(data.NUM_ORDER.ToString());
+                bool rs = this.clienttManager.RecallOrderDataClientBool(data.NUM_ORDER.ToString(), txtGateCodeString);
                 Inventec.Common.Logging.LogSystem.Error("GỌI LẠI TRÊN LƯỚI ___ " + rs);
                 currentCall = data;
                 txtCurrentCall.Text = currentCall.NUM_ORDER + " - " + currentCall.TDL_PATIENT_NAME + " - " + currentCall.TDL_TREATMENT_CODE;
@@ -506,6 +554,24 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private HIS_EXP_MEST GetTargetFromPrepareGrid()
+        {
+            try
+            {
+                if (gvPrepareMedicine.FocusedRowHandle >= 0)
+                    return gvPrepareMedicine.GetFocusedRow() as HIS_EXP_MEST;
+                if (gvPrepareMedicine.FocusedRowHandle == DevExpress.XtraGrid.GridControl.AutoFilterRowHandle && gvPrepareMedicine.RowCount == 1)
+                {
+                    int rowHandle = gvPrepareMedicine.GetVisibleRowHandle(0);
+                    return gvPrepareMedicine.GetRow(rowHandle) as HIS_EXP_MEST;
+                }    
+            }
+            catch (Exception ex)
+            {
+            }
+            return null;
         }
     }
 }

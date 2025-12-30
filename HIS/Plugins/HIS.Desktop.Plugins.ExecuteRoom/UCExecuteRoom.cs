@@ -365,6 +365,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 this.labelControl10.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.labelControl10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.labelControl9.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.labelControl9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtBMI.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.txtBMI.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem70.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem70.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem75.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem75.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem76.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem76.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem77.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControlItem77.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -2621,6 +2622,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         case PopupMenuProcessor.ItemType.ChonMayXuLy:
                             this.frmShowChonMayXuLy();
                             break;
+                        case PopupMenuProcessor.ItemType.DoThiLuc:
+                            OpenOptometristFromSereServ();
+                            break;
                     }
                 }
             }
@@ -2629,6 +2633,36 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        //Do thị lực
+        private void OpenOptometristFromSereServ()
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.Optometrist").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.Optometrist");
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    moduleData.RoomId = roomId;
+                    moduleData.RoomTypeId = roomTypeId;
+                    List<object> listArgs = new List<object>();
+                    var ss6 = gridViewSereServServiceReq.GetFocusedRow() as SereServ6ADO;
+                    if (ss6 != null)
+                    {
+                        var data = new HIS_SERE_SERV();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(data, ss6);
+                        listArgs.Add(data);
+                    }
+                    var extenceInstance = PluginInstance.GetPluginInstance(moduleData, listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void frmShowChonMayXuLy()
         {
             try

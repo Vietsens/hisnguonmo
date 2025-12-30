@@ -408,7 +408,7 @@ namespace HIS.Desktop.Plugins.HisTrackingList.UcEmrDocument
                     //Inventec.Common.Logging.LogSystem.Debug("ProcessJoinDocument.11");
                     try
                     {
-                        //System.IO.File.Delete(temFile);//TODO
+                        System.IO.File.Delete(temFile);//TODO
                     }
                     catch (Exception) { }
                 }

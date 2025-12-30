@@ -265,7 +265,7 @@
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

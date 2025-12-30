@@ -128,7 +128,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
                         }
                     }
-                }
+                } 
 
                 if (HisConfigCFG.icdServiceHasCheck == 3 || HisConfigCFG.icdServiceHasCheck == 4 || HisConfigCFG.icdServiceHasCheck == 5)
                 {

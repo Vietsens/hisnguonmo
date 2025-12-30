@@ -78,6 +78,8 @@
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.chkIsExamAnesthesia = new DevExpress.XtraEditors.CheckEdit();
+            this.lciIsExamAnesthesia = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -118,6 +120,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsExamAnesthesia.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIsExamAnesthesia)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -133,6 +137,7 @@
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.chkIsExamAnesthesia);
             this.layoutControl2.Controls.Add(this.panelSubIcd);
             this.layoutControl2.Controls.Add(this.panelIcd);
             this.layoutControl2.Controls.Add(this.btnLamLai);
@@ -210,7 +215,7 @@
             this.chkExamInBed.Location = new System.Drawing.Point(127, 163);
             this.chkExamInBed.Name = "chkExamInBed";
             this.chkExamInBed.Properties.Caption = "";
-            this.chkExamInBed.Size = new System.Drawing.Size(532, 19);
+            this.chkExamInBed.Size = new System.Drawing.Size(201, 19);
             this.chkExamInBed.StyleController = this.layoutControl2;
             this.chkExamInBed.TabIndex = 9;
             // 
@@ -310,7 +315,8 @@
             this.layoutControlItem15,
             this.layoutControlItem16,
             this.emptySpaceItem5,
-            this.emptySpaceItem6});
+            this.emptySpaceItem6,
+            this.lciIsExamAnesthesia});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(661, 410);
@@ -377,7 +383,7 @@
             this.layoutControlItem7.Control = this.chkExamInBed;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 161);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(661, 23);
+            this.layoutControlItem7.Size = new System.Drawing.Size(330, 23);
             this.layoutControlItem7.Text = "Khám tại giường:";
             this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(120, 0);
@@ -524,10 +530,6 @@
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1,
             this.bar3});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnThem,
@@ -590,15 +592,15 @@
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(665, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(665, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 443);
-            this.barDockControlBottom.Size = new System.Drawing.Size(665, 23);
+            this.barDockControlBottom.Size = new System.Drawing.Size(665, 0);
             // 
             // barDockControlLeft
             // 
@@ -617,6 +619,26 @@
             // dxErrorProvider1
             // 
             this.dxErrorProvider1.ContainerControl = this;
+            // 
+            // chkIsExamAnesthesia
+            // 
+            this.chkIsExamAnesthesia.Location = new System.Drawing.Point(424, 163);
+            this.chkIsExamAnesthesia.MenuManager = this.barManager1;
+            this.chkIsExamAnesthesia.Name = "chkIsExamAnesthesia";
+            this.chkIsExamAnesthesia.Properties.Caption = "";
+            this.chkIsExamAnesthesia.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkIsExamAnesthesia.Size = new System.Drawing.Size(235, 19);
+            this.chkIsExamAnesthesia.StyleController = this.layoutControl2;
+            this.chkIsExamAnesthesia.TabIndex = 19;
+            // 
+            // lciIsExamAnesthesia
+            // 
+            this.lciIsExamAnesthesia.Control = this.chkIsExamAnesthesia;
+            this.lciIsExamAnesthesia.Location = new System.Drawing.Point(330, 161);
+            this.lciIsExamAnesthesia.Name = "lciIsExamAnesthesia";
+            this.lciIsExamAnesthesia.Size = new System.Drawing.Size(331, 23);
+            this.lciIsExamAnesthesia.Text = "Khám tiền gây mê:";
+            this.lciIsExamAnesthesia.TextSize = new System.Drawing.Size(89, 13);
             // 
             // frmInviteSpecialistExam
             // 
@@ -677,6 +699,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsExamAnesthesia.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciIsExamAnesthesia)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -733,5 +757,7 @@
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem6;
+        private DevExpress.XtraEditors.CheckEdit chkIsExamAnesthesia;
+        private DevExpress.XtraLayout.LayoutControlItem lciIsExamAnesthesia;
     }
 }

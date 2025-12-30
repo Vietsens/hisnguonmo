@@ -19,6 +19,7 @@ using DevExpress.XtraEditors;
 using HIS.Desktop.Plugins.MchTreatmentExamService.UCAdress;
 using HIS.UC.SecondaryIcd;
 using HIS.UC.TreeSereServ7;
+using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using MCH.EFMODEL.DataModels;
 using MOS.EFMODEL.DataModels;
@@ -104,10 +105,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
         {
             try
             {
+                CommonParam param = new CommonParam();
                 // Kiểm tra license MCH trước
-                if (!CheckMchLicense())
+                if (!CheckMchLicense(ref param))
                 {
-                    XtraMessageBox.Show("Không có quyền sử dụng chức năng này. Vui lòng liên hệ quản trị viên.",
+                    XtraMessageBox.Show(param.GetMessage(),
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     DisableAllControls();
                     return;

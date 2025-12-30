@@ -452,7 +452,7 @@ namespace HIS.Desktop.Plugins.MchExamServiceList
                     Inventec.Desktop.Common.Modules.Module moduleData = LocalStorage.LocalData.GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.MchTreatmentExamService").FirstOrDefault();
                     if (moduleData == null)
                     {
-                        Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ApproveAggrImpMest");
+                        Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.MchTreatmentExamService");
                         return;
                     }
 
@@ -462,6 +462,7 @@ namespace HIS.Desktop.Plugins.MchExamServiceList
                     if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
                     ((Form)extenceInstance).ShowDialog();
+                    FillDataToGrid();
                 }
             }
             catch (Exception ex)

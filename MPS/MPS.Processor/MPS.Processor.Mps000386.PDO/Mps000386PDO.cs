@@ -28,10 +28,15 @@ namespace MPS.Processor.Mps000386.PDO
     public class Mps000386PDO : RDOBase
     {
         public HIS_SERVICE_REQ ServiceReq;
-
+        public HIS_SERE_SERV_VIEX SereServViex;
         public Mps000386PDO(HIS_SERVICE_REQ serviceReq)
         {
             this.ServiceReq = serviceReq;
+        }
+        public Mps000386PDO(HIS_SERVICE_REQ serviceReq, HIS_SERE_SERV_VIEX sereServViex)
+        {
+            this.ServiceReq = serviceReq;
+            this.SereServViex = sereServViex;
         }
     }
 }

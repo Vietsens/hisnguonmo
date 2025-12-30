@@ -26,13 +26,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MPS.Processor.Mps000248.PDO.Mps000248PDO;
 
 namespace MPS.Processor.Mps000248
 {
     public class Mps000248Processor : AbstractProcessor
     {
         Mps000248PDO rdo;
-
+       
         public Mps000248Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -69,7 +70,8 @@ namespace MPS.Processor.Mps000248
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
-
+                
+                
                 SetBarcodeKey();
                 SetSingleKey();
 
@@ -77,7 +79,10 @@ namespace MPS.Processor.Mps000248
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
                 objectTag.AddObjectData(store, "MedicineTypeNNs", rdo._MedicineIsAdrs);
+                objectTag.AddObjectData(store, "MedicineTypeNNs2", rdo._MedicineIsAdrs);
                 objectTag.AddObjectData(store, "MedicineTypes", rdo._Medicines);
+                
+                
 
                 result = true;
             }
@@ -154,6 +159,9 @@ namespace MPS.Processor.Mps000248
                         else if (rdo._ADR.EXPERTISE_STANDER_ID == IMSys.DbConfig.HIS_RS.HIS_ADR.EXPERTISE_STANDER_ID__OTHER)
                             SetSingleKey(new KeyValue(Mps000248ExtendSingleKey.EXPERTISE_STANDER_ID__OTHER, "X"));
                     }
+
+                     
+                  
                 }
 
                 AddObjectKeyIntoListkey<V_HIS_ADR>(rdo._ADR, false);
@@ -165,5 +173,8 @@ namespace MPS.Processor.Mps000248
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+       
+
+
     }
 }

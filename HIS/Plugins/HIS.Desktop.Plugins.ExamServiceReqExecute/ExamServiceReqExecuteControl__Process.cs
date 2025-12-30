@@ -55,6 +55,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -209,6 +210,105 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void onClickOptometrist(object sender, EventArgs e)
+        {
+            try
+            {
+                var moduleData = GlobalVariables.currentModuleRaws.FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.Optometrist");
+                if (moduleData == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.Optometrist");
+                    return;
+                }
+
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                {
+                    return;
+                }
+
+                moduleData.RoomId = this.moduleData.RoomId;
+                moduleData.RoomTypeId = this.moduleData.RoomTypeId;
+
+                HIS_SERE_SERV sereServDetail = TryGetExamSereServFromCache();
+                if (sereServDetail == null)
+                {
+                    sereServDetail = LoadExamSereServByApi(this.HisServiceReqView?.TREATMENT_ID);
+                }
+
+                if (sereServDetail == null)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("onClickOptometrist: khong tim thay SERE_SERV kham de truyen sang module do thi luc");
+                    return;
+                }
+
+                List<object> listArgs = new List<object> { sereServDetail };
+
+                var moduleWithRoom = PluginInstance.GetModuleWithWorkingRoom(moduleData, moduleData.RoomId, moduleData.RoomTypeId);
+                var extenceInstance = PluginInstance.GetPluginInstance(moduleWithRoom, listArgs);
+                if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                ((Form)extenceInstance).ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private HIS_SERE_SERV TryGetExamSereServFromCache()
+        {
+            try
+            {
+                if (this.SereServsCurrentTreatment == null || this.SereServsCurrentTreatment.Count == 0)
+                {
+                    return null;
+                }
+
+                var sereServKh = this.SereServsCurrentTreatment
+                    .FirstOrDefault(o => o.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                                         || o.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH);
+                if (sereServKh == null)
+                {
+                    return null;
+                }
+
+                var data = new HIS_SERE_SERV();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(data, sereServKh);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
+        private HIS_SERE_SERV LoadExamSereServByApi(long? treatmentId)
+        {
+            try
+            {
+                if (!treatmentId.HasValue)
+                {
+                    return null;
+                }
+
+                CommonParam param = new CommonParam();
+                var filter = new MOS.Filter.HisSereServFilter
+                {
+                    TREATMENT_ID = treatmentId.Value,
+                    TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                };
+
+                var sereServs = new BackendAdapter(param)
+                    .Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, filter, param);
+
+                var sereServ = sereServs?.FirstOrDefault();
+                return sereServ;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
         }
         //qtcode
@@ -583,7 +683,88 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return valid;
+        }   
+
+        private void FocusTreatmentExtField(string fieldName)
+        {
+            if (fieldName == "CLINICAL_NOTE")
+            {
+                if (txtPathologicalProcess != null)
+                {
+                    txtPathologicalProcess.Focus();
+                    txtPathologicalProcess.SelectAll();
+                }
+            }
+            else
+            {
+                if (txtSubclinical != null)
+                {
+                    txtSubclinical.Focus();
+                    txtSubclinical.SelectAll();
+                }
+            }
         }
+        private bool ValidateTreatmentExtMaxLength(ExamTreatmentFinishResult finishResult)
+        {
+            string overField = null;
+            string clinicalNote = finishResult?.TreatmentFinishSDO?.ClinicalNote;
+            string subclinicalResult = finishResult?.TreatmentFinishSDO?.SubclinicalResult;
+
+            if (string.IsNullOrEmpty(clinicalNote))
+            {
+                clinicalNote = txtPathologicalProcess.Text;
+            }
+            if (string.IsNullOrEmpty(subclinicalResult))
+            {
+                subclinicalResult = txtSubclinical.Text;
+            }
+
+            if (!string.IsNullOrEmpty(clinicalNote) && Encoding.UTF8.GetByteCount(clinicalNote) > MAX_CLINICAL_LENGTH)
+            {
+                overField = "CLINICAL_NOTE";
+            }
+            else if (!string.IsNullOrEmpty(subclinicalResult) && Encoding.UTF8.GetByteCount(subclinicalResult) > MAX_CLINICAL_LENGTH)
+            {
+                overField = "SUBCLINICAL_RESULT";
+            }
+
+            if (overField == null)
+            {
+                return true;
+            }
+
+            var opt = HisConfigCFG.IsCheckValueMaxlengthOption;
+            if (opt == "1")
+            {
+                var dlg = XtraMessageBox.Show(
+                    "Dữ liệu trường quá trình bệnh lý, tóm tắt kết quả vượt quá 4000 ký tự. Bạn có muốn sửa không?",
+                    "Thông báo",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (dlg == DialogResult.Yes)
+                {
+                    FocusTreatmentExtField(overField);
+                    return false;
+                }
+
+                return true; 
+            }
+
+            if (opt == "2")
+            {
+                XtraMessageBox.Show(
+                    "Dữ liệu trường quá trình bệnh lý, tóm tắt kết quả vượt quá 4000 ký tự.",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                FocusTreatmentExtField(overField);
+                return false;
+            }
+            return true;
+        }
+
         public bool isWarning = true;
         private bool ValidIcd(bool isSave)
         {

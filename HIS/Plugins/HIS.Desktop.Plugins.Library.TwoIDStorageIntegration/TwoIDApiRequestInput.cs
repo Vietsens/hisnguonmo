@@ -47,6 +47,10 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
         public string gender { get; set; }
         public string status { get; set; }
 
+        //url upload
+        public string fingerPrintImage { get; set; }
+        public string faceImage { get; set; }
+        public string handSignatureImage { get; set; }
 
         public TwoIDApiRequestInput()
         {
@@ -73,7 +77,9 @@ namespace HIS.Desktop.Plugins.Library.TwoIDStorageIntegration
                 this.issueDate = data.issueDate;
                 this.expiredDate = data.expiredDate;
                 this.idCardVerifyResult = data.idCardVerifyResult;
-
+                this.fingerPrintImage = data.fingerPrintImage;
+                this.faceImage = data.faceImage;
+                this.handSignatureImage = data.handSignatureImage;
             }
         }
 

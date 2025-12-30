@@ -1062,7 +1062,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                     else
                     {
-                        if (cboBuyerOrganzation2.EditValue != null)
+                        if (cboBuyerOrganzation2.EditValue != null && dtWorkPlace.Exists(o => o.ID == Int64.Parse(cboBuyerOrganzation2.EditValue.ToString())))
                         {
                             data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganzation2.EditValue.ToString());
                             data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;
@@ -1085,7 +1085,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                     else
                     {
-                        if (cboBuyerOrganization.EditValue != null)
+                        if (cboBuyerOrganization.EditValue != null && dtWorkPlace.Exists(o=>o.ID == Int64.Parse(cboBuyerOrganization.EditValue.ToString())))
                         {
                             data.Transaction.BUYER_WORK_PLACE_ID = Int64.Parse(cboBuyerOrganization.EditValue.ToString());
                             data.Transaction.BUYER_ORGANIZATION = dtWorkPlace.Where(o => o.ID == data.Transaction.BUYER_WORK_PLACE_ID).First().WORK_PLACE_NAME;

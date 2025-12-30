@@ -18,17 +18,12 @@
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Actions;
 using Inventec.Desktop.Core.Tools;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.Optometrist
 {
-    [KeyboardAction("OptometristSave", "HIS.Desktop.Plugins.ServiceExecute.UCServiceExecute", "OptometristSave", KeyStroke = XKeys.Control | XKeys.S)]
-    //[KeyboardAction("End", "HIS.Desktop.Plugins.ServiceExecute.UCServiceExecute", "End", KeyStroke = XKeys.Control | XKeys.E)]
-    [KeyboardAction("OptometristPrint", "HIS.Desktop.Plugins.ServiceExecute.UCServiceExecute", "OptometristPrint", KeyStroke = XKeys.Control | XKeys.P)]
+    [KeyboardAction("OptometristSave", "HIS.Desktop.Plugins.Optometrist.UC.UCOptometrist", "OptometristSave", KeyStroke = XKeys.Control | XKeys.S)]
+    [KeyboardAction("OptometristPrintKham", "HIS.Desktop.Plugins.Optometrist.UC.UCOptometrist", "OptometristPrintKham", KeyStroke = XKeys.Control | XKeys.I)]
+    [KeyboardAction("OptometristPrintDon", "HIS.Desktop.Plugins.Optometrist.UC.UCOptometrist", "OptometristPrintDon", KeyStroke = XKeys.Control | XKeys.P)]
     [ExtensionOf(typeof(DesktopToolExtensionPoint))]
     public sealed class KeyboardWorker : Tool<IDesktopToolContext>
     {

@@ -146,8 +146,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                var medicineLine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMedicineLine.EditValue ?? "").ToString()));
-                if (medicineLine.ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT) 
+                if (isValid)
                 {
                     lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
                     ValidateCombox vali = new ValidateCombox();

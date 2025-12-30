@@ -1004,24 +1004,20 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
             var view = sender as GridView;
             if (view == null)
             {
-                Inventec.Common.Logging.LogSystem.Warn("GridView is null");
                 return;
             }
 
             var rowExt = view.GetRow(e.RowHandle) as V_HIS_TRACKING_EXT;
             if (rowExt?.Tracking == null)
             {
-                Inventec.Common.Logging.LogSystem.Info("rowExt or rowExt.Tracking is null at row " + e.RowHandle);
                 return;
             }
 
             long trackingId = rowExt.Tracking.ID;
-            Inventec.Common.Logging.LogSystem.Info("RowCellStyle => trackingId : " + trackingId);
 
             bool hasAnalysisInDb = rowExt.DrugUseAnalysis != null && rowExt.DrugUseAnalysis.ID > 0;
             bool hasAnalysisFromForm = trackingIdsWithDrugAnalysis != null && trackingIdsWithDrugAnalysis.Contains(trackingId);
 
-            Inventec.Common.Logging.LogSystem.Info($"hasAnalysisInDb: {hasAnalysisInDb}, hasAnalysisFromForm: {hasAnalysisFromForm}");
 
             if (hasAnalysisInDb || hasAnalysisFromForm)
             {
@@ -1352,7 +1348,6 @@ namespace HIS.Desktop.Plugins.HisTrackingList.Run
                         numberOfDocumentFileDisposed++;
                     }
                 }
-                Inventec.Common.Logging.LogAction.Info("_____DisposeMemoryStream : " + numberOfDocumentFileDisposed + " Document file Disposed");
             }
             catch (Exception ex)
             {
