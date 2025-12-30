@@ -2439,7 +2439,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     else medicineType.IS_RAW_MEDICINE = null;
                 }
                 #endregion
-                //if (lstConfig != null && lstConfig.Count > 0)
                 {
                     if (lstConfig.Any(x => x.ID == 1)) medicineType.IS_STOP_IMP = 1;
                     else medicineType.IS_STOP_IMP = null;
@@ -7233,8 +7232,16 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     {
                         cboMedicineLine.Properties.Buttons[1].Visible = true;
                         ValidatecboMedicineUseForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
-                        dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
-                        ValidatecboDosageForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
+                        if (medicineLine.ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                        {
+                            dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
+                            ValidatecboDosageForm(true);
+                        }
+                        else
+                        {
+                            dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
+                            ValidatecboDosageForm(false);
+                        }
                     }                    
                 }
             }
@@ -8368,6 +8375,27 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtActiveIngrBhytCode_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if(txtActiveIngrBhytCode.EditValue != null && txtActiveIngrBhytCode.EditValue != "")
+                {
+                    ValidatecboDosageForm(true);
+                }
+                else
+                {
+                    dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
+                    ValidatecboDosageForm(false);
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
