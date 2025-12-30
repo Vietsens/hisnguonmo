@@ -15,13 +15,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Plugins.Library.EmrGenerate;
 using HIS.Desktop.Utility;
-using Inventec.Common.Integrate;
+using Inventec.Common.Adapter;
+using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace HIS.Desktop.Plugins.Optometrist.UC
@@ -117,7 +121,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     }
                     else
                     {
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(currentsereServ.TDL_TREATMENT_CODE, printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(currentsereServ.TDL_TREATMENT_CODE, printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
                         result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName)
                         {
                             EmrInputADO = inputADO
@@ -153,7 +157,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     }
                     else
                     {
-                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(currentsereServ.TDL_TREATMENT_CODE, printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode(currentsereServ.TDL_TREATMENT_CODE, printTypeCode, this.currentModule != null ? currentModule.RoomId : 0);
                         result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName)
                         {
                             EmrInputADO = inputADO
@@ -166,6 +170,31 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 WaitingManager.Hide();
             }
+        }
+        private HIS_SERVICE_REQ GetServiceReq()
+        {
+            try
+            {
+                var currentsereServ = GetSelectedSereServ();
+                if (currentsereServ != null)
+                {
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisServiceReqFilter filter = new MOS.Filter.HisServiceReqFilter();
+                    filter.ID = currentsereServ.SERVICE_REQ_ID;
+                    filter.IS_ACTIVE = 1;
+                    var apiResult = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>
+                        (ApiConsumer.HisRequestUriStore.HIS_SERVICE_REQ_GET_, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                    if (apiResult != null && apiResult.Count > 0)
+                    {
+                        return apiResult.First();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
         }
     }
 }
