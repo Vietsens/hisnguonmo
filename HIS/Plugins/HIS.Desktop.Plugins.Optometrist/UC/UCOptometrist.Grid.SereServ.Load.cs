@@ -27,31 +27,48 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
                 if (apiResult != null && apiResult.Count > 0)
                 {
-                    foreach (var item in apiResult)
-                    {
-                        if (item.HIS_SERE_SERV_VIEX == null || item.HIS_SERE_SERV_VIEX.Count == 0)
-                        {
-                            item.HIS_SERE_SERV_VIEX = FetchSereServViex(item);
-                        }
+                    var sereServIds = apiResult.Select(o => o.ID).Distinct().ToList();
 
-                        if (item.HIS_SERE_SERV_VIEX != null && item.HIS_SERE_SERV_VIEX.Count > 0)
-                        {
-                            var viex = item.HIS_SERE_SERV_VIEX
-                                .OrderByDescending(o => o.ID)
-                                .FirstOrDefault();
+                    var paramViex = new CommonParam();
+                    var filterViex = new MOS.Filter.HisSereServViexFilter();
+                    filterViex.SERE_SERV_IDs = sereServIds;
+                    filterViex.IS_ACTIVE = 1;
 
-                            if (viex != null)
+                    var allViex = new BackendAdapter(paramViex).Get<List<HIS_SERE_SERV_VIEX>>
+                        (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GET, ApiConsumer.ApiConsumers.MosConsumer, filterViex, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramViex)
+                        ?? new List<HIS_SERE_SERV_VIEX>();
+
+                    var joined = apiResult
+                        .GroupJoin(
+                            allViex,
+                            ss => ss.ID,
+                            vx => vx.SERE_SERV_ID,
+                            (ss, vxGroup) => new
                             {
-                                item.VISION_TEST_TIME = viex.VISION_TEST_TIME;
-                                item.VISION_TEST_ROOM_NAME = viex.VISION_TEST_ROOM_NAME;
-                                item.VISION_TEST_NUM = viex.VISION_TEST_NUM;
+                                SereServ = ss,
+                                ViexList = vxGroup.OrderByDescending(o => o.ID).ToList(),
+                                LatestViex = vxGroup.OrderByDescending(o => o.ID).FirstOrDefault()
+                            })
+                        .Select(x =>
+                        {
+                            x.SereServ.HIS_SERE_SERV_VIEX = x.ViexList;
+                            if (x.LatestViex != null)
+                            {
+                                x.SereServ.VISION_TEST_TIME = x.LatestViex.VISION_TEST_TIME;
+                                x.SereServ.VISION_TEST_ROOM_NAME = x.LatestViex.VISION_TEST_ROOM_NAME;
+                                x.SereServ.VISION_TEST_NUM = x.LatestViex.VISION_TEST_NUM;
                             }
-                        }
-                    }
-                    apiResult = apiResult.Where(w => (w.HIS_SERE_SERV_VIEX != null && w.HIS_SERE_SERV_VIEX.Count > 0)
-                    || w.ID == currentsereServ.ID
-                    ).OrderBy(o => o.ID == currentsereServ.ID && (o.HIS_SERE_SERV_VIEX == null || o.HIS_SERE_SERV_VIEX.Count == 0) ? 1 : 99)
-                    .OrderByDescending(o => o.VISION_TEST_TIME).ToList();
+                            return x.SereServ;
+                        })
+                        .ToList();
+
+                    apiResult = joined
+                        .Where(w => (w.HIS_SERE_SERV_VIEX != null && w.HIS_SERE_SERV_VIEX.Count > 0)
+                            || w.ID == currentsereServ.ID)
+                        .OrderBy(o => o.ID == currentsereServ.ID && (o.HIS_SERE_SERV_VIEX == null || o.HIS_SERE_SERV_VIEX.Count == 0) ? 1 : 99)
+                        .OrderByDescending(o => o.VISION_TEST_TIME)
+                        .ToList();
+
                     gridControlSereServ.DataSource = apiResult;
                     gridControlSereServ.RefreshDataSource();
 
@@ -70,38 +87,36 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private List<HIS_SERE_SERV_VIEX> FetchSereServViex(HIS_SERE_SERV sereServ)
-        {
-            try
-            {
-                if (sereServ == null) return null;
 
-                // Nếu item đã có list thì dùng luôn (chuẩn hóa về List)
-                if (sereServ.HIS_SERE_SERV_VIEX != null && sereServ.HIS_SERE_SERV_VIEX.Count > 0)
-                {
-                    return sereServ.HIS_SERE_SERV_VIEX
-                        .OrderByDescending(o => o.ID)
-                        .ToList();
-                }
+        //private List<HIS_SERE_SERV_VIEX> FetchSereServViex(HIS_SERE_SERV sereServ)
+        //{
+        //    try
+        //    {
+        //        if (sereServ == null) return null;
 
-                CommonParam param = new CommonParam();
-                MOS.Filter.HisSereServViexFilter filter = new MOS.Filter.HisSereServViexFilter();
-                filter.IS_ACTIVE = 1;
-                filter.TDL_TREATMENT_ID = sereServ.TDL_TREATMENT_ID;
-                filter.SERE_SERV_ID = sereServ.ID;
-                var apiResult = new BackendAdapter(param).Get<List<HIS_SERE_SERV_VIEX>>
-                    (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GET, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+        //        // Nếu item đã có list thì dùng luôn (chuẩn hóa về List)
+        //        if (sereServ.HIS_SERE_SERV_VIEX != null && sereServ.HIS_SERE_SERV_VIEX.Count > 0)
+        //        {
+        //            return sereServ.HIS_SERE_SERV_VIEX
+        //                .OrderByDescending(o => o.ID)
+        //                .ToList();
+        //        }
 
-                return apiResult?
-                    .OrderByDescending(o => o.ID)
-                    .ToList();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return null;
-        }
+        //        CommonParam param = new CommonParam();
+        //        MOS.Filter.HisSereServViexFilter filter = new MOS.Filter.HisSereServViexFilter();
+        //        filter.SERE_SERV_IDs = new List<long> { sereServ.ID };
+        //        filter.IS_ACTIVE = 1;
+        //        var apiResult = new BackendAdapter(param).Get<List<HIS_SERE_SERV_VIEX>>
+        //            (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GET, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+
+        //        return apiResult;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //    return null;
+        //}
         private void gridViewSereServ_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
         {
             try
