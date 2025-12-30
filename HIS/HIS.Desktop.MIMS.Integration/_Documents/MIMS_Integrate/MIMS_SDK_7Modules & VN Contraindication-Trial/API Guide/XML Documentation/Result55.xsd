@@ -1,0 +1,2139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2011 rel. 3 sp1 (x64) (http://www.altova.com) by Archie (UMB Medica) -->
+<!-- edited with XMLSPY v5 rel. 4 U (http://www.xmlspy.com) by Andy Myint (MediMedia) -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Mike Schenk (Atmedica) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:element name="Result">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element name="List">
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="Product" type="listElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="ProductLine" type="listElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="Molecule" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="listElementType">
+                      <xs:attribute name="languageCode" type="xs:language" use="required"/>
+                      <xs:attribute name="nameSourceCode" type="xs:string" use="required"/>
+                      <xs:attribute name="primaryName" type="xs:boolean" use="optional" fixed="true"/>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ActiveCompositionGroup" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="listElementType">
+                      <xs:sequence>
+                        <xs:element name="Molecules" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="Molecule" type="listElementType" maxOccurs="unbounded">
+                                <xs:annotation>
+                                  <xs:documentation>The name is the "primary name" for the molecule.</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="count" type="xs:integer" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Products" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Appears if the Products element appears in the request.</xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="Product" maxOccurs="unbounded">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                  <xs:attribute name="name" type="xs:string" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="count" type="xs:integer" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                      <!--xs:attribute name="name" use="optional" /-->
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ActiveComposition" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="listElementType">
+                      <xs:sequence>
+                        <xs:element name="Molecules" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="Molecule" maxOccurs="unbounded">
+                                <xs:annotation>
+                                  <xs:documentation>The text content of this element may contain free-text Information describing the strength/concentration/potency of the molecule. The molecule names are those marked with primaryName="True" in the List Molecule result.</xs:documentation>
+                                </xs:annotation>
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                  <xs:attribute name="name" type="xs:string" use="required"/>
+                                  <xs:attribute name="strength" type="nullableDecimalType" use="required"/>
+                                  <xs:attribute name="maximumStrength" type="nullableDecimalType" use="required"/>
+                                  <xs:attribute name="strengthUnit" type="xs:string" use="required"/>
+                                  <xs:attribute name="perVolume" type="nullableDecimalType" use="required"/>
+                                  <xs:attribute name="perVolumeUnit" type="xs:string" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="count" type="xs:integer" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Products" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>Appears if the Products element appears in the request.</xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="Product" maxOccurs="unbounded">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                  <xs:attribute name="name" type="xs:string" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="count" type="xs:integer" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                      <!--xs:attribute name="name" use="prohibited" /-->
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GGPI" type="listElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="GenericItem" type="listElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="SpecificItem" type="listElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="AtcClassification" type="listElementCodeType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="TherapeuticClass" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="listElementCodeType">
+                      <xs:attribute name="parentCode"/>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="SubstanceClass" type="listElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="HealthIssue" type="listElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="HealthIssueCode" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="code" type="xs:string" use="required"/>
+                  <xs:attribute name="codeType" type="xs:string" use="required"/>
+                  <xs:attribute name="name"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="DSMRouteOfAdmin" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:complexContent>
+                    <xs:extension base="removableListElementType">
+                      <xs:attribute name="D2D" type="xs:boolean" use="required"/>
+                      <xs:attribute name="D2H" type="xs:boolean" use="required"/>
+                      <xs:attribute name="D2F" type="xs:boolean" use="required"/>
+                    </xs:extension>
+                  </xs:complexContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="FoodClass" type="listElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="RouteOfAdministration" type="removableListElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="CompanyType" type="removableListElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="DocumentType" type="removableListElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="Form" type="removableListElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="HL7Form" type="listElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="PackageType" type="removableListElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="PriceType" type="removableListElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="ProductType" type="removableListElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="MoleculeNameSource" type="listElementCodeType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="Unit" type="listElementCodeType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="Package" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PackageIdentifierType" type="removableListElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="ProductIdentifierType" type="removableListElementType" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element name="DoseRangeInterval" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:choice>
+            <xs:attribute name="total" type="xs:unsignedLong" use="required"/>
+            <xs:attribute name="from" type="xs:unsignedLong" use="required"/>
+            <xs:attribute name="to" type="xs:unsignedLong" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Detail">
+          <xs:complexType>
+            <xs:choice>
+              <xs:element name="Datafile">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Copyright" type="xs:string"/>
+                    <xs:element name="Languages">
+                      <xs:annotation>
+                        <xs:documentation>Lists the language codes for text in this file. The codes appear in their order of preference. These define the languages that are used to select from GDDB the most appropriate available text for each entity defined in this datafile. Usually
+													this list will only be one or two entries long with the final entry being English.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Language">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:language" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="BuildID"/>
+                    <xs:element name="IssueDate"/>
+                    <xs:element name="FastTrack">
+                      <xs:complexType>
+                        <xs:attribute name="version" type="xs:string" use="required"/>
+                        <xs:attribute name="buildDate" type="xs:date" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Note"/>
+                  </xs:sequence>
+                  <xs:attribute name="countryCode" type="xs:string" use="required"/>
+                  <xs:attribute name="currencyCode" type="xs:string" use="required"/>
+                  <xs:attribute name="dataReleaseDate" type="xs:dateTime" use="required"/>
+                  <xs:attribute name="dataSchemaVersion" type="xs:string"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="FoodClass">
+                <xs:complexType mixed="true">
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                  <xs:attribute name="name" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Product">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="OffMarketReason" type="xs:string" minOccurs="0"/>
+                    <xs:element name="ProductLine">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="GGPI" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>This is missing if the GGPI column value in the GDDB.PRODUCT table is null. That would be the case if at least one item did not have a Specific Item identifier.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ProductType" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>This is missing if the Product Type column value in GDDB is null.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Items" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>This appears if the Items element is in the request.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Item" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Form">
+                                  <xs:complexType>
+                                    <xs:attribute name="reference" type="GUID" use="required"/>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Routes">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="Route" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                          <xs:attribute name="reference" type="GUID" use="required"/>
+                                          <xs:attribute name="name" type="xs:string" use="required"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="count" type="xs:integer" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Images">
+                                  <xs:complexType>
+                                    <xs:complexContent>
+                                      <xs:extension base="imagesType">
+                                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                                      </xs:extension>
+                                    </xs:complexContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="ActiveCompositionGroup">
+                                  <xs:annotation>
+                                    <xs:documentation>Active Compositions with no molecules are not allowed.</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="ActiveComposition">
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="Molecules">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="Molecule" maxOccurs="unbounded">
+                                                    <xs:annotation>
+                                                      <xs:documentation>The text content of this element may contain free-text Information describing the strength/concentration/potency of the molecule. The molecule names come from those that are identified for this particular product rather than
+																												those that are marked primary for the entire dataset.</xs:documentation>
+                                                    </xs:annotation>
+                                                    <xs:complexType>
+                                                      <xs:attribute name="reference" type="GUID" use="required"/>
+                                                      <xs:attribute name="name" type="xs:string" use="required"/>
+                                                      <xs:attribute name="languageCode" type="xs:language" use="required"/>
+                                                      <xs:attribute name="nameSourceCode" type="xs:string" use="required"/>
+                                                      <xs:attribute name="strength" type="nullableDecimalType" use="required"/>
+                                                      <xs:attribute name="maximumStrength" type="nullableDecimalType" use="required"/>
+                                                      <xs:attribute name="strengthUnit" type="xs:string" use="required"/>
+                                                      <xs:attribute name="perVolume" type="nullableDecimalType" use="required"/>
+                                                      <xs:attribute name="perVolumeUnit" type="xs:string" use="required"/>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="count" type="xs:integer" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="reference" type="GUID" use="required"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                      <xs:element name="GenericItem" minOccurs="0">
+                                        <xs:annotation>
+                                          <xs:documentation>This may be null if the global editors have not yet assigned a Specific Item id to this item.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:complexType>
+                                          <xs:sequence>
+                                            <xs:element name="HL7Form">
+                                              <xs:complexType>
+                                                <xs:attribute name="reference" type="GUID" use="required"/>
+                                                <xs:attribute name="name" type="xs:string" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="SpecificItem">
+                                              <xs:complexType>
+                                                <xs:sequence>
+                                                  <xs:element name="Molecules">
+                                                    <xs:complexType>
+                                                      <xs:sequence>
+                                                        <xs:element name="Molecule" maxOccurs="unbounded">
+                                                          <xs:annotation>
+                                                            <xs:documentation>The molecule names are those marked with primaryName="True" in the List Molecule result.</xs:documentation>
+                                                          </xs:annotation>
+                                                          <xs:complexType>
+                                                            <xs:attribute name="reference" type="GUID" use="required"/>
+                                                            <xs:attribute name="name" type="xs:string" use="required"/>
+                                                            <xs:attribute name="strength" type="nullableDecimalType" use="required"/>
+                                                            <xs:attribute name="maximumStrength" type="nullableDecimalType" use="required"/>
+                                                            <xs:attribute name="strengthUnit" type="xs:string" use="required"/>
+                                                          </xs:complexType>
+                                                        </xs:element>
+                                                      </xs:sequence>
+                                                      <xs:attribute name="count" type="xs:integer" use="required"/>
+                                                    </xs:complexType>
+                                                  </xs:element>
+                                                </xs:sequence>
+                                                <xs:attribute name="reference" type="GUID" use="required"/>
+                                                <xs:attribute name="name" type="xs:string" use="required"/>
+                                                <xs:attribute name="perVolume" type="nullableDecimalType" use="required"/>
+                                                <xs:attribute name="perVolumeUnit" type="xs:string" use="required"/>
+                                              </xs:complexType>
+                                            </xs:element>
+                                          </xs:sequence>
+                                          <xs:attribute name="reference" type="GUID" use="required"/>
+                                          <xs:attribute name="name" type="xs:string" use="required"/>
+                                        </xs:complexType>
+                                      </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="reference" type="GUID" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Packages" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>This appears if the Packages element is in the request.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Package" maxOccurs="unbounded">
+                            <xs:annotation>
+                              <xs:documentation>Every product must have at least 1 package as a business rule.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Images" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>This appears if the Images element is in the request.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:complexContent>
+                          <xs:extension base="imagesType">
+                            <xs:attribute name="count" type="xs:integer" use="required"/>
+                          </xs:extension>
+                        </xs:complexContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="TherapeuticClasses" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>This appears if the TherapeuticClasses element is in the request.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="TherapeuticClass" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ATCCodes" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>This appears if the ATCCodes element is in the request.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ATCCode" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="code" type="xs:string" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Companies" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>This appears if the Companies element is in the request.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Company" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="CompanyType">
+                                  <xs:complexType>
+                                    <xs:attribute name="reference" type="GUID" use="required"/>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Documents" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Appears if the Documents element is in the request.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Document" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:any/>
+                              </xs:sequence>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="typeReference" type="GUID" use="required"/>
+                              <xs:attribute name="stylesheetReference" type="GUID" use="optional"/>
+                              <xs:attribute name="schemaReference" type="GUID" use="optional"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Identifiers" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Identifier" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="identifier" type="xs:string" use="required"/>
+                              <xs:attribute name="identifierType" type="GUID" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="CautionaryLabels" minOccurs="0" type="calsType"/>
+                  </xs:all>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                  <xs:attribute name="name" type="xs:string" use="required"/>
+                  <xs:attribute name="code" type="xs:string" use="required"/>
+                  <xs:attribute name="registrationDate" type="xs:date" use="optional"/>
+                  <xs:attribute name="onMarketDate" type="xs:date" use="optional"/>
+                  <xs:attribute name="offMarketDate" type="xs:date" use="optional"/>
+                  <xs:attribute name="hardStop" type="xs:boolean" use="optional" fixed="true"/>
+                  <xs:attribute name="offMarket" type="xs:boolean" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Package">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Product">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OffMarketReason" minOccurs="0">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string"/>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="PackageType" minOccurs="0">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Items" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Item" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="PackageType" minOccurs="0">
+                                  <xs:complexType>
+                                    <xs:attribute name="reference" type="GUID" use="required"/>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="itemsPerPack" type="xs:positiveInteger" use="required"/>
+                              <xs:attribute name="quantity" type="nullableQuantityDecimalType" use="required"/>
+                              <xs:attribute name="quantityUnitCode" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Prices" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Price" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="PriceType">
+                                  <xs:complexType>
+                                    <xs:attribute name="name" type="xs:string" use="required"/>
+                                    <xs:attribute name="reference" type="GUID" use="required"/>
+                                  </xs:complexType>
+                                </xs:element>
+                              </xs:sequence>
+                              <xs:attribute name="price" type="priceDecimalType" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Images" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Image" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Identifiers" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Identifier" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="identifier" type="xs:string" use="required"/>
+                              <xs:attribute name="identifierType" type="GUID" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                  <xs:attribute name="onMarketDate" type="xs:date" use="optional"/>
+                  <xs:attribute name="offMarketDate" type="xs:date" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ActiveCompositionGroup">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Molecules" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Molecule" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ActiveCompositions" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ActiveComposition" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Products" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Product" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                              <xs:documentation>May not have any if the ACG is in the data file only for backward-compatibility.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="GenericItems" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="GenericItem" minOccurs="0" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="ActiveComposition">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ActiveCompositionGroup">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Molecules" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Molecule" maxOccurs="unbounded">
+                            <xs:annotation>
+                              <xs:documentation>The text content of this element may contain free-text Information describing the strength/concentration/potency of the molecule. The molecule names are those marked with primaryName="True" in the List Molecule result.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                              <xs:attribute name="strength" type="nullableDecimalType" use="required"/>
+                              <xs:attribute name="maximumStrength" type="nullableDecimalType" use="required"/>
+                              <xs:attribute name="strengthUnit" type="xs:string" use="required"/>
+                              <xs:attribute name="perVolume" type="nullableDecimalType" use="required"/>
+                              <xs:attribute name="perVolumeUnit" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Products" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Product" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                              <xs:documentation>May not have any if the AC is in the data file only for backward-compatibility.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GGPI">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="SpecificItems" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="SpecificItem" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Products" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Product" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                              <xs:documentation>May not have any if the GGPI is in the data file only for backward-compatibility.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="CautionaryLabels" minOccurs="0" type="calsType"/>
+                  </xs:all>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                  <xs:attribute name="name" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="GenericItem">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="ActiveCompositionGroup">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="HL7Form">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SpecificItems" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="SpecificItem" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Products" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Product" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                              <xs:documentation>May not have any if the GI is in the data file only for backward-compatibility.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Molecules" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Molecule" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="CautionaryLabels" minOccurs="0" type="calsType"/>
+                  </xs:all>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                  <xs:attribute name="name" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="SpecificItem">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="GenericItem">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="HL7Form">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Products" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Product" minOccurs="0" maxOccurs="unbounded">
+                            <xs:annotation>
+                              <xs:documentation>May not have any if the SI is in the data file only for backward-compatibility.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="GGPIs" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="GGPI" maxOccurs="unbounded">
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Molecules" minOccurs="0">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="Molecule" maxOccurs="unbounded">
+                            <xs:annotation>
+                              <xs:documentation>The molecule names are those marked with primaryName="True" in the List Molecule result.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:attribute name="reference" type="GUID" use="required"/>
+                              <xs:attribute name="name" type="xs:string" use="required"/>
+                              <xs:attribute name="strength" type="nullableDecimalType" use="required"/>
+                              <xs:attribute name="maximumStrength" type="nullableDecimalType" use="required"/>
+                              <xs:attribute name="strengthUnit" type="xs:string" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="count" type="xs:integer" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="CautionaryLabels" minOccurs="0" type="calsType"/>
+                  </xs:all>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                  <xs:attribute name="name" type="xs:string" use="required"/>
+                  <xs:attribute name="perVolume" type="nullableDecimalType" use="required"/>
+                  <xs:attribute name="perVolumeUnit" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Content">
+          <xs:complexType>
+            <xs:choice>
+              <xs:choice maxOccurs="unbounded">
+                <xs:element name="Package">
+                  <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element name="Document">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:any/>
+                          </xs:sequence>
+                          <xs:attribute name="reference" type="GUID" use="required"/>
+                          <xs:attribute name="typeReference" type="GUID" use="required"/>
+                          <xs:attribute name="stylesheetReference" type="GUID" use="optional"/>
+                          <xs:attribute name="schemaReference" type="GUID" use="optional"/>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:choice>
+                    <xs:attribute name="reference" type="GUID" use="required"/>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="Product">
+                  <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element name="Document">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:any/>
+                          </xs:sequence>
+                          <xs:attribute name="reference" type="GUID" use="required"/>
+                          <xs:attribute name="typeReference" type="GUID" use="required"/>
+                          <xs:attribute name="stylesheetReference" type="GUID" use="optional"/>
+                          <xs:attribute name="schemaReference" type="GUID" use="optional"/>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:choice>
+                    <xs:attribute name="reference" type="GUID" use="required"/>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="ProductLine">
+                  <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element name="Document">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:any/>
+                          </xs:sequence>
+                          <xs:attribute name="reference" type="GUID" use="required"/>
+                          <xs:attribute name="typeReference" type="GUID" use="required"/>
+                          <xs:attribute name="stylesheetReference" type="GUID" use="optional"/>
+                          <xs:attribute name="schemaReference" type="GUID" use="optional"/>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:choice>
+                    <xs:attribute name="reference" type="GUID" use="required"/>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="GGPI">
+                  <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element name="Document">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:any/>
+                          </xs:sequence>
+                          <xs:attribute name="reference" type="GUID" use="required"/>
+                          <xs:attribute name="typeReference" type="GUID" use="required"/>
+                          <xs:attribute name="stylesheetReference" type="GUID" use="optional"/>
+                          <xs:attribute name="schemaReference" type="GUID" use="optional"/>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:choice>
+                    <xs:attribute name="reference" type="GUID" use="required"/>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="GenericItem">
+                  <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element name="Document">
+                        <xs:complexType>
+                          <xs:sequence>
+                            <xs:any/>
+                          </xs:sequence>
+                          <xs:attribute name="reference" type="GUID" use="required"/>
+                          <xs:attribute name="typeReference" type="GUID" use="required"/>
+                          <xs:attribute name="stylesheetReference" type="GUID" use="optional"/>
+                          <xs:attribute name="schemaReference" type="GUID" use="optional"/>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:choice>
+                    <xs:attribute name="reference" type="GUID" use="required"/>
+                  </xs:complexType>
+                </xs:element>
+              </xs:choice>
+              <xs:element name="Document">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:any/>
+                  </xs:sequence>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                  <xs:attribute name="typeReference" type="GUID" use="required"/>
+                  <xs:attribute name="stylesheetReference" type="GUID" use="optional"/>
+                  <xs:attribute name="schemaReference" type="GUID" use="optional"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Interaction">
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="ActiveComposition" type="interactionDrugType"/>
+              <xs:element name="ActiveCompositionGroup" type="interactionDrugType"/>
+              <xs:element name="Product" type="interactionDrugType"/>
+              <xs:element name="GGPI" type="interactionDrugType"/>
+              <xs:element name="GenericItem" type="interactionDrugType"/>
+              <xs:element name="SpecificItem" type="interactionDrugType"/>
+              <xs:element name="DoseCheck" type="doseCheckType"/>
+              <xs:element name="DuplicateIngredient" type="duplicateIngredientType"/>
+              <xs:element name="DuplicateTherapy" type="duplicateTherapyType"/>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Exception">
+          <xs:complexType/>
+        </xs:element>
+      </xs:choice>
+      <xs:attribute name="buildID"/>
+      <xs:attribute name="copyright"/>
+      <xs:attribute name="expiryDate"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="GUID">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}\}"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="nullableDecimalType">
+    <xs:union memberTypes="emptyStringType strengthDecimalType"/>
+  </xs:simpleType>
+  <xs:simpleType name="strengthDecimalType">
+    <xs:restriction base="xs:decimal">
+      <xs:totalDigits value="20"/>
+      <xs:fractionDigits value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="emptyStringType">
+    <xs:restriction base="xs:string">
+      <xs:length value="0"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="nullableQuantityDecimalType">
+    <xs:union memberTypes="emptyStringType quantityDecimalType"/>
+  </xs:simpleType>
+  <xs:simpleType name="quantityDecimalType">
+    <xs:restriction base="xs:decimal">
+      <xs:totalDigits value="20"/>
+      <xs:fractionDigits value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="priceDecimalType">
+    <xs:restriction base="xs:decimal">
+      <xs:totalDigits value="10"/>
+      <xs:fractionDigits value="2"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="imagesType">
+    <xs:sequence>
+      <xs:element name="Image" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Even if the request asks for Images, there may not be any, so this element could occur 0 times.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attribute name="reference" type="GUID" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="listElementType">
+    <xs:attribute name="reference" type="GUID" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="listElementCodeType">
+    <xs:attribute name="code" type="xs:string" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="interactionDrugType">
+    <xs:sequence>
+      <xs:element name="Route" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Appears if there is an interaction for this route, or if this route was specified for its "parent" XML element in the request.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="ActiveComposition" type="interactingDrugType"/>
+              <xs:element name="ActiveCompositionGroup" type="interactingDrugType"/>
+              <xs:element name="Product" type="interactingDrugType"/>
+              <xs:element name="GGPI" type="interactingDrugType"/>
+              <xs:element name="GenericItem" type="interactingDrugType"/>
+              <xs:element name="SpecificItem" type="interactingDrugType"/>
+            </xs:choice>
+            <xs:element name="HealthIssue" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="ClassInteraction" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                      <xs:documentation>Drug-Health Issue interaction details remain essentially the same as version 4.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="PrescribingInteractionClass">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="PrescribingMolecule">
+                                <xs:complexType>
+                                  <xs:attribute name="name" type="xs:string" use="required"/>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="name" type="xs:string" use="required"/>
+                            <xs:attribute name="reference" type="GUID" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Severity">
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="xs:string">
+                                <xs:attribute name="name" type="xs:string" use="required"/>
+                                <xs:attribute name="ranking" type="xs:positiveInteger" use="required"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Likelihood"  minOccurs="0">
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="xs:string">
+                                <xs:attribute name="name" type="xs:string" use="required"/>
+                                <xs:attribute name="ranking" type="xs:positiveInteger" use="required"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Interaction">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="Abbreviated" type="xs:string"/>
+                              <xs:element name="Full" type="xs:string">
+                                <xs:annotation>
+                                  <xs:documentation>At the moment, this is always empty and the only available description is in the &lt;Abbreviated&gt; element.</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="References" type="referencesType"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="reference" type="GUID" use="required"/>
+                <xs:attribute name="name" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="HealthIssueCode" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="ClassInteraction" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                      <xs:documentation>Drug-Health Issue interaction details remain essentially the same as version 4.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="PrescribingInteractionClass">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="PrescribingMolecule">
+                                <xs:complexType>
+                                  <xs:attribute name="name" type="xs:string" use="required"/>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="name" type="xs:string" use="required"/>
+                            <xs:attribute name="reference" type="GUID" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Severity">
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="xs:string">
+                                <xs:attribute name="name" type="xs:string" use="required"/>
+                                <xs:attribute name="ranking" type="xs:positiveInteger" use="required"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Likelihood"  minOccurs="0">
+                          <xs:complexType>
+                            <xs:simpleContent>
+                              <xs:extension base="xs:string">
+                                <xs:attribute name="name" type="xs:string" use="required"/>
+                                <xs:attribute name="ranking" type="xs:positiveInteger" use="required"/>
+                              </xs:extension>
+                            </xs:simpleContent>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="Interaction">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="Abbreviated" type="xs:string"/>
+                              <xs:element name="Full" type="xs:string">
+                                <xs:annotation>
+                                  <xs:documentation>At the moment, this is always empty and the only available description is in the &lt;Abbreviated&gt; element.</xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="References" type="referencesType"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="code" type="xs:string" use="required"/>
+                <xs:attribute name="name" type="xs:string" use="required"/>
+                <xs:attribute name="codeType" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="WOCBA" minOccurs="0" type="wocbaType"/>
+            <xs:element name="Pregnancy" minOccurs="0" type="pregnancyType"/>
+            <xs:element name="Lactation" minOccurs="0" type="lactationType"/>
+          </xs:choice>
+          <xs:attribute name="reference" type="GUID" use="required"/>
+          <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Allergy" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element name="SubstanceClass">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="PrescribingMolecule">
+                    <xs:complexType>
+                      <xs:attribute name="reference" type="GUID" use="required"/>
+                      <xs:attribute name="name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="AllergyMolecule" minOccurs="0">
+                    <xs:complexType>
+                      <xs:attribute name="reference" use="required"/>
+                      <xs:attribute name="name" use="required"/>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="CrossSensitive" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="SubstanceClass">
+                          <xs:complexType>
+                            <xs:choice minOccurs="0">
+                              <xs:element name="Molecule">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="ActiveComposition">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="ActiveCompositionGroup">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="Product">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="GGPI">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="GenericItem">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                              <xs:element name="SpecificItem">
+                                <xs:complexType>
+                                  <xs:attribute name="referenee" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:choice>
+                            <xs:attribute name="reference" type="GUID" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="reference" type="GUID" use="required"/>
+                <xs:attribute name="name" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="Molecule">
+              <xs:complexType>
+                <xs:choice>
+                  <xs:element name="SubstanceClass" minOccurs="0">
+                    <xs:annotation>
+                      <xs:documentation>This element does not appear if the allergy is due to a "molecule self-check"</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="PrescribingMolecule">
+                          <xs:complexType>
+                            <xs:attribute name="reference" type="GUID" use="required"/>
+                            <xs:attribute name="name" type="xs:string" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="CrossSensitive" minOccurs="0">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="SubstanceClass">
+                                <xs:complexType>
+                                  <xs:choice minOccurs="0">
+                                    <xs:element name="Molecule">
+                                      <xs:complexType>
+                                        <xs:attribute name="reference" type="GUID" use="required"/>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="ActiveComposition">
+                                      <xs:complexType>
+                                        <xs:attribute name="reference" type="GUID" use="required"/>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="ActiveCompositionGroup">
+                                      <xs:complexType>
+                                        <xs:attribute name="reference" type="GUID" use="required"/>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="Product">
+                                      <xs:complexType>
+                                        <xs:attribute name="reference" type="GUID" use="required"/>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="GGPI">
+                                      <xs:complexType>
+                                        <xs:attribute name="reference" type="GUID" use="required"/>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="GenericItem">
+                                      <xs:complexType>
+                                        <xs:attribute name="reference" type="GUID" use="required"/>
+                                      </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="SpecificItem">
+                                      <xs:complexType>
+                                        <xs:attribute name="reference" type="GUID" use="required"/>
+                                      </xs:complexType>
+                                    </xs:element>
+                                  </xs:choice>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                      <xs:attribute name="reference" type="GUID" use="required"/>
+                      <xs:attribute name="name" type="xs:string" use="required"/>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="CrossSensitive">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="PrescribingSubstanceClass">
+                          <xs:complexType>
+                            <xs:sequence>
+                              <xs:element name="PrescribingMolecule">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                  <xs:attribute name="name" type="xs:string" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="reference" type="GUID" use="required"/>
+                            <xs:attribute name="name" type="xs:string"/>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="AllergySubstanceClass">
+                          <xs:complexType>
+                            <xs:sequence minOccurs="0">
+                              <xs:element name="AllergyMolecule">
+                                <xs:complexType>
+                                  <xs:attribute name="reference" type="GUID" use="required"/>
+                                  <xs:attribute name="name" type="xs:string" use="required"/>
+                                </xs:complexType>
+                              </xs:element>
+                            </xs:sequence>
+                            <xs:attribute name="reference" type="GUID" use="required"/>
+                            <xs:attribute name="name" type="xs:string"/>
+                          </xs:complexType>
+                        </xs:element>
+                        <xs:element name="References" type="referencesType" minOccurs="0"/>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:choice>
+                <xs:attribute name="reference" type="GUID" use="required"/>
+                <xs:attribute name="name" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="ActiveComposition" type="allergyDrugType"/>
+            <xs:element name="ActiveCompositionGroup" type="allergyDrugType"/>
+            <xs:element name="Product" type="allergyDrugType"/>
+            <xs:element name="GGPI" type="allergyDrugType"/>
+            <xs:element name="GenericItem" type="allergyDrugType"/>
+            <xs:element name="SpecificItem" type="allergyDrugType"/>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CautionaryLabels" minOccurs="0" type="calsType"/>
+    </xs:sequence>
+    <xs:attribute name="reference" type="GUID" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="offMarket" type="xs:boolean" use="optional"/>
+    <!-- For products -->
+  </xs:complexType>
+  <xs:complexType name="allergyDrugType">
+    <xs:choice>
+      <xs:element name="Molecule">
+        <xs:complexType>
+          <xs:attribute name="reference" type="GUID" use="required"/>
+          <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:choice>
+        <xs:element name="SubstanceClass">
+          <xs:annotation>
+            <xs:documentation>This element does not appear if the allergy is due to a "molecule self-check"</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PrescribingMolecule">
+                <xs:complexType>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                  <xs:attribute name="name" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="AllergyMolecule">
+                <xs:complexType>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                  <xs:attribute name="name" type="xs:string" use="required"/>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="reference" type="GUID" use="required"/>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="CrossSensitive">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PrescribingSubstanceClass">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="PrescribingMolecule">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="AllergySubstanceClass">
+                <xs:complexType>
+                  <xs:sequence minOccurs="0">
+                    <xs:element name="AllergyMolecule">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                        <xs:attribute name="name" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="reference" type="GUID" use="required"/>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="References" type="referencesType"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:choice>
+    <xs:attribute name="reference" type="GUID" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="interactingDrugType">
+    <xs:sequence>
+      <xs:element name="Route" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>Appears if there is an interaction for this route, or if this route was specified for its "parent" XML element in the request.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ClassInteraction" minOccurs="0" maxOccurs="unbounded">
+              <xs:annotation>
+                <xs:documentation>Drug-Drug interaction details remain the same as version 4.</xs:documentation>
+              </xs:annotation>
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="PrescribingInteractionClass">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="PrescribingMolecule">
+                          <xs:complexType>
+                            <xs:attribute name="name" type="xs:string" use="required"/>
+                            <xs:attribute name="reference" type="GUID" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                      <xs:attribute name="name" type="xs:string" use="required"/>
+                      <xs:attribute name="reference" type="GUID" use="required"/>
+                      <xs:attribute name="description" type="xs:string"/>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="InteractionClass">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Molecule">
+                          <xs:complexType>
+                            <xs:attribute name="name" type="xs:string" use="required"/>
+                            <xs:attribute name="reference" type="GUID" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                      <xs:attribute name="name" type="xs:string" use="required"/>
+                      <xs:attribute name="reference" type="GUID" use="required"/>
+                      <xs:attribute name="description" type="xs:string" use="optional"/>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="Severity">
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute name="name" type="xs:string" use="required"/>
+                          <xs:attribute name="ranking" type="xs:positiveInteger" use="required"/>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="Likelihood" minOccurs="0">
+                    <xs:annotation>
+                      <xs:documentation>This element is obsolete. Use Documentation element instead. Future version will not support this element.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute name="name" type="xs:string" use="required"/>
+                          <xs:attribute name="ranking" type="xs:positiveInteger" use="required"/>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="Documentation">
+                    <xs:annotation>
+                      <xs:documentation>This element has the same value as Likelihood element.</xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute name="name" type="xs:string" use="required"/>
+                          <xs:attribute name="ranking" type="xs:positiveInteger" use="required"/>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="Observation">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Abbreviated" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element is obsolete. Use Professional element instead. Future version will not support this element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Professional" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element has the same value as Abbreviated element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Full" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element is obsolete. Use Consumer element instead. Future version will not support this element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Consumer" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element has the same value as Full element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="Interaction">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Abbreviated" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element is obsolete. Use Professional element instead. Future version will not support this element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Professional" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element has the same value as Abbreviated.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Full" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>At the moment, this is always empty and the only available description is in the &lt;Abbreviated&gt; element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Consumer" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element has the same value as Full element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="Precaution" minOccurs="0" maxOccurs="unbounded">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Abbreviated" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element is obsolete. Use Professional element instead. Future version will not support this element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Professional" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element has the same value as Abbreviated.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Full" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element is obsolete. Use Consumer element instead. Future version will not support this element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                        <xs:element name="Consumer" type="xs:string" minOccurs="0">
+                          <xs:annotation>
+                            <xs:documentation>This element has the same value as Full element.</xs:documentation>
+                          </xs:annotation>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="References" type="referencesType"  minOccurs="0"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="reference" type="GUID" use="required"/>
+          <xs:attribute name="name" type="xs:string" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="reference" type="GUID" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="Mirror" type="xs:boolean" use="optional" fixed="true"/>
+  </xs:complexType>
+  <xs:complexType name="removableListElementType">
+    <xs:complexContent>
+      <xs:extension base="listElementType">
+        <xs:attribute name="obsolete" type="xs:boolean" use="optional" fixed="true"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="referencesType">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="BookReference">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Author" type="xs:string"/>
+            <xs:element name="ChapterTitle" type="xs:string"/>
+            <xs:element name="Title" type="xs:string"/>
+            <xs:element name="Edition" type="xs:string"/>
+            <xs:element name="Volume" type="xs:string"/>
+            <xs:element name="PublishLoc" type="xs:string"/>
+            <xs:element name="Publisher" type="xs:string"/>
+            <xs:element name="Year" type="xs:string"/>
+            <xs:element name="Page" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="JournalReference">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Author"/>
+            <xs:element name="Title"/>
+            <xs:element name="Journal" type="xs:string"/>
+            <xs:element name="Year"/>
+            <xs:element name="Volume"/>
+            <xs:element name="Part" type="xs:string"/>
+            <xs:element name="Page"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="WebReference">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Author" type="xs:string"/>
+            <xs:element name="Title" type="xs:string"/>
+            <xs:element name="Site" type="xs:string"/>
+            <xs:element name="URL" type="xs:string"/>
+            <xs:element name="Date" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ElectronicReference">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Title"/>
+            <xs:element name="RefTitle" type="xs:string"/>
+            <xs:element name="SystemName" type="xs:string"/>
+            <xs:element name="SystemAuthor" type="xs:string"/>
+            <xs:element name="SystemManf" type="xs:string"/>
+            <xs:element name="SystemManfLoc" type="xs:string"/>
+            <xs:element name="SystemManfCountry" type="xs:string"/>
+            <xs:element name="URL" type="xs:string"/>
+            <xs:element name="Date" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PackageInsertReference">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="DrugName" type="xs:string"/>
+            <xs:element name="CompanyLoc" type="xs:string"/>
+            <xs:element name="CompanyName" type="xs:string"/>
+            <xs:element name="Year" type="xs:string"/>
+            <xs:element name="URL" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Website">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Title" type="xs:string" minOccurs="0"/>
+            <xs:element name="ReferenceDisplay" type="xs:string" minOccurs="0"/>
+            <xs:element name="URL" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Journal">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Title" type="xs:string" minOccurs="0"/>
+            <xs:element name="ReferenceDisplay" type="xs:string" minOccurs="0"/>
+            <xs:element name="URL" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="duplicateTherapyType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="Warning" minOccurs="0" maxOccurs="3">
+        <xs:complexType>
+          <xs:sequence maxOccurs="unbounded">
+            <xs:element name="Duplicate">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:choice maxOccurs="unbounded">
+                    <xs:element name="ActiveComposition">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ActiveCompositionGroup">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Product">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="GGPI">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SpecificItem">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="GenericItem">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:element name="RouteOfAdministration" maxOccurs="2">
+                    <xs:complexType>
+                      <xs:attribute name="reference" type="GUID" use="required"/>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="ATCCode" type="xs:string" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="Level">
+            <xs:simpleType>
+              <xs:restriction base="xs:integer">
+                <xs:enumeration value="1"/>
+                <xs:enumeration value="2"/>
+                <xs:enumeration value="3"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="pregnancyType">
+    <xs:sequence>
+      <xs:element name="InteractionClass" minOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Molecule">
+              <xs:complexType>
+                <xs:attribute name="name" use="required"/>
+                <xs:attribute name="reference" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="name" use="required"/>
+          <xs:attribute name="reference" use="required"/>
+          <xs:attribute name="description" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Category" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Comment"/>
+          </xs:sequence>
+          <xs:attribute name="name" use="required"/>
+          <xs:attribute name="Trimester" use="required"/>
+          <xs:attribute name="Source" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="wocbaType">
+    <xs:sequence>
+      <xs:element name="InteractionClass" minOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Molecule">
+              <xs:complexType>
+                <xs:attribute name="name" use="required"/>
+                <xs:attribute name="reference" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="name" use="required"/>
+          <xs:attribute name="reference" use="required"/>
+          <xs:attribute name="description" use="optional"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Category" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Comment">
+              </xs:element>
+          </xs:sequence>
+          <xs:attribute name="name" use="required"/>
+          <xs:attribute name="Source" use="required"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="lactationType">
+    <xs:sequence>
+      <xs:element name="InteractionClass">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Molecule">
+              <xs:complexType>
+                <xs:attribute name="name" use="required"/>
+                <xs:attribute name="reference" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="name" use="required"/>
+          <xs:attribute name="reference" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Severity">
+        <xs:complexType mixed="true">
+          <xs:attribute name="name" use="required"/>
+          <xs:attribute name="ranking" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Comment">
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="calsType">
+    <xs:sequence>
+      <xs:element name="CautionaryLabel" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Warning" minOccurs="1"/>
+            <xs:element name="Description" minOccurs="1"/>
+            <xs:element name="FoodClass" minOccurs="0">
+              <xs:complexType>
+                <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                    <xs:attribute name="reference" type="GUID" use="optional"/>
+                  </xs:extension>
+                </xs:simpleContent>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="References" minOccurs="0" type="calReferencesType"/>
+          </xs:sequence>
+          <xs:attribute name="type" type="xs:string" use="optional"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="count" type="xs:integer" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="calReferencesType">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="Website">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Title" type="xs:string" minOccurs="0"/>
+            <xs:element name="ReferenceDisplay" type="xs:string" minOccurs="0"/>
+            <xs:element name="URL" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Journal">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Title" type="xs:string" minOccurs="0"/>
+            <xs:element name="ReferenceDisplay" type="xs:string" minOccurs="0"/>
+            <xs:element name="URL" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="doseCheckType">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="ActiveCompositionGroup" type="doseCheckElementType"/>
+      <xs:element name="ActiveComposition" type="doseCheckElementType"/>
+      <xs:element name="Product" type="doseCheckElementType"/>
+      <xs:element name="GGPI" type="doseCheckElementType"/>
+      <xs:element name="GenericItem" type="doseCheckElementType"/>
+      <xs:element name="SpecificItem" type="doseCheckElementType"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="doseCheckElementType">
+    <xs:choice maxOccurs="unbounded">
+      <xs:element name="RouteOfAdministration">
+        <xs:complexType>
+          <xs:attribute name="reference" use="required"/>
+          <xs:attribute name="name" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Indication" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="reference" use="required"/>
+          <xs:attribute name="name" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Form" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="reference" use="required"/>
+          <xs:attribute name="name" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Profile" minOccurs="0">
+        <xs:complexType>
+          <xs:attribute name="name" use="required"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Warnings">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Warning">
+              <xs:complexType mixed="true">
+                <xs:choice>
+                  <xs:sequence>
+                    <xs:element name="Message"/>
+                    <xs:element name="Limit">
+                      <xs:complexType>
+                        <xs:choice>
+                          <xs:element name="Frequency">
+                            <xs:complexType>
+                              <xs:attribute name="name" use="required"/>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="Dose">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element name="Value"/>
+                                <xs:element name="Unit"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="Duration">
+                            <xs:complexType>
+                              <xs:choice>
+                                <xs:element name="Minute"/>
+                                <xs:element name="Hour"/>
+                                <xs:element name="Day"/>
+                                <xs:element name="Week"/>
+                                <xs:element name="Month"/>
+                                <xs:element name="Year"/>
+                              </xs:choice>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:choice>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:element name="ValidRoutes" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence maxOccurs="unbounded">
+                        <xs:element name="RouteOfAdministration">
+                          <xs:complexType>
+                            <xs:attribute name="reference" use="required"/>
+                            <xs:attribute name="name" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="ValidForms" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Form">
+                          <xs:complexType>
+                            <xs:attribute name="reference" use="required"/>
+                            <xs:attribute name="name" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element name="ValidIndications" minOccurs="0">
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Indication">
+                          <xs:complexType>
+                            <xs:attribute name="reference" use="required"/>
+                            <xs:attribute name="name" use="required"/>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:choice>
+                <xs:attribute name="id" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="reference" use="required"/>
+    <xs:attribute name="name" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="duplicateIngredientType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="Warning" minOccurs="0" maxOccurs="3">
+        <xs:complexType>
+          <xs:sequence maxOccurs="unbounded">
+            <xs:element name="Molecule">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:choice maxOccurs="unbounded">
+                    <xs:element name="ActiveComposition">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ActiveCompositionGroup">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Product">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="GGPI">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SpecificItem">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="GenericItem">
+                      <xs:complexType>
+                        <xs:attribute name="reference" type="GUID" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:element name="RouteOfAdministration" maxOccurs="2">
+                    <xs:complexType>
+                      <xs:sequence minOccurs="0">
+                        <xs:element name="Note" minOccurs="0"/>
+                      </xs:sequence>
+                      <xs:attribute name="reference" type="GUID" use="required"/>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+                <xs:attribute name="reference" type="xs:string" use="required"/>
+                <xs:attribute name="name" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="Level">
+            <xs:simpleType>
+              <xs:restriction base="xs:integer">
+                <xs:enumeration value="1"/>
+                <xs:enumeration value="2"/>
+                <xs:enumeration value="3"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
