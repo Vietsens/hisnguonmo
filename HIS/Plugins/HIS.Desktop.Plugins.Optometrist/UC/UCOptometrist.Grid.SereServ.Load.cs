@@ -1,9 +1,5 @@
 ﻿using DevExpress.Data;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Plugins.Library.EmrGenerate;
 using HIS.Desktop.Plugins.Optometrist.ADO;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
@@ -18,31 +14,6 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
 {
     public partial class UCOptometrist : UserControlBase
     {
-        private HIS_SERVICE_REQ GetServiceReq()
-        {
-            try
-            {
-                var currentsereServ = GetSelectedSereServ();
-                if (currentsereServ != null)
-                {
-                    CommonParam param = new CommonParam();
-                    MOS.Filter.HisServiceReqFilter filter = new MOS.Filter.HisServiceReqFilter();
-                    filter.ID = currentsereServ.SERVICE_REQ_ID;
-                    filter.IS_ACTIVE = 1;
-                    var apiResult = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>
-                        (ApiConsumer.HisRequestUriStore.HIS_SERVICE_REQ_GET_, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
-                    if (apiResult != null && apiResult.Count > 0)
-                    {
-                        return apiResult.First();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-            return null;
-        }
         private void LoadSereServGrid()
         {
             try
@@ -77,7 +48,10 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                             }
                         }
                     }
-                    apiResult = apiResult.OrderByDescending(o => o.VISION_TEST_TIME).ToList();
+                    apiResult = apiResult.Where(w => (w.HIS_SERE_SERV_VIEX != null && w.HIS_SERE_SERV_VIEX.Count > 0)
+                    || w.ID == currentsereServ.ID
+                    ).OrderBy(o => o.ID == currentsereServ.ID && (o.HIS_SERE_SERV_VIEX == null || o.HIS_SERE_SERV_VIEX.Count == 0) ? 1 : 99)
+                    .OrderByDescending(o => o.VISION_TEST_TIME).ToList();
                     gridControlSereServ.DataSource = apiResult;
                     gridControlSereServ.RefreshDataSource();
 
@@ -112,10 +86,9 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
 
                 CommonParam param = new CommonParam();
                 MOS.Filter.HisSereServViexFilter filter = new MOS.Filter.HisSereServViexFilter();
+                filter.IS_ACTIVE = 1;
                 filter.TDL_TREATMENT_ID = sereServ.TDL_TREATMENT_ID;
                 filter.SERE_SERV_ID = sereServ.ID;
-                filter.IS_ACTIVE = 1;
-
                 var apiResult = new BackendAdapter(param).Get<List<HIS_SERE_SERV_VIEX>>
                     (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GET, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
 

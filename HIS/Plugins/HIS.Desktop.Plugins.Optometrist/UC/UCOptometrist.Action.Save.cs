@@ -65,8 +65,6 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     {
                         btnPrint_Click(null, null);
                     }
-
-                    btnSave.Enabled = false;
                 }
 
                 #region Show message
