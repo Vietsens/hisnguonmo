@@ -1,0 +1,29 @@
+.container1 {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 100%;
+  padding: 5px 10px; /* reduced padding for tighter height */
+  height: 70px; /* or you can adjust if needed */
+  overflow: hidden; /* prevent any overflow or scrollbars */
+  box-sizing: border-box; /* very important to include padding inside */
+}
+
+.container1 img {
+  width: 300px; /* developer can control */
+  height: 70px; /* developer can control */
+  object-fit: contain; /* important: keeps image aspect ratio nicely */
+  flex-shrink: 0; /* don't let logo shrink */
+}
+
+.container1 span {
+  color: black;
+  font-size: 12px;
+  text-align: right;
+  flex: 1; /* take the remaining space */
+  padding-left: 10px; /* some space after logo */
+  overflow: hidden; /* just in case text overflows */
+  white-space: nowrap; /* keep it on one line */
+  text-overflow: ellipsis; /* show ... if text is too long */
+}
