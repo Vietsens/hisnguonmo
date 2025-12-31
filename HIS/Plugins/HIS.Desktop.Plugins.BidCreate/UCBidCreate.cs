@@ -843,6 +843,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                     this.medicineType.Type = Base.GlobalConfig.THUOC;
                     DtExpiredDate.Enabled = true;
                     spinImpMoreRatio.Enabled = true;
+
+                    ValidDosageForm();
                     SetValueForAdd();
                 }
             }
@@ -1281,7 +1283,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     bool isValid = !string.IsNullOrEmpty(this.medicineType.DOSAGE_FORM);
                     if (this.medicineType.MEDICINE_LINE_ID.Value != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
                     {
-                        layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        
                         ValidDosageForm();
                     }
 
@@ -1289,7 +1291,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
 
                         dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
-                        layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Black;
+                       
                     }
                     if (!string.IsNullOrEmpty(this.medicineType.DOSAGE_FORM))
                     {

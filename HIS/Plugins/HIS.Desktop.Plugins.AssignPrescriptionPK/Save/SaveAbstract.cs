@@ -24,6 +24,7 @@ using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Resources;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
+using HIS.UC.TreatmentFinish;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.SDO;
@@ -1570,7 +1571,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 
             return numOfDays;
         }
-
+         
         protected bool CheckValid()
         {
             bool valid = true;
@@ -1595,7 +1596,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 
             return valid;
         }
-
+       
         private bool CheckTreatmentFinish()
         {
             bool result = true;
@@ -1604,63 +1605,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 List<string> paramMessageErrorOther = new List<string>(), paramMessageErrorEmpty = new List<string>();
                 
                
-                if (this.IsAutoTreatmentEnd && frmAssignPrescription.treatmentFinishProcessor != null)
-                {
-                    var treatUC = frmAssignPrescription.treatmentFinishProcessor.GetDataOutput(frmAssignPrescription.ucTreatmentFinish);
-                    if (treatUC != null)
-                    {
-                       
-                        if (!string.IsNullOrEmpty(treatUC.ClinicalNote) && treatUC.ClinicalNote.Length > 4000)
-                        {
-                            this.Param.Messages.Add(ResourceMessage.BanNhapQuaKyTuChoTruongDauHieuLamSang);
-                            return false;
-                        }
-                        
-                    
-                        if (HisConfigCFG.IsCheckValueMaxlengthOption == "1" || HisConfigCFG.IsCheckValueMaxlengthOption == "2")
-                        {
-                            bool hasOverLength = false;
-                            string message = "";
-                            
-                            if ((!string.IsNullOrEmpty(treatUC.ClinicalNote) && treatUC.ClinicalNote.Length > 4000) ||
-                                (!string.IsNullOrEmpty(treatUC.SubclinicalResult) && treatUC.SubclinicalResult.Length > 4000))
-                            {
-                                hasOverLength = true;
-                                message = ResourceMessage.DuLieuTruongQuaTrinhBenhLyTomTatKetQuaVuotQuaKyTu;
-                            }
-                            
-                            if (hasOverLength)
-                            {
-                                if (HisConfigCFG.IsCheckValueMaxlengthOption == "1")
-                                {
-                                   
-                                    var dialogResult = DevExpress.XtraEditors.XtraMessageBox.Show(
-                                        message + ". " + ResourceMessage.BanCoMuonTiepTucKhong,
-                                        "Cảnh báo",
-                                        System.Windows.Forms.MessageBoxButtons.YesNo,
-                                        System.Windows.Forms.MessageBoxIcon.Warning);
-                                    
-                                    if (dialogResult == System.Windows.Forms.DialogResult.Yes)
-                                    {
-                                       
-                                        return false;
-                                    }
-                                    
-                                }
-                                else if (HisConfigCFG.IsCheckValueMaxlengthOption == "2")
-                                {
-                                  
-                                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                                        message,
-                                        "Thông báo",
-                                        System.Windows.Forms.MessageBoxButtons.OK,
-                                        System.Windows.Forms.MessageBoxIcon.Information);
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
+               
                 
                 if (frmAssignPrescription.treatmentFinishProcessor != null && !frmAssignPrescription.treatmentFinishProcessor.GetValidateWithMessage(frmAssignPrescription.ucTreatmentFinish, paramMessageErrorEmpty, paramMessageErrorOther))
                 {

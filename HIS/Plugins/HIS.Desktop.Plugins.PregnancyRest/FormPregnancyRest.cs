@@ -266,7 +266,33 @@ namespace HIS.Desktop.Plugins.PregnancyRest
 
                     rs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_DOCUMENT_BOOK>>("api/HisDocumentBook/GetView", ApiConsumers.MosConsumer, dBookFilter, null);
 
-                    long year = Convert.ToInt64((this.DtRestTimeTo.EditValue != null && this.DtRestTimeTo.DateTime != DateTime.MinValue) ? this.DtRestTimeTo.DateTime.ToString("yyyy") : DateTime.Now.ToString("yyyy"));
+                    //long year = Convert.ToInt64((this.DtRestTimeTo.EditValue != null && this.DtRestTimeTo.DateTime != DateTime.MinValue) ? this.DtRestTimeTo.DateTime.ToString("yyyy") : DateTime.Now.ToString("yyyy"));
+                    long year = DateTime.Now.Year;
+
+                   
+                    try
+                    {
+                        if (this.hisTreatment != null && this.hisTreatment.OUT_TIME != null)
+                        {
+                            DateTime? outTimeDt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.hisTreatment.OUT_TIME.Value);
+                            if (outTimeDt.HasValue && outTimeDt.Value != DateTime.MinValue)
+                            {
+                                year = outTimeDt.Value.Year;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+
+                    // fallback nếu chưa có OUT_TIME (vd: chưa ra viện)
+                    if (year <= 0)
+                    {
+                        year = (this.DtRestTimeTo.EditValue != null && this.DtRestTimeTo.DateTime != DateTime.MinValue)
+                            ? this.DtRestTimeTo.DateTime.Year
+                            : DateTime.Now.Year;
+                    }
                     LogSystem.Debug("LoadDocumentBook.Year: " + year);
 
                     long typeId = CboTreatmentEndTypExt.EditValue != null ? Inventec.Common.TypeConvert.Parse.ToInt64(CboTreatmentEndTypExt.EditValue.ToString()) : -99;
