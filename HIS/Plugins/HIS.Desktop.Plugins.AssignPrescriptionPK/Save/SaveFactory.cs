@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
-{
+{ 
     class SaveFactory
     {
         internal static ISave MakeISave(CommonParam param,
