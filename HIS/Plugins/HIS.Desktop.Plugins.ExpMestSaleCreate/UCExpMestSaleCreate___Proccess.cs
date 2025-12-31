@@ -159,6 +159,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 {
                     isTwoPatient = false;
                     uriRequest = "api/HisExpMest/SaleUpdateListSdo";
+                    txtPrescriptionCode_KeyDown(txtPrescriptionCode, new KeyEventArgs(Keys.Enter));
+
+                    //ProcessorSearchPatient();
                     InitDataToSaleCreate(ref saleSDO);
                 }
 

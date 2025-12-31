@@ -4407,6 +4407,28 @@ namespace HIS.Desktop.Plugins.BidUpdate
             }
         }
 
+        private void txtActiveBhyt_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtActiveBhyt.EditValue != null && txtActiveBhyt.EditValue != "")
+                {
+                    ValidCboDosageForm();
+                }
+                else
+                {
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    ValidCboDosageForm();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
         private void txtMaDT_KeyDown(object sender, KeyEventArgs e)
         {
             try
