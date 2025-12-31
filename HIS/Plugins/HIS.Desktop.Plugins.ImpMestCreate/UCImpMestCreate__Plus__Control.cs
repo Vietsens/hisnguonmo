@@ -132,7 +132,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 messError.Add(lciPackingJoinBid.Text.Trim().Trim(':'));
                             }
-                            if (String.IsNullOrWhiteSpace(this.cboDosageForm.Text))
+
+                            if (!String.IsNullOrEmpty(this.currrentServiceAdo.activeIngrBhytCode) && String.IsNullOrWhiteSpace(this.cboDosageForm.Text))
                             {
                                 messError.Add(lciDosageForm.Text.Trim().Trim(':'));
                             }
@@ -153,9 +154,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             }
                             if (String.IsNullOrWhiteSpace(this.txtActiveIngrBhytName.Text))
                             {
-
                                 messError.Add(lciActiveIngrBhytName.Text.Trim().Trim(':'));
-
                             }
                         }
 
