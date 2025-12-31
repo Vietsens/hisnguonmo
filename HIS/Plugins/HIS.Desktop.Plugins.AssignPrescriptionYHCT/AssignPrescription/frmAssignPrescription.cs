@@ -4316,15 +4316,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                selectedDates.Clear();
                 if (IsManyDay)
                 {
+                    selectedDates.Clear();
+                    if (this.USE_TIME != null && this.USE_TIME.Count > 0)
+                    {
+                        foreach (var useTime in this.USE_TIME)
+                        {
+                            var dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(useTime);
+                            if (dt.HasValue && dt.Value != DateTime.MinValue)
+                            {
+                                var d = dt.Value.Date;
+                                if (!selectedDates.Contains(d)) selectedDates.Add(d);
+                            }
+                        }
+                    }
+
                     Point txtDuTruTimeLocationOnScreen = txtDuTruTime.PointToScreen(new Point(0, txtDuTruTime.Height));
                     popupControlContainer1.ShowPopup(txtDuTruTimeLocationOnScreen);
-                    foreach (var date in selectedDates)
-                    {
-                        calendarControlDutru.DateTime = date;
-                    }
+                    if (selectedDates.Count > 0)
+                        calendarControlDutru.DateTime = selectedDates.OrderByDescending(o => o).First();
                 }
                 else
                 {
@@ -4348,12 +4359,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 PopupContainerBarControl control = popupControlContainer1.Parent as PopupContainerBarControl;
                 control.ClosePopup();
-                setDefaultDutruTime();
                 if (calendarControlDutru.SelectedRanges.Count == 0)
                 {
                     
                     return;
                 }
+                selectedDates.Clear();
                 foreach (DateRange item in calendarControlDutru.SelectedRanges)
                 {
                     if (item != null)
@@ -4411,56 +4422,107 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
+        //private void txtDuTruTime_Validated(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+
+        //        if (!string.IsNullOrEmpty(txtDuTruTime.Text))
+        //        {
+        //            if (this.USE_TIME != null) this.USE_TIME.Clear();
+        //            if (this.selectedDates != null) this.selectedDates.Clear();
+        //            if (IsManyDay)
+        //            {
+        //                var date = txtDuTruTime.Text.Trim().Split(';');
+        //                foreach (var _date in date)
+        //                {
+        //                    DateTime selectedDate;
+        //                    bool isValidDate = DateTime.TryParse(_date.ToString(), out selectedDate);
+        //                    if (isValidDate && !selectedDates.Contains(selectedDate)) selectedDates.Add(selectedDate);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if(cboDuTruTime.DateTime != null && cboDuTruTime.DateTime != DateTime.MaxValue && cboDuTruTime.DateTime != DateTime.MinValue)
+        //                {
+        //                    DateTime selectedDate = cboDuTruTime.DateTime;
+        //                    if (!selectedDates.Contains(selectedDate)) selectedDates.Add(selectedDate);
+        //                    txtDuTruTime.Text = selectedDate.ToString("dd/MM/yyyy");
+        //                }
+        //                else
+        //                {
+        //                    txtDuTruTime.Text = "";
+        //                }
+
+        //            }
+
+        //            if (!string.IsNullOrEmpty(txtDuTruTime.Text)) UpdateSelectedDatesText();
+        //        }
+        //        else
+        //        {
+        //            setDefaultDutruTime();
+
+
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
         private void txtDuTruTime_Validated(object sender, EventArgs e)
         {
             try
             {
-
-                if (!string.IsNullOrEmpty(txtDuTruTime.Text))
+                if (string.IsNullOrEmpty(txtDuTruTime.Text))
                 {
-                    if (this.USE_TIME != null) this.USE_TIME.Clear();
-                    if (this.selectedDates != null) this.selectedDates.Clear();
-                    if (IsManyDay)
+                    setDefaultDutruTime();
+                    return;
+                }
+
+                if (IsManyDay)
+                {
+                    // Multi-day: txt chỉ dd/MM => không parse. Dữ liệu thật nằm trong USE_TIME.
+                    // Chỉ cần đồng bộ lại hiển thị theo selectedDates/USE_TIME (nếu cần).
+                    if (this.USE_TIME != null && this.USE_TIME.Count > 0)
                     {
-                        var date = txtDuTruTime.Text.Trim().Split(';');
-                        foreach (var _date in date)
+                        selectedDates.Clear();
+                        foreach (var useTime in this.USE_TIME)
                         {
-                            DateTime selectedDate;
-                            bool isValidDate = DateTime.TryParse(_date.ToString(), out selectedDate);
-                            if (isValidDate && !selectedDates.Contains(selectedDate)) selectedDates.Add(selectedDate);
+                            var dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(useTime);
+                            if (dt.HasValue && dt.Value != DateTime.MinValue)
+                            {
+                                var d = dt.Value.Date;
+                                if (!selectedDates.Contains(d)) selectedDates.Add(d);
+                            }
                         }
-                    }
-                    else
-                    {
-                        if(cboDuTruTime.DateTime != null && cboDuTruTime.DateTime != DateTime.MaxValue && cboDuTruTime.DateTime != DateTime.MinValue)
-                        {
-                            DateTime selectedDate = cboDuTruTime.DateTime;
-                            if (!selectedDates.Contains(selectedDate)) selectedDates.Add(selectedDate);
-                            txtDuTruTime.Text = selectedDate.ToString("dd/MM/yyyy");
-                        }
-                        else
-                        {
-                            txtDuTruTime.Text = "";
-                        }
-                            
+                        UpdateSelectedDatesText();
                     }
 
-                    if (!string.IsNullOrEmpty(txtDuTruTime.Text)) UpdateSelectedDatesText();
+                    return;
+                }
+
+                // Single-day: mới parse từ cbo/text và rebuild
+                selectedDates.Clear();
+                this.USE_TIME?.Clear();
+
+                if (cboDuTruTime.DateTime != DateTime.MaxValue && cboDuTruTime.DateTime != DateTime.MinValue)
+                {
+                    var selectedDate = cboDuTruTime.DateTime.Date;
+                    selectedDates.Add(selectedDate);
+                    UpdateSelectedDatesText();
                 }
                 else
                 {
                     setDefaultDutruTime();
-
-
                 }
-                
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void txtDuTruTime_EditValueChanged(object sender, EventArgs e)
         {
             try
