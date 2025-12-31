@@ -12,10 +12,10 @@ namespace HIS.Desktop.MIMS.Integration.View
         /// </summary>
         /// <param name="html">Chuỗi HTML cần hiển thị</param>
         /// <param name="title">Tiêu đề form (tùy chọn)</param>
-        public static void ShowHtml(string html, string title = "MIMS", Int32? width = 900, Int32? height = 700)
+        public static void ShowHtml(string html, string title = "MIMS")
         {
-            //var form = new WebBrowser(html, title, width, height);
-            var form = new WebBrowserStyle1(html, title, width, height);
+            var form = new WebBrowser(html, title);
+            //var form = new WebBrowserStyle1(html, title, width, height);
             form.Show();
         }
     }

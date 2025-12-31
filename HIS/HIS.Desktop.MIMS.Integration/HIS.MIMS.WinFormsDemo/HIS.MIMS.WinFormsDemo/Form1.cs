@@ -55,7 +55,9 @@ namespace HIS.MIMS.WinFormsDemo
 
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xml);
             string html = MimsResponseTransformer.XmlToHtml(xmlResponse);
-            ShowHtml(html, string.IsNullOrEmpty(xmlResponse) ? "No response from MIMS API" : null);
+            WebViewHelper.ShowHtml(html, "Drug Information (GGPI)");
+            //ShowHtml(html, string.IsNullOrEmpty(xmlResponse) ? "No response from MIMS API" : null);
+
         }
 
         // 3. Use integration service for CDS Drug-Drug interaction 
@@ -87,7 +89,8 @@ namespace HIS.MIMS.WinFormsDemo
 
             var service = new VnContraindicationService();
             MimsResult result = service.Check(hisCodes);
-            ShowHtml(result.Html, result.Message);
+            service.ShowResult(result);
+            //ShowHtml(result.Html, result.Message);
         }
 
         // 5. Drug–Drug Alert test using the exact prescriptionquery from Postman collection
@@ -97,7 +100,8 @@ namespace HIS.MIMS.WinFormsDemo
 
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xml);
             string html = MimsResponseTransformer.XmlToHtml(xmlResponse);
-            ShowHtml(html, string.IsNullOrEmpty(xmlResponse) ? "No response from MIMS API" : null);
+            //ShowHtml(html, string.IsNullOrEmpty(xmlResponse) ? "No response from MIMS API" : null);
+            WebViewHelper.ShowHtml(html, "Tương tác thuốc");
         }
     }
 }
