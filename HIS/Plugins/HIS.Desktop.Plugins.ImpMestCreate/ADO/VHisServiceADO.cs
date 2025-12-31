@@ -175,6 +175,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
                     this.packingTypeName = data.PACKING_TYPE_NAME;
                     this.heinServiceBhytName = data.HEIN_SERVICE_BHYT_NAME;
                     this.DescriptionMedicineType = data.DESCRIPTION;
+                    this.activeIngrBhytCode = data.ACTIVE_INGR_BHYT_CODE;
                     this.activeIngrBhytName = data.ACTIVE_INGR_BHYT_NAME;
                     this.HeinLimitPrice = data.HEIN_LIMIT_PRICE ?? null;
                     //this.dosageForm = data.DOSAGE_FORM;

@@ -2348,7 +2348,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         this.currrentServiceAdo.DOSAGE_FORM = cboDosageForm.Text;
                     }
-                    else if (this.currrentServiceAdo.MEDICINE_LINE_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                    else if (!String.IsNullOrEmpty(this.currrentServiceAdo.activeIngrBhytCode)) // this.currrentServiceAdo.MEDICINE_LINE_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT &&
                     {
                         XtraMessageBox.Show("Dạng bào chế không được để trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
@@ -3451,7 +3451,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.DOSAGE_FORM = cboDosageForm.Text;
                         this.currrentServiceAdo.HisMedicine.DOSAGE_FORM = this.currrentServiceAdo.DOSAGE_FORM;
                     }
-                    else if (this.currrentServiceAdo.MEDICINE_LINE_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                    else if (!String.IsNullOrEmpty(this.currrentServiceAdo.activeIngrBhytCode)) // this.currrentServiceAdo.MEDICINE_LINE_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT && 
                     {
                         XtraMessageBox.Show("Dạng bào chế không được để trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
@@ -3935,7 +3935,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
                     if (this.currrentServiceAdo.IsMedicine)
                     {
-                        if (this.currrentServiceAdo.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                        //this.currrentServiceAdo.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT ||
+                        if (String.IsNullOrEmpty(this.currrentServiceAdo.activeIngrBhytCode)) 
                         {
                             this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
                         }
