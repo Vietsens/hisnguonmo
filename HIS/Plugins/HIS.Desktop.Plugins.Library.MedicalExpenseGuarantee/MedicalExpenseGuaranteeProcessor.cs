@@ -22,7 +22,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                     return null;
                 }
 
-                Base.ApiConsumer consumer = new Base.ApiConsumer(registerUse.baseUri, registerUse.applicationCode, registerUse.limet);
+                Base.ApiConsumer consumer = new Base.ApiConsumer(registerUse.baseUri, registerUse.applicationCode, registerUse.limet, registerUse.cskcbbd);
 
                 // Gọi API Register Use
                 registerUseResponse = consumer.CreateRequest<RegisterUseResponse>(Base.API.API_GUARANTEE_REGISTER_USE, registerUse.registerUseRequest);
@@ -57,7 +57,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 }
                 
                 // Khởi tạo API Consumer
-                Base.ApiConsumer consumer = new Base.ApiConsumer(use.baseUri, use.applicationCode, use.limet);
+                Base.ApiConsumer consumer = new Base.ApiConsumer(use.baseUri, use.applicationCode, use.limet, use.cskcbbd);
 
                 if (use.useRequest.Signature == null || use.useRequest.Signature == "")
                 {
@@ -109,7 +109,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                     return null;
                 }
 
-                Base.ApiConsumer consumer = new Base.ApiConsumer(cancelRegisterUse.baseUri, cancelRegisterUse.applicationCode, cancelRegisterUse.limet);
+                Base.ApiConsumer consumer = new Base.ApiConsumer(cancelRegisterUse.baseUri, cancelRegisterUse.applicationCode, cancelRegisterUse.limet, cancelRegisterUse.cskcbbd);
 
                 if (cancelRegisterUse.cancelRegisterUseRequest.Signature == null || cancelRegisterUse.cancelRegisterUseRequest.Signature == "")
                 {
@@ -146,7 +146,48 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 return null;
             }
         }
+        public AvailableBalanceInfoResponse GuaranteeAvailableBalanceInfoResponse(DataInput availableBalanceInfo)
+        {
+            try
+            {
+                AvailableBalanceInfoResponse availableBalanceInfoResponse = new AvailableBalanceInfoResponse();
+                if (!this.ValiAvailableBalanceInfo(availableBalanceInfo.availableBalanceInfoRequest, ref availableBalanceInfoResponse))
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Validate failed: " + availableBalanceInfoResponse.Message);
+                    return null;
+                }
 
+                Base.ApiConsumer consumer = new Base.ApiConsumer(availableBalanceInfo.baseUri, availableBalanceInfo.applicationCode, availableBalanceInfo.limet, availableBalanceInfo.cskcbbd);
+
+                availableBalanceInfoResponse = consumer.CreateRequest<AvailableBalanceInfoResponse>(Base.API.API_GUARANTEE_AVAILABLE_BALANCE_INFO, availableBalanceInfo.availableBalanceInfoRequest);
+
+                if (availableBalanceInfoResponse == null || !availableBalanceInfoResponse.Success)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " + availableBalanceInfoResponse?.Status + ", Message: " + availableBalanceInfoResponse?.Message);
+                    return null;
+                }
+                else
+                {
+                    if (availableBalanceInfoResponse.Data.IsValid)
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("GuaranteeAvailableBalanceInfoResponse Success - data: " + availableBalanceInfoResponse.Data);
+                        return availableBalanceInfoResponse;
+                    }
+                    else
+                    {
+                        var errorCode = availableBalanceInfoResponse.Data?.ErrorCode;
+                        var errorDesc = availableBalanceInfoResponse.Data?.ErrorMessage;
+                        Inventec.Common.Logging.LogSystem.Error("API Error - Code: " + errorCode + " Desc: " + errorDesc);
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
         public bool ValidateUse(UseRequest dataUser, ref UseResponse response)
         {
             bool result = true;
@@ -305,6 +346,52 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                     result = false;
                     if (response == null)
                         response = new CancelRegisterUseResponse();
+                    response.Message = mess;
+                    response.Success = false;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
+        public bool ValiAvailableBalanceInfo(AvailableBalanceInfoRequest dataCancelRegisterUse, ref AvailableBalanceInfoResponse response)
+        {
+            bool result = true;
+            try
+            {
+                string mess = "";
+
+                if (dataCancelRegisterUse == null)
+                {
+                    mess = "Dữ liệu request không được để trống";
+                }
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.RequestId))
+                {
+                    mess = "Không xác định được mã giao dịch (RequestId)";
+                }
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.PatientName))
+                {
+                    mess = "Không xác định được tên bệnh nhân (PatientName)";
+                }
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.Dob))
+                {
+                    mess = "Không xác định được ngày sinh (Dob - yyyyMMddHHmmss)";
+                }
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.CccdNumber))
+                {
+                    mess = "Không xác định được số CCCD/CMND (CccdNumber)";
+                }
+
+                if (!string.IsNullOrWhiteSpace(mess))
+                {
+                    result = false;
+                    if (response == null)
+                        response = new AvailableBalanceInfoResponse();
                     response.Message = mess;
                     response.Success = false;
                 }

@@ -15,13 +15,15 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
         private string baseUri;
         private string applicationCode;
         private string limet;
+        private string cskcbbd;
         private HttpClient _httpClient;
 
-        public ApiConsumer(string baseUri, string applicationCode, string limet)
+        public ApiConsumer(string baseUri, string applicationCode, string limet, string cskcbbd)
         {
             this.baseUri = baseUri;
             this.applicationCode = applicationCode;
             this.limet = limet;
+            this.cskcbbd = cskcbbd;
             _httpClient = new HttpClient();
         }
 
@@ -32,9 +34,11 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.Timeout = new TimeSpan(0, 0, 90);
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            _httpClient.DefaultRequestHeaders.Add("HospitalCode ", this.cskcbbd); 
 
             string requestJson = JsonConvert.SerializeObject(sendData);
             HttpResponseMessage resp = null;
+
             try
             {
                 resp = _httpClient.PostAsync(requestUri, new StringContent(requestJson, Encoding.UTF8, "application/json")).Result;
@@ -44,7 +48,6 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
                 throw ex;
             }
             
-
             string responseData = resp.Content.ReadAsStringAsync().Result;
 
             if (resp == null || !resp.IsSuccessStatusCode)

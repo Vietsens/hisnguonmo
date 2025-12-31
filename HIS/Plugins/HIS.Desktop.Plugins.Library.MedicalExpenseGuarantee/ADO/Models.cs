@@ -157,4 +157,27 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO
 
     public class InquiryResponse : ApiResponse<StandardResponseData<InquiryData>> { }
     #endregion
+
+    #region AvailableBalanceInfo API
+    public class AvailableBalanceInfoRequest
+    {
+        public string RequestId { get; set; }
+        public string PatientName { get; set; }
+        public string Dob { get; set; }
+        public string CccdNumber { get; set; }
+    }
+
+    public class AvailableBalanceInfoData
+    {
+        public bool IsValid { get; set; }
+        public string ErrorCode { get; set; }
+        public string ErrorMessage { get; set; }
+        public string RequestId { get; set; }
+        public string RegisteredAmount { get; set; }
+        public string UsedAmount { get; set; }
+        public string AvailableBalance { get; set; }
+    }
+
+    public class AvailableBalanceInfoResponse : ApiResponse<AvailableBalanceInfoData> { }
+    #endregion
 }
