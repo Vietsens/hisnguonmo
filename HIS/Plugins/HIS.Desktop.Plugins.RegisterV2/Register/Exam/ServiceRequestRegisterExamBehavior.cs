@@ -338,6 +338,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                         if (this.otherPaySourceId > 0)
                         {
                             item.OtherPaySourceId = this.otherPaySourceId;
+                            item.IsGuaranteed = this.isCheckBaoLanh;
                         }
                     }
                 }
