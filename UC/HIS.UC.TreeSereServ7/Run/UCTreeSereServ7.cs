@@ -37,6 +37,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using System.Drawing.Drawing2D;
 using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
+using DevExpress.XtraEditors.Controls;
 
 namespace HIS.UC.TreeSereServ7.Run
 {
@@ -243,6 +244,7 @@ namespace HIS.UC.TreeSereServ7.Run
         {
             try
             {
+                this.trvService.Columns.Clear();
                 this.trvService.OptionsView.ShowCheckBoxes = this.IsShowCheckNode;
                 this.trvService.OptionsView.AutoWidth = this.isAutoWidth;
                 if (TreeSereServ7ADO.TreeSereServ7Columns != null && TreeSereServ7ADO.TreeSereServ7Columns.Count > 0)
@@ -277,6 +279,7 @@ namespace HIS.UC.TreeSereServ7.Run
                     {
                         RepositoryItemButtonEdit buttonEdit = new RepositoryItemButtonEdit();
                         buttonEdit.AutoHeight = false;
+                        buttonEdit.TextEditStyle = TextEditStyles.HideTextEditor;
                         buttonEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
                         DevExpress.Utils.SuperToolTip superToolTip = new DevExpress.Utils.SuperToolTip();
                         superToolTip.Items.Add(new DevExpress.Utils.ToolTipItem());
@@ -287,7 +290,7 @@ namespace HIS.UC.TreeSereServ7.Run
                         DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn = new DevExpress.XtraTreeList.Columns.TreeListColumn();
 
                         treeListColumn.ColumnEdit = buttonEdit;
-                        treeListColumn.Width = 20;
+                        treeListColumn.Width = 28;
                         treeListColumn.ToolTip = svtr.Tooltip;
                         treeListColumn.VisibleIndex = svtr.VisibleIndex;
                         treeListColumn.Caption = svtr.Caption;
@@ -737,22 +740,39 @@ namespace HIS.UC.TreeSereServ7.Run
         {
             try
             {
-                if (sender != null && sender is DevExpress.XtraEditors.ButtonEdit)
+                //if (sender != null && sender is DevExpress.XtraEditors.ButtonEdit)
+                //{
+                //    var btn = sender as DevExpress.XtraEditors.ButtonEdit;
+                //    if (btn.Tag != null)
+                //    {
+                //        SereServHandler clickhandler = btn.Tag as SereServHandler;
+                //        if (clickhandler != null)
+                //        {
+                //            var data = trvService.GetDataRecordByNode(trvService.FocusedNode);
+                //            if (data != null && data is SereServADO)
+                //            {
+                //                clickhandler((SereServADO)data);
+                //            }
+                //        }
+                //    }
+                //}
+                var clickhandler = e.Button.Tag as SereServHandler;
+                if (clickhandler == null)
                 {
-                    var btn = sender as DevExpress.XtraEditors.ButtonEdit;
-                    if (btn.Tag != null)
-                    {
-                        SereServHandler clickhandler = btn.Tag as SereServHandler;
-                        if (clickhandler != null)
-                        {
-                            var data = trvService.GetDataRecordByNode(trvService.FocusedNode);
-                            if (data != null && data is SereServADO)
-                            {
-                                clickhandler((SereServADO)data);
-                            }
-                        }
-                    }
+                    // fallback nếu cần: lấy từ repository item
+                    var be = sender as DevExpress.XtraEditors.ButtonEdit;
+                    var rep = be?.Properties as DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit;
+                    clickhandler = rep?.Tag as SereServHandler;
                 }
+
+                if (clickhandler == null) return;
+
+                // lấy đúng node theo vị trí click (tránh lệch FocusedNode)
+                var hi = trvService.CalcHitInfo(trvService.PointToClient(Control.MousePosition));
+                var node = hi?.Node ?? trvService.FocusedNode;
+
+                var data = trvService.GetDataRecordByNode(node) as SereServADO;
+                if (data != null) clickhandler(data);
             }
             catch (Exception ex)
             {

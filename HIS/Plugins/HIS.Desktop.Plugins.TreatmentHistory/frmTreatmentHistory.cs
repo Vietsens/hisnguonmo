@@ -59,6 +59,7 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace HIS.Desktop.Plugins.TreatmentHistory
 {
@@ -561,6 +562,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 ado.DepartmentID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId) != null ? HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId : 0;
                 ado.TreeSereServ7Columns = new List<TreeSereServ7Column>();
                 //ado.TreeSereServ7_CustomDrawNodeCell = treeSereServ_CustomDrawNodeCell;
+                ado.ColumnButtonEdits = new List<ColumnButtonEditADO>();
+                ado.ColumnButtonEdits.Add(new ColumnButtonEditADO() { Caption = "", Tooltip = "Thông tin khám sức khỏe", ActionHandler = btnKsk_Click, Image = Properties.Resources.kham_suc_khoe, VisibleIndex = 0 });
 
                 //Sửa yêu cầu
                 //TreeSereServ7Column colEditServiceReq = new TreeSereServ7Column("   ", "EditServiceReq", 30, true);
@@ -602,6 +605,26 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnKsk_Click(UC.TreeSereServ7.SereServADO data)
+        {
+            if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
+            {
+                WaitingManager.Show();
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.EnterKskInfomantion").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.EnterKskInfomantion'");
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.EnterKskInfomantion' is not plugins");
+
+                List<object> listArgs = new List<object>();
+
+                listArgs.Add(data.TDL_SERVICE_REQ_CODE);
+                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId), listArgs);
+                if (extenceInstance == null) throw new NullReferenceException("Khoi tao moduleData that bai. extenceInstance = null");
+
+                WaitingManager.Hide();
+                ((Form)extenceInstance).ShowDialog();
             }
         }
 

@@ -71,8 +71,9 @@
     <Reference Include="HIS.UC.Icd">
       <HintPath>..\..\..\..\LIB\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.TreeSereServ7">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7.dll</HintPath>
+    <Reference Include="HIS.UC.TreeSereServ7, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TreeSereServ7.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ViewEmrDocument">
       <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.ViewEmrDocument.dll</HintPath>
@@ -323,6 +324,9 @@
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\kham-suc-khoe.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
