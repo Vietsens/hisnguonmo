@@ -3313,10 +3313,5 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-        private void xtraTabPage5_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }

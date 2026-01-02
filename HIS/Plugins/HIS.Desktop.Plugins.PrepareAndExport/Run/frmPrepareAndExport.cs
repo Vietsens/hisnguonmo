@@ -710,11 +710,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                 int rowHandle = gvPrepareMedicine.GetVisibleRowHandle(0);
                 var one = gvPrepareMedicine.GetRow(rowHandle) as HIS_EXP_MEST;
                 if (one == null) return;
-                if (currentCall != null && currentCall.ID != one.ID)
-                {
-                    return;
-                }
-
+                currentCall = one;
                 CallSpecific(one);
                 //btnCall_Click(null, null);
 
