@@ -120,10 +120,9 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControl1.Controls.Add(this.treeSereServ);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1409, 609);
+            this.layoutControl1.Size = new System.Drawing.Size(1057, 495);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -140,8 +139,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.tc_TdlMedicineConcentra});
             this.treeSereServ.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeSereServ.KeyFieldName = "CONCRETE_ID__IN_SETY";
-            this.treeSereServ.Location = new System.Drawing.Point(3, 3);
-            this.treeSereServ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeSereServ.Location = new System.Drawing.Point(2, 2);
             this.treeSereServ.Name = "treeSereServ";
             this.treeSereServ.OptionsBehavior.AllowIndeterminateCheckState = true;
             this.treeSereServ.OptionsBehavior.AllowPixelScrolling = DevExpress.Utils.DefaultBoolean.True;
@@ -172,7 +170,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.rep_btnDelete_Enable,
             this.rep_btnDelete_Disable});
             this.treeSereServ.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
-            this.treeSereServ.Size = new System.Drawing.Size(1403, 603);
+            this.treeSereServ.Size = new System.Drawing.Size(1053, 491);
             this.treeSereServ.TabIndex = 4;
             this.treeSereServ.ToolTipController = this.toolTipController2;
             this.treeSereServ.GetStateImage += new DevExpress.XtraTreeList.GetStateImageEventHandler(this.treeSereServ_GetStateImage);
@@ -360,7 +358,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1409, 609);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1057, 495);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -368,18 +366,17 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControlItem1.Control = this.treeSereServ;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1409, 609);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1057, 495);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // UCTreeListService
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "UCTreeListService";
-            this.Size = new System.Drawing.Size(1409, 609);
+            this.Size = new System.Drawing.Size(1057, 495);
             this.Load += new System.EventHandler(this.UCTreeListService_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);

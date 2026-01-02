@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.1.11304.174
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop", "HIS.Desktop\HIS.Desktop.csproj", "{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}"
 EndProject
@@ -1162,6 +1162,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.HisExpMestMediMate", "Plugins\HIS.Desktop.Plugins.HisExpMestMediMate\HIS.Desktop.Plugins.HisExpMestMediMate.csproj", "{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.DrugUsageAnalysis", "Plugins\HIS.Desktop.Plugins.DrugUsageAnalysis\HIS.Desktop.Plugins.DrugUsageAnalysis.csproj", "{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPA", "..\..\common\TOOL\CPA\CPA\CPA.csproj", "{67CAFD3F-CA94-497B-85C9-E771CA691A23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.UC.TreeSereServ7", "..\UC\HIS.UC.TreeSereServ7\HIS.UC.TreeSereServ7.csproj", "{81A0490C-AB41-449D-B164-DDF364EEEE66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -4637,6 +4641,22 @@ Global
 		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Release|x86.ActiveCfg = Release|Any CPU
 		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7}.Release|x86.Build.0 = Release|Any CPU
+		{67CAFD3F-CA94-497B-85C9-E771CA691A23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67CAFD3F-CA94-497B-85C9-E771CA691A23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67CAFD3F-CA94-497B-85C9-E771CA691A23}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{67CAFD3F-CA94-497B-85C9-E771CA691A23}.Debug|x86.Build.0 = Debug|Any CPU
+		{67CAFD3F-CA94-497B-85C9-E771CA691A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67CAFD3F-CA94-497B-85C9-E771CA691A23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67CAFD3F-CA94-497B-85C9-E771CA691A23}.Release|x86.ActiveCfg = Release|Any CPU
+		{67CAFD3F-CA94-497B-85C9-E771CA691A23}.Release|x86.Build.0 = Release|Any CPU
+		{81A0490C-AB41-449D-B164-DDF364EEEE66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81A0490C-AB41-449D-B164-DDF364EEEE66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81A0490C-AB41-449D-B164-DDF364EEEE66}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{81A0490C-AB41-449D-B164-DDF364EEEE66}.Debug|x86.Build.0 = Debug|Any CPU
+		{81A0490C-AB41-449D-B164-DDF364EEEE66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81A0490C-AB41-449D-B164-DDF364EEEE66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81A0490C-AB41-449D-B164-DDF364EEEE66}.Release|x86.ActiveCfg = Release|Any CPU
+		{81A0490C-AB41-449D-B164-DDF364EEEE66}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -5208,6 +5228,7 @@ Global
 		{89833235-6CCD-4CDD-90F2-A53CDD601ED5} = {436CA54F-2E28-4F98-B76A-12974D589A7D}
 		{4BDCCA80-26F3-480F-8EB6-E0DA8DD24F68} = {F4AC4A92-33BB-4BF3-9CCE-CBED841842CD}
 		{BE60D7C2-FB85-47B7-81C2-3A20CAB6F6D7} = {9CA3460F-6F5C-4EAF-899E-163FB2ECB416}
+		{81A0490C-AB41-449D-B164-DDF364EEEE66} = {4389DCF1-3139-4266-8DB8-8407BB0095E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B8CBF9E-8615-4AF0-9894-C15CB4B6FC6B}
