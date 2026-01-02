@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.webControl1 = new EO.WinForm.WebControl();
-            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.webView1 = new EO.WebBrowser.WebView();
+            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -50,6 +50,22 @@
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // webControl1
+            // 
+            this.webControl1.BackColor = System.Drawing.Color.White;
+            this.webControl1.Location = new System.Drawing.Point(2, 2);
+            this.webControl1.Name = "webControl1";
+            this.webControl1.Size = new System.Drawing.Size(880, 657);
+            this.webControl1.TabIndex = 4;
+            this.webControl1.Text = "webControl1";
+            this.webControl1.WebView = this.webView1;
+            // 
+            // webView1
+            // 
+            this.webView1.InputMsgFilter = null;
+            this.webView1.ObjectForScripting = null;
+            this.webView1.Title = null;
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -62,16 +78,6 @@
             this.layoutControlGroup1.Size = new System.Drawing.Size(884, 661);
             this.layoutControlGroup1.TextVisible = false;
             // 
-            // webControl1
-            // 
-            this.webControl1.BackColor = System.Drawing.Color.White;
-            this.webControl1.Location = new System.Drawing.Point(2, 2);
-            this.webControl1.Name = "webControl1";
-            this.webControl1.Size = new System.Drawing.Size(880, 657);
-            this.webControl1.TabIndex = 4;
-            this.webControl1.Text = "webControl1";
-            this.webControl1.WebView = this.webView1;
-            // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.webControl1;
@@ -81,12 +87,6 @@
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // webView1
-            // 
-            this.webView1.InputMsgFilter = null;
-            this.webView1.ObjectForScripting = null;
-            this.webView1.Title = null;
-            // 
             // WebBrowser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -94,6 +94,7 @@
             this.ClientSize = new System.Drawing.Size(884, 661);
             this.Controls.Add(this.layoutControl1);
             this.Name = "WebBrowser";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "WebBrowser";
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
