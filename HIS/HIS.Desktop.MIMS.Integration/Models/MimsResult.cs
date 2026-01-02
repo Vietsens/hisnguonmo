@@ -46,6 +46,21 @@ namespace HIS.Desktop.MIMS.Integration.Models
 		/// </summary>
 		public DrugInformationGgpiDetail DrugInformationGgpi { get; set; }
 
+		/// <summary>
+		/// Cờ cho biết request tới MIMS bị timeout / lỗi kết nối.
+		/// </summary>
+		public bool IsTimeout { get; set; }
+
+		/// <summary>
+		/// Cờ cho biết MIMS trả về XML lỗi dạng &lt;Error&gt;...&lt;/Error&gt;.
+		/// </summary>
+		public bool IsErrorResponse { get; set; }
+
+		/// <summary>
+		/// Nội dung lỗi chi tiết (nếu MIMS trả về &lt;Error&gt;&lt;Message&gt;...&lt;/Message&gt;&lt;/Error&gt;).
+		/// </summary>
+		public string ErrorMessage { get; set; }
+
 		public MimsResult()
 		{
 			Alerts = new List<string>();

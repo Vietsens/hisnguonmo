@@ -265,7 +265,6 @@
     <Folder Include="Resources\Scripts\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="View\WebBrowser.resx">
       <DependentUpon>WebBrowser.cs</DependentUpon>
     </EmbeddedResource>

@@ -8,8 +8,22 @@ namespace HIS.Desktop.MIMS.Integration.Core
 {
     public static class MimsClient
     {
+        /// <summary>
+        /// Gửi request tới MIMS (đơn giản, không phân biệt timeout).
+        /// </summary>
         public static string PostXml(string url, string xml)
         {
+            bool _;
+            return PostXml(url, xml, out _);
+        }
+
+        /// <summary>
+        /// Gửi request tới MIMS, trả về chuỗi XML và cờ timeout/kết nối.
+        /// </summary>
+        public static string PostXml(string url, string xml, out bool isTimeoutOrConnectionError)
+        {
+            isTimeoutOrConnectionError = false;
+
             try
             {
                 // Đảm bảo sử dụng TLS 1.2 khi kết nối tới server MIMS
@@ -20,6 +34,10 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 request.Credentials = new NetworkCredential(
                     MimsConfig.Username,
                     MimsConfig.Password);
+
+                // Timeout hợp lý để UI không bị treo lâu (ms)
+                request.Timeout = 15000;         // 15s cho kết nối
+                request.ReadWriteTimeout = 15000; // 15s cho đọc/ghi
 
                 var postData =
                     "prescriptionquery=" + HttpUtility.UrlEncode(xml) +
@@ -36,6 +54,19 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 {
                     return reader.ReadToEnd();
                 }
+            }
+            catch (WebException ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+
+                if (ex.Status == WebExceptionStatus.Timeout ||
+                    ex.Status == WebExceptionStatus.ConnectFailure ||
+                    ex.Status == WebExceptionStatus.NameResolutionFailure)
+                {
+                    isTimeoutOrConnectionError = true;
+                }
+
+                return null;
             }
             catch (Exception ex)
             {

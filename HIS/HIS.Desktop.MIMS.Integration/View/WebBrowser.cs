@@ -36,6 +36,30 @@ namespace HIS.Desktop.MIMS.Integration.View
             EO.WebBrowser.Runtime.AddLicense(license_code);
             //webView1.NewWindow += NewWindowBrowser;
 
+            LoadHtml(html);
+        }
+
+        /// <summary>
+        /// Nạp lại HTML vào WebView (ghi file tạm trong thư mục MIMSStyleSheet rồi LoadUrl).
+        /// </summary>
+        public void LoadHtml(string html)
+        {
+            // Xóa file tạm cũ nếu có
+            if (!string.IsNullOrEmpty(_tempHtmlPath))
+            {
+                try
+                {
+                    if (File.Exists(_tempHtmlPath))
+                        File.Delete(_tempHtmlPath);
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+
+                _tempHtmlPath = null;
+            }
+
             // Write HTML into the same folder as CSS/JS (MIMSStyleSheet) so relative paths work
             var baseDir = MimsConfig.ResourceBasePath; // e.g. ...\\bin\\Resources\\MIMSStyleSheet
             if (!Directory.Exists(baseDir))

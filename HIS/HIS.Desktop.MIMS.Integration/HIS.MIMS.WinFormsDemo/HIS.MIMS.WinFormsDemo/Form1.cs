@@ -60,7 +60,7 @@ namespace HIS.MIMS.WinFormsDemo
 
         }
 
-        // 3. Use integration service for CDS Drug-Drug interaction 
+        // 3. Use integration service for CDS Drug-Drug interaction (async, không block UI)
         private void btnTestCdsInteraction_Click(object sender, EventArgs e)
         {
             var current = new List<DrugItem>
@@ -73,12 +73,10 @@ namespace HIS.MIMS.WinFormsDemo
             var previous = new List<DrugItem>();
 
             var service = new DrugDrugInteractionService();
-            MimsResult result = service.Check(current, previous);
-            //ShowHtml(result.Html, result.Message);
-            service.ShowResult(result);
+            service.ShowResultAsync(current, previous);
         }
 
-        // 4. Use integration service for VN Contraindication sample (using HIS codes that map to above products)
+        // 4. Use integration service for VN Contraindication sample (async, using HIS codes that map to above products)
         private void btnTestVnContra_Click(object sender, EventArgs e)
         {
             var hisCodes = new List<string>
@@ -88,9 +86,7 @@ namespace HIS.MIMS.WinFormsDemo
             };
 
             var service = new VnContraindicationService();
-            MimsResult result = service.Check(hisCodes);
-            service.ShowResult(result);
-            //ShowHtml(result.Html, result.Message);
+            service.ShowResultAsync(hisCodes);
         }
 
         // 5. Drug–Drug Alert test using the exact prescriptionquery from Postman collection
