@@ -145,7 +145,7 @@
     <value>ပရိုဂရမ်လူနာသည် Case Case ကို မဖန်တီးရသေးပါ။</value>
   </data>
   <data name="BenhNhanChuongTrinhChuaDuocTaoVoBenhAnBanCoMuonTaoVBDHayKhong" xml:space="preserve">
-    <value>ပရိုဂရမ်ရှိ လူနာသည် Case Case မဖန်တီးရသေးပါ။</value>
+    <value>BanChuaChonKhoXuat</value>
   </data>
   <data name="BenhNhanDangNoTienKhogChoPhepChiDinhDV" xml:space="preserve">
     <value>လူနာသည် အကြွေးတင်နေသဖြင့် ဆေးစာခွင့်မရှိပါ။</value>
@@ -184,7 +184,7 @@
     <value>ပွားနေသော ဆေးအုပ်စု- 
 	{0}</value>
   </data>
-	<data name="CacThuocCoCungMaGroupATC_BanCoMuonTiepTuc" xml:space="preserve">
+  <data name="CacThuocCoCungMaGroupATC_BanCoMuonTiepTuc" xml:space="preserve">
     <value>ပွားနေသော ဆေးအုပ်စု- 
 	{0}</value>
   </data>

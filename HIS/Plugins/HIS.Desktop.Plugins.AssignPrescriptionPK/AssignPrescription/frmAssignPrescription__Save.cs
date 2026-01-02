@@ -58,6 +58,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
+
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
     public partial class frmAssignPrescription : HIS.Desktop.Utility.FormBase
@@ -424,6 +425,176 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             return $"{icdMain};{oldValue};{newValue}";
         }
 
+        //huannh bổ sung Cảnh báo đơn thuốc nếu vượt số tiền
+        //private bool CheckMaxPrescriptionAmount(List<MediMatyTypeADO> serviceCheckeds__Send)
+        //{
+        //    bool result = true;
+        //    try
+        //    {
+        //        if (serviceCheckeds__Send == null || serviceCheckeds__Send.Count == 0)
+        //            return result;
+
+        //        // Lấy thông tin HIS_TREATMENT_TYPE theo TDL_TREATMENT_TYPE_ID của TREATMENT hiện tại
+        //        if (this.currentHisPatientTypeAlter == null || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID <= 0)
+        //            return result;
+
+        //        // Lấy thông tin HIS_TREATMENT_TYPE từ BackendData hoặc gọi API
+        //        CommonParam param = new CommonParam();
+        //        HisTreatmentTypeFilter treatmentTypeFilter = new HisTreatmentTypeFilter();
+        //        treatmentTypeFilter.ID = this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID;
+
+        //        var treatmentTypes = new BackendAdapter(param)
+        //            .Get<List<HIS_TREATMENT_TYPE>>("api/HisTreatmentType/Get", ApiConsumers.MosConsumer, treatmentTypeFilter, param);
+
+        //        if (treatmentTypes == null || treatmentTypes.Count == 0)
+        //            return result;
+
+        //        HIS_TREATMENT_TYPE treatmentType = treatmentTypes.FirstOrDefault();
+
+        //        // Kiểm tra có cấu hình MAX_PRESCRIPTION_AMOUNT không
+        //        if (treatmentType.MAX_PRESCRIPTION_AMOUNT == null || treatmentType.MAX_PRESCRIPTION_AMOUNT <= 0)
+        //            return result;
+
+        //        // Kiểm tra có cấu hình MAX_PRESCRIPTION_AMOUNT_OPTION không
+        //        if (treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION == null || treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION <= 0)
+        //            return result;
+
+        //        // Tính tổng tiền của đơn thuốc người dùng kê
+        //        decimal totalPrescriptionAmount = 0;
+        //        foreach (var item in serviceCheckeds__Send)
+        //        {
+        //            totalPrescriptionAmount += item.TotalPrice;
+        //        }
+
+        //        Inventec.Common.Logging.LogSystem.Debug(
+        //            "CheckMaxPrescriptionAmount: " +
+        //            "TotalPrescriptionAmount=" + totalPrescriptionAmount +
+        //            ", MAX_PRESCRIPTION_AMOUNT=" + treatmentType.MAX_PRESCRIPTION_AMOUNT +
+        //            ", MAX_PRESCRIPTION_AMOUNT_OPTION=" + treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION);
+
+        //        // So sánh tổng tiền với giới hạn
+        //        if (totalPrescriptionAmount > treatmentType.MAX_PRESCRIPTION_AMOUNT.Value)
+        //        {
+        //            string totalAmountStr = Inventec.Common.Number.Convert.NumberToString(totalPrescriptionAmount, ConfigApplications.NumberSeperator);
+        //            string maxAmountStr = Inventec.Common.Number.Convert.NumberToString(treatmentType.MAX_PRESCRIPTION_AMOUNT.Value, ConfigApplications.NumberSeperator);
+
+        //            if (treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION == 1)
+        //            {
+        //                // Hiển thị cảnh báo và hỏi người dùng
+        //                string message = string.Format(
+        //                    "Tổng tiền {0} của đơn thuốc lớn hơn số tiền {1} được kê tối đa của 1 đơn thuốc theo diện điều trị. Bạn có muốn tiếp tục?",
+        //                    totalAmountStr,
+        //                    maxAmountStr);
+
+        //                DialogResult dialogResult = MessageBox.Show(
+        //                    message,
+        //                    "Thông báo",
+        //                    MessageBoxButtons.YesNo,
+        //                    MessageBoxIcon.Warning);
+
+        //                if (dialogResult != DialogResult.Yes)
+        //                {
+        //                    result = false;
+        //                }
+        //            }
+        //            else if (treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION == 2)
+        //            {
+        //                // Chặn và hiển thị thông báo
+        //                string message = string.Format(
+        //                    "Tổng tiền {0} của đơn thuốc lớn hơn số tiền {1} được kê tối đa của 1 đơn thuốc theo diện điều trị",
+        //                    totalAmountStr,
+        //                    maxAmountStr);
+
+        //                MessageBox.Show(
+        //                    message,
+        //                    "Thông báo",
+        //                    MessageBoxButtons.OK,
+        //                    MessageBoxIcon.Warning);
+
+        //                result = false;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result = false;
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+
+        //    return result;
+        //}
+
+
+        public bool CheckedTreatmentFinishV2()
+        {
+            bool result = true;
+            try
+            {
+              
+                bool isHasUcTreatmentFinish =
+                    !GlobalStore.IsTreatmentIn &&
+                    this.treatmentFinishProcessor != null &&
+                    this.ucTreatmentFinish != null;
+
+              
+                var treatUC = isHasUcTreatmentFinish
+                    ? this.treatmentFinishProcessor.GetDataOutput(this.ucTreatmentFinish)
+                    : null;
+
+                if (isHasUcTreatmentFinish && treatUC != null)
+                {
+                    if (HisConfigCFG.IsCheckValueMaxlengthOption == "1"
+                        || HisConfigCFG.IsCheckValueMaxlengthOption == "2")
+                    {
+                        bool hasOverLength = false;
+                        string message = "";
+
+                        if ((!string.IsNullOrEmpty(treatUC.ClinicalNote)
+                                && Encoding.UTF8.GetByteCount(treatUC.ClinicalNote) > 4000)
+                            || (!string.IsNullOrEmpty(treatUC.SubclinicalResult)
+                                && Encoding.UTF8.GetByteCount(treatUC.SubclinicalResult) > 4000))
+                        {
+                            hasOverLength = true;
+                            message = ResourceMessage.DuLieuTruongQuaTrinhBenhLyTomTatKetQuaVuotQuaKyTu;
+                        }
+
+                        if (hasOverLength)
+                        {
+                            if (HisConfigCFG.IsCheckValueMaxlengthOption == "1")
+                            {
+                                var dialogResult = DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    message + ". " + ResourceMessage.BanCoMuonTiepTucKhong,
+                                    "Cảnh báo",
+                                    System.Windows.Forms.MessageBoxButtons.YesNo,
+                                    System.Windows.Forms.MessageBoxIcon.Warning);
+
+                                if (dialogResult == System.Windows.Forms.DialogResult.Yes)
+                                {
+                                    return false;
+                                }
+                            }
+                            else // option == "2"
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    message,
+                                    "Thông báo",
+                                    System.Windows.Forms.MessageBoxButtons.OK,
+                                    System.Windows.Forms.MessageBoxIcon.Information);
+
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = true;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return result;
+        }
 
 
         private void ProcessSaveData(HIS.Desktop.Plugins.AssignPrescriptionPK.SAVETYPE saveType)
@@ -839,9 +1010,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                     if ((HisConfigCFG.MustChooseSeviceExamOption == "1" || (isHasTreatmentFinishChecked && HisConfigCFG.MustChooseSeviceExamOption == "2")) && !this.CheckMustChooseSeviceExamOption(HisConfigCFG.MustChooseSeviceExamOption))
                         return;
+                    //huanzz
+                    if (!CheckedTreatmentFinishV2()) return;
                 }
-
                 Inventec.Common.Logging.LogSystem.Info("frmAssignPrescription.ProcessSaveData.3");
+                //huannh KDPk
+                //valid = valid && this.CheckMaxPrescriptionAmount(serviceCheckeds__Send);
+                //if (!valid) return;
 
 
                 bool isSaveAndPrint = (saveType == SAVETYPE.SAVE_PRINT_NOW);

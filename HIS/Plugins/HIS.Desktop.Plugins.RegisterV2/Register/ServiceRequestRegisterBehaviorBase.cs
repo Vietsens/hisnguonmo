@@ -43,6 +43,7 @@ using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.UC.KskContract.ADO;
 using DevExpress.XtraEditors;
 using His.UC.UCHein;
+using HIS.UC.UCPatientRaw;
 
 namespace HIS.Desktop.Plugins.RegisterV2.Register
 {
@@ -260,6 +261,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected bool chkAutoPay { get; set; }
         protected bool chkExamOnline { get; set; }
         protected long? cashierRoom_RoomId { get; set; }
+        protected bool isCheckBaoLanh { get; set; }
+        protected string Guarantee_Code { get; set; }
+        protected string Guarantee_Request_Code { get; set; }
 
         internal ServiceRequestRegisterBehaviorBase(CommonParam param, UCRegister ucServiceRequestRegiter)
             : base(param)
@@ -552,6 +556,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.chkAutoCreateBill = ucServiceRequestRegiter.chkAutoCreateBill.Checked;
                 this.chkAutoDeposit = ucServiceRequestRegiter.chkAutoDeposit.Checked;
                 this.chkAutoPay = ucServiceRequestRegiter.chkAutoPay.Checked;
+                this.isCheckBaoLanh = ucServiceRequestRegiter.chkBaoLanh.Checked;
+                this.Guarantee_Code = ucServiceRequestRegiter.GuarateeCode;
+                this.Guarantee_Request_Code = ucServiceRequestRegiter.GuaranteeRequestCode;
                 if (ucServiceRequestRegiter.cboCashierRoom.EditValue != null)
                 {
                     V_HIS_CASHIER_ROOM cashierRoom = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_CASHIER_ROOM>().FirstOrDefault(o => o.ID == Convert.ToInt64(ucServiceRequestRegiter.cboCashierRoom.EditValue));
@@ -829,6 +836,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.ProvinceCode = provinceCode;
                 this.patientProfile.DistrictCode = districtCode;
                 this.patientProfile.TreatmentTime = intructionTime;
+
+                //Kiểm tra nếu checkbox đc check hoặc có dữ liệu thì mới gán giá trị
+                if (isCheckBaoLanh)
+                {
+                    this.patientProfile.HisTreatment.GUARANTEE_CODE = this.Guarantee_Code;
+                    this.patientProfile.HisTreatment.GUARANTEE_REQUEST_CODE = this.Guarantee_Request_Code;
+                }
 
                 //Đồng bộ dữ liệu thay đổi từ UCTransPatiADO sang đối tượng dữ liệu phục vụ làm đầu vào cho gọi api        
                 if (this.UCTransPatiADO != null
