@@ -82,5 +82,10 @@ namespace MPS.Processor.Mps000181
         internal const string DETAIL_MAX_USE_TIME_TO_STR = "DETAIL_MAX_USE_TIME_TO_STR";
 
         internal const string ELECTRONIC_EXP_MEST_CODE = "ELECTRONIC_EXP_MEST_CODE";
+        // qtcode
+        public const string REQ_ICD_CODE = "REQ_ICD_CODE";
+        public const string REQ_ICD_NAME = "REQ_ICD_NAME";
+        public const string REQ_ICD_SUB_CODE = "REQ_ICD_SUB_CODE";
+        public const string REQ_ICD_TEXT = "REQ_ICD_TEXT";
     }
 }
