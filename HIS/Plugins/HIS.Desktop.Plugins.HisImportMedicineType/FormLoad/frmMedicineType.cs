@@ -1144,10 +1144,17 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.ALLOW_ODD_ERROR = 1;
                         }
                     }
-                    if (string.IsNullOrEmpty(item.DOSAGE_FORM))
+                    // Sửa theo yêu cầu 32096: Chỉ bắt buộc nhập Dạng bào chế khi có Mã hoạt chất BHYT
+                    if (!string.IsNullOrEmpty(item.ACTIVE_INGR_BHYT_CODE)) 
                     {
-                        error += string.Format(Message.MessageImport.TruongDuBatBuoc, "dạng bào chế");
-                        mediAdo.DOSAGE_FORM_ERROR = 1;
+                        if (mediAdo.MEDICINE_LINE_ID != 3) 
+                        {
+                            if (string.IsNullOrEmpty(item.DOSAGE_FORM))
+                            {
+                                error += string.Format(Message.MessageImport.TruongDuBatBuoc, "dạng bào chế");
+                                mediAdo.DOSAGE_FORM_ERROR = 1;
+                            }
+                        }
                     }
                     if (!string.IsNullOrEmpty(item.REQUIRE_HSD))
                     {
