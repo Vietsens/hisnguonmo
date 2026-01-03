@@ -3946,9 +3946,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 isLoadingGuaranteeInfo = true;
 
-                //await Task.Run(() =>
-                //{
-                try
+                await Task.Run(() =>
+                {
+                    try
                 {
                     // Dùng thư viện chung
                     //ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
@@ -4052,7 +4052,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     Inventec.Common.Logging.LogSystem.Error(ex);
                     this.guaranteeInfo = null;
                 }
-                //});
+                });
 
                 UpdateGuaranteeLabel();
                 isLoadingGuaranteeInfo = false;

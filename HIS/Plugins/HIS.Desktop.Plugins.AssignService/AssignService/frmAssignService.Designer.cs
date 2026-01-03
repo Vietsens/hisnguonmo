@@ -129,10 +129,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.barBtnSaveNShow = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnEditCtrlU = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnAssignAI = new DevExpress.XtraEditors.SimpleButton();
             this.popupControlContainer4 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
@@ -512,6 +508,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciGuarantee = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTotalGuarantee = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn3 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -937,10 +937,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barbtnSaveShortcut,
@@ -1034,34 +1030,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F4);
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1352, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 617);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1352, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 588);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1352, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 588);
             // 
             // btnAssignAI
             // 
@@ -2721,8 +2689,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn_Guarantee.ColumnEdit = this.repositoryItemCheckGuarantee;
             this.gridColumn_Guarantee.FieldName = "IsGuarantee";
             this.gridColumn_Guarantee.FieldNameSortGroup = "IsGuaranteeUnb";
+            this.gridColumn_Guarantee.MaxWidth = 60;
             this.gridColumn_Guarantee.Name = "gridColumn_Guarantee";
             this.gridColumn_Guarantee.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn_Guarantee.Visible = true;
+            this.gridColumn_Guarantee.VisibleIndex = 8;
             this.gridColumn_Guarantee.Width = 60;
             // 
             // repositoryItemCheckGuarantee
@@ -2743,7 +2714,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnPatientTypeName__TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnPatientTypeName__TabService.ToolTip = "Đối tượng thanh toán";
             this.gridColumnPatientTypeName__TabService.Visible = true;
-            this.gridColumnPatientTypeName__TabService.VisibleIndex = 8;
+            this.gridColumnPatientTypeName__TabService.VisibleIndex = 9;
             this.gridColumnPatientTypeName__TabService.Width = 35;
             // 
             // grcExpend_TabService
@@ -2761,7 +2732,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcExpend_TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.grcExpend_TabService.ToolTip = "Hao phí";
             this.grcExpend_TabService.Visible = true;
-            this.grcExpend_TabService.VisibleIndex = 9;
+            this.grcExpend_TabService.VisibleIndex = 10;
             this.grcExpend_TabService.Width = 24;
             // 
             // gridColumnIsKH__TabService
@@ -2788,7 +2759,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnExecuteRoomName__TabService.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnExecuteRoomName__TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnExecuteRoomName__TabService.Visible = true;
-            this.gridColumnExecuteRoomName__TabService.VisibleIndex = 17;
+            this.gridColumnExecuteRoomName__TabService.VisibleIndex = 18;
             this.gridColumnExecuteRoomName__TabService.Width = 46;
             // 
             // repositoryItemcboExcuteRoom_TabService
@@ -2824,7 +2795,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcAmount_TabService.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcAmount_TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.grcAmount_TabService.Visible = true;
-            this.grcAmount_TabService.VisibleIndex = 10;
+            this.grcAmount_TabService.VisibleIndex = 11;
             this.grcAmount_TabService.Width = 30;
             // 
             // grcPrice_TabService
@@ -2844,7 +2815,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcPrice_TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.grcPrice_TabService.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grcPrice_TabService.Visible = true;
-            this.grcPrice_TabService.VisibleIndex = 11;
+            this.grcPrice_TabService.VisibleIndex = 12;
             this.grcPrice_TabService.Width = 31;
             // 
             // gridColumnNoDifference
@@ -2859,7 +2830,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnNoDifference.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnNoDifference.ToolTip = "Không tính chênh lệch";
             this.gridColumnNoDifference.Visible = true;
-            this.gridColumnNoDifference.VisibleIndex = 13;
+            this.gridColumnNoDifference.VisibleIndex = 14;
             this.gridColumnNoDifference.Width = 20;
             // 
             // gridColumnHeadCardNumberNoDifference
@@ -2875,7 +2846,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnHeadCardNumberNoDifference.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnHeadCardNumberNoDifference.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnHeadCardNumberNoDifference.Visible = true;
-            this.gridColumnHeadCardNumberNoDifference.VisibleIndex = 14;
+            this.gridColumnHeadCardNumberNoDifference.VisibleIndex = 15;
             this.gridColumnHeadCardNumberNoDifference.Width = 27;
             // 
             // grcPrice_ServicePatyPrpo
@@ -2892,7 +2863,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcPrice_ServicePatyPrpo.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcPrice_ServicePatyPrpo.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grcPrice_ServicePatyPrpo.Visible = true;
-            this.grcPrice_ServicePatyPrpo.VisibleIndex = 15;
+            this.grcPrice_ServicePatyPrpo.VisibleIndex = 16;
             this.grcPrice_ServicePatyPrpo.Width = 30;
             // 
             // gridColumnServiceTypeName
@@ -2915,7 +2886,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnShareCount.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnShareCount.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnShareCount.Visible = true;
-            this.gridColumnShareCount.VisibleIndex = 18;
+            this.gridColumnShareCount.VisibleIndex = 19;
             this.gridColumnShareCount.Width = 39;
             // 
             // gridColumnSERVICE_CONDITION_ID
@@ -2937,7 +2908,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn11.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 19;
+            this.gridColumn11.VisibleIndex = 20;
             this.gridColumn11.Width = 41;
             // 
             // repositoryItemButtonEditOtherPaySource
@@ -2960,7 +2931,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnSERVICE_CONDITION_NAME.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnSERVICE_CONDITION_NAME.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnSERVICE_CONDITION_NAME.Visible = true;
-            this.gridColumnSERVICE_CONDITION_NAME.VisibleIndex = 20;
+            this.gridColumnSERVICE_CONDITION_NAME.VisibleIndex = 21;
             this.gridColumnSERVICE_CONDITION_NAME.Width = 38;
             // 
             // repositoryItemButtonCondition
@@ -2983,7 +2954,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcSampleType.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcSampleType.ToolTip = "Loại mẫu bệnh phẩm xét nghiệm";
             this.grcSampleType.Visible = true;
-            this.grcSampleType.VisibleIndex = 21;
+            this.grcSampleType.VisibleIndex = 22;
             this.grcSampleType.Width = 29;
             // 
             // gridColumnChiPhiNgoaiGoi_TabService
@@ -3000,7 +2971,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnChiPhiNgoaiGoi_TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnChiPhiNgoaiGoi_TabService.ToolTip = "Chi phí ngoài gói";
             this.gridColumnChiPhiNgoaiGoi_TabService.Visible = true;
-            this.gridColumnChiPhiNgoaiGoi_TabService.VisibleIndex = 16;
+            this.gridColumnChiPhiNgoaiGoi_TabService.VisibleIndex = 17;
             this.gridColumnChiPhiNgoaiGoi_TabService.Width = 35;
             // 
             // gridColumnEstimateDuration
@@ -3129,7 +3100,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn_Service_PrimaryPatientType.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn_Service_PrimaryPatientType.ToolTip = "Đối tượng phụ thu";
             this.gridColumn_Service_PrimaryPatientType.Visible = true;
-            this.gridColumn_Service_PrimaryPatientType.VisibleIndex = 12;
+            this.gridColumn_Service_PrimaryPatientType.VisibleIndex = 13;
             this.gridColumn_Service_PrimaryPatientType.Width = 34;
             // 
             // colUnb
@@ -3271,7 +3242,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn19.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn19.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 22;
+            this.gridColumn19.VisibleIndex = 23;
             this.gridColumn19.Width = 71;
             // 
             // colIsNotUseBhytUnb
@@ -3308,7 +3279,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 23;
+            this.gridColumn23.VisibleIndex = 24;
             this.gridColumn23.Width = 60;
             // 
             // repositoryItemSpinEditEstimateDuration
@@ -5588,6 +5559,34 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciTotalGuarantee.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTotalGuarantee.TextSize = new System.Drawing.Size(120, 20);
             this.lciTotalGuarantee.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1352, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 617);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1352, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 588);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1352, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 588);
             // 
             // customGridLookUpEditWithFilterMultiColumn1View
             // 
