@@ -39,20 +39,21 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO
 
     public class PatientInfoRequest : BaseGuaranteeRequest
     {
-        public string PatientName { get; set; }
-        public string Dob { get; set; }
-        public string CccdNumber { get; set; }
+        public string PatientFullName { get; set; }
+        public string PatientDateOfBirth { get; set; }
+        public string PatientCccd { get; set; }
         public string Signature { get; set; }
+        public string Token { get; set; }
     }
     #endregion
 
     #region RegisterUse API
     public class RegisterUseRequest
     {
-        public string PatientName { get; set; }
-        public string Dob { get; set; }
-        public string CccdNumber { get; set; }
-        public string Amount { get; set; }
+        public string PatientFullName { get; set; }
+        public string PatientDateOfBirth { get; set; }
+        public string PatientCccd { get; set; }
+        public string RequestAmount { get; set; }
         public string ApplicationCode { get; set; }
         public string Remark { get; set; }
         public string Signature { get; set; }
@@ -162,9 +163,10 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO
     public class AvailableBalanceInfoRequest
     {
         public string RequestId { get; set; }
-        public string PatientName { get; set; }
-        public string Dob { get; set; }
-        public string CccdNumber { get; set; }
+        public string PatientFullName { get; set; }
+        public string PatientDateOfBirth { get; set; }
+        public string PatientCccd { get; set; }
+        public string ApplicationCode { get; set; }
     }
 
     public class AvailableBalanceInfoData
