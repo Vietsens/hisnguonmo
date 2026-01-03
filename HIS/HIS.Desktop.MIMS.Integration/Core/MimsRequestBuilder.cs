@@ -80,6 +80,42 @@ namespace HIS.Desktop.MIMS.Integration.Core
             return sb.ToString();
         }
 
+        public static string BuildDrugHealthAlertRequest(
+            List<DrugItem> drugs,
+            List<string> icd10Codes)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("<Request><Interaction><Prescribing>");
+
+            if (drugs != null)
+            {
+                foreach (var d in drugs)
+                {
+                    sb.Append(BuildDrugTag(d));
+                }
+            }
+
+            sb.Append("</Prescribing>");
+
+            if (icd10Codes != null && icd10Codes.Count > 0)
+            {
+                sb.Append("<HealthIssueCodes>");
+                foreach (var code in icd10Codes)
+                {
+                    if (string.IsNullOrWhiteSpace(code))
+                        continue;
+
+                    sb.Append(string.Format("<HealthIssueCode code=\"{0}\" codeType=\"ICD10\" />", code.Trim()));
+                }
+                sb.Append("</HealthIssueCodes>");
+            }
+
+            sb.Append("<References/></Interaction></Request>");
+
+            return sb.ToString();
+        }
+
         public static string BuildVnContraindicationRequest(
             List<string> hisDrugCodes)
         {

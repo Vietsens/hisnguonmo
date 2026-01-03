@@ -43,7 +43,7 @@ namespace HIS.MIMS.WinFormsDemo
             // Call CDS endpoint directly and transform XML -> HTML via XSL
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xml);
             string html = MimsResponseTransformer.XmlToHtml(xmlResponse);
-            WebViewHelper.ShowHtml(html, "Drug Information (Product)");
+            WebViewHelper.ShowHtml(html, "Thông tin thuốc");
 
             //ShowHtml(html, string.IsNullOrEmpty(xmlResponse) ? "No response from MIMS API" : null);
         }
