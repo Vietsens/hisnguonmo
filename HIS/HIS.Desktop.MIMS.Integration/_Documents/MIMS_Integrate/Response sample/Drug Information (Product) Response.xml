@@ -1,0 +1,238 @@
+<Result buildID="3374" copyright="Copyright (c) 2021 MIMS" expiryDate="2025-12-31">
+    <Content>
+        <Product name="Vercef dispersible tab 125 mg" offMarket="false" reference="{D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60}">
+            <MONOGRAPH>
+                <GENMONO>
+                    <![CDATA[Cefaclor]]>
+                </GENMONO>
+                <LASTUPDATED>
+                    <![CDATA[TRUE]]>
+                </LASTUPDATED>
+                <GCLS>
+                    <![CDATA[Cephalosporins]]>
+                </GCLS>
+                <GPCAT>
+                    <![CDATA[PO: B]]>
+                </GPCAT>
+                <GCI>
+                    <![CDATA[Hypersensitivity to cefaclor or to other cephalosporins.]]>
+                </GCI>
+                <GSP>
+                    <![CDATA[Hypersensitivity to penicillins. History of GI disease. Renal impairment. Pregnancy and lactation.<br /><I>Monitoring Parameters:</I><br />Monitor renal function. Observe for signs of anaphylaxis during 1st dose.<br /><I>Overdosage:</I><br />Symptoms: Nausea, vomiting, epigastric distress, diarrhoea. Management: Supportive treatment.]]>
+                </GSP>
+                <GAR>
+                    <![CDATA[GI effects (e.g. diarrhoea, nausea, vomiting), headache, rash. Rarely, serum sickness-like reactions consisting of erythema multiforme or maculopapular pruritic rash or urticaria accompanied by arthritis, arthralgia, irritability and fever.<br><strong>Potentially Fatal:</strong> Severe hypersensitivity reactions (e.g. Stevens-Johnson syndrome, toxic epidermal necrolysis and anaphylaxis), pseudomembranous colitis.]]>
+                </GAR>
+                <GDI>
+                    <![CDATA[May enhance the nephrotoxic effect of aminoglycosides. May diminish the therapeutic effect of BCG, typhoid vaccine and Na picosulfate. Concomitant use w/ warfarin may increase prothrombin time. Probenecid inhibits renal excretion of cefaclor.]]>
+                </GDI>
+                <GPPPA>
+                    <![CDATA[May be taken with or without food.<br /><I>Reconstitution:</I><br />Add the amount of water specified on the container in 2 portions to provide a susp containing 125, 187, 250 or 375 mg per 5 mL. Shake the bottle after each addition.<br /><I>Storage:</I><br />Store between 20-25&deg;C. Protect from moisture. Reconstituted powd for susp: Store between 2-8&deg;C.]]>
+                </GPPPA>
+                <GATC1>
+                    <![CDATA[cefaclor]]>
+                </GATC1>
+                <GATC2>
+                    <![CDATA[J01DC04]]>
+                </GATC2>
+                <GLAB>
+                    <![CDATA[False-positive reaction in urinary glucose test using Benedict&apos;s or Fehling&apos;s soln or copper sulfate test tablets. Positive direct Coombs&apos; test.]]>
+                </GLAB>
+                <GFOOD>
+                    <![CDATA[Food may delay the rate but does not affect the extent of absorption.]]>
+                </GFOOD>
+                <GDOSE>
+                    <![CDATA[<i>Oral</i><br /><b>Otitis media, Respiratory tract infections, Skin infections, Soft tissue infections, Urinary tract infections</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>250-500 mg 8 hrly. Max: 4 g daily.<br /><b>Child: </b><em>&gt;1 mth</em> 20-40 mg/kg daily in 2 or 3 divided doses. Max: 0.75-1.5 g daily.<br /></div>]]>
+                </GDOSE>
+                <GSPG/>
+                <GACTION>
+                    <![CDATA[<b>Description: </b>Cefaclor inhibits bacterial cell wall synthesis by binding to 1 or more of the penicillin-binding proteins (PBPs) which in turn inhibit the final transpeptidation step of peptidoglycan synthesis in bacterial cell walls, thus inhibiting cell wall biosynthesis and arresting cell wall assembly resulting in bacterial cell death.<br /><b>Pharmacokinetics: </b><br /><b>Absorption: </b>Well absorbed from the GI tract. Food may delay the rate but does not affect the extent of absorption. Time to peak plasma concentration: 0.5-1 hr.<br /><b>Distribution: </b>Widely distributed. Crosses the placenta and enters breast milk. Plasma protein binding: Approx 25%.<br /><b>Excretion: </b>Via urine (up to 85%, as unchanged drug). Plasma half-life: 0.5-1 hr.<br />]]>
+                </GACTION>
+            </MONOGRAPH>
+            <BRIEFMONO>
+                <BRDNAME>
+                    <![CDATA[Vercef]]>
+                </BRDNAME>
+                <LASTUPDATED>
+                    <![CDATA[2020-6-22 02:51:25]]>
+                </LASTUPDATED>
+                <BPOI/>
+                <BC>
+                    <![CDATA[Cefaclor]]>
+                </BC>
+                <BI/>
+                <BD/>
+                <BPP>
+                    <![CDATA[<B>Cap</B>  250 mg x 10 x 10 &apos; s (RM136.50).<B>Distab</B>  125 mg x 5 x 6 &apos; s. 250 mg x 5 x 6 &apos; s.<B>MR tab</B>  375 mg x 10 x 10 &apos; s (RM200).<B>Susp</B>  125 mg/5 mL x 50 mL x 1 &apos; s. 187 mg/5 mL x 30 mL x 1 &apos; s.<B>Granules for oral susp</B>  375 mg/5 mL x 30 mL x 1 &apos; s, 60 mL x 1 &apos; s.]]>
+                </BPP>
+                <BCI/>
+                <BSP/>
+                <BAR/>
+                <BDI/>
+                <Form>
+                    <Advice>
+                        <![CDATA[Take with or without food.]]>
+                    </Advice>
+                    <Remark>
+                        <![CDATA[MR tab: Swallow whole, do not chew/crush.]]>
+                    </Remark>
+                </Form>
+            </BRIEFMONO>
+            <PILS>
+                <SPECIFICPIL GenericName="Cefaclor" Id="dfce2679-954d-4874-bb6d-a61a01207947" IsActive="true" Language="BahasaMelayu">
+                    <RELATEDSYNONYM/>
+                    <ROUTEFORM>
+                        <![CDATA[Oral]]>
+                    </ROUTEFORM>
+                    <DESCRIPTION>
+                        <![CDATA[Cefaclor-Oral]]>
+                    </DESCRIPTION>
+                    <INDICATIONLABEL>
+                        <![CDATA[Mengapakah saya perlu mengambil ubat ini?]]>
+                    </INDICATIONLABEL>
+                    <INDICATION>
+                        <![CDATA[Cefaclor adalah antibiotik. Ia digunakan untuk merawat sesetengah jenis jangkitan bakteria pada hidung, tekak, dada, telinga, kulit atau pundi kencing.]]>
+                    </INDICATION>
+                    <DOSAGELABEL>
+                        <![CDATA[Bagaimanakah cara saya mengambil ubat ini?]]>
+                    </DOSAGELABEL>
+                    <DOSAGE>
+                        <![CDATA[Ambil Cefaclor seperti yang diarahkan oleh doktor anda atau ikut arahan pada label ubat. Jangan ambil dos yang lebih atau kurang daripada yang diarahkan oleh doktor anda.<br /><br />
+Anda boleh mengambil Cefaclor dengan atau tanpa makanan.<br /><br />
+Ubat ini boleh didapati dalam bentuk tablet, kapsul dan cecair ampaian oral.<br /><br />
+Jika anda mengambil tablet atau kapsul, telan ia secara sekaligus dan jangan membahagi, mengunyah atau menghancurkan tablet atau kapsul.<br /><br />
+Jika anda mengambil cecair ampaian oral, goncang botol dengan sebaik mungkin sebelum anda mengambilnya untuk memastikan bahawa cecair itu bercampur sama rata. Gunakan sudu atau cawan pengukur yang disediakan untuk mengukur dos anda.<br /><br />
+Ubat ini perlu diambil pada jangka masa yang tetap supaya ia berkesan. Teruskan mengambil Cefaclor walaupun keadaan anda bertambah baik. Jangan berhenti mengambil ubat ini melainkan jika diarahkan oleh doktor.<br /><br />
+Jangan melangkau mana-mana dos. Anda mesti menghabiskan kesemua dos antibiotik yang diberikan. Jika tidak, jangkitan anda tidak dapat dirawat sepenuhnya.]]>
+                    </DOSAGE>
+                    <MISSEDDOSELABEL>
+                        <![CDATA[Apakah yang perlu saya lakukan apabila terlupa mengambil ubat ini?]]>
+                    </MISSEDDOSELABEL>
+                    <MISSEDDOSE>
+                        <![CDATA[Ambil dos yang terlupa sebaik sahaja anda ingat. Jika ia hampir kepada masa untuk dos seterusnya, abaikan dos yang terlepas dan ikut semula jadual dos anda seperti biasa.<br /><br />
+JANGAN menggandakan dos dalam apa jua keadaan.<br /><br />
+Jika anda sering lupa untuk mengambil ubat, beritahu doktor dan ahli farmasi anda.]]>
+                    </MISSEDDOSE>
+                    <CONTRAINDICATIONSLABEL>
+                        <![CDATA[Bilakah ubat ini tidak patut/sesuai diambil?]]>
+                    </CONTRAINDICATIONSLABEL>
+                    <CONTRAINDICATIONS>
+                        <![CDATA[Beritahu doktor anda dengan segera jika anda mempunyai sejarah tindakbalas alahan (ruam, sesak nafas, bengkak mulut atau mata) kepada antibiotik yang serupa seperti cefalexin, cefuroxime, cefixime, ceftibuten atau mana-mana antibiotik cephalosporin yang lain.]]>
+                    </CONTRAINDICATIONS>
+                    <SPECIALPRECAUTIONSLABEL>
+                        <![CDATA[Apakah yang perlu saya beri perhatian semasa mengambil ubat ini?]]>
+                    </SPECIALPRECAUTIONSLABEL>
+                    <SPECIALPRECAUTIONS>
+                        <![CDATA[Beritahu doktor anda jika anda mempunyai penyakit buah pinggang.<br /><br />
+Beritahu doktor anda jika anda mengandung atau menyusukan bayi.<br /><br />
+Amalkan kebersihan diri yang baik untuk mengurangkan risiko daripada dijangkiti lagi.]]>
+                    </SPECIALPRECAUTIONS>
+                    <SIDEEFFECTSLABEL>
+                        <![CDATA[Apakah kesan sampingan daripada pengambilan ubat ini?]]>
+                    </SIDEEFFECTSLABEL>
+                    <SIDEEFFECTS>
+                        <![CDATA[Cefaclor boleh menyebabkan kesan-kesan sampingan yang berikut: sakit kepala, cirit-birit, loya, muntah-muntah dan ketidakselesaan perut.<br /><br />
+Sesetengah kesan sampingan mungkin memerlukan bantuan perubatan dengan segera. Beritahu doktor anda dengan segera jika anda mengalami mana-mana yang berikut:<br /><br />
+- sakit tekak dengan demam yang kerap dan berterusan, pendarahan atau lebam yang luar biasa<br />
+- warna kekuningan pada kulit atau mata<br />
+- ruam dengan pengelupasan kulit atau melepuh pada bibir, mulut atau mata dan disertai dengan demam<br /><br />
+Jika anda mengalami ruam, sesak nafas, bengkak pada mulut atau mata, berhenti mengambil ubat ini dan beritahu doktor anda dengan segera. Ini mungkin tanda-tanda tindak balas alahan.<br /><br />
+Beritahu doktor anda jika mana-mana kesan sampingan tidak hilang atau bertambah teruk, atau jika anda mengalami kesan sampingan yang lain.]]>
+                    </SIDEEFFECTS>
+                    <DRUGINTERACTIONSLABEL>
+                        <![CDATA[Bolehkah saya mengambil ubat ini bersama ubat-ubatan yang lain?]]>
+                    </DRUGINTERACTIONSLABEL>
+                    <DRUGINTERACTIONS>
+                        <![CDATA[Beritahu doktor dan ahli farmasi anda jika anda mengambil warfarin (ubat penipisan darah) atau probenecid (ubat untuk gout).<br /><br />
+Sentiasa beritahu doktor dan ahli farmasi anda jika anda mengambil sebarang ubat-ubatan lain, termasuk tonik herba seperti ubat tradisional, makanan tambahan/suplemen kesihatan dan ubat-ubatan yang anda beli tanpa surat ubat (preskripsi).]]>
+                    </DRUGINTERACTIONS>
+                    <FOODINTERACTIONSLABEL>
+                        <![CDATA[Adakah terdapat sebarang sekatan terhadap jenis makanan yang saya boleh makan?]]>
+                    </FOODINTERACTIONSLABEL>
+                    <FOODINTERACTIONS>
+                        <![CDATA[Elakkan daripada mengambil alkohol.]]>
+                    </FOODINTERACTIONS>
+                    <STORAGELABEL>
+                        <![CDATA[Bagaimanakah cara saya menyimpan ubat ini?]]>
+                    </STORAGELABEL>
+                    <STORAGE>
+                        <![CDATA[Simpan di tempat yang sejuk, kering dan jauh daripada kanak-kanak.<br /><br />
+Simpan ampaian oral dalam peti sejuk (antara 2-8&#176;C) sebaik sahaja anda telah campur ubat serbuk dengan air. Jangan membekukannya, kerana ia akan menjadi kurang berkesan. Buangkan mana-mana bahagian yang tidak digunakan selepas 14 hari.<br /><br />
+Ubat-ubatan tidak boleh digunakan selepas ia melepasi tarikh luput.]]>
+                    </STORAGE>
+                    <COPYRIGHT>
+                        <![CDATA[Penafian: Maklumat ini dihasilkan secara bebas oleh MIMS berdasarkan ubat Cefaclor dan disediakan untuk rujukan anda sahaja. Ia bukan pengganti bagi dan hanya perlu digunakan bersama-sama dengan perundingan penuh oleh profesional kesihatan yang berlesen, maklumat yang diberikan oleh ahli farmasi anda dan/atau pengeluar ubat. Ia mungkin tidak mengandungi semua maklumat yang anda perlukan dan ia tidak boleh menggantikan penjagaan perubatan profesional, dan ia juga tidak mengambil kira keadaan individu seseorang. Walaupun pelbagai usaha telah dilakukan untuk memastikan ketepatan kandungan, pihak kami tidak akan bertanggungjawab atau menanggung apa-apa tuntutan atau ganti rugi yang berbangkit daripada penggunaan atau penyalahgunaan maklumat yang terkandung di sini, sama ada dari segi kandungan atau ketidaklengkapan maklumat, atau sebaliknya. Hakcipta © 2020 MIMS. Semua hakcipta terpelihara. Diperkasakan oleh MIMS]]>
+                    </COPYRIGHT>
+                </SPECIFICPIL>
+            </PILS>
+            <PILS>
+                <SPECIFICPIL GenericName="Cefaclor" Id="94531562-a3fa-4928-9c74-a61a011f78e5" IsActive="true" Language="English">
+                    <RELATEDSYNONYM/>
+                    <ROUTEFORM>
+                        <![CDATA[Oral]]>
+                    </ROUTEFORM>
+                    <DESCRIPTION>
+                        <![CDATA[Cefaclor-Oral]]>
+                    </DESCRIPTION>
+                    <INDICATIONLABEL>
+                        <![CDATA[Why do I need this medicine?]]>
+                    </INDICATIONLABEL>
+                    <INDICATION>
+                        <![CDATA[Cefaclor is an antibiotic. It is used to treat certain bacterial infections of the nose, throat, chest, ears, skin or bladder.]]>
+                    </INDICATION>
+                    <DOSAGELABEL>
+                        <![CDATA[How do I take this medicine?]]>
+                    </DOSAGELABEL>
+                    <DOSAGE>
+                        <![CDATA[Take Cefaclor exactly as directed by your doctor or according to the instruction on the label. Do not take more or less than instructed by your doctor.<br /><br />You may take Cefaclor with or without meals.<br /><br />This medicine is available as a tablet, capsule and suspension.<br /><br />If you are taking the tablets or capsules, swallow it whole and do not divide, chew or crush the tablet or capsule. <br /><br />If you are taking an oral suspension, shake the bottle well before you take it to ensure that the liquid is evenly mixed. Use the measuring spoon or cup provided to measure your dose.<br /><br />This medicine should be taken at regular intervals for it to be effective. Continue to take Cefaclor even when you feel better. Do not stop taking it unless instructed by the doctor. <br /><br />Do not skip any doses. You must complete the entire course of antibiotic. If you don&apos;t, the infection will not clear completely.<br />]]>
+                    </DOSAGE>
+                    <MISSEDDOSELABEL>
+                        <![CDATA[What should I do if I have forgotten to take this medicine?]]>
+                    </MISSEDDOSELABEL>
+                    <MISSEDDOSE>
+                        <![CDATA[Take the missed dose as soon as you remember. If it is almost time for your next dose, skip the missed dose and return to your normal dosing schedule.<br /><br />DO NOT double a dose under any circumstances.<br /><br />If you often forget to take your medicine, let your doctor and pharmacist know.]]>
+                    </MISSEDDOSE>
+                    <CONTRAINDICATIONSLABEL>
+                        <![CDATA[When should I not use this medicine?]]>
+                    </CONTRAINDICATIONSLABEL>
+                    <CONTRAINDICATIONS>
+                        <![CDATA[Alert your doctor if you have a history of allergic reactions (rash, breathlessness, swollen mouth or eyes) to similar antibiotics such as cefalexin, cefuroxime, cefixime, ceftibuten or any other cephalosporin antibiotics.]]>
+                    </CONTRAINDICATIONS>
+                    <SPECIALPRECAUTIONSLABEL>
+                        <![CDATA[What should I take note of while taking this medicine?]]>
+                    </SPECIALPRECAUTIONSLABEL>
+                    <SPECIALPRECAUTIONS>
+                        <![CDATA[Inform your doctor if you have kidney disease.<br /><br />Let your doctor know if you are pregnant or breastfeeding. <br /><br />Practice good hygiene to reduce the chances of getting infected again.]]>
+                    </SPECIALPRECAUTIONS>
+                    <SIDEEFFECTSLABEL>
+                        <![CDATA[What side effects could I experience?]]>
+                    </SIDEEFFECTSLABEL>
+                    <SIDEEFFECTS>
+                        <![CDATA[Cefaclor may cause any of the following side effects: headache, diarrhoea, nausea, vomiting and stomach discomfort.<br /><br />Some side effects may need immediate medical help. Alert your doctor quickly if you experience any of the following:<br /><br />- frequent and persistent sore throat with fever, unusual bleeding or bruising<br />- yellowing of the skin or eyes<br />- rashes with peeling of the skin or blistering of the lips, mouth or eyes accompanied by fever<br /><br />If you develop rashes, breathlessness, swollen mouth or eyes, stop the medicine and inform your doctor quickly. These could be signs of an allergic reaction.<br /><br />Inform your doctor if any of these side effects do not go away or are severe, or if you experience other side effects.<br />]]>
+                    </SIDEEFFECTS>
+                    <DRUGINTERACTIONSLABEL>
+                        <![CDATA[Can I take this with other medicines?]]>
+                    </DRUGINTERACTIONSLABEL>
+                    <DRUGINTERACTIONS>
+                        <![CDATA[Inform your doctor and pharmacist if you are taking warfarin (blood-thinning medicine) or probenecid (medicine for gout). <br /><br />Always notify your doctor and pharmacist if you are taking any other medicines, including herbal medicines such as traditional Chinese medicines, supplements and medicines that you buy without a prescription.]]>
+                    </DRUGINTERACTIONS>
+                    <FOODINTERACTIONSLABEL>
+                        <![CDATA[What special dietary instructions should I follow?]]>
+                    </FOODINTERACTIONSLABEL>
+                    <FOODINTERACTIONS>
+                        <![CDATA[Avoid alcohol.]]>
+                    </FOODINTERACTIONS>
+                    <STORAGELABEL>
+                        <![CDATA[How should I store this medicine?]]>
+                    </STORAGELABEL>
+                    <STORAGE>
+                        <![CDATA[Store in a cool, dry place away from the reach of children.<br /><br />Refrigerate the oral suspension (between 2-8°C) once you have mixed the powder with water. Do not freeze it otherwise it will become less effective. Throw away any unused portion after 14 days.<br /><br />Medicines must not be used past the expiry date.]]>
+                    </STORAGE>
+                    <COPYRIGHT>
+                        <![CDATA[Disclaimer: This information is independently developed by MIMS based on Cefaclor and is provided for your reference only. It is not a replacement for and should only be used in conjunction with full consultation with a licensed healthcare professional, the information provided by your pharmacist and/or the manufacturer of the medication. It may not contain all the available information you require and cannot substitute professional medical care, nor does it take into account all individual circumstances. Although great effort has been made to ensure content accuracy, we shall not be held responsible or liable for any claims or damages arising from the use or misuse of the information contained herein, its contents or omissions, or otherwise. Copyright © 2020 MIMS. All rights reserved. Powered by MIMS]]>
+                    </COPYRIGHT>
+                </SPECIFICPIL>
+            </PILS>
+        </Product>
+    </Content>
+</Result>

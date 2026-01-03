@@ -238,6 +238,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         item.TEST_SAMPLE_TYPE_NAME = null;
                         item.SereServEkipADO = null;
                         item.NumberOfTimes = 1;
+                        item.IsGuarantee = false; 
+                        //if (currentHisTreatment.GUARANTEE_CODE != null) item.IsGuarantee = true; 
+                        // Bỏ check all bảo lãnh lúc ban đầu - sẽ tự động check khi tích chọn dịch vụ
+                        //item.SetIsGuarantee(false);
                     }
                 }
                 else

@@ -26,6 +26,8 @@ namespace HIS.Desktop.LocalStorage.BackendData.ADO
 {
     public class SereServADO : MOS.EFMODEL.DataModels.V_HIS_SERE_SERV
     {
+        // qtcode
+        public bool IsGuarantee { get; set; } = false; 
         public long? AssignNumOrder { get; set; }
         public long? SERVICE_CONDITION_ID { get; set; }
         public string OTHER_PAY_SOURCE_NAME { get; set; }

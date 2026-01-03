@@ -129,6 +129,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         private const string CONFIG_KEY__WarningHeinPatientTypeCode = "HIS.Desktop.Plugins.RegisterV2.WarningHeinPatientTypeCode"; 
         private const string CONFIG_KEY__HideAddressLevel = "HIS.Desktop.Plugins.Register.HideAddressLevel";
         private const string CONFIG_KEY__WarningOverMonth = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
+        private const string CONFIG_KEY_GuaranteeConnection = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
 
         public static bool HideAddressLevel;
         public static string CHECK_DUPLICATION;
@@ -183,7 +184,7 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
         /// </summary>
         public static string RelativesInforOption;
         public static long WarnOverMonthsTransfer;
-
+        public static string GuaranteeConnection;
         /// <summary>
         /// Cấu hình Kiểm tra hồ sơ điều trị gần nhất của bn. Nếu có ngày ra = ngày hiện tại thì cảnh báo. 
         /// 1: có, 0: không
@@ -415,10 +416,12 @@ namespace HIS.Desktop.Plugins.Library.RegisterConfig
                 BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_SERVICE_FOLLOW>();
                 IsUsingRecognition = GetValue(IS_USING_RECOGNITION) == valueString__true;
 
-                ValueAutoCallRegisterReq = Int64.Parse(GetValue(CONFIG_KEY_AUTO_CALL_REGISTER_REQ));
+                if(GetValue(CONFIG_KEY_AUTO_CALL_REGISTER_REQ) != null)
+                    ValueAutoCallRegisterReq = Int64.Parse(GetValue(CONFIG_KEY_AUTO_CALL_REGISTER_REQ));
 
                 NumOrderIssueOption = GetValue(CONFIG_KEY_NUM_ORDER_ISSUE_OPTION);
                 WarnOverMonthsTransfer = HisConfigs.Get<long>(CONFIG_KEY__WarningOverMonth);
+                GuaranteeConnection = GetValue(CONFIG_KEY_GuaranteeConnection);
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 sp2 (http://www.altova.com) by Arseniy Kucherenko (CMPMedica) -->
+<!-- edited with XML Spy v4.4 U (http://www.xmlspy.com) by Mike Schenk (Atmedica) -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xsd:element name="Request">
+        <xsd:annotation>
+            <xsd:documentation>version 5.41.0.0</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:choice>
+                    <xsd:element name="List">
+                        <xsd:annotation>
+                            <xsd:documentation>These are queries for finding entities that the user has some information about. They return only basic information about the entity... name and reference generally.   Also the list requests that have simply an entity name return the entire list for that entity</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:choice>
+                                    <xsd:element name="Product">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Returns products that meet all of the supplied criteria. The criteria are combined with a logical "AND."</xsd:documentation>
+                                        </xsd:annotation>
+                                        <xsd:complexType>
+                                            <xsd:all>
+                                                <xsd:element name="ByName" type="baseByName" minOccurs="0"/>
+                                                <xsd:element name="ByGGPI" type="baseByReference" minOccurs="0"/>
+                                                <xsd:element name="ByProductLine" type="baseByReference" minOccurs="0"/>
+                                                <xsd:element name="ByProductCode" minOccurs="0">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute name="code" type="xsd:string" use="required"/>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                                <xsd:element name="ByProductType" type="baseByReference" minOccurs="0"/>
+                                                <xsd:element name="ByActiveCompositionGroup" type="baseByReference" minOccurs="0"/>
+                                                <xsd:element name="ByActiveComposition" type="baseByReference" minOccurs="0"/>
+                                                <xsd:element name="ByGenericItem" type="baseByReference" minOccurs="0"/>
+                                                <xsd:element name="BySpecificItem" type="baseByReference" minOccurs="0"/>
+                                                <xsd:element name="ByAtcClassification" minOccurs="0">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute name="code" type="xsd:string" use="required"/>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                                <xsd:element name="ByTherapeuticClass" minOccurs="0">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute name="code" type="xsd:string" use="required"/>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                                <xsd:element name="ByMolecules" type="ByMoleculesType" minOccurs="0"/>
+                                                <xsd:element name="ByIdentifier" minOccurs="0">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute name="identifier" type="xsd:string" use="required"/>
+                                                        <xsd:attribute name="identifierType" type="GUID" use="required"/>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                                <xsd:element name="ByPackageIdentifier" minOccurs="0">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute name="identifier" type="xsd:string" use="required"/>
+                                                        <xsd:attribute name="identifierType" type="GUID" use="required"/>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:all>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="ProductLine">
+                                        <xsd:complexType>
+                                            <xsd:choice>
+                                                <xsd:element name="ByName" type="baseByName"/>
+                                                <xsd:element name="ByReference" type="baseByReference"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="Molecule">
+                                        <xsd:complexType>
+                                            <xsd:choice>
+                                                <xsd:element name="ByName" type="baseByName"/>
+                                                <xsd:element name="ByReference" type="baseByReference"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="ActiveCompositionGroup">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:choice minOccurs="0">
+                                                    <xsd:element name="ByMoleculeName" type="baseByName"/>
+                                                    <xsd:element name="ByMoleculeReference" type="baseByReference"/>
+                                                    <xsd:element name="ByMolecules" type="ByMoleculesType"/>
+                                                </xsd:choice>
+                                                <xsd:element name="Products" minOccurs="0"/>
+                                            </xsd:sequence>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="ActiveComposition">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:choice minOccurs="0">
+                                                    <xsd:element name="ByMoleculeName" type="baseByName"/>
+                                                    <xsd:element name="ByMoleculeReference" type="baseByReference"/>
+                                                    <xsd:element name="ByMolecules" type="ByMoleculesType"/>
+                                                </xsd:choice>
+                                                <xsd:element name="Products" minOccurs="0"/>
+                                            </xsd:sequence>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="GGPI">
+                                        <xsd:complexType>
+                                            <xsd:choice minOccurs="0">
+                                                <xsd:element name="ByMoleculeName" type="baseByName"/>
+                                                <xsd:element name="ByMoleculeReference" type="baseByReference"/>
+                                                <xsd:element name="ByMolecules" type="ByMoleculesType"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="GenericItem">
+                                        <xsd:complexType>
+                                            <xsd:choice minOccurs="0">
+                                                <xsd:element name="ByMoleculeName" type="baseByName"/>
+                                                <xsd:element name="ByMoleculeReference" type="baseByReference"/>
+                                                <xsd:element name="ByMolecules" type="ByMoleculesType"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="SpecificItem">
+                                        <xsd:complexType>
+                                            <xsd:choice minOccurs="0">
+                                                <xsd:element name="ByMoleculeName" type="baseByName"/>
+                                                <xsd:element name="ByMoleculeReference" type="baseByReference"/>
+                                                <xsd:element name="ByMolecules" type="ByMoleculesType"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="AtcClassification">
+                                        <xsd:complexType>
+                                            <xsd:choice>
+                                                <xsd:element name="ByLevel" type="xsd:string">
+                                                    <xsd:annotation>
+                                                        <xsd:documentation>Replaces the ByGroup option from version 4. The text of the element is either empty which will cause all Level 1 codes and names to be returned, or it contains a code from one level, in which case the result is the list of codes and names for the children at the next level. If a level 5 code is supplied (or any invalid code), there will be an empty list in the result. If a 2, 6 or greater than 7 character string is supplied, there will be an error returned in "Result Information".</xsd:documentation>
+                                                    </xsd:annotation>
+                                                </xsd:element>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="TherapeuticClass">
+                                        <xsd:complexType>
+                                            <xsd:choice>
+                                                <xsd:element name="ByCode" type="xsd:string"/>
+                                                <xsd:element name="ByName" type="baseByName"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="SubstanceClass">
+                                        <xsd:complexType>
+                                            <xsd:choice>
+                                                <xsd:element name="ByName" type="baseByName"/>
+                                                <xsd:element name="ByReference" type="baseByReference"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="HealthIssue">
+                                        <xsd:complexType>
+                                            <xsd:choice>
+                                                <xsd:element name="ByHealthIssueCode">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute name="code" type="xsd:string" use="required"/>
+                                                        <xsd:attribute name="codeType" type="xsd:string" use="required"/>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                                <xsd:element name="ByName" type="baseByName"/>
+                                                <xsd:element name="ByReference" type="baseByReference"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="HealthIssueCode">
+                                        <xsd:complexType>
+                                            <xsd:choice>
+                                                <xsd:element name="ByHealthIssue">
+                                                    <xsd:complexType>
+                                                        <xsd:complexContent>
+                                                            <xsd:extension base="baseByReference">
+                                                                <xsd:attribute name="codeType" type="xsd:string" use="optional"/>
+                                                            </xsd:extension>
+                                                        </xsd:complexContent>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="DSMRouteOfAdmin"/>
+                                    <xsd:element name="FoodClass"/>
+                                    <xsd:element name="RouteOfAdministration"/>
+                                    <xsd:element name="CompanyType"/>
+                                    <xsd:element name="DocumentType"/>
+                                    <xsd:element name="Form"/>
+                                    <xsd:element name="HL7Form"/>
+                                    <xsd:element name="PackageType"/>
+                                    <xsd:element name="PriceType"/>
+                                    <xsd:element name="ProductType"/>
+                                    <xsd:element name="MoleculeNameSource"/>
+                                    <xsd:element name="Unit"/>
+                                    <xsd:element name="Package">
+                                        <xsd:complexType>
+                                            <xsd:choice>
+                                                <xsd:element name="ByIdentifier">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute name="identifier" type="xsd:string" use="required"/>
+                                                        <xsd:attribute name="identifierType" type="GUID" use="required"/>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="PackageIdentifierType"/>
+                                    <xsd:element name="ProductIdentifierType"/>
+                                    <xsd:element name="DoseInterval"/>
+                                    <xsd:element name="DemographicParameter"/>
+                                </xsd:choice>
+                                <xsd:element name="Filter" minOccurs="0">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Select">
+                                                <xsd:complexType>
+                                                    <xsd:choice>
+                                                        <xsd:element name="Range">
+                                                            <xsd:complexType>
+                                                                <xsd:attribute name="from" type="xsd:unsignedInt" use="required"/>
+                                                                <xsd:attribute name="to" type="xsd:unsignedInt" use="required"/>
+                                                            </xsd:complexType>
+                                                        </xsd:element>
+                                                    </xsd:choice>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="Detail">
+                        <xsd:complexType>
+                            <xsd:choice>
+                                <xsd:element name="Datafile"/>
+                                <xsd:element name="FoodClass" type="baseByReference">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Would supply the long description of the class.</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="Product">
+                                    <xsd:complexType>
+                                        <xsd:complexContent>
+                                            <xsd:extension base="baseByReference">
+                                                <xsd:all>
+                                                    <xsd:annotation>
+                                                        <xsd:documentation>Including any one or several of these "child" entities will cause that entity to be returned in the result.</xsd:documentation>
+                                                    </xsd:annotation>
+                                                    <xsd:element name="Items" minOccurs="0"/>
+                                                    <xsd:element name="Packages" minOccurs="0"/>
+                                                    <xsd:element name="Images" minOccurs="0"/>
+                                                    <xsd:element name="TherapeuticClasses" minOccurs="0"/>
+                                                    <xsd:element name="ATCCodes" minOccurs="0"/>
+                                                    <xsd:element name="Companies" minOccurs="0"/>
+                                                    <xsd:element name="Documents" minOccurs="0">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence minOccurs="0">
+                                                                <xsd:element name="DocumentType" maxOccurs="unbounded">
+                                                                    <xsd:complexType>
+                                                                        <xsd:attribute name="reference" type="GUID" use="required"/>
+                                                                    </xsd:complexType>
+                                                                </xsd:element>
+                                                            </xsd:sequence>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                    <xsd:element name="Identifiers" minOccurs="0"/>
+                                                </xsd:all>
+                                            </xsd:extension>
+                                        </xsd:complexContent>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="ProductByIIdentifier">
+                                    <xsd:complexType>
+                                        <xsd:all>
+                                            <xsd:annotation>
+                                                <xsd:documentation>Including any one or several of these "child" entities will cause that entity to be returned in the result.</xsd:documentation>
+                                            </xsd:annotation>
+                                            <xsd:element name="Items" minOccurs="0"/>
+                                            <xsd:element name="Packages" minOccurs="0"/>
+                                            <xsd:element name="Images" minOccurs="0"/>
+                                            <xsd:element name="TherapeuticClasses" minOccurs="0"/>
+                                            <xsd:element name="ATCCodes" minOccurs="0"/>
+                                            <xsd:element name="Companies" minOccurs="0"/>
+                                            <xsd:element name="Documents" minOccurs="0">
+                                                <xsd:complexType>
+                                                    <xsd:sequence minOccurs="0">
+                                                        <xsd:element name="DocumentType" maxOccurs="unbounded">
+                                                            <xsd:complexType>
+                                                                <xsd:attribute name="reference" type="GUID" use="required"/>
+                                                            </xsd:complexType>
+                                                        </xsd:element>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                            <xsd:element name="Identifiers" minOccurs="0"/>
+                                        </xsd:all>
+                                        <xsd:attribute name="identifier" type="xsd:string" use="required"/>
+                                        <xsd:attribute name="identifierType" type="GUID" use="required"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="Package">
+                                    <xsd:complexType>
+                                        <xsd:complexContent>
+                                            <xsd:extension base="baseByReference">
+                                                <xsd:all>
+                                                    <xsd:element name="Items" minOccurs="0"/>
+                                                    <xsd:element name="Prices" minOccurs="0"/>
+                                                    <xsd:element name="Images" minOccurs="0"/>
+                                                    <xsd:element name="Identifiers" minOccurs="0"/>
+                                                </xsd:all>
+                                            </xsd:extension>
+                                        </xsd:complexContent>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="PackageByIdentifier">
+                                    <xsd:complexType>
+                                        <xsd:all>
+                                            <xsd:element name="Items" minOccurs="0"/>
+                                            <xsd:element name="Prices" minOccurs="0"/>
+                                            <xsd:element name="Images" minOccurs="0"/>
+                                            <xsd:element name="Identifiers" minOccurs="0"/>
+                                        </xsd:all>
+                                        <xsd:attribute name="identifier" type="xsd:string" use="required"/>
+                                        <xsd:attribute name="identifierType" type="GUID" use="required"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="ActiveCompositionGroup">
+                                    <xsd:complexType>
+                                        <xsd:complexContent>
+                                            <xsd:extension base="baseByReference">
+                                                <xsd:all>
+                                                    <xsd:element name="Molecules" minOccurs="0"/>
+                                                    <xsd:element name="ActiveCompositions" minOccurs="0"/>
+                                                    <xsd:element name="Products" minOccurs="0"/>
+                                                    <xsd:element name="GenericItems" minOccurs="0"/>
+                                                </xsd:all>
+                                            </xsd:extension>
+                                        </xsd:complexContent>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="ActiveComposition">
+                                    <xsd:complexType>
+                                        <xsd:complexContent>
+                                            <xsd:extension base="baseByReference">
+                                                <xsd:all>
+                                                    <xsd:element name="Molecules" minOccurs="0"/>
+                                                    <xsd:element name="Products" minOccurs="0"/>
+                                                </xsd:all>
+                                            </xsd:extension>
+                                        </xsd:complexContent>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="GGPI">
+                                    <xsd:complexType>
+                                        <xsd:complexContent>
+                                            <xsd:extension base="baseByReference">
+                                                <xsd:all>
+                                                    <xsd:element name="SpecificItems" minOccurs="0"/>
+                                                    <xsd:element name="Products" minOccurs="0"/>
+                                                </xsd:all>
+                                            </xsd:extension>
+                                        </xsd:complexContent>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="GenericItem">
+                                    <xsd:complexType>
+                                        <xsd:complexContent>
+                                            <xsd:extension base="baseByReference">
+                                                <xsd:all>
+                                                    <xsd:element name="SpecificItems" minOccurs="0"/>
+                                                    <xsd:element name="Products" minOccurs="0"/>
+                                                    <xsd:element name="Molecules" minOccurs="0"/>
+                                                </xsd:all>
+                                            </xsd:extension>
+                                        </xsd:complexContent>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="SpecificItem">
+                                    <xsd:complexType>
+                                        <xsd:complexContent>
+                                            <xsd:extension base="baseByReference">
+                                                <xsd:all>
+                                                    <xsd:element name="Products" minOccurs="0"/>
+                                                    <xsd:element name="GGPIs" minOccurs="0"/>
+                                                    <xsd:element name="Molecules" minOccurs="0"/>
+                                                </xsd:all>
+                                            </xsd:extension>
+                                        </xsd:complexContent>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:choice>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="Content">
+                        <xsd:complexType>
+                            <xsd:choice>
+                                <xsd:element name="Image">
+                                    <xsd:annotation>
+                                        <xsd:documentation>Must use the RequestBINARY method for these requests.</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:complexType>
+                                        <xsd:choice>
+                                            <xsd:element name="ByReference" type="baseByReference"/>
+                                            <xsd:element name="ByName" type="baseByName"/>
+                                        </xsd:choice>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:choice maxOccurs="unbounded">
+                                    <xsd:element name="Package" type="DocumentTypeFilter"/>
+                                    <xsd:element name="Product" type="DocumentTypeFilter"/>
+                                    <xsd:element name="ProductLine" type="DocumentTypeFilter"/>
+                                    <xsd:element name="GGPI" type="DocumentTypeFilter"/>
+                                    <xsd:element name="GenericItem" type="DocumentTypeFilter"/>
+                                </xsd:choice>
+                                <xsd:element name="ByReference" type="baseByReference"/>
+                            </xsd:choice>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:sequence>
+                        <xsd:element name="Interaction">
+                            <xsd:complexType>
+                                <xsd:all>
+                                    <xsd:element name="Prescribing">
+                                        <xsd:complexType>
+                                            <xsd:choice maxOccurs="unbounded">
+                                                <xsd:element name="ActiveComposition" type="drugItem"/>
+                                                <xsd:element name="ActiveCompositionGroup" type="drugItem"/>
+                                                <xsd:element name="Product" type="drugItem"/>
+                                                <xsd:element name="GGPI" type="drugItem"/>
+                                                <xsd:element name="GenericItem" type="drugItem"/>
+                                                <xsd:element name="SpecificItem" type="drugItem"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="Prescribed" minOccurs="0">
+                                        <xsd:complexType>
+                                            <xsd:choice maxOccurs="unbounded">
+                                                <xsd:element name="ActiveComposition" type="drugItem"/>
+                                                <xsd:element name="ActiveCompositionGroup" type="drugItem"/>
+                                                <xsd:element name="Product" type="drugItem"/>
+                                                <xsd:element name="GGPI" type="drugItem"/>
+                                                <xsd:element name="GenericItem" type="drugItem"/>
+                                                <xsd:element name="SpecificItem" type="drugItem"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="Allergies" minOccurs="0">
+                                        <xsd:complexType>
+                                            <xsd:choice maxOccurs="unbounded">
+                                                <xsd:element name="SubstanceClass" type="baseByReference"/>
+                                                <xsd:element name="ActiveComposition">
+                                                    <xsd:complexType>
+                                                        <xsd:complexContent>
+                                                            <xsd:extension base="baseByReference">
+                                                                <xsd:attribute name="name" type="xsd:string" use="optional"/>
+                                                            </xsd:extension>
+                                                        </xsd:complexContent>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                                <xsd:element name="ActiveCompositionGroup">
+                                                    <xsd:complexType>
+                                                        <xsd:complexContent>
+                                                            <xsd:extension base="baseByReference">
+                                                                <xsd:attribute name="name" type="xsd:string" use="optional"/>
+                                                            </xsd:extension>
+                                                        </xsd:complexContent>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                                <xsd:element name="Molecule" type="baseByReference"/>
+                                                <xsd:element name="Product" type="baseByReference"/>
+                                                <xsd:element name="GGPI" type="baseByReference"/>
+                                                <xsd:element name="SpecificItem" type="baseByReference"/>
+                                                <xsd:element name="GenericItem" type="baseByReference"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="HealthIssues" minOccurs="0">
+                                        <xsd:complexType>
+                                            <xsd:choice maxOccurs="unbounded">
+                                                <xsd:element name="HealthIssue" type="baseByReference"/>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="HealthIssueCodes" minOccurs="0">
+                                        <xsd:complexType>
+                                            <xsd:choice maxOccurs="unbounded">
+                                                <xsd:element name="HealthIssueCode">
+                                                    <xsd:complexType>
+                                                        <xsd:attribute name="code" type="xsd:string" use="required"/>
+                                                        <xsd:attribute name="codeType" type="xsd:string" use="required"/>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:choice>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="Food" minOccurs="0">
+                                        <xsd:annotation>
+                                            <xsd:documentation>If this element is specified, then Drug-to-Food interactions will be returned.</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:element>
+                                    <xsd:element name="References" minOccurs="0">
+                                        <xsd:annotation>
+                                            <xsd:documentation>If this element is included, then the results will include references for D2D, D2F and D2H interactions.</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:element>
+                                    <xsd:element name="CautionaryLabels" minOccurs="0">
+                                        <xsd:annotation>
+                                            <xsd:documentation>If this element is included, then the results will cautionary labels.</xsd:documentation>
+                                        </xsd:annotation>
+                                    </xsd:element>
+                                    <xsd:element name="DuplicateTherapy" minOccurs="0">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Specify this element if the result is required to include the Duplicate Therapy check.</xsd:documentation>
+                                        </xsd:annotation>
+                                        <xsd:complexType>
+                                            <xsd:attribute name="checkSameDrug" type="xsd:string" use="optional"/>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="DuplicateIngredient" minOccurs="0">
+                                        <xsd:annotation>
+                                            <xsd:documentation>Specify this element if the result is required to include the Duplicate Ingredient check.</xsd:documentation>
+                                        </xsd:annotation>
+                                        <xsd:complexType>
+                                            <xsd:attribute name="checkSameDrug" type="xsd:string" use="optional"/>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                </xsd:all>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:choice>
+                <xsd:element name="PatientProfile" minOccurs="0">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Gender" minOccurs="0" type="gender"/>
+                            <xsd:element name="Age" type="timeInterval" minOccurs="0">
+                            </xsd:element>
+                            <xsd:element name="Weight" minOccurs="0" type="xsd:float"/>
+                            <xsd:element name="Height" minOccurs="0" type="xsd:int"/>
+                            <xsd:element name="BSA" minOccurs="0" type="xsd:float"/>
+                            <xsd:element name="Pregnancy" minOccurs="0" type="pregnancyInterval"/>
+                            <xsd:element name="Nursing" minOccurs="0" type="xsd:boolean"/>
+                            <xsd:element name="Allergies" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:choice maxOccurs="unbounded">
+                                        <xsd:element name="SubstanceClass" type="baseByReference"/>
+                                        <xsd:element name="ActiveComposition">
+                                            <xsd:complexType>
+                                                <xsd:complexContent>
+                                                    <xsd:extension base="baseByReference">
+                                                        <xsd:attribute name="name" type="xsd:string" use="optional"/>
+                                                    </xsd:extension>
+                                                </xsd:complexContent>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="ActiveCompositionGroup">
+                                            <xsd:complexType>
+                                                <xsd:complexContent>
+                                                    <xsd:extension base="baseByReference">
+                                                        <xsd:attribute name="name" type="xsd:string" use="optional"/>
+                                                    </xsd:extension>
+                                                </xsd:complexContent>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="Molecule" type="baseByReference"/>
+                                        <xsd:element name="Product" type="baseByReference"/>
+                                        <xsd:element name="GGPI" type="baseByReference"/>
+                                        <xsd:element name="SpecificItem" type="baseByReference"/>
+                                        <xsd:element name="GenericItem" type="baseByReference"/>
+                                    </xsd:choice>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="HealthIssues" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:choice maxOccurs="unbounded">
+                                        <xsd:element name="HealthIssue" type="baseByReference"/>
+                                    </xsd:choice>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="HealthIssueCodes" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:choice maxOccurs="unbounded">
+                                        <xsd:element name="HealthIssueCode">
+                                            <xsd:complexType>
+                                                <xsd:attribute name="code" type="xsd:string" use="required"/>
+                                                <xsd:attribute name="codeType" type="xsd:string" use="required"/>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:choice>
+                                </xsd:complexType>
+                            </xsd:element>  
+                        </xsd:sequence>
+                                        
+                    </xsd:complexType>
+                                        
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:complexType name="baseByName" mixed="false">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string"/>
+        </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="baseByReference" mixed="false">
+        <xsd:attribute name="reference" type="GUID" use="required"/>
+    </xsd:complexType>    
+    <xsd:complexType name="baseByReferenceOrName" mixed="false">
+        <xsd:attribute name="reference" type="GUID" use="optional"/>
+        <xsd:attribute name="name" type="xsd:string" use="optional"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="timeInterval">
+        <xsd:sequence>
+            <xsd:element type="xsd:int" name="Year" minOccurs="0"/>
+            <xsd:element type="xsd:int" name="Month" minOccurs="0"/>
+            <xsd:element type="xsd:int" name="Day" minOccurs="0"/>
+            <xsd:element type="xsd:int" name="Hour" minOccurs="0"/>
+            <xsd:element type="xsd:int" name="Minute" minOccurs="0"/>
+            <xsd:element type="xsd:int" name="Week" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" use="optional"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="pregnancyInterval">
+        <xsd:sequence>
+            <xsd:element type="xsd:int" name="Month" minOccurs="0"/>
+            <xsd:element type="xsd:int" name="Day" minOccurs="0"/>
+            <xsd:element type="xsd:int" name="Week" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="name" use="optional"/>
+    </xsd:complexType>
+     
+    <xsd:complexType name="drugDose">
+        <xsd:sequence>
+            <xsd:annotation/>
+            <xsd:element name="Dose" type="doseValue"/>
+            <xsd:element name="Frequency" type="timeInterval"/> 
+            <xsd:element name="FrequencyPeriod" type="timeInterval" minOccurs="0"/>
+            <xsd:element name="Indications" minOccurs="0">
+                    <xsd:complexType>
+                        <xsd:choice maxOccurs="unbounded">
+                            <xsd:element name="Indication" type="baseByReferenceOrName"/>
+                        </xsd:choice>
+                    </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="doseValue">
+            <xsd:sequence>
+                <xsd:element name="Value" type="xsd:float" minOccurs="1"/>
+                <xsd:element name="Unit" type="xsd:string" minOccurs="1"/>
+            </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="drugItem">
+        <xsd:sequence>
+            <xsd:element name="RouteOfAdministration" type="baseByReferenceOrName" minOccurs="0"/>
+            <xsd:element name="Dosing" type="drugDose" minOccurs="0">
+            </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="reference" type="GUID" use="required"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="DocumentTypeFilter" mixed="false">
+        <xsd:choice maxOccurs="unbounded">
+            <xsd:element name="DocumentType" type="baseByReference" minOccurs="0"/>
+        </xsd:choice>
+        <xsd:attribute name="reference" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    <xsd:complexType name="ByMoleculesType">
+        <xsd:annotation>
+            <xsd:documentation>XAND limits to products that contain all the listed molecules and no other molecules.
+                XOR limits to products that contain only one molecule and that molecule is from the list.
+                OR limits to products that contain any molecule(s) in the list.
+                AND limits to products that contain all the molecules in the list plus other molecules potentially.</xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="ByMolecule" type="baseByReference" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="combination" use="optional" default="AND">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="OR"/>
+                    <xsd:enumeration value="AND"/>
+                    <xsd:enumeration value="XOR"/>
+                    <xsd:enumeration value="XAND"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+    </xsd:complexType>
+    <xsd:simpleType name="GUID">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="\{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}\}"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+<xsd:simpleType name="gender">
+  <xsd:restriction base="xsd:string">
+    <xsd:enumeration value="M"/>
+    <xsd:enumeration value="F"/>
+  </xsd:restriction>
+</xsd:simpleType>
+    
+</xsd:schema>
+

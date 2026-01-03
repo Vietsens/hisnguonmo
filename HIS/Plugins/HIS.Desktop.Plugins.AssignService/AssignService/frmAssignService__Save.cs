@@ -64,6 +64,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (this.gridViewServiceProcess.FocusedRowModified)
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
+                // Validate bảo lãnh trước khi lưu
+                if (!ValidateGuaranteeBeforeSave())
+                {
+                    return;
+                }
+
                 bool isValid = true;
                 if (!CheckPackage())
                 {
@@ -1731,6 +1737,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         sdo.ShareCount = item.ShareCount;
                         sdo.UserPrice = item.AssignSurgPriceEdit;
                         sdo.UserPackagePrice = item.AssignPackagePriceEdit;
+                        // Thêm thông tin bảo lãnh
+                        if (item.IsGuarantee)
+                            sdo.IsGuaranteed = true;
                         if (HisConfigCFG.ServicePatyForServicePackage != "1")
                         {
                             sdo.PackageId = item.PackagePriceId;

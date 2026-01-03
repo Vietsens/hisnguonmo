@@ -296,6 +296,48 @@ namespace MPS.Processor.Mps000181
                     string electronicExpMestCode = string.Format("{0}{1}-{2}", MPS.ProcessorBase.PrintConfig.MediOrgCode, HIS.ERXConnect.ERXCode.Encode(Convert.ToInt64(serviceReqCode)), title);
                     SetSingleKey(new KeyValue(Mps000181ExtendSingleKey.ELECTRONIC_EXP_MEST_CODE, electronicExpMestCode));
                 }
+                string icdCode = null;
+                string icdName = null;
+                string icdSubCode = null;
+                string icdText = null;
+
+                if (rdo.lstHisServiceReq != null && rdo.lstHisServiceReq.Count > 0)
+                {
+                    var lastReq = rdo.lstHisServiceReq.Last();
+
+                    if (lastReq != null)
+                    {
+                        icdCode = lastReq.ICD_CODE;
+                        icdName = lastReq.ICD_NAME;
+                        icdSubCode = lastReq.ICD_SUB_CODE;
+                        icdText = lastReq.ICD_TEXT;
+                    }
+                }
+                else if (rdo.hisServiceReq_Exam != null)
+                {
+                    icdCode = rdo.hisServiceReq_Exam.ICD_CODE;
+                    icdName = rdo.hisServiceReq_Exam.ICD_NAME;
+                    icdSubCode = rdo.hisServiceReq_Exam.ICD_SUB_CODE;
+                    icdText = rdo.hisServiceReq_Exam.ICD_TEXT;
+                }
+                else if (rdo.vHisPrescription5 != null)
+                {
+                    icdCode = rdo.vHisPrescription5.ICD_CODE;
+                    icdName = rdo.vHisPrescription5.ICD_NAME;
+                    icdSubCode = rdo.vHisPrescription5.ICD_SUB_CODE;
+                    icdText = rdo.vHisPrescription5.ICD_TEXT;
+                }
+                if (!string.IsNullOrWhiteSpace(icdCode))
+                    SetSingleKey(new KeyValue(Mps000181ExtendSingleKey.REQ_ICD_CODE, icdCode));
+
+                if (!string.IsNullOrWhiteSpace(icdName))
+                    SetSingleKey(new KeyValue(Mps000181ExtendSingleKey.REQ_ICD_NAME, icdName));
+
+                if (!string.IsNullOrWhiteSpace(icdSubCode))
+                    SetSingleKey(new KeyValue(Mps000181ExtendSingleKey.REQ_ICD_SUB_CODE, icdSubCode));
+
+                if (!string.IsNullOrWhiteSpace(icdText))
+                    SetSingleKey(new KeyValue(Mps000181ExtendSingleKey.REQ_ICD_TEXT, icdText));
             }
             catch (Exception ex)
             {

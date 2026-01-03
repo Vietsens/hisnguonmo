@@ -1,0 +1,126 @@
+<Result buildID="3374" copyright="Copyright (c) 2021 MIMS" expiryDate="2025-12-31">
+    <Interaction>
+        <GGPI name="captopril 100mg Oral Tablet" reference="{488F9F61-5D37-4989-925E-1742FFFDAA9E}">
+            <Route name="Systemic" reference="{90075601-10D4-49DD-9292-9B884D9D3EF3}">
+                <Route name="Systemic" reference="{90075601-10D4-49DD-9292-9B884D9D3EF3}">
+                    <ClassInteraction>
+                        <PrescribingInteractionClass description="ACE inhibitors inhibit the conversion of angiotensin I to angiotensin II." name="Angiotensin converting enzyme (ACE) inhibitors" reference="{97077317-8EB4-4EE1-8604-5654CF551B85}">
+                            <PrescribingMolecule name="captopril" reference="{A5A315C6-86E4-4ACE-89AF-E18B3AED1158}"/>
+                        </PrescribingInteractionClass>
+                        <InteractionClass description="Analgesic, antipyretic and anti-inflammatory agents." name="Salicylates (systemic)" reference="{3CCDBD67-FD02-4AF8-B3EB-E54066A7BAD5}">
+                            <Molecule name="aspirin" reference="{68EC41A6-71EE-427C-B261-03425BAA3DD3}"/>
+                        </InteractionClass>
+                        <Severity name="Moderate" ranking="4">Moderate</Severity>
+                        <Likelihood name="Good" ranking="3">Good</Likelihood>
+                        <Documentation name="Good" ranking="3">Good</Documentation>
+                        <Observation>
+                            <Abbreviated/>
+                            <Professional>has its effect reduced by</Professional>
+                            <Full/>
+                            <Consumer/>
+                        </Observation>
+                        <Interaction>
+                            <Abbreviated/>
+                            <Professional>Salicylates may reduce the beneficial effects of angiotensin converting enzyme inhibitors (ACEIs). Salicylates inhibit synthesis of prostaglandins and may antagonise antihypertensive effects of ACEIs in a dose-dependent manner, cause vasoconstriction/reduced cardiac output in heart failure patients, as well as increased risk of renal impairment. However, studies have shown that low-dose aspirin (less than or equals to 100 mg per day) is less likely to interact with ACEI. Furthermore, there are conflicting results of aspirin’s effect to worsen heart failure in patients on concomitant ACEI. Nevertheless, if concurrent use is necessary, monitor patient’s clinical condition, blood pressure and renal function.</Professional>
+                            <Full/>
+                            <Consumer/>
+                        </Interaction>
+                        <Precaution>
+                            <Abbreviated/>
+                            <Professional>Use combination with caution.</Professional>
+                            <Full/>
+                            <Consumer/>
+                        </Precaution>
+                        <Precaution>
+                            <Abbreviated/>
+                            <Professional>Monitor patient clinically.</Professional>
+                            <Full/>
+                            <Consumer/>
+                        </Precaution>
+                        <Precaution>
+                            <Abbreviated/>
+                            <Professional>Monitor renal function.</Professional>
+                            <Full/>
+                            <Consumer/>
+                        </Precaution>
+                        <Precaution>
+                            <Abbreviated/>
+                            <Professional>Monitor blood pressure.</Professional>
+                            <Full/>
+                            <Consumer/>
+                        </Precaution>
+                        <References>
+                            <JournalReference>
+                                <Author>Meune C, Mourad JJ, Bergmann JF et al</Author>
+                                <Title>Interaction between cyclooxygenase and the renin-angiotensin-aldosterone system: rationale and clinical relevance</Title>
+                                <Journal>J Renin Angiotensin Aldosterone Syst</Journal>
+                                <Year>2003</Year>
+                                <Volume>4</Volume>
+                                <Part>3/Sep</Part>
+                                <Page>149-54</Page>
+                            </JournalReference>
+                            <JournalReference>
+                                <Author>Levy PD, Nandyal D, Welch RD et al</Author>
+                                <Title>Does aspirin use adversely influence intermediate-term postdischarge outcomes for hospitalized patients who are treated with angiotensin-converting enzyme inhibitors or angiotensin receptor blockers? Findings from Organized Program to Facilitate Life-Saving Treatment in Hospitalized Patients with Heart Failure (OPTIMIZE-HF)</Title>
+                                <Journal>Am Heart J</Journal>
+                                <Year>2010</Year>
+                                <Volume>159</Volume>
+                                <Part>2/Feb</Part>
+                                <Page>222-230</Page>
+                            </JournalReference>
+                            <ElectronicReference>
+                                <Title>ACE inhibitors + Aspirin</Title>
+                                <RefTitle>Stockleys Drug Interactions</RefTitle>
+                                <SystemName>MedicinesComplete</SystemName>
+                                <SystemAuthor>Baxter K (ed)</SystemAuthor>
+                                <SystemManf>RPS Publishing</SystemManf>
+                                <SystemManfLoc>London</SystemManfLoc>
+                                <SystemManfCountry>UK</SystemManfCountry>
+                                <URL>http://www.medicinescomplete.com/mc</URL>
+                                <Date>19/09/2016</Date>
+                            </ElectronicReference>
+                            <JournalReference>
+                                <Author>Stys T, Lawson WE, Smaldone GC et al</Author>
+                                <Title>Does aspirin attenuate the beneficial effects of angiotensin-converting enzyme inhibition in heart failure?</Title>
+                                <Journal>Arch Intern Med</Journal>
+                                <Year>2000</Year>
+                                <Volume>160</Volume>
+                                <Part>10/May 22</Part>
+                                <Page>1409-13</Page>
+                            </JournalReference>
+                            <JournalReference>
+                                <Author>Guazzi M, Brambilla R, Reina G et al</Author>
+                                <Title>Aspirin-angiotensin-converting enzyme inhibitor coadministration and mortality in patients with heart failure: a dose-related adverse effect of aspirin</Title>
+                                <Journal>Arch Intern Med</Journal>
+                                <Year>2003</Year>
+                                <Volume>163</Volume>
+                                <Part>13/Jul 14</Part>
+                                <Page>1574-9</Page>
+                            </JournalReference>
+                            <JournalReference>
+                                <Author>Meune C, Mahe I, Mourad JJ et al</Author>
+                                <Title>Interaction between angiotensin-converting enzyme inhibitors and aspirin: a review</Title>
+                                <Journal>Eur J Clin Pharmacol</Journal>
+                                <Year>2000</Year>
+                                <Volume>56</Volume>
+                                <Part>9-10/Dec</Part>
+                                <Page>609-20</Page>
+                            </JournalReference>
+                            <JournalReference>
+                                <Author>Masoudi FA, Wolfe P, Havranek EP et al</Author>
+                                <Title>Aspirin use in older patients with heart failure and coronary artery disease: national prescription patterns and relationship with outcomes</Title>
+                                <Journal>J Am Coll Cardiol</Journal>
+                                <Year>2005</Year>
+                                <Volume>46</Volume>
+                                <Part>6/Sep 20</Part>
+                                <Page>955-62</Page>
+                            </JournalReference>
+                        </References>
+                    </ClassInteraction>
+                </Route>
+            </Route>
+        </GGPI>
+        <GGPI reference="{BF33752F-6062-0589-E034-0003BA299378}" rejected="true"/>
+        <DuplicateTherapy/>
+    </Interaction>
+</Result>

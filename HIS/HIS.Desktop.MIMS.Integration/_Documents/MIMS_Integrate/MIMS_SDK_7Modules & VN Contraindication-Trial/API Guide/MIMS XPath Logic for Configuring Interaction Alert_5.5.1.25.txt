@@ -1,0 +1,201 @@
+--------------------------------------------------------------------------------------------------------------------------------------
+XPath Expression Checks on all InteractionResponse.xml
+--------------------------------------------------------------------------------------------------------------------------------------
+Objective:
+
+Given below are the XPath Expressions that can be used to run below checks on the Result.xml to
+a. Find if there are any interaction alerts for any "specific drug" or "severity" or "irrespective of any drug or severity" in the response.xml
+b. These flags can be used to pop-up interaction alert or over-ride reasoning window in your application only when this XPATH Flag is "True"
+c. XPATH Flags 
+	(i) if XPATH Count > 0 = True
+	(ii) if XPATH Count = 0 = False
+
+Example or one use case:
+
+If a specific drug being prescribed has any interaction with other drugs prescribed in same order or with previously prescribed Medications which are still active, then use the below XPath logic to run that check before applying the stylesheet. Hence if the XPath expression reports count > 0 then the Result.xml output has interaction for the specific medicine being prescribed, only then you proceed triggering pop-up window to display interaction alert or same flag can be used to trigger over-ride reasoning window via your application else not.
+
+Applicable Modules:
+
+These logics cover “Drug to Drug”, “Drug to Allergy”, “Drug to Health”, "Duplicate Therapy", "Duplicate Ingredient", "Drug Pregnancy", "Drug Lactation", "Drug Dose" Interaction Alerts
+
+(i) XPath for "Drug to Drug Interaction":
+----------------------------------------
+To check if any Drug to Drug Interaction alert exists in the Result.xml
+
+For Specific Drug whose GUID = {864EBD9F-9789-4451-908A-C6A354E9FA24}
+“count(//Interaction/*[@reference='{864EBD9F-9789-4451-908A-C6A354E9FA24}' and not(@Mirror)]/Route/*/Route/ClassInteraction|//Interaction/*/Route/*[@reference='{864EBD9F-9789-4451-908A-C6A354E9FA24}' and not(@Mirror)]/Route/ClassInteraction)"
+
+For Specific Drug whose GUID = {864EBD9F-9789-4451-908A-C6A354E9FA24} and Severity 'Severe' or 'Moderate' or 'Minor' or 'Caution'
+
+“count(//Interaction/*[@reference='{864EBD9F-9789-4451-908A-C6A354E9FA24}' and not(@Mirror)]/Route/*/Route/ClassInteraction/Severity[@name='Severe' or @name='Moderate' or @name='Minor' or @name='Caution']|//Interaction/*/Route/*[@reference='{864EBD9F-9789-4451-908A-C6A354E9FA24}' and not(@Mirror)]/Route/ClassInteraction/Severity[@name='Severe' or @name='Moderate' or @name='Minor' or @name='Caution'])"
+
+Irrespective to any specific drug and Severity
+“count(//Interaction/*[not(@Mirror)]/Route/*/Route/ClassInteraction| //Interaction/*/Route/*[not(@Mirror)]/Route/ClassInteraction)”
+
+Irrespective to any specific drug but with specific Severity
+“count(//Interaction/*[not(@Mirror)]/Route/*/Route/ClassInteraction/Severity[@name='Severe' or @name='Moderate' or @name='Minor' or @name='Caution']|//Interaction/*/Route/*[not(@Mirror)]/Route/ClassInteraction/Severity[@name='Severe' or @name='Moderate' or @name='Minor' or @name='Caution'])”
+
+(ii) XPath for "Drug to Health Interaction":
+-------------------------------------------
+
+To check if any Drug to Health Interaction alert exists in the Result.xml
+
+For Specific Drug whose GUID = {35051B69-F816-49D2-8A1A-1DA953855A0E}
+“count(//Interaction/*[@reference='{35051B69-F816-49D2-8A1A-1DA953855A0E}'and not(@Mirror)]/Route/HealthIssueCode/ClassInteraction|//Interaction/*/Route/*[@reference='{35051B69-F816-49D2-8A1A-1DA953855A0E}' and not(@Mirror)]/Route/HealthIssueCode/ClassInteraction)”
+
+For Specific Drug whose GUID = {35051B69-F816-49D2-8A1A-1DA953855A0E} and Severity 'Contraindicated' or 'Extreme Caution'
+“count(//Interaction/*[@reference='{35051B69-F816-49D2-8A1A-1DA953855A0E}'and not(@Mirror)]/Route/HealthIssueCode/ClassInteraction/Severity[@name='Contraindicated' or @name='Extreme Caution']|//Interaction/*/Route/*[@reference='{35051B69-F816-49D2-8A1A-1DA953855A0E}' and not(@Mirror)]/Route/HealthIssueCode/ClassInteraction/Severity[@name='Contraindicated' or @name='Extreme Caution'])”
+
+Irrespective to any specific drug and Severity
+“count(//Interaction/*[not(@Mirror)]/Route/HealthIssueCode/ClassInteraction|//Interaction/*/Route/*[not(@Mirror)]/Route/HealthIssueCode/ClassInteraction)”
+
+Irrespective to any specific drug but with specific Severity
+“count(//Interaction/*[not(@Mirror)]/Route/HealthIssueCode/ClassInteraction/ Severity[@name='Contraindicated' or @name='Extreme Caution']|//Interaction/*/Route/*[not(@Mirror)]/Route/HealthIssueCode/ClassInteraction/ Severity[@name='Contraindicated' or @name='Extreme Caution'])”
+
+
+(iii) XPath for "Drug to Allergy Interaction":
+-----------------------------------------------
+
+To check if any Drug to Allergy Interaction alert exists in the Result.xml
+
+For Specific Drug whose GUID = {673FE2DD-4B75-4EFA-85DA-7957A90AF7A2}
+“count(//Interaction/*[@reference='{673FE2DD-4B75-4EFA-85DA-7957A90AF7A2}'and not(@Mirror)]/Allergy)”
+
+For any Drug to Allergy Interactions, irrespective to any specific drug
+“count(//Interaction/*[not(@Mirror)]/Allergy)”
+
+(iv) XPath for "Duplicate Ingredient Alert”:
+--------------------------------------------
+
+To check if any Duplicate Ingredient alert exists in the Result.xml
+
+For Specific Drug whose GUID = {8BFF7D31-0EF8-4256-AB98-EFC7C0BD6548}
+“count(//Interaction/DuplicateIngredient/Warning/Molecule/Molecule/*[@reference='{8BFF7D31-0EF8-4256-AB98-EFC7C0BD6548}'])”
+
+For Specific Drug whose GUID = {8BFF7D31-0EF8-4256-AB98-EFC7C0BD6548} and Severity @Level='1' or @Level='2' or @Level='3'
+“count(//Interaction/DuplicateIngredient/Warning[@Level='1' or @Level='2' or @Level='3']/Molecule/Molecule/*[@reference='{8BFF7D31-0EF8-4256-AB98-EFC7C0BD6548}'])”
+
+Irrespective to any specific drug or Severity
+“count(//Interaction/DuplicateIngredient/Warning/Molecule/Molecule)”
+
+Irrespective to any specific drug but with specific Severity
+“count(//Interaction/DuplicateIngredient/Warning[@Level='1' or @Level='2' or @Level='3']/Molecule/Molecule)”
+
+(v) XPath for "Duplicate Therapy Alert”:
+----------------------------------------
+
+To check if any Duplicate Therapy alert exists in the Result.xml
+
+For Specific Drug whose GUID = {B4268321-1B08-73AE-E034-080020E1DD8C}
+“count(//Interaction/DuplicateTherapy/Warning/Duplicate/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}'])”
+
+For Specific Drug whose GUID = {B4268321-1B08-73AE-E034-080020E1DD8C} and Severity @Level='1' or @Level='2' or @Level='3'
+“count(//Interaction/DuplicateTherapy/Warning[@Level='1' or @Level='2' or @Level='3']/Duplicate/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}'])”
+
+Irrespective to any specific drug and severity
+“count(//Interaction/DuplicateTherapy/Warning/Duplicate)”
+
+Irrespective to any specific drug but with specific Severity
+“count(//Interaction/DuplicateTherapy/Warning[@Level='1' or @Level='2' or @Level='3']/Duplicate)”
+
+(vi) XPath for "Drug to Pregnancy Alert”:
+-----------------------------------------
+To check if any Drug to Pregnancy alert exists in the Result.xml
+
+For Specific Drug whose GUID = {707BFAFF-1B76-4621-9983-D8212D2E00F7}
+“count(//Interaction/*[@reference='{707BFAFF-1B76-4621-9983-D8212D2E00F7}' and not(@Mirror)]/Route/Pregnancy|//Interaction/*/Route/*[@reference='{707BFAFF-1B76-4621-9983-D8212D2E00F7}' and not(@Mirror)]/Route/Pregnancy)”
+
+For Specific Drug whose GUID = {707BFAFF-1B76-4621-9983-D8212D2E00F7} and Severity or Category like 'A' or 'B' or 'C' or 'D' or 'X' or '+'
+
+“count(//Interaction/*[@reference='{707BFAFF-1B76-4621-9983-D8212D2E00F7}' and not(@Mirror)]/Route/Pregnancy/Category[@name='A' or @name='B' or @name='C' or @name='D' or @name='X' or @name='+']|//Interaction/*/Route/*[@reference='{707BFAFF-1B76-4621-9983-D8212D2E00F7}' and not(@Mirror)]/Route/Pregnancy/Category[@name='A' or @name='B' or @name='C' or @name='D' or @name='X' or @name='+'])”
+
+Irrespective to any specific drug and Severity
+“count(//Interaction/*[not(@Mirror)]/Route/Pregnancy|//Interaction/*/Route/*[not(@Mirror)]/Route/Pregnancy)”
+
+Irrespective to any specific drug but with specific Severity
+“count(//Interaction/*[not(@Mirror)]/Route/Pregnancy/Category[@name='A' or @name='B' or @name='C' or @name='D' or @name='X' or @name='+']|//Interaction/*/Route/*[not(@Mirror)]/Route/Pregnancy/Category[@name='A' or @name='B' or @name='C' or @name='D' or @name='X' or @name='+'])”
+
+(vii) XPath for "Drug to Pregnancy Alert” (Women of Childbearing Age [WOBCA]):
+---------------------------------------------------------------------------------
+
+To check if any WOCBA alert exists in the Result.xml
+
+For Specific Drug whose GUID = {B4268321-1B08-73AE-E034-080020E1DD8C}
+“count(//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/WOCBA|//Interaction/*/Route/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/WOCBA)”
+
+For Specific Drug whose GUID = {B4268321-1B08-73AE-E034-080020E1DD8C} and Severity or Category like 'A' or 'B' or 'C' or 'D' or 'X' or '+'
+
+“count(//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/WOCBA/Category[@name='A' or @name='B' or @name='C' or @name='D' or @name='X' or @name='+']|//Interaction/*/Route/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/WOCBA/Category[@name='A' or @name='B' or @name='C' or @name='D' or @name='X' or @name='+'])”
+
+Irrespective to any specific drug and Severity
+“count(//Interaction/*[not(@Mirror)]/Route/WOCBA|//Interaction/*/Route/*[not(@Mirror)]/Route/WOCBA)”
+
+Irrespective to any specific drug but with specific Severity
+“count(//Interaction/*[not(@Mirror)]/Route/WOCBA/Category[@name='A' or @name='B' or @name='C' or @name='D' or @name='X' or @name='+']|//Interaction/*/Route/*[not(@Mirror)]/Route/WOCBA/Category[@name='A' or @name='B' or @name='C' or @name='D' or @name='X' or @name='+'])”
+
+(viii) XPath for "Drug to Lactation Alert”:
+------------------------------------------
+To check if any Drug to Lactation alert exists in the Result.xml
+
+For Specific Drug whose GUID = {B4268321-1B08-73AE-E034-080020E1DD8C}
+“count(//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/Lactation|//Interaction/*/Route/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/Lactation)”
+
+For Specific Drug whose GUID = {B4268321-1B08-73AE-E034-080020E1DD8C} and Severity like 'Contraindicated' or 'Avoid if possible' or 'Caution'
+
+“count(//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/Lactation/Severity[@name='Contraindicated' or @name='Avoid if possible' or @name='Caution']|//Interaction/*/Route/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/Lactation/Severity[@name='Contraindicated' or @name='Avoid if possible' or @name='Caution'])”
+
+Irrespective to any specific drug
+“count(//Interaction/*[not(@Mirror)]/Route/Lactation|//Interaction/*/Route/*[not(@Mirror)]/Route/Lactation)”
+
+Irrespective to any specific drug but with specific Severity
+“count(//Interaction/*[not(@Mirror)]/Route/Lactation/Severity[@name='Contraindicated' or @name='Avoid if possible' or @name='Caution']|//Interaction/*/Route/*[not(@Mirror)]/Route/Lactation/Severity[@name='Contraindicated' or @name='Avoid if possible' or @name='Caution'])”
+
+
+(ix) XPath for "Drug Dose Alert”: 
+----------------------------------
+
+a. Dose Check
+-------------
+
+To check if any Drug Dose alert exists in the Result.xml
+
+For Specific Drug whose GUID = {B4268321-1B08-73AE-E034-080020E1DD8C}
+“count(//Interaction/DoseCheck/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}']/Warnings)” 
+
+Irrespective to any specific drug
+“count(//Interaction/DoseCheck/*/Warnings)” 
+
+For Specific Drug whose GUID = {B4268321-1B08-73AE-E034-080020E1DD8C} and Specific WarningID
+count(//Interaction/DoseCheck/*[@reference='{A8C10CD4-E8E0-4E54-863C-80AF913F0386}']/Warnings/Warning[@id='IDS_DOSE_MAX_WARNING'])
+
+
+b. "Combined Dose Alert”: 
+-------------------------
+To check if any Combined Drug Dose alert exists in the Result.xml
+
+For Specific Drug whose GUID = {B94A25B3-52FC-49DB-8E5D-629ABC01ECB4}
+“count(//Interaction/DoseCheck/CombinedDoseCheck/Molecule/*[@reference='{B94A25B3-52FC-49DB-8E5D-629ABC01ECB4}'])"
+
+Irrespective to any specific drug
+“count(//Interaction/DoseCheck/CombinedDoseCheck/Molecule/Warnings)” 
+
+For Specific Drug whose GUID = {B4268321-1B08-73AE-E034-080020E1DD8C} and Specific WarningID
+“count(//Interaction/DoseCheck/CombinedDoseCheck/Molecule/*[@reference='{B94A25B3-52FC-49DB-8E5D-629ABC01ECB4}']|//Interaction/DoseCheck/CombinedDoseCheck/Molecule/Warnings/Warning[@id='IDS_DOSE_MAX_WARNING'])” 
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+b) Use Concatenated XPath Query for all above modules in application Code: 
+--------------------------------------------------------------------------------------------------------------------------------------
+
+XPath with GUID: when using each drug (for Instant alert)
+
+count(//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/*/Route/ClassInteraction|//Interaction/*/Route/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/ClassInteraction|//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}'and not(@Mirror)]/Route/HealthIssueCode/ClassInteraction|//Interaction/*/Route/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/HealthIssueCode/ClassInteraction|//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}'and not(@Mirror)]/Allergy|//Interaction/DuplicateIngredient/Warning/Molecule/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}']|//Interaction/DuplicateTherapy/Warning/Duplicate/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}']|//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/Pregnancy|//Interaction/*/Route/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/Pregnancy|//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/WOCBA|//Interaction/*/Route/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/WOCBA|//Interaction/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/Lactation|//Interaction/*/Route/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}' and not(@Mirror)]/Route/Lactation|//Interaction/DoseCheck/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}']/Warnings|//Interaction/DoseCheck/CombinedDoseCheck/Molecule/*[@reference='{B4268321-1B08-73AE-E034-080020E1DD8C}'])
+
+XPath without GUID:
+
+count(//Interaction/*[not(@Mirror)]/Route/*/Route/ClassInteraction|//Interaction/*/Route/*[not(@Mirror)]/Route/ClassInteraction|//Interaction/*[not(@Mirror)]/Route/HealthIssueCode/ClassInteraction|//Interaction/*/Route/*[not(@Mirror)]/Route/HealthIssueCode/ClassInteraction|//Interaction/*[not(@Mirror)]/Allergy|//Interaction/DuplicateIngredient/Warning/Molecule|//Interaction/DuplicateTherapy/Warning/Duplicate|//Interaction/*[not(@Mirror)]/Route/Pregnancy|//Interaction/*/Route/*[not(@Mirror)]/Route/Pregnancy|//Interaction/*[not(@Mirror)]/Route/WOCBA|//Interaction/*/Route/*[not(@Mirror)]/Route/WOCBA|//Interaction/*[not(@Mirror)]/Route/Lactation|//Interaction/*/Route/*[not(@Mirror)]/Route/Lactation|//Interaction/DoseCheck/*/Warnings|//Interaction/DoseCheck/CombinedDoseCheck/Molecule/Warnings)
+
+
+XPath Query Example for Over-Ride reasoning window:
+
+count(//Interaction/*[not(@Mirror)]/Route/*/Route/ClassInteraction/Severity[@name='Severe' or @name='Moderate']|//Interaction/*/Route/*[not(@Mirror)]/Route/ClassInteraction/Severity[@name='Severe' or @name='Moderate']|//Interaction/*[not(@Mirror)]/Route/HealthIssueCode/ClassInteraction/ Severity[@name='Contraindicated']|//Interaction/*/Route/*[not(@Mirror)]/Route/HealthIssueCode/ClassInteraction/ Severity[@name='Contraindicated']|//Interaction/*[not(@Mirror)]/Allergy|//Interaction/DuplicateIngredient/Warning[@Level='1' or @Level='2']/Molecule|//Interaction/DuplicateTherapy/Warning[@Level='1' or @Level='2']/Duplicate|//Interaction/*[not(@Mirror)]/Route/Pregnancy/Category[@name='D' or @name='X' or @name='+']|//Interaction/*/Route/*[not(@Mirror)]/Route/Pregnancy/Category[@name='D' or @name='X' or @name='+']|//Interaction/*[not(@Mirror)]/Route/WOCBA/Category[@name='D' or @name='X' or @name='+']|//Interaction/*/Route/*[not(@Mirror)]/Route/WOCBA/Category[@name='D' or @name='X' or @name='+']|//Interaction/*[not(@Mirror)]/Route/Lactation/Severity[@name='Contraindicated' or @name='Avoid if possible']|//Interaction/*/Route/*[not(@Mirror)]/Route/Lactation/Severity[@name='Contraindicated' or @name='Avoid if possible']|//Interaction/DoseCheck/*/Warnings/Warning[@id='IDS_DOSE_MAX_WARNING']|//Interaction/DoseCheck/CombinedDoseCheck/Molecule/Warnings/Warning[@id='IDS_DOSE_MAX_WARNING'])

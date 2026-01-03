@@ -15,20 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Views.Grid;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.Plugins.BidCreate.Validation;
+using Inventec.Common.Logging;
+using Inventec.Desktop.Common.Controls.ValidationRule;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.LibraryMessage;
-using HIS.Desktop.Plugins.BidCreate.Validation;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using DevExpress.XtraEditors;
-using Inventec.Common.Logging;
-using DevExpress.XtraGrid.Views.Grid;
 
 namespace HIS.Desktop.Plugins.BidCreate
 {
@@ -307,17 +308,48 @@ namespace HIS.Desktop.Plugins.BidCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        //private void ValidDosageForm()
+        //{
+        //    try
+        //    {
+        //        DosageValidationRule dosageValidationRule = new DosageValidationRule();
+        //        dosageValidationRule.cboDosageForm = cboDosageForm;
+        //        dosageValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
+        //        dosageValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+        //        dxValidationProviderLeft.SetValidationRule(cboDosageForm, dosageValidationRule);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogSystem.Error(ex);
+        //    }
+        //}
         private void ValidDosageForm()
         {
             try
             {
-                DosageValidationRule dosageValidationRule = new DosageValidationRule();
-                dosageValidationRule.cboDosageForm = cboDosageForm;
-                dosageValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
-                dosageValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                dxValidationProviderLeft.SetValidationRule(cboDosageForm, dosageValidationRule);        
+                var isMedicineTab = xtraTabControl1.SelectedTabPageIndex == 0;
+                var isRequireDosageForm =
+                    isMedicineTab
+                    && this.medicineType != null
+                    && !string.IsNullOrWhiteSpace(this.medicineType.ACTIVE_INGR_BHYT_CODE);
+
+                if (isRequireDosageForm)
+                {
+                    layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    DosageValidationRule dosageValidationRule = new DosageValidationRule();
+                    dosageValidationRule.cboDosageForm = cboDosageForm;
+                    dosageValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
+                    dosageValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, dosageValidationRule);
+                }
+                else
+                {
+                    layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Black;
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogSystem.Error(ex);
             }

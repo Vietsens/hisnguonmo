@@ -1613,7 +1613,6 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
                 if (!String.IsNullOrWhiteSpace(electronicBillDataInput.Transaction?.BUYER_IDENTITY_NUMBER))
                 {
                     result.buyerIdNo = electronicBillDataInput.Transaction.BUYER_IDENTITY_NUMBER.Trim();
-                    result.buyerIdType = "1";
                 }
                 //else if (!String.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber))
                 //{
@@ -1628,7 +1627,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VIETTEL
 
                 if (!String.IsNullOrWhiteSpace(electronicBillDataInput.Transaction?.BUYER_SOCIAL_RELATIONS_CODE))
                 {
-                 result.buyerBudgetCode = electronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE.Trim();
+                    result.buyerBudgetCode = electronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE.Trim();
                 }
 
                 result.buyerAddressLine = !String.IsNullOrWhiteSpace(adoInfo.BuyerAddress) ? adoInfo.BuyerAddress : ".";

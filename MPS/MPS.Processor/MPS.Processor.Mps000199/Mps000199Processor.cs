@@ -71,10 +71,13 @@ namespace MPS.Processor.Mps000199
             try
             {
                 decimal sumPrice = 0;
+                V_HIS_IMP_MEST_MEDICINE lastMedicine = null;
+                V_HIS_IMP_MEST_MATERIAL lastMaterial = null;
                 if (rdo._ImpMestMedicines != null && rdo._ImpMestMedicines.Count > 0)
                 {
                     // sắp xếp theo thứ tự tăng dần của id
                     rdo._ImpMestMedicines = rdo._ImpMestMedicines.OrderBy(o => o.ID).ToList();
+                    lastMedicine = rdo._ImpMestMedicines.LastOrDefault();
                     foreach (var item in rdo._ImpMestMedicines)
                     {
                         _ListAdo.Add(new Mps000199ADO(item, rdo._ListMedicalContract));
@@ -87,6 +90,7 @@ namespace MPS.Processor.Mps000199
                 {
                     //sắp xếp theo thứ tự tăng dần của id
                     rdo._ImpMestMaterials = rdo._ImpMestMaterials.OrderBy(o => o.ID).ToList();
+                    lastMaterial = rdo._ImpMestMaterials.LastOrDefault();
                     foreach (var item in rdo._ImpMestMaterials)
                     {
                         _ListAdo.Add(new Mps000199ADO(item, rdo._ListMedicalContract));
@@ -108,6 +112,25 @@ namespace MPS.Processor.Mps000199
                         sumPrice += item.PRICE.Value * (1 + (item.VAT_RATIO ?? 0));
                     }
                 }
+                // Lấy giá trị xuất cuối cùng đúng chuẩn DB cho cả thuốc và vật tư
+                decimal? lastExpPrice = null;
+                decimal? lastExpVatRatio = null;
+                // Sử dụng IMP_TIME thay cho EXP_TIME
+                var lastExpMedicine = rdo._ImpMestMedicines != null && rdo._ImpMestMedicines.Count > 0 ? rdo._ImpMestMedicines.OrderByDescending(x => x.IMP_TIME).FirstOrDefault() : null;
+                var lastExpMaterial = rdo._ImpMestMaterials != null && rdo._ImpMestMaterials.Count > 0 ? rdo._ImpMestMaterials.OrderByDescending(x => x.IMP_TIME).FirstOrDefault() : null;
+                if (lastExpMedicine != null && lastExpMedicine.PRICE.HasValue)
+                {
+                    lastExpPrice = lastExpMedicine.PRICE;
+                    lastExpVatRatio = lastExpMedicine.VAT_RATIO;
+                }
+                else if (lastExpMaterial != null && lastExpMaterial.PRICE.HasValue)
+                {
+                    lastExpPrice = lastExpMaterial.PRICE;
+                    lastExpVatRatio = lastExpMaterial.VAT_RATIO;
+                }
+                SetSingleKey(new KeyValue("LAST_EXP_PRICE", lastExpPrice));
+                SetSingleKey(new KeyValue("LAST_EXP_VAT_RATIO", lastExpVatRatio));
+
                 string totalPriceSeparate = Inventec.Common.Number.Convert.NumberToString(sumPrice, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
                 SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.TOTAL_PRICE, sumPrice));
                 SetSingleKey(new KeyValue(Mps000199ExtendSingleKey.TOTAL_PRICE_SEPARATE, totalPriceSeparate));

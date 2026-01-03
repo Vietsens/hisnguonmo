@@ -1032,8 +1032,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 data.Transaction.REPLACE_REASON = txtReplaceReason.Text;
                 data.Transaction.TREATMENT_ID = this.treatmentId.Value;
                 data.Transaction.CASHIER_ROOM_ID = this.cashierRoom.ID;
-                data.Transaction.BUYER_NAME = txtBuyerName.Text.Trim();                
+                data.Transaction.BUYER_NAME = txtBuyerName.Text.Trim();
 
+                decimal guaranteeAmount = 0;
+                decimal.TryParse(this.guaranteeAmountRes, out guaranteeAmount);
+
+                data.Transaction.GUARANTEE_AMOUNT = guaranteeAmount;
+
+                data.Transaction.GUARANTEE_REF_CODE = txtSoGiaoDich.Text;
                 if (radioBuyerUser.Checked)
                 {
                     // Cá nhân

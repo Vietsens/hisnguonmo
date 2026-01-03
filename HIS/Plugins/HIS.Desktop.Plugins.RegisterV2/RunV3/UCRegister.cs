@@ -20,11 +20,14 @@ using DevExpress.Utils.Menu;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraLayout;
+using DevExpress.XtraPrinting;
 using HIS.Desktop.DelegateRegister;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Plugins.RegisterV2.Choice;
 using HIS.Desktop.Utility;
@@ -62,7 +65,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         internal int registerNumber = 0;
         internal bool isShowMess;
         //qtcode
-        int TreatmentTypeIdPicked { get; set;  }
+        int TreatmentTypeIdPicked { get; set; }
         internal List<long> serviceReqPrintIds { get; set; }
         const string IsDefaultRightRouteType__True = "1";
 
@@ -110,6 +113,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         bool IsEmergency = false;
         List<V_HIS_SERVICE> lstService;
         bool IsActionSavePrint = false;
+        internal string GuarateeCode = null;
+        internal string GuaranteeRequestCode = null;
         #endregion
 
         #region Construct - Load
@@ -152,13 +157,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             }
         }
         //qtcode
-        
+
         private void UCRegister_Load(object sender, EventArgs e)
         {
             try
             {
 
-                Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load .1");   
+                Inventec.Common.Logging.LogSystem.Debug("UCRegister_Load .1");
                 timerInitForm.Enabled = true;
                 timerInitForm.Interval = 1000;
                 RegisterTimer(currentModule.ModuleLink, "timerInitForm", timerInitForm.Interval, timerInitForm_Tick);
@@ -185,7 +190,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                 LogSystem.Debug("UCRegister_Load .7");
                 LoadDefaultScreenSaver();
-
+                if (!String.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection))
+                {
+                    layoutControlItem32.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                }
+                else
+                {
+                    layoutControlItem32.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
                 LogSystem.Debug("UCRegister_Load .8");
                 if (!string.IsNullOrEmpty(HisConfigCFG.ModuleLinkApply))
                 {
@@ -1074,7 +1086,70 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 {
                     this.ucPatientRaw1.LoadDataComboPrimaryPatientType(roomId);
                 }
-                
+                this.chkBaoLanh.Checked = false;
+                //Goji thư viện
+                if (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection))
+                {
+                    // Parse cấu trúc: <Địa chỉ>|<Mã ứng dụng>:<Tài khoản>:<mật khẩu>|<hạn mức đăng ký mặc định>
+                    string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');
+
+                    if (parts.Length >= 3)
+                    {
+                        // Phần 1: Địa chỉ
+                        string guaranteeAddress = parts[0].Trim();
+
+                        // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
+                        string[] credentials = parts[1].Split(':');
+                        string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
+                        string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
+                        string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
+
+                        // Phần 3: Hạn mức đăng ký mặc định
+                        string guaranteeDefaultLimit = parts[2].Trim();
+
+                        // Log để kiểm tra
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            string.Format("Guarantee Connection - Address: {0}, " +
+                            "AppCode: {1}, " +
+                            "Username: {2}, " +
+                            "DefaultLimit: {3}", guaranteeAddress, guaranteeAppCode, guaranteeUsername, guaranteeDefaultLimit)
+                        );
+
+
+                        string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+                        MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
+                        DataInput data = new DataInput();
+                        data.baseUri = guaranteeAddress;
+                        data.applicationCode = guaranteeAppCode;
+                        data.limet = guaranteeDefaultLimit;
+                        data.cskcbbd = branchHeinMediOrgCode;
+                        data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
+                        {
+                            RequestId = this.GuaranteeRequestCode ?? null,
+                            ContractNumber = this.GuarateeCode ?? null,
+                            PatientName = ucPatientRaw1.GetValue().PATIENT_NAME,
+                            Dob = ucPatientRaw1.GetValue().DOB_STR,
+                            CccdNumber = ucPlusInfo1.GetValue().CCCD_NUMBER,
+                            Amount = guaranteeDefaultLimit,
+                            Remark = "Hủy đăng ký sử dụng bảo lãnh",
+                            Signature = ""
+                        };
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
+                        CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
+                        if (rs != null)
+                        {
+                            LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
+                            this.GuarateeCode = null;
+                            this.GuaranteeRequestCode = null;
+                        }
+                        else
+                        {
+                            LogSystem.Debug("Gọi api thất bại, ..............");
+                        }
+                    }
+                }
+                //gọi hàm hủy bảo lãnh
                 var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
                 if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)
                 {
@@ -2066,6 +2141,87 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             {
                 ucAddressCombo1.FocusTHX();
                 e.Handled = true;
+            }
+        }
+
+        private void chkBaoLanh_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkBaoLanh.Checked)
+                {
+                    if (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection))
+                    {
+                        // Parse cấu trúc: <Địa chỉ>|<Mã ứng dụng>:<Tài khoản>:<mật khẩu>|<hạn mức đăng ký mặc định>
+                        string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');
+
+                        if (parts.Length >= 3)
+                        {
+                            // Phần 1: Địa chỉ
+                            string guaranteeAddress = parts[0].Trim();
+
+                            // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
+                            string[] credentials = parts[1].Split(':');
+                            string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
+                            string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
+                            string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
+
+                            // Phần 3: Hạn mức đăng ký mặc định
+                            string guaranteeDefaultLimit = parts[2].Trim();
+
+                            // Log để kiểm tra
+                            Inventec.Common.Logging.LogSystem.Debug(
+                                string.Format("Guarantee Connection - Address: {0}, " +
+                                "AppCode: {1}, " +
+                                "Username: {2}, " +
+                                "DefaultLimit: {3}", guaranteeAddress, guaranteeAppCode, guaranteeUsername, guaranteeDefaultLimit)
+                            );
+
+                            string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+                            MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
+                            DataInput data = new DataInput();
+                            data.baseUri = guaranteeAddress;
+                            data.applicationCode = guaranteeAppCode;
+                            data.limet = guaranteeDefaultLimit;
+                            data.cskcbbd = branchHeinMediOrgCode;
+                            data.registerUseRequest = new RegisterUseRequest
+                            {
+                                PatientName = ucPatientRaw1.GetValue().PATIENT_NAME,
+                                Dob = ucPatientRaw1.GetValue().DOB_STR,
+                                CccdNumber = ucPlusInfo1.GetValue().CCCD_NUMBER,
+                                Amount = guaranteeDefaultLimit,
+                                ApplicationCode = guaranteeAppCode,
+                                Remark = "Thanh toán viện phí cho bệnh nhân " + ucPatientRaw1.GetValue().PATIENT_NAME,
+                                Signature = ""
+                            };
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
+                            RegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeRegisterUse(data);
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
+                            if (rs != null)
+                            {
+                                LogSystem.Debug("Gọi api thành công");
+                                this.GuarateeCode = rs.Data.ContractNumber;
+                                this.GuaranteeRequestCode = rs.Data.RequestId;
+                                this.chkBaoLanh.Checked = true;
+                            }
+                            else
+                            {
+                                LogSystem.Debug("Gọi api thất bại");
+                                this.chkBaoLanh.Checked = false;
+                            }
+                        }
+
+                        //Gọi vào thư viện tích hợp hệ thống bảo lãnh VP
+                        //Thành công -> Check
+                        //Gán guarantee
+                        //Thất bại -> Uncheck và thông báo lỗi
+                    }
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
