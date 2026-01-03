@@ -61,7 +61,17 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     this.TempType = _templateType;
                     string[] configArr = serviceConfig.Split('|');
                     serviceUrl = configArr[1];
-                    cer_serial = configArr[2];
+                    if (configArr.Length > 2)
+                    {
+                        cer_serial = configArr[2];
+                    }
+                    //string invoiceType = ""; 
+                    //if(configArr.Length > 3)
+                    //{
+                    //    invoiceType = configArr[3]; 
+                    //}
+                    //bool isSign = (!string.IsNullOrWhiteSpace(cer_serial) && invoiceType != "1");  
+
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
                         Inventec.Common.Logging.LogSystem.Error("Khong tim thay dia chi Webservice URL");
@@ -82,9 +92,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     switch (electronicBillType)
                     {
                         case ElectronicBillType.ENUM.CREATE_INVOICE:
-                            ProcessGetDataReferences(ref result);
-                            ProcessCreateInvoice(ref result);
-                            ProcessSignInvoiceCertFile(ref result);
+                            ProcessGetDataReferences(ref result); // lấy thông tin phát hành hóa đơn
+                            ProcessCreateInvoice(ref result); // tạo
+                            //if (isSign)
+                            //{
+                                ProcessSignInvoiceCertFile(ref result); // ký
+                            //}
                             break;
                         case ElectronicBillType.ENUM.GET_INVOICE_LINK:
                             ProcessPrintInvoice(ref result);
@@ -149,7 +162,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     System.IO.File.WriteAllBytes(fullName, data);
                     result.Success = true;
                     result.InvoiceSys = ProviderType.MOBIFONE;
-                    result.InvoiceLink = fullName;                  
+                    result.InvoiceLink = fullName;
                 }
                 else
                 {
@@ -188,7 +201,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     result.InvoiceSys = ProviderType.MOBIFONE;
                     Inventec.Common.Logging.LogSystem.Error("Ky va gui hoa don toi CQT that bai " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                     ElectronicBillResultUtil.Set(ref result, false, data.error);
-                    ProcessCreateInvoice(ref result, (int)EditMode.Delete);                  
+                    ProcessCreateInvoice(ref result, (int)EditMode.Delete);
                 }
             }
             catch (Exception ex)
@@ -209,7 +222,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                 dt.cer_serial = cer_serial;
                 dt.type_cmd = HoaDonData.First().data.is_hdcma == 1 ? ((int)(TypeCmd.HasCode)).ToString() : ((int)(TypeCmd.NoCode)).ToString();
                 dt.is_api = "1";
-                obj.data = new List<SignInvoiceCertFile68Data>(){ dt };
+                obj.data = new List<SignInvoiceCertFile68Data>() { dt };
             }
             catch (Exception ex)
             {
@@ -226,11 +239,15 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     return;
                 string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(DataHoaDon78Init(editMode));
                 HoaDonData = HIS.Desktop.Plugins.Library.ElectronicBill.Base.ApiConsumerV2.CreateRequest<List<HoaDon78Result>>(System.Net.WebRequestMethods.Http.Post, serviceUrl, RequestUriStore.MobifoneSaveListHoadon78, login.token, login.ma_dvcs, sendJsonData);
-                if (HoaDonData != null && HoaDonData.Count > 0 && HoaDonData.FirstOrDefault(o=> !string.IsNullOrEmpty(o.error)) == null)
+                if (HoaDonData != null && HoaDonData.Count > 0 && HoaDonData.FirstOrDefault(o => !string.IsNullOrEmpty(o.error)) == null)
                 {
                     if (editMode == (int)EditMode.Create)
                     {
                         result.Success = true;
+                        result.InvoiceCode = HoaDonData.First().data.hdon_id;
+                        result.InvoiceNumOrder = HoaDonData.First().data.khieu + HoaDonData.First().data.shdon;
+                        result.InvoiceLoginname = adoLogin.username;
+                        result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(HoaDonData.First().data.nlap);
                     }
                     result.InvoiceSys = ProviderType.MOBIFONE;
                 }
@@ -294,7 +311,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                 }
                 hd78data.details.Add(dt);
 
-                hd78data.tgtcthue = (dt.data != null && dt.data.Count > 0) ? dt.data.Sum(o=>o.thtien ?? 0) : 0;
+                hd78data.tgtcthue = (dt.data != null && dt.data.Count > 0) ? dt.data.Sum(o => o.thtien ?? 0) : 0;
                 hd78data.tgtthue = (dt.data != null && dt.data.Count > 0) ? dt.data.Sum(o => o.tthue ?? 0) : 0;
                 hd78data.tgtttbso = (dt.data != null && dt.data.Count > 0) ? dt.data.Sum(o => o.tgtien ?? 0) : 0;
                 hd78data.tgtttbso_last = (dt.data != null && dt.data.Count > 0) ? dt.data.Sum(o => o.tgtien ?? 0) : 0;
@@ -565,13 +582,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
         }
         #endregion
 
-        private LoginResultData ProcessLogin( LoginData obj)
+        private LoginResultData ProcessLogin(LoginData obj)
         {
             LoginResultData result = null;
             try
             {
                 string sendJsonData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
-                result = Base.ApiConsumerV2.CreateRequest<LoginResultData>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.MobifoneLogin, null,null, sendJsonData);
+                result = Base.ApiConsumerV2.CreateRequest<LoginResultData>(System.Net.WebRequestMethods.Http.Post, serviceUrl, Base.RequestUriStore.MobifoneLogin, null, null, sendJsonData);
             }
             catch (Exception ex)
             {

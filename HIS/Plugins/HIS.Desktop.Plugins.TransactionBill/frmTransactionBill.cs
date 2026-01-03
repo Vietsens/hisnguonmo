@@ -4383,18 +4383,18 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 var res = form.GuaranteeUse(use);
                 if (res?.Success == true && res.Data?.Data != null)
                 {
-                    this.guaranteeAmountRes = res.Data.Data.AvailableBalance ?? "0";
+                    this.guaranteeAmountRes = lblBaoLanh.Text ?? "0";
                     this.txtSoGiaoDich.Text = res.Data.Data.RefNo ?? string.Empty;
 
                     // Đổi lblReceiveAmount.Text về số
                     decimal receiveAmount = 0;
-                    decimal guaranteeAmount = 0;
+                    decimal tienBaoLanh = 0;
 
                     decimal.TryParse(lblReceiveAmount.Text.Replace(",", ""), out receiveAmount);
-                    decimal.TryParse(guaranteeAmountRes, out guaranteeAmount);
+                    decimal.TryParse(lblBaoLanh.Text, out tienBaoLanh);
 
                     // Trừ bảo lãnh và gán lại
-                    receiveAmount -= guaranteeAmount;
+                    receiveAmount -= tienBaoLanh;
                     if (receiveAmount < 0) receiveAmount = 0;
 
                     lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(

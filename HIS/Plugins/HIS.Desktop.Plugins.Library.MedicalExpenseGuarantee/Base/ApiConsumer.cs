@@ -1,8 +1,11 @@
 ﻿using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
+using Inventec.Common.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
@@ -32,11 +35,16 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
         {
             _httpClient.BaseAddress = new Uri(baseUri);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
-            _httpClient.Timeout = new TimeSpan(0, 0, 90);
+            _httpClient.Timeout = TimeSpan.FromSeconds(180);
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
-            _httpClient.DefaultRequestHeaders.Add("HospitalCode ", this.cskcbbd); 
+            //_httpClient.DefaultRequestHeaders.Add("HospitalCode", this.cskcbbd);  
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             string requestJson = JsonConvert.SerializeObject(sendData);
+            LogSystem.Info("requestJson " + requestJson);
+            LogSystem.Info("baseUri " + baseUri);
+            LogSystem.Info("requestUri " + requestUri);
             HttpResponseMessage resp = null;
 
             try
@@ -49,6 +57,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
             }
             
             string responseData = resp.Content.ReadAsStringAsync().Result;
+            LogSystem.Info("responseData " + responseData);
 
             if (resp == null || !resp.IsSuccessStatusCode)
             {
@@ -80,6 +89,34 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
                 }
                 return sb.ToString();
             }
+        }
+
+        public static string RemoveVietnameseAccent(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return string.Empty;
+
+            string normalized = text.Normalize(NormalizationForm.FormD);
+            var sb = new StringBuilder();
+
+            foreach (char c in normalized)
+            {
+                if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        public static string NormalizeString(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return string.Empty;
+
+            string noAccent = RemoveVietnameseAccent(input);
+            return noAccent.ToLowerInvariant().Trim();
         }
     }
 }

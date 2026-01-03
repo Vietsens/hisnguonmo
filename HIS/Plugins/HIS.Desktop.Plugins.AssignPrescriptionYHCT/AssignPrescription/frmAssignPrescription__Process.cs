@@ -2905,6 +2905,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 }
                 //if (this.actionType == GlobalVariables.ActionEdit && this.totalHeinByTreatment > 0)
                 //    this.totalHeinByTreatment = this.totalHeinByTreatment - totalPrice;
+                this.tongTienDonNguoiDung = totalPrice;
                 this.lblTongTien.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPrice, ConfigApplications.NumberSeperator);
             }
             catch (Exception ex)

@@ -135,11 +135,13 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.VNPT
                     //}
                     //qtcode
                     if (cmdType != Inventec.Common.ElectronicBill.CmdType.ImportAndPublishInv &&
-                        cmdType != Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction &&
-                        //cmdType != Inventec.Common.ElectronicBill.CmdType.PublishInvFkey && // Thêm điều kiện cho AdjustInvoiceAction
-                        this.ElectronicBillDataInput != null && !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.Transaction.INVOICE_CODE))
+                        //cmdType != Inventec.Common.ElectronicBill.CmdType.AdjustInvoiceAction &&
+                         cmdType != Inventec.Common.ElectronicBill.CmdType.PublishInvFkey  && 
+                         this.ElectronicBillDataInput != null &&
+                         !String.IsNullOrWhiteSpace(this.ElectronicBillDataInput.InvoiceCode)
+                        )
                     {
-                        electronicBillInput.fKey = this.ElectronicBillDataInput.Transaction.INVOICE_CODE;
+                            electronicBillInput.fKey = this.ElectronicBillDataInput.InvoiceCode;
                     }
                     else
                     {

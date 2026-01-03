@@ -85,6 +85,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
     public partial class frmAssignService : HIS.Desktop.Utility.FormBase
     {
         #region Reclare variable
+        // qtcode
+        bool isLoadingGuaranteeInfo = false;
+        GuaranteeInfoADO guaranteeInfo = null;
         List<string> arrControlEnableNotChange = new List<string>();
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         CheckIcdManager checkIcdManager { get; set; }
@@ -1115,6 +1118,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                
                 LogSystem.Debug("frmAssignService_Load => Starting...");
                 LoadHisServiceFromRam();
                 LoadServiceTesaCache();
@@ -1170,6 +1174,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.InitComboServiceGroup();
                     this.InitComboExecuteRoom();
                     this.LoadTreatmentInfo__PatientType();
+                    // qtcode3
+                    this.LoadGuaranteeInfo(); 
                     LogSystem.Debug("frmAssignService_Load => 3");
                     this.BindTree();
                     IsFirstLoad = true;
@@ -1179,6 +1185,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     LogSystem.Debug("frmAssignService_Load => 5");
                     this.LoadDataToGridParticipants();
                 }
+                VisibleGuarantee();
                 this.gridControlServiceProcess.ToolTipController = this.tooltipService;
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
                 this.AddBarManager(this.barManager1);
@@ -1234,6 +1241,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
+        private void VisibleGuarantee()
+        {
+            if (currentTreatment?.GUARANTEE_CODE != null)
+            {
+                lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; 
+                lciTotalGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                gridViewServiceProcess.Columns["IsGuarantee"].Visible = true;
+            } 
+            else
+            {
+                lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciTotalGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                gridViewServiceProcess.Columns["IsGuarantee"].Visible = false;
+            }
+        }
         private void ModuleList()
         {
             try
@@ -2491,6 +2513,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                         if (sereServADO.IsChecked)
                         {
+                            // qtcode3
+                            // Tự động check bảo lãnh khi tích chọn dịch vụ
+                            // sereServADO.SetIsGuarantee(true);
+                            sereServADO.IsGuarantee = true;
+                            UpdateTotalGuaranteePrice(); // update label số tiền cần bảo lãnh
                             if (CheckExistServicePaymentLimit(sereServADO.TDL_SERVICE_CODE))
                             {
                                 MessageBox.Show(ResourceMessage.DichVuCLSCoGioiHanChiDinhThanhToanBHYT_DeNghiBSXemXetTruocKhiChiDinh, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -2535,8 +2562,31 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                     if (e.Column.FieldName == this.grcChecked_TabService.FieldName)
                     {
+                        UpdateTotalGuaranteePrice(); 
                         if (sereServADO.IsChecked)
+                        {
                             this.SetAssignNumOrder(sereServADO);
+                            
+                            // Validate bảo lãnh khi tích chọn dịch vụ
+                            if (this.guaranteeInfo != null && !string.IsNullOrEmpty(this.currentHisTreatment?.GUARANTEE_CODE))
+                            {
+                                string guaranteeMessage = "";
+                                if (!ValidateGuaranteeAmount(ref guaranteeMessage, true))
+                                {
+                                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                                        guaranteeMessage, 
+                                        "Cảnh báo", 
+                                        MessageBoxButtons.OK, 
+                                        MessageBoxIcon.Warning);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // Bỏ check bảo lãnh khi bỏ tích chọn dịch vụ
+                            // qtcode3
+                            sereServADO.IsGuarantee = false;
+                        }
                     }
                     if (e.Column.FieldName == this.grcChecked_TabService.FieldName
                         || e.Column.FieldName == this.grcExpend_TabService.FieldName

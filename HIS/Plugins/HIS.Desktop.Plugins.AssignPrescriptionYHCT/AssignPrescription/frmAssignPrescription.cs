@@ -230,6 +230,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         public bool IsManyDay { get; set; }
         public long Assign_time { get; set; }
         HIS_DHST currentDhst;
+        decimal tongTienDonNguoiDung = 0;
         #endregion
 
         #region Construct
@@ -277,7 +278,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 this.icdExam = data.IcdExam;
                 this.ContructorIntructionTime = data.IntructionTime;
                 this.tracking = data.Tracking;
-
+                
                 Resources.ResourceLanguageManager.LanguagefrmAssignPrescription = new ResourceManager("HIS.Desktop.Plugins.AssignPrescriptionYHCT.Resources.Lang", typeof(HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription.frmAssignPrescription).Assembly);
                 this.InitAssignPresctiptionType();
                 HisConfigCFG.LoadConfig();
