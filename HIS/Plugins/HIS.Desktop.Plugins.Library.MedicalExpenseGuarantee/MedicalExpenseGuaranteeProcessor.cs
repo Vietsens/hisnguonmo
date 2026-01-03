@@ -1,4 +1,6 @@
 ﻿using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base;
+using Inventec.Common.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,6 +17,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
         {
             try
             {
+                LogSystem.Info("Start GuaranteeRegisterUse " + LogUtil.TraceData("input: ", registerUse.registerUseRequest));
+                LogSystem.Info("input GuaranteeRegisterUse " + registerUse.registerUseRequest);
                 RegisterUseResponse registerUseResponse = new RegisterUseResponse();
                 if (!this.ValidateRegisterUse(registerUse.registerUseRequest, ref registerUseResponse))
                 {
@@ -23,7 +27,14 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 }
 
                 Base.ApiConsumer consumer = new Base.ApiConsumer(registerUse.baseUri, registerUse.applicationCode, registerUse.limet, registerUse.cskcbbd);
-
+                if (registerUse.registerUseRequest.Signature == null || registerUse.registerUseRequest.Signature == "")
+                {
+                    string name = ApiConsumer.NormalizeString(registerUse.registerUseRequest.PatientFullName);
+                    string Signature = name + registerUse.registerUseRequest.PatientDateOfBirth + registerUse.registerUseRequest.PatientCccd + registerUse.registerUseRequest.RequestAmount + registerUse.applicationCode;
+                    registerUse.registerUseRequest.Signature = consumer.ConvertSHA256(Signature);
+                }
+                LogSystem.Info("Start GuaranteeRegisterUse API" + LogUtil.TraceData("input: ", registerUse.registerUseRequest));
+                LogSystem.Info("input GuaranteeRegisterUse API" + registerUse.registerUseRequest);
                 // Gọi API Register Use
                 registerUseResponse = consumer.CreateRequest<RegisterUseResponse>(Base.API.API_GUARANTEE_REGISTER_USE, registerUse.registerUseRequest);
 
@@ -47,6 +58,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
         {
             try
             {
+                LogSystem.Info("Start GuaranteeUse " + LogUtil.TraceData("input: ", use.useRequest));
+                LogSystem.Info("input GuaranteeUse " + use.useRequest);
                 UseResponse responseUser = new UseResponse();
 
                 // Validate dữ liệu đầu vào
@@ -64,6 +77,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                     string Signature = use.useRequest.RequestId + use.useRequest.Amount;
                     use.useRequest.Signature = consumer.ConvertSHA256(Signature);
                 }
+                LogSystem.Info("Start GuaranteeUse API" + LogUtil.TraceData("input: ", use.useRequest));
+                LogSystem.Info("input GuaranteeUse API" + use.useRequest);
                 // Gọi API Use
                 responseUser = consumer.CreateRequest<UseResponse>(Base.API.API_GUARANTEE_USE, use.useRequest);
                 
@@ -102,6 +117,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
         {
             try
             {
+                LogSystem.Info("Start GuaranteeCancelRegisterUse " + LogUtil.TraceData("input: ", cancelRegisterUse.cancelRegisterUseRequest));
+                LogSystem.Info("input GuaranteeCancelRegisterUse " + cancelRegisterUse.cancelRegisterUseRequest);
                 CancelRegisterUseResponse cancelRegisterUseResponse = new CancelRegisterUseResponse();
                 if (!this.ValiCancelRegisterUse(cancelRegisterUse.cancelRegisterUseRequest, ref cancelRegisterUseResponse))
                 {
@@ -117,6 +134,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                     cancelRegisterUse.cancelRegisterUseRequest.Signature = consumer.ConvertSHA256(Signature);
                 }
 
+                LogSystem.Info("Start GuaranteeCancelRegisterUse API" + LogUtil.TraceData("input: ", cancelRegisterUse.cancelRegisterUseRequest));
+                LogSystem.Info("input GuaranteeCancelRegisterUse API" + cancelRegisterUse.cancelRegisterUseRequest);
                 cancelRegisterUseResponse = consumer.CreateRequest<CancelRegisterUseResponse>(Base.API.API_GUARANTEE_CANCEL_REGISTER_USE, cancelRegisterUse.cancelRegisterUseRequest);
 
                 if (cancelRegisterUseResponse != null && cancelRegisterUseResponse.Success)
@@ -150,6 +169,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
         {
             try
             {
+                LogSystem.Info("Start GuaranteeAvailableBalanceInfoResponse " + LogUtil.TraceData("input: ", availableBalanceInfo.availableBalanceInfoRequest));
+                LogSystem.Info("input GuaranteeAvailableBalanceInfoResponse " + availableBalanceInfo.availableBalanceInfoRequest);
                 AvailableBalanceInfoResponse availableBalanceInfoResponse = new AvailableBalanceInfoResponse();
                 if (!this.ValiAvailableBalanceInfo(availableBalanceInfo.availableBalanceInfoRequest, ref availableBalanceInfoResponse))
                 {
@@ -188,7 +209,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 return null;
             }
         }
-        public bool ValidateUse(UseRequest dataUser, ref UseResponse response)
+        private bool ValidateUse(UseRequest dataUser, ref UseResponse response) 
         {
             bool result = true;
             try
@@ -215,15 +236,15 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 {
                     mess = "Không xác định được số hợp đồng (ContractNumber)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataUser.PatientName))
+                else if (string.IsNullOrWhiteSpace(dataUser.PatientFullName))
                 {
                     mess = "Không xác định được tên bệnh nhân (PatientName)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataUser.Dob))
+                else if (string.IsNullOrWhiteSpace(dataUser.PatientDateOfBirth))
                 {
                     mess = "Không xác định được ngày sinh (Dob - yyyyMMddHHmmss)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataUser.CccdNumber))
+                else if (string.IsNullOrWhiteSpace(dataUser.PatientCccd))
                 {
                     mess = "Không xác định được số CCCD/CMND (CccdNumber)";
                 }
@@ -245,8 +266,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 return false;
             }
         }
-
-        public bool ValidateRegisterUse(RegisterUseRequest dataUseRequest, ref RegisterUseResponse response)
+        private bool ValidateRegisterUse(RegisterUseRequest dataUseRequest, ref RegisterUseResponse response)
         {
             bool result = true;
             try
@@ -257,9 +277,9 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 {
                     mess = "Dữ liệu request không được để trống";
                 }
-                else if (string.IsNullOrWhiteSpace(dataUseRequest.Amount))
+                else if (string.IsNullOrWhiteSpace(dataUseRequest.RequestAmount))
                 {
-                    mess = "Không xác định được số tiền thanh toán (Amount)";
+                    mess = "Không xác định được số tiền thanh toán (RequestAmount)";
                 }
                 else if (string.IsNullOrWhiteSpace(dataUseRequest.Remark))
                 {
@@ -269,17 +289,17 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 {
                     mess = "Không xác định được mã ứng dụng của HIS(ApplicationCode)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataUseRequest.PatientName))
+                else if (string.IsNullOrWhiteSpace(dataUseRequest.PatientFullName))
                 {
                     mess = "Không xác định được tên bệnh nhân (PatientName)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataUseRequest.Dob))
+                else if (string.IsNullOrWhiteSpace(dataUseRequest.PatientDateOfBirth))
                 {
                     mess = "Không xác định được ngày sinh (Dob - yyyyMMddHHmmss)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataUseRequest.CccdNumber))
+                else if (string.IsNullOrWhiteSpace(dataUseRequest.PatientCccd))
                 {
-                    mess = "Không xác định được số CCCD/CMND (CccdNumber)";
+                    mess = "Không xác định được số CCCD/CMND (PatientCccd)";
                 }
 
                 if (!string.IsNullOrWhiteSpace(mess))
@@ -300,8 +320,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 return false;
             }
         }
-
-        public bool ValiCancelRegisterUse(CancelRegisterUseRequest dataCancelRegisterUse, ref CancelRegisterUseResponse response)
+        private bool ValiCancelRegisterUse(CancelRegisterUseRequest dataCancelRegisterUse, ref CancelRegisterUseResponse response)
         {
             bool result = true;
             try
@@ -328,15 +347,15 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 {
                     mess = "Không xác định được số hợp đồng (ContractNumber)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.PatientName))
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.PatientFullName))
                 {
                     mess = "Không xác định được tên bệnh nhân (PatientName)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.Dob))
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.PatientDateOfBirth))
                 {
                     mess = "Không xác định được ngày sinh (Dob - yyyyMMddHHmmss)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.CccdNumber))
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.PatientCccd))
                 {
                     mess = "Không xác định được số CCCD/CMND (CccdNumber)";
                 }
@@ -358,8 +377,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 return false;
             }
         }
-
-        public bool ValiAvailableBalanceInfo(AvailableBalanceInfoRequest dataCancelRegisterUse, ref AvailableBalanceInfoResponse response)
+        private bool ValiAvailableBalanceInfo(AvailableBalanceInfoRequest dataCancelRegisterUse, ref AvailableBalanceInfoResponse response)
         {
             bool result = true;
             try
@@ -374,15 +392,15 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 {
                     mess = "Không xác định được mã giao dịch (RequestId)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.PatientName))
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.PatientFullName))
                 {
                     mess = "Không xác định được tên bệnh nhân (PatientName)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.Dob))
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.PatientDateOfBirth))
                 {
                     mess = "Không xác định được ngày sinh (Dob - yyyyMMddHHmmss)";
                 }
-                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.CccdNumber))
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.PatientCccd))
                 {
                     mess = "Không xác định được số CCCD/CMND (CccdNumber)";
                 }
