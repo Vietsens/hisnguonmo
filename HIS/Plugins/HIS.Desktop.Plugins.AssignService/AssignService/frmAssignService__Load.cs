@@ -4292,7 +4292,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 LogSystem.Error(ex);
             }
-            totalGuaranteePrice += decimal.Parse(lblChiPhiBNPhaiTra.Text);
+
+            var totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.PRICE) : 0;
+            totalGuaranteePrice += totalGuaranteeOriginal;
             return totalGuaranteePrice;
         }
 
