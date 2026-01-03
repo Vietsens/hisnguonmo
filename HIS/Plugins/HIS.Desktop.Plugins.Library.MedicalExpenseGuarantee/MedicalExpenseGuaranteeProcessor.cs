@@ -404,6 +404,10 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 {
                     mess = "Không xác định được số CCCD/CMND (CccdNumber)";
                 }
+                else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.Remark))
+                {
+                    mess = "Không xác định được diễn giải giao dịch (Remark)";
+                }
 
                 if (!string.IsNullOrWhiteSpace(mess))
                 {
