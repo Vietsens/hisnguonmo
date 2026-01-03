@@ -371,7 +371,34 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         return;
                     }
                 }
+                //this.lblTongTien.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPrice, ConfigApplications.NumberSeperator);
 
+                HIS_TREATMENT_TYPE treatmentType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == currentTreatmentWithPatientType.TDL_TREATMENT_TYPE_ID);
+                if (treatmentType != null && treatmentType.MAX_PRESCRIPTION_AMOUNT != null && treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION != null)
+                {
+                    if(this.tongTienDonNguoiDung > treatmentType.MAX_PRESCRIPTION_AMOUNT)
+                    {
+                        string sTong = Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.tongTienDonNguoiDung, ConfigApplications.NumberSeperator);
+                        string sMax = Inventec.Common.Number.Convert.NumberToStringRoundAuto(treatmentType.MAX_PRESCRIPTION_AMOUNT.Value, ConfigApplications.NumberSeperator);
+                        if (treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION == 1)
+                        {
+                            
+                            string message = $"Tổng tiền {sTong} của đơn thuốc lớn hơn số tiền {sMax} được kê tối đa của 1 đơn thuốc theo diện điều trị. Bạn có muốn tiếp tục?";
+                            var result = DevExpress.XtraEditors.XtraMessageBox.Show(message, "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                            if (result == DialogResult.No)
+                            {
+                                return;
+                            }
+                        }
+                        if(treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION == 2)
+                        {
+                            string message = $"Tổng tiền {sTong} của đơn thuốc lớn hơn số tiền {sMax} được kê tối đa của 1 đơn thuốc theo diện điều trị.";
+                            DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                    }
+                }
                 if (GlobalStore.IsTreatmentIn && this.patientSelectProcessor != null && this.ucPatientSelect != null)
                 {
                     var listPatientSelecteds = this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect);
