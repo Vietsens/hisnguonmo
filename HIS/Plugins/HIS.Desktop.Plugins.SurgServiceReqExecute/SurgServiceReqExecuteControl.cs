@@ -5694,7 +5694,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             try
             {
                 var ext = grdControlService.DataSource as BindingSource;
-                var list = ext?.DataSource as List<V_HIS_SERE_SERV_5> ?? this.sereServbyServiceReqs;  
+                var list = ext?.DataSource as List<V_HIS_SERE_SERV_5> ?? this.sereServbyServiceReqs;
                 if (list == null || list.Count == 0)
                     return true;
 
@@ -5723,7 +5723,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 }
                 catch { instructionTime = null; }
 
-                var now = DateTime.Now;
                 List<string> invalids = new List<string>();
 
                 foreach (var item in rsApi)
@@ -5748,9 +5747,20 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     try { if (item.SERE_SERV_ID != 0) serviceCodeMap.TryGetValue(item.SERE_SERV_ID, out displayCode); } catch { displayCode = null; }
                     var display = !string.IsNullOrEmpty(displayCode) ? displayCode : (item.SERE_SERV_ID > 0 ? item.SERE_SERV_ID.ToString() : "UNKNOWN");
 
-                    if (instructionTime.HasValue && end.Value < instructionTime.Value && chkKetThuc.Checked)
+                    // Guard nullables before accessing Value
+                    if (instructionTime.HasValue && end.HasValue && chkKetThuc.Checked)
                     {
-                        invalids.Add(string.Format("{0} có thời gian kết thúc nhỏ hơn thời gian y lệnh", display));    
+                        if (end.Value < instructionTime.Value)
+                        {
+                            invalids.Add(string.Format("{0} có thời gian kết thúc nhỏ hơn thời gian y lệnh", display));
+                            continue;
+                        }
+                    }
+
+                    // Additional sanity checks (optional) - example: end before begin
+                    if (begin.HasValue && end.HasValue && end.Value < begin.Value)
+                    {
+                        invalids.Add(string.Format("{0} có thời gian kết thúc nhỏ hơn thời gian bắt đầu", display));
                         continue;
                     }
                 }
