@@ -70,8 +70,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     if (_child == null) _child = new MCH_CHILD();
                     
-                    _child.MENTAL_STATUS = mentalStatusValue.HasValue ? mentalStatusValue.Value.ToString() : null;
-                    _child.MOTION_STATUS = motionStatusValue.HasValue ? motionStatusValue.Value.ToString() : null;
+                    _child.MENTAL_STATUS = mentalStatusValue.HasValue ? (mentalStatusValue.Value + 1).ToString() : null;
+                    _child.MOTION_STATUS = motionStatusValue.HasValue ? (motionStatusValue.Value + 1).ToString() : null;
                     _child.WEIGHT = weight;
                     _child.HEIGHT = height;
                     _child.HEAD_CIRCUM = headCircum;
@@ -138,10 +138,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 if (_child != null)
                 {
                     if (!string.IsNullOrEmpty(_child.MENTAL_STATUS))
-                        SetRadioGroupValue("MentalStatus", short.Parse(_child.MENTAL_STATUS));
+                        SetRadioGroupValue("MentalStatus", (short?)(short.Parse(_child.MENTAL_STATUS) - 1));
                     
                     if (!string.IsNullOrEmpty(_child.MOTION_STATUS))
-                        SetRadioGroupValue("MotionStatus", short.Parse(_child.MOTION_STATUS));
+                        SetRadioGroupValue("MotionStatus", (short?)(short.Parse(_child.MOTION_STATUS) - 1));
                     
                     SetSpinEditStringValue(spnW1, _child.WEIGHT);
                     SetSpinEditStringValue(spnH1, _child.HEIGHT);

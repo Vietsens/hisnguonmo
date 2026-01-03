@@ -40,7 +40,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 _antenatalVisit.ABDOMINAL_CIRCUMFERENCE = GetSpinEditStringValue(spnAbdominalCircumference2);
                 
                 var pelvicMeasurementValue = GetRadioGroupValue("PelvicMeasurement");
-                _antenatalVisit.PELVIC_MEASUREMENT = pelvicMeasurementValue.HasValue ? pelvicMeasurementValue.Value.ToString() : null;
+                _antenatalVisit.PELVIC_MEASUREMENT = pelvicMeasurementValue.HasValue ? (pelvicMeasurementValue.Value + 1).ToString() : null;
                 
                 var anemiaStatusValue = GetRadioGroupValue("AnemiaStatus");
                 _antenatalVisit.ANEMIA_STATUS = anemiaStatusValue.HasValue ? anemiaStatusValue.Value.ToString() : null;
@@ -112,7 +112,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     SetSpinEditStringValue(spnAbdominalCircumference2, _antenatalVisit.ABDOMINAL_CIRCUMFERENCE);
                     
                     if (!string.IsNullOrEmpty(_antenatalVisit.PELVIC_MEASUREMENT))
-                        SetRadioGroupValue("PelvicMeasurement", short.Parse(_antenatalVisit.PELVIC_MEASUREMENT));
+                        SetRadioGroupValue("PelvicMeasurement", (short?)(short.Parse(_antenatalVisit.PELVIC_MEASUREMENT) - 1));
                     
                     if (!string.IsNullOrEmpty(_antenatalVisit.ANEMIA_STATUS))
                         SetRadioGroupValue("AnemiaStatus", short.Parse(_antenatalVisit.ANEMIA_STATUS));

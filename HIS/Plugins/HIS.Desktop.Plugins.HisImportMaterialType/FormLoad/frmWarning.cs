@@ -120,11 +120,11 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                         e.Valid = false;
                         e.ErrorText = "Trường dữ liệu bắt buộc nhập";
                     }
-                    else if (e.Value != null && Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(e.Value.ToString(), 100))
-                    {
-                        e.Valid = false;
-                        e.ErrorText = "Trường dữ liệu vượt quá ký tự cho phép";
-                    }
+                    //else if (e.Value != null && Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(e.Value.ToString(), 100))
+                    //{
+                    //    e.Valid = false;
+                    //    e.ErrorText = "Trường dữ liệu vượt quá ký tự cho phép";
+                    //}
                     else
                     {
                         e.Valid = true;
@@ -310,13 +310,13 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                         return false;
                     }
 
-                    var maxLengthName = data.Where(o => Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(o.MANUFACTURER_NAME, 100)).ToList();
-                    if (maxLengthName != null && maxLengthName.Count > 0)
-                    {
-                        string mess = "Tên hãng sản xuất: " + String.Join(",", maxLengthName.Select(o => o.MANUFACTURER_NAME).ToArray()) + " vượt quá ký tự cho phép";
-                        DevExpress.XtraEditors.XtraMessageBox.Show(mess, "Thông báo");
-                        return false;
-                    }
+                    //var maxLengthName = data.Where(o => Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(o.MANUFACTURER_NAME, 100)).ToList();
+                    //if (maxLengthName != null && maxLengthName.Count > 0)
+                    //{
+                    //    string mess = "Tên hãng sản xuất: " + String.Join(",", maxLengthName.Select(o => o.MANUFACTURER_NAME).ToArray()) + " vượt quá ký tự cho phép";
+                    //    DevExpress.XtraEditors.XtraMessageBox.Show(mess, "Thông báo");
+                    //    return false;
+                    //}
 
                     var nullCode = data.Where(o => string.IsNullOrEmpty(o.MANUFACTURER_CODE)).ToList();
                     if (nullCode != null && nullCode.Count > 0)

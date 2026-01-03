@@ -480,8 +480,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             SoloValidBidControl(txtPackageNumber, layoutPackageNumber, false);
                         }
                     }
-
-                    if (this.currrentServiceAdo.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                    //this.currrentServiceAdo.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT || 
+                    if (String.IsNullOrEmpty(this.currrentServiceAdo.activeIngrBhytCode))
                     {
                         this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
                     }

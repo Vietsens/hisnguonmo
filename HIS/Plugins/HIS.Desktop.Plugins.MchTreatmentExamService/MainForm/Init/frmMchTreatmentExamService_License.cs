@@ -14,19 +14,18 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
     {
         #region License and Disable Controls
 
-        private bool CheckMchLicense()
+        private bool CheckMchLicense(ref CommonParam param)
         {
             bool result = true;
             try
             {
-                string branchCode = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId()).BRANCH_CODE;
+                string branchCode = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId()).HEIN_MEDI_ORG_CODE;
                 if (string.IsNullOrEmpty(branchCode))
                 {
                     Inventec.Common.Logging.LogSystem.Warn("Branch code is empty");
                     return false;
                 }
 
-                CommonParam param = new CommonParam();
                 result = new BackendAdapter(param)
                     .Post<bool>("api/MchLicense/Check", ApiConsumers.MchConsumer, branchCode, param);
 

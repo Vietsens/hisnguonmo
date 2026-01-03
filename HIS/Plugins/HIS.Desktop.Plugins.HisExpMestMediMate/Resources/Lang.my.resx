@@ -1,0 +1,486 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmHisExpMestMediMate.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmHisExpMestMediMate.barButtonItem1.Caption" xml:space="preserve">
+    <value>ရှာရန် (Ctr F)</value>
+  </data>
+  <data name="frmHisExpMestMediMate.barButtonItem3.Caption" xml:space="preserve">
+    <value>ထုတ်ယူရန် (Ctrl O)</value>
+  </data>
+  <data name="frmHisExpMestMediMate.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmHisExpMestMediMate.Text" xml:space="preserve">
+    <value>သွင်းကုန်၊ တင်ပို့မှုသမိုင်း</value>
+  </data>
+  <data name="frmHistoryMedicine.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmHistoryMedicine.bbtnAdd.Caption" xml:space="preserve">
+    <value>ထည့်ပါ (Ctrl N)</value>
+  </data>
+  <data name="frmHistoryMedicine.bbtnEdit.Caption" xml:space="preserve">
+    <value>တည်းဖြတ်ရန် (Ctrl S)</value>
+  </data>
+  <data name="frmHistoryMedicine.bbtnFocusDefault.Caption" xml:space="preserve">
+    <value>F2</value>
+  </data>
+  <data name="frmHistoryMedicine.bbtnReset.Caption" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmHistoryMedicine.bbtnSearch.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmHistoryMedicine.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColCode.Caption" xml:space="preserve">
+    <value>ဆေးကုဒ်</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColCode.ToolTip" xml:space="preserve">
+    <value>ဆေးကုဒ်</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColCreateTime.Caption" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColCreateTime.ToolTip" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColCreator.Caption" xml:space="preserve">
+    <value>Inventory ကာလ</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColCreator.ToolTip" xml:space="preserve">
+    <value>Inventory ကာလ</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColModifier.Caption" xml:space="preserve">
+    <value>ပီပြင်သည်</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColModifier.ToolTip" xml:space="preserve">
+    <value>ပီပြင်သည်</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColModifyTime.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColModifyTime.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColName.Caption" xml:space="preserve">
+    <value>သွင်းကုန်/တင်ပို့ချိန်</value>
+  </data>
+  <data name="frmHistoryMedicine.grdColName.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်/တင်ပို့ချိန်</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumnisLock</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumn2.Caption" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumn2.ToolTip" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumn3.Caption" xml:space="preserve">
+    <value>သွင်းကုန်/ပို့ကုန် အမျိုးအစား</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumn3.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်/ပို့ကုန် အမျိုးအစား</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumn4.Caption" xml:space="preserve">
+    <value>တင်သွင်း/တင်ပို့ခြင်း လက်မှတ်ကုဒ်</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumn4.ToolTip" xml:space="preserve">
+    <value>တင်သွင်း/တင်ပို့ခြင်း လက်မှတ်ကုဒ်</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumn5.Caption" xml:space="preserve">
+    <value>သွင်းကုန်/ပို့ကုန် အရာဝတ္ထု</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumn5.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်/ပို့ကုန် အရာဝတ္ထု</value>
+  </data>
+  <data name="frmHistoryMedicine.gridColumnEdit.ToolTip" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="frmHistoryMedicine.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmHistoryMedicine.layoutControl7.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="frmHistoryMedicine.layoutControlItem13.Text" xml:space="preserve">
+    <value>ဆိုက်ရောက်မည့်ရက်-</value>
+  </data>
+  <data name="frmHistoryMedicine.layoutControlItem19.Text" xml:space="preserve">
+    <value>စကားလုံးဖန်တီးချိန်-</value>
+  </data>
+  <data name="frmHistoryMedicine.layoutControlItem2.Text" xml:space="preserve">
+    <value>ရက်စွဲမှ</value>
+  </data>
+  <data name="frmHistoryMedicine.layoutControlItem20.Text" xml:space="preserve">
+    <value>ဖန်တီးချိန်-</value>
+  </data>
+  <data name="frmHistoryMedicine.STT.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmHistoryMedicine.Text" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါး တင်သွင်း တင်ပို့မှုသမိုင်း</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl R)</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.chkHistoryMaterial.Properties.Caption" xml:space="preserve">
+    <value>ပစ္စည်းများ</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.chkHistoryMedicine.Properties.Caption" xml:space="preserve">
+    <value>ဆေးဝါး</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.chkHistoryMedicine.ToolTip" xml:space="preserve">
+    <value>ဆေးဝါး</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColCode.Caption" xml:space="preserve">
+    <value>ဆေးကုဒ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColCode.ToolTip" xml:space="preserve">
+    <value>ဆေးကုဒ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColCreateTime.Caption" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColCreateTime.ToolTip" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColCreator.Caption" xml:space="preserve">
+    <value>Inventory ကာလ</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColCreator.ToolTip" xml:space="preserve">
+    <value>Inventory ကာလ</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColModifier.Caption" xml:space="preserve">
+    <value>ပီပြင်သည်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColModifier.ToolTip" xml:space="preserve">
+    <value>ပီပြင်သည်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColModifyTime.Caption" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColModifyTime.ToolTip" xml:space="preserve">
+    <value>ပြုပြင်ချိန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColName.Caption" xml:space="preserve">
+    <value>အထွက်အချိန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.grdColName.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်/တင်ပို့ချိန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn1.Caption" xml:space="preserve">
+    <value>gridColumnisLock</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn10.Caption" xml:space="preserve">
+    <value>အသေးစိတ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn11.Caption" xml:space="preserve">
+    <value>စာရွက်စာတမ်းနံပါတ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn12.Caption" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn13.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn14.Caption" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn15.Caption" xml:space="preserve">
+    <value>အသေးစိတ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn16.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn17.Caption" xml:space="preserve">
+    <value>gridColumnisLock</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn18.ToolTip" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn19.Caption" xml:space="preserve">
+    <value>ပစ္စည်းကုဒ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn19.ToolTip" xml:space="preserve">
+    <value>ဆေးကုဒ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn2.Caption" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn2.ToolTip" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn20.Caption" xml:space="preserve">
+    <value>အထွက်အချိန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn20.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်/တင်ပို့ချိန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn21.Caption" xml:space="preserve">
+    <value>လက်မှတ်ကုဒ်ကို ထုတ်ယူပါ။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn21.ToolTip" xml:space="preserve">
+    <value>တင်သွင်း/တင်ပို့ခြင်း လက်မှတ်ကုဒ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn22.Caption" xml:space="preserve">
+    <value>Output အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn22.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်/ပို့ကုန် အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn23.Caption" xml:space="preserve">
+    <value>ပစ္စည်းထုတ်ရန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn23.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်/ပို့ကုန် အရာဝတ္ထု</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn24.Caption" xml:space="preserve">
+    <value>စာရွက်စာတမ်းနံပါတ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn25.Caption" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn25.ToolTip" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn26.Caption" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn26.ToolTip" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn27.Caption" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn28.Caption" xml:space="preserve">
+    <value>Inventory ကာလ</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn28.ToolTip" xml:space="preserve">
+    <value>Inventory ကာလ</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn29.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn3.Caption" xml:space="preserve">
+    <value>Output အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn3.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်/ပို့ကုန် အမျိုးအစား</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn30.Caption" xml:space="preserve">
+    <value>ဖန်တီးချိန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn31.Caption" xml:space="preserve">
+    <value>အော်ဒါမှာတယ်။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn32.Caption" xml:space="preserve">
+    <value>ဆရာမတွေ တောင်းဆိုတယ်။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn33.Caption" xml:space="preserve">
+    <value>ဂိုဒေါင်များ တင်သွင်းခြင်း။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn34.Caption" xml:space="preserve">
+    <value>ဂိုဒေါင်ကို တင်ပို့သည်။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn4.Caption" xml:space="preserve">
+    <value>လက်မှတ်ကုဒ်ကို ထုတ်ယူပါ။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn4.ToolTip" xml:space="preserve">
+    <value>တင်သွင်း/တင်ပို့ခြင်း လက်မှတ်ကုဒ်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn5.Caption" xml:space="preserve">
+    <value>ပစ္စည်းထုတ်ရန်</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn5.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်/ပို့ကုန် အရာဝတ္ထု</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn6.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn7.Caption" xml:space="preserve">
+    <value>ဆရာမတွေ တောင်းဆိုတယ်။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn8.Caption" xml:space="preserve">
+    <value>ဂိုဒေါင်များ တင်သွင်းခြင်း။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumn9.Caption" xml:space="preserve">
+    <value>ဂိုဒေါင်ကို တင်ပို့သည်။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.gridColumnEdit.ToolTip" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControl7.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem10.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem11.Text" xml:space="preserve">
+    <value>ပို့ကုန်ဂိုဒေါင်-</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem13.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem16.Text" xml:space="preserve">
+    <value>အထွက် အမျိုးအစား-</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem22.Text" xml:space="preserve">
+    <value>နံပါတ်-</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem6.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အမှန်တကယ် တင်ပို့ခြင်း/မတင်သွင်းသော်လည်း သိမ်းပိုက်ထားသည့် ဒေတာကို ပြန်လည်ရယူရန် ရှင်းလင်းပါ။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem6.Text" xml:space="preserve">
+    <value>မှ-</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အမှန်တကယ် တင်ပို့ခြင်း/မတင်သွင်းသော်လည်း သိမ်းပိုက်ထားသည့် ဒေတာကို ပြန်လည်ရယူရန် ရှင်းလင်းပါ။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem7.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem8.Text" xml:space="preserve">
+    <value>အခြေအနေ-</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.layoutControlItem9.Text" xml:space="preserve">
+    <value>ဌာန လိုအပ်သည်-</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.STT.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးများကို ရှာဖွေပါ။</value>
+  </data>
+  <data name="UC_HisExpMestMediMate.txtSearchMediMate.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးများကို ရှာဖွေပါ။</value>
+  </data>
+</root>

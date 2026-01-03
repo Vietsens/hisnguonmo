@@ -15,16 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using HIS.Desktop.Plugins.Optometrist.UC;
 using Inventec.Core;
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
 using MOS.EFMODEL.DataModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.Optometrist.Optometrist
 {
@@ -52,22 +48,22 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             {
                 if (entity != null && entity.Count() > 0)
                 {
-                    V_HIS_SERVICE_REQ serviceReq = null;
+                    HIS_SERE_SERV sereServ = null;
                     foreach (var item in entity)
                     {
                         if (item is Inventec.Desktop.Common.Modules.Module)
                         {
                             currentModule = (Inventec.Desktop.Common.Modules.Module)item;
                         }
-                        else if (item is V_HIS_SERVICE_REQ)
+                        else if (item is HIS_SERE_SERV)
                         {
-                            serviceReq = (V_HIS_SERVICE_REQ)item;
+                            sereServ = (HIS_SERE_SERV)item;
                         }
                     }
 
-                    if (currentModule != null && serviceReq != null && serviceReq.ID > 0)
+                    if (currentModule != null && sereServ != null)
                     {
-                        result = new UCOptometrist(currentModule, serviceReq.ID);
+                        result = new frmOptometrist(currentModule, sereServ);
                     }
                 }
             }

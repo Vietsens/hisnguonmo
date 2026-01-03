@@ -1,0 +1,1204 @@
+{
+	"info": {
+		"_postman_id": "721dd5c4-90b8-47c2-8ffd-511f1d83a680",
+		"name": "MIMS API Test Collection",
+		"description": "Postman collection for testing MIMS API endpoints with authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15128021"
+	},
+	"item": [
+		{
+			"name": "Drug Information (Product)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "KhanhHoa",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "198GTjisas",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "prescriptionquery",
+							"value": "<Request><Content><Product reference=\"{D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60}\" /></Content></Request>",
+							"type": "text"
+						},
+						{
+							"key": "responsetype",
+							"value": "xml",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+					"protocol": "http",
+					"host": [
+						"49",
+						"249",
+						"193",
+						"198"
+					],
+					"port": "8081",
+					"path": [
+						"RESTFTWebService-VN",
+						"FTRequest",
+						"xmlrequestplus"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Drug Information (Product)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Content><Product reference=\"{D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60}\" /></Content></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "16106"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 26 Dec 2025 04:05:08 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2025-12-31\"><Content><Product name=\"Vercef dispersible tab 125 mg\" offMarket=\"false\" reference=\"{D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60}\"><MONOGRAPH><GENMONO><![CDATA[Cefaclor]]></GENMONO><LASTUPDATED><![CDATA[TRUE]]></LASTUPDATED><GCLS><![CDATA[Cephalosporins]]></GCLS><GPCAT><![CDATA[PO: B]]></GPCAT><GCI><![CDATA[Hypersensitivity to cefaclor or to other cephalosporins.]]></GCI><GSP><![CDATA[Hypersensitivity to penicillins. History of GI disease. Renal impairment. Pregnancy and lactation.<br /><I>Monitoring Parameters:</I><br />Monitor renal function. Observe for signs of anaphylaxis during 1st dose.<br /><I>Overdosage:</I><br />Symptoms: Nausea, vomiting, epigastric distress, diarrhoea. Management: Supportive treatment.]]></GSP><GAR><![CDATA[GI effects (e.g. diarrhoea, nausea, vomiting), headache, rash. Rarely, serum sickness-like reactions consisting of erythema multiforme or maculopapular pruritic rash or urticaria accompanied by arthritis, arthralgia, irritability and fever.<br>\r\n<strong>Potentially Fatal:</strong> Severe hypersensitivity reactions (e.g. Stevens-Johnson syndrome, toxic epidermal necrolysis and anaphylaxis), pseudomembranous colitis.]]></GAR><GDI><![CDATA[May enhance the nephrotoxic effect of aminoglycosides. May diminish the therapeutic effect of BCG, typhoid vaccine and Na picosulfate. Concomitant use w/ warfarin may increase prothrombin time. Probenecid inhibits renal excretion of cefaclor.]]></GDI><GPPPA><![CDATA[May be taken with or without food.<br /><I>Reconstitution:</I><br />Add the amount of water specified on the container in 2 portions to provide a susp containing 125, 187, 250 or 375 mg per 5 mL. Shake the bottle after each addition.<br /><I>Storage:</I><br />Store between 20-25&deg;C. Protect from moisture. Reconstituted powd for susp: Store between 2-8&deg;C.]]></GPPPA><GATC1><![CDATA[cefaclor]]></GATC1><GATC2><![CDATA[J01DC04]]></GATC2><GLAB><![CDATA[False-positive reaction in urinary glucose test using Benedict&apos;s or Fehling&apos;s soln or copper sulfate test tablets. Positive direct Coombs&apos; test.]]></GLAB><GFOOD><![CDATA[Food may delay the rate but does not affect the extent of absorption.]]></GFOOD><GDOSE><![CDATA[<i>Oral</i><br /><b>Otitis media, Respiratory tract infections, Skin infections, Soft tissue infections, Urinary tract infections</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>250-500 mg 8 hrly. Max: 4 g daily.<br /><b>Child: </b><em>&gt;1 mth</em> 20-40 mg/kg daily in 2 or 3 divided doses. Max: 0.75-1.5 g daily.<br /></div>]]></GDOSE><GSPG/><GACTION><![CDATA[<b>Description: </b>Cefaclor inhibits bacterial cell wall synthesis by binding to 1 or more of the penicillin-binding proteins (PBPs) which in turn inhibit the final transpeptidation step of peptidoglycan synthesis in bacterial cell walls, thus inhibiting cell wall biosynthesis and arresting cell wall assembly resulting in bacterial cell death.<br /><b>Pharmacokinetics: </b><br /><b>Absorption: </b>Well absorbed from the GI tract. Food may delay the rate but does not affect the extent of absorption. Time to peak plasma concentration: 0.5-1 hr.<br /><b>Distribution: </b>Widely distributed. Crosses the placenta and enters breast milk. Plasma protein binding: Approx 25%.<br /><b>Excretion: </b>Via urine (up to 85%, as unchanged drug). Plasma half-life: 0.5-1 hr.<br />]]></GACTION></MONOGRAPH><BRIEFMONO><BRDNAME><![CDATA[Vercef]]></BRDNAME><LASTUPDATED><![CDATA[2020-6-22 02:51:25]]></LASTUPDATED><BPOI/><BC><![CDATA[Cefaclor]]></BC><BI/><BD/><BPP><![CDATA[<B>Cap</B>  250 mg x 10 x 10 &apos; s (RM136.50). <B>Distab</B>  125 mg x 5 x 6 &apos; s. 250 mg x 5 x 6 &apos; s. <B>MR tab</B>  375 mg x 10 x 10 &apos; s (RM200). <B>Susp</B>  125 mg/5 mL x 50 mL x 1 &apos; s. 187 mg/5 mL x 30 mL x 1 &apos; s. <B>Granules for oral susp</B>  375 mg/5 mL x 30 mL x 1 &apos; s, 60 mL x 1 &apos; s.]]></BPP><BCI/><BSP/><BAR/><BDI/><Form><Advice> <![CDATA[Take with or without food.]]></Advice><Remark> <![CDATA[MR tab: Swallow whole, do not chew/crush.]]></Remark></Form></BRIEFMONO><PILS><SPECIFICPIL GenericName=\"Cefaclor\" Id=\"dfce2679-954d-4874-bb6d-a61a01207947\" IsActive=\"true\" Language=\"BahasaMelayu\"><RELATEDSYNONYM/><ROUTEFORM><![CDATA[Oral]]></ROUTEFORM><DESCRIPTION><![CDATA[Cefaclor-Oral]]></DESCRIPTION><INDICATIONLABEL><![CDATA[Mengapakah saya perlu mengambil ubat ini?]]></INDICATIONLABEL><INDICATION><![CDATA[Cefaclor adalah antibiotik. Ia digunakan untuk merawat sesetengah jenis jangkitan bakteria pada hidung, tekak, dada, telinga, kulit atau pundi kencing.]]></INDICATION><DOSAGELABEL><![CDATA[Bagaimanakah cara saya mengambil ubat ini?]]></DOSAGELABEL><DOSAGE><![CDATA[Ambil Cefaclor seperti yang diarahkan oleh doktor anda atau ikut arahan pada label ubat. Jangan ambil dos yang lebih atau kurang daripada yang diarahkan oleh doktor anda.<br />\r\n<br />\r\nAnda boleh mengambil Cefaclor dengan atau tanpa makanan.<br />\r\n<br />\r\nUbat ini boleh didapati dalam bentuk tablet, kapsul dan cecair ampaian oral.<br />\r\n<br />\r\nJika anda mengambil tablet atau kapsul, telan ia secara sekaligus dan jangan membahagi, mengunyah atau menghancurkan tablet atau kapsul.<br />\r\n<br />\r\nJika anda mengambil cecair ampaian oral, goncang botol dengan sebaik mungkin sebelum anda mengambilnya untuk memastikan bahawa cecair itu bercampur sama rata. Gunakan sudu atau cawan pengukur yang disediakan untuk mengukur dos anda.<br />\r\n<br />\r\nUbat ini perlu diambil pada jangka masa yang tetap supaya ia berkesan. Teruskan mengambil Cefaclor walaupun keadaan anda bertambah baik. Jangan berhenti mengambil ubat ini melainkan jika diarahkan oleh doktor.<br />\r\n<br />\r\nJangan melangkau mana-mana dos. Anda mesti menghabiskan kesemua dos antibiotik yang diberikan. Jika tidak, jangkitan anda tidak dapat dirawat sepenuhnya.]]></DOSAGE><MISSEDDOSELABEL><![CDATA[Apakah yang perlu saya lakukan apabila terlupa mengambil ubat ini?]]></MISSEDDOSELABEL><MISSEDDOSE><![CDATA[Ambil dos yang terlupa sebaik sahaja anda ingat. Jika ia hampir kepada masa untuk dos seterusnya, abaikan dos yang terlepas dan ikut semula jadual dos anda seperti biasa.<br />\r\n<br />\r\nJANGAN menggandakan dos dalam apa jua keadaan.<br />\r\n<br />\r\nJika anda sering lupa untuk mengambil ubat, beritahu doktor dan ahli farmasi anda.]]></MISSEDDOSE><CONTRAINDICATIONSLABEL><![CDATA[Bilakah ubat ini tidak patut/sesuai diambil?]]></CONTRAINDICATIONSLABEL><CONTRAINDICATIONS><![CDATA[Beritahu doktor anda dengan segera jika anda mempunyai sejarah tindakbalas alahan (ruam, sesak nafas, bengkak mulut atau mata) kepada antibiotik yang serupa seperti cefalexin, cefuroxime, cefixime, ceftibuten atau mana-mana antibiotik cephalosporin yang lain.]]></CONTRAINDICATIONS><SPECIALPRECAUTIONSLABEL><![CDATA[Apakah yang perlu saya beri perhatian semasa mengambil ubat ini?]]></SPECIALPRECAUTIONSLABEL><SPECIALPRECAUTIONS><![CDATA[Beritahu doktor anda jika anda mempunyai penyakit buah pinggang.<br />\r\n<br />\r\nBeritahu doktor anda jika anda mengandung atau menyusukan bayi.<br />\r\n<br />\r\nAmalkan kebersihan diri yang baik untuk mengurangkan risiko daripada dijangkiti lagi.]]></SPECIALPRECAUTIONS><SIDEEFFECTSLABEL><![CDATA[Apakah kesan sampingan daripada pengambilan ubat ini?]]></SIDEEFFECTSLABEL><SIDEEFFECTS><![CDATA[Cefaclor boleh menyebabkan kesan-kesan sampingan yang berikut: sakit kepala, cirit-birit, loya, muntah-muntah dan ketidakselesaan perut.<br />\r\n<br />\r\nSesetengah kesan sampingan mungkin memerlukan bantuan perubatan dengan segera. Beritahu doktor anda dengan segera jika anda mengalami mana-mana yang berikut:<br />\r\n<br />\r\n- sakit tekak dengan demam yang kerap dan berterusan, pendarahan atau lebam yang luar biasa<br />\r\n- warna kekuningan pada kulit atau mata<br />\r\n- ruam dengan pengelupasan kulit atau melepuh pada bibir, mulut atau mata dan disertai dengan demam<br />\r\n<br />\r\nJika anda mengalami ruam, sesak nafas, bengkak pada mulut atau mata, berhenti mengambil ubat ini dan beritahu doktor anda dengan segera. Ini mungkin tanda-tanda tindak balas alahan.<br />\r\n<br />\r\nBeritahu doktor anda jika mana-mana kesan sampingan tidak hilang atau bertambah teruk, atau jika anda mengalami kesan sampingan yang lain.]]></SIDEEFFECTS><DRUGINTERACTIONSLABEL><![CDATA[Bolehkah saya mengambil ubat ini bersama ubat-ubatan yang lain?]]></DRUGINTERACTIONSLABEL><DRUGINTERACTIONS><![CDATA[Beritahu doktor dan ahli farmasi anda jika anda mengambil warfarin (ubat penipisan darah) atau probenecid (ubat untuk gout).<br />\r\n<br />\r\nSentiasa beritahu doktor dan ahli farmasi anda jika anda mengambil sebarang ubat-ubatan lain, termasuk tonik herba seperti ubat tradisional, makanan tambahan/suplemen kesihatan dan ubat-ubatan yang anda beli tanpa surat ubat (preskripsi).]]></DRUGINTERACTIONS><FOODINTERACTIONSLABEL><![CDATA[Adakah terdapat sebarang sekatan terhadap jenis makanan yang saya boleh makan?]]></FOODINTERACTIONSLABEL><FOODINTERACTIONS><![CDATA[Elakkan daripada mengambil alkohol.]]></FOODINTERACTIONS><STORAGELABEL><![CDATA[Bagaimanakah cara saya menyimpan ubat ini?]]></STORAGELABEL><STORAGE><![CDATA[Simpan di tempat yang sejuk, kering dan jauh daripada kanak-kanak.<br />\r\n<br />\r\nSimpan ampaian oral dalam peti sejuk (antara 2-8&#176;C) sebaik sahaja anda telah campur ubat serbuk dengan air. Jangan membekukannya, kerana ia akan menjadi kurang berkesan. Buangkan mana-mana bahagian yang tidak digunakan selepas 14 hari.<br />\r\n<br />\r\nUbat-ubatan tidak boleh digunakan selepas ia melepasi tarikh luput.]]></STORAGE><COPYRIGHT><![CDATA[Penafian: Maklumat ini dihasilkan secara bebas oleh MIMS berdasarkan ubat Cefaclor dan disediakan untuk rujukan anda sahaja. Ia bukan pengganti bagi dan hanya perlu digunakan bersama-sama dengan perundingan penuh oleh profesional kesihatan yang berlesen, maklumat yang diberikan oleh ahli farmasi anda dan/atau pengeluar ubat. Ia mungkin tidak mengandungi semua maklumat yang anda perlukan dan ia tidak boleh menggantikan penjagaan perubatan profesional, dan ia juga tidak mengambil kira keadaan individu seseorang. Walaupun pelbagai usaha telah dilakukan untuk memastikan ketepatan kandungan, pihak kami tidak akan bertanggungjawab atau menanggung apa-apa tuntutan atau ganti rugi yang berbangkit daripada penggunaan atau penyalahgunaan maklumat yang terkandung di sini, sama ada dari segi kandungan atau ketidaklengkapan maklumat, atau sebaliknya. Hakcipta © 2020 MIMS. Semua hakcipta terpelihara. Diperkasakan oleh MIMS]]></COPYRIGHT></SPECIFICPIL></PILS><PILS><SPECIFICPIL GenericName=\"Cefaclor\" Id=\"94531562-a3fa-4928-9c74-a61a011f78e5\" IsActive=\"true\" Language=\"English\"><RELATEDSYNONYM/><ROUTEFORM><![CDATA[Oral]]></ROUTEFORM><DESCRIPTION><![CDATA[Cefaclor-Oral]]></DESCRIPTION><INDICATIONLABEL><![CDATA[Why do I need this medicine?]]></INDICATIONLABEL><INDICATION><![CDATA[Cefaclor is an antibiotic. It is used to treat certain bacterial infections of the nose, throat, chest, ears, skin or bladder.]]></INDICATION><DOSAGELABEL><![CDATA[How do I take this medicine?]]></DOSAGELABEL><DOSAGE><![CDATA[Take Cefaclor exactly as directed by your doctor or according to the instruction on the label. Do not take more or less than instructed by your doctor.<br /><br />You may take Cefaclor with or without meals.<br /><br />This medicine is available as a tablet, capsule and suspension.<br /><br />If you are taking the tablets or capsules, swallow it whole and do not divide, chew or crush the tablet or capsule. <br /><br />If you are taking an oral suspension, shake the bottle well before you take it to ensure that the liquid is evenly mixed. Use the measuring spoon or cup provided to measure your dose.<br /><br />This medicine should be taken at regular intervals for it to be effective. Continue to take Cefaclor even when you feel better. Do not stop taking it unless instructed by the doctor. <br /><br />Do not skip any doses. You must complete the entire course of antibiotic. If you don&apos;t, the infection will not clear completely.<br />]]></DOSAGE><MISSEDDOSELABEL><![CDATA[What should I do if I have forgotten to take this medicine?]]></MISSEDDOSELABEL><MISSEDDOSE><![CDATA[Take the missed dose as soon as you remember. If it is almost time for your next dose, skip the missed dose and return to your normal dosing schedule.<br /><br />DO NOT double a dose under any circumstances.<br /><br />If you often forget to take your medicine, let your doctor and pharmacist know.]]></MISSEDDOSE><CONTRAINDICATIONSLABEL><![CDATA[When should I not use this medicine?]]></CONTRAINDICATIONSLABEL><CONTRAINDICATIONS><![CDATA[Alert your doctor if you have a history of allergic reactions (rash, breathlessness, swollen mouth or eyes) to similar antibiotics such as cefalexin, cefuroxime, cefixime, ceftibuten or any other cephalosporin antibiotics.]]></CONTRAINDICATIONS><SPECIALPRECAUTIONSLABEL><![CDATA[What should I take note of while taking this medicine?]]></SPECIALPRECAUTIONSLABEL><SPECIALPRECAUTIONS><![CDATA[Inform your doctor if you have kidney disease.<br /><br />Let your doctor know if you are pregnant or breastfeeding. <br /><br />Practice good hygiene to reduce the chances of getting infected again.]]></SPECIALPRECAUTIONS><SIDEEFFECTSLABEL><![CDATA[What side effects could I experience?]]></SIDEEFFECTSLABEL><SIDEEFFECTS><![CDATA[Cefaclor may cause any of the following side effects: headache, diarrhoea, nausea, vomiting and stomach discomfort.<br /><br />Some side effects may need immediate medical help. Alert your doctor quickly if you experience any of the following:<br /><br />- frequent and persistent sore throat with fever, unusual bleeding or bruising<br />- yellowing of the skin or eyes<br />- rashes with peeling of the skin or blistering of the lips, mouth or eyes accompanied by fever<br /><br />If you develop rashes, breathlessness, swollen mouth or eyes, stop the medicine and inform your doctor quickly. These could be signs of an allergic reaction.<br /><br />Inform your doctor if any of these side effects do not go away or are severe, or if you experience other side effects.<br />]]></SIDEEFFECTS><DRUGINTERACTIONSLABEL><![CDATA[Can I take this with other medicines?]]></DRUGINTERACTIONSLABEL><DRUGINTERACTIONS><![CDATA[Inform your doctor and pharmacist if you are taking warfarin (blood-thinning medicine) or probenecid (medicine for gout). <br /><br />Always notify your doctor and pharmacist if you are taking any other medicines, including herbal medicines such as traditional Chinese medicines, supplements and medicines that you buy without a prescription.]]></DRUGINTERACTIONS><FOODINTERACTIONSLABEL><![CDATA[What special dietary instructions should I follow?]]></FOODINTERACTIONSLABEL><FOODINTERACTIONS><![CDATA[Avoid alcohol.]]></FOODINTERACTIONS><STORAGELABEL><![CDATA[How should I store this medicine?]]></STORAGELABEL><STORAGE><![CDATA[Store in a cool, dry place away from the reach of children.<br /><br />Refrigerate the oral suspension (between 2-8°C) once you have mixed the powder with water. Do not freeze it otherwise it will become less effective. Throw away any unused portion after 14 days.<br /><br />Medicines must not be used past the expiry date.]]></STORAGE><COPYRIGHT><![CDATA[Disclaimer: This information is independently developed by MIMS based on Cefaclor and is provided for your reference only. It is not a replacement for and should only be used in conjunction with full consultation with a licensed healthcare professional, the information provided by your pharmacist and/or the manufacturer of the medication. It may not contain all the available information you require and cannot substitute professional medical care, nor does it take into account all individual circumstances. Although great effort has been made to ensure content accuracy, we shall not be held responsible or liable for any claims or damages arising from the use or misuse of the information contained herein, its contents or omissions, or otherwise. Copyright © 2020 MIMS. All rights reserved. Powered by MIMS]]></COPYRIGHT></SPECIFICPIL></PILS></Product></Content></Result>"
+				},
+				{
+					"name": "Drug Information (Product) Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Content><Product reference=\"{D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60}\" /></Content></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "81"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 31 Dec 2025 02:31:25 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Error><Message>(Severe) Unable to open the file! - start > end</Message></Error>"
+				}
+			]
+		},
+		{
+			"name": "Drug Information (GGPI)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "KhanhHoa",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "198GTjisas",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "prescriptionquery",
+							"value": "<Request><Content><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/></Content></Request>",
+							"type": "text"
+						},
+						{
+							"key": "responsetype",
+							"value": "xml",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+					"protocol": "http",
+					"host": [
+						"49",
+						"249",
+						"193",
+						"198"
+					],
+					"port": "8081",
+					"path": [
+						"RESTFTWebService-VN",
+						"FTRequest",
+						"xmlrequestplus"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Drug Information (GGPI)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Content><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/></Content></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "32903"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 26 Dec 2025 04:05:51 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2025-12-31\"><Content><GGPI name=\"captopril 100mg Oral Tablet\" reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"><MONOGRAPH><GENMONO><![CDATA[Captopril]]></GENMONO><LASTUPDATED><![CDATA[TRUE]]></LASTUPDATED><GCLS><![CDATA[ACE Inhibitors/Direct Renin Inhibitors]]></GCLS><GPCAT><![CDATA[PO/SL: D]]></GPCAT><GCI><![CDATA[History of angioedema related to ACE treatment, hereditary or idiopathic angioneurotic oedema. Concomitant use with aliskiren esp in patients with diabetes mellitus or renal impairment (GFR &lt;60 mL/min/1.73m<sup>2</sup>) and neprilysin inhibitor (e.g. sacubitril). Pregnancy.]]></GCI><GSP><![CDATA[Patient with volume and/or Na depletion, ischaemic cardiovascular or cerebrovascular disease, aortic stenosis, unstented unilateral/bilateral renal artery stenosis, hypertrophic and outflow tract obstruction, collagen vascular disease. Patient undergoing major surgery or during anaesthetics. Desensitisation treatment (e.g. hymenoptera venom). Black race. Renal impairment. Children and elderly. Lactation.<br /><I>Patient Counselling:</I><br />May impair ability to drive or operate machinery.<br /><I>Monitoring Parameters:</I><br />Monitor blood pressure, BUN, serum creatinine, CBC with differentials, and electrolytes. Monitor for signs of angioedema and assess pregnancy status.<br /><I>Overdosage:</I><br />Symptoms: Severe hypotension, shock, stupor, bradycardia, electrolyte disturbances, and renal failure. Management: Prevent absorption of recent ingestion by employing gastric lavage, administration of adsorbents and Na sulphate within 30 minutes post intake. For hypotension, place in shock position and rapidly initiate salt and volume supplementations. Administer atropine and consider the use of pacemaker for pacemaker and bradycardia.]]></GSP><GAR><![CDATA[<em>Significant:</em> Hypotension, intestinal or peripheral angioedema, non-productive and persistent cough; cholestatic jaundice, proteinuria, neutropenia, agranulocytosis, thrombocytopenia, renal impairment or failure and hyperkalaemia.<br>\r\n<em>Cardiac disorders:</em> Dyspnoea.<br>\r\n<em>Gastrointestinal disorders:</em> Nausea, vomiting, diarrhea, constipation, dry mouth, epigastric discomfort, abdominal pain, peptic ulcer, dyspepsia.<br>\r\n<em>General disorders and admin site conditions: </em>Asthenia.<br>\r\n<em>Metabolism and nutrition disorders:</em> Anorexia, symptomatic hyponatremia, hypoglycaemia.<br>\r\n<em>Nervous system disorders:</em> Taste impairment, dizziness.<br>\r\n<em>Psychiatric disorders:</em> Sleep disorders, rarely, confusion, depression.<br>\r\n<em>Renal and urinary disorders:</em> Rarely, polyuria, oliguria, pollakiuria.<br>\r\n<em>Reproductive system and breast disorders:</em> Rarely, gynaecomastia.<br>\r\n<em>Skin and subcutaneous tissue disorders:</em> Rash, pruritus with or without rash, alopecia.<br>\r\n<strong>Potentially Fatal:</strong> Angioedema involving the tongue, glottis or larynx; rarely, fulminant hepatic necrosis.]]></GAR><GDI><![CDATA[Increases lithium concentration and toxicity. Increased risk of leucopenia with procainamide and immunosuppresants. Decreased renal clearance with probenecid. Enhances hypotensive effect of TCA and antipsychotics. Decreased antihypertensive effects with sympathomimetic agents. Increased hypotensive effect with adrenergic blocking agents and NSAIDs (e.g. indomethacin, ibuprofen). Potentiates blood glucose-lowering effects of insulin and oral antidiabetics (e.g. sulphonylureas). May result in volume depletion and risk of hypotension with thiazide or loop diuretics (except furosemide and hydrochlorothiazide). May increase serum K with K-sparing diuretics (e.g. amiloride, spironolactone, triamterene), K-containing salt substitutes or supplements. Increased risk of low renal function due to serum K increase with NSAIDs.  Increased risk of angioedema with neprilysin inhibitor and mammalian target of rapamycin inhibitor (e.g. temsirolimus, everolimus).<br>\r\n<strong>Potentially Fatal:</strong> Increased risk of hypotension, hyperkalaemia and impaired renal function with aliskiren. Increased risk of angioedema with neprilysin inhibitors (e.g. sacubitril). May cause anaphylactoid reactions with dextran sulfate in LDL apheresis.]]></GDI><GPPPA><![CDATA[Should be taken on an empty stomach. Take 1 hr before or 2 hr after meals.<br /><I>Storage:</I><br />Store between 20-25&deg;C. Protect from moisture.]]></GPPPA><GATC1><![CDATA[captopril]]></GATC1><GATC2><![CDATA[C09AA01]]></GATC2><GLAB><![CDATA[May cause false-positive urine test for acetone determination using nitroprusside reagent. May result to false-negative aldosterone/renin ratio (ARR).]]></GLAB><GFOOD><![CDATA[Decreased serum concentration with food.]]></GFOOD><GDOSE><![CDATA[<i>Oral</i><br /><b>Diabetic nephropathy</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>75-100 mg daily in divided doses.<br /><b>Child: </b>Neonates and infants: 0.15 mg/kg. Children and adolescents: 0.3 mg/kg. All doses are given tid according to response or based on patient response.<br /><b>Elderly: </b>Initially, 6.25 mg bid.<br /></div><br /><i>Oral</i><br /><b>Post-myocardial infarction</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>Acute treatment (within 24 hours of the onset of symptoms): 6.25 mg as test dose, followed by 12.5 mg after 2 hours and 25 mg after 12 hours. If tolerated, 50 mg bid for 4 weeks. Re-evaluate patient state according to clinical response. Chronic treatment (&gt;24 hours of the onset of symptoms): Initially, 6.25 mg within 3-16 days post-infarction, followed by 12.5 mg tid for 2 days, then 25 mg tid depending on patient response. Maintenance: 75-150 mg daily in 2 or 3 divided doses.<br /><b>Child: </b>Neonates and infants: 0.15 mg/kg. Children and adolescents: 0.3 mg/kg. All doses are given tid according to response or based on patient response.<br /><b>Elderly: </b>Initially, 6.25 mg bid.<br /></div><br /><i>Oral</i><br /><b>Hypertension</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>Initially, 25-75 mg daily in 2-3 divided doses. Dosage is individualised according to clinical response and may be increased after at least 2 weeks, to 100-150 mg daily in 2-3 divided doses as needed to reach target BP. Patients on diuretics or with cardiac decompensation: Initially, 6.25 mg or 12.5 mg bid.<br /><b>Child: </b>Neonates and infants: 0.15 mg/kg. Children and adolescents: 0.3 mg/kg. All doses are given tid according to response or based on patient response.<br /><b>Elderly: </b>Initially, 6.25 mg bid.<br /></div><br /><i>Oral</i><br /><b>Congestive heart failure</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>Initially, 6.25-12.5 mg bid or tid. Dosage is individualised according to clinical response and may be increased incrementally, with at least 2 weeks intervals. Maintenance: 75-150 mg daily in divided doses.<br /><b>Child: </b>Neonates and infants: 0.15 mg/kg. Children and adolescents: 0.3 mg/kg. All doses are given tid according to response or based on patient response.<br /><b>Elderly: </b>Initially, 6.25 mg bid.<br /></div><br /><B>Dosage Adjustment in Renal Impairment:</B><br /><table style=&apos;width: 328px; height: 106px;&apos;>\r\n    <tbody>\r\n        <tr>\r\n            <th>CrCl (mL/min)</th>\r\n            <th>Dosage</th>\r\n        </tr>\r\n        <tr>\r\n            <td>&lt;10</td>\r\n            <td>6.25 mg daily. Max 37.5 mg daily.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>10-20</td>\r\n            <td>12.5 mg daily. Max: 75 mg daily.<br>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>21-40</td>\r\n            <td>25 mg daily. Max: 100 mg daily.<br>\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>&gt;40</td>\r\n            <td>25-50 mg daily. Max: 150 mg daily.</td>\r\n        </tr>\r\n    </tbody>\r\n</table>]]></GDOSE><GSPG/><GACTION><![CDATA[<b>Description: </b>Captopril is a sulfhydryl-containing ACE inhibitor which competitively inhibits ACE to prevent conversion of angiotensin I to angiotensin II, thereby increasing plasma renin activity and reducing aldosterone secretion.<br /><b>Onset: </b>Within 15 minutes.<br /><b>Pharmacokinetics: </b><br /><b>Absorption: </b>Rapidly absorbed from the gastrointestinal tract (approx. 60-75%). Decreased serum concentration with food. Bioavailability: Approx 60-75%. Time to peak plasma concentration: Within 1-2 hours.<br /><b>Distribution: </b>Crosses placenta and enters breast milk (small amounts). Volume of distribution at steady state: 0.7 L/kg. Plasma protein binding: 25%-30%.<br /><b>Excretion: </b>Via urine (&gt;95%; 40-50% as unchanged drug). Elimination half-life: 2-3 hours.<br />]]></GACTION></MONOGRAPH><PILS><SPECIFICPIL GenericName=\"Captopril\" Id=\"2cfcdd5b-43db-4ebe-837c-a61a011f877b\" IsActive=\"true\" Language=\"English\"><RELATEDSYNONYM/><ROUTEFORM><![CDATA[Oral]]></ROUTEFORM><DESCRIPTION><![CDATA[Captopril - Oral]]></DESCRIPTION><INDICATIONLABEL><![CDATA[Why do I need this medicine?]]></INDICATIONLABEL><INDICATION><![CDATA[Captopril is used on its own or together with other medicines to keep your blood pressure under control. This medicine helps relax your blood vessels consequently lowering your blood pressure. <br />\r\n<br />\r\nCaptopril may also be used to treat other conditions such as heart failure, heart attack, and kidney damage caused by diabetes.]]></INDICATION><DOSAGELABEL><![CDATA[How do I take this medicine?]]></DOSAGELABEL><DOSAGE><![CDATA[Take Captopril exactly as directed by your doctor or according to the instructions on the label. Do not take more or less than instructed by your doctor.<br />\r\n<br />\r\nThis medicine should be taken on an empty stomach, at least 1 hour before or 2 hours after a meal. Try to take it at the same time each day.<br />\r\n<br />\r\nCaptopril must be taken regularly for it to be effective. Continue taking this medicine even when you feel better/well. Do not stop taking it unless instructed by the doctor, as stopping it suddenly may worsen your condition.]]></DOSAGE><MISSEDDOSELABEL><![CDATA[What should I do if I have forgotten to take this medicine?]]></MISSEDDOSELABEL><MISSEDDOSE><![CDATA[Take the missed dose as soon as you remember. If it is almost time for your next dose, skip the missed dose and return to your normal dosing schedule.<br />\r\n<br />\r\nDO NOT double a dose under any circumstances.<br />\r\n<br />\r\nIf you often forget to take your medicine, let your doctor and pharmacist know.]]></MISSEDDOSE><CONTRAINDICATIONSLABEL><![CDATA[When should I not use this medicine?]]></CONTRAINDICATIONSLABEL><CONTRAINDICATIONS><![CDATA[Alert your doctor if you have the previously experience a serious allergic reaction which causes swelling of the face, lips and throat due to an unknown reason or a family history, as Captopril may not be suitable for you.<br />\r\n<br />\r\nDo not take this medicine if you are pregnant or planning to have a baby soon. If you become pregnant while being treated with this medicine, alert your doctor immediately. Captopril may cause harm to your unborn child. You must use proven birth control methods while taking this medicine. <br />\r\n<br />\r\nDo not take this medicine if you have taken sacubitril (medicine used to treat high blood pressure) if you have diabetes and severe kidney disease. <br />\r\n<br />\r\nDo not take Captopril with aliskiren (medicine used to treat high blood pressure) if you have diabetes and severe kidney disease. Please see the section &#8220;Can I take this with other medicines?&#8221; below for more information.]]></CONTRAINDICATIONS><SPECIALPRECAUTIONSLABEL><![CDATA[What should I take note of while taking this medicine?]]></SPECIALPRECAUTIONSLABEL><SPECIALPRECAUTIONS><![CDATA[Inform your doctor if you have the following conditions:<br />\r\n<ul>\r\n    <li>low sodium levels in the blood or fluid loss caused by water pills, dietary salt restriction, diarrhoea or vomiting</li>\r\n    <li>heart disease such as narrowing of the valves of the heart&#160;</li>\r\n    <li>kidney disease</li>\r\n    <li>immune system diseases affecting collagen</li>\r\n    <li>diabetes</li>\r\n</ul>\r\nLet your doctor know if you are breastfeeding.<br />\r\n<br />\r\nBe sure to check with your doctor or pharmacist before giving Captopril to a child or elderly person. Children and elderly people may be more sensitive to the side effects.<br />\r\n<br />\r\nIf you are going for an operation, including minor surgery and dental work, inform your doctor or dentist that you are taking Captopril.<br />\r\n<br />\r\nIf you are of a Black race, Captopril may be less effective. Inform your doctor if you are taking this medicine.<br />\r\n<br />\r\nIf you are going to undergo certain laboratory tests, inform your doctor that you are using this medicine.<br />\r\n<br />\r\nWhy is it important to keep my appointments with the doctor?<br />\r\n<br />\r\nKeep your appointments with your doctor. Your doctor needs to monitor your condition and check your response to the medication regularly. <br />\r\n<ul>\r\n    <li>Your blood pressure may fall to unsafe levels without you noticing it.</li>\r\n    <li>Your doctor may also need to do routine blood tests while you are being treated with Captopril to monitor the health of your kidney. Your doctor will advise you about how often you need to have blood tests.</li>\r\n</ul>\r\nWhat lifestyle changes can I make to improve my blood pressure?<br />\r\n<br />\r\nRegular exercise and eating a healthy diet will help lower your blood pressure and improve your overall health. Engage in physical activity (e.g. walking) at least 30 to 60 minutes on most days of the week. If you have not exercised for a long time, start with light exercises such as slow&#160;walks. Speak to your doctor about what type of exercise would be suitable for you. Follow a healthy diet plan by eating more fruits, vegetables, whole grains and low-fat dairy products and reduce your intake of foods high in saturated fat, cholesterol and sodium. Cutting down on deep-fried foods and using less salt when cooking can kick-start your healthy diet.<br />\r\n<br />\r\nIf you smoke, you should try to quit. Smoking is harmful to your blood pressure, heart and overall health. Speak to your doctor or pharmacist about ways to kick your smoking habit.]]></SPECIALPRECAUTIONS><SIDEEFFECTSLABEL><![CDATA[What side effects could I experience?]]></SIDEEFFECTSLABEL><SIDEEFFECTS><![CDATA[This medicine may cause any of the following side effects: nausea, vomiting, diarrhoea, constipation, dizziness, dry mouth, stomach discomfort and pain; dyspepsia, taste impairment, persistent dry cough, weakness, loss of appetite, difficulty in breathing, frequent urination, rash, alopecia, lack of concentration, muscle weakness, cramping or numbness; fast or irregular heartbeat, low blood sugar (sweating, hunger, irritability, headache), enlargement of one or both breasts, sleep disturbance, confusion, unusual changes in mood or behaviour (being too depressed, agitated, or having compulsive and impulsive behaviour).<br />\r\nSome side effects may be serious, although they are not common. Alert your doctor quickly if you experience:<br />\r\n<ul>\r\n    <li>swelling in the ankles or feet</li>\r\n    <li>yellowing of the skin or eyes</li>\r\n    <li>foamy, frothy or bubbly-looking urine</li>\r\n</ul>\r\nIf you develop rashes, breathlessness, swollen mouth or eyes, stop taking Captopril and inform your doctor quickly. These could be signs of an allergic reaction.<br />\r\n<br />\r\nYou may experience dizziness when getting up from a sitting or lying down position, especially if you are taking this medicine for the first time. This is common and should disappear gradually as you get used to the medicine. It will help if you get up slowly from a sitting or lying position.<br />\r\n<br />\r\nThis medicine may cause the level of your red blood cells, white blood cells and platelets to drop.<br />\r\n<br />\r\nRed blood cells carry oxygen around your body. A fall in the level of red blood cells may make you feel tired and worn out.<br />\r\n<br />\r\nWhite blood cells help your body to fight infections. A fall in the level of your white blood cells may put you at higher risk for infections, such as coughs, colds and flu, which may lead to more serious infections. Avoid crowded places and people who are sick. Alert your doctor if you have a fever, or a cough or flu that does not go away.<br />\r\n<br />\r\nPlatelets help your blood to clot when there is a cut in the skin. A fall in the level of your platelets may put you at risk of bleeding more than usual. Do not take part in activities where you may fall or get injured, such as contact sports. Alert your doctor if you get any unusual bruising (large bruises or several bruises, especially if the bruises appeared on their own) or bleeding that takes a long time to stop (for example, too much bleeding when you floss or brush your teeth).<br />\r\n<br />\r\nInform your doctor if any of these side effects do not go away or are severe, or if you experience other side effects.]]></SIDEEFFECTS><DRUGINTERACTIONSLABEL><![CDATA[Can I take this with other medicines?]]></DRUGINTERACTIONSLABEL><DRUGINTERACTIONS><![CDATA[Do not take Captopril with aliskiren (medicine used to treat high blood pressure) if you have diabetes and severe kidney disease.<br />\r\n<br />\r\nDo not take Captopril if you are taking medicines for high blood pressure or heart disease e.g. sacubitril/valsartan. <br />\r\n<br />\r\nInform your doctor and pharmacist if you are taking any of these medicines:<br />\r\n<ul>\r\n    <li>NSAIDs (medicine for pain and inflammation) e.g. indomethacin, ibuprofen</li>\r\n    <li>medicines for diabetes e.g. insulin, sitagliptin, gliclazide</li>\r\n    <li>medicines for water retention (&#8220;water pills&#8221;) e.g. spironolactone</li>\r\n    <li>medicine used in organ transplant or certain immune disorders e.g. temsirolimus, everolimus</li>\r\n    <li>other medicines for high blood pressure or heart disease e.g. propranolol, amlodipine</li>\r\n    <li>medicine for depression e.g. lithium</li>\r\n    <li>potassium supplements (either as a medicine or as a salt substitute)</li>\r\n    <li>medicine for high blood pressure e.g. losartan, prazosin, hydralazine</li>\r\n</ul>\r\nThis list does not include all medicine that may interact with Captopril.<br />\r\n<br />\r\nAlways notify your doctor and pharmacist if you are taking any other medicines, including herbal tonics such as traditional Chinese medicine, supplements and medicine that you buy without a prescription.]]></DRUGINTERACTIONS><FOODINTERACTIONSLABEL><![CDATA[What special dietary instructions should I follow?]]></FOODINTERACTIONSLABEL><FOODINTERACTIONS><![CDATA[Avoid alcohol.<br />\r\n<br />\r\nAvoid taking too much food that is high in potassium, such as orange juice, bananas or prunes. Do not use salt substitutes that contain potassium.<br />\r\n<br />\r\nCut down on your salt intake. This may help lower your blood pressure and improve your overall health. Speak to your doctor or dietitian about ways to cut down on your salt intake.]]></FOODINTERACTIONS><STORAGELABEL><![CDATA[How should I store this medicine?]]></STORAGELABEL><STORAGE><![CDATA[Store in a cool, dry place away from the reach of children.<br />\r\n<br />\r\nMedicines must not be used past the expiry date.]]></STORAGE><COPYRIGHT><![CDATA[Disclaimer: This information is independently developed by MIMS based on Captopril and is provided for your reference only. It is not a replacement for and should only be used in conjunction with full consultation with a licensed healthcare professional, the information provided by your pharmacist and/or the manufacturer of the medication. It may not contain all the available information you require and cannot substitute professional medical care, nor does it take into account all individual circumstances. Although great effort has been made to ensure content accuracy, we shall not be held responsible or liable for any claims or damages arising from the use or misuse of the information contained herein, its contents or omissions, or otherwise. Copyright © 2020 MIMS. All rights reserved. Powered by MIMS]]></COPYRIGHT></SPECIFICPIL></PILS><PILS><SPECIFICPIL GenericName=\"Captopril\" Id=\"50c06c88-a636-4163-a701-a61a0120587b\" IsActive=\"true\" Language=\"BahasaMelayu\"><RELATEDSYNONYM/><ROUTEFORM><![CDATA[Oral]]></ROUTEFORM><DESCRIPTION><![CDATA[Captopril - Oral]]></DESCRIPTION><INDICATIONLABEL><![CDATA[Mengapakah saya perlu mengambil ubat ini?]]></INDICATIONLABEL><INDICATION><![CDATA[Captopril boleh diambil secara sendiri atau bersama-sama ubat-ubatan lain untuk mengawal tekanan darah anda. Ubat ini melegakan saluran darah anda dan ini membantu menurunkan tekanan darah anda.<br />\r\n<br />\r\nCaptopril juga boleh digunakan untuk merawat keadaan lain seperti kegagalan jantung, serangan jantung dan kerosakan buah pinggang yang disebabkan oleh diabetes.]]></INDICATION><DOSAGELABEL><![CDATA[Bagaimanakah cara saya mengambil ubat ini?]]></DOSAGELABEL><DOSAGE><![CDATA[Ambil Captopril seperti yang diarahkan oleh doktor anda atau ikut arahan pada label ubat. Jangan ambil dos yang lebih atau kurang daripada yang diarahkan oleh doktor anda.<br />\r\n<br />\r\nUbat ini perlu diambil semasa perut kosong, sekurang-kurangnya 1 jam sebelum atau 2 jam selepas makan. Cuba ambil ubat ini pada masa yang sama setiap hari.<br />\r\n<br />\r\nCaptopril perlu diambil secara teratur supaya ia berkesan. Teruskan mengambil ubat ini walaupun keadaan anda bertambah baik. Jangan berhenti mengambil ubat ini kecuali jika diarahkan oleh doktor kerana berhenti tiba-tiba boleh memburukkan keadaan anda.]]></DOSAGE><MISSEDDOSELABEL><![CDATA[Apakah yang perlu saya lakukan apabila terlupa mengambil ubat ini?]]></MISSEDDOSELABEL><MISSEDDOSE><![CDATA[Ambil dos yang terlupa sebaik sahaja anda ingat. Jika ia hampir kepada masa untuk dos seterusnya, abaikan dos yang terlepas dan ikut semula jadual dos anda seperti biasa.<br />\r\n<br />\r\nJANGAN menggandakan dos dalam apa jua keadaan.<br />\r\n<br />\r\nJika anda sering lupa untuk mengambil ubat, beritahu doktor dan ahli farmasi anda.]]></MISSEDDOSE><CONTRAINDICATIONSLABEL><![CDATA[Bilakah ubat ini tidak patut/sesuai diambil?]]></CONTRAINDICATIONSLABEL><CONTRAINDICATIONS><![CDATA[Beritahu doktor anda dengan segera jika anda pernah mengalami reaksi alahan yang serius yang boleh menyebabkan bengkak pada muka dan tekak disebabkan oleh sebab yang tidak diketahui atau sejarah keluarga kerana Captopril mungkin tidak sesuai untuk anda.<br />\r\n<br />\r\nJangan mengambil ubat ini jika anda hamil atau merancang untuk hamil tidak lama lagi. Jika anda hamil ketika sedang dirawat dengan ubat ini, beritahu doktor anda dengan segera. Captopril boleh menyebabkan kemudaratan kepada bayi dalam kandungan.<br />\r\n<br />\r\nJangan mengambil Captopril jika anda telah mengambil sacubitril (ubat untuk merawat tekanan darah tinggi) jika anda mempunyai penyakit diabetes and penyakit buah pinggang yang teruk.<br />\r\n<br />\r\nJangan mengambil Captopril bersama aliskiren (ubat untuk merawat tekanan darah tinggi) jika anda mempunyai penyakit diabetes dan penyakit buah pinggang yang teruk.&#160;Sila lihat seksyen &#34;Bolehkah saya mengambil ubat ini dengan ubat-ubatan yang lain?&#34; di bawah untuk mendapatkan maklumat lanjut.]]></CONTRAINDICATIONS><SPECIALPRECAUTIONSLABEL><![CDATA[Apakah yang perlu saya beri perhatian semasa mengambil ubat ini?]]></SPECIALPRECAUTIONSLABEL><SPECIALPRECAUTIONS><![CDATA[Beritahu doktor anda jika anda mempunyai keadaan berikut:<br />\r\n<br />\r\n-tahap sodium yang rendah dalam darah atau kehilangan cecair yang disebabkan oleh pil air, sekatan garam pemakanan, cirit-birit atau muntah-muntah<br />\r\n- penyakit jantung seperti injap jantung yang menyempit<br />\r\n- penyakit buah pinggang<br />\r\n- penyakit sistem imun yang menjejaskan kolagen<br />\r\n- diabetes<br />\r\n<br />\r\nBeritahu doktor anda jika anda menyusukan bayi.<br />\r\n<br />\r\nPastikan anda menyemak dengan doktor atau ahli farmasi anda sebelum memberikan Captopril kepada kanak-kanak atau orang tua. Kanak-kanak dan orang tua mungkin lebih sensitif kepada kesan sampingan.<br />\r\n<br />\r\nJika anda akan menjalani pembedahan, termasuk pembedahan kecil atau berkaitan pergigian, beritahu doktor atau doktor gigi anda yang anda sedang mengambil Captopril.<br />\r\n<br />\r\nJika anda bangsa kulit hitam, Captopril mungkin kurang berkesan. Beri tahu doktor anda jika anda mengambil ubat ini.<br />\r\n<br />\r\nJika anda akan menjalani ujian makmal tertentu, beri tahu doktor anda bahawa anda mengambil ubat ini.<br />\r\n<br />\r\nMengapa penting untuk memastikan temu janji dengan doktor?<br />\r\n<br />\r\nTepati temu janji dengan doktor anda. Doktor anda perlu memantau keadaan anda dan memeriksa tindak balas badan anda terhadap ubat secara berkala.<br />\r\n<br />\r\nTekanan darah anda boleh turun kepada tahap yang tidak selamat tanpa anda menyedarinya.<br />\r\n<br />\r\nDoktor anda mungkin perlu juga untuk melakukan ujian darah rutin semasa anda sedang dirawat dengan Captopril untuk memantau kesihatan buah pinggang anda. Doktor anda akan menasihati anda tentang berapa kerap anda perlu menjalani ujian darah.<br />\r\n<br />\r\nApakah perubahan gaya hidup yang boleh saya lakukan untuk mengawal tekanan darah saya?<br />\r\n<br />\r\nSenaman secara kerap dan makan diet yang sihat akan membantu menurunkan tekanan darah anda dan meningkatkan kesihatan anda secara keseluruhan. Lakukan aktiviti fizikal (seperti berjalan) sekurang-kurangnya 30-60 minit pada kebanyakan hari dalam seminggu. Jika anda sudah lama tidak melakukan senaman, mulakan dengan senaman ringan seperti berjalan perlahan. Bincanglah dengan doktor anda tentang jenis senaman yang sesuai untuk anda. Ikut pelan diet yang sihat seperti makan lebih banyak buah-buahan, sayur-sayuran, bijirin penuh dan produk tenusu rendah lemak dan kurangkan pengambilan makanan yang tinggi lemak tepu, kolesterol dan sodium. Mulai pelan diet sihat anda dengan mengurangkan makanan yang digoreng dalam minyak dan mengurangkan penggunaan garam semasa memasak.<br />\r\n<br />\r\nJika anda merokok, anda perlu cuba untuk berhenti. Merokok adalah berbahaya kepada tekanan darah, jantung dan kesihatan anda secara keseluruhan. Bincanglah dengan doktor atau ahli farmasi anda tentang cara-cara untuk menghindari tabiat merokok anda.]]></SPECIALPRECAUTIONS><SIDEEFFECTSLABEL><![CDATA[Apakah kesan sampingan daripada pengambilan ubat ini?]]></SIDEEFFECTSLABEL><SIDEEFFECTS><![CDATA[Ubat ini boleh menyebabkan mana-mana kesan sampingan berikut: loya, muntah, cirit-birit, sembelit, pening, mulut kering, ketidakselesaan atau kesakitan perut; dispepsia, kerosakan rasa, batuk kering berterusan, keletihan, hilang selera makan, kesukaran bernafas, kerap membuang air kecil, ruam, alopecia, kurang konsentrasi, kelemahan otot, kejang atau kebas; denyut jantung cepat atau tidak teratur, gula darah rendah (berpeluh, lapar, kerengsaan, sakit kepala), pembesaran satu atau kedua-dua payudara, gangguan tidur, kekeliruan, perubahan yang luar biasa dalam mood atau tingkah laku (terlalu tertekan, gelisah, atau mempunyai perilaku yang kompulsif dan impulsif).<br />\r\n<br />\r\nSesetengah kesan sampingan mungkin serius, walaupun mereka tidak biasa. Beritahu doktor anda dengan segera jika anda mengalami yang berikut:<br />\r\n- bengkak pada kaki atau pergelangan kaki<br />\r\n- kekuningan pada mata atau kulit<br />\r\n- air kencing yang berbuih<br />\r\n<br />\r\nJika anda mengalami ruam, sesak nafas, mulut atau mata yang bengkak, hentikan mengambil Captopril dan segera beri tahu doktor anda. Ini boleh menjadi tanda-tanda  alahan.<br />\r\n<br />\r\nAnda juga mungkin berasa pening apabila bangun daripada posisi duduk atau berbaring, terutamanya jika anda mengambil ubat ini buat pertama kali. Ini adalah perkara biasa dan keadaan ini akan beransur-ansur pulih setelah badan anda biasa dengan Captopril. Untuk mengurangkan masalah ini, bangun secara perlahan-perlahan.<br />\r\n<br />\r\nUbat ini akan menyebabkan paras sel-sel darah merah, sel-sel darah putih dan platelet anda jatuh.<br />\r\n<br />\r\nSel-sel darah merah membawa oksigen  ke seluruh badan anda. Apabila paras sel darah merah menurun, anda mungkin sering berasa letih dan lemah.<br />\r\n<br />\r\nSel-sel darah putih membantu badan anda untuk melawan jangkitan. Apabila paras sel-sel darah putih anda menurun, ini boleh meletakkan anda berisiko tinggi untuk mendapat jangkitan seperti batuk dan selesema, yang boleh membawa kepada jangkitan yang lebih serius. Elakkan tempat yang sesak dan orang yang sakit. Beritahu doktor anda jika anda mempunyai demam, atau batuk atau selesema yang tidak hilang.<br />\r\n<br />\r\nPlatelet membantu darah anda membeku apabila terdapat luka di kulit. Apabila paras platelet anda menurun, anda mungkin berisiko pendarahan lebih daripada biasa. Jangan mengambil bahagian dalam aktiviti-aktiviti yang anda boleh jatuh atau tercedera, seperti sukan kontak. Beritahu doktor anda dengan segera jika anda medapat lebam yang luar biasa (lebam besar atau beberapa lebam, terutamanya jika lebam muncul sendiri) atau pendarahan yang mengambil masa yang lama untuk berhenti (contohnya terlalu banyak pendarahan apabila anda menggunakan flos atau bila memberus gigi anda).<br />\r\n<br />\r\nBeritahu doktor anda jika mana-mana kesan sampingan tidak hilang atau bertambah teruk, atau jika anda mengalami kesan sampingan yang lain.]]></SIDEEFFECTS><DRUGINTERACTIONSLABEL><![CDATA[Bolehkah saya mengambil ubat ini bersama ubat-ubatan yang lain?]]></DRUGINTERACTIONSLABEL><DRUGINTERACTIONS><![CDATA[Jangan ambil Captopril bersama-sama dengan aliskiren (sejenis ubat untuk merawat penyakit darah tinggi) jika anda mempunyai diabetes dan penyakit buah pinggang yang teruk.<br />\r\n<br />\r\nJangan ambil Captopril jika anda mengambil ubat-ubatan lain untuk penyakit darah tinggi atau penyakit jantung contohnya sacubitril/valsartan.<br />\r\n<br />\r\nBeritahu doktor dan ahli farmasi anda jika anda mengambil mana-mana ubatan ini:<br />\r\n<br />\r\n- NSAIDs (ubat untuk sakit dan keradangan) contohnya indomethacin, ibuprofen<br />\r\n- ubat-ubatan untuk diabetes contohnya insulin, sitagliptin, gliclazide<br />\r\n- ubat-ubatan untuk pengekalan air (&#34;pil air&#34;) contohnya spironolactone<br />\r\n- ubat yang digunakan untuk pemindahan organ atau gangguan imun tertentu contohnya temsirolimus, everolimus<br />\r\n- ubat-ubatan lain untuk darah tinggi atau penyakit jantung contohnya propranolol, amlodipine<br />\r\n- ubat-ubatan untuk kemurungan contohnya lithium<br />\r\n- suplemen kalium (sama ada sebagai ubat atau pengganti garam)<br />\r\n- ubat-ubatan untuk tekanan darah tinggi contohnya losartan, prazosin, hydralazine<br />\r\n<br />\r\nSenarai ini tidak termasuk semua ubat-ubatan yang boleh berinteraksi dengan Captopril.<br />\r\n<br />\r\nSentiasa beritahu doktor dan ahli farmasi anda jika anda mengambil sebarang ubat-ubatan lain, termasuk tonik herba seperti ubat tradisional, makanan tambahan/suplemen kesihatan dan ubat-ubatan yang anda beli tanpa surat ubat (preskripsi).]]></DRUGINTERACTIONS><FOODINTERACTIONSLABEL><![CDATA[Adakah terdapat sebarang sekatan terhadap jenis makanan yang saya boleh makan?]]></FOODINTERACTIONSLABEL><FOODINTERACTIONS><![CDATA[Elakkan  alkohol.<br />\r\n<br />\r\nElakkan mengambil terlalu banyak makanan yang tinggi kalium, seperti jus oren, pisang atau prun. Jangan gunakan pengganti garam yang mengandung kalium.<br />\r\n<br />\r\nKurangkan pengambilan garam anda. Ini boleh membantu menurunkan tekanan darah dan meningkatkan kesihatan anda secara keseluruhan. Berbincanglah dengan doktor atau pakar diet anda tentang cara-cara untuk mengurangkan pengambilan garam anda.]]></FOODINTERACTIONS><STORAGELABEL><![CDATA[Bagaimanakah cara saya menyimpan ubat ini?]]></STORAGELABEL><STORAGE><![CDATA[Simpan di tempat yang sejuk, kering dan jauh daripada kanak-kanak.<br />\r\n<br />\r\nUbat-ubatan tidak boleh digunakan selepas ia melepasi tarikh luput.]]></STORAGE><COPYRIGHT><![CDATA[Penafian: Maklumat ini dihasilkan secara bebas oleh MIMS berdasarkan ubat Captopril dan disediakan untuk rujukan anda sahaja. Ia bukan pengganti bagi dan hanya perlu digunakan bersama-sama dengan perundingan penuh oleh profesional kesihatan yang berlesen, maklumat yang diberikan oleh ahli farmasi anda dan/atau pengeluar ubat. Ia mungkin tidak mengandungi semua maklumat yang anda perlukan dan ia tidak boleh menggantikan penjagaan perubatan profesional, dan ia juga tidak mengambil kira keadaan individu seseorang. Walaupun pelbagai usaha telah dilakukan untuk memastikan ketepatan kandungan, pihak kami tidak akan bertanggungjawab atau menanggung apa-apa tuntutan atau ganti rugi yang berbangkit daripada penggunaan atau penyalahgunaan maklumat yang terkandung di sini, sama ada dari segi kandungan atau ketidaklengkapan maklumat, atau sebaliknya. Hakcipta © 2020 MIMS. Semua hakcipta terpelihara. Diperkasakan oleh MIMS]]></COPYRIGHT></SPECIFICPIL></PILS></GGPI></Content></Result>"
+				}
+			]
+		},
+		{
+			"name": "Drug Information (GenericItem)",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "KhanhHoa",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "198GTjisas",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "prescriptionquery",
+							"value": "<Request><Content><GenericItem reference=\"{02216809-BB20-40EE-B6DD-171EE6B046A8}\"/></Content></Request>",
+							"type": "text"
+						},
+						{
+							"key": "responsetype",
+							"value": "xml",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+					"protocol": "http",
+					"host": [
+						"49",
+						"249",
+						"193",
+						"198"
+					],
+					"port": "8081",
+					"path": [
+						"RESTFTWebService-VN",
+						"FTRequest",
+						"xmlrequestplus"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Drug Information (GenericItem)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Content><GenericItem reference=\"{02216809-BB20-40EE-B6DD-171EE6B046A8}\"/></Content></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "18329"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Dec 2025 04:58:07 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2025-12-31\"><Content><GenericItem name=\"meropenem Powder for Injection\" reference=\"{02216809-BB20-40EE-B6DD-171EE6B046A8}\"><PILS><SPECIFICPIL GenericName=\"Meropenem\" Id=\"4a22972f-2ce8-4d78-b984-abac00dce36a\" IsActive=\"true\" Language=\"English\"><RELATEDSYNONYM><![CDATA[also known as meropenem anhydrous]]></RELATEDSYNONYM><DESCRIPTION><![CDATA[Meropenem - Intravenous]]></DESCRIPTION><INDICATIONLABEL><![CDATA[Why do I need this medicine?]]></INDICATIONLABEL><INDICATION><![CDATA[Meropenem is an antibiotic. It is used to treat bacterial infections of the lungs, brain, stomach, kidney and skin.]]></INDICATION><DOSAGELABEL><![CDATA[How do I use this medicine?]]></DOSAGELABEL><DOSAGE><![CDATA[Meropenem injection is to be given directly into the vein (intravenously) using a syringe or by infusion (drip). It is delivered directly into the bloodstream via the blood vessel.<br />\r\n<br />\r\nYour doctor or nurse will administer the injection for you.<br />\r\n<br />\r\nThe dose of this medicine will be decided by your doctor. Your doctor will advise you on the treatment timeframe depending on the type or severity of your infection.<br />\r\n<br />\r\nYou must complete the entire course of this medicine. If you don&apos;t, the infection will not be properly controlled.]]></DOSAGE><MISSEDDOSELABEL><![CDATA[What should I do if I have forgotten to use this medicine?]]></MISSEDDOSELABEL><MISSEDDOSE><![CDATA[Ensure that you keep all the appointments with your doctor so that you do not miss any doses. Your doctor also needs to regularly monitor your response to Meropenem.<br />\r\n<br />\r\nIf you miss an appointment or miss an injection, alert your doctor or nurse. A replacement appointment or injection should be given as soon as possible.]]></MISSEDDOSE><CONTRAINDICATIONSLABEL><![CDATA[When should I not use this medicine?]]></CONTRAINDICATIONSLABEL><CONTRAINDICATIONS><![CDATA[Do not use this medicine if you ever had an allergic reaction (e.g. rashes, breathlessness, swollen eyes) to Meropenem or any similar medicine or antibiotics (e.g. penicillin, cephalosporins).]]></CONTRAINDICATIONS><SPECIALPRECAUTIONSLABEL><![CDATA[What should I take note of while using this medicine?]]></SPECIALPRECAUTIONSLABEL><SPECIALPRECAUTIONS><![CDATA[Inform your doctor if you have the following conditions:\r\n<ul>\r\n    <li>history of seizures (fits)</li>\r\n    <li>liver disease</li>\r\n    <li>kidney disease</li>\r\n</ul>\r\nLet your doctor know if you are pregnant or breastfeeding.<br />\r\n<br />\r\nWhy is it important to keep my appointments with the doctor?<br />\r\n<br />\r\nKeep your appointments with your doctor. Your doctor needs to monitor your condition and check your response to the medication regularly.\r\n<ul>\r\n    <li>Culture and susceptibility tests must be done before treatment to know if this medicine is suited for you to use.</li>\r\n    <li>Routine tests (e.g. complete blood count, liver and kidney function) may be done while you are being treated with this medicine. Your doctor will advise you about how often you will need to have these tests.</li>\r\n</ul>]]></SPECIALPRECAUTIONS><SIDEEFFECTSLABEL><![CDATA[What side effects could I experience?]]></SIDEEFFECTSLABEL><SIDEEFFECTS><![CDATA[Meropenem may cause seizures, headaches, and tingling or prickling skin. If affected, do not drive or take part in any activity in which you need to be alert.<br />\r\n<br />\r\nOther side effects include any of the following: nausea, vomiting, diarrhoea, and injection site pain or swelling.<br />\r\n<br />\r\nSome side effects may need immediate medical help. Alert your doctor quickly if you experience any of the following:<br />\r\n<ul>\r\n    <li>rashes, breathlessness, swelling of the face, eyes or mouth</li>\r\n    <li>rashes with peeling of the skin or blistering of the lips, mouth or eyes accompanied by fever</li>\r\n    <li>prolonged diarrhoea</li>\r\n</ul>\r\nInform your doctor if any of these side effects do not go away or are severe, or if you experience other side effects.]]></SIDEEFFECTS><DRUGINTERACTIONSLABEL><![CDATA[Can I use this with other medicines?]]></DRUGINTERACTIONSLABEL><DRUGINTERACTIONS><![CDATA[Inform your doctor and pharmacist if you are taking any of these medicines:<br />\r\n<ul>\r\n    <li>probenecid (medicine for gout)</li>\r\n    <li>medicines for epilepsy (fits or seizures) e.g. valproic acid</li>\r\n    <li>warfarin (blood-thinning medicine)</li>\r\n</ul>\r\nThis list does not include all medicines that may interact with Meropenem.<br />\r\n<br />\r\nAlways notify your doctor and pharmacist if you are taking any other medicines, including herbal tonics such as traditional Chinese medicines, supplements and medicines that you buy without a prescription.]]></DRUGINTERACTIONS><FOODINTERACTIONSLABEL><![CDATA[What special dietary instructions should I follow?]]></FOODINTERACTIONSLABEL><FOODINTERACTIONS><![CDATA[Avoid alcohol.]]></FOODINTERACTIONS><STORAGELABEL><![CDATA[How should I store this medicine?]]></STORAGELABEL><STORAGE><![CDATA[Store in a cool, dry place away from the reach of children. Protect from light.<br />\r\n<br />\r\nMedicines must not be used past the expiry date.]]></STORAGE><COPYRIGHT><![CDATA[Disclaimer: This information is independently developed by MIMS based on Meropenem and is provided for your reference only. It is not a replacement for and should only be used in conjunction with full consultation with a licensed healthcare professional, the information provided by your pharmacist and/or the manufacturer of the medication. It may not contain all the available information you require and cannot substitute professional medical care, nor does it take into account all individual circumstances. Although great effort has been made to ensure content accuracy, we shall not be held responsible or liable for any claims or damages arising from the use or misuse of the information contained herein, its contents or omissions, or otherwise. Copyright © 2020 MIMS. All rights reserved. Powered by MIMS]]></COPYRIGHT></SPECIFICPIL></PILS><MONOGRAPH><GENMONO><![CDATA[Meropenem]]></GENMONO><LASTUPDATED><![CDATA[TRUE]]></LASTUPDATED><GCLS><![CDATA[Other Beta-Lactams]]></GCLS><GPCAT><![CDATA[IV/Parenteral: B]]></GPCAT><GCI><![CDATA[Hypersensitivity to meropenem or other carbapenems. History of anaphylactic reaction to &beta;-lactams (e.g. penicillins, cephalosporins).]]></GCI><GSP><![CDATA[Patient with CNS disorder (e.g. brain lesions, history of seizures). Renal and hepatic impairment. Children. Pregnancy and lactation.<br /><I>Patient Counselling:</I><br />This drug may cause seizure, headache, paraesthesia, and delirium, if affected, do not drive or operate machinery.<br /><I>Monitoring Parameters:</I><br />Perform culture and sensitivity testing prior to initiation of therapy. Monitor renal function, LFT, CBC (prolonged use). Monitor for signs of anaphylaxis during 1st dose.]]></GSP><GAR><![CDATA[<em>Significant:</em> Confusional states and seizure; severe cutaneous reactions (e.g. Stevens-Johnson syndrome [SJS], toxic epidermal necrolysis [TEN], drug reaction with eosinophilia and systemic symptoms [DRESS], erythema multiforme, acute generalised exanthematous pustulosis); fungal or bacterial superinfection including <em>C. difficile</em>-associated diarrhoea.<br>\r\n<em>Blood and lymphatic system disorders:</em> Thrombocythaemia, anaemia.<br>\r\n<em>Gastrointestinal disorders:</em> Diarrhoea, vomiting, nausea, abdominal pain, constipation.<br>\r\n<em>General disorders and administration site conditions:</em> Injection site inflammation, pain.<br>\r\n<em>Investigations:</em> Increased transaminases, increased alkaline phosphatase, increased lactate dehydrogenase.<br>\r\n<em>Nervous system disorders:</em> Headache.<br>\r\n<em>Skin and subcutaneous tissue disorders:</em> Rash, pruritus.<br>\r\n<strong>Potentially Fatal:</strong> Hypersensitivity reactions (e.g. anaphylaxis), antibiotic-associated or pseudomembranous colitis.]]></GAR><GDI><![CDATA[Increased plasma concentration and prolonged elimination half-life with probenecid. May decrease plasma levels of valproic acid, thus increasing the risk of seizures. May enhance anticoagulant effect of warfarin.]]></GDI><GPPPA><![CDATA[<br /><I>Reconstitution:</I><br />Reconstitute vial labelled as containing 500 mg or 1 g with 10 mL or 20 mL of sterile water for inj, respectively, to provide a final concentration of 50 mg/mL. May dilute further with a compatible solution for infusion (e.g. 0.9% NaCl, dextrose 5%) to a final concentration ranging from 1-20 mg/mL.<br /><I>Storage:</I><br />Store between 20-25&deg;C. Reconstituted solution: Store up to 3 hours at 25&deg;C or 12 hours between 2-8&deg;C. Do not freeze.]]></GPPPA><GATC1><![CDATA[meropenem]]></GATC1><GATC2><![CDATA[J01DH02]]></GATC2><GLAB><![CDATA[May give positive direct or indirect Coombs test.]]></GLAB><GFOOD/><GDOSE><![CDATA[<i>Intravenous</i><br /><b>Lower respiratory tract infections</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>Exacerbation in patients with cystic fibrosis: 2 g 8 hourly via infusion over approx 15-30 minutes.<br /><b>Child: </b><em>&ge;3 months</em> weighing &le;50 kg: 40 mg/kg 8 hourly via infusion over approx 15-30 minutes; &gt;50 kg: Same as adult dose.<br /></div><br /><i>Intravenous</i><br /><b>Susceptible Gram-negative infections, Susceptible Gram-positive infections</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>In cases of severe pneumonia, complicated UTI, complicated intra-abdominal infections, complicated skin and skin structure infections, gynaecological infections: 0.5-1 g 8 hourly via infusion over approx 15-30 minutes or via bolus inj over approx 3-5 minutes.<br /><b>Child: </b><em>&ge;3 months</em> weighing &le;50 kg: 10-20 mg/kg 8 hourly via infusion over approx 15-30 minutes or via bolus inj over approx 3-5 minutes; &gt;50 kg: Same as adult dose.<br /></div><br /><i>Intravenous</i><br /><b>Bacterial meningitis</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>2 g 8 hourly via infusion over approx 15-30 minutes.<br /><b>Child: </b><em>&ge;3 months</em> weighing &le;50 kg: 40 mg/kg 8 hourly via infusion over approx 15-30 minutes; &gt;50 kg: Same as adult dose.<br /></div><br /><B>Dosage Adjustment in Renal Impairment:</B><br /><table style=&apos;width: 217px; height: 144px;&apos;>\r\n    <tbody>\r\n        <tr>\r\n            <th>CrCl (mL/min)</th>\r\n            <th>Dosage</th>\r\n        </tr>\r\n        <tr>\r\n            <td>&lt;10</td>\r\n            <td>Half the usual dose 24 hourly.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>10-25</td>\r\n            <td>Half the usual dose 12 hourly.</td>\r\n        </tr>\r\n        <tr>\r\n            <td>26-50</td>\r\n            <td>Usual dose 12 hourly.</td>\r\n        </tr>\r\n    </tbody>\r\n</table>]]></GDOSE><GSPG/><GACTION><![CDATA[<b>Description: </b>Meropenem is a &beta;-lactam antibiotic. It inhibits bacterial cell wall synthesis by binding to several penicillin-binding proteins (PBPs) in gram-negative and gram-positive bacteria resulting in cell wall assembly arrest and eventually bacterial cell lysis.<br /><b>Pharmacokinetics: </b><br /><b>Absorption: </b>Time to peak plasma concentration: Approx 1 hour (tissues); 2-3 hours (CSF).<br /><b>Distribution: </b>Widely distributed into body tissues and fluids including peritoneal fluid, urinary tract, lung, bronchial mucosa, muscle tissue, CSF, and bile. Enters breast milk (small amounts). Volume of distribution: 15-20 L (adult); approx. 0.3-0.4 L/kg (children). Plasma protein binding: Approx 2%.<br /><b>Metabolism: </b>Metabolised in the liver via hydrolysis into inactive form.<br /><b>Excretion: </b>Mainly via urine (approx 70% as unchanged drug; approx 28% as inactive metabolite); faeces (2%). Elimination half-life: Approx 1 hour.<br />]]></GACTION></MONOGRAPH><PILS><SPECIFICPIL GenericName=\"Meropenem\" Id=\"dfdb927e-ab4a-4733-b24f-abad00d37767\" IsActive=\"true\" Language=\"BahasaMelayu\"><RELATEDSYNONYM><![CDATA[also known as meropenem anhydrous]]></RELATEDSYNONYM><DESCRIPTION><![CDATA[Meropenem - Intravenous]]></DESCRIPTION><INDICATIONLABEL><![CDATA[Mengapakah saya perlu mengambil ubat ini?]]></INDICATIONLABEL><INDICATION><![CDATA[Meropenem adalah antibiotik. Ia digunakan untuk merawat jangkitan bakteria pada paru-paru, otak, perut, buah pinggang dan kulit.]]></INDICATION><DOSAGELABEL><![CDATA[Bagaimanakah cara saya menggunakan ubat ini?]]></DOSAGELABEL><DOSAGE><![CDATA[Suntikan Meropenem diberikan terus ke dalam vena (intravena) menggunakan picagari atau dengan infusi (titisan). Ia dihantar terus ke aliran darah melalui saluran darah.<br />\r\n<br />\r\nDoktor atau jururawat anda akan memberikan suntikan untuk anda.<br />\r\n<br />\r\nDos ubat ini akan ditentukan oleh doktor anda. Doktor anda akan menasihati anda tentang tempoh  rawatan bergantung kepada jenis atau keterukan jangkitan anda.<br />\r\n<br />\r\nAnda mesti menghabiskan kesemua ubat yang diberikan. Jika tidak, jangkitan anda tidak dapat dikawal dengan betul.]]></DOSAGE><MISSEDDOSELABEL><![CDATA[Apakah yang perlu dilakukan jika saya terlupa mengambil ubat ini?]]></MISSEDDOSELABEL><MISSEDDOSE><![CDATA[Tepati semua temujanji dengan doktor anda supaya anda tidak terlepas mana-mana dos. Doktor anda juga perlu secara berkala memantau tindak balas anda kepada Meropenem.<br />\r\n<br />\r\nJika anda terlepas temujanji atau terlepas suntikan, beritahu doktor atau jururawat anda dengan segera. Temujanji atau suntikan gantian harus diberikan secepat mungkin.]]></MISSEDDOSE><CONTRAINDICATIONSLABEL><![CDATA[Bilakah ubat ini tidak patut/sesuai diambil?]]></CONTRAINDICATIONSLABEL><CONTRAINDICATIONS><![CDATA[Jangan menggunakan ubat ini jika anda pernah mengalami reaksi alahan (contohnya ruam, sesak nafas, mata bengkak) kepada Meropenem atau mana-mana ubat serupa atau antibiotik (contohnya penicillin, cephalosporin).]]></CONTRAINDICATIONS><SPECIALPRECAUTIONSLABEL><![CDATA[Apakah yang perlu saya beri perhatian semasa mengambil ubat ini?]]></SPECIALPRECAUTIONSLABEL><SPECIALPRECAUTIONS><![CDATA[Beritahu doktor anda jika anda mempunyai keadaan-keadaan yang berikut:<br />\r\n<ul>\r\n    <li>sejarah sawan (fits)</li>\r\n    <li>penyakit hati</li>\r\n    <li>penyakit buah pinggang</li>\r\n</ul>\r\nBeritahu doktor anda jika anda mengandung atau menyusukan bayi.<br />\r\n<br />\r\nMengapa ia penting menghadiri temujanji saya dengan doktor?<br />\r\n<br />\r\nTepati temujanji dengan doktor anda. Doktor anda perlu memantau keadaan\r\nanda dan memeriksa tindak balas badan anda terhadap ubat secara teratur.<br />\r\n<ul>\r\n    <li>Ujian kultur dan kepekaan mesti dilakukan sebelum rawatan untuk mengetahui sama ada ubat ini sesuai untuk anda gunakan.</li>\r\n    <li>Ujian rutin (contohnya kiraan darah lengkap, fungsi hati dan buah pinggang) mungkin dilakukan semasa anda dirawat dengan ubat ini. Doktor anda akan menasihati anda tentang berapa kerap anda perlu menjalani ujian ini.</li>\r\n</ul>]]></SPECIALPRECAUTIONS><SIDEEFFECTSLABEL><![CDATA[Apakah kesan sampingan daripada pengambilan ubat ini?]]></SIDEEFFECTSLABEL><SIDEEFFECTS><![CDATA[Meropenem boleh menyebabkan sawan, sakit kepala, dan kesemutan atau cucukan pada kulit. Jika terjejas, jangan memandu atau mengambil bahagian dalam apa-apa aktiviti yang memerlukan anda supaya berjaga-jaga.<br />\r\n<br />\r\nKesan-kesan sampingan lain termasuk mana-mana yang berikut: loya, muntah, cirit-birit, dan sakit atau bengkak di tempat suntikan.<br />\r\n<br />\r\nSesetengah kesan sampingan mungkin memerlukan bantuan perubatan dengan\r\nsegera. Beritahu doktor anda dengan segera jika anda mengalami mana-mana\r\ndaripada yang berikut:<br />\r\n<ul>\r\n    <li>ruam, sesak nafas, bengkak pada muka, mata atau mulut</li>\r\n    <li>ruam dengan kulit mengelupas atau melepuh pada bibir, mulut atau mata yang disertai dengan demam</li>\r\n    <li>cirit-birit yang berpanjangan</li>\r\n</ul>\r\nBeritahu doktor anda jika mana-mana kesan sampingan tidak hilang atau\r\nbertambah teruk, atau jika anda mengalami kesan sampingan yang lain.]]></SIDEEFFECTS><DRUGINTERACTIONSLABEL><![CDATA[Bolehkah saya menggunakan ubat ini bersama ubat-ubatan yang lain?]]></DRUGINTERACTIONSLABEL><DRUGINTERACTIONS><![CDATA[Beritahu doktor dan ahli farmasi anda jika anda mengambil mana-mana daripada ubat-ubatan berikut:<br />\r\n<ul>\r\n    <li>probenecid (ubat untuk gout)</li>\r\n    <li>ubat-ubatan untuk epilepsi (fits atau sawan) contohnya valproic acid</li>\r\n    <li>warfarin (ubat penipisan darah)</li>\r\n</ul>\r\nSenarai ini tidak termasuk semua ubat-ubatan yang boleh berinteraksi dengan Meropenem.<br />\r\n<br />\r\nSentiasa beritahu doktor dan ahli farmasi anda jika anda mengambil\r\nsebarang ubat-ubatan lain, termasuk tonik herba seperti ubat\r\ntradisional, makanan tambahan/suplemen kesihatan dan ubat-ubatan yang\r\nanda beli tanpa surat ubat (preskripsi).]]></DRUGINTERACTIONS><FOODINTERACTIONSLABEL><![CDATA[Adakah terdapat sebarang sekatan terhadap jenis makanan yang saya boleh makan?]]></FOODINTERACTIONSLABEL><FOODINTERACTIONS><![CDATA[Elakkan daripada mengambil alkohol.]]></FOODINTERACTIONS><STORAGELABEL><![CDATA[Bagaimanakah cara saya menyimpan ubat ini?]]></STORAGELABEL><STORAGE><![CDATA[Simpan di tempat yang sejuk, kering dan jauh daripada kanak-kanak. Lindungi daripada cahaya.<br />\r\n<br />\r\nUbat-ubatan tidak boleh digunakan selepas ia melepasi tarikh luput.]]></STORAGE><COPYRIGHT><![CDATA[Penafian: Maklumat ini dihasilkan secara bebas oleh MIMS berdasarkan ubat Meropenem dan disediakan untuk rujukan anda sahaja. Ia bukan pengganti bagi dan hanya perlu digunakan bersama-sama dengan perundingan penuh oleh profesional kesihatan yang berlesen, maklumat yang diberikan oleh ahli farmasi anda dan/atau pengeluar ubat. Ia mungkin tidak mengandungi semua maklumat yang anda perlukan dan ia tidak boleh menggantikan penjagaan perubatan profesional, dan ia juga tidak mengambil kira keadaan individu seseorang. Walaupun pelbagai usaha telah dilakukan untuk memastikan ketepatan kandungan, pihak kami tidak akan bertanggungjawab atau menanggung apa-apa tuntutan atau ganti rugi yang berbangkit daripada penggunaan atau penyalahgunaan maklumat yang terkandung di sini, sama ada dari segi kandungan atau ketidaklengkapan maklumat, atau sebaliknya. Hakcipta © 2020 MIMS. Semua hakcipta terpelihara. Diperkasakan oleh MIMS]]></COPYRIGHT></SPECIFICPIL></PILS></GenericItem></Content></Result>"
+				}
+			]
+		},
+		{
+			"name": "Drug–Drug Alert",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "KhanhHoa",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "198GTjisas",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "prescriptionquery",
+							"value": "<Request><Interaction><Prescribing><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{49102790-2259-457F-88B5-A968FA397EDA}\"/></Prescribing><References/></Interaction></Request>",
+							"type": "text"
+						},
+						{
+							"key": "responsetype",
+							"value": "xml",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+					"protocol": "http",
+					"host": [
+						"49",
+						"249",
+						"193",
+						"198"
+					],
+					"port": "8081",
+					"path": [
+						"RESTFTWebService-VN",
+						"FTRequest",
+						"xmlrequestplus"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Drug–Drug Alert",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\"/></Prescribing><References/></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5302"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 26 Dec 2025 04:06:10 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2025-12-31\"><Interaction><GGPI name=\"captopril 100mg Oral Tablet\" reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><ClassInteraction><PrescribingInteractionClass description=\"ACE inhibitors inhibit the conversion of angiotensin I to angiotensin II.\" name=\"Angiotensin converting enzyme (ACE) inhibitors\" reference=\"{97077317-8EB4-4EE1-8604-5654CF551B85}\"><PrescribingMolecule name=\"captopril\" reference=\"{A5A315C6-86E4-4ACE-89AF-E18B3AED1158}\"/></PrescribingInteractionClass><InteractionClass description=\"Analgesic, antipyretic and anti-inflammatory agents.\" name=\"Salicylates (systemic)\" reference=\"{3CCDBD67-FD02-4AF8-B3EB-E54066A7BAD5}\"><Molecule name=\"aspirin\" reference=\"{68EC41A6-71EE-427C-B261-03425BAA3DD3}\"/></InteractionClass><Severity name=\"Moderate\" ranking=\"4\">Moderate</Severity><Likelihood name=\"Good\" ranking=\"3\">Good</Likelihood><Documentation name=\"Good\" ranking=\"3\">Good</Documentation><Observation><Abbreviated/><Professional>has its effect reduced by</Professional><Full/><Consumer/></Observation><Interaction><Abbreviated/><Professional>Salicylates may reduce the beneficial effects of angiotensin converting enzyme inhibitors (ACEIs). Salicylates inhibit synthesis of prostaglandins and may antagonise antihypertensive effects of ACEIs in a dose-dependent manner, cause vasoconstriction/reduced cardiac output in heart failure patients, as well as increased risk of renal impairment. However, studies have shown that low-dose aspirin (less than or equals to 100 mg per day) is less likely to interact with ACEI. Furthermore, there are conflicting results of aspirin’s effect to worsen heart failure in patients on concomitant ACEI. Nevertheless, if concurrent use is necessary, monitor patient’s clinical condition, blood pressure and renal function.</Professional><Full/><Consumer/></Interaction><Precaution><Abbreviated/><Professional>Use combination with caution.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor patient clinically.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor renal function.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor blood pressure.</Professional><Full/><Consumer/></Precaution><References><JournalReference><Author>Meune C, Mourad JJ, Bergmann JF et al</Author><Title>Interaction between cyclooxygenase and the renin-angiotensin-aldosterone system: rationale and clinical relevance</Title><Journal>J Renin Angiotensin Aldosterone Syst</Journal><Year>2003</Year><Volume>4</Volume><Part>3/Sep</Part><Page>149-54</Page></JournalReference><JournalReference><Author>Levy PD, Nandyal D, Welch RD et al</Author><Title>Does aspirin use adversely influence intermediate-term postdischarge outcomes for hospitalized patients who are treated with angiotensin-converting enzyme inhibitors or angiotensin receptor blockers? Findings from Organized Program to Facilitate Life-Saving Treatment in Hospitalized Patients with Heart Failure (OPTIMIZE-HF)</Title><Journal>Am Heart J</Journal><Year>2010</Year><Volume>159</Volume><Part>2/Feb</Part><Page>222-230</Page></JournalReference><ElectronicReference><Title>ACE inhibitors + Aspirin</Title><RefTitle>Stockleys Drug Interactions</RefTitle><SystemName>MedicinesComplete</SystemName><SystemAuthor>Baxter K (ed)</SystemAuthor><SystemManf>RPS Publishing</SystemManf><SystemManfLoc>London</SystemManfLoc><SystemManfCountry>UK</SystemManfCountry><URL>http://www.medicinescomplete.com/mc</URL><Date>19/09/2016</Date></ElectronicReference><JournalReference><Author>Stys T, Lawson WE, Smaldone GC et al</Author><Title>Does aspirin attenuate the beneficial effects of angiotensin-converting enzyme inhibition in heart failure?</Title><Journal>Arch Intern Med</Journal><Year>2000</Year><Volume>160</Volume><Part>10/May 22</Part><Page>1409-13</Page></JournalReference><JournalReference><Author>Guazzi M, Brambilla R, Reina G et al</Author><Title>Aspirin-angiotensin-converting enzyme inhibitor coadministration and mortality in patients with heart failure: a dose-related adverse effect of aspirin</Title><Journal>Arch Intern Med</Journal><Year>2003</Year><Volume>163</Volume><Part>13/Jul 14</Part><Page>1574-9</Page></JournalReference><JournalReference><Author>Meune C, Mahe I, Mourad JJ et al</Author><Title>Interaction between angiotensin-converting enzyme inhibitors and aspirin: a review</Title><Journal>Eur J Clin Pharmacol</Journal><Year>2000</Year><Volume>56</Volume><Part>9-10/Dec</Part><Page>609-20</Page></JournalReference><JournalReference><Author>Masoudi FA, Wolfe P, Havranek EP et al</Author><Title>Aspirin use in older patients with heart failure and coronary artery disease: national prescription patterns and relationship with outcomes</Title><Journal>J Am Coll Cardiol</Journal><Year>2005</Year><Volume>46</Volume><Part>6/Sep 20</Part><Page>955-62</Page></JournalReference></References></ClassInteraction></Route></Route></GGPI><GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\" rejected=\"true\"/><DuplicateTherapy/></Interaction></Result>"
+				},
+				{
+					"name": "Drug–Drug Alert 2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{49102790-2259-457F-88B5-A968FA397EDA}\"/></Prescribing><References/></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "10528"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 30 Dec 2025 03:21:50 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2025-12-31\"><Interaction><GGPI name=\"captopril 100mg Oral Tablet\" reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><GGPI name=\"hydroCHLOROthiazide 12.5mg - irbesartan 300mg film coated tablet\" reference=\"{49102790-2259-457F-88B5-A968FA397EDA}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><ClassInteraction><PrescribingInteractionClass description=\"ACE inhibitors inhibit the conversion of angiotensin I to angiotensin II.\" name=\"Angiotensin converting enzyme (ACE) inhibitors\" reference=\"{97077317-8EB4-4EE1-8604-5654CF551B85}\"><PrescribingMolecule name=\"captopril\" reference=\"{A5A315C6-86E4-4ACE-89AF-E18B3AED1158}\"/></PrescribingInteractionClass><InteractionClass description=\"Angiotensin II antagonists selectively block angiotensin I receptors and consequently reduce the pressor effect of angiotensin II.\" name=\"Angiotensin II antagonists\" reference=\"{983F0047-2064-1A34-E034-080020E1DD8C}\"><Molecule name=\"irbesartan\" reference=\"{5CE6122D-2B39-470B-AF13-5E035E860E90}\"/></InteractionClass><Severity name=\"Severe\" ranking=\"5\">Severe</Severity><Likelihood name=\"Well Established\" ranking=\"4\">Well Established</Likelihood><Documentation name=\"Well Established\" ranking=\"4\">Well Established</Documentation><Observation><Abbreviated>causes additive toxicity with</Abbreviated><Professional>causes additive toxicity with</Professional><Full>causes additional harmful effects with</Full><Consumer>causes additional harmful effects with</Consumer></Observation><Interaction><Abbreviated/><Professional>Concomitant use of angiotensin II antagonists and angiotensin converting enzyme (ACE) inhibitors may lead to an increased risk of hypotension, hyperkalaemia and renal impairment due to the dual inhibition of the renin-angiotensin system. Several studies demonstrated no significant clinical benefits and increased adverse events with combination therapy (angiotensin II antagonist and ACE inhibitor) compared to monotherapy. Conversely, some studies have found that dual therapy significantly reduces albuminuria or proteinuria but major adverse renal events were reported. Furthermore, a study in healthy subjects found that the Cmax and AUC of ramipril increased by 2.1- and 2.3-fold, respectively when coadministered with telmisartan. Concurrent use is not recommended in patients with diabetic nephropathy and/or moderate to severe renal impairment. If combined use is necessary, closely monitor patient’s blood pressure, renal function and serum potassium levels.</Professional><Full/><Consumer/></Interaction><Precaution><Abbreviated/><Professional>Avoid combination.</Professional><Full/><Consumer/></Precaution><References><JournalReference><Author>ONTARGET Investigators, Yusuf S, Teo KK et al</Author><Title>Telmisartan, ramipril, or both in patients at high risk for vascular events</Title><Journal>N Engl J Med</Journal><Year>2008</Year><Volume>358</Volume><Part>15/Apr 10</Part><Page>1547-59</Page></JournalReference><WebReference><Author>European Medicines Agency</Author><Title>Combined use of medicines affecting the renin-angiotensin system (RAS) to be restricted &amp;#8211; CHMP endorses PRAC recommendation. Published 23 May 2014</Title><Site>European Medicines Agency</Site><URL>https://www.ema.europa.eu/</URL><Date>17/01/2019</Date></WebReference><JournalReference><Author>Mann JF, Anderson C, Gao P et al</Author><Title>Dual inhibition of the renin-angiotensin system in high-risk diabetes and risk for stroke and other outcomes: results of the ONTARGET trial</Title><Journal>J Hypertens</Journal><Year>2013</Year><Volume>31</Volume><Part>2/Feb</Part><Page>414-21</Page></JournalReference><JournalReference><Author>Stotter BR, Ferguson MA</Author><Title>Should ACE inhibitors and ARBs be used in combination in children?</Title><Journal>Pediatr Nephrol</Journal><Year>2018</Year><Volume>Epub ahead of print</Volume><Part>Aug 15</Part><Page/></JournalReference><ElectronicReference><Title>Angiotensin-Converting Enzyme Inhibitors / Angiotensin II Receptor Blockers</Title><RefTitle>Lexi-Interact</RefTitle><SystemName>Lexi-Comp Online</SystemName><SystemAuthor/><SystemManf>Lexi-Comp, Inc</SystemManf><SystemManfLoc>Hudson, Ohio</SystemManfLoc><SystemManfCountry>USA</SystemManfCountry><URL>http://www.crlonline.com</URL><Date>17/01/2019</Date></ElectronicReference><JournalReference><Author>Fried LF, Emanuele N, Zhang JH et al</Author><Title>Combined angiotensin inhibition for the treatment of diabetic nephropathy</Title><Journal>N Engl J Med</Journal><Year>2013</Year><Volume>369</Volume><Part>20/Nov 14</Part><Page>1892-903</Page></JournalReference><JournalReference><Author>Makani H, Bangalore S, Desouza KA et al</Author><Title>Efficacy and safety of dual blockade of the renin-angiotensin system: meta-analysis of randomised trials</Title><Journal>BMJ</Journal><Year>2013</Year><Volume>346</Volume><Part>Jan 28</Part><Page>f360</Page></JournalReference><JournalReference><Author>Mann JF, Schmieder RE, McQueen M et al</Author><Title>Renal outcomes with telmisartan, ramipril, or both, in people at high vascular risk (the ONTARGET study): a multicentre, randomised, double-blind, controlled trial</Title><Journal>Lancet</Journal><Year>2008</Year><Volume>372</Volume><Part>9638/Aug 16</Part><Page>547-53</Page></JournalReference><JournalReference><Author>Jacobsen P, Andersen S, Rossing K et al</Author><Title>Dual blockade of the renin-angiotensin system versus maximal recommended dose of ACE inhibition in diabetic nephropathy</Title><Journal>Kidney Int</Journal><Year>2003</Year><Volume>63</Volume><Part>5/May</Part><Page>1874-80</Page></JournalReference><JournalReference><Author>Hanevold CD</Author><Title>Acute renal failure during lisinopril and losartan therapy for proteinuria</Title><Journal>Pharmacotherapy</Journal><Year>2006</Year><Volume>26</Volume><Part>9/Sep</Part><Page>1348-51</Page></JournalReference></References></ClassInteraction></Route></GGPI><GGPI name=\"hydroCHLOROthiazide 12.5mg - irbesartan 300mg film coated tablet\" reference=\"{49102790-2259-457F-88B5-A968FA397EDA}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><ClassInteraction><PrescribingInteractionClass description=\"ACE inhibitors inhibit the conversion of angiotensin I to angiotensin II.\" name=\"Angiotensin converting enzyme (ACE) inhibitors\" reference=\"{97077317-8EB4-4EE1-8604-5654CF551B85}\"><PrescribingMolecule name=\"captopril\" reference=\"{A5A315C6-86E4-4ACE-89AF-E18B3AED1158}\"/></PrescribingInteractionClass><InteractionClass description=\"Thiazides inhibit sodium and chloride reabsorption, and increase potassium elimination. Due to the continued presence of sodium in the distal tubules, water is not reabsorbed and is consequently excreted.\" name=\"Thiazide and related diuretics\" reference=\"{9DE4EC15-1E8C-5879-E034-080020E1DD8C}\"><Molecule name=\"hydrochlorothiazide\" reference=\"{1C28E25F-12E6-47C1-A3C7-C3CA6EA47FC1}\"/></InteractionClass><Severity name=\"Minor\" ranking=\"3\">Minor</Severity><Likelihood name=\"Well Established\" ranking=\"4\">Well Established</Likelihood><Documentation name=\"Well Established\" ranking=\"4\">Well Established</Documentation><Observation><Abbreviated/><Professional>has an additive effect with</Professional><Full/><Consumer/></Observation><Interaction><Abbreviated/><Professional>Concurrent use of ACE inhibitors and thiazide (or related) diuretics is usually effective and well tolerated. However, combination of these agents may cause first-dose hypotension especially when hyponatraemia or hypovolaemia is present. Coadministration may increase the risk of renal impairment and may cause hypokalaemia. An isolated case of hyponatraemia was also reported with concurrent use. Monitor patient’s renal function, serum electrolytes and blood pressure during coadministration. Moreover, the addition of NSAID to this combination (ACE inhibitor + diuretic) may increase the risk of renal impairment particularly in the elderly.</Professional><Full/><Consumer/></Interaction><Precaution><Abbreviated/><Professional>Use combination with caution.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor renal function.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor blood electrolytes.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor blood pressure.</Professional><Full/><Consumer/></Precaution><References><JournalReference><Author>Mandal AK, Markert RJ, Saklayen MG et al</Author><Title>Diuretics potentiate angiotensin converting enzyme inhibitor-induced acute renal failure</Title><Journal>Clin Nephrol</Journal><Year>1994</Year><Volume>42</Volume><Part>3/Sep</Part><Page>170-4</Page></JournalReference><JournalReference><Author>Koffer H, Vlasses PH, Ferguson RK et al</Author><Title>Captopril in diuretic-treated hypertensive patients</Title><Journal>JAMA</Journal><Year>1980</Year><Volume>244</Volume><Part>22/Dec 5</Part><Page>2532-5</Page></JournalReference><JournalReference><Author>D'Costa DF, Basu SK, Gunasekera NP</Author><Title>ACE inhibitors and diuretics causing hypokalaemia</Title><Journal>Br J Clin Pract</Journal><Year>1990</Year><Volume>44</Volume><Part>1/Jan</Part><Page>26-7</Page></JournalReference><JournalReference><Author>Loboz KK, Shenfield GM</Author><Title>Drug combinations and impaired renal function -- the 'triple whammy'</Title><Journal>Br J Clin Pharmacol</Journal><Year>2005</Year><Volume>59</Volume><Part>2/Feb</Part><Page>239-43</Page></JournalReference><JournalReference><Author>Collier JG, Webb DJ</Author><Title>Severe thiazide-induced hyponatraemia during treatment with enalapril</Title><Journal>Postgrad Med J</Journal><Year>1987</Year><Volume>63</Volume><Part>746/Dec</Part><Page>1105-6</Page></JournalReference><JournalReference><Author>Camin RM, Cols M, Chevarria JL et al</Author><Title>Acute kidney injury secondary to a combination of renin-angiotensin system inhibitors, diuretics and NSAIDS: &amp;quot;The Triple Whammy&amp;quot;</Title><Journal>Nefrologia</Journal><Year>2015</Year><Volume>35</Volume><Part>2</Part><Page>197-206</Page></JournalReference></References></ClassInteraction></Route></GGPI></Route></GGPI><GGPI name=\"hydroCHLOROthiazide 12.5mg - irbesartan 300mg film coated tablet\" reference=\"{49102790-2259-457F-88B5-A968FA397EDA}\"/><DuplicateTherapy/></Interaction></Result>"
+				},
+				{
+					"name": "Drug–Drug Alert Error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{49102790-2259-457F-88B5-A968FA397EDA}\"/></Prescribing><References/></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "81"
+						},
+						{
+							"key": "Date",
+							"value": "Wed, 31 Dec 2025 03:02:46 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Error><Message>(Severe) Unable to open the file! - start > end</Message></Error>"
+				}
+			]
+		},
+		{
+			"name": "Drug–Allergy Alert",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "KhanhHoa",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "198GTjisas",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "prescriptionquery",
+							"value": "<Request><Interaction><Prescribing><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{41B3DDAC-1D7E-4FD5-97E4-7AA7197845A3}\"/></Prescribing><Allergies><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{41B3DDAC-1D7E-4FD5-97E4-7AA7197845A3}\"/></Allergies><References/></Interaction></Request>",
+							"type": "text"
+						},
+						{
+							"key": "responsetype",
+							"value": "xml",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+					"protocol": "http",
+					"host": [
+						"49",
+						"249",
+						"193",
+						"198"
+					],
+					"port": "8081",
+					"path": [
+						"RESTFTWebService-VN",
+						"FTRequest",
+						"xmlrequestplus"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Drug–Allergy Alert",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\"/></Prescribing><Allergies><Molecule reference=\"{5143B2B1-DBED-45A2-8308-61636C3A2F0B}\"/><Molecule reference=\"{7142A19F-EDE2-4A7C-A30B-06AB60B6B71F}\"/><Molecule reference=\"{74DCDDAF-9349-430F-A2F2-B7F2BC5CD8AA}\"/><SubstanceClass reference=\"{8B9ECB52-CDC9-4460-AB40-6E3C7DF38B1E}\"/><SubstanceClass reference=\"{9E775009-231D-728D-E034-080020E1DD8C}\"/></Allergies><References/></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5302"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 26 Dec 2025 04:06:20 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2025-12-31\"><Interaction><GGPI name=\"captopril 100mg Oral Tablet\" reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><ClassInteraction><PrescribingInteractionClass description=\"ACE inhibitors inhibit the conversion of angiotensin I to angiotensin II.\" name=\"Angiotensin converting enzyme (ACE) inhibitors\" reference=\"{97077317-8EB4-4EE1-8604-5654CF551B85}\"><PrescribingMolecule name=\"captopril\" reference=\"{A5A315C6-86E4-4ACE-89AF-E18B3AED1158}\"/></PrescribingInteractionClass><InteractionClass description=\"Analgesic, antipyretic and anti-inflammatory agents.\" name=\"Salicylates (systemic)\" reference=\"{3CCDBD67-FD02-4AF8-B3EB-E54066A7BAD5}\"><Molecule name=\"aspirin\" reference=\"{68EC41A6-71EE-427C-B261-03425BAA3DD3}\"/></InteractionClass><Severity name=\"Moderate\" ranking=\"4\">Moderate</Severity><Likelihood name=\"Good\" ranking=\"3\">Good</Likelihood><Documentation name=\"Good\" ranking=\"3\">Good</Documentation><Observation><Abbreviated/><Professional>has its effect reduced by</Professional><Full/><Consumer/></Observation><Interaction><Abbreviated/><Professional>Salicylates may reduce the beneficial effects of angiotensin converting enzyme inhibitors (ACEIs). Salicylates inhibit synthesis of prostaglandins and may antagonise antihypertensive effects of ACEIs in a dose-dependent manner, cause vasoconstriction/reduced cardiac output in heart failure patients, as well as increased risk of renal impairment. However, studies have shown that low-dose aspirin (less than or equals to 100 mg per day) is less likely to interact with ACEI. Furthermore, there are conflicting results of aspirin’s effect to worsen heart failure in patients on concomitant ACEI. Nevertheless, if concurrent use is necessary, monitor patient’s clinical condition, blood pressure and renal function.</Professional><Full/><Consumer/></Interaction><Precaution><Abbreviated/><Professional>Use combination with caution.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor patient clinically.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor renal function.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor blood pressure.</Professional><Full/><Consumer/></Precaution><References><JournalReference><Author>Meune C, Mourad JJ, Bergmann JF et al</Author><Title>Interaction between cyclooxygenase and the renin-angiotensin-aldosterone system: rationale and clinical relevance</Title><Journal>J Renin Angiotensin Aldosterone Syst</Journal><Year>2003</Year><Volume>4</Volume><Part>3/Sep</Part><Page>149-54</Page></JournalReference><JournalReference><Author>Levy PD, Nandyal D, Welch RD et al</Author><Title>Does aspirin use adversely influence intermediate-term postdischarge outcomes for hospitalized patients who are treated with angiotensin-converting enzyme inhibitors or angiotensin receptor blockers? Findings from Organized Program to Facilitate Life-Saving Treatment in Hospitalized Patients with Heart Failure (OPTIMIZE-HF)</Title><Journal>Am Heart J</Journal><Year>2010</Year><Volume>159</Volume><Part>2/Feb</Part><Page>222-230</Page></JournalReference><ElectronicReference><Title>ACE inhibitors + Aspirin</Title><RefTitle>Stockleys Drug Interactions</RefTitle><SystemName>MedicinesComplete</SystemName><SystemAuthor>Baxter K (ed)</SystemAuthor><SystemManf>RPS Publishing</SystemManf><SystemManfLoc>London</SystemManfLoc><SystemManfCountry>UK</SystemManfCountry><URL>http://www.medicinescomplete.com/mc</URL><Date>19/09/2016</Date></ElectronicReference><JournalReference><Author>Stys T, Lawson WE, Smaldone GC et al</Author><Title>Does aspirin attenuate the beneficial effects of angiotensin-converting enzyme inhibition in heart failure?</Title><Journal>Arch Intern Med</Journal><Year>2000</Year><Volume>160</Volume><Part>10/May 22</Part><Page>1409-13</Page></JournalReference><JournalReference><Author>Guazzi M, Brambilla R, Reina G et al</Author><Title>Aspirin-angiotensin-converting enzyme inhibitor coadministration and mortality in patients with heart failure: a dose-related adverse effect of aspirin</Title><Journal>Arch Intern Med</Journal><Year>2003</Year><Volume>163</Volume><Part>13/Jul 14</Part><Page>1574-9</Page></JournalReference><JournalReference><Author>Meune C, Mahe I, Mourad JJ et al</Author><Title>Interaction between angiotensin-converting enzyme inhibitors and aspirin: a review</Title><Journal>Eur J Clin Pharmacol</Journal><Year>2000</Year><Volume>56</Volume><Part>9-10/Dec</Part><Page>609-20</Page></JournalReference><JournalReference><Author>Masoudi FA, Wolfe P, Havranek EP et al</Author><Title>Aspirin use in older patients with heart failure and coronary artery disease: national prescription patterns and relationship with outcomes</Title><Journal>J Am Coll Cardiol</Journal><Year>2005</Year><Volume>46</Volume><Part>6/Sep 20</Part><Page>955-62</Page></JournalReference></References></ClassInteraction></Route></Route></GGPI><GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\" rejected=\"true\"/><DuplicateTherapy/></Interaction></Result>"
+				}
+			]
+		},
+		{
+			"name": "Duplicate Alert",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "KhanhHoa",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "198GTjisas",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "prescriptionquery",
+							"value": "<Request><Interaction><Prescribing><GGPI reference=\"{AA0D6353-F6E1-4AB1-AF1E-5E5F109A0706}\"/><GGPI reference=\"{B7AD6ED9-C22D-561C-E034-080020E1DD8C}\"/></Prescribing><DuplicateTherapy checkSameDrug=\"true\"/><DuplicateIngredient checkSameDrug=\"true\"/><References/></Interaction></Request>",
+							"type": "text"
+						},
+						{
+							"key": "responsetype",
+							"value": "xml",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+					"protocol": "http",
+					"host": [
+						"49",
+						"249",
+						"193",
+						"198"
+					],
+					"port": "8081",
+					"path": [
+						"RESTFTWebService-VN",
+						"FTRequest",
+						"xmlrequestplus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Drug–Health Alert",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "KhanhHoa",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "198GTjisas",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "prescriptionquery",
+							"value": "<Request><Interaction><Prescribing><GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\"/></Prescribing><HealthIssueCodes><HealthIssueCode code=\"J45\" codeType=\"ICD10\"/><HealthIssueCode code=\"N17\" codeType=\"ICD10\"/></HealthIssueCodes><References/></Interaction></Request>",
+							"type": "text"
+						},
+						{
+							"key": "responsetype",
+							"value": "xml",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+					"protocol": "http",
+					"host": [
+						"49",
+						"249",
+						"193",
+						"198"
+					],
+					"port": "8081",
+					"path": [
+						"RESTFTWebService-VN",
+						"FTRequest",
+						"xmlrequestplus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VN Contraindication Alert",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "KhanhHoa",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "198GTjisas",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "prescriptionquery",
+							"value": "<Request><Interaction><Prescribing><ItemCode value=\"17\"/><ItemCode value=\"99\"/></Prescribing></Interaction></Request>",
+							"type": "text"
+						},
+						{
+							"key": "responsetype",
+							"value": "xml",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus-vn",
+					"protocol": "http",
+					"host": [
+						"49",
+						"249",
+						"193",
+						"198"
+					],
+					"port": "8081",
+					"path": [
+						"RESTFTWebService-VN",
+						"FTRequest",
+						"xmlrequestplus-vn"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "VN Contraindication Alert result 0",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><ItemCode value=\"21863\"/><ItemCode value=\"10226\"/></Prescribing></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus-vn",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus-vn"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "227"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Dec 2025 06:04:11 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result>\n<Interaction>\n<DANH_SACH_TUONG_TAC>\nKhông tìm thấy. Không tìm thấy tương tác không nên được hiểu là an toàn. Nên thực hiện đánh giá lâm sàng</DANH_SACH_TUONG_TAC>\n</Interaction>\n</Result>"
+				},
+				{
+					"name": "VN Contraindication Alert Result 02",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><ItemCode value=\"21863\"/><ItemCode value=\"10226\"/></Prescribing></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus-vn",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus-vn"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "227"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 27 Dec 2025 06:04:49 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result>\n<Interaction>\n<DANH_SACH_TUONG_TAC>\n<CAP_TUONG_TAC>\n<CapTuongTac>[Aspirin] - [Ketorolac]</CapTuongTac>\n<HoatChat_1>Aspirin 500mg Agimexpharm [Aspirin]</HoatChat_1>\n<HoatChat_2>Acuvail eye 4.5mg/ml 0.4ml [Ketorolac]</HoatChat_2>\n<CacThuocCoKhaNangGayTuongTac/>\n<MucDoTuongTac/>\n<ThoiGianKhoiPhat/>\n<MucDoNghiemTrong>Chống chỉ định</MucDoNghiemTrong>\n<DuLieuVeTuongTac/>\n<HauQuaCuaTuongTac>Tăng nguy cơ xuất huyết tiêu hóa nghiêm trọng (sử dụng đồng thời ketorolac với 1 NSAID khác làm\ntăng nguy cơ xuất huyết tiêu hóa gấp 5 lần so với phối hợp 2 NSAID khác)</HauQuaCuaTuongTac>\n<CoCheTuongTac>Hiệp đồng tác dụng kích ứng đường tiêu hóa</CoCheTuongTac>\n<XuTriTuongTac>Chống chỉ định phối hợp. Cần đặc biệt lưu ý nguy cơ tương tác trong trường hợp giảm đau hậu\nphẫu.</XuTriTuongTac>\n<BanLuan/><TaiLieuThamKhao>Quyết định số 5948/QĐ-BYT ngày 30/12/2021 của Bộ Y tế.</TaiLieuThamKhao><TuyenBoMienTruTrachNhiem>Các cảnh báo và thông tin Chống chỉ định của VN do Bộ Y tế quy định chứ không phải từ\nMIMS hoặc bất kỳ nền tảng liên quan nào. Do đó, bất kỳ sự khác biệt hoặc quan ngại nào liên quan đến nội dung thì cần liên\nhệ MOH để làm rõ. MIMS từ chối mọi trách nhiệm về sai sót hoặc thông tin không chính xác. Người dùng cuối được khuyến\nkhích xác minh thông tin với các kênh chính thức của Bộ Y tế Việt Nam. Người dùng cuối có trách nhiệm đánh giá tất cả\nthông tin trong bối cảnh lâm sàng trước khi đưa ra bất kỳ quyết định kê đơn cuối cùng nào. Bằng cách truy cập và sử dụng\nthông tin này, người dùng thừa nhận rằng MOH là nguồn thông tin chính thức</TuyenBoMienTruTrachNhiem>\n</CAP_TUONG_TAC><CAP_TUONG_TAC>\n<CapTuongTac>[Acenocoumarol] - [Tamoxifen]</CapTuongTac><HoatChat_1>Acenocoumarol 1mg [Acenocoumarol]</HoatChat_1><HoatChat_2>Nolvadex 10mg [Tamoxifen]</HoatChat_2><CacThuocCoKhaNangGayTuongTac/><MucDoTuongTac/><ThoiGianKhoiPhat/><MucDoNghiemTrong>Chống chỉ định có điều kiện</MucDoNghiemTrong><DuLieuVeTuongTac/><HauQuaCuaTuongTac>Tăng nguy cơ xuất huyết</HauQuaCuaTuongTac><CoCheTuongTac>[Tamoxifen] ức chế CYP2C9 làm giảm chuyển hóa của acenocoumarol</CoCheTuongTac><XuTriTuongTac>1. Chống chỉ định phối hợp ở bệnh nhân sử dụng tamoxifen dự phòng tiên phát ung thư vú.2. Ở bệnh nhân\nung thư vú, nên cân nhắc sử dụng heparin trọng lượng phân tử thấp (LMWH) hoặc các thuốc chống đông đường uống tác\nđộng trực tiếp (DOAC) thay thế cho warfarin để điều trị thuyên tắc tĩnh mạch do huyết khối. Trong trường hợp bắt buộc sử\ndụng đồng thời tamoxifen với warfarin, cần giảm 1/2 đến 2/3 liều warfarin và theo dõi chặt chẽ bệnh\nnhân.</XuTriTuongTac><BanLuan/><TaiLieuThamKhao>Quyết định số 5948/QĐ-BYT ngày 30/12/2021 của Bộ Y tế.</TaiLieuThamKhao><TuyenBoMienTruTrachNhiem>Các cảnh báo và thông tin Chống chỉ định của VN do Bộ Y tế quy định chứ không phải từ\nMIMS hoặc bất kỳ nền tảng liên quan nào. Do đó, bất kỳ sự khác biệt hoặc quan ngại nào liên quan đến nội dung thì cần liên\nhệ MOH để làm rõ. MIMS từ chối mọi trách nhiệm về sai sót hoặc thông tin không chính xác. Người dùng cuối được khuyến\nkhích xác minh thông tin với các kênh chính thức của Bộ Y tế Việt Nam. Người dùng cuối có trách nhiệm đánh giá tất cả\nthông tin trong bối cảnh lâm sàng trước khi đưa ra bất kỳ quyết định kê đơn cuối cùng nào. Bằng cách truy cập và sử dụng\nthông tin này, người dùng thừa nhận rằng MOH là nguồn thông tin chính thức</TuyenBoMienTruTrachNhiem>\n</CAP_TUONG_TAC></DANH_SACH_TUONG_TAC></Interaction></Result>"
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "KhanhHoa",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "198GTjisas",
+				"type": "string"
+			}
+		]
+	}
+}

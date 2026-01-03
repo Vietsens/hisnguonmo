@@ -1,0 +1,280 @@
+<Result buildID="3374" copyright="Copyright (c) 2021 MIMS" expiryDate="2025-12-31">
+    <Content>
+        <GGPI name="captopril 100mg Oral Tablet" reference="{488F9F61-5D37-4989-925E-1742FFFDAA9E}">
+            <MONOGRAPH>
+                <GENMONO>
+                    <![CDATA[Captopril]]>
+                </GENMONO>
+                <LASTUPDATED>
+                    <![CDATA[TRUE]]>
+                </LASTUPDATED>
+                <GCLS>
+                    <![CDATA[ACE Inhibitors/Direct Renin Inhibitors]]>
+                </GCLS>
+                <GPCAT>
+                    <![CDATA[PO/SL: D]]>
+                </GPCAT>
+                <GCI>
+                    <![CDATA[History of angioedema related to ACE treatment, hereditary or idiopathic angioneurotic oedema. Concomitant use with aliskiren esp in patients with diabetes mellitus or renal impairment (GFR &lt;60 mL/min/1.73m<sup>2</sup>) and neprilysin inhibitor (e.g. sacubitril). Pregnancy.]]>
+                </GCI>
+                <GSP>
+                    <![CDATA[Patient with volume and/or Na depletion, ischaemic cardiovascular or cerebrovascular disease, aortic stenosis, unstented unilateral/bilateral renal artery stenosis, hypertrophic and outflow tract obstruction, collagen vascular disease. Patient undergoing major surgery or during anaesthetics. Desensitisation treatment (e.g. hymenoptera venom). Black race. Renal impairment. Children and elderly. Lactation.<br /><I>Patient Counselling:</I><br />May impair ability to drive or operate machinery.<br /><I>Monitoring Parameters:</I><br />Monitor blood pressure, BUN, serum creatinine, CBC with differentials, and electrolytes. Monitor for signs of angioedema and assess pregnancy status.<br /><I>Overdosage:</I><br />Symptoms: Severe hypotension, shock, stupor, bradycardia, electrolyte disturbances, and renal failure. Management: Prevent absorption of recent ingestion by employing gastric lavage, administration of adsorbents and Na sulphate within 30 minutes post intake. For hypotension, place in shock position and rapidly initiate salt and volume supplementations. Administer atropine and consider the use of pacemaker for pacemaker and bradycardia.]]>
+                </GSP>
+                <GAR>
+                    <![CDATA[<em>Significant:</em> Hypotension, intestinal or peripheral angioedema, non-productive and persistent cough; cholestatic jaundice, proteinuria, neutropenia, agranulocytosis, thrombocytopenia, renal impairment or failure and hyperkalaemia.<br><em>Cardiac disorders:</em> Dyspnoea.<br><em>Gastrointestinal disorders:</em> Nausea, vomiting, diarrhea, constipation, dry mouth, epigastric discomfort, abdominal pain, peptic ulcer, dyspepsia.<br><em>General disorders and admin site conditions: </em>Asthenia.<br><em>Metabolism and nutrition disorders:</em> Anorexia, symptomatic hyponatremia, hypoglycaemia.<br><em>Nervous system disorders:</em> Taste impairment, dizziness.<br><em>Psychiatric disorders:</em> Sleep disorders, rarely, confusion, depression.<br><em>Renal and urinary disorders:</em> Rarely, polyuria, oliguria, pollakiuria.<br><em>Reproductive system and breast disorders:</em> Rarely, gynaecomastia.<br><em>Skin and subcutaneous tissue disorders:</em> Rash, pruritus with or without rash, alopecia.<br><strong>Potentially Fatal:</strong> Angioedema involving the tongue, glottis or larynx; rarely, fulminant hepatic necrosis.]]>
+                </GAR>
+                <GDI>
+                    <![CDATA[Increases lithium concentration and toxicity. Increased risk of leucopenia with procainamide and immunosuppresants. Decreased renal clearance with probenecid. Enhances hypotensive effect of TCA and antipsychotics. Decreased antihypertensive effects with sympathomimetic agents. Increased hypotensive effect with adrenergic blocking agents and NSAIDs (e.g. indomethacin, ibuprofen). Potentiates blood glucose-lowering effects of insulin and oral antidiabetics (e.g. sulphonylureas). May result in volume depletion and risk of hypotension with thiazide or loop diuretics (except furosemide and hydrochlorothiazide). May increase serum K with K-sparing diuretics (e.g. amiloride, spironolactone, triamterene), K-containing salt substitutes or supplements. Increased risk of low renal function due to serum K increase with NSAIDs.  Increased risk of angioedema with neprilysin inhibitor and mammalian target of rapamycin inhibitor (e.g. temsirolimus, everolimus).<br><strong>Potentially Fatal:</strong> Increased risk of hypotension, hyperkalaemia and impaired renal function with aliskiren. Increased risk of angioedema with neprilysin inhibitors (e.g. sacubitril). May cause anaphylactoid reactions with dextran sulfate in LDL apheresis.]]>
+                </GDI>
+                <GPPPA>
+                    <![CDATA[Should be taken on an empty stomach. Take 1 hr before or 2 hr after meals.<br /><I>Storage:</I><br />Store between 20-25&deg;C. Protect from moisture.]]>
+                </GPPPA>
+                <GATC1>
+                    <![CDATA[captopril]]>
+                </GATC1>
+                <GATC2>
+                    <![CDATA[C09AA01]]>
+                </GATC2>
+                <GLAB>
+                    <![CDATA[May cause false-positive urine test for acetone determination using nitroprusside reagent. May result to false-negative aldosterone/renin ratio (ARR).]]>
+                </GLAB>
+                <GFOOD>
+                    <![CDATA[Decreased serum concentration with food.]]>
+                </GFOOD>
+                <GDOSE>
+                    <![CDATA[<i>Oral</i><br /><b>Diabetic nephropathy</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>75-100 mg daily in divided doses.<br /><b>Child: </b>Neonates and infants: 0.15 mg/kg. Children and adolescents: 0.3 mg/kg. All doses are given tid according to response or based on patient response.<br /><b>Elderly: </b>Initially, 6.25 mg bid.<br /></div><br /><i>Oral</i><br /><b>Post-myocardial infarction</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>Acute treatment (within 24 hours of the onset of symptoms): 6.25 mg as test dose, followed by 12.5 mg after 2 hours and 25 mg after 12 hours. If tolerated, 50 mg bid for 4 weeks. Re-evaluate patient state according to clinical response. Chronic treatment (&gt;24 hours of the onset of symptoms): Initially, 6.25 mg within 3-16 days post-infarction, followed by 12.5 mg tid for 2 days, then 25 mg tid depending on patient response. Maintenance: 75-150 mg daily in 2 or 3 divided doses.<br /><b>Child: </b>Neonates and infants: 0.15 mg/kg. Children and adolescents: 0.3 mg/kg. All doses are given tid according to response or based on patient response.<br /><b>Elderly: </b>Initially, 6.25 mg bid.<br /></div><br /><i>Oral</i><br /><b>Hypertension</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>Initially, 25-75 mg daily in 2-3 divided doses. Dosage is individualised according to clinical response and may be increased after at least 2 weeks, to 100-150 mg daily in 2-3 divided doses as needed to reach target BP. Patients on diuretics or with cardiac decompensation: Initially, 6.25 mg or 12.5 mg bid.<br /><b>Child: </b>Neonates and infants: 0.15 mg/kg. Children and adolescents: 0.3 mg/kg. All doses are given tid according to response or based on patient response.<br /><b>Elderly: </b>Initially, 6.25 mg bid.<br /></div><br /><i>Oral</i><br /><b>Congestive heart failure</b><br /><div style=&apos;padding-left: 20px;&apos;><b>Adult: </b>Initially, 6.25-12.5 mg bid or tid. Dosage is individualised according to clinical response and may be increased incrementally, with at least 2 weeks intervals. Maintenance: 75-150 mg daily in divided doses.<br /><b>Child: </b>Neonates and infants: 0.15 mg/kg. Children and adolescents: 0.3 mg/kg. All doses are given tid according to response or based on patient response.<br /><b>Elderly: </b>Initially, 6.25 mg bid.<br /></div><br /><B>Dosage Adjustment in Renal Impairment:</B><br /><table style=&apos;width: 328px; height: 106px;&apos;><tbody><tr><th>CrCl (mL/min)</th><th>Dosage</th></tr><tr><td>&lt;10</td><td>6.25 mg daily. Max 37.5 mg daily.</td></tr><tr><td>10-20</td><td>12.5 mg daily. Max: 75 mg daily.<br>
+            </td>
+        </tr><tr><td>21-40</td><td>25 mg daily. Max: 100 mg daily.<br>
+            </td>
+        </tr><tr><td>&gt;40</td><td>25-50 mg daily. Max: 150 mg daily.</td></tr>
+    </tbody>
+</table>]]>
+</GDOSE>
+<GSPG/>
+<GACTION>
+    <![CDATA[<b>Description: </b>Captopril is a sulfhydryl-containing ACE inhibitor which competitively inhibits ACE to prevent conversion of angiotensin I to angiotensin II, thereby increasing plasma renin activity and reducing aldosterone secretion.<br /><b>Onset: </b>Within 15 minutes.<br /><b>Pharmacokinetics: </b><br /><b>Absorption: </b>Rapidly absorbed from the gastrointestinal tract (approx. 60-75%). Decreased serum concentration with food. Bioavailability: Approx 60-75%. Time to peak plasma concentration: Within 1-2 hours.<br /><b>Distribution: </b>Crosses placenta and enters breast milk (small amounts). Volume of distribution at steady state: 0.7 L/kg. Plasma protein binding: 25%-30%.<br /><b>Excretion: </b>Via urine (&gt;95%; 40-50% as unchanged drug). Elimination half-life: 2-3 hours.<br />]]>
+</GACTION>
+</MONOGRAPH>
+<PILS>
+    <SPECIFICPIL GenericName="Captopril" Id="2cfcdd5b-43db-4ebe-837c-a61a011f877b" IsActive="true" Language="English">
+        <RELATEDSYNONYM/>
+        <ROUTEFORM>
+            <![CDATA[Oral]]>
+        </ROUTEFORM>
+        <DESCRIPTION>
+            <![CDATA[Captopril - Oral]]>
+        </DESCRIPTION>
+        <INDICATIONLABEL>
+            <![CDATA[Why do I need this medicine?]]>
+        </INDICATIONLABEL>
+        <INDICATION>
+            <![CDATA[Captopril is used on its own or together with other medicines to keep your blood pressure under control. This medicine helps relax your blood vessels consequently lowering your blood pressure. <br /><br />
+Captopril may also be used to treat other conditions such as heart failure, heart attack, and kidney damage caused by diabetes.]]>
+        </INDICATION>
+        <DOSAGELABEL>
+            <![CDATA[How do I take this medicine?]]>
+        </DOSAGELABEL>
+        <DOSAGE>
+            <![CDATA[Take Captopril exactly as directed by your doctor or according to the instructions on the label. Do not take more or less than instructed by your doctor.<br /><br />
+This medicine should be taken on an empty stomach, at least 1 hour before or 2 hours after a meal. Try to take it at the same time each day.<br /><br />
+Captopril must be taken regularly for it to be effective. Continue taking this medicine even when you feel better/well. Do not stop taking it unless instructed by the doctor, as stopping it suddenly may worsen your condition.]]>
+        </DOSAGE>
+        <MISSEDDOSELABEL>
+            <![CDATA[What should I do if I have forgotten to take this medicine?]]>
+        </MISSEDDOSELABEL>
+        <MISSEDDOSE>
+            <![CDATA[Take the missed dose as soon as you remember. If it is almost time for your next dose, skip the missed dose and return to your normal dosing schedule.<br /><br />
+DO NOT double a dose under any circumstances.<br /><br />
+If you often forget to take your medicine, let your doctor and pharmacist know.]]>
+        </MISSEDDOSE>
+        <CONTRAINDICATIONSLABEL>
+            <![CDATA[When should I not use this medicine?]]>
+        </CONTRAINDICATIONSLABEL>
+        <CONTRAINDICATIONS>
+            <![CDATA[Alert your doctor if you have the previously experience a serious allergic reaction which causes swelling of the face, lips and throat due to an unknown reason or a family history, as Captopril may not be suitable for you.<br /><br />
+Do not take this medicine if you are pregnant or planning to have a baby soon. If you become pregnant while being treated with this medicine, alert your doctor immediately. Captopril may cause harm to your unborn child. You must use proven birth control methods while taking this medicine. <br /><br />
+Do not take this medicine if you have taken sacubitril (medicine used to treat high blood pressure) if you have diabetes and severe kidney disease. <br /><br />
+Do not take Captopril with aliskiren (medicine used to treat high blood pressure) if you have diabetes and severe kidney disease. Please see the section &#8220;Can I take this with other medicines?&#8221; below for more information.]]>
+        </CONTRAINDICATIONS>
+        <SPECIALPRECAUTIONSLABEL>
+            <![CDATA[What should I take note of while taking this medicine?]]>
+        </SPECIALPRECAUTIONSLABEL>
+        <SPECIALPRECAUTIONS>
+            <![CDATA[Inform your doctor if you have the following conditions:<br /><ul><li>low sodium levels in the blood or fluid loss caused by water pills, dietary salt restriction, diarrhoea or vomiting</li><li>heart disease such as narrowing of the valves of the heart&#160;</li><li>kidney disease</li><li>immune system diseases affecting collagen</li><li>diabetes</li></ul>
+Let your doctor know if you are breastfeeding.<br /><br />
+Be sure to check with your doctor or pharmacist before giving Captopril to a child or elderly person. Children and elderly people may be more sensitive to the side effects.<br /><br />
+If you are going for an operation, including minor surgery and dental work, inform your doctor or dentist that you are taking Captopril.<br /><br />
+If you are of a Black race, Captopril may be less effective. Inform your doctor if you are taking this medicine.<br /><br />
+If you are going to undergo certain laboratory tests, inform your doctor that you are using this medicine.<br /><br />
+Why is it important to keep my appointments with the doctor?<br /><br />
+Keep your appointments with your doctor. Your doctor needs to monitor your condition and check your response to the medication regularly. <br /><ul><li>Your blood pressure may fall to unsafe levels without you noticing it.</li><li>Your doctor may also need to do routine blood tests while you are being treated with Captopril to monitor the health of your kidney. Your doctor will advise you about how often you need to have blood tests.</li></ul>
+What lifestyle changes can I make to improve my blood pressure?<br /><br />
+Regular exercise and eating a healthy diet will help lower your blood pressure and improve your overall health. Engage in physical activity (e.g. walking) at least 30 to 60 minutes on most days of the week. If you have not exercised for a long time, start with light exercises such as slow&#160;walks. Speak to your doctor about what type of exercise would be suitable for you. Follow a healthy diet plan by eating more fruits, vegetables, whole grains and low-fat dairy products and reduce your intake of foods high in saturated fat, cholesterol and sodium. Cutting down on deep-fried foods and using less salt when cooking can kick-start your healthy diet.<br /><br />
+If you smoke, you should try to quit. Smoking is harmful to your blood pressure, heart and overall health. Speak to your doctor or pharmacist about ways to kick your smoking habit.]]>
+</SPECIALPRECAUTIONS>
+<SIDEEFFECTSLABEL>
+    <![CDATA[What side effects could I experience?]]>
+</SIDEEFFECTSLABEL>
+<SIDEEFFECTS>
+    <![CDATA[This medicine may cause any of the following side effects: nausea, vomiting, diarrhoea, constipation, dizziness, dry mouth, stomach discomfort and pain; dyspepsia, taste impairment, persistent dry cough, weakness, loss of appetite, difficulty in breathing, frequent urination, rash, alopecia, lack of concentration, muscle weakness, cramping or numbness; fast or irregular heartbeat, low blood sugar (sweating, hunger, irritability, headache), enlargement of one or both breasts, sleep disturbance, confusion, unusual changes in mood or behaviour (being too depressed, agitated, or having compulsive and impulsive behaviour).<br />
+Some side effects may be serious, although they are not common. Alert your doctor quickly if you experience:<br /><ul><li>swelling in the ankles or feet</li><li>yellowing of the skin or eyes</li><li>foamy, frothy or bubbly-looking urine</li></ul>
+If you develop rashes, breathlessness, swollen mouth or eyes, stop taking Captopril and inform your doctor quickly. These could be signs of an allergic reaction.<br /><br />
+You may experience dizziness when getting up from a sitting or lying down position, especially if you are taking this medicine for the first time. This is common and should disappear gradually as you get used to the medicine. It will help if you get up slowly from a sitting or lying position.<br /><br />
+This medicine may cause the level of your red blood cells, white blood cells and platelets to drop.<br /><br />
+Red blood cells carry oxygen around your body. A fall in the level of red blood cells may make you feel tired and worn out.<br /><br />
+White blood cells help your body to fight infections. A fall in the level of your white blood cells may put you at higher risk for infections, such as coughs, colds and flu, which may lead to more serious infections. Avoid crowded places and people who are sick. Alert your doctor if you have a fever, or a cough or flu that does not go away.<br /><br />
+Platelets help your blood to clot when there is a cut in the skin. A fall in the level of your platelets may put you at risk of bleeding more than usual. Do not take part in activities where you may fall or get injured, such as contact sports. Alert your doctor if you get any unusual bruising (large bruises or several bruises, especially if the bruises appeared on their own) or bleeding that takes a long time to stop (for example, too much bleeding when you floss or brush your teeth).<br /><br />
+Inform your doctor if any of these side effects do not go away or are severe, or if you experience other side effects.]]>
+</SIDEEFFECTS>
+<DRUGINTERACTIONSLABEL>
+    <![CDATA[Can I take this with other medicines?]]>
+</DRUGINTERACTIONSLABEL>
+<DRUGINTERACTIONS>
+    <![CDATA[Do not take Captopril with aliskiren (medicine used to treat high blood pressure) if you have diabetes and severe kidney disease.<br /><br />
+Do not take Captopril if you are taking medicines for high blood pressure or heart disease e.g. sacubitril/valsartan. <br /><br />
+Inform your doctor and pharmacist if you are taking any of these medicines:<br /><ul><li>NSAIDs (medicine for pain and inflammation) e.g. indomethacin, ibuprofen</li><li>medicines for diabetes e.g. insulin, sitagliptin, gliclazide</li><li>medicines for water retention (&#8220;water pills&#8221;) e.g. spironolactone</li><li>medicine used in organ transplant or certain immune disorders e.g. temsirolimus, everolimus</li><li>other medicines for high blood pressure or heart disease e.g. propranolol, amlodipine</li><li>medicine for depression e.g. lithium</li><li>potassium supplements (either as a medicine or as a salt substitute)</li><li>medicine for high blood pressure e.g. losartan, prazosin, hydralazine</li></ul>
+This list does not include all medicine that may interact with Captopril.<br /><br />
+Always notify your doctor and pharmacist if you are taking any other medicines, including herbal tonics such as traditional Chinese medicine, supplements and medicine that you buy without a prescription.]]>
+</DRUGINTERACTIONS>
+<FOODINTERACTIONSLABEL>
+    <![CDATA[What special dietary instructions should I follow?]]>
+</FOODINTERACTIONSLABEL>
+<FOODINTERACTIONS>
+    <![CDATA[Avoid alcohol.<br /><br />
+Avoid taking too much food that is high in potassium, such as orange juice, bananas or prunes. Do not use salt substitutes that contain potassium.<br /><br />
+Cut down on your salt intake. This may help lower your blood pressure and improve your overall health. Speak to your doctor or dietitian about ways to cut down on your salt intake.]]>
+</FOODINTERACTIONS>
+<STORAGELABEL>
+    <![CDATA[How should I store this medicine?]]>
+</STORAGELABEL>
+<STORAGE>
+    <![CDATA[Store in a cool, dry place away from the reach of children.<br /><br />
+Medicines must not be used past the expiry date.]]>
+</STORAGE>
+<COPYRIGHT>
+    <![CDATA[Disclaimer: This information is independently developed by MIMS based on Captopril and is provided for your reference only. It is not a replacement for and should only be used in conjunction with full consultation with a licensed healthcare professional, the information provided by your pharmacist and/or the manufacturer of the medication. It may not contain all the available information you require and cannot substitute professional medical care, nor does it take into account all individual circumstances. Although great effort has been made to ensure content accuracy, we shall not be held responsible or liable for any claims or damages arising from the use or misuse of the information contained herein, its contents or omissions, or otherwise. Copyright © 2020 MIMS. All rights reserved. Powered by MIMS]]>
+</COPYRIGHT>
+</SPECIFICPIL>
+</PILS>
+<PILS>
+    <SPECIFICPIL GenericName="Captopril" Id="50c06c88-a636-4163-a701-a61a0120587b" IsActive="true" Language="BahasaMelayu">
+        <RELATEDSYNONYM/>
+        <ROUTEFORM>
+            <![CDATA[Oral]]>
+        </ROUTEFORM>
+        <DESCRIPTION>
+            <![CDATA[Captopril - Oral]]>
+        </DESCRIPTION>
+        <INDICATIONLABEL>
+            <![CDATA[Mengapakah saya perlu mengambil ubat ini?]]>
+        </INDICATIONLABEL>
+        <INDICATION>
+            <![CDATA[Captopril boleh diambil secara sendiri atau bersama-sama ubat-ubatan lain untuk mengawal tekanan darah anda. Ubat ini melegakan saluran darah anda dan ini membantu menurunkan tekanan darah anda.<br /><br />
+Captopril juga boleh digunakan untuk merawat keadaan lain seperti kegagalan jantung, serangan jantung dan kerosakan buah pinggang yang disebabkan oleh diabetes.]]>
+        </INDICATION>
+        <DOSAGELABEL>
+            <![CDATA[Bagaimanakah cara saya mengambil ubat ini?]]>
+        </DOSAGELABEL>
+        <DOSAGE>
+            <![CDATA[Ambil Captopril seperti yang diarahkan oleh doktor anda atau ikut arahan pada label ubat. Jangan ambil dos yang lebih atau kurang daripada yang diarahkan oleh doktor anda.<br /><br />
+Ubat ini perlu diambil semasa perut kosong, sekurang-kurangnya 1 jam sebelum atau 2 jam selepas makan. Cuba ambil ubat ini pada masa yang sama setiap hari.<br /><br />
+Captopril perlu diambil secara teratur supaya ia berkesan. Teruskan mengambil ubat ini walaupun keadaan anda bertambah baik. Jangan berhenti mengambil ubat ini kecuali jika diarahkan oleh doktor kerana berhenti tiba-tiba boleh memburukkan keadaan anda.]]>
+        </DOSAGE>
+        <MISSEDDOSELABEL>
+            <![CDATA[Apakah yang perlu saya lakukan apabila terlupa mengambil ubat ini?]]>
+        </MISSEDDOSELABEL>
+        <MISSEDDOSE>
+            <![CDATA[Ambil dos yang terlupa sebaik sahaja anda ingat. Jika ia hampir kepada masa untuk dos seterusnya, abaikan dos yang terlepas dan ikut semula jadual dos anda seperti biasa.<br /><br />
+JANGAN menggandakan dos dalam apa jua keadaan.<br /><br />
+Jika anda sering lupa untuk mengambil ubat, beritahu doktor dan ahli farmasi anda.]]>
+        </MISSEDDOSE>
+        <CONTRAINDICATIONSLABEL>
+            <![CDATA[Bilakah ubat ini tidak patut/sesuai diambil?]]>
+        </CONTRAINDICATIONSLABEL>
+        <CONTRAINDICATIONS>
+            <![CDATA[Beritahu doktor anda dengan segera jika anda pernah mengalami reaksi alahan yang serius yang boleh menyebabkan bengkak pada muka dan tekak disebabkan oleh sebab yang tidak diketahui atau sejarah keluarga kerana Captopril mungkin tidak sesuai untuk anda.<br /><br />
+Jangan mengambil ubat ini jika anda hamil atau merancang untuk hamil tidak lama lagi. Jika anda hamil ketika sedang dirawat dengan ubat ini, beritahu doktor anda dengan segera. Captopril boleh menyebabkan kemudaratan kepada bayi dalam kandungan.<br /><br />
+Jangan mengambil Captopril jika anda telah mengambil sacubitril (ubat untuk merawat tekanan darah tinggi) jika anda mempunyai penyakit diabetes and penyakit buah pinggang yang teruk.<br /><br />
+Jangan mengambil Captopril bersama aliskiren (ubat untuk merawat tekanan darah tinggi) jika anda mempunyai penyakit diabetes dan penyakit buah pinggang yang teruk.&#160;Sila lihat seksyen &#34;Bolehkah saya mengambil ubat ini dengan ubat-ubatan yang lain?&#34; di bawah untuk mendapatkan maklumat lanjut.]]>
+        </CONTRAINDICATIONS>
+        <SPECIALPRECAUTIONSLABEL>
+            <![CDATA[Apakah yang perlu saya beri perhatian semasa mengambil ubat ini?]]>
+        </SPECIALPRECAUTIONSLABEL>
+        <SPECIALPRECAUTIONS>
+            <![CDATA[Beritahu doktor anda jika anda mempunyai keadaan berikut:<br /><br />
+-tahap sodium yang rendah dalam darah atau kehilangan cecair yang disebabkan oleh pil air, sekatan garam pemakanan, cirit-birit atau muntah-muntah<br />
+- penyakit jantung seperti injap jantung yang menyempit<br />
+- penyakit buah pinggang<br />
+- penyakit sistem imun yang menjejaskan kolagen<br />
+- diabetes<br /><br />
+Beritahu doktor anda jika anda menyusukan bayi.<br /><br />
+Pastikan anda menyemak dengan doktor atau ahli farmasi anda sebelum memberikan Captopril kepada kanak-kanak atau orang tua. Kanak-kanak dan orang tua mungkin lebih sensitif kepada kesan sampingan.<br /><br />
+Jika anda akan menjalani pembedahan, termasuk pembedahan kecil atau berkaitan pergigian, beritahu doktor atau doktor gigi anda yang anda sedang mengambil Captopril.<br /><br />
+Jika anda bangsa kulit hitam, Captopril mungkin kurang berkesan. Beri tahu doktor anda jika anda mengambil ubat ini.<br /><br />
+Jika anda akan menjalani ujian makmal tertentu, beri tahu doktor anda bahawa anda mengambil ubat ini.<br /><br />
+Mengapa penting untuk memastikan temu janji dengan doktor?<br /><br />
+Tepati temu janji dengan doktor anda. Doktor anda perlu memantau keadaan anda dan memeriksa tindak balas badan anda terhadap ubat secara berkala.<br /><br />
+Tekanan darah anda boleh turun kepada tahap yang tidak selamat tanpa anda menyedarinya.<br /><br />
+Doktor anda mungkin perlu juga untuk melakukan ujian darah rutin semasa anda sedang dirawat dengan Captopril untuk memantau kesihatan buah pinggang anda. Doktor anda akan menasihati anda tentang berapa kerap anda perlu menjalani ujian darah.<br /><br />
+Apakah perubahan gaya hidup yang boleh saya lakukan untuk mengawal tekanan darah saya?<br /><br />
+Senaman secara kerap dan makan diet yang sihat akan membantu menurunkan tekanan darah anda dan meningkatkan kesihatan anda secara keseluruhan. Lakukan aktiviti fizikal (seperti berjalan) sekurang-kurangnya 30-60 minit pada kebanyakan hari dalam seminggu. Jika anda sudah lama tidak melakukan senaman, mulakan dengan senaman ringan seperti berjalan perlahan. Bincanglah dengan doktor anda tentang jenis senaman yang sesuai untuk anda. Ikut pelan diet yang sihat seperti makan lebih banyak buah-buahan, sayur-sayuran, bijirin penuh dan produk tenusu rendah lemak dan kurangkan pengambilan makanan yang tinggi lemak tepu, kolesterol dan sodium. Mulai pelan diet sihat anda dengan mengurangkan makanan yang digoreng dalam minyak dan mengurangkan penggunaan garam semasa memasak.<br /><br />
+Jika anda merokok, anda perlu cuba untuk berhenti. Merokok adalah berbahaya kepada tekanan darah, jantung dan kesihatan anda secara keseluruhan. Bincanglah dengan doktor atau ahli farmasi anda tentang cara-cara untuk menghindari tabiat merokok anda.]]>
+        </SPECIALPRECAUTIONS>
+        <SIDEEFFECTSLABEL>
+            <![CDATA[Apakah kesan sampingan daripada pengambilan ubat ini?]]>
+        </SIDEEFFECTSLABEL>
+        <SIDEEFFECTS>
+            <![CDATA[Ubat ini boleh menyebabkan mana-mana kesan sampingan berikut: loya, muntah, cirit-birit, sembelit, pening, mulut kering, ketidakselesaan atau kesakitan perut; dispepsia, kerosakan rasa, batuk kering berterusan, keletihan, hilang selera makan, kesukaran bernafas, kerap membuang air kecil, ruam, alopecia, kurang konsentrasi, kelemahan otot, kejang atau kebas; denyut jantung cepat atau tidak teratur, gula darah rendah (berpeluh, lapar, kerengsaan, sakit kepala), pembesaran satu atau kedua-dua payudara, gangguan tidur, kekeliruan, perubahan yang luar biasa dalam mood atau tingkah laku (terlalu tertekan, gelisah, atau mempunyai perilaku yang kompulsif dan impulsif).<br /><br />
+Sesetengah kesan sampingan mungkin serius, walaupun mereka tidak biasa. Beritahu doktor anda dengan segera jika anda mengalami yang berikut:<br />
+- bengkak pada kaki atau pergelangan kaki<br />
+- kekuningan pada mata atau kulit<br />
+- air kencing yang berbuih<br /><br />
+Jika anda mengalami ruam, sesak nafas, mulut atau mata yang bengkak, hentikan mengambil Captopril dan segera beri tahu doktor anda. Ini boleh menjadi tanda-tanda  alahan.<br /><br />
+Anda juga mungkin berasa pening apabila bangun daripada posisi duduk atau berbaring, terutamanya jika anda mengambil ubat ini buat pertama kali. Ini adalah perkara biasa dan keadaan ini akan beransur-ansur pulih setelah badan anda biasa dengan Captopril. Untuk mengurangkan masalah ini, bangun secara perlahan-perlahan.<br /><br />
+Ubat ini akan menyebabkan paras sel-sel darah merah, sel-sel darah putih dan platelet anda jatuh.<br /><br />
+Sel-sel darah merah membawa oksigen  ke seluruh badan anda. Apabila paras sel darah merah menurun, anda mungkin sering berasa letih dan lemah.<br /><br />
+Sel-sel darah putih membantu badan anda untuk melawan jangkitan. Apabila paras sel-sel darah putih anda menurun, ini boleh meletakkan anda berisiko tinggi untuk mendapat jangkitan seperti batuk dan selesema, yang boleh membawa kepada jangkitan yang lebih serius. Elakkan tempat yang sesak dan orang yang sakit. Beritahu doktor anda jika anda mempunyai demam, atau batuk atau selesema yang tidak hilang.<br /><br />
+Platelet membantu darah anda membeku apabila terdapat luka di kulit. Apabila paras platelet anda menurun, anda mungkin berisiko pendarahan lebih daripada biasa. Jangan mengambil bahagian dalam aktiviti-aktiviti yang anda boleh jatuh atau tercedera, seperti sukan kontak. Beritahu doktor anda dengan segera jika anda medapat lebam yang luar biasa (lebam besar atau beberapa lebam, terutamanya jika lebam muncul sendiri) atau pendarahan yang mengambil masa yang lama untuk berhenti (contohnya terlalu banyak pendarahan apabila anda menggunakan flos atau bila memberus gigi anda).<br /><br />
+Beritahu doktor anda jika mana-mana kesan sampingan tidak hilang atau bertambah teruk, atau jika anda mengalami kesan sampingan yang lain.]]>
+        </SIDEEFFECTS>
+        <DRUGINTERACTIONSLABEL>
+            <![CDATA[Bolehkah saya mengambil ubat ini bersama ubat-ubatan yang lain?]]>
+        </DRUGINTERACTIONSLABEL>
+        <DRUGINTERACTIONS>
+            <![CDATA[Jangan ambil Captopril bersama-sama dengan aliskiren (sejenis ubat untuk merawat penyakit darah tinggi) jika anda mempunyai diabetes dan penyakit buah pinggang yang teruk.<br /><br />
+Jangan ambil Captopril jika anda mengambil ubat-ubatan lain untuk penyakit darah tinggi atau penyakit jantung contohnya sacubitril/valsartan.<br /><br />
+Beritahu doktor dan ahli farmasi anda jika anda mengambil mana-mana ubatan ini:<br /><br />
+- NSAIDs (ubat untuk sakit dan keradangan) contohnya indomethacin, ibuprofen<br />
+- ubat-ubatan untuk diabetes contohnya insulin, sitagliptin, gliclazide<br />
+- ubat-ubatan untuk pengekalan air (&#34;pil air&#34;) contohnya spironolactone<br />
+- ubat yang digunakan untuk pemindahan organ atau gangguan imun tertentu contohnya temsirolimus, everolimus<br />
+- ubat-ubatan lain untuk darah tinggi atau penyakit jantung contohnya propranolol, amlodipine<br />
+- ubat-ubatan untuk kemurungan contohnya lithium<br />
+- suplemen kalium (sama ada sebagai ubat atau pengganti garam)<br />
+- ubat-ubatan untuk tekanan darah tinggi contohnya losartan, prazosin, hydralazine<br /><br />
+Senarai ini tidak termasuk semua ubat-ubatan yang boleh berinteraksi dengan Captopril.<br /><br />
+Sentiasa beritahu doktor dan ahli farmasi anda jika anda mengambil sebarang ubat-ubatan lain, termasuk tonik herba seperti ubat tradisional, makanan tambahan/suplemen kesihatan dan ubat-ubatan yang anda beli tanpa surat ubat (preskripsi).]]>
+        </DRUGINTERACTIONS>
+        <FOODINTERACTIONSLABEL>
+            <![CDATA[Adakah terdapat sebarang sekatan terhadap jenis makanan yang saya boleh makan?]]>
+        </FOODINTERACTIONSLABEL>
+        <FOODINTERACTIONS>
+            <![CDATA[Elakkan  alkohol.<br /><br />
+Elakkan mengambil terlalu banyak makanan yang tinggi kalium, seperti jus oren, pisang atau prun. Jangan gunakan pengganti garam yang mengandung kalium.<br /><br />
+Kurangkan pengambilan garam anda. Ini boleh membantu menurunkan tekanan darah dan meningkatkan kesihatan anda secara keseluruhan. Berbincanglah dengan doktor atau pakar diet anda tentang cara-cara untuk mengurangkan pengambilan garam anda.]]>
+        </FOODINTERACTIONS>
+        <STORAGELABEL>
+            <![CDATA[Bagaimanakah cara saya menyimpan ubat ini?]]>
+        </STORAGELABEL>
+        <STORAGE>
+            <![CDATA[Simpan di tempat yang sejuk, kering dan jauh daripada kanak-kanak.<br /><br />
+Ubat-ubatan tidak boleh digunakan selepas ia melepasi tarikh luput.]]>
+        </STORAGE>
+        <COPYRIGHT>
+            <![CDATA[Penafian: Maklumat ini dihasilkan secara bebas oleh MIMS berdasarkan ubat Captopril dan disediakan untuk rujukan anda sahaja. Ia bukan pengganti bagi dan hanya perlu digunakan bersama-sama dengan perundingan penuh oleh profesional kesihatan yang berlesen, maklumat yang diberikan oleh ahli farmasi anda dan/atau pengeluar ubat. Ia mungkin tidak mengandungi semua maklumat yang anda perlukan dan ia tidak boleh menggantikan penjagaan perubatan profesional, dan ia juga tidak mengambil kira keadaan individu seseorang. Walaupun pelbagai usaha telah dilakukan untuk memastikan ketepatan kandungan, pihak kami tidak akan bertanggungjawab atau menanggung apa-apa tuntutan atau ganti rugi yang berbangkit daripada penggunaan atau penyalahgunaan maklumat yang terkandung di sini, sama ada dari segi kandungan atau ketidaklengkapan maklumat, atau sebaliknya. Hakcipta © 2020 MIMS. Semua hakcipta terpelihara. Diperkasakan oleh MIMS]]>
+        </COPYRIGHT>
+    </SPECIFICPIL>
+</PILS>
+</GGPI>
+</Content>
+</Result>

@@ -850,6 +850,13 @@ namespace HIS.Desktop.Plugins.TransactionInfoEdit
                 ado.TransactionId = this._HisTransaction.ID;
                 ado.BuyerEmail = this.txtBuyerEmail.Text;
                 ado.BuyerSocailRelationscode = this.txtDvqhns.Text;
+
+                ado.BuyerIdentityNumber = this.txtDinhDanh.Text;
+                if (short.TryParse(this.cboGiayTo.EditValue?.ToString(), out short value))
+                {
+                    ado.BuyerIdentityType = value;
+                }
+
                 //ado.PayFormId = Convert.ToInt64(cboPayForm.EditValue);
                 //if (cboPayForm.EditValue != null)
                 //    ado.PayFormId = Convert.ToInt64(cboPayForm.EditValue);

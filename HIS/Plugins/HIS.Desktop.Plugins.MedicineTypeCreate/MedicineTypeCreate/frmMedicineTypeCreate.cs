@@ -1566,16 +1566,23 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     }
                 }
 
-                var mediStock = BackendDataWorker.Get<HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
-                if (hIS_MEDICINE_TYPE.IS_BUSINESS == 1 || mediStock.IS_BUSINESS == 1)
+                var mediStock = BackendDataWorker.Get<HIS_MEDI_STOCK>()
+    .FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
+
+                bool isBusiness =
+                    (mediStock?.IS_BUSINESS == 1) ||
+                    (hIS_MEDICINE_TYPE.IS_BUSINESS == 1);
+
+                if (isBusiness)
                 {
                     var item = allItems.FirstOrDefault(x => x.NAME == "Thuốc kinh doanh");
-                    if (item != null)
+                    if (item != null && !lstConfig.Any(x => x.ID == item.ID))
                     {
                         gridCheck.Selection.Add(item);
                         lstConfig.Add(item);
                     }
                 }
+
 
                 if (hIS_MEDICINE_TYPE.IS_ALLOW_ODD == 1)
                 {
@@ -2386,7 +2393,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 }
 
                 #region Danh sach thuoc
-                if (lstMedicine != null && lstMedicine.Count > 0)
+                //if (lstMedicine != null && lstMedicine.Count > 0)
                 {
                     if (lstMedicine.Any(x=>x.ID == 1)) medicineType.IS_CHEMICAL_SUBSTANCE = 1;
                     else medicineType.IS_CHEMICAL_SUBSTANCE = null;
@@ -2432,7 +2439,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     else medicineType.IS_RAW_MEDICINE = null;
                 }
                 #endregion
-                if (lstConfig != null && lstConfig.Count > 0)
                 {
                     if (lstConfig.Any(x => x.ID == 1)) medicineType.IS_STOP_IMP = 1;
                     else medicineType.IS_STOP_IMP = null;
@@ -7226,8 +7232,16 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     {
                         cboMedicineLine.Properties.Buttons[1].Visible = true;
                         ValidatecboMedicineUseForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
-                        dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
-                        ValidatecboDosageForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
+                        if (medicineLine.ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                        {
+                            dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
+                            ValidatecboDosageForm(true);
+                        }
+                        else
+                        {
+                            dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
+                            ValidatecboDosageForm(false);
+                        }
                     }                    
                 }
             }
@@ -8113,13 +8127,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
-                lstConfig = new List<AConfigADO>();
                 bool hasKD = false;
                 bool hasAllowOdd = false; // Track if ID=4 is checked
 
                 if (gridCheckMark != null)
                 {
-
                     // Lấy selection hiện tại
                     var currentSelection = gridCheckMark.Selection.OfType<AConfigADO>().ToList();
 
@@ -8161,7 +8173,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         gridCheckMark.Selection.Remove(item);
                     }
 
-                    this.lstConfig.Clear();
+                    // CẬP NHẬT lstConfig từ validSelection
+                    this.lstConfig = new List<AConfigADO>();
                     foreach (var er in validSelection)
                     {
                         if (sb.Length > 0) 
@@ -8175,40 +8188,18 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                         lstConfig.Add(er);
                     }
-
-                    cboConfig.EditValue = lstConfig;
-
-                    //List<AConfigADO> erSelectedNews = new List<AConfigADO>();
-                    //foreach (AConfigADO er in gridCheckMark.Selection)
-                    //{
-                    //    if (er != null)
-                    //    {
-                    //        if (sb.ToString().Length > 0) { sb.Append(", "); }
-                    //        sb.Append(er.NAME);
-                    //        erSelectedNews.Add(er);
-                    //    }
-                    //}
-                    //this.lstConfig = new List<AConfigADO>();
-                    //this.lstConfig.AddRange(erSelectedNews);
                 }
-                // FORCE UPDATE TEXT - Sử dụng nhiều cách
+                
+                // UPDATE TEXT
                 string displayText = sb.ToString();
-
-                // Cách 1: Set trực tiếp
                 cboConfig.Text = displayText;
-
-                // Cách 2: BeginInvoke để chạy sau khi events khác hoàn thành
-                this.BeginInvoke(new Action(() =>
-                {
-                    cboConfig.Text = displayText;
-                }));
-
+                
                 // Force refresh để update UI
                 if (cboConfig.Properties.View != null)
                 {
                     cboConfig.Properties.View.RefreshData();
                 }
-                //this.cboConfig.Text = sb.ToString();
+                
                 if (hasKD)
                 {
                     chkIsSaleEqualImpPrice.Enabled = false;
@@ -8225,14 +8216,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 }
                 if (hasAllowOdd)
                 {
-                    //chkIsSplitCompensation.Enabled = false;
-                    //chkIsSplitCompensation.CheckState = CheckState.Unchecked;
                     txtContentWarning.Enabled = true;
                     btnContentWarning.Enabled = true;
                 }
                 else
                 {
-                    //chkIsSplitCompensation.Enabled = true;
                     txtContentWarning.Enabled = false;
                     txtContentWarning.Text = "";
                     btnContentWarning.Enabled = false;
@@ -8246,28 +8234,37 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
         private void Event_Check(object sender, EventArgs e)
         {
-
             try
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
-                lstMedicine = new List<AMedicineTypeADO>();
+                
                 if (gridCheckMark != null)
                 {
-                    List<AMedicineTypeADO> erSelectedNews = new List<AMedicineTypeADO>();
-                    foreach (AMedicineTypeADO er in (sender as GridCheckMarksSelection).Selection)
+                    // Lấy selection hiện tại từ GridCheckMarksSelection
+                    var currentSelection = gridCheckMark.Selection.OfType<AMedicineTypeADO>().ToList();
+                    
+                    // CẬP NHẬT lstMedicine từ currentSelection
+                    this.lstMedicine = new List<AMedicineTypeADO>();
+                    foreach (AMedicineTypeADO er in currentSelection)
                     {
                         if (er != null)
                         {
-                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            if (sb.Length > 0) { sb.Append(", "); }
                             sb.Append(er.NAME);
-                            erSelectedNews.Add(er);
+                            this.lstMedicine.Add(er);
                         }
                     }
-                    this.lstMedicine = new List<AMedicineTypeADO>();
-                    this.lstMedicine.AddRange(erSelectedNews);
                 }
+                
+                // UPDATE TEXT
                 this.cboLoaiThuoc.Text = sb.ToString();
+                
+                // Force refresh để update UI
+                if (cboLoaiThuoc.Properties.View != null)
+                {
+                    cboLoaiThuoc.Properties.View.RefreshData();
+                }
             }
             catch (Exception ex)
             {
@@ -8378,6 +8375,27 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtActiveIngrBhytCode_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if(txtActiveIngrBhytCode.EditValue != null && txtActiveIngrBhytCode.EditValue != "")
+                {
+                    ValidatecboDosageForm(true);
+                }
+                else
+                {
+                    dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
+                    ValidatecboDosageForm(false);
+                }
+            }
+            catch (Exception ex)
+            {
+
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

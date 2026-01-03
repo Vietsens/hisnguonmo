@@ -1503,11 +1503,11 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     }
                     else if (!string.IsNullOrEmpty(item.MANUFACTURER_NAME))
                     {
-                        if (!CheckMaxLenth(item.MANUFACTURER_NAME, 100))
-                        {
-                            error += string.Format(Message.MessageImport.Maxlength, "Tên hãng sản xuất");
-                            mateAdo.MANUFACTURER_NAME_ERROR = 1;
-                        }
+                        //if (!CheckMaxLenth(item.MANUFACTURER_NAME, 100))
+                        //{
+                        //    error += string.Format(Message.MessageImport.Maxlength, "Tên hãng sản xuất");
+                        //    mateAdo.MANUFACTURER_NAME_ERROR = 1;
+                        //}
 
                         var manufacturer = BackendDataWorker.Get<HIS_MANUFACTURER>().FirstOrDefault(o => o.MANUFACTURER_NAME == item.MANUFACTURER_NAME);
                         if (manufacturer != null)

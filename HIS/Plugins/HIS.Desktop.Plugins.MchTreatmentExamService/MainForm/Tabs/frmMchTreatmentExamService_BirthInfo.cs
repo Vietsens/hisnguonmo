@@ -93,6 +93,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 var week2To6CareValue = GetRadioGroupValue("Week2To6Care");
                 _birthInfo.WEEK_2_TO_6_CARE = week2To6CareValue.HasValue ? week2To6CareValue.Value.ToString() : null;
                 _birthInfo.NEWBORN_CONDITION = GetComboValue(cboNewbornCondition3);
+                _birthInfo.MIDWIFE_TYPE = GetComboValue(cboDiploma3);
             }
             catch (Exception ex)
             {
@@ -218,7 +219,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 string birthCertificateCode = txtBirthCertificateCode3.Text;
                 long? birthCertificateDate = ConvertDateToTimeNumber(dteBirthCertificateDate3.EditValue, true);
                 var birthCertificateRoundValue = GetRadioGroupValue("BirthCertificateRound");
-                long? childBirthDate = ConvertDateToTimeNumber(dteChildBirthDate3.EditValue, true);
+                long? childBirthDate = ConvertDateToTimeNumber(dteChildBirthDate3.EditValue, false);
                 string temporaryHeinCard = txtTemporaryHeinCardNumber3.Text;
                 string ethnicCode = GetComboValue(cboEthnic3);
                 var careWeek1Value = GetRadioGroupValue("CareWeek1");
@@ -296,7 +297,6 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _child.BIRTH_COMMUNE_NAME = addressBabyAdo.Commune_Name;
                     _child.BIRTH_DISTRICT_NAME = addressBabyAdo.District_Name;
                     _child.BIRTH_PROVINCE_NAME = addressBabyAdo.Province_Name;
-
                     _child.CHILD_BIRTH_DATE = childBirthDate;
                     _child.TEMPORARY_HEIN_CARD_NUMBER = temporaryHeinCard;
                     _child.ETHNIC_CODE = ethnicCode;

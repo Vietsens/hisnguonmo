@@ -36,10 +36,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 InitComboKeyValue(cboDiploma3, diplomaData);
 
                 // Tab 4: Tránh thai
-                InitComboKeyValue(cboDiploma4, diplomaData);
+                InitComboKeyValue(cboDiploma4, diplomaData.Where(o=>o.CODE != "4").ToList());
 
                 // Tab 5: Phá thai
-                InitComboKeyValue(cboDiploma5, diplomaData);
+                InitComboKeyValue(cboDiploma5, diplomaData.Where(o => o.CODE != "4").ToList());
             }
             catch (Exception ex)
             {

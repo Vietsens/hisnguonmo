@@ -24,6 +24,7 @@ using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Resources;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
+using HIS.UC.TreatmentFinish;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.SDO;
@@ -1570,7 +1571,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 
             return numOfDays;
         }
-
+         
         protected bool CheckValid()
         {
             bool valid = true;
@@ -1595,13 +1596,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 
             return valid;
         }
-
+       
         private bool CheckTreatmentFinish()
         {
             bool result = true;
             try
             {
                 List<string> paramMessageErrorOther = new List<string>(), paramMessageErrorEmpty = new List<string>();
+                
+               
+               
+                
                 if (frmAssignPrescription.treatmentFinishProcessor != null && !frmAssignPrescription.treatmentFinishProcessor.GetValidateWithMessage(frmAssignPrescription.ucTreatmentFinish, paramMessageErrorEmpty, paramMessageErrorOther))
                 {
                     if (paramMessageErrorOther.Count > 0)

@@ -23,10 +23,12 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 // MCH_ABORTION
                 _abortion.GESTATIONAL_WEEKS = GetSpinEditStringValue(spnGestationalWeeks5);
                 _abortion.ABORTION_METHOD = GetComboValue(cboAbortionMethod5);
-                _abortion.TISSUE_EXAMINATION_RESULT = GetComboValue(cboTissueExaminationResult5);
+
+                //Sua lai luu dung truong du lieu
+                _abortion.ABORTION_COMPLICATION = GetComboValue(cboTissueExaminationResult5);
                 
                 var abortionComplicationValue = GetRadioGroupValue("AbortionComplication");
-                _abortion.ABORTION_COMPLICATION = abortionComplicationValue.HasValue ? abortionComplicationValue.Value.ToString() : null;
+                _abortion.TISSUE_EXAMINATION_RESULT = abortionComplicationValue.HasValue ? abortionComplicationValue.Value.ToString() : null;
             }
             catch (Exception ex)
             {
@@ -48,10 +50,10 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 {
                     SetSpinEditStringValue(spnGestationalWeeks5, _abortion.GESTATIONAL_WEEKS);
                     SetComboValue(cboAbortionMethod5, _abortion.ABORTION_METHOD);
-                    SetComboValue(cboTissueExaminationResult5, _abortion.TISSUE_EXAMINATION_RESULT);
+                    SetComboValue(cboTissueExaminationResult5, _abortion.ABORTION_COMPLICATION);
                     
-                    if (!string.IsNullOrEmpty(_abortion.ABORTION_COMPLICATION))
-                        SetRadioGroupValue("AbortionComplication", short.Parse(_abortion.ABORTION_COMPLICATION));
+                    if (!string.IsNullOrEmpty(_abortion.TISSUE_EXAMINATION_RESULT))
+                        SetRadioGroupValue("AbortionComplication", short.Parse(_abortion.TISSUE_EXAMINATION_RESULT));
                 }
             }
             catch (Exception ex)

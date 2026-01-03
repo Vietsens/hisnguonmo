@@ -15,11 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Utils.OAuth;
+using DevExpress.Utils.OAuth.Provider;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraExport;
+using DevExpress.XtraLayout;
 using DevExpress.XtraLayout.Utils;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
@@ -29,6 +32,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
 using HIS.Desktop.Plugins.TransactionBill.ADO;
 using HIS.Desktop.Plugins.TransactionBill.Base;
 using HIS.Desktop.Plugins.TransactionBill.Config;
@@ -48,6 +52,7 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.LibraryHein.HcmPoorFund;
 using MOS.SDO;
+using MPS.Processor.Mps000279.PDO;
 using Newtonsoft.Json;
 using SAR.EFMODEL.DataModels;
 using System;
@@ -60,10 +65,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace HIS.Desktop.Plugins.TransactionBill
 {
@@ -135,7 +142,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         bool isNotLoadWhileChangeControlStateInFirst;
         List<PayFormADO> payFormList = new List<PayFormADO>();
         List<HIS_BANK> hisBankList = null;
-
+        string guaranteeAmountRes = "";
         List<HIS_CARD> hisCard = null;
         V_HIS_PATIENT hispatient = null;
         string creator = "";
@@ -571,6 +578,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 6");
                 this.FillDataToButtonPrint();
                 this.InitMenuToButtonPrint();
+                RunGuaranteeCheck();
             }
             catch (Exception ex)
             {
@@ -1529,6 +1537,18 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     this.ListSereServ = ListSereServ.Where(o => o.VIR_TOTAL_PATIENT_PRICE > 0).ToList();
                 }
 
+
+                if (ListSereServ != null && ListSereServ.Count > 0 && currentTreatment.GUARANTEE_CODE != null)
+                {
+
+                    decimal totalGuaranteed = ListSereServ.Where(x => x.IS_GUARANTEED == 1).Sum(x => x.VIR_TOTAL_PATIENT_PRICE ?? 0);
+
+                    this.lblBaoLanh.Text = Inventec.Common.Number.Convert.NumberToString(totalGuaranteed, ConfigApplications.NumberSeperator);
+                }
+                else
+                {
+                    this.lblBaoLanh.Text = "0";
+                }
                 ssTreeProcessor.Reload(ucSereServTree, ListSereServ);
             }
             catch (Exception ex)
@@ -4330,6 +4350,82 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        
+        private void chkBaoLanhVP_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
 
+                HIS_TREATMENT treatment = GetTreatment(this.treatmentId);
+
+                var sysConfigValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO");
+                string[] p = (sysConfigValue ?? "").Split('|');
+                if (p.Length < 3) throw new Exception("SysConfig không đúng định dạng");
+
+                var form = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.MedicalExpenseGuaranteeProcessor();
+                var use = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.DataInput();
+                string remark = "Thanh toán viện phí cho bệnh nhân " + treatment?.TDL_PATIENT_NAME;
+
+                use.baseUri = p[0];
+                use.applicationCode = p[1].Split(':')[0];
+                use.limet = p[2];
+                use.cskcbbd = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE; ;
+
+                use.useRequest = new Library.MedicalExpenseGuarantee.ADO.UseRequest();
+                use.useRequest.RequestId = treatment?.GUARANTEE_REQUEST_CODE;
+                use.useRequest.Amount = this.lblBaoLanh.Text ;
+                use.useRequest.Remark = remark;
+                use.useRequest.ContractNumber = treatment?.GUARANTEE_CODE;
+                use.useRequest.PatientFullName = treatment?.TDL_PATIENT_NAME;
+                use.useRequest.PatientDateOfBirth = treatment?.TDL_PATIENT_DOB.ToString();
+                use.useRequest.PatientCccd = treatment?.TDL_PATIENT_CCCD_NUMBER;
+                var res = form.GuaranteeUse(use);
+                if (res?.Success == true && res.Data?.Data != null)
+                {
+                    this.guaranteeAmountRes = res.Data.Data.AvailableBalance ?? "0";
+                    this.txtSoGiaoDich.Text = res.Data.Data.RefNo ?? string.Empty;
+
+                    // Đổi lblReceiveAmount.Text về số
+                    decimal receiveAmount = 0;
+                    decimal guaranteeAmount = 0;
+
+                    decimal.TryParse(lblReceiveAmount.Text.Replace(",", ""), out receiveAmount);
+                    decimal.TryParse(guaranteeAmountRes, out guaranteeAmount);
+
+                    // Trừ bảo lãnh và gán lại
+                    receiveAmount -= guaranteeAmount;
+                    if (receiveAmount < 0) receiveAmount = 0;
+
+                    lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(
+                        receiveAmount, ConfigApplications.NumberSeperator);
+                }
+                else
+                {
+                    XtraMessageBox.Show("Bảo lãnh viện phí thất bại.", "Thông báo");
+                    e.Cancel = true;
+                }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                WaitingManager.Hide();
+            }
+        }
+       
+        private void RunGuaranteeCheck()
+        {
+            if (currentTreatment != null && !string.IsNullOrEmpty(currentTreatment.GUARANTEE_CODE))
+            {
+                XtraMessageBox.Show("Bệnh nhân có đăng ký bảo lãnh viện phí. Vui lòng kiểm tra lại thông tin và check vào Bảo lãnh viện phí để thực hiện chốt số liệu.", "Thông báo");
+            }
+            else
+            {
+                layoutControlItem64.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem65.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem66.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            }
+        }
     }
 }

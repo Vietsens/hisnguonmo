@@ -1,0 +1,34 @@
+<Result buildID="3374" copyright="Copyright (c) 2021 MIMS" expiryDate="2025-12-31">
+<?xml-stylesheet type="text/xsl" href="MIMSStylesheet_CDSDefault_byRanking_VN_551126.xsl"?>
+    <Interaction>
+        <Product name="Vytorin 10/40 mg tab" offMarket="false" reference="{E6EDB82B-4FE2-463C-A937-A37B6784BC55}"/>
+        <Product name="Covastin tab 10 mg" offMarket="false" reference="{22CD5B4E-D7D7-434E-9CCD-2762030E5312}"/>
+        <DuplicateTherapy>
+            <Warning Level="1">
+                <Duplicate ATCCode="C10AA01">
+                    <Product reference="{E6EDB82B-4FE2-463C-A937-A37B6784BC55}"/>
+                    <Product reference="{22CD5B4E-D7D7-434E-9CCD-2762030E5312}"/>
+                    <RouteOfAdministration name="Systemic" reference="{90075601-10D4-49DD-9292-9B884D9D3EF3}"/>
+                </Duplicate>
+            </Warning>
+            <Warning Level="3">
+                <Duplicate ATCCode="C10A">
+                    <Product reference="{E6EDB82B-4FE2-463C-A937-A37B6784BC55}"/>
+                    <Product reference="{22CD5B4E-D7D7-434E-9CCD-2762030E5312}"/>
+                    <RouteOfAdministration name="Systemic" reference="{90075601-10D4-49DD-9292-9B884D9D3EF3}"/>
+                </Duplicate>
+            </Warning>
+        </DuplicateTherapy>
+        <DuplicateIngredient>
+            <Warning Level="1">
+                <Molecule name="simvastatin" reference="{9E711682-5382-4DF9-BF6E-E5AD8DA5037B}">
+                    <Molecule name="simvastatin" reference="{9E711682-5382-4DF9-BF6E-E5AD8DA5037B}">
+                        <Product reference="{E6EDB82B-4FE2-463C-A937-A37B6784BC55}"/>
+                        <Product reference="{22CD5B4E-D7D7-434E-9CCD-2762030E5312}"/>
+                    </Molecule>
+                </Molecule>
+                <RouteOfAdministration name="Systemic" reference="{90075601-10D4-49DD-9292-9B884D9D3EF3}"/>
+            </Warning>
+        </DuplicateIngredient>
+    </Interaction>
+</Result>

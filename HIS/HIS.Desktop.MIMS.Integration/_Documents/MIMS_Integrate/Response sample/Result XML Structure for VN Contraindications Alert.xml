@@ -1,0 +1,54 @@
+<Result>
+<Interaction>
+<DANH_SACH_TUONG_TAC>
+<CAP_TUONG_TAC>
+<CapTuongTac>[Aspirin] - [Ketorolac]</CapTuongTac>
+<HoatChat_1>Aspirin 500mg Agimexpharm [Aspirin]</HoatChat_1>
+<HoatChat_2>Acuvail eye 4.5mg/ml 0.4ml [Ketorolac]</HoatChat_2>
+<CacThuocCoKhaNangGayTuongTac/>
+<MucDoTuongTac/>
+<ThoiGianKhoiPhat/>
+<MucDoNghiemTrong>Chống chỉ định</MucDoNghiemTrong>
+<DuLieuVeTuongTac/>
+<HauQuaCuaTuongTac>Tăng nguy cơ xuất huyết tiêu hóa nghiêm trọng (sử dụng đồng thời ketorolac với 1 NSAID khác làm
+tăng nguy cơ xuất huyết tiêu hóa gấp 5 lần so với phối hợp 2 NSAID khác)</HauQuaCuaTuongTac>
+<CoCheTuongTac>Hiệp đồng tác dụng kích ứng đường tiêu hóa</CoCheTuongTac>
+<XuTriTuongTac>Chống chỉ định phối hợp. Cần đặc biệt lưu ý nguy cơ tương tác trong trường hợp giảm đau hậu
+phẫu.</XuTriTuongTac>
+<BanLuan/>
+<TaiLieuThamKhao>Quyết định số 5948/QĐ-BYT ngày 30/12/2021 của Bộ Y tế.</TaiLieuThamKhao>
+<TuyenBoMienTruTrachNhiem>Các cảnh báo và thông tin Chống chỉ định của VN do Bộ Y tế quy định chứ không phải từ
+MIMS hoặc bất kỳ nền tảng liên quan nào. Do đó, bất kỳ sự khác biệt hoặc quan ngại nào liên quan đến nội dung thì cần liên
+hệ MOH để làm rõ. MIMS từ chối mọi trách nhiệm về sai sót hoặc thông tin không chính xác. Người dùng cuối được khuyến
+khích xác minh thông tin với các kênh chính thức của Bộ Y tế Việt Nam. Người dùng cuối có trách nhiệm đánh giá tất cả
+thông tin trong bối cảnh lâm sàng trước khi đưa ra bất kỳ quyết định kê đơn cuối cùng nào. Bằng cách truy cập và sử dụng
+thông tin này, người dùng thừa nhận rằng MOH là nguồn thông tin chính thức</TuyenBoMienTruTrachNhiem>
+</CAP_TUONG_TAC>
+<CAP_TUONG_TAC>
+<CapTuongTac>[Acenocoumarol] - [Tamoxifen]</CapTuongTac>
+<HoatChat_1>Acenocoumarol 1mg [Acenocoumarol]</HoatChat_1>
+<HoatChat_2>Nolvadex 10mg [Tamoxifen]</HoatChat_2>
+<CacThuocCoKhaNangGayTuongTac/>
+<MucDoTuongTac/>
+<ThoiGianKhoiPhat/>
+<MucDoNghiemTrong>Chống chỉ định có điều kiện</MucDoNghiemTrong>
+<DuLieuVeTuongTac/>
+<HauQuaCuaTuongTac>Tăng nguy cơ xuất huyết</HauQuaCuaTuongTac>
+<CoCheTuongTac>[Tamoxifen] ức chế CYP2C9 làm giảm chuyển hóa của acenocoumarol</CoCheTuongTac>
+<XuTriTuongTac>1. Chống chỉ định phối hợp ở bệnh nhân sử dụng tamoxifen dự phòng tiên phát ung thư vú.2. Ở bệnh nhân
+ung thư vú, nên cân nhắc sử dụng heparin trọng lượng phân tử thấp (LMWH) hoặc các thuốc chống đông đường uống tác
+động trực tiếp (DOAC) thay thế cho warfarin để điều trị thuyên tắc tĩnh mạch do huyết khối. Trong trường hợp bắt buộc sử
+dụng đồng thời tamoxifen với warfarin, cần giảm 1/2 đến 2/3 liều warfarin và theo dõi chặt chẽ bệnh
+nhân.</XuTriTuongTac>
+<BanLuan/>
+<TaiLieuThamKhao>Quyết định số 5948/QĐ-BYT ngày 30/12/2021 của Bộ Y tế.</TaiLieuThamKhao>
+<TuyenBoMienTruTrachNhiem>Các cảnh báo và thông tin Chống chỉ định của VN do Bộ Y tế quy định chứ không phải từ
+MIMS hoặc bất kỳ nền tảng liên quan nào. Do đó, bất kỳ sự khác biệt hoặc quan ngại nào liên quan đến nội dung thì cần liên
+hệ MOH để làm rõ. MIMS từ chối mọi trách nhiệm về sai sót hoặc thông tin không chính xác. Người dùng cuối được khuyến
+khích xác minh thông tin với các kênh chính thức của Bộ Y tế Việt Nam. Người dùng cuối có trách nhiệm đánh giá tất cả
+thông tin trong bối cảnh lâm sàng trước khi đưa ra bất kỳ quyết định kê đơn cuối cùng nào. Bằng cách truy cập và sử dụng
+thông tin này, người dùng thừa nhận rằng MOH là nguồn thông tin chính thức</TuyenBoMienTruTrachNhiem>
+</CAP_TUONG_TAC>
+</DANH_SACH_TUONG_TAC>
+</Interaction>
+</Result>

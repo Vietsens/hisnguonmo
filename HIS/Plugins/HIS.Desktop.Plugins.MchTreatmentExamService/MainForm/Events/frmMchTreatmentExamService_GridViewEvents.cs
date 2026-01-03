@@ -153,6 +153,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 SwitchToTabAndFillData(examServiceToCopy.EXAM_SERVICE_TYPE_ID);
                 SetDefaultExamDateAndUser(examServiceToCopy);
+                btnSave.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -180,7 +181,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 ClearAllTabsData();
                 ResetDataModels();
-
+                LoadMch(ExamServiceEdit);
                 bool loadSuccess = LoadExamServiceDetailData(ExamServiceEdit);
 
                 WaitingManager.Hide();
@@ -194,6 +195,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 SwitchToTabAndFillData(ExamServiceEdit.EXAM_SERVICE_TYPE_ID);
                 SetDefaultExamDateAndUser(ExamServiceEdit);
+                btnSave.Enabled = true;
             }
             catch (Exception ex)
             {
