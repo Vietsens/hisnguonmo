@@ -64,6 +64,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (this.gridViewServiceProcess.FocusedRowModified)
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
+                // Validate bảo lãnh trước khi lưu
+                if (!ValidateGuaranteeBeforeSave())
+                {
+                    return;
+                }
+
                 bool isValid = true;
                 if (!CheckPackage())
                 {
