@@ -1088,67 +1088,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
                 this.chkBaoLanh.Checked = false;
                 //Goji thư viện
-                if (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection))
-                {
-                    // Parse cấu trúc: <Địa chỉ>|<Mã ứng dụng>:<Tài khoản>:<mật khẩu>|<hạn mức đăng ký mặc định>
-                    string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');
-
-                    if (parts.Length >= 3)
-                    {
-                        // Phần 1: Địa chỉ
-                        string guaranteeAddress = parts[0].Trim();
-
-                        // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
-                        string[] credentials = parts[1].Split(':');
-                        string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
-                        string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
-                        string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
-
-                        // Phần 3: Hạn mức đăng ký mặc định
-                        string guaranteeDefaultLimit = parts[2].Trim();
-
-                        // Log để kiểm tra
-                        Inventec.Common.Logging.LogSystem.Debug(
-                            string.Format("Guarantee Connection - Address: {0}, " +
-                            "AppCode: {1}, " +
-                            "Username: {2}, " +
-                            "DefaultLimit: {3}", guaranteeAddress, guaranteeAppCode, guaranteeUsername, guaranteeDefaultLimit)
-                        );
-
-
-                        string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
-                        MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
-                        DataInput data = new DataInput();
-                        data.baseUri = guaranteeAddress;
-                        data.applicationCode = guaranteeAppCode;
-                        data.limet = guaranteeDefaultLimit;
-                        data.cskcbbd = branchHeinMediOrgCode;
-                        data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
-                        {
-                            RequestId = this.GuaranteeRequestCode ?? null,
-                            ContractNumber = this.GuarateeCode ?? null,
-                            PatientName = ucPatientRaw1.GetValue().PATIENT_NAME,
-                            Dob = ucPatientRaw1.GetValue().DOB_STR,
-                            CccdNumber = ucPlusInfo1.GetValue().CCCD_NUMBER,
-                            Amount = guaranteeDefaultLimit,
-                            Remark = "Hủy đăng ký sử dụng bảo lãnh",
-                            Signature = ""
-                        };
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
-                        CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
-                        if (rs != null)
-                        {
-                            LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
-                            this.GuarateeCode = null;
-                            this.GuaranteeRequestCode = null;
-                        }
-                        else
-                        {
-                            LogSystem.Debug("Gọi api thất bại, ..............");
-                        }
-                    }
-                }
+                
                 //gọi hàm hủy bảo lãnh
                 var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
                 if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)
@@ -2148,48 +2088,48 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         {
             try
             {
-                if (chkBaoLanh.Checked)
+                if (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection))
                 {
-                    if (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection))
+                    // Parse cấu trúc: <Địa chỉ>|<Mã ứng dụng>:<Tài khoản>:<mật khẩu>|<hạn mức đăng ký mặc định>
+                    string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');
+
+                    if (parts.Length >= 3)
                     {
-                        // Parse cấu trúc: <Địa chỉ>|<Mã ứng dụng>:<Tài khoản>:<mật khẩu>|<hạn mức đăng ký mặc định>
-                        string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');
+                        // Phần 1: Địa chỉ
+                        string guaranteeAddress = parts[0].Trim();
 
-                        if (parts.Length >= 3)
+                        // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
+                        string[] credentials = parts[1].Split(':');
+                        string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
+                        string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
+                        string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
+
+                        // Phần 3: Hạn mức đăng ký mặc định
+                        string guaranteeDefaultLimit = parts[2].Trim();
+
+                        // Log để kiểm tra
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            string.Format("Guarantee Connection - Address: {0}, " +
+                            "AppCode: {1}, " +
+                            "Username: {2}, " +
+                            "DefaultLimit: {3}", guaranteeAddress, guaranteeAppCode, guaranteeUsername, guaranteeDefaultLimit)
+                        );
+
+                        string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+                        MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
+                        DataInput data = new DataInput();
+                        data.baseUri = guaranteeAddress;
+                        data.applicationCode = guaranteeAppCode;
+                        data.limet = guaranteeDefaultLimit;
+                        data.cskcbbd = branchHeinMediOrgCode;
+                        if (chkBaoLanh.Checked)
                         {
-                            // Phần 1: Địa chỉ
-                            string guaranteeAddress = parts[0].Trim();
-
-                            // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
-                            string[] credentials = parts[1].Split(':');
-                            string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
-                            string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
-                            string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
-
-                            // Phần 3: Hạn mức đăng ký mặc định
-                            string guaranteeDefaultLimit = parts[2].Trim();
-
-                            // Log để kiểm tra
-                            Inventec.Common.Logging.LogSystem.Debug(
-                                string.Format("Guarantee Connection - Address: {0}, " +
-                                "AppCode: {1}, " +
-                                "Username: {2}, " +
-                                "DefaultLimit: {3}", guaranteeAddress, guaranteeAppCode, guaranteeUsername, guaranteeDefaultLimit)
-                            );
-
-                            string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
-                            MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
-                            DataInput data = new DataInput();
-                            data.baseUri = guaranteeAddress;
-                            data.applicationCode = guaranteeAppCode;
-                            data.limet = guaranteeDefaultLimit;
-                            data.cskcbbd = branchHeinMediOrgCode;
                             data.registerUseRequest = new RegisterUseRequest
                             {
-                                PatientName = ucPatientRaw1.GetValue().PATIENT_NAME,
-                                Dob = ucPatientRaw1.GetValue().DOB_STR,
-                                CccdNumber = ucPlusInfo1.GetValue().CCCD_NUMBER,
-                                Amount = guaranteeDefaultLimit,
+                                PatientFullName = ucPatientRaw1.GetValue().PATIENT_NAME,
+                                PatientDateOfBirth = ucPatientRaw1.GetValue().DOB.ToString(),
+                                PatientCccd = ucPlusInfo1.GetValue().CCCD_NUMBER,
+                                RequestAmount = guaranteeDefaultLimit,
                                 ApplicationCode = guaranteeAppCode,
                                 Remark = "Thanh toán viện phí cho bệnh nhân " + ucPatientRaw1.GetValue().PATIENT_NAME,
                                 Signature = ""
@@ -2208,16 +2148,45 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             {
                                 LogSystem.Debug("Gọi api thất bại");
                                 this.chkBaoLanh.Checked = false;
+                                XtraMessageBox.Show("Đăng ký bảo lãnh thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
-
-                        //Gọi vào thư viện tích hợp hệ thống bảo lãnh VP
-                        //Thành công -> Check
-                        //Gán guarantee
-                        //Thất bại -> Uncheck và thông báo lỗi
+                        else
+                        {
+                            data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
+                            {
+                                RequestId = this.GuaranteeRequestCode ?? null,
+                                ContractNumber = this.GuarateeCode ?? null,
+                                PatientFullName = ucPatientRaw1.GetValue().PATIENT_NAME,
+                                PatientDateOfBirth = ucPatientRaw1.GetValue().DOB.ToString(),
+                                PatientCccd = ucPlusInfo1.GetValue().CCCD_NUMBER,
+                                Amount = guaranteeDefaultLimit,
+                                Remark = "Hủy đăng ký sử dụng bảo lãnh",
+                                Signature = "",
+                                Token = ""
+                            };
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
+                            CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
+                            if (rs != null)
+                            {
+                                LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
+                                this.GuarateeCode = null;
+                                this.GuaranteeRequestCode = null;
+                            }
+                            else
+                            {
+                                LogSystem.Debug("Gọi api thất bại, ..............");
+                            }
+                        }
                     }
+
+                    //Gọi vào thư viện tích hợp hệ thống bảo lãnh VP
+                    //Thành công -> Check
+                    //Gán guarantee
+                    //Thất bại -> Uncheck và thông báo lỗi
                 }
-                
+
             }
             catch (Exception ex)
             {

@@ -1359,7 +1359,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             // 
             // chkBaoLanh
             // 
-            this.chkBaoLanh.Location = new System.Drawing.Point(352, 48);
+            this.chkBaoLanh.Location = new System.Drawing.Point(428, 48);
             this.chkBaoLanh.Name = "chkBaoLanh";
             this.chkBaoLanh.Properties.Caption = "Bảo lãnh VP";
             this.chkBaoLanh.Size = new System.Drawing.Size(147, 19);
@@ -1372,7 +1372,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             // layoutControlItem32
             // 
             this.layoutControlItem32.Control = this.chkBaoLanh;
-            this.layoutControlItem32.Location = new System.Drawing.Point(380, 46);
+            this.layoutControlItem32.Location = new System.Drawing.Point(426, 46);
             this.layoutControlItem32.Name = "layoutControlItem32";
             this.layoutControlItem32.Size = new System.Drawing.Size(151, 44);
             this.layoutControlItem32.TextSize = new System.Drawing.Size(0, 0);
