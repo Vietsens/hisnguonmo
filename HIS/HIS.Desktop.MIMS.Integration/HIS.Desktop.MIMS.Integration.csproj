@@ -70,6 +70,8 @@
     <Compile Include="Core\MimsResultDetailParser.cs" />
     <Compile Include="Models\ActiveMedication.cs" />
     <Compile Include="Models\AllergyItem.cs" />
+    <Compile Include="Models\DrugAllergyAlertDetail.cs" />
+    <Compile Include="Models\DrugHealthAlertDetail.cs" />
     <Compile Include="Models\DrugItem.cs" />
     <Compile Include="Models\MimsResult.cs" />
     <Compile Include="Models\DrugInformationGgpiDetail.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Models\VnContraindicationInteraction.cs" />
     <Compile Include="Modules\DrugAllergyService.cs" />
     <Compile Include="Modules\DrugDrugInteractionService.cs" />
+    <Compile Include="Modules\DrugHealthService.cs" />
     <Compile Include="Modules\DuplicateDrugService.cs" />
     <Compile Include="Modules\VNContraindicationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

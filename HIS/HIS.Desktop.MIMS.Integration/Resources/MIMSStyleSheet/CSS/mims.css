@@ -1,0 +1,100 @@
+body {
+font-size: 10px;
+font-family : arial,sans serif,helvetica;
+}
+
+h4.subheading {
+	font-weight:	bold;
+	font-size: 1.1em;
+	margin-top: 0.5em;
+	margin-bottom: 0.2em;
+}
+
+h4.subheading +  p, h4.subheading + ul, h4.subheading + ol { margin: 0px; }
+
+h4.subheading img { vertical-align: middle; }
+
+h3.ui-accordion-header + div { padding-top:0px !important; }
+
+/* Use this section to customize the display of the severity scale */
+table.severity {
+font-size : smaller;
+font-weight : bold;
+text-align : center;
+}
+
+table.severity td
+{
+width: 40px;
+}
+
+td.gray {
+color : white;
+background-color: #CCCCCC;
+}
+
+td.severity0 {
+background-color : gray;
+}
+
+td.severity1 {
+background-color : green;
+}
+
+td.severity2 {
+background-color : #adff2f;	/* greenyellow is not recognized in VS2008 :( */
+}
+
+td.severity3 {
+	background-color : yellow;
+}
+
+td.severity4 {
+background-color: orange;
+}
+
+td.severity5 {
+background-color: red;
+}
+
+td.severity6 {
+background-color: blue;
+}
+
+ul.NoBulletNoIndent {
+  list-style-type: none;
+  margin-left: 0px;
+  padding-left: 0px
+}
+
+/* For table styling, prevent resizing because of change in font-weight */
+.jtable tr .ui-state-hover {
+font-weight: normal;
+}
+
+               
+div.acc_container {
+    height: auto;
+}
+
+.body {
+    height: 100%
+}                
+
+em { font-style: italic; font-weight: bold; }
+
+table.monograph { width:100%; border-collapse: collapse; }
+table.monograph td, table.monograph th { padding: 3px; }
+
+td.monograph-heading { width: 20%; vertical-align:top; min-width: 10em; max-width: 17em !important; }
+
+#list_interactions  div.ui-accordion-content-active { min-height: 100px }
+
+div.warning-bar { padding:0 0.7em; }
+span.ui-icon {float: left; margin-right: 0.3em; }
+
+table.severity { border-style: solid; border-width: 1px; border-collapse: collapse; text-align: left; float:left}
+
+table.severity tr { height: 1.2em; }
+table.severity td { width: 1.2em; }
+

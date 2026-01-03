@@ -42,6 +42,16 @@ namespace HIS.Desktop.MIMS.Integration.Models
 		public List<DrugDrugAlertDetail> DrugDrugAlertDetails { get; set; }
 
 		/// <summary>
+		/// Chi tiết cảnh báo dị ứng thuốc (Drug-Allergy Alert).
+		/// </summary>
+		public List<DrugAllergyAlertDetail> DrugAllergyAlertDetails { get; set; }
+
+		/// <summary>
+		/// Chi tiết cảnh báo Drug-Health Alert (tương tác thuốc - bệnh lý nền).
+		/// </summary>
+		public List<DrugHealthAlertDetail> DrugHealthAlertDetails { get; set; }
+
+		/// <summary>
 		/// Thông tin chi tiết Drug Information (GGPI)
 		/// </summary>
 		public DrugInformationGgpiDetail DrugInformationGgpi { get; set; }
@@ -66,6 +76,8 @@ namespace HIS.Desktop.MIMS.Integration.Models
 			Alerts = new List<string>();
 			VnContraindicationDetails = new List<VnContraindicationInteraction>();
 			DrugDrugAlertDetails = new List<DrugDrugAlertDetail>();
+			DrugAllergyAlertDetails = new List<DrugAllergyAlertDetail>();
+			DrugHealthAlertDetails = new List<DrugHealthAlertDetail>();
 		}
 	}
 }
