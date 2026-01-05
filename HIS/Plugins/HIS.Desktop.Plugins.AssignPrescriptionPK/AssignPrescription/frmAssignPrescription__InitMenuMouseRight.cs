@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraBars;
+using DevExpress.XtraExport;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.MIMS.Integration.Models;
+using HIS.Desktop.MIMS.Integration.Modules;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.MixedInfusion;
@@ -41,7 +44,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             EDIT_DAY_NUM,
             EDIT_EXPEND_TYPE,
             MIXED_INFUSION,
-            CANCEL_MIXED_INFUSION
+            CANCEL_MIXED_INFUSION,
+            INFORMATION,
+            INFORMATION_EVALUATION
         }
 
         private void InitMenu()
@@ -89,6 +94,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     menu.AddItems(new BarButtonItem[] { itemCancelMixedInfusion });
                 }
 
+                if (HisConfigCFG.ConnectDrugInterventionInfo == "2")
+                {
+
+                    Inventec.Common.Logging.LogSystem.Info("InitMenu.5");
+                    BarButtonItem itemInformation = new BarButtonItem(barManager1, ResourceMessage.ThongTinThuoc, 1);
+                    itemInformation.Tag = MOUSE_RIGHT_TYPE.INFORMATION;
+                    itemInformation.ItemClick += new ItemClickEventHandler(setProcessMenu);
+                    menu.AddItems(new BarButtonItem[] { itemInformation });
+
+                    Inventec.Common.Logging.LogSystem.Info("InitMenu.6");
+                    BarButtonItem itemInformationEvaluation = new BarButtonItem(barManager1, ResourceMessage.DanhGiaThongTinThuoc, 1);
+                    itemInformationEvaluation.Tag = MOUSE_RIGHT_TYPE.INFORMATION_EVALUATION;
+                    itemInformationEvaluation.ItemClick += new ItemClickEventHandler(setProcessMenu);
+                    menu.AddItems(new BarButtonItem[] { itemInformationEvaluation });
+                }
 
                 if (menu.ItemLinks.Count > 0)
                     menu.ShowPopup(Cursor.Position);
@@ -137,6 +157,62 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         break;
                     case MOUSE_RIGHT_TYPE.CANCEL_MIXED_INFUSION:
                         CancelMixedInfusion();
+                        break;
+                    case MOUSE_RIGHT_TYPE.INFORMATION:
+                        List<MediMatyTypeADO> MediMatyTypeInformation = this.GetMediMatySelected();
+                        if (MediMatyTypeInformation != null && MediMatyTypeInformation.Count > 0)
+                        {
+                            var service = new HIS.Desktop.MIMS.Integration.Modules.DrugInfomationService();
+                            MimsDrugType mimsDrugType = new MimsDrugType();
+                            switch (MediMatyTypeInformation.FirstOrDefault().MIMS_TYPE)
+                            {
+                                case 1:
+                                    mimsDrugType = MimsDrugType.GGPI;
+                                    break;
+                                case 2:
+                                    mimsDrugType = MimsDrugType.Product;
+                                    break;
+                                case 3:
+                                    mimsDrugType = MimsDrugType.GenericItem;
+                                    break;
+                                default:
+                                    mimsDrugType = MimsDrugType.GenericItem;
+                                    break;
+                            }
+                            service.ShowResultAsync(new HIS.Desktop.MIMS.Integration.Models.DrugItem(null, null, MediMatyTypeInformation.FirstOrDefault().MIMS_GUID, mimsDrugType));
+                        }
+                        break;
+                    case MOUSE_RIGHT_TYPE.INFORMATION_EVALUATION:
+                        List<MediMatyTypeADO> MediMatyTypeInformationEvluation = this.GetMediMatySelected();
+                        if (MediMatyTypeInformationEvluation != null && MediMatyTypeInformationEvluation.Count > 0)
+                        {
+                            List<HIS.Desktop.MIMS.Integration.Models.DrugItem> lstDrugItem = new List<MIMS.Integration.Models.DrugItem>();
+                            var service = new HIS.Desktop.MIMS.Integration.Modules.DrugDrugInteractionService();
+
+                            foreach (var item in MediMatyTypeInformationEvluation)
+                            {
+                                MimsDrugType mimsDrugType = new MimsDrugType();
+                                switch (item.MIMS_TYPE)
+                                {
+                                    case 1:
+                                        mimsDrugType = MimsDrugType.GGPI;
+                                        break;
+                                    case 2:
+                                        mimsDrugType = MimsDrugType.Product;
+                                        break;
+                                    case 3:
+                                        mimsDrugType = MimsDrugType.GenericItem;
+                                        break;
+                                    default:
+                                        mimsDrugType = MimsDrugType.GenericItem;
+                                        break;
+                                }
+                                HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(null, null, item.MIMS_GUID, mimsDrugType);
+                                lstDrugItem.Add(drugItem);
+                            }
+                            
+                            service.ShowResultAsync(lstDrugItem, null);
+                        }
                         break;
                     default:
                         break;
