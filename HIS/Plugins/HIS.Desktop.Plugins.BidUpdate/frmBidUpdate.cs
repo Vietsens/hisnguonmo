@@ -3128,6 +3128,13 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
                     return;
                 }
+                if (mediType.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                {
+                    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                    dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    return;
+                }
                 // Nếu thuốc kinh doanh thì không bắt buộc
                 if (mediType.IS_BUSINESS == (short)1)
                 {

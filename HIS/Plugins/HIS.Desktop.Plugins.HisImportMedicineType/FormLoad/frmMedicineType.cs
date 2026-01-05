@@ -1144,18 +1144,8 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.ALLOW_ODD_ERROR = 1;
                         }
                     }
-                    // Sửa theo yêu cầu 32096: Chỉ bắt buộc nhập Dạng bào chế khi có Mã hoạt chất BHYT
-                    if (!string.IsNullOrEmpty(item.ACTIVE_INGR_BHYT_CODE)) 
-                    {
-                        if (mediAdo.MEDICINE_LINE_ID != 3) 
-                        {
-                            if (string.IsNullOrEmpty(item.DOSAGE_FORM))
-                            {
-                                error += string.Format(Message.MessageImport.TruongDuBatBuoc, "dạng bào chế");
-                                mediAdo.DOSAGE_FORM_ERROR = 1;
-                            }
-                        }
-                    }
+
+                  
                     if (!string.IsNullOrEmpty(item.REQUIRE_HSD))
                     {
                         if (item.REQUIRE_HSD.Trim().ToLower() == "x")
@@ -2183,6 +2173,18 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         if (package != null)
                         {
                             mediAdo.MEDICINE_LINE_ID = package.ID;
+                            if (mediAdo.MEDICINE_LINE_ID != 3)
+                            {
+                                if (!string.IsNullOrEmpty(item.ACTIVE_INGR_BHYT_CODE))
+                                {
+                                    if (string.IsNullOrEmpty(item.DOSAGE_FORM))
+                                    {
+                                        error += string.Format(Message.MessageImport.TruongDuBatBuoc, "dạng bào chế (Bắt buộc với thuốc có hoạt chất)");
+                                        mediAdo.DOSAGE_FORM_ERROR = 1;
+                                    }
+                                }
+                            }
+
                             mediAdo.MEDICINE_LINE_NAME = package.MEDICINE_LINE_NAME;
                         }
                         else

@@ -272,6 +272,21 @@ namespace Inventec.Common.DateTime
         /// <returns></returns>
         public static string AgeString(long dob, string caption__Tuoi, string caption__ThangTuoi, string caption__NgayTuoi, string caption__GioTuoi, long? time = null)
         {
+            return AgeStringWithTime(dob, caption__Tuoi, caption__ThangTuoi, caption__NgayTuoi, caption__GioTuoi, time = null, true);
+        }
+
+        /// <summary>
+        /// Công thức tính tuổi theo biểu mẫu excel
+        /// </summary>
+        /// <param name="dob">Ngày tháng năm sinh</param>
+        /// <param name="caption__Tuoi">tuổi </param>
+        /// <param name="caption__ThangTuoi">tháng tuổi</param>
+        /// <param name="caption__NgayTuoi">ngày tuổi</param>
+        /// <param name="caption__GioTuoi">giờ tuổi</param>
+        /// <param name="time">thời điểm tính tuổi</param>
+        /// <returns></returns>
+        public static string AgeStringWithTime(long dob, string caption__Tuoi, string caption__ThangTuoi, string caption__NgayTuoi, string caption__GioTuoi, long? time = null, bool? isTuoiHienTai = false)
+        {
             string result = string.Empty;
             try
             {
@@ -332,7 +347,9 @@ namespace Inventec.Common.DateTime
                                 //- Trên 72 tháng tuổi: tính chính xác đến năm: tuổi= năm hiện tại - năm sinh
                                 else
                                 {
-                                    int year = System.DateTime.Now.Year - dtNgSinh.Year;
+                                    var yearNow = dtNow.Year;
+                                    if (isTuoiHienTai == true) yearNow = System.DateTime.Now.Year;
+                                    int year = yearNow - dtNgSinh.Year;
                                     result = (year + " " + tuoi);
                                 }
                             }

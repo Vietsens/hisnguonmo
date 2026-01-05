@@ -7,6 +7,32 @@ namespace HIS.Desktop.MIMS.Integration.Core
 {
 	public class MimsRequestBuilder
 	{
+        private static string BuildDrugTag(DrugItem drug)
+        {
+			switch (drug.DrugType)
+			{
+				case MimsDrugType.Product:
+					return string.Format("<Product reference=\"{{{0}}}\" />", drug.MimsGuid);
+				case MimsDrugType.GGPI:
+					return string.Format("<GGPI reference=\"{{{0}}}\" />", drug.MimsGuid);
+				default:
+					return string.Format("<GenericItem reference=\"{{{0}}}\" />", drug.MimsGuid);
+			}
+        }
+
+        public static string BuildDrugInformationRequest(DrugItem drug)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("<Request><Content>");
+
+            sb.Append(BuildDrugTag(drug));
+
+            sb.Append("<References/></Content></Request>");
+
+            return sb.ToString();
+        }
+
         public static string BuildDrugDrugInteractionRequest(
             List<DrugItem> currentDrugs,
             List<DrugItem> previousDrugs)
@@ -40,19 +66,6 @@ namespace HIS.Desktop.MIMS.Integration.Core
         public static string BuildDrugInteractionRequest(List<DrugItem> drugs)
         {
             return BuildDrugDrugInteractionRequest(drugs, new List<DrugItem>());
-        }
-
-        private static string BuildDrugTag(DrugItem drug)
-        {
-			switch (drug.DrugType)
-			{
-				case MimsDrugType.Product:
-					return string.Format("<Product reference=\"{{{0}}}\" />", drug.MimsGuid);
-				case MimsDrugType.GGPI:
-					return string.Format("<GGPI reference=\"{{{0}}}\" />", drug.MimsGuid);
-				default:
-					return string.Format("<GenericItem reference=\"{{{0}}}\" />", drug.MimsGuid);
-			}
         }
 
         public static string BuildDrugAllergyRequest(
