@@ -45,7 +45,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.gridControlServiceProcess.DataSource = null;
                 //this.gridControlOtherPaySource.DataSource = null;
                 //this.customGridControlSubIcdName.DataSource = null;
-                //this.gridControlCondition.DataSource = null;
+                //this.gridControlCondition.DataSource = null; 
 
                 this.navBarControlChongChiDinhInfo.NavPaneStateChanged -= new System.EventHandler(this.navBarControlChongChiDinhInfo_NavPaneStateChanged);
                 this.txtMediMatyForPrescription.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtMediMatyForPrescription_ButtonClick);
@@ -229,122 +229,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 this.tooltipService.GetActiveObjectInfo -= new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.tooltipService_GetActiveObjectInfo);
 
-                this.arrControlEnableNotChange = null;
-                this.dicOrderTabIndexControl = null;
-                this.serviceReqParentId = null;
-                this.expMestTemplateId = null;
-                this.treatmentCode = null;
-                this.intructionTimeSelecteds = null;
-                this.intructionTimeSelected = null;
-                this.UseTimeSelecteds = null;
-                this.UseTimeSelected = null;
-                this.intructionTimeSelectedsForMedi = null;
-                this.intructionTimeSelectedForMedi = null;
-                this.currentSereServ = null;
-                this.currentSereServInEkip = null;
-                this.Service__Main = null;
-                this.serviceReqMain = null;
-                this.processDataResult = null;
-                this.processRefeshIcd = null;
-                this.processWhileAutoTreatmentEnd = null;
-                this.currentTreatmentWithPatientType = null;
-                this.currentHisPatientTypeAlter = null;
-                this.currentPatientTypeWithPatientTypeAlter = null;
-                this.currentPatientTypes = null;
-                this.currentMedicineTypes = null;
-                this.currentMaterialTypes = null;
-                this.medicineTypeTutSelected = null;
-                this.materialTypeTutSelected = null;
-                this.sereServsInTreatmentRaw = null;
-                this.sereServWithTreatment = null;
-                this.serviceReqMetyInDay = null;
-                this.serviceReqMatyInDay = null;
-                this.mediMatyTypeADOBKs = null;
-                this.mediMatyTypeADOs = null;
-                this.currentMediMateTypeComboADOs = null;
-                this.mediMatyTypeAvailables = null;
-                this.currentMedicineTypeADOForEdit = null;
-                this.mediStockD1ADOs = null;
-                this.icdChoose = null;
-                this.currentModule = null;
-                this.currentWorkPlace = null;
-                this.serviceInPackages = null;
-                this.servicePackageByServices = null;
-                this.outPrescriptionResultSDOs = null;
-                this.inPrescriptionResultSDOs = null;
-                this.currentPrescriptions = null;
-                this.currentMediStock = null;
-                this.currentMediStockNhaThuocSelecteds = null;
-                this.currentMediStockByHeaderCard = null;
-                this.currentMediStockByNotInHeaderCard = null;
-                this.currentWorkingMestRooms = null;
-                this.assignPrescriptionEditADO = null;
-                this.icdExam = null;
-                this.lastInfo = null;
-                this.lastColumn = null;
-                this.oldExpMest = null;
-                this.oldServiceReq = null;
-                this.ServiceReqEye = null;
-                this.listMedicineBeanForEdits = null;
-                this.listMaterialBeanForEdits = null;
-                this.paramCommon = null;
-                if (this.ucPeriousExpMestList != null)
-                {
-                    this.periousExpMestListProcessor.DisposeControl(ucPeriousExpMestList);
-                    this.ucPeriousExpMestList.Dispose();
-                    this.ucPeriousExpMestList = null;
-                }
-                this.periousExpMestListProcessor = null;
-                this.treatmentFinishProcessor = null;
-                if (this.ucTreatmentFinish != null)
-                {
-                    this.ucTreatmentFinish.Dispose();
-                    this.ucTreatmentFinish = null;
-                }
-                this.patientSelectProcessor = null;
-                if (this.ucPatientSelect != null)
-                {
-                    this.ucPatientSelect.Dispose();
-                    this.ucPatientSelect = null;
-                }
-                this.resultDataPrescription = null;
-                this.treatmentBedRoomLViewFilterInput = null;
-                this.currentIcds = null;
-                this.trackingADOs = null;
-                this.allergenics = null;
-                this.serviceReqPrints = null;
-                this.serviceReqPrintAlls = null;
-                this.expMestPrints = null;
-                this.expMestMedicinePrints = null;
-                this.expMestMaterialPrints = null;
-                this.expMestMedicineEditPrints = null;
-                this.expMestMaterialEditPrints = null;
-                this.serviceReqMetys = null;
-                this.serviceReqMatys = null;
-                this.requestRoom = null;
-                this.currentDhst = null;
-                this.controlStateWorker = null;
-                this.currentControlStateRDO = null;
-                this.Listtrackings = null;
-                this.currentPrescriptionFilter = null;
-                this.mediStockAllows = null;
-                this.currentAdviseFormADO = null;
-                this._Menu = null;
-                this.LstEmrCoverConfig = null;
-                this.LstEmrCoverConfigDepartment = null;
-                this.treatmentData = null;
-                this.emrMenuPopupProcessor = null;
-                this.workingServiceConditions = null;
-                this.serviceMetyByServices = null;
-                this.serviceMatyByServices = null;
-                this.icdSubcodeAdoChecks = null;
-                this.subIcdPopupSelect = null;
-                this.downHitInfo = null;
-                this.VHistreatment = null;
-                this.epaymentDepositResultSDO = null;
-                this.lstDepartmentTran = null;
-                this.lstCoTreatment = null;
-                this.paramSaveList = null;
 
                 AssignPrescriptionWorker.DisposeInstance();
 
