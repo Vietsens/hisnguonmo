@@ -4149,13 +4149,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 string guaranteeMessage = "";
-                if (!ValidateGuaranteeAmount(ref guaranteeMessage))
+                if (!ValidateGuaranteeAmount(ref guaranteeMessage))   
                 {
                     XtraMessageBox.Show(
                         guaranteeMessage,
                         "Thông báo",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Stop);
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Warning);
                     return false;
                 }
                 return true;
