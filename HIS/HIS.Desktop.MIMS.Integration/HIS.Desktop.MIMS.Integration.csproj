@@ -80,6 +80,7 @@
     <Compile Include="Modules\DrugAllergyService.cs" />
     <Compile Include="Modules\DrugDrugInteractionService.cs" />
     <Compile Include="Modules\DrugHealthService.cs" />
+    <Compile Include="Modules\DrugInfomationService.cs" />
     <Compile Include="Modules\DuplicateDrugService.cs" />
     <Compile Include="Modules\VNContraindicationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
