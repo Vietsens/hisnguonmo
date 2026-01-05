@@ -343,7 +343,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     this.InitializePackageAutoRefresh();  // Gọi để khởi động timer
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -1118,7 +1118,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
-                
+
                 LogSystem.Debug("frmAssignService_Load => Starting...");
                 LoadHisServiceFromRam();
                 LoadServiceTesaCache();
@@ -1175,7 +1175,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     this.InitComboExecuteRoom();
                     this.LoadTreatmentInfo__PatientType();
                     // qtcode3
-                    this.LoadGuaranteeInfo(); 
+                    this.LoadGuaranteeInfo();
                     LogSystem.Debug("frmAssignService_Load => 3");
                     this.BindTree();
                     IsFirstLoad = true;
@@ -1185,7 +1185,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     LogSystem.Debug("frmAssignService_Load => 5");
                     this.LoadDataToGridParticipants();
                 }
-                VisibleGuarantee();
+                
                 this.gridControlServiceProcess.ToolTipController = this.tooltipService;
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
                 this.AddBarManager(this.barManager1);
@@ -1233,6 +1233,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     this.InitializePackageAutoRefresh();  // Gọi để khởi động timer
                 }
+
+                UpdateTotalGuaranteePrice();
+                VisibleGuarantee();
             }
             catch (Exception ex)
             {
@@ -1243,12 +1246,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         private void VisibleGuarantee()
         {
-            if (currentTreatment?.GUARANTEE_CODE != null)
+            if (this.currentHisTreatment != null && !string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
             {
-                lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; 
+                lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 lciTotalGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 gridViewServiceProcess.Columns["IsGuarantee"].Visible = true;
-            } 
+            }
             else
             {
                 lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -1408,6 +1411,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
 
                     lblChiPhiBNPhaiTra.Text = Inventec.Common.Number.Convert.NumberToString(totalPatientPrice, ConfigApplications.NumberSeperator);
+                    if (this.currentHisTreatment != null && this.currentHisTreatment.GUARANTEE_CODE != null)
+                        UpdateTotalGuaranteePrice();
                     lblDaDong.Text = Inventec.Common.Number.Convert.NumberToString(total_obtained_price, ConfigApplications.NumberSeperator);
                     if (this.transferTreatmentFee > 0)
                     {
@@ -2288,7 +2293,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             //isEditCtrol = isEditCtrol && IsAllowEditSurgeryPrice(e.RowHandle);
                             if (data != null && (data.PACKAGE_ID.HasValue || data.PackagePriceId.HasValue || !isEditCtrol))
                                 e.RepositoryItem = repositoryItemTxtReadOnly;
-                            else   
+                            else
                                 e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
                         }
                     }
@@ -2562,21 +2567,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
                     if (e.Column.FieldName == this.grcChecked_TabService.FieldName)
                     {
-                        UpdateTotalGuaranteePrice(); 
+                        UpdateTotalGuaranteePrice();
                         if (sereServADO.IsChecked)
                         {
                             this.SetAssignNumOrder(sereServADO);
-                            
+
                             // Validate bảo lãnh khi tích chọn dịch vụ
                             if (this.guaranteeInfo != null && !string.IsNullOrEmpty(this.currentHisTreatment?.GUARANTEE_CODE))
                             {
                                 string guaranteeMessage = "";
-                                if (!ValidateGuaranteeAmount(ref guaranteeMessage, true))
+                                if (!ValidateGuaranteeAmount(ref guaranteeMessage))
                                 {
                                     DevExpress.XtraEditors.XtraMessageBox.Show(
-                                        guaranteeMessage, 
-                                        "Cảnh báo", 
-                                        MessageBoxButtons.OK, 
+                                        guaranteeMessage,
+                                        "Cảnh báo",
+                                        MessageBoxButtons.OK,
                                         MessageBoxIcon.Warning);
                                 }
                             }
@@ -8509,7 +8514,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
-        private void cboPackage_EditValueChanged(object sender, EventArgs e)  
+        private void cboPackage_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
@@ -10661,6 +10666,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
+        private void gridViewServiceProcess_DataSourceChanged(object sender, EventArgs e)
+        {
+            if(currentHisTreatment != null && string.IsNullOrWhiteSpace(currentHisTreatment.GUARANTEE_CODE))
+            {
+                gridViewServiceProcess.Columns["IsGuarantee"].Visible = false;
+            }
+        }
     }
     public class BankInfo
     {

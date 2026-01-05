@@ -1289,7 +1289,7 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                     else
                     {
-
+                        layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Black;
                         dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
                        
                     }
