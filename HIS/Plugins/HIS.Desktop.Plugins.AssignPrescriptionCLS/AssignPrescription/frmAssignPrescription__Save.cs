@@ -15,8 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Config;
@@ -37,6 +39,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 {
@@ -257,6 +260,33 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 validFolow += "valid.16=" + valid + ";";
                 Inventec.Common.Logging.LogSystem.Debug(validFolow + "____" + Inventec.Common.Logging.LogUtil.TraceData("frmAssignPrescription.valid", valid));
                 if (!valid) return;
+
+                if (Histreatment != null)
+                {
+                    var treatmentType = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == Histreatment.TDL_TREATMENT_TYPE_ID);
+                    if (treatmentType != null && treatmentType.MAX_PRESCRIPTION_AMOUNT != null && treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION != null)
+                    {
+                        decimal tongTien = 0;
+                        decimal.TryParse(lblTongTien.Text, out tongTien);
+                        var totalPrice = Inventec.Common.Number.Convert.NumberToString(tongTien, ConfigApplications.NumberSeperator);
+                        var amountMax = Inventec.Common.Number.Convert.NumberToString(treatmentType.MAX_PRESCRIPTION_AMOUNT.Value, ConfigApplications.NumberSeperator);
+
+                        if (tongTien > treatmentType.MAX_PRESCRIPTION_AMOUNT)
+                        {
+                            if (treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION == 1)
+                            {
+                                var result = XtraMessageBox.Show(String.Format("Tổng tiền {0} của đơn thuốc lớn hơn số tiền {1} được kê tối đa của 1 đơn thuốc theo diện điều trị. Bạn có muốn tiếp tục?", totalPrice, amountMax), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                if (result == DialogResult.No) 
+                                    return;
+                            }
+                            else if (treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION == 2)
+                            {
+                                var result = XtraMessageBox.Show(String.Format("Tổng tiền {0} của đơn thuốc lớn hơn số tiền {1} được kê tối đa của 1 đơn thuốc theo diện diều trị", totalPrice, amountMax), "Thông báo", MessageBoxButtons.OK);
+                                    return;
+                            }
+                        }
+                    }
+                }
 
                 bool isSaveAndPrint = (saveType == SAVETYPE.SAVE_PRINT_NOW);
                 //Tạm khóa các button lưu && lưu in lại khi đang xử lý

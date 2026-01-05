@@ -411,6 +411,10 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
+                        else if (e.Column.FieldName == "IS_EXAM_ANESTHESIA_STR")
+                        {
+                            e.Value = data.IS_EXAM_ANESTHESIA == 1 ? true : false;
+                        }
                     }
                 }
             }
