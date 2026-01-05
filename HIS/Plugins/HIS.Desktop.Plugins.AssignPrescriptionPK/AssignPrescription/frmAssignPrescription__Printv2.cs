@@ -733,6 +733,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             OutPatientPresResultSDO.ServiceReqMaties = matyTask.Result;
 
                             OutPatientPresResultSDOForPrints.Add(OutPatientPresResultSDO);
+
+                            LogSystem.Info("printPrescriptionProcessor: " + LogUtil.TraceData("___--___", OutPatientPresResultSDOForPrints));
+                            LogSystem.Info("printPrescriptionProcessor: " + OutPatientPresResultSDOForPrints);
                             // 6. In ấn
                             printPrescriptionProcessor = new Library.PrintPrescription.PrintPrescriptionProcessor(
                                 OutPatientPresResultSDOForPrints, IsNotShow, this.currentModule, true);
