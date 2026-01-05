@@ -53,6 +53,8 @@ using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
 using System.Drawing;
 using DevExpress.XtraExport;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -718,7 +720,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, sereServADOOld.PackagePriceId, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
                     }
-                        
+
 
                     if (sereServADOOld.PRIMARY_PATIENT_TYPE_ID.HasValue)
                     {
@@ -739,7 +741,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         && sereServADOOld.IsNoDifference.Value)
                     {
                         this.GetHeinLimitPrice(sereServADOOld, instructionTime, this.currentHisTreatment.IN_TIME, ref heinLimitPrice, ref heinLimitRatio);
-                         
+
                         if (heinLimitPrice.HasValue && heinLimitPrice.Value > 0)
                         {
                             resultData = heinLimitPrice;
@@ -1263,7 +1265,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                             var RoomIds = PatientTypeRooms.Where(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID).Select(o => o.ROOM_ID).ToList();
                                             arrExcuteRoom = arrExcuteRoom.Where(o => RoomIds.Contains(o.ROOM_ID)).ToList();
                                         }
-                                        var arrExcuteRoomCode = arrExcuteRoom.Select(o => o.ROOM_ID).ToArray(); 
+                                        var arrExcuteRoomCode = arrExcuteRoom.Select(o => o.ROOM_ID).ToArray();
                                         dataCombo = ((arrExcuteRoomCode != null && arrExcuteRoomCode.Count() > 0 && this.allDataExecuteRooms != null) ? this.allDataExecuteRooms.Where(o => arrExcuteRoomCode.Contains(o.ROOM_ID)).ToList() : null);
                                     }
                                     var checkExecuteRoom = dataCombo != null && dataCombo.Count > 0 ? dataCombo.FirstOrDefault(o => o.BRANCH_ID == this.requestRoom.BRANCH_ID) : null;
@@ -1354,7 +1356,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 decimal totalPrimary = 0, tmp = 0;
                 decimal totalPrice = GetDefaultSerServTotalPrice(ref totalPrimary);
                 this.lblTotalServicePrice.Text = Inventec.Common.Number.Convert.NumberToString(totalPrice, ConfigApplications.NumberSeperator);
-
+                UpdateTotalGuaranteePrice(); 
                 decimal totalPriceBhyt = GetDefaultSerServTotalPrice(ref tmp, HisConfigCFG.PatientTypeId__BHYT);
                 decimal totalChecnhBhyt = 0;
                 if (totalPrimary > 0 && totalPriceBhyt > 0)
@@ -1857,7 +1859,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     bool LastOption = false;
                     long intructionTime = this.intructionTimeSelecteds.FirstOrDefault();
                     long treatmentTime = this.currentHisTreatment.IN_TIME;
-                    var patientTypeIdInSePas = BranchDataWorker.ServicePatyWithListPatientType(serviceId, this.patientTypeIdAls).Where(o => ((!o.TREATMENT_TO_TIME.HasValue || o.TREATMENT_TO_TIME.Value >= treatmentTime) || (!o.TO_TIME.HasValue || o.TO_TIME.Value >= intructionTime)) && (HisConfigCFG.ServicePatyForServicePackage == "1" ? true :((!sereServADO.PackagePriceId.HasValue && !o.PACKAGE_ID.HasValue) || (sereServADO.PackagePriceId.HasValue && sereServADO.PackagePriceId.Value == o.PACKAGE_ID)))).Select(o => o.PATIENT_TYPE_ID).ToList();
+                    var patientTypeIdInSePas = BranchDataWorker.ServicePatyWithListPatientType(serviceId, this.patientTypeIdAls).Where(o => ((!o.TREATMENT_TO_TIME.HasValue || o.TREATMENT_TO_TIME.Value >= treatmentTime) || (!o.TO_TIME.HasValue || o.TO_TIME.Value >= intructionTime)) && (HisConfigCFG.ServicePatyForServicePackage == "1" ? true : ((!sereServADO.PackagePriceId.HasValue && !o.PACKAGE_ID.HasValue) || (sereServADO.PackagePriceId.HasValue && sereServADO.PackagePriceId.Value == o.PACKAGE_ID)))).Select(o => o.PATIENT_TYPE_ID).ToList();
                     var patientTypeIdInSePasWithServices = BranchDataWorker.ServicePatyWithListPatientType(serviceId, this.patientTypeIdAls);
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientTypeIdInSePasWithServices), patientTypeIdInSePasWithServices));
                     //    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADO.PackagePriceId), sereServADO.PackagePriceId));
@@ -1890,10 +1892,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 Inventec.Common.Logging.LogSystem.Debug("ChoosePatientTypeDefaultlService.2");
                                 listResult = currentPatientTypeTemps.Where(o => (!this.isNotUseBhyt || (this.isNotUseBhyt && o.ID != HisConfigCFG.PatientTypeId__BHYT)) && o.ID == patientTypeAppointmentId.Value).ToList();
-                            }else if (HisConfigCFG.IsSetPrimaryPatientType != commonString__true
-                                && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.HasValue
-                                && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value != HisConfigCFG.PatientTypeId__BHYT
-                                && currentPatientTypeTemps.Exists(e => e.ID == this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value))
+                            }
+                            else if (HisConfigCFG.IsSetPrimaryPatientType != commonString__true
+                               && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.HasValue
+                               && this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value != HisConfigCFG.PatientTypeId__BHYT
+                               && currentPatientTypeTemps.Exists(e => e.ID == this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value))
                             {
                                 Inventec.Common.Logging.LogSystem.Debug("ChoosePatientTypeDefaultlService. 6 currentRoom Has default instr patient type");
                                 listResult = currentPatientTypeTemps.Where(o => (!this.isNotUseBhyt || (this.isNotUseBhyt && o.ID != HisConfigCFG.PatientTypeId__BHYT)) && o.ID == this.requestRoom.DEFAULT_INSTR_PATIENT_TYPE_ID.Value).ToList();
@@ -3037,7 +3040,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 }
 
                 //Ẩn hiện button Gợi ý chỉ định (AI)
-                bool isVisibilitylayoutControlItem36 = !string.IsNullOrEmpty(HisConfigCFG.SuggestAssignServicesInfo);               
+                bool isVisibilitylayoutControlItem36 = !string.IsNullOrEmpty(HisConfigCFG.SuggestAssignServicesInfo);
                 if (isVisibilitylayoutControlItem36)
                 {
                     layoutControlItem36.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -3754,7 +3757,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// <summary>
         /// Lay Chan doan mac dinh: Lay chan doan cuoi cung trong cac xu ly dich vu Kham benh
         /// </summary>
-        HIS_ICD icdMain = null; 
+        HIS_ICD icdMain = null;
         private void LoadIcdDefault()
         {
             try
@@ -3928,6 +3931,371 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        // qtcode3
+        private async Task LoadGuaranteeInfo()
+        {
+            try
+            {
+                if (this.currentHisTreatment == null || string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
+                {
+                    //HideGuaranteeLabel();
+                    return;
+                }
+
+                isLoadingGuaranteeInfo = true;
+
+                await Task.Run(() =>
+                {
+                    try
+                {
+                    // Dùng thư viện chung
+                    //ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
+                    var guaranteeConnection = Config.HisConfigCFG.GuaranteeConnectionInfo; 
+
+                    if (string.IsNullOrEmpty(guaranteeConnection))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Chưa cấu hình thông tin kết nối hệ thống bảo lãnh");
+                        this.guaranteeInfo = null;
+                        //return;
+                    }
+                    string[] parts = guaranteeConnection.Split('|');
+                    if (parts.Length < 3)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Cấu hình kết nối bảo lãnh không đúng định dạng");
+                        this.guaranteeInfo = null;
+                        return;
+                    }
+
+                    //  Địa chỉ
+                    string guaranteeAddress = parts[0].Trim();
+
+                    // Mã ứng dụng:Tài khoản:Mật khẩu
+                    string[] credentials = parts[1].Split(':');
+                    string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
+                    string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
+                    string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
+
+                    // Hạn mức đăng ký mặc định
+                    string guaranteeDefaultLimit = parts[2].Trim();
+
+                    string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+
+                    // Gọi API RegisterUse để lấy RequestId
+                    MedicalExpenseGuaranteeProcessor medicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
+                    DataInput dataInput = new DataInput();
+                    dataInput.baseUri = guaranteeAddress;
+                    dataInput.applicationCode = guaranteeAppCode;
+                    dataInput.limet = guaranteeDefaultLimit;
+                    dataInput.cskcbbd = branchHeinMediOrgCode;
+                    dataInput.registerUseRequest = new RegisterUseRequest
+                    {
+                        PatientFullName = this.currentHisTreatment.TDL_PATIENT_NAME,
+                        PatientDateOfBirth = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.currentHisTreatment.TDL_PATIENT_DOB),
+                        PatientCccd = this.currentHisTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentHisTreatment.TDL_PATIENT_CMND_NUMBER,
+                        RequestAmount = guaranteeDefaultLimit,
+                        ApplicationCode = guaranteeAppCode,
+                        Remark = "Tra cứu hạn mức bảo lãnh cho bệnh nhân " + this.currentHisTreatment.TDL_PATIENT_NAME,
+                        Signature = ""
+                    };
+
+                    Inventec.Common.Logging.LogSystem.Debug("Bắt đầu gọi API RegisterUse để lấy RequestId");
+                    RegisterUseResponse registerResponse = medicalExpenseGuarantee.GuaranteeRegisterUse(dataInput);
+                    //dataInput.availableBalanceInfoRequest = new AvailableBalanceInfoRequest
+                    //{
+                    //    RequestId = registerResponse.Data.RequestId,
+                    //    PatientFullName = this.currentHisTreatment.TDL_PATIENT_NAME,
+                    //    PatientDateOfBirth = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.currentHisTreatment.TDL_PATIENT_DOB),
+                    //    PatientCccd = this.currentHisTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentHisTreatment.TDL_PATIENT_CMND_NUMBER,
+                    //    ApplicationCode = guaranteeAppCode
+                    //};
+                    if (registerResponse == null || !registerResponse.Success || registerResponse.Data == null)
+                    {
+                        string errorMsg = registerResponse != null ? registerResponse.Message : "Không có phản hồi từ API RegisterUse";
+                        Inventec.Common.Logging.LogSystem.Warn("Gọi API RegisterUse thất bại: " + errorMsg);
+                        this.guaranteeInfo = null;
+                        return;
+                    }
+                    // AvailableBalanceInfoRequest
+
+                    dataInput.availableBalanceInfoRequest = new AvailableBalanceInfoRequest
+                    {
+                        RequestId = registerResponse.Data.RequestId,
+                        PatientFullName = this.currentHisTreatment.TDL_PATIENT_NAME,
+                        PatientDateOfBirth = this.currentHisTreatment.TDL_PATIENT_DOB.ToString(),
+                        PatientCccd = this.currentHisTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentHisTreatment.TDL_PATIENT_CMND_NUMBER,
+                        ApplicationCode = guaranteeAppCode,
+                        Remark = "Tra cứu hạn mức bảo lãnh cho bệnh nhân " + this.currentHisTreatment.TDL_PATIENT_NAME
+                    };
+                    AvailableBalanceInfoResponse balanceInfoResponse = new AvailableBalanceInfoResponse();
+                    balanceInfoResponse = medicalExpenseGuarantee.GuaranteeAvailableBalanceInfoResponse(dataInput);
+
+                    if (balanceInfoResponse != null && balanceInfoResponse.Success == true)
+                    {
+                        this.guaranteeInfo = new GuaranteeInfoADO
+                        {
+                            GUARANTEE_CODE = this.currentHisTreatment.GUARANTEE_CODE,
+                            GUARANTEE_REGISTER = decimal.TryParse(balanceInfoResponse.Data.RegisteredAmount, out decimal limit) ? limit : 0,
+                            GUARANTEE_USED = decimal.TryParse(balanceInfoResponse.Data.UsedAmount, out decimal used) ? used : 0,
+                            GUARANTEE_BALANCE = decimal.TryParse(balanceInfoResponse.Data.AvailableBalance, out decimal remain) ? remain : 0
+                        };
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Tra cứu bảo lãnh thất bại");
+                        this.guaranteeInfo = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    this.guaranteeInfo = null;
+                }
+                });
+
+                UpdateGuaranteeLabel();
+                isLoadingGuaranteeInfo = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                isLoadingGuaranteeInfo = false;
+            }
+        }
+
+        private void UpdateGuaranteeLabel()
+        {
+            try
+            {
+                if (guaranteeInfo != null)
+                {
+
+                    if (this.InvokeRequired)
+                    {
+                        this.Invoke(new MethodInvoker(delegate
+                        {
+                            lblGuarantee.Text = Inventec.Common.Number.Convert.NumberToString(guaranteeInfo.GUARANTEE_REGISTER, ConfigApplications.NumberSeperator);
+                            lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        }));
+                    }
+                    else
+                    {
+                        lblGuarantee.Text = Inventec.Common.Number.Convert.NumberToString(guaranteeInfo.GUARANTEE_REGISTER, ConfigApplications.NumberSeperator);
+                        lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private bool ValidateGuaranteeAmount(ref string message)
+        {
+            try
+            {
+                // Nếu không có thông tin bảo lãnh hoặc không có GUARANTEE_CODE thì bỏ qua
+                if (this.guaranteeInfo == null || (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE)))
+                    return true;
+
+                // Lấy danh sách dịch vụ đã chọn và đánh dấu bảo lãnh
+                //var guaranteedServices = this.ServiceIsleafADOs?
+                //    .Where(o => o.IsChecked && o.IsGuarantee)
+                //    .ToList();
+
+                //if (guaranteedServices == null || guaranteedServices.Count == 0)
+                //    return true;
+
+                //decimal totalGuaranteeAmount = GetTotalGuaranteePrice();
+                //long? bhytPatientTypeId = GetBHYTPatientTypeId();
+
+                //foreach (var svc in guaranteedServices)
+                //{
+                //    // Tính tổng tiền bệnh nhân phải trả
+                //    decimal patientPrice = svc.PRICE * svc.AMOUNT;
+                //    totalGuaranteeAmount += patientPrice;
+                //    // Nếu là BHYT thì trừ đi phần BHYT thanh toán
+                //    //if (bhytPatientTypeId.HasValue && svc.PATIENT_TYPE_ID == bhytPatientTypeId.Value)
+                //    //{
+                //    //    decimal heinPrice = (svc.HEIN_LIMIT_PRICE ?? 0) * svc.AMOUNT * (svc.HEIN_LIMIT_RATIO ?? 0);
+                //    //    patientPrice = patientPrice - heinPrice;
+                //    //}
+
+                //    // Nếu là hao phí thì không tính vào bảo lãnh
+                //    //if (svc.IsExpend != true)
+                //    //{
+                //    //    totalGuaranteeAmount += patientPrice;
+                //    //}
+                //}
+
+                if ( decimal.Parse(lblTotalGuarantee.Text) > this.guaranteeInfo.GUARANTEE_REGISTER)
+                {
+                    message = "Tổng tiền dịch vụ đã vượt hạn mức vui lòng kiểm tra lại.";
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                return true;
+            }
+        }
+
+        private bool ValidateGuaranteeBeforeSave()
+        {
+            try
+            {
+                string guaranteeMessage = "";
+                if (!ValidateGuaranteeAmount(ref guaranteeMessage))   
+                {
+                    XtraMessageBox.Show(
+                        guaranteeMessage,
+                        "Thông báo",
+                        MessageBoxButtons.OK, 
+                        MessageBoxIcon.Warning);
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                return true;
+            }
+        }
+        private void UpdateTotalGuaranteePrice()
+        {
+            try
+            {
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(UpdateTotalGuaranteePrice));
+                    return;
+                }
+
+                if (this.guaranteeInfo != null && !string.IsNullOrEmpty(this.currentHisTreatment?.GUARANTEE_CODE))
+                {
+                    decimal totalGuaranteePrice = GetTotalGuaranteePrice();
+                    lblTotalGuarantee.Text = Inventec.Common.Number.Convert.NumberToString(totalGuaranteePrice, ConfigApplications.NumberSeperator);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private decimal GetTotalGuaranteePrice() // lấy ra số tiền cần được bảo lãnh
+        {
+            decimal totalGuaranteePrice = 0;
+            try
+            {
+                if (this.guaranteeInfo == null || string.IsNullOrEmpty(this.currentHisTreatment?.GUARANTEE_CODE))
+                    return 0;
+
+                long instructionTime = this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0 ? this.intructionTimeSelecteds.FirstOrDefault() : 0;
+
+                if (ServiceIsleafADOs != null && ServiceIsleafADOs.Count > 0)
+                {
+                    // Chỉ lấy dịch vụ được tích chọn VÀ được bảo lãnh
+                    var dataCheckeds = ServiceIsleafADOs.Where(o => o.IsChecked && o.IsGuarantee).ToList();
+
+                    if (dataCheckeds != null && dataCheckeds.Count > 0)
+                    {
+                        var serviceRoomViews = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_SERVICE_ROOM>();
+
+                        foreach (var item in dataCheckeds)
+                        {
+                            // Không tính dịch vụ hao phí
+                            //if (item.PATIENT_TYPE_ID != 0 && (item.IsExpend ?? false) == false)
+
+                            item.PATIENT_TYPE_ID = this.currentHisTreatment.TDL_PATIENT_TYPE_ID != null ? this.currentHisTreatment.TDL_PATIENT_TYPE_ID.Value : 0; 
+                            if ((item.IsExpend ?? false) == false)
+                            {
+                                var servicePaties = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.ServicePatyWithListPatientType(item.SERVICE_ID, this.patientTypeIdAls);
+                                V_HIS_SERVICE_PATY data_ServicePrice = null;
+
+                                if (servicePaties != null && servicePaties.Count > 0 && this.requestRoom != null)
+                                {
+                                    List<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM> dataCombo = new List<V_HIS_EXECUTE_ROOM>();
+
+                                    if (this.allDataExecuteRooms != null && this.allDataExecuteRooms.Count > 0 && serviceRoomViews != null && serviceRoomViews.Count > 0)
+                                    {
+                                        var arrExcuteRoom = serviceRoomViews.Where(o => item != null && o.SERVICE_ID == item.SERVICE_ID);
+
+                                        if (HisConfigCFG.IsAssignRoomByPatientType && PatientTypeRooms != null && PatientTypeRooms.Count > 0 && PatientTypeRooms.Exists(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID))
+                                        {
+                                            var RoomIds = PatientTypeRooms.Where(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID).Select(o => o.ROOM_ID).ToList();
+                                            arrExcuteRoom = arrExcuteRoom.Where(o => RoomIds.Contains(o.ROOM_ID)).ToList();
+                                        }
+                                        var arrExcuteRoomCode = arrExcuteRoom.Select(o => o.ROOM_ID).ToArray();
+                                        dataCombo = ((arrExcuteRoomCode != null && arrExcuteRoomCode.Count() > 0 && this.allDataExecuteRooms != null) ? this.allDataExecuteRooms.Where(o => arrExcuteRoomCode.Contains(o.ROOM_ID)).ToList() : null);
+                                    }
+
+                                    var checkExecuteRoom = dataCombo != null && dataCombo.Count > 0 ? dataCombo.FirstOrDefault(o => o.BRANCH_ID == this.requestRoom.BRANCH_ID) : null;
+                                    if (checkExecuteRoom != null)
+                                    {
+                                        item.TDL_EXECUTE_BRANCH_ID = checkExecuteRoom.BRANCH_ID;
+                                    }
+                                    else
+                                    {
+                                        item.TDL_EXECUTE_BRANCH_ID = dataCombo != null && dataCombo.Count > 0 ? dataCombo.FirstOrDefault().BRANCH_ID : 0;
+                                        item.TDL_EXECUTE_BRANCH_ID = item.TDL_EXECUTE_BRANCH_ID == 0 ? HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.GetCurrentBranchId() : item.TDL_EXECUTE_BRANCH_ID;
+                                    }
+
+                                    List<HIS_SERE_SERV> sameServiceType = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.TDL_SERVICE_TYPE_ID == item.SERVICE_TYPE_ID).ToList() : null;
+                                    List<HIS_SERE_SERV> sameService = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.SERVICE_ID == item.SERVICE_ID).ToList() : null;
+                                    var intructionNumByType = sameServiceType != null ? (long)sameServiceType.Count() + 1 : 1;
+                                    var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;
+
+                                    data_ServicePrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, item.TDL_EXECUTE_BRANCH_ID, null, this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, item.SERVICE_ID, item.PATIENT_TYPE_ID, intructionNum, intructionNumByType, item.PackagePriceId, item.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
+                                }
+
+                                // Tính tổng tiền
+                                if (item.AssignSurgPriceEdit.HasValue && item.AssignSurgPriceEdit > 0)
+                                {
+                                    totalGuaranteePrice += item.AssignSurgPriceEdit.Value;
+                                }
+                                else
+                                {
+                                    if (item.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT
+                                            && item.IsNoDifference.HasValue
+                                            && item.IsNoDifference.Value)
+                                    {
+                                        if (item.HEIN_LIMIT_PRICE.HasValue && item.HEIN_LIMIT_PRICE.Value > 0)
+                                        {
+                                            totalGuaranteePrice += item.AMOUNT * item.HEIN_LIMIT_PRICE.Value;
+                                        }
+                                        else if (item.HEIN_LIMIT_RATIO.HasValue && item.HEIN_LIMIT_RATIO.Value > 0 && data_ServicePrice != null)
+                                        {
+                                            totalGuaranteePrice += (item.AMOUNT * data_ServicePrice.PRICE * (1 + data_ServicePrice.VAT_RATIO) * item.HEIN_LIMIT_RATIO.Value);
+                                        }
+                                        else if (data_ServicePrice != null)
+                                        {
+                                            totalGuaranteePrice += (item.AMOUNT * data_ServicePrice.PRICE * (1 + data_ServicePrice.VAT_RATIO));
+                                        }
+                                    }
+                                    else if (data_ServicePrice != null)
+                                    {
+                                        totalGuaranteePrice += (item.AMOUNT * data_ServicePrice.PRICE * (1 + data_ServicePrice.VAT_RATIO));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+
+            var totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.PRICE) : 0;
+            totalGuaranteePrice += totalGuaranteeOriginal;
+            return totalGuaranteePrice;
         }
 
         private async Task LoadDataSereServWithTreatment(HisTreatmentWithPatientTypeInfoSDO treatment, DateTime? intructionTime)

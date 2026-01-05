@@ -822,7 +822,7 @@ namespace HIS.Desktop.Plugins.HisService
                     ControlEditorADO controlEditADO = new ControlEditorADO("SAMPLE_TYPE_CODE", "SAMPLE_TYPE_CODE", column, false, 350);
                     ControlEditorLoader.Load(cboSampleType, BackendDataWorker.Get<LIS_SAMPLE_TYPE>().Where(o => o.IS_ACTIVE == 1).ToList(), controlEditADO);
                 }
-                else if ((lisIntegrationVersion != "1" || lisIntegrationOption != "1") && (lisIntegrationVersion != "2" || lisIntegrationType != "1"))
+                else
                 {
                     List<ColumnInfo> column = new List<ColumnInfo>();
                     column.Add(new ColumnInfo("TEST_SAMPLE_TYPE_CODE", "", 100, 1));

@@ -29,6 +29,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
 {
     class HisConfigCFG
     {
+        public const string MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
+
         private const string CONFIG_KEY__PATY_FOR_PACKAGE = "His.Desktop.AssignService.HisPackage.ServicePatyForServicePackage";
         private const string CONFIG_KEY__USAGE_CHECK_INTERVAL = "His.Desktop.AssignService.HisPackage.UsageCheckInterval";
         private const string CONFIG_KEY__WARNING_OPTION = "HIS.DESKTOP.HIS_PACKAGE.MAX_PACKAGE_USAGE_PER_DAY.WARNING_OPTION";
@@ -102,6 +104,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
         internal const string CONFIG_KEY__SuggestAssignServicesInfo = "HIS.Desktop.AI.SuggestAssignServicesInfo";
         internal static bool IsAssignRoomByPatientType;
+        internal static string GuaranteeConnectionInfo;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
         internal static string ASSIGN_SIMULTANEITY_OPTION;
         internal static string InstructionTimeServiceMustBeGreaterThanStartTimeExam;
@@ -222,6 +225,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         {
             try
             {
+                GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
                 ServicePatyForServicePackage = GetValue(CONFIG_KEY__PATY_FOR_PACKAGE);
                 UsageCheckInterval = GetValue(CONFIG_KEY__USAGE_CHECK_INTERVAL);
                 IsWarningOption = GetValue(CONFIG_KEY__WARNING_OPTION);

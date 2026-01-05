@@ -308,21 +308,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        //private void ValidDosageForm()
-        //{
-        //    try
-        //    {
-        //        DosageValidationRule dosageValidationRule = new DosageValidationRule();
-        //        dosageValidationRule.cboDosageForm = cboDosageForm;
-        //        dosageValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
-        //        dosageValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-        //        dxValidationProviderLeft.SetValidationRule(cboDosageForm, dosageValidationRule);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogSystem.Error(ex);
-        //    }
-        //}
+      
         private void ValidDosageForm()
         {
             try

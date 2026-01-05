@@ -7,6 +7,32 @@ namespace HIS.Desktop.MIMS.Integration.Core
 {
 	public class MimsRequestBuilder
 	{
+        private static string BuildDrugTag(DrugItem drug)
+        {
+			switch (drug.DrugType)
+			{
+				case MimsDrugType.Product:
+					return string.Format("<Product reference=\"{{{0}}}\" />", drug.MimsGuid);
+				case MimsDrugType.GGPI:
+					return string.Format("<GGPI reference=\"{{{0}}}\" />", drug.MimsGuid);
+				default:
+					return string.Format("<GenericItem reference=\"{{{0}}}\" />", drug.MimsGuid);
+			}
+        }
+
+        public static string BuildDrugInformationRequest(DrugItem drug)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("<Request><Content>");
+
+            sb.Append(BuildDrugTag(drug));
+
+            sb.Append("<References/></Content></Request>");
+
+            return sb.ToString();
+        }
+
         public static string BuildDrugDrugInteractionRequest(
             List<DrugItem> currentDrugs,
             List<DrugItem> previousDrugs)
@@ -42,19 +68,6 @@ namespace HIS.Desktop.MIMS.Integration.Core
             return BuildDrugDrugInteractionRequest(drugs, new List<DrugItem>());
         }
 
-        private static string BuildDrugTag(DrugItem drug)
-        {
-			switch (drug.DrugType)
-			{
-				case MimsDrugType.Product:
-					return string.Format("<Product reference=\"{{{0}}}\" />", drug.MimsGuid);
-				case MimsDrugType.GGPI:
-					return string.Format("<GGPI reference=\"{{{0}}}\" />", drug.MimsGuid);
-				default:
-					return string.Format("<GenericItem reference=\"{{{0}}}\" />", drug.MimsGuid);
-			}
-        }
-
         public static string BuildDrugAllergyRequest(
             List<DrugItem> drugs,
             List<AllergyItem> allergies)
@@ -76,6 +89,42 @@ namespace HIS.Desktop.MIMS.Integration.Core
 			}
 
             sb.Append("</Allergies><References/></Interaction></Request>");
+
+            return sb.ToString();
+        }
+
+        public static string BuildDrugHealthAlertRequest(
+            List<DrugItem> drugs,
+            List<string> icd10Codes)
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("<Request><Interaction><Prescribing>");
+
+            if (drugs != null)
+            {
+                foreach (var d in drugs)
+                {
+                    sb.Append(BuildDrugTag(d));
+                }
+            }
+
+            sb.Append("</Prescribing>");
+
+            if (icd10Codes != null && icd10Codes.Count > 0)
+            {
+                sb.Append("<HealthIssueCodes>");
+                foreach (var code in icd10Codes)
+                {
+                    if (string.IsNullOrWhiteSpace(code))
+                        continue;
+
+                    sb.Append(string.Format("<HealthIssueCode code=\"{0}\" codeType=\"ICD10\" />", code.Trim()));
+                }
+                sb.Append("</HealthIssueCodes>");
+            }
+
+            sb.Append("<References/></Interaction></Request>");
 
             return sb.ToString();
         }

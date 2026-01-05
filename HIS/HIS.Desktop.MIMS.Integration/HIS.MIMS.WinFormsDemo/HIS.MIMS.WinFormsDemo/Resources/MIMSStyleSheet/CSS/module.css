@@ -1,0 +1,63 @@
+div.module {
+  width: 340px;
+  /*border: 2px #5f5f5f solid;
+  background-color: white;*/
+}
+
+div.module div.caption {
+  padding: 0 8px;
+  height: 24px;
+  font-weight: bold;
+  /*
+  background: black;
+  border: 1px solid black;
+  color: white;
+*/
+}
+
+div.module.rolledup div.caption {
+  /*background: black;*/
+}
+
+div.module div.caption span {
+  float: left;
+}
+
+div.module div.caption img {
+  float: right;
+  cursor: pointer;
+}
+
+div.module div.caption span.icon {
+  float: right;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+div.module div.caption span.refreshIcon {
+  float: right;
+  margin-right: 2%;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+div.module div.caption .stylesheets {
+  float: right;
+  font-weight:normal;
+}
+
+div.module div.caption span.gearIcon {
+  float: right;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+div.module div.caption span,div.module div.caption img {
+  margin-top: 4px;
+}
+
+div.module div.body {
+  padding: 8px;
+  /*background-color: white;*/
+  border-width: 0;
+}

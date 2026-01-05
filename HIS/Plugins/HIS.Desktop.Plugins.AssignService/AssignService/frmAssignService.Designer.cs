@@ -116,6 +116,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
+            this.lblTotalGuarantee = new System.Windows.Forms.Label();
+            this.lblGuarantee = new System.Windows.Forms.Label();
             this.chkPrintVBA = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -127,10 +129,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.barBtnSaveNShow = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnEditCtrlU = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnAssignAI = new DevExpress.XtraEditors.SimpleButton();
             this.popupControlContainer4 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
@@ -260,6 +258,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn_PtttGroup = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_InstructionNote = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemMemoExEdit_IntructionNote = new DevExpress.XtraEditors.Repository.RepositoryItemMemoExEdit();
+            this.gridColumn_Guarantee = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckGuarantee = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumnPatientTypeName__TabService = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcExpend_TabService = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnIsKH__TabService = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -328,6 +328,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.repositoryItemSpinEditEstimateDuration = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.colAssignNumOrderUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn24 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colIsGuaranteeUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemBtnChecked__TabService = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemcboPatientType_TabService1 = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.repositoryItemChkIsExpend_TabService = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -505,6 +506,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.emptySpaceItem11 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciGuarantee = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciTotalGuarantee = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn3 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -614,6 +621,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit_ServiceCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit_ServiceName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoExEdit_IntructionNote)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckGuarantee)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemcboExcuteRoom_TabService)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).BeginInit();
@@ -792,6 +800,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGuarantee)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTotalGuarantee)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).BeginInit();
@@ -809,6 +819,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.lblTotalGuarantee);
+            this.lcEditorInfo.Controls.Add(this.lblGuarantee);
             this.lcEditorInfo.Controls.Add(this.chkPrintVBA);
             this.lcEditorInfo.Controls.Add(this.btnAssignAI);
             this.lcEditorInfo.Controls.Add(this.popupControlContainer4);
@@ -891,6 +903,24 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lcEditorInfo.TabIndex = 0;
             this.lcEditorInfo.Text = "layoutControl1";
             // 
+            // lblTotalGuarantee
+            // 
+            this.lblTotalGuarantee.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalGuarantee.Location = new System.Drawing.Point(783, 502);
+            this.lblTotalGuarantee.Name = "lblTotalGuarantee";
+            this.lblTotalGuarantee.Size = new System.Drawing.Size(219, 20);
+            this.lblTotalGuarantee.TabIndex = 154;
+            this.lblTotalGuarantee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblGuarantee
+            // 
+            this.lblGuarantee.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGuarantee.Location = new System.Drawing.Point(542, 502);
+            this.lblGuarantee.Name = "lblGuarantee";
+            this.lblGuarantee.Size = new System.Drawing.Size(112, 20);
+            this.lblGuarantee.TabIndex = 153;
+            this.lblGuarantee.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // chkPrintVBA
             // 
             this.chkPrintVBA.Location = new System.Drawing.Point(1311, 526);
@@ -907,10 +937,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barbtnSaveShortcut,
@@ -1004,34 +1030,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F4);
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1352, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 617);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1352, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 588);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1352, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 588);
             // 
             // btnAssignAI
             // 
@@ -1393,7 +1391,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lblConThua.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblConThua.Location = new System.Drawing.Point(392, 502);
             this.lblConThua.Name = "lblConThua";
-            this.lblConThua.Size = new System.Drawing.Size(359, 20);
+            this.lblConThua.Size = new System.Drawing.Size(71, 20);
             this.lblConThua.StyleController = this.lcEditorInfo;
             this.lblConThua.TabIndex = 131;
             // 
@@ -2395,7 +2393,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.repSampleType,
             this.repSampleTypeDis,
             this.repositoryItemSpinNumberOfTimes_TabService,
-            this.repositoryItemSpinNumberOfTimes__Disable_TabService});
+            this.repositoryItemSpinNumberOfTimes__Disable_TabService,
+            this.repositoryItemCheckGuarantee});
             this.gridControlServiceProcess.Size = new System.Drawing.Size(1182, 254);
             this.gridControlServiceProcess.TabIndex = 30;
             this.gridControlServiceProcess.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -2413,6 +2412,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcServiceName_TabService,
             this.gridColumn_PtttGroup,
             this.gridColumn_InstructionNote,
+            this.gridColumn_Guarantee,
             this.gridColumnPatientTypeName__TabService,
             this.grcExpend_TabService,
             this.gridColumnIsKH__TabService,
@@ -2475,7 +2475,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.colTEST_SAMPLE_TYPE_IDUnb,
             this.gridColumn23,
             this.colAssignNumOrderUnb,
-            this.gridColumn24});
+            this.gridColumn24,
+            this.colIsGuaranteeUnb});
             this.gridViewServiceProcess.GridControl = this.gridControlServiceProcess;
             this.gridViewServiceProcess.Name = "gridViewServiceProcess";
             this.gridViewServiceProcess.OptionsBehavior.AutoExpandAllGroups = true;
@@ -2501,6 +2502,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridViewServiceProcess.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewServiceProcess_KeyDown);
             this.gridViewServiceProcess.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewServiceProcess_MouseDown);
             this.gridViewServiceProcess.DoubleClick += new System.EventHandler(this.gridViewServiceProcess_DoubleClick);
+            this.gridViewServiceProcess.DataSourceChanged += new System.EventHandler(this.gridViewServiceProcess_DataSourceChanged);
             // 
             // grcView_TabService
             // 
@@ -2651,7 +2653,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn_PtttGroup.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn_PtttGroup.Visible = true;
             this.gridColumn_PtttGroup.VisibleIndex = 6;
-            this.gridColumn_PtttGroup.Width = 46;
+            this.gridColumn_PtttGroup.Width = 43;
             // 
             // gridColumn_InstructionNote
             // 
@@ -2666,7 +2668,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn_InstructionNote.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn_InstructionNote.Visible = true;
             this.gridColumn_InstructionNote.VisibleIndex = 7;
-            this.gridColumn_InstructionNote.Width = 32;
+            this.gridColumn_InstructionNote.Width = 30;
             // 
             // repositoryItemMemoExEdit_IntructionNote
             // 
@@ -2681,6 +2683,24 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.repositoryItemMemoExEdit_IntructionNote.ShowIcon = false;
             this.repositoryItemMemoExEdit_IntructionNote.Popup += new System.EventHandler(this.repositoryItemMemoExEdit_IntructionNote_Popup);
             // 
+            // gridColumn_Guarantee
+            // 
+            this.gridColumn_Guarantee.Caption = "Bảo lãnh";
+            this.gridColumn_Guarantee.ColumnEdit = this.repositoryItemCheckGuarantee;
+            this.gridColumn_Guarantee.FieldName = "IsGuarantee";
+            this.gridColumn_Guarantee.FieldNameSortGroup = "IsGuaranteeUnb";
+            this.gridColumn_Guarantee.MaxWidth = 60;
+            this.gridColumn_Guarantee.Name = "gridColumn_Guarantee";
+            this.gridColumn_Guarantee.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn_Guarantee.Visible = true;
+            this.gridColumn_Guarantee.VisibleIndex = 8;
+            this.gridColumn_Guarantee.Width = 60;
+            // 
+            // repositoryItemCheckGuarantee
+            // 
+            this.repositoryItemCheckGuarantee.AutoHeight = false;
+            this.repositoryItemCheckGuarantee.Name = "repositoryItemCheckGuarantee";
+            // 
             // gridColumnPatientTypeName__TabService
             // 
             this.gridColumnPatientTypeName__TabService.Caption = "ĐTTT";
@@ -2694,8 +2714,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnPatientTypeName__TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnPatientTypeName__TabService.ToolTip = "Đối tượng thanh toán";
             this.gridColumnPatientTypeName__TabService.Visible = true;
-            this.gridColumnPatientTypeName__TabService.VisibleIndex = 8;
-            this.gridColumnPatientTypeName__TabService.Width = 37;
+            this.gridColumnPatientTypeName__TabService.VisibleIndex = 9;
+            this.gridColumnPatientTypeName__TabService.Width = 35;
             // 
             // grcExpend_TabService
             // 
@@ -2712,8 +2732,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcExpend_TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.grcExpend_TabService.ToolTip = "Hao phí";
             this.grcExpend_TabService.Visible = true;
-            this.grcExpend_TabService.VisibleIndex = 9;
-            this.grcExpend_TabService.Width = 26;
+            this.grcExpend_TabService.VisibleIndex = 10;
+            this.grcExpend_TabService.Width = 24;
             // 
             // gridColumnIsKH__TabService
             // 
@@ -2739,8 +2759,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnExecuteRoomName__TabService.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnExecuteRoomName__TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnExecuteRoomName__TabService.Visible = true;
-            this.gridColumnExecuteRoomName__TabService.VisibleIndex = 17;
-            this.gridColumnExecuteRoomName__TabService.Width = 49;
+            this.gridColumnExecuteRoomName__TabService.VisibleIndex = 18;
+            this.gridColumnExecuteRoomName__TabService.Width = 46;
             // 
             // repositoryItemcboExcuteRoom_TabService
             // 
@@ -2775,8 +2795,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcAmount_TabService.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcAmount_TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.grcAmount_TabService.Visible = true;
-            this.grcAmount_TabService.VisibleIndex = 10;
-            this.grcAmount_TabService.Width = 32;
+            this.grcAmount_TabService.VisibleIndex = 11;
+            this.grcAmount_TabService.Width = 30;
             // 
             // grcPrice_TabService
             // 
@@ -2795,8 +2815,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcPrice_TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.grcPrice_TabService.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grcPrice_TabService.Visible = true;
-            this.grcPrice_TabService.VisibleIndex = 11;
-            this.grcPrice_TabService.Width = 33;
+            this.grcPrice_TabService.VisibleIndex = 12;
+            this.grcPrice_TabService.Width = 31;
             // 
             // gridColumnNoDifference
             // 
@@ -2810,7 +2830,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnNoDifference.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnNoDifference.ToolTip = "Không tính chênh lệch";
             this.gridColumnNoDifference.Visible = true;
-            this.gridColumnNoDifference.VisibleIndex = 13;
+            this.gridColumnNoDifference.VisibleIndex = 14;
             this.gridColumnNoDifference.Width = 20;
             // 
             // gridColumnHeadCardNumberNoDifference
@@ -2826,8 +2846,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnHeadCardNumberNoDifference.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnHeadCardNumberNoDifference.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnHeadCardNumberNoDifference.Visible = true;
-            this.gridColumnHeadCardNumberNoDifference.VisibleIndex = 14;
-            this.gridColumnHeadCardNumberNoDifference.Width = 29;
+            this.gridColumnHeadCardNumberNoDifference.VisibleIndex = 15;
+            this.gridColumnHeadCardNumberNoDifference.Width = 27;
             // 
             // grcPrice_ServicePatyPrpo
             // 
@@ -2843,8 +2863,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcPrice_ServicePatyPrpo.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcPrice_ServicePatyPrpo.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grcPrice_ServicePatyPrpo.Visible = true;
-            this.grcPrice_ServicePatyPrpo.VisibleIndex = 15;
-            this.grcPrice_ServicePatyPrpo.Width = 32;
+            this.grcPrice_ServicePatyPrpo.VisibleIndex = 16;
+            this.grcPrice_ServicePatyPrpo.Width = 30;
             // 
             // gridColumnServiceTypeName
             // 
@@ -2866,8 +2886,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnShareCount.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnShareCount.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnShareCount.Visible = true;
-            this.gridColumnShareCount.VisibleIndex = 18;
-            this.gridColumnShareCount.Width = 42;
+            this.gridColumnShareCount.VisibleIndex = 19;
+            this.gridColumnShareCount.Width = 39;
             // 
             // gridColumnSERVICE_CONDITION_ID
             // 
@@ -2888,8 +2908,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn11.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 19;
-            this.gridColumn11.Width = 44;
+            this.gridColumn11.VisibleIndex = 20;
+            this.gridColumn11.Width = 41;
             // 
             // repositoryItemButtonEditOtherPaySource
             // 
@@ -2911,8 +2931,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnSERVICE_CONDITION_NAME.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnSERVICE_CONDITION_NAME.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnSERVICE_CONDITION_NAME.Visible = true;
-            this.gridColumnSERVICE_CONDITION_NAME.VisibleIndex = 20;
-            this.gridColumnSERVICE_CONDITION_NAME.Width = 41;
+            this.gridColumnSERVICE_CONDITION_NAME.VisibleIndex = 21;
+            this.gridColumnSERVICE_CONDITION_NAME.Width = 38;
             // 
             // repositoryItemButtonCondition
             // 
@@ -2934,8 +2954,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.grcSampleType.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcSampleType.ToolTip = "Loại mẫu bệnh phẩm xét nghiệm";
             this.grcSampleType.Visible = true;
-            this.grcSampleType.VisibleIndex = 21;
-            this.grcSampleType.Width = 31;
+            this.grcSampleType.VisibleIndex = 22;
+            this.grcSampleType.Width = 29;
             // 
             // gridColumnChiPhiNgoaiGoi_TabService
             // 
@@ -2951,8 +2971,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumnChiPhiNgoaiGoi_TabService.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnChiPhiNgoaiGoi_TabService.ToolTip = "Chi phí ngoài gói";
             this.gridColumnChiPhiNgoaiGoi_TabService.Visible = true;
-            this.gridColumnChiPhiNgoaiGoi_TabService.VisibleIndex = 16;
-            this.gridColumnChiPhiNgoaiGoi_TabService.Width = 37;
+            this.gridColumnChiPhiNgoaiGoi_TabService.VisibleIndex = 17;
+            this.gridColumnChiPhiNgoaiGoi_TabService.Width = 35;
             // 
             // gridColumnEstimateDuration
             // 
@@ -3080,8 +3100,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn_Service_PrimaryPatientType.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn_Service_PrimaryPatientType.ToolTip = "Đối tượng phụ thu";
             this.gridColumn_Service_PrimaryPatientType.Visible = true;
-            this.gridColumn_Service_PrimaryPatientType.VisibleIndex = 12;
-            this.gridColumn_Service_PrimaryPatientType.Width = 36;
+            this.gridColumn_Service_PrimaryPatientType.VisibleIndex = 13;
+            this.gridColumn_Service_PrimaryPatientType.Width = 34;
             // 
             // colUnb
             // 
@@ -3222,8 +3242,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn19.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn19.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 22;
-            this.gridColumn19.Width = 60;
+            this.gridColumn19.VisibleIndex = 23;
+            this.gridColumn19.Width = 71;
             // 
             // colIsNotUseBhytUnb
             // 
@@ -3259,7 +3279,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 23;
+            this.gridColumn23.VisibleIndex = 24;
             this.gridColumn23.Width = 60;
             // 
             // repositoryItemSpinEditEstimateDuration
@@ -3287,6 +3307,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn24.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn24.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn24.Width = 32;
+            // 
+            // colIsGuaranteeUnb
+            // 
+            this.colIsGuaranteeUnb.FieldName = "IsGuaranteeUnb";
+            this.colIsGuaranteeUnb.Name = "colIsGuaranteeUnb";
+            this.colIsGuaranteeUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
             // 
             // repositoryItemBtnChecked__TabService
             // 
@@ -4477,7 +4503,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControlItem29,
             this.emptySpaceItem11,
             this.layoutControlItem36,
-            this.layoutControlItem39});
+            this.layoutControlItem39,
+            this.lciGuarantee,
+            this.lciTotalGuarantee});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -5053,7 +5081,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciForlblConThua.MaxSize = new System.Drawing.Size(0, 24);
             this.lciForlblConThua.MinSize = new System.Drawing.Size(200, 24);
             this.lciForlblConThua.Name = "layoutControlItem27";
-            this.lciForlblConThua.Size = new System.Drawing.Size(488, 24);
+            this.lciForlblConThua.Size = new System.Drawing.Size(200, 24);
             this.lciForlblConThua.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciForlblConThua.Text = "Còn thừa:";
             this.lciForlblConThua.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -5142,9 +5170,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // emptySpaceItem10
             // 
             this.emptySpaceItem10.AllowHotTrack = false;
-            this.emptySpaceItem10.Location = new System.Drawing.Point(753, 500);
+            this.emptySpaceItem10.Location = new System.Drawing.Point(1004, 500);
             this.emptySpaceItem10.Name = "emptySpaceItem10";
-            this.emptySpaceItem10.Size = new System.Drawing.Size(599, 24);
+            this.emptySpaceItem10.Size = new System.Drawing.Size(348, 24);
             this.emptySpaceItem10.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciServiceGroup
@@ -5502,6 +5530,64 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControlItem39.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem39.TextToControlDistance = 5;
             // 
+            // lciGuarantee
+            // 
+            this.lciGuarantee.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lciGuarantee.AppearanceItemCaption.Options.UseFont = true;
+            this.lciGuarantee.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciGuarantee.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciGuarantee.Control = this.lblGuarantee;
+            this.lciGuarantee.Location = new System.Drawing.Point(465, 500);
+            this.lciGuarantee.Name = "lciGuarantee";
+            this.lciGuarantee.Size = new System.Drawing.Size(191, 24);
+            this.lciGuarantee.Text = "Bảo lãnh:";
+            this.lciGuarantee.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciGuarantee.TextSize = new System.Drawing.Size(70, 20);
+            this.lciGuarantee.TextToControlDistance = 5;
+            // 
+            // lciTotalGuarantee
+            // 
+            this.lciTotalGuarantee.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lciTotalGuarantee.AppearanceItemCaption.Options.UseFont = true;
+            this.lciTotalGuarantee.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTotalGuarantee.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTotalGuarantee.Control = this.lblTotalGuarantee;
+            this.lciTotalGuarantee.Location = new System.Drawing.Point(656, 500);
+            this.lciTotalGuarantee.Name = "lciTotalGuarantee";
+            this.lciTotalGuarantee.Size = new System.Drawing.Size(348, 24);
+            this.lciTotalGuarantee.Text = "Số tiền cần bảo lãnh:";
+            this.lciTotalGuarantee.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTotalGuarantee.TextSize = new System.Drawing.Size(120, 20);
+            this.lciTotalGuarantee.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1352, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 617);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1352, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 588);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1352, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 588);
+            // 
             // customGridLookUpEditWithFilterMultiColumn1View
             // 
             this.customGridLookUpEditWithFilterMultiColumn1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
@@ -5678,6 +5764,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit_ServiceCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit_ServiceName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoExEdit_IntructionNote)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckGuarantee)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemcboExcuteRoom_TabService)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).EndInit();
@@ -5856,6 +5943,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGuarantee)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTotalGuarantee)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).EndInit();
@@ -6271,5 +6360,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem36;
         private DevExpress.XtraEditors.CheckEdit chkPrintVBA;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
+        private System.Windows.Forms.Label lblGuarantee;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Guarantee;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckGuarantee;
+        private DevExpress.XtraLayout.LayoutControlItem lciGuarantee;
+        private DevExpress.XtraGrid.Columns.GridColumn colIsGuaranteeUnb;
+        private System.Windows.Forms.Label lblTotalGuarantee;
+        private DevExpress.XtraLayout.LayoutControlItem lciTotalGuarantee;
     }
 }

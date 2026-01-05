@@ -943,18 +943,19 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtMaTT.Enabled = true;
                     txtMaDT.Enabled = true;
                     txtTenTT.Enabled = true;
-                    var mt = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineType.ID).MEDICINE_LINE_ID;
-                    if (mt != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
-                    {
-                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
-                        ValidMaxlengthDosageForm();
-                    }
-                    else
-                    {
-                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
-                        dxValidationProviderLeft.RemoveControlError(cboDosageForm);
-                        dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
-                    }
+                    //var mt = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineType.ID).MEDICINE_LINE_ID;
+                    //if (mt != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                    //{
+                    //    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    //    ValidMaxlengthDosageForm();
+                    //}
+                    //else
+                    //{
+                    //    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                    //    dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                    //    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    //}
+                    UpdateDosageFormValidationByMedicineType(medicineType.ID);
                     lciDosageForm.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     cboInformationBid.SelectedIndex = -1;
                     lciTenBHYT.Size = lciMaTT.Size;
@@ -1917,18 +1918,19 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         cboDosageForm.EditValue = null;
                     }
                     //cboDosageForm.EditValue = HisConfigCFG.IsSet__BHYT ? this.medicineType.DOSAGE_FORM : "";
-                    var mt = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineType.ID).MEDICINE_LINE_ID;
-                    if (mt != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
-                    {
-                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
-                        ValidMaxlengthDosageForm();
-                    }
-                    else
-                    {
-                        this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
-                        dxValidationProviderLeft.RemoveControlError(cboDosageForm);
-                        dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
-                    }
+                    //var mt = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == medicineType.ID).MEDICINE_LINE_ID;
+                    //if (mt != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                    //{
+                    //    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    //    ValidMaxlengthDosageForm();
+                    //}
+                    //else
+                    //{
+                    //    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                    //    dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                    //    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    //}
+                    UpdateDosageFormValidationByMedicineType(medicineType.ID);
                     if (this.medicineType.DAY_LIFESPAN.HasValue)
                     {
                         spinDayLifeSpan.EditValue = this.medicineType.DAY_LIFESPAN.Value;
@@ -3111,6 +3113,53 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 valid = false;
             }
             return valid;
+        }
+        private void UpdateDosageFormValidationByMedicineType(long medicineTypeId)
+        {
+            try
+            {
+                var mediType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>()
+                    .FirstOrDefault(o => o.ID == medicineTypeId);
+                if (mediType == null)
+                {
+                    // Không có thông tin thì không bắt buộc
+                    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                    dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    return;
+                }
+                if (mediType.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                {
+                    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                    dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    return;
+                }
+                // Nếu thuốc kinh doanh thì không bắt buộc
+                if (mediType.IS_BUSINESS == (short)1)
+                {
+                    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                    dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                    return;
+                }
+                // Nếu có ACTIVE_INGR_BHYT_CODE thì bắt buộc nhập Dạng bào chế
+                if (!string.IsNullOrWhiteSpace(mediType.ACTIVE_INGR_BHYT_CODE))
+                {
+                    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    ValidMaxlengthDosageForm(); // hàm cũ, vẫn dùng rule độ dài và required
+                }
+                else
+                {
+                    this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
+                    dxValidationProviderLeft.RemoveControlError(cboDosageForm);
+                    dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
         //private bool CheckValidDataInGridService(ref CommonParam param, List<ADO.MedicineTypeADO> MedicineCheckeds__Send)
         //{

@@ -767,7 +767,7 @@
 					"urlencoded": [
 						{
 							"key": "prescriptionquery",
-							"value": "<Request><Interaction><Prescribing><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{41B3DDAC-1D7E-4FD5-97E4-7AA7197845A3}\"/></Prescribing><Allergies><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{41B3DDAC-1D7E-4FD5-97E4-7AA7197845A3}\"/></Allergies><References/></Interaction></Request>",
+							"value": "<Request><Interaction><Prescribing><Product reference=\"{8A0E925D-745B-4626-9F85-2D82B4240C9C}\" /></Prescribing><Allergies><SubstanceClass reference=\"{A713E866-B041-4235-BE1B-416BBE968D4B}\" /></Allergies><References/></Interaction></Request>",
 							"type": "text"
 						},
 						{
@@ -839,11 +839,14 @@
 					},
 					"status": "OK",
 					"code": 200,
-					"_postman_previewlanguage": null,
+					"_postman_previewlanguage": "xml",
 					"header": [
 						{
 							"key": "Content-Type",
-							"value": "text/plain;charset=UTF-8"
+							"value": "application/xml",
+							"name": "Content-Type",
+							"description": "",
+							"type": "text"
 						},
 						{
 							"key": "Content-Length",
@@ -863,7 +866,77 @@
 						}
 					],
 					"cookie": [],
-					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2025-12-31\"><Interaction><GGPI name=\"captopril 100mg Oral Tablet\" reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><ClassInteraction><PrescribingInteractionClass description=\"ACE inhibitors inhibit the conversion of angiotensin I to angiotensin II.\" name=\"Angiotensin converting enzyme (ACE) inhibitors\" reference=\"{97077317-8EB4-4EE1-8604-5654CF551B85}\"><PrescribingMolecule name=\"captopril\" reference=\"{A5A315C6-86E4-4ACE-89AF-E18B3AED1158}\"/></PrescribingInteractionClass><InteractionClass description=\"Analgesic, antipyretic and anti-inflammatory agents.\" name=\"Salicylates (systemic)\" reference=\"{3CCDBD67-FD02-4AF8-B3EB-E54066A7BAD5}\"><Molecule name=\"aspirin\" reference=\"{68EC41A6-71EE-427C-B261-03425BAA3DD3}\"/></InteractionClass><Severity name=\"Moderate\" ranking=\"4\">Moderate</Severity><Likelihood name=\"Good\" ranking=\"3\">Good</Likelihood><Documentation name=\"Good\" ranking=\"3\">Good</Documentation><Observation><Abbreviated/><Professional>has its effect reduced by</Professional><Full/><Consumer/></Observation><Interaction><Abbreviated/><Professional>Salicylates may reduce the beneficial effects of angiotensin converting enzyme inhibitors (ACEIs). Salicylates inhibit synthesis of prostaglandins and may antagonise antihypertensive effects of ACEIs in a dose-dependent manner, cause vasoconstriction/reduced cardiac output in heart failure patients, as well as increased risk of renal impairment. However, studies have shown that low-dose aspirin (less than or equals to 100 mg per day) is less likely to interact with ACEI. Furthermore, there are conflicting results of aspirin’s effect to worsen heart failure in patients on concomitant ACEI. Nevertheless, if concurrent use is necessary, monitor patient’s clinical condition, blood pressure and renal function.</Professional><Full/><Consumer/></Interaction><Precaution><Abbreviated/><Professional>Use combination with caution.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor patient clinically.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor renal function.</Professional><Full/><Consumer/></Precaution><Precaution><Abbreviated/><Professional>Monitor blood pressure.</Professional><Full/><Consumer/></Precaution><References><JournalReference><Author>Meune C, Mourad JJ, Bergmann JF et al</Author><Title>Interaction between cyclooxygenase and the renin-angiotensin-aldosterone system: rationale and clinical relevance</Title><Journal>J Renin Angiotensin Aldosterone Syst</Journal><Year>2003</Year><Volume>4</Volume><Part>3/Sep</Part><Page>149-54</Page></JournalReference><JournalReference><Author>Levy PD, Nandyal D, Welch RD et al</Author><Title>Does aspirin use adversely influence intermediate-term postdischarge outcomes for hospitalized patients who are treated with angiotensin-converting enzyme inhibitors or angiotensin receptor blockers? Findings from Organized Program to Facilitate Life-Saving Treatment in Hospitalized Patients with Heart Failure (OPTIMIZE-HF)</Title><Journal>Am Heart J</Journal><Year>2010</Year><Volume>159</Volume><Part>2/Feb</Part><Page>222-230</Page></JournalReference><ElectronicReference><Title>ACE inhibitors + Aspirin</Title><RefTitle>Stockleys Drug Interactions</RefTitle><SystemName>MedicinesComplete</SystemName><SystemAuthor>Baxter K (ed)</SystemAuthor><SystemManf>RPS Publishing</SystemManf><SystemManfLoc>London</SystemManfLoc><SystemManfCountry>UK</SystemManfCountry><URL>http://www.medicinescomplete.com/mc</URL><Date>19/09/2016</Date></ElectronicReference><JournalReference><Author>Stys T, Lawson WE, Smaldone GC et al</Author><Title>Does aspirin attenuate the beneficial effects of angiotensin-converting enzyme inhibition in heart failure?</Title><Journal>Arch Intern Med</Journal><Year>2000</Year><Volume>160</Volume><Part>10/May 22</Part><Page>1409-13</Page></JournalReference><JournalReference><Author>Guazzi M, Brambilla R, Reina G et al</Author><Title>Aspirin-angiotensin-converting enzyme inhibitor coadministration and mortality in patients with heart failure: a dose-related adverse effect of aspirin</Title><Journal>Arch Intern Med</Journal><Year>2003</Year><Volume>163</Volume><Part>13/Jul 14</Part><Page>1574-9</Page></JournalReference><JournalReference><Author>Meune C, Mahe I, Mourad JJ et al</Author><Title>Interaction between angiotensin-converting enzyme inhibitors and aspirin: a review</Title><Journal>Eur J Clin Pharmacol</Journal><Year>2000</Year><Volume>56</Volume><Part>9-10/Dec</Part><Page>609-20</Page></JournalReference><JournalReference><Author>Masoudi FA, Wolfe P, Havranek EP et al</Author><Title>Aspirin use in older patients with heart failure and coronary artery disease: national prescription patterns and relationship with outcomes</Title><Journal>J Am Coll Cardiol</Journal><Year>2005</Year><Volume>46</Volume><Part>6/Sep 20</Part><Page>955-62</Page></JournalReference></References></ClassInteraction></Route></Route></GGPI><GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\" rejected=\"true\"/><DuplicateTherapy/></Interaction></Result>"
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2025-12-31\">\n    <Interaction>\n        <GGPI name=\"captopril 100mg Oral Tablet\" reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\">\n            <Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\">\n                <Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\">\n                    <ClassInteraction>\n                        <PrescribingInteractionClass description=\"ACE inhibitors inhibit the conversion of angiotensin I to angiotensin II.\" name=\"Angiotensin converting enzyme (ACE) inhibitors\" reference=\"{97077317-8EB4-4EE1-8604-5654CF551B85}\">\n                            <PrescribingMolecule name=\"captopril\" reference=\"{A5A315C6-86E4-4ACE-89AF-E18B3AED1158}\"/>\n                        </PrescribingInteractionClass>\n                        <InteractionClass description=\"Analgesic, antipyretic and anti-inflammatory agents.\" name=\"Salicylates (systemic)\" reference=\"{3CCDBD67-FD02-4AF8-B3EB-E54066A7BAD5}\">\n                            <Molecule name=\"aspirin\" reference=\"{68EC41A6-71EE-427C-B261-03425BAA3DD3}\"/>\n                        </InteractionClass>\n                        <Severity name=\"Moderate\" ranking=\"4\">Moderate</Severity>\n                        <Likelihood name=\"Good\" ranking=\"3\">Good</Likelihood>\n                        <Documentation name=\"Good\" ranking=\"3\">Good</Documentation>\n                        <Observation>\n                            <Abbreviated/>\n                            <Professional>has its effect reduced by</Professional>\n                            <Full/>\n                            <Consumer/>\n                        </Observation>\n                        <Interaction>\n                            <Abbreviated/>\n                            <Professional>Salicylates may reduce the beneficial effects of angiotensin converting enzyme inhibitors (ACEIs). Salicylates inhibit synthesis of prostaglandins and may antagonise antihypertensive effects of ACEIs in a dose-dependent manner, cause vasoconstriction/reduced cardiac output in heart failure patients, as well as increased risk of renal impairment. However, studies have shown that low-dose aspirin (less than or equals to 100 mg per day) is less likely to interact with ACEI. Furthermore, there are conflicting results of aspirin’s effect to worsen heart failure in patients on concomitant ACEI. Nevertheless, if concurrent use is necessary, monitor patient’s clinical condition, blood pressure and renal function.</Professional>\n                            <Full/>\n                            <Consumer/>\n                        </Interaction>\n                        <Precaution>\n                            <Abbreviated/>\n                            <Professional>Use combination with caution.</Professional>\n                            <Full/>\n                            <Consumer/>\n                        </Precaution>\n                        <Precaution>\n                            <Abbreviated/>\n                            <Professional>Monitor patient clinically.</Professional>\n                            <Full/>\n                            <Consumer/>\n                        </Precaution>\n                        <Precaution>\n                            <Abbreviated/>\n                            <Professional>Monitor renal function.</Professional>\n                            <Full/>\n                            <Consumer/>\n                        </Precaution>\n                        <Precaution>\n                            <Abbreviated/>\n                            <Professional>Monitor blood pressure.</Professional>\n                            <Full/>\n                            <Consumer/>\n                        </Precaution>\n                        <References>\n                            <JournalReference>\n                                <Author>Meune C, Mourad JJ, Bergmann JF et al</Author>\n                                <Title>Interaction between cyclooxygenase and the renin-angiotensin-aldosterone system: rationale and clinical relevance</Title>\n                                <Journal>J Renin Angiotensin Aldosterone Syst</Journal>\n                                <Year>2003</Year>\n                                <Volume>4</Volume>\n                                <Part>3/Sep</Part>\n                                <Page>149-54</Page>\n                            </JournalReference>\n                            <JournalReference>\n                                <Author>Levy PD, Nandyal D, Welch RD et al</Author>\n                                <Title>Does aspirin use adversely influence intermediate-term postdischarge outcomes for hospitalized patients who are treated with angiotensin-converting enzyme inhibitors or angiotensin receptor blockers? Findings from Organized Program to Facilitate Life-Saving Treatment in Hospitalized Patients with Heart Failure (OPTIMIZE-HF)</Title>\n                                <Journal>Am Heart J</Journal>\n                                <Year>2010</Year>\n                                <Volume>159</Volume>\n                                <Part>2/Feb</Part>\n                                <Page>222-230</Page>\n                            </JournalReference>\n                            <ElectronicReference>\n                                <Title>ACE inhibitors + Aspirin</Title>\n                                <RefTitle>Stockleys Drug Interactions</RefTitle>\n                                <SystemName>MedicinesComplete</SystemName>\n                                <SystemAuthor>Baxter K (ed)</SystemAuthor>\n                                <SystemManf>RPS Publishing</SystemManf>\n                                <SystemManfLoc>London</SystemManfLoc>\n                                <SystemManfCountry>UK</SystemManfCountry>\n                                <URL>http://www.medicinescomplete.com/mc</URL>\n                                <Date>19/09/2016</Date>\n                            </ElectronicReference>\n                            <JournalReference>\n                                <Author>Stys T, Lawson WE, Smaldone GC et al</Author>\n                                <Title>Does aspirin attenuate the beneficial effects of angiotensin-converting enzyme inhibition in heart failure?</Title>\n                                <Journal>Arch Intern Med</Journal>\n                                <Year>2000</Year>\n                                <Volume>160</Volume>\n                                <Part>10/May 22</Part>\n                                <Page>1409-13</Page>\n                            </JournalReference>\n                            <JournalReference>\n                                <Author>Guazzi M, Brambilla R, Reina G et al</Author>\n                                <Title>Aspirin-angiotensin-converting enzyme inhibitor coadministration and mortality in patients with heart failure: a dose-related adverse effect of aspirin</Title>\n                                <Journal>Arch Intern Med</Journal>\n                                <Year>2003</Year>\n                                <Volume>163</Volume>\n                                <Part>13/Jul 14</Part>\n                                <Page>1574-9</Page>\n                            </JournalReference>\n                            <JournalReference>\n                                <Author>Meune C, Mahe I, Mourad JJ et al</Author>\n                                <Title>Interaction between angiotensin-converting enzyme inhibitors and aspirin: a review</Title>\n                                <Journal>Eur J Clin Pharmacol</Journal>\n                                <Year>2000</Year>\n                                <Volume>56</Volume>\n                                <Part>9-10/Dec</Part>\n                                <Page>609-20</Page>\n                            </JournalReference>\n                            <JournalReference>\n                                <Author>Masoudi FA, Wolfe P, Havranek EP et al</Author>\n                                <Title>Aspirin use in older patients with heart failure and coronary artery disease: national prescription patterns and relationship with outcomes</Title>\n                                <Journal>J Am Coll Cardiol</Journal>\n                                <Year>2005</Year>\n                                <Volume>46</Volume>\n                                <Part>6/Sep 20</Part>\n                                <Page>955-62</Page>\n                            </JournalReference>\n                        </References>\n                    </ClassInteraction>\n                </Route>\n            </Route>\n        </GGPI>\n        <GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\" rejected=\"true\"/>\n        <DuplicateTherapy/>\n    </Interaction>\n</Result>"
+				},
+				{
+					"name": "Drug–Allergy Alert 01",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><Product reference=\"{8A0E925D-745B-4626-9F85-2D82B4240C9C}\" /></Prescribing><Allergies><SubstanceClass reference=\"{A713E866-B041-4235-BE1B-416BBE968D4B}\" /></Allergies><References/></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "504"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 03 Jan 2026 04:27:49 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2027-12-31\"><Interaction><Product name=\"Metrogyl Injection soln for inj 5 mg/mL\" offMarket=\"false\" reference=\"{8A0E925D-745B-4626-9F85-2D82B4240C9C}\"><Allergy><SubstanceClass name=\"Nitroimidazole derivatives\" reference=\"{A713E866-B041-4235-BE1B-416BBE968D4B}\"><PrescribingMolecule name=\"metroNIDAZOLE\" reference=\"{44E8BE57-6B47-486C-926D-20590D35A3FF}\"/></SubstanceClass></Allergy></Product><DuplicateTherapy/></Interaction></Result>"
 				}
 			]
 		},
@@ -956,7 +1029,7 @@
 					"urlencoded": [
 						{
 							"key": "prescriptionquery",
-							"value": "<Request><Interaction><Prescribing><GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\"/></Prescribing><HealthIssueCodes><HealthIssueCode code=\"J45\" codeType=\"ICD10\"/><HealthIssueCode code=\"N17\" codeType=\"ICD10\"/></HealthIssueCodes><References/></Interaction></Request>",
+							"value": "<Request><Interaction><Prescribing><Product reference=\"{775368B5-254F-4CF0-A605-B64846459BF8}\" /></Prescribing><HealthIssueCodes><HealthIssueCode code=\"R00.1\" codeType=\"ICD10\" /></HealthIssueCodes><References/></Interaction></Request>",
 							"type": "text"
 						},
 						{
@@ -983,7 +1056,218 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Drug–Health Alert rejected",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\"/></Prescribing><HealthIssueCodes><HealthIssueCode code=\"J45\" codeType=\"ICD10\"/><HealthIssueCode code=\"N17\" codeType=\"ICD10\"/></HealthIssueCodes><References/></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "212"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 03 Jan 2026 04:15:02 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2027-12-31\"><Interaction><GGPI reference=\"{BF33752F-6062-0589-E034-0003BA299378}\" rejected=\"true\"/><DuplicateTherapy/></Interaction></Result>"
+				},
+				{
+					"name": "Drug–Health Alert 01",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><Product reference=\"{000347A7-E4B4-4C46-A9C0-EF2545C38634}\" /></Prescribing><HealthIssueCodes><HealthIssueCode code=\"F10.1\" codeType=\"ICD10\" /></HealthIssueCodes><References/></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3297"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 03 Jan 2026 04:21:17 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2027-12-31\"><Interaction><Product name=\"Asolan tab 1 mg\" offMarket=\"false\" reference=\"{000347A7-E4B4-4C46-A9C0-EF2545C38634}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><HealthIssueCode code=\"F10.1\" codeType=\"ICD10\" name=\"Harmful use\"><ClassInteraction><PrescribingInteractionClass description=\"Class of agents that cause CNS depression.\" name=\"Benzodiazepines\" reference=\"{26FFC948-FAE0-4F70-8F65-3B34244FA228}\"><PrescribingMolecule name=\"alprazolam\" reference=\"{B140A4DD-FB71-4087-8318-1B7D80E0965E}\"/></PrescribingInteractionClass><Severity name=\"Extreme Caution\" ranking=\"2\"/><Likelihood name=\"Limited\" ranking=\"2\">Limited</Likelihood><Documentation name=\"Limited\" ranking=\"2\">Limited</Documentation><Interaction><Abbreviated>Patients with a history of alcohol or substance abuse may be at higher risk of developing benzodiazepines abuse. Substance use disorders may also be aggravated by benzodiazepines. Carefully monitor patient’s therapy and consider alternative treatment strategies if clinically appropriate.</Abbreviated><Professional>Patients with a history of alcohol or substance abuse may be at higher risk of developing benzodiazepines abuse. Substance use disorders may also be aggravated by benzodiazepines. Carefully monitor patient’s therapy and consider alternative treatment strategies if clinically appropriate.</Professional><Full/><Consumer/></Interaction><References><JournalReference><Author>Brunette MF, Noordsy DL, Xie H et al</Author><Title>Benzodiazepine use and abuse among patients with severe mental illness and co-occurring substance use disorders</Title><Journal>Psychiatr Serv</Journal><Year>2003</Year><Volume>54</Volume><Part>10/Oct</Part><Page>1395-401</Page></JournalReference><ElectronicReference><Title>Diazepam</Title><RefTitle>Martindale: The Complete Drug Reference</RefTitle><SystemName>MedicinesComplete</SystemName><SystemAuthor>Brayfield A (ed)</SystemAuthor><SystemManf>RPS Publishing</SystemManf><SystemManfLoc>London</SystemManfLoc><SystemManfCountry>UK</SystemManfCountry><URL>http://www.medicinescomplete.com/mc</URL><Date>11/12/2017</Date></ElectronicReference><JournalReference><Author>Gaither JR, Goulet JL, Becker WC et al</Author><Title>The Association Between Receipt of Guideline-Concordant Long-Term Opioid Therapy and All-Cause Mortality</Title><Journal>J Gen Intern Med</Journal><Year>2016</Year><Volume>31</Volume><Part>5/May</Part><Page>492-501</Page></JournalReference><JournalReference><Author>Tevik K, Selb&amp;#230;k G, Engedal K et al</Author><Title>Use of alcohol and drugs with addiction potential among older women and men in a population-based study. The Nord-Tr&amp;#248;ndelag Health Study 2006-2008 (HUNT3)</Title><Journal>PLoS One</Journal><Year>2017</Year><Volume>12</Volume><Part>9/Sep 8</Part><Page>e0184428</Page></JournalReference><JournalReference><Author>Ciraulo DA, Nace EP</Author><Title>Benzodiazepine treatment of anxiety or insomnia in substance abuse patients</Title><Journal>Am J Addict</Journal><Year>2000</Year><Volume>9</Volume><Part>4/Fall</Part><Page>276-9</Page></JournalReference></References></ClassInteraction></HealthIssueCode></Route></Product><DuplicateTherapy/></Interaction></Result>"
+				},
+				{
+					"name": "Drug–Health Alert 02",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prescriptionquery",
+									"value": "<Request><Interaction><Prescribing><Product reference=\"{775368B5-254F-4CF0-A605-B64846459BF8}\" /></Prescribing><HealthIssueCodes><HealthIssueCode code=\"R00.1\" codeType=\"ICD10\" /></HealthIssueCodes><References/></Interaction></Request>",
+									"type": "text"
+								},
+								{
+									"key": "responsetype",
+									"value": "xml",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://49.249.193.198:8081/RESTFTWebService-VN/FTRequest/xmlrequestplus",
+							"protocol": "http",
+							"host": [
+								"49",
+								"249",
+								"193",
+								"198"
+							],
+							"port": "8081",
+							"path": [
+								"RESTFTWebService-VN",
+								"FTRequest",
+								"xmlrequestplus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3074"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 03 Jan 2026 04:24:51 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=20"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "<Result buildID=\"3374\" copyright=\"Copyright (c) 2021 MIMS\" expiryDate=\"2027-12-31\"><Interaction><Product name=\"Manace inj 5 mg/mL\" offMarket=\"false\" reference=\"{775368B5-254F-4CF0-A605-B64846459BF8}\"><Route name=\"Systemic\" reference=\"{90075601-10D4-49DD-9292-9B884D9D3EF3}\"><HealthIssueCode code=\"R00.1\" codeType=\"ICD10\" name=\"Bradycardia, unspecified\"><ClassInteraction><PrescribingInteractionClass description=\"Antipsychotics of the butyrophenone group.\" name=\"Butyrophenone antipsychotics\" reference=\"{024B1CA9-6169-4986-A81F-3FFAE2C56253}\"><PrescribingMolecule name=\"haloperidol\" reference=\"{33CFD35A-2230-4B45-A791-E4CB4C313491}\"/></PrescribingInteractionClass><Severity name=\"Contraindicated\" ranking=\"3\"/><Likelihood name=\"Well Established\" ranking=\"4\">Well Established</Likelihood><Documentation name=\"Well Established\" ranking=\"4\">Well Established</Documentation><Interaction><Abbreviated>The use of butyrophenone antipsychotics in patients with conduction disorders (e.g. significant bradycardia or AV block) may result in cardiac arrhythmia. Closely monitor ECG in these patients if use of butyrophenone antipsychotics cannot be avoided.</Abbreviated><Professional>The use of butyrophenone antipsychotics in patients with conduction disorders (e.g. significant bradycardia or AV block) may result in cardiac arrhythmia. Closely monitor ECG in these patients if use of butyrophenone antipsychotics cannot be avoided.</Professional><Full/><Consumer/></Interaction><References><JournalReference><Author>Gury C, Canceil O, Iaria P</Author><Title>Antipsychotic drugs and cardiovascular safety: current studies of prolonged QT interval and risk of ventricular arrhythmia</Title><Journal>Encephale</Journal><Year>2000</Year><Volume>26</Volume><Part>6/Nov-Dec</Part><Page>62-72</Page></JournalReference><JournalReference><Author>Pacher P, Kecskemeti V</Author><Title>Cardiovascular side effects of new antidepressants and antipsychotics: new drugs, old concerns?</Title><Journal>Curr Pharm Des</Journal><Year>2004</Year><Volume>10</Volume><Part>20</Part><Page>2463-75</Page></JournalReference><JournalReference><Author>Vieweg WV, Wood MA, Fernandez A et al</Author><Title>Proarrhythmic risk with antipsychotic and antidepressant drugs: implications in the elderly</Title><Journal>Drugs Aging</Journal><Year>2009</Year><Volume>26</Volume><Part>12</Part><Page>997-1012</Page></JournalReference><JournalReference><Author>Ginwalla M, Biblo LA, Paydak H</Author><Title>Torsade de pointes following intravenous haloperidol administration in a patient with complete heart block</Title><Journal>WMJ</Journal><Year>2009</Year><Volume>108</Volume><Part>1/Feb</Part><Page>48-50</Page></JournalReference><JournalReference><Author>St&amp;#246;llberger C, Huber JO, Finsterer J</Author><Title>Antipsychotic drugs and QT prolongation</Title><Journal>Int Clin Psychopharmacol</Journal><Year>2005</Year><Volume>20</Volume><Part>5/Sep</Part><Page>243-51</Page></JournalReference></References></ClassInteraction></HealthIssueCode></Route></Product><DuplicateTherapy/></Interaction></Result>"
+				}
+			]
 		},
 		{
 			"name": "VN Contraindication Alert",
@@ -1015,7 +1299,7 @@
 					"urlencoded": [
 						{
 							"key": "prescriptionquery",
-							"value": "<Request><Interaction><Prescribing><ItemCode value=\"17\"/><ItemCode value=\"99\"/></Prescribing></Interaction></Request>",
+							"value": "<Request><Interaction><Prescribing><ItemCode=\" 21863\" /><ItemCode=\" 10226\" /><ItemCode=\"20824\" /><ItemCode=\"19007\" /></Prescribing></Interaction></Request>",
 							"type": "text"
 						},
 						{

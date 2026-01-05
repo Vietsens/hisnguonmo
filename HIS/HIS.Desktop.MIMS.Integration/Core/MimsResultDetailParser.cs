@@ -103,23 +103,22 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     var interactionClass = ci.Element("InteractionClass");
                     var molecule = interactionClass != null ? interactionClass.Element("Molecule") : null;
 
-                    var detail = new DrugDrugAlertDetail
-                    {
-                        PrimaryDrugName = primaryDrugName,
-                        PrimaryDrugReference = primaryDrugRef,
-                        InteractingDrugName = molecule != null ? (string)molecule.Attribute("name") : null,
-                        InteractingDrugReference = molecule != null && molecule.Attribute("reference") != null ? (string)molecule.Attribute("reference") : secondaryDrugRef,
-                        PrescribingClassName = prescribingClass != null ? (string)prescribingClass.Attribute("name") : null,
-                        InteractingClassName = interactionClass != null ? (string)interactionClass.Attribute("name") : null,
-                        Severity = (string)ci.Element("Severity"),
-                        Likelihood = (string)ci.Element("Likelihood"),
-                        Documentation = (string)ci.Element("Documentation"),
-                        ProfessionalText = ci.Element("Interaction") != null ? (string)ci.Element("Interaction").Element("Professional") : null
-                    };
+                    var detail = new DrugDrugAlertDetail();
+                    detail.PrimaryDrugName = primaryDrugName;
+                    detail.PrimaryDrugReference = primaryDrugRef;
+                    detail.InteractingDrugName = molecule != null ? (string)molecule.Attribute("name") : null;
+                    detail.InteractingDrugReference = (molecule != null && molecule.Attribute("reference") != null) ? (string)molecule.Attribute("reference") : secondaryDrugRef;
+                    detail.PrescribingClassName = prescribingClass != null ? (string)prescribingClass.Attribute("name") : null;
+                    detail.InteractingClassName = interactionClass != null ? (string)interactionClass.Attribute("name") : null;
+                    detail.Severity = (string)ci.Element("Severity");
+                    detail.Likelihood = (string)ci.Element("Likelihood");
+                    detail.Documentation = (string)ci.Element("Documentation");
+                    detail.ProfessionalText = (ci.Element("Interaction") != null && ci.Element("Interaction").Element("Professional") != null) ? (string)ci.Element("Interaction").Element("Professional") : null;
 
                     foreach (var p in ci.Elements("Precaution"))
                     {
-                        var text = (string)p.Element("Professional");
+                        var professionalElem = p.Element("Professional");
+                        var text = professionalElem != null ? (string)professionalElem : null;
                         if (!string.IsNullOrEmpty(text) && text.Trim().Length > 0)
                         {
                             detail.Precautions.Add(text);
@@ -130,6 +129,158 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 }
 
                 return result.Count > 0 ? result : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Parse kết quả Drug-Allergy Alert (Result/Interaction/GGPI/Product/GenericItem/Allergy...).
+        /// </summary>
+        public static List<DrugAllergyAlertDetail> ParseDrugAllergyAlerts(string xml)
+        {
+            if (string.IsNullOrEmpty(xml) || xml.Trim().Length == 0)
+                return null;
+
+            try
+            {
+                var doc = XDocument.Parse(xml);
+                var root = doc.Root;
+                if (root == null) return null;
+                var interaction = root.Element("Interaction");
+                if (interaction == null) return null;
+
+                var list = new List<DrugAllergyAlertDetail>();
+
+                foreach (var drugNode in interaction.Elements())
+                {
+                    var nodeName = drugNode.Name.LocalName;
+                    if (nodeName != "GGPI" && nodeName != "Product" && nodeName != "GenericItem")
+                        continue;
+
+                    var allergy = drugNode.Element("Allergy");
+                    if (allergy == null)
+                        continue;
+
+                    foreach (var allergenNode in allergy.Elements())
+                    {
+                        var allergenType = allergenNode.Name.LocalName;
+                        var allergenName = (string)allergenNode.Attribute("name");
+                        var allergenRef = (string)allergenNode.Attribute("reference");
+
+                        string allergyClassName = null;
+                        string allergyClassRef = null;
+
+                        XElement classElement = null;
+                        if (allergenNode.Name.LocalName == "Molecule")
+                        {
+                            classElement = allergenNode.Element("SubstanceClass");
+                        }
+                        else if (allergenNode.Name.LocalName == "SubstanceClass")
+                        {
+                            classElement = allergenNode;
+                        }
+
+                        if (classElement != null)
+                        {
+                            allergyClassName = (string)classElement.Attribute("name");
+                            allergyClassRef = (string)classElement.Attribute("reference");
+                        }
+
+                        var detail = new DrugAllergyAlertDetail
+                        {
+                            DrugName = (string)drugNode.Attribute("name"),
+                            DrugReference = (string)drugNode.Attribute("reference"),
+                            AllergenNodeType = allergenType,
+                            AllergenName = allergenName,
+                            AllergenReference = allergenRef,
+                            AllergyClassName = allergyClassName,
+                            AllergyClassReference = allergyClassRef
+                        };
+
+                        list.Add(detail);
+                    }
+                }
+
+                return list.Count > 0 ? list : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Parse kết quả Drug-Health Alert (Result/Interaction/GGPI/.../Route/HealthIssueCode/ClassInteraction...).
+        /// </summary>
+        public static List<DrugHealthAlertDetail> ParseDrugHealthAlerts(string xml)
+        {
+            if (string.IsNullOrEmpty(xml) || xml.Trim().Length == 0)
+                return null;
+
+            try
+            {
+                var doc = XDocument.Parse(xml);
+                var root = doc.Root;
+                if (root == null) return null;
+                var interaction = root.Element("Interaction");
+                if (interaction == null) return null;
+
+                var list = new List<DrugHealthAlertDetail>();
+
+                foreach (var drugNode in interaction.Elements())
+                {
+                    var nodeName = drugNode.Name.LocalName;
+                    if (nodeName != "GGPI" && nodeName != "Product" && nodeName != "GenericItem")
+                        continue;
+
+                    string drugName = (string)drugNode.Attribute("name");
+                    string drugRef = (string)drugNode.Attribute("reference");
+
+                    foreach (var route in drugNode.Elements("Route"))
+                    {
+                        string routeName = (string)route.Attribute("name");
+
+                        foreach (var hic in route.Elements("HealthIssueCode"))
+                        {
+                            string code = (string)hic.Attribute("code");
+                            string codeType = (string)hic.Attribute("codeType");
+                            string issueName = (string)hic.Attribute("name");
+
+                            foreach (var ci in hic.Elements("ClassInteraction"))
+                            {
+                                var prescribingClass = ci.Element("PrescribingInteractionClass");
+                                var severityElem = ci.Element("Severity");
+                                var likelihoodElem = ci.Element("Likelihood");
+                                var documentationElem = ci.Element("Documentation");
+                                var interactionElem = ci.Element("Interaction");
+
+                                var detail = new DrugHealthAlertDetail();
+                                detail.DrugName = drugName;
+                                detail.DrugReference = drugRef;
+                                detail.RouteName = routeName;
+                                detail.HealthIssueCode = code;
+                                detail.HealthIssueCodeType = codeType;
+                                detail.HealthIssueName = issueName;
+                                detail.PrescribingClassName = prescribingClass != null ? (string)prescribingClass.Attribute("name") : null;
+                                detail.PrescribingClassDescription = prescribingClass != null ? (string)prescribingClass.Attribute("description") : null;
+                                detail.PrescribingMoleculeName = (prescribingClass != null && prescribingClass.Element("PrescribingMolecule") != null) ? (string)prescribingClass.Element("PrescribingMolecule").Attribute("name") : null;
+                                detail.Severity = severityElem != null ? ((string)severityElem.Attribute("name") != null ? (string)severityElem.Attribute("name") : severityElem.Value) : null;
+                                detail.Likelihood = likelihoodElem != null ? ((string)likelihoodElem.Attribute("name") != null ? (string)likelihoodElem.Attribute("name") : likelihoodElem.Value) : null;
+                                detail.Documentation = documentationElem != null ? ((string)documentationElem.Attribute("name") != null ? (string)documentationElem.Attribute("name") : documentationElem.Value) : null;
+                                detail.ProfessionalText = (interactionElem != null && interactionElem.Element("Professional") != null) ? (string)interactionElem.Element("Professional") : null;
+
+                                list.Add(detail);
+                            }
+                        }
+                    }
+                }
+
+                return list.Count > 0 ? list : null;
             }
             catch (Exception ex)
             {

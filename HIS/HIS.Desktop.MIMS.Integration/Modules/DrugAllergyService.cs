@@ -44,27 +44,31 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             }
 
             var trimmed = xmlResponse.TrimStart();
-            if (trimmed.StartsWith("<Error", System.StringComparison.OrdinalIgnoreCase))
-            {
-                result.IsErrorResponse = true;
-                try
-                {
-                    var doc = XDocument.Parse(xmlResponse);
-                    result.ErrorMessage = (string)doc.Root.Element("Message");
-                }
-                catch
-                {
-                    result.ErrorMessage = xmlResponse;
-                }
+			if (trimmed.StartsWith("<Error", System.StringComparison.OrdinalIgnoreCase))
+			{
+				result.IsErrorResponse = true;
+				try
+				{
+					var doc = XDocument.Parse(xmlResponse);
+					result.ErrorMessage = (string)doc.Root.Element("Message");
+				}
+				catch
+				{
+					result.ErrorMessage = xmlResponse;
+				}
 
-                result.Success = false;
-                result.Message = result.ErrorMessage;
-                result.Html = BuildSimpleHtml(result.ErrorMessage ?? "MIMS trả về lỗi.");
-                return result;
-            }
+				result.Success = false;
+				result.Message = result.ErrorMessage;
+				result.Html = BuildSimpleHtml(result.ErrorMessage ?? "MIMS trả về lỗi.");
+				return result;
+			}
 
 			result.Html = MimsResponseTransformer.XmlToHtml(xmlResponse);
 			result.Success = !string.IsNullOrEmpty(result.Html);
+
+            // Parse chi tiết Drug-Allergy Alert (theo XML Result trong tài liệu MIMS).
+            result.DrugAllergyAlertDetails = MimsResultDetailParser.ParseDrugAllergyAlerts(xmlResponse);
+
 			return result;
 		}
 
