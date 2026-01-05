@@ -65,12 +65,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     {
                         cer_serial = configArr[2];
                     }
-                    //string invoiceType = ""; 
-                    //if(configArr.Length > 3)
-                    //{
-                    //    invoiceType = configArr[3]; 
-                    //}
-                    //bool isSign = (!string.IsNullOrWhiteSpace(cer_serial) && invoiceType != "1");  
+                    string invoiceType = "";
+                    if (configArr.Length > 3)
+                    {
+                        invoiceType = configArr[3];
+                    }
+                    bool isSign = (!string.IsNullOrWhiteSpace(cer_serial) && invoiceType != "1");
 
                     if (String.IsNullOrEmpty(serviceUrl))
                     {
@@ -94,10 +94,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                         case ElectronicBillType.ENUM.CREATE_INVOICE:
                             ProcessGetDataReferences(ref result); // lấy thông tin phát hành hóa đơn
                             ProcessCreateInvoice(ref result); // tạo
-                            //if (isSign)
-                            //{
+                            if (isSign)
+                            {
                                 ProcessSignInvoiceCertFile(ref result); // ký
-                            //}
+                            }
                             break;
                         case ElectronicBillType.ENUM.GET_INVOICE_LINK:
                             ProcessPrintInvoice(ref result);
@@ -604,7 +604,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
             try
             {
                 string[] configArr = serviceConfig.Split('|');
-                if (configArr.Length < 3)
+                if (configArr.Length < 2)
                     throw new Exception("Sai định dạng cấu hình hệ thống.");
                 if (configArr[0] != ProviderType.MOBIFONE)
                     throw new Exception("Không đúng cấu hình nhà cung cấp MOBIFONE");
