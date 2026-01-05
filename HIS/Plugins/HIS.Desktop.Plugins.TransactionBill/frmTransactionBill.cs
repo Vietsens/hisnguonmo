@@ -4357,15 +4357,34 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 WaitingManager.Show();
 
-                HIS_TREATMENT treatment = GetTreatment(this.treatmentId);
+                bool isChecking = Convert.ToBoolean(e.NewValue);
 
+                decimal receiveAmount = 0;
+                decimal tienBaoLanh = 0;
+
+                decimal.TryParse(lblReceiveAmount.Text.Replace(",", ""), out receiveAmount);
+                decimal.TryParse(lblBaoLanh.Text, out tienBaoLanh);
+
+                if (!isChecking)
+                {
+                    // Cộng lại tiền đã bảo lãnh
+                    receiveAmount = receiveAmount + tienBaoLanh;
+
+                    lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(
+                        receiveAmount, ConfigApplications.NumberSeperator
+                    );
+                    this.txtSoGiaoDich.Text = string.Empty;
+                    // Cho phép bỏ check
+                    return;
+                }
+                
                 var sysConfigValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO");
                 string[] p = (sysConfigValue ?? "").Split('|');
                 if (p.Length < 3) throw new Exception("SysConfig không đúng định dạng");
 
                 var form = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.MedicalExpenseGuaranteeProcessor();
                 var use = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.DataInput();
-                string remark = "Thanh toán viện phí cho bệnh nhân " + treatment?.TDL_PATIENT_NAME;
+                string remark = "Thanh toán viện phí cho bệnh nhân " + currentTreatment?.TDL_PATIENT_NAME;
 
                 use.baseUri = p[0];
                 use.applicationCode = p[1].Split(':')[0];
@@ -4373,35 +4392,27 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 use.cskcbbd = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE; ;
 
                 use.useRequest = new Library.MedicalExpenseGuarantee.ADO.UseRequest();
-                use.useRequest.RequestId = treatment?.GUARANTEE_REQUEST_CODE;
-                use.useRequest.Amount = this.lblBaoLanh.Text ;
+                use.useRequest.RequestId = currentTreatment?.GUARANTEE_REQUEST_CODE;
+                use.useRequest.Amount = this.lblBaoLanh.Text;
                 use.useRequest.Remark = remark;
-                use.useRequest.ContractNumber = treatment?.GUARANTEE_CODE;
-                use.useRequest.PatientFullName = treatment?.TDL_PATIENT_NAME;
-                use.useRequest.PatientDateOfBirth = treatment?.TDL_PATIENT_DOB.ToString();
-                use.useRequest.PatientCccd = treatment?.TDL_PATIENT_CCCD_NUMBER;
+                use.useRequest.ContractNumber = currentTreatment?.GUARANTEE_CODE;
+                use.useRequest.PatientFullName = currentTreatment?.TDL_PATIENT_NAME;
+                use.useRequest.PatientDateOfBirth = currentTreatment?.TDL_PATIENT_DOB.ToString();
+                use.useRequest.PatientCccd = currentTreatment?.TDL_PATIENT_CCCD_NUMBER;
                 var res = form.GuaranteeUse(use);
                 if (res?.Success == true && res.Data?.Data != null)
                 {
                     this.guaranteeAmountRes = lblBaoLanh.Text ?? "0";
                     this.txtSoGiaoDich.Text = res.Data.Data.RefNo ?? string.Empty;
 
-                    // Đổi lblReceiveAmount.Text về số
-                    decimal receiveAmount = 0;
-                    decimal tienBaoLanh = 0;
-
-                    decimal.TryParse(lblReceiveAmount.Text.Replace(",", ""), out receiveAmount);
-                    decimal.TryParse(lblBaoLanh.Text, out tienBaoLanh);
-
                     // Trừ bảo lãnh và gán lại
                     receiveAmount -= tienBaoLanh;
                     if (receiveAmount < 0) receiveAmount = 0;
-
-                    lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(
-                        receiveAmount, ConfigApplications.NumberSeperator);
+                    lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(receiveAmount, ConfigApplications.NumberSeperator);
                 }
                 else
                 {
+                    WaitingManager.Hide();
                     XtraMessageBox.Show("Bảo lãnh viện phí thất bại.", "Thông báo");
                     e.Cancel = true;
                 }
@@ -4413,7 +4424,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 WaitingManager.Hide();
             }
         }
-       
         private void RunGuaranteeCheck()
         {
             if (currentTreatment != null && !string.IsNullOrEmpty(currentTreatment.GUARANTEE_CODE))
