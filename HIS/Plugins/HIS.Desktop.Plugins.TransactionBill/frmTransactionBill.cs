@@ -4357,6 +4357,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 WaitingManager.Show();
 
+                var sysConfigValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO");
+                string[] p = (sysConfigValue ?? "").Split('|');
+                if (p.Length < 3)
+                {
+                    e.Cancel = true;
+                    throw new Exception("Cấu hình MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO không đúng định dạng");
+                }
+
                 bool isChecking = Convert.ToBoolean(e.NewValue);
 
                 decimal receiveAmount = 0;
@@ -4377,10 +4385,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     // Cho phép bỏ check
                     return;
                 }
-                
-                var sysConfigValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO");
-                string[] p = (sysConfigValue ?? "").Split('|');
-                if (p.Length < 3) throw new Exception("SysConfig không đúng định dạng");
 
                 var form = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.MedicalExpenseGuaranteeProcessor();
                 var use = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.DataInput();
