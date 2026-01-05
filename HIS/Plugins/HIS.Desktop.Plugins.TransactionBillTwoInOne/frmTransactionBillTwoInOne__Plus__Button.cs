@@ -977,6 +977,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 billTwoBookSDO.RecieptTransaction.EXEMPTION_REASON = txtRecieptReason.Text;
                 billTwoBookSDO.RecieptTransaction.DESCRIPTION = txtRecieptDescription.Text;
                 billTwoBookSDO.RecieptTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
+                billTwoBookSDO.RecieptTransaction.DESCRIPTION = txtDescription.Text;
+                billTwoBookSDO.RecieptTransaction.GUARANTEE_REF_CODE = txtGuaranteedRefCode.Text;
+                billTwoBookSDO.RecieptTransaction.GUARANTEE_AMOUNT = tongTienBaoLanh;
 
                 if (chkBuyerInfo.Checked)
                 {
@@ -1139,7 +1142,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 billTwoBookSDO.InvoiceTransaction.EXEMPTION_REASON = txtInvoiceReason.Text;
                 billTwoBookSDO.InvoiceTransaction.DESCRIPTION = txtInvoiceDescription.Text;
                 billTwoBookSDO.InvoiceTransaction.BUYER_ACCOUNT_NUMBER = txtBuyerAccountCode.Text;
-                
+                billTwoBookSDO.InvoiceTransaction.DESCRIPTION = txtDescription.Text;
+                billTwoBookSDO.InvoiceTransaction.GUARANTEE_REF_CODE = txtGuaranteedRefCode.Text;
+                billTwoBookSDO.InvoiceTransaction.GUARANTEE_AMOUNT = tongTienBaoLanh;
+
+
                 if (chkBuyerInfo.Checked)
                 {
                     billTwoBookSDO.InvoiceTransaction.BUYER_NAME = txtBuyerName.Text;
