@@ -3996,7 +3996,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         PatientCccd = this.currentHisTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentHisTreatment.TDL_PATIENT_CMND_NUMBER,
                         RequestAmount = guaranteeDefaultLimit,
                         ApplicationCode = guaranteeAppCode,
-                        Remark = "Tra cứu hạn mức bảo lãnh cho bệnh nhân " + this.currentHisTreatment.TDL_PATIENT_NAME,
+                        Remark = "Tra cứu hạn mức bảo lãnh",
                         Signature = ""
                     };
 
@@ -4026,7 +4026,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         PatientDateOfBirth = this.currentHisTreatment.TDL_PATIENT_DOB.ToString(),
                         PatientCccd = this.currentHisTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentHisTreatment.TDL_PATIENT_CMND_NUMBER,
                         ApplicationCode = guaranteeAppCode,
-                        Remark = "Tra cứu hạn mức bảo lãnh cho bệnh nhân " + this.currentHisTreatment.TDL_PATIENT_NAME
+                        Remark = "Tra cứu hạn mức bảo lãnh"
                     };
                     AvailableBalanceInfoResponse balanceInfoResponse = new AvailableBalanceInfoResponse();
                     balanceInfoResponse = medicalExpenseGuarantee.GuaranteeAvailableBalanceInfoResponse(dataInput);
@@ -4129,7 +4129,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //    //}
                 //}
 
-                if ( decimal.Parse(lblTotalGuarantee.Text) > this.guaranteeInfo.GUARANTEE_REGISTER)
+                decimal totalGuarantee;
+                if (decimal.TryParse(lblTotalGuarantee.Text, out totalGuarantee) && totalGuarantee > this.guaranteeInfo.GUARANTEE_REGISTER)
                 {
                     message = "Tổng tiền dịch vụ đã vượt hạn mức vui lòng kiểm tra lại.";
                     return false;
@@ -4176,7 +4177,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     return;
                 }
 
-                if (this.guaranteeInfo != null && !string.IsNullOrEmpty(this.currentHisTreatment?.GUARANTEE_CODE))
+                if (this.guaranteeInfo != null && this.currentHisTreatment != null && !string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
                 {
                     decimal totalGuaranteePrice = GetTotalGuaranteePrice();
                     lblTotalGuarantee.Text = Inventec.Common.Number.Convert.NumberToString(totalGuaranteePrice, ConfigApplications.NumberSeperator);
@@ -4193,7 +4194,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             decimal totalGuaranteePrice = 0;
             try
             {
-                if (this.guaranteeInfo == null || string.IsNullOrEmpty(this.currentHisTreatment?.GUARANTEE_CODE))
+                if (this.guaranteeInfo == null || this.currentHisTreatment == null || string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
                     return 0;
 
                 long instructionTime = this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0 ? this.intructionTimeSelecteds.FirstOrDefault() : 0;
