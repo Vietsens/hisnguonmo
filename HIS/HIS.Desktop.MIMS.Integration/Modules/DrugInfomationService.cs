@@ -16,16 +16,22 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 
         public MimsResult Check(DrugItem drug)
         {
+            var result = new MimsResult();
+            if (drug == null || drug.MimsGuid == null)
+            {
+                result.Success = false;
+                result.Message = "Không có thông tin thuốc kiểm tra tương tác";
+                result.Html = BuildSimpleHtml(result.Message);
+                ShowResult(result);
+                return result;
+            }
             string xmlRequest = MimsRequestBuilder.BuildDrugInformationRequest(drug);
 
             bool isTimeout;
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xmlRequest, out isTimeout);
 
-            var result = new MimsResult
-            {
-                RawXml = xmlResponse,
-                IsTimeout = isTimeout
-            };
+            result.RawXml = xmlResponse;
+            result.IsTimeout = isTimeout;
 
             if (isTimeout)
             {

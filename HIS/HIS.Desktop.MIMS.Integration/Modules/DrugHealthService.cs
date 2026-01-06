@@ -19,16 +19,22 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// </summary>
         public MimsResult Check(List<DrugItem> drugs, List<string> icd10Codes)
         {
+            var result = new MimsResult();
+            if (drugs == null || drugs.Count == 0 || !drugs.Exists(o=>o.MimsGuid!=null))
+            {
+                result.Success = false;
+                result.Message = "Không có thông tin thuốc kiểm tra tương tác";
+                result.Html = BuildSimpleHtml(result.Message);
+                ShowResult(result);
+                return result;
+            }
             string xmlRequest = MimsRequestBuilder.BuildDrugHealthAlertRequest(drugs, icd10Codes);
 
             bool isTimeout;
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xmlRequest, out isTimeout);
 
-            var result = new MimsResult
-            {
-                RawXml = xmlResponse,
-                IsTimeout = isTimeout
-            };
+            result.RawXml = xmlResponse;
+            result.IsTimeout = isTimeout;
 
             if (isTimeout)
             {
