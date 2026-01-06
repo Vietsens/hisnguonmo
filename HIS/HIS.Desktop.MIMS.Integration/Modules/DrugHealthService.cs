@@ -89,6 +89,16 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             }
         }
 
+        public bool ShowDialog(List<DrugItem> drugs, List<string> icd10Codes)
+        {
+            MimsResult result = Check(drugs, icd10Codes);
+            if (result != null && !string.IsNullOrEmpty(result.Html))
+            {
+                return WebViewHelper.ShowDialog(result.Html, "Kiểm tra bệnh lý nền (Drug-Health Alert)");
+            }
+            return false;
+        }
+
         public void ShowResultAsync(List<DrugItem> drugs, List<string> icd10Codes)
         {
             WebViewHelper.ShowResultAsync(() => Check(drugs, icd10Codes), "Kiểm tra bệnh lý nền (Drug-Health Alert)");

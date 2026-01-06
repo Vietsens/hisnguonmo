@@ -86,5 +86,15 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         {
             WebViewHelper.ShowResultAsync(() => Check(current, previous), "Kiểm tra tương tác thuốc");
         }
+
+        public bool ShowDialog(List<DrugItem> drugs, List<DrugItem> previous)
+        {
+            MimsResult result = Check(drugs, previous);
+            if (result != null && !string.IsNullOrEmpty(result.Html))
+            {
+                return WebViewHelper.ShowDialog(result.Html, "Kiểm tra tương tác thuốc");
+            }
+            return false;
+        }
     }
 }
