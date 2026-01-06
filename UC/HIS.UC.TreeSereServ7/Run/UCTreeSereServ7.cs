@@ -292,6 +292,7 @@ namespace HIS.UC.TreeSereServ7.Run
                         treeListColumn.ColumnEdit = buttonEdit;
                         treeListColumn.Width = 28;
                         treeListColumn.ToolTip = svtr.Tooltip;
+                        treeListColumn.FieldName = svtr.FieldName;
                         treeListColumn.VisibleIndex = svtr.VisibleIndex;
                         treeListColumn.Caption = svtr.Caption;
                         treeListColumn.ImageAlignment = StringAlignment.Center;

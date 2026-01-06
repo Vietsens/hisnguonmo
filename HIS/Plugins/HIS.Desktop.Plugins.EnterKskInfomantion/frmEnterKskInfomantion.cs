@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -90,6 +90,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
         List<V_HIS_EXECUTE_ROOM> listExecuteRoom;
         List<V_HIS_EXECUTE_ROOM> _ExecuteRoomSearchSelecteds;
         List<V_HIS_EXECUTE_ROOM> listDepartmentRoom;
+        private string _serviceReqCode;
         #endregion
 
         public enum ServiceReqStatus
@@ -102,7 +103,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
 
         HIS_KSK_GENERAL HisKskGeneral = new HIS_KSK_GENERAL();
         #region Construct
-        public frmEnterKskInfomantion(Inventec.Desktop.Common.Modules.Module moduleData)
+        public frmEnterKskInfomantion(Inventec.Desktop.Common.Modules.Module moduleData, string serviceReqCode)
             : base(moduleData)
         {
             try
@@ -111,6 +112,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
 
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
+                _serviceReqCode = serviceReqCode;
                 gridControlServiceReq.ToolTipController = toolTipControllerGrid;
 
                 try
@@ -369,6 +371,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     lblPatientCode.Text = data.TDL_PATIENT_CODE;
                     lblPatientName.Text = data.TDL_PATIENT_NAME;
                     lblGender.Text = data.TDL_PATIENT_GENDER_NAME;
+                    string gender = (data.TDL_PATIENT_GENDER_NAME).Trim().ToLower();
+                    bool isFemale = gender == "nữ" || gender == "nu";
+                    ApplyObstetricHistoryVisibility(isFemale);
                     if (data.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                         lblBirthDate.Text = data.TDL_PATIENT_DOB.ToString().Substring(0, 4);
                     else
@@ -400,6 +405,69 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     {
                         lblKSKContract.Text = "";
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ApplyObstetricHistoryVisibility(bool isFemale)
+        {
+            try
+            {
+                layoutControlTab1.BeginUpdate();
+                try
+                {
+                    var items = new DevExpress.XtraLayout.BaseLayoutItem[]
+                    {
+                        layoutControlItem154,
+                        layoutControlItem155,
+                        layoutControlItem156,
+                        layoutControlItem157,
+                        layoutControlItem158,
+                        layoutControlItem159,
+                        layoutControlItem160,
+                        layoutControlItem161,
+                        layoutControlItem162,
+                        layoutControlItem163,
+                        layoutControlItem164,
+                        layoutControlItem165,
+                        layoutControlItem166,
+                        layoutControlItem167,
+                        layoutControlItem168,
+                        layoutControlItem169,
+                        layoutControlItem170,
+                        layoutControlItem171,
+                        layoutControlItem172,
+                        layoutControlItem173,
+                        layoutControlItem174,
+                        layoutControlItem175,
+                        layoutControlItem176,
+                        layoutControlItem177,
+                        layoutControlItem178,
+                        layoutControlItem179,
+                        layoutControlItem180,
+                        layoutControlItem181,
+                        layoutControlItem182,
+
+                        // lciNoteContraceptives,
+                    };
+
+                    foreach (var it in items)
+                    {
+                        if (it == null) continue;
+                        it.Visibility = isFemale
+                            ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                            : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    }
+
+                    // optional: nếu ẩn thì có thể clear dữ liệu vùng này để tránh “dính dữ liệu nữ” qua nam
+                    // if (!isFemale) ClearObstetricHistoryControls();
+                }
+                finally
+                {
+                    layoutControlTab1.EndUpdate();
                 }
             }
             catch (Exception ex)
@@ -920,6 +988,14 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 //Gan gia tri mac dinh
                 SetDefaultValue();
 
+                //an hien tab theo cau hinh
+                ApplyHiddenTabOption();
+
+                if (!string.IsNullOrWhiteSpace(_serviceReqCode))
+                {
+                    txtServiceReqCodeForSearch.Text = _serviceReqCode.Trim();
+                }
+
                 //Load du lieu
                 FillDataToGridControl();
 
@@ -945,6 +1021,31 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ApplyHiddenTabOption()
+        {
+            int opt = HIS.Desktop.Plugins.EnterKskInfomantion.Config.HisConfig.HiddenTabOption;
+
+            if (opt == 1)
+            {
+                xtraTabPage1.PageVisible = true;
+                xtraTabPage5.PageVisible = false;
+                xtraTabControl1.SelectedTabPage = xtraTabPage1;
+            }
+            else if (opt == 2)
+            {
+                xtraTabPage1.PageVisible = false;
+                xtraTabPage5.PageVisible = true;
+                xtraTabControl1.SelectedTabPage = xtraTabPage5;
+            }
+            else
+            {
+                // Mặc định: hiện cả 2 tab
+                xtraTabPage1.PageVisible = true;
+                xtraTabPage5.PageVisible = true;
+
+                xtraTabControl1.SelectedTabPage = xtraTabPage1;
             }
         }
 
@@ -3317,6 +3418,105 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
         private void xtraTabPage5_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void btnChooseResultTab5_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
+                else if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.currentTreatmentId);
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)SelectDataResultTab5);
+                    listArgs.Add(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId));
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+        private void SelectDataResultTab5(object data)
+        {
+            try
+            {
+                if (data != null && data is string)
+                {
+                    string dienBien = data as string;
+                    memoSubclinicalResult.Text = dienBien;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+
+        }
+        private void ExclusiveNullablePair(DevExpress.XtraEditors.CheckEdit me,
+                                  DevExpress.XtraEditors.CheckEdit other)
+        {
+            if (Equals(me.Tag, "UPDATE")) return;
+
+            try
+            {
+                me.Tag = "UPDATE";
+                other.Tag = "UPDATE";
+                if(me.Checked)
+                {
+                    other.Checked = false;
+                }
+            }
+            finally
+            {
+                me.Tag = null;
+                other.Tag = null;
+            }
+        }
+
+        private void chkMarriedYes_CheckedChanged(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMarriedNo);
+        }
+
+        private void chkMarriedNo_CheckedChanged(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMarriedYes);
+        }
+
+        private void chkMenstrualRegular_CheckedChanged(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualIrregular);
+        }
+
+        private void chkMenstrualIrregular_CheckedChanged(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualRegular);
+        }
+
+        private void chkMenstrualYes_CheckedChanged(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualNo);
+        }
+
+        private void chkMenstrualNo_CheckedChanged(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualYes);
+        }
+
+        private void chkContraceptionYes_CheckedChanged(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkContraceptionNo);
+        }
+
+        private void chkContraceptionNo_CheckedChanged(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkContraceptionYes);
         }
     }
 }
