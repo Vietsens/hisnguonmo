@@ -27,8 +27,8 @@ namespace HIS.Desktop.MIMS.Integration.Models
 
     public enum MimsDrugType
     {
-        Product,
-        GGPI,
-        GenericItem
+        GGPI = 1,
+        Product = 2,
+        GenericItem = 3
     }
 }
