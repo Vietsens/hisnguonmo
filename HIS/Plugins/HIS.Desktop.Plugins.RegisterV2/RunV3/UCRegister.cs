@@ -190,7 +190,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 
                 LogSystem.Debug("UCRegister_Load .7");
                 LoadDefaultScreenSaver();
-                if (!String.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection))
+                if (!String.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection) || HisConfigCFG.GuaranteeConnection != "")
                 {
                     layoutControlItem32.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 }
@@ -1088,7 +1088,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
                 this.chkBaoLanh.Checked = false;
                 //Goji thư viện
-                
+                layoutControlItem31.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 //gọi hàm hủy bảo lãnh
                 var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
                 if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)
@@ -2088,7 +2088,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         {
             try
             {
-                if (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection))
+                if (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection) || HisConfigCFG.GuaranteeConnection != "")
                 {
                     // Parse cấu trúc: <Địa chỉ>|<Mã ứng dụng>:<Tài khoản>:<mật khẩu>|<hạn mức đăng ký mặc định>
                     string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');

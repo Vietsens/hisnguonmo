@@ -350,7 +350,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             this.layoutControlItem24,
             this.layoutControlItem26,
             this.layoutControlItem17,
-            this.layoutControlItem31});
+            this.layoutControlItem31, 
+            this.layoutControlItem32});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
