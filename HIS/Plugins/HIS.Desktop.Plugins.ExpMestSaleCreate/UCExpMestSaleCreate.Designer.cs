@@ -521,7 +521,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControl1.Controls.Add(this.cboIdentification);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 38);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(46, 204, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
@@ -532,7 +532,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // chkSign
             // 
             this.chkSign.Location = new System.Drawing.Point(566, 757);
-            this.chkSign.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkSign.Margin = new System.Windows.Forms.Padding(4);
             this.chkSign.MenuManager = this.barManager1;
             this.chkSign.Name = "chkSign";
             this.chkSign.Properties.Caption = "";
@@ -647,7 +647,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlTop.Size = new System.Drawing.Size(1893, 38);
             // 
             // barDockControlBottom
@@ -655,7 +655,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 825);
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlBottom.Size = new System.Drawing.Size(1893, 0);
             // 
             // barDockControlLeft
@@ -663,7 +663,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlLeft.Size = new System.Drawing.Size(0, 787);
             // 
             // barDockControlRight
@@ -671,7 +671,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1893, 38);
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 787);
             // 
             // txtIdentification
@@ -687,7 +687,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // toggleSwitch1
             // 
             this.toggleSwitch1.Location = new System.Drawing.Point(567, 69);
-            this.toggleSwitch1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.toggleSwitch1.Margin = new System.Windows.Forms.Padding(4);
             this.toggleSwitch1.MenuManager = this.barManager1;
             this.toggleSwitch1.Name = "toggleSwitch1";
             this.toggleSwitch1.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Default;
@@ -703,7 +703,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.txtEmail.Enabled = false;
             this.txtEmail.Location = new System.Drawing.Point(427, 97);
-            this.txtEmail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtEmail.Margin = new System.Windows.Forms.Padding(4);
             this.txtEmail.MenuManager = this.barManager1;
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(234, 22);
@@ -714,7 +714,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.btnQr.Enabled = false;
             this.btnQr.Location = new System.Drawing.Point(1544, 757);
-            this.btnQr.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnQr.Margin = new System.Windows.Forms.Padding(4);
             this.btnQr.MenuManager = this.barManager1;
             this.btnQr.Name = "btnQr";
             this.btnQr.Size = new System.Drawing.Size(58, 27);
@@ -727,7 +727,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // chkEditUser
             // 
             this.chkEditUser.Location = new System.Drawing.Point(863, 125);
-            this.chkEditUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkEditUser.Margin = new System.Windows.Forms.Padding(4);
             this.chkEditUser.MenuManager = this.barManager1;
             this.chkEditUser.Name = "chkEditUser";
             this.chkEditUser.Properties.Caption = "Sửa";
@@ -740,7 +740,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnDonCu
             // 
             this.btnDonCu.Location = new System.Drawing.Point(782, 3);
-            this.btnDonCu.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDonCu.Margin = new System.Windows.Forms.Padding(4);
             this.btnDonCu.Name = "btnDonCu";
             this.btnDonCu.Size = new System.Drawing.Size(102, 27);
             this.btnDonCu.StyleController = this.layoutControl1;
@@ -762,7 +762,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // panelIcd
             // 
             this.panelIcd.Location = new System.Drawing.Point(0, 0);
-            this.panelIcd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panelIcd.Margin = new System.Windows.Forms.Padding(4);
             this.panelIcd.Name = "panelIcd";
             this.panelIcd.Size = new System.Drawing.Size(664, 26);
             this.panelIcd.TabIndex = 4;
@@ -792,7 +792,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnSubIcd
             // 
             this.btnSubIcd.Location = new System.Drawing.Point(1371, 153);
-            this.btnSubIcd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSubIcd.Margin = new System.Windows.Forms.Padding(4);
             this.btnSubIcd.Name = "btnSubIcd";
             this.btnSubIcd.Size = new System.Drawing.Size(43, 18);
             this.btnSubIcd.StyleController = this.layoutControl1;
@@ -803,7 +803,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtIcd
             // 
             this.txtIcd.Location = new System.Drawing.Point(917, 152);
-            this.txtIcd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtIcd.Margin = new System.Windows.Forms.Padding(4);
             this.txtIcd.MenuManager = this.barManager1;
             this.txtIcd.Name = "txtIcd";
             this.txtIcd.Properties.MaxLength = 4000;
@@ -819,7 +819,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtSubIcdCode
             // 
             this.txtSubIcdCode.Location = new System.Drawing.Point(741, 152);
-            this.txtSubIcdCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtSubIcdCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtSubIcdCode.MenuManager = this.barManager1;
             this.txtSubIcdCode.Name = "txtSubIcdCode";
             this.txtSubIcdCode.Size = new System.Drawing.Size(176, 22);
@@ -831,7 +831,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnSearchPres
             // 
             this.btnSearchPres.Location = new System.Drawing.Point(398, 36);
-            this.btnSearchPres.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSearchPres.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearchPres.Name = "btnSearchPres";
             this.btnSearchPres.Size = new System.Drawing.Size(82, 27);
             this.btnSearchPres.StyleController = this.layoutControl1;
@@ -843,7 +843,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtPatientPhone
             // 
             this.txtPatientPhone.Location = new System.Drawing.Point(1058, 69);
-            this.txtPatientPhone.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPatientPhone.Margin = new System.Windows.Forms.Padding(4);
             this.txtPatientPhone.MenuManager = this.barManager1;
             this.txtPatientPhone.Name = "txtPatientPhone";
             this.txtPatientPhone.Size = new System.Drawing.Size(356, 22);
@@ -854,7 +854,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtPatientCode
             // 
             this.txtPatientCode.Location = new System.Drawing.Point(560, 35);
-            this.txtPatientCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPatientCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtPatientCode.MenuManager = this.barManager1;
             this.txtPatientCode.Name = "txtPatientCode";
             this.txtPatientCode.Properties.NullValuePrompt = "Mã bệnh nhân";
@@ -868,7 +868,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // chkAutoShow
             // 
             this.chkAutoShow.Location = new System.Drawing.Point(368, 757);
-            this.chkAutoShow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkAutoShow.Margin = new System.Windows.Forms.Padding(4);
             this.chkAutoShow.MenuManager = this.barManager1;
             this.chkAutoShow.Name = "chkAutoShow";
             this.chkAutoShow.Properties.Caption = "";
@@ -880,7 +880,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnDebt
             // 
             this.btnDebt.Location = new System.Drawing.Point(1781, 757);
-            this.btnDebt.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDebt.Margin = new System.Windows.Forms.Padding(4);
             this.btnDebt.Name = "btnDebt";
             this.btnDebt.Size = new System.Drawing.Size(109, 27);
             this.btnDebt.StyleController = this.layoutControl1;
@@ -913,7 +913,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControl2.Controls.Add(this.spinDiscountRatio);
             this.layoutControl2.Controls.Add(this.lblPayPrice);
             this.layoutControl2.Location = new System.Drawing.Point(1417, 0);
-            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(1366, 415, 250, 350);
             this.layoutControl2.Root = this.Root;
@@ -925,7 +925,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.labelControl5.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.labelControl5.Location = new System.Drawing.Point(434, 228);
-            this.labelControl5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelControl5.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl5.Name = "labelControl5";
             this.labelControl5.Size = new System.Drawing.Size(39, 20);
             this.labelControl5.StyleController = this.layoutControl2;
@@ -935,7 +935,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.labelControl4.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.labelControl4.Location = new System.Drawing.Point(434, 292);
-            this.labelControl4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelControl4.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl4.Name = "labelControl4";
             this.labelControl4.Size = new System.Drawing.Size(39, 20);
             this.labelControl4.StyleController = this.layoutControl2;
@@ -949,7 +949,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinQuetThe.Location = new System.Drawing.Point(148, 356);
-            this.spinQuetThe.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinQuetThe.Margin = new System.Windows.Forms.Padding(4);
             this.spinQuetThe.MenuManager = this.barManager1;
             this.spinQuetThe.Name = "spinQuetThe";
             this.spinQuetThe.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -963,7 +963,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.btnCauHinh.Image = ((System.Drawing.Image)(resources.GetObject("btnCauHinh.Image")));
             this.btnCauHinh.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
             this.btnCauHinh.Location = new System.Drawing.Point(423, 3);
-            this.btnCauHinh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCauHinh.Margin = new System.Windows.Forms.Padding(4);
             this.btnCauHinh.Name = "btnCauHinh";
             this.btnCauHinh.Size = new System.Drawing.Size(34, 27);
             this.btnCauHinh.StyleController = this.layoutControl2;
@@ -973,7 +973,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // ChkKetNoiPOS
             // 
             this.ChkKetNoiPOS.Location = new System.Drawing.Point(345, 3);
-            this.ChkKetNoiPOS.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ChkKetNoiPOS.Margin = new System.Windows.Forms.Padding(4);
             this.ChkKetNoiPOS.MenuManager = this.barManager1;
             this.ChkKetNoiPOS.Name = "ChkKetNoiPOS";
             this.ChkKetNoiPOS.Properties.Caption = "";
@@ -988,7 +988,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.lblTransactionCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblTransactionCode.Location = new System.Drawing.Point(148, 174);
-            this.lblTransactionCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblTransactionCode.Margin = new System.Windows.Forms.Padding(4);
             this.lblTransactionCode.Name = "lblTransactionCode";
             this.lblTransactionCode.Size = new System.Drawing.Size(325, 20);
             this.lblTransactionCode.StyleController = this.layoutControl2;
@@ -1000,7 +1000,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.lblTotalReceivable.Appearance.ForeColor = System.Drawing.Color.Red;
             this.lblTotalReceivable.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblTotalReceivable.Location = new System.Drawing.Point(148, 292);
-            this.lblTotalReceivable.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblTotalReceivable.Margin = new System.Windows.Forms.Padding(4);
             this.lblTotalReceivable.Name = "lblTotalReceivable";
             this.lblTotalReceivable.Size = new System.Drawing.Size(225, 30);
             this.lblTotalReceivable.StyleController = this.layoutControl2;
@@ -1014,7 +1014,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinBaseValue.Location = new System.Drawing.Point(379, 264);
-            this.spinBaseValue.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinBaseValue.Margin = new System.Windows.Forms.Padding(4);
             this.spinBaseValue.MenuManager = this.barManager1;
             this.spinBaseValue.Name = "spinBaseValue";
             this.spinBaseValue.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1027,7 +1027,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // chkRoundPrice
             // 
             this.chkRoundPrice.Location = new System.Drawing.Point(148, 264);
-            this.chkRoundPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkRoundPrice.Margin = new System.Windows.Forms.Padding(4);
             this.chkRoundPrice.MenuManager = this.barManager1;
             this.chkRoundPrice.Name = "chkRoundPrice";
             this.chkRoundPrice.Properties.Caption = "";
@@ -1044,7 +1044,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinBillNumOrder.Location = new System.Drawing.Point(148, 92);
-            this.spinBillNumOrder.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinBillNumOrder.Margin = new System.Windows.Forms.Padding(4);
             this.spinBillNumOrder.MenuManager = this.barManager1;
             this.spinBillNumOrder.Name = "spinBillNumOrder";
             this.spinBillNumOrder.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1062,7 +1062,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // cboBillAccountBook
             // 
             this.cboBillAccountBook.Location = new System.Drawing.Point(148, 64);
-            this.cboBillAccountBook.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboBillAccountBook.Margin = new System.Windows.Forms.Padding(4);
             this.cboBillAccountBook.MenuManager = this.barManager1;
             this.cboBillAccountBook.Name = "cboBillAccountBook";
             this.cboBillAccountBook.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1086,7 +1086,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // cboBillCashierRoom
             // 
             this.cboBillCashierRoom.Location = new System.Drawing.Point(148, 36);
-            this.cboBillCashierRoom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboBillCashierRoom.Margin = new System.Windows.Forms.Padding(4);
             this.cboBillCashierRoom.MenuManager = this.barManager1;
             this.cboBillCashierRoom.Name = "cboBillCashierRoom";
             this.cboBillCashierRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1110,7 +1110,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // chkCreateBill
             // 
             this.chkCreateBill.Location = new System.Drawing.Point(148, 3);
-            this.chkCreateBill.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkCreateBill.Margin = new System.Windows.Forms.Padding(4);
             this.chkCreateBill.MenuManager = this.barManager1;
             this.chkCreateBill.Name = "chkCreateBill";
             this.chkCreateBill.Properties.Caption = "";
@@ -1123,7 +1123,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // lblPresNumber
             // 
             this.lblPresNumber.Location = new System.Drawing.Point(148, 384);
-            this.lblPresNumber.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblPresNumber.Margin = new System.Windows.Forms.Padding(4);
             this.lblPresNumber.Name = "lblPresNumber";
             this.lblPresNumber.Size = new System.Drawing.Size(325, 20);
             this.lblPresNumber.StyleController = this.layoutControl2;
@@ -1132,7 +1132,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // cboPayForm
             // 
             this.cboPayForm.Location = new System.Drawing.Point(148, 120);
-            this.cboPayForm.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboPayForm.Margin = new System.Windows.Forms.Padding(4);
             this.cboPayForm.MenuManager = this.barManager1;
             this.cboPayForm.Name = "cboPayForm";
             this.cboPayForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1147,7 +1147,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // labelControl3
             // 
             this.labelControl3.Location = new System.Drawing.Point(461, 200);
-            this.labelControl3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelControl3.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl3.Name = "labelControl3";
             this.labelControl3.Size = new System.Drawing.Size(12, 16);
             this.labelControl3.StyleController = this.layoutControl2;
@@ -1159,7 +1159,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.lblTotalPrice.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalPrice.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblTotalPrice.Location = new System.Drawing.Point(148, 148);
-            this.lblTotalPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblTotalPrice.Margin = new System.Windows.Forms.Padding(4);
             this.lblTotalPrice.Name = "lblTotalPrice";
             this.lblTotalPrice.Size = new System.Drawing.Size(325, 20);
             this.lblTotalPrice.StyleController = this.layoutControl2;
@@ -1173,7 +1173,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinDiscount.Location = new System.Drawing.Point(148, 200);
-            this.spinDiscount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinDiscount.Margin = new System.Windows.Forms.Padding(4);
             this.spinDiscount.Name = "spinDiscount";
             this.spinDiscount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1195,7 +1195,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinTransferAmount.Location = new System.Drawing.Point(148, 328);
-            this.spinTransferAmount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinTransferAmount.Margin = new System.Windows.Forms.Padding(4);
             this.spinTransferAmount.MenuManager = this.barManager1;
             this.spinTransferAmount.Name = "spinTransferAmount";
             this.spinTransferAmount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1222,7 +1222,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn_Result_NationalName});
             this.treeListResult.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeListResult.Location = new System.Drawing.Point(3, 410);
-            this.treeListResult.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeListResult.Margin = new System.Windows.Forms.Padding(4);
             this.treeListResult.Name = "treeListResult";
             this.treeListResult.OptionsView.AutoWidth = false;
             this.treeListResult.OptionsView.ShowIndicator = false;
@@ -1331,7 +1331,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinDiscountRatio.Location = new System.Drawing.Point(379, 200);
-            this.spinDiscountRatio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinDiscountRatio.Margin = new System.Windows.Forms.Padding(4);
             this.spinDiscountRatio.Name = "spinDiscountRatio";
             this.spinDiscountRatio.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1347,7 +1347,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.lblPayPrice.Appearance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblPayPrice.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblPayPrice.Location = new System.Drawing.Point(148, 228);
-            this.lblPayPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblPayPrice.Margin = new System.Windows.Forms.Padding(4);
             this.lblPayPrice.Name = "lblPayPrice";
             this.lblPayPrice.Size = new System.Drawing.Size(225, 30);
             this.lblPayPrice.StyleController = this.layoutControl2;
@@ -1708,7 +1708,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // chkPrintNow
             // 
             this.chkPrintNow.Location = new System.Drawing.Point(782, 757);
-            this.chkPrintNow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkPrintNow.Margin = new System.Windows.Forms.Padding(4);
             this.chkPrintNow.MenuManager = this.barManager1;
             this.chkPrintNow.Name = "chkPrintNow";
             this.chkPrintNow.Properties.Caption = "";
@@ -1720,7 +1720,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnNewExpMest
             // 
             this.btnNewExpMest.Location = new System.Drawing.Point(1338, 757);
-            this.btnNewExpMest.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnNewExpMest.Margin = new System.Windows.Forms.Padding(4);
             this.btnNewExpMest.Name = "btnNewExpMest";
             this.btnNewExpMest.Size = new System.Drawing.Size(123, 27);
             this.btnNewExpMest.StyleController = this.layoutControl1;
@@ -1731,7 +1731,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnCancelExport
             // 
             this.btnCancelExport.Location = new System.Drawing.Point(860, 757);
-            this.btnCancelExport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCancelExport.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancelExport.Name = "btnCancelExport";
             this.btnCancelExport.Size = new System.Drawing.Size(121, 27);
             this.btnCancelExport.StyleController = this.layoutControl1;
@@ -1745,7 +1745,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.popupControlContainerMediMaty.Controls.Add(this.gridControlMediMaty);
             this.popupControlContainerMediMaty.Location = new System.Drawing.Point(27, 337);
             this.popupControlContainerMediMaty.Manager = this.barManager1;
-            this.popupControlContainerMediMaty.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.popupControlContainerMediMaty.Margin = new System.Windows.Forms.Padding(4);
             this.popupControlContainerMediMaty.Name = "popupControlContainerMediMaty";
             this.popupControlContainerMediMaty.Size = new System.Drawing.Size(777, 262);
             this.popupControlContainerMediMaty.TabIndex = 63;
@@ -1755,10 +1755,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // gridControlMediMaty
             // 
             this.gridControlMediMaty.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlMediMaty.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlMediMaty.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlMediMaty.Location = new System.Drawing.Point(0, 0);
             this.gridControlMediMaty.MainView = this.gridViewMediMaty;
-            this.gridControlMediMaty.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlMediMaty.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlMediMaty.MenuManager = this.barManager1;
             this.gridControlMediMaty.Name = "gridControlMediMaty";
             this.gridControlMediMaty.Size = new System.Drawing.Size(777, 262);
@@ -1780,7 +1780,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtMediMatyForPrescription
             // 
             this.txtMediMatyForPrescription.Location = new System.Drawing.Point(98, 179);
-            this.txtMediMatyForPrescription.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMediMatyForPrescription.Margin = new System.Windows.Forms.Padding(4);
             this.txtMediMatyForPrescription.MenuManager = this.barManager1;
             this.txtMediMatyForPrescription.Name = "txtMediMatyForPrescription";
             this.txtMediMatyForPrescription.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1800,7 +1800,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.popupControlContainer1.Controls.Add(this.gridControlPopupUser);
             this.popupControlContainer1.Location = new System.Drawing.Point(812, 482);
             this.popupControlContainer1.Manager = this.barManager1;
-            this.popupControlContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.popupControlContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.popupControlContainer1.Name = "popupControlContainer1";
             this.popupControlContainer1.Size = new System.Drawing.Size(533, 235);
             this.popupControlContainer1.TabIndex = 6;
@@ -1810,10 +1810,10 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // gridControlPopupUser
             // 
             this.gridControlPopupUser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlPopupUser.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlPopupUser.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlPopupUser.Location = new System.Drawing.Point(0, 0);
             this.gridControlPopupUser.MainView = this.gridViewPopupUser;
-            this.gridControlPopupUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlPopupUser.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlPopupUser.MenuManager = this.barManager1;
             this.gridControlPopupUser.Name = "gridControlPopupUser";
             this.gridControlPopupUser.Size = new System.Drawing.Size(533, 235);
@@ -1835,7 +1835,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.cboAge.Enabled = false;
             this.cboAge.Location = new System.Drawing.Point(1342, 35);
-            this.cboAge.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboAge.Margin = new System.Windows.Forms.Padding(4);
             this.cboAge.MenuManager = this.barManager1;
             this.cboAge.Name = "cboAge";
             this.cboAge.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1849,7 +1849,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.txtAge.Enabled = false;
             this.txtAge.Location = new System.Drawing.Point(1295, 35);
-            this.txtAge.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtAge.Margin = new System.Windows.Forms.Padding(4);
             this.txtAge.MenuManager = this.barManager1;
             this.txtAge.Name = "txtAge";
             this.txtAge.Size = new System.Drawing.Size(47, 22);
@@ -1859,7 +1859,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // cboTHX
             // 
             this.cboTHX.Location = new System.Drawing.Point(268, 69);
-            this.cboTHX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboTHX.Margin = new System.Windows.Forms.Padding(4);
             this.cboTHX.MenuManager = this.barManager1;
             this.cboTHX.Name = "cboTHX";
             this.cboTHX.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1881,7 +1881,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtMaTHX
             // 
             this.txtMaTHX.Location = new System.Drawing.Point(98, 69);
-            this.txtMaTHX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMaTHX.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaTHX.MenuManager = this.barManager1;
             this.txtMaTHX.Name = "txtMaTHX";
             this.txtMaTHX.Size = new System.Drawing.Size(170, 22);
@@ -1892,7 +1892,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // labelControl2
             // 
             this.labelControl2.Location = new System.Drawing.Point(219, 207);
-            this.labelControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelControl2.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl2.Name = "labelControl2";
             this.labelControl2.Size = new System.Drawing.Size(12, 16);
             this.labelControl2.StyleController = this.layoutControl1;
@@ -1907,7 +1907,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinProfit.Location = new System.Drawing.Point(98, 207);
-            this.spinProfit.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinProfit.Margin = new System.Windows.Forms.Padding(4);
             this.spinProfit.MenuManager = this.barManager1;
             this.spinProfit.Name = "spinProfit";
             this.spinProfit.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1932,7 +1932,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinDayNum.Location = new System.Drawing.Point(951, 179);
-            this.spinDayNum.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinDayNum.Margin = new System.Windows.Forms.Padding(4);
             this.spinDayNum.MenuManager = this.barManager1;
             this.spinDayNum.Name = "spinDayNum";
             this.spinDayNum.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1959,7 +1959,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.dtIntructionTime.EditValue = null;
             this.dtIntructionTime.Location = new System.Drawing.Point(255, 125);
-            this.dtIntructionTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtIntructionTime.Margin = new System.Windows.Forms.Padding(4);
             this.dtIntructionTime.MenuManager = this.barManager1;
             this.dtIntructionTime.Name = "dtIntructionTime";
             this.dtIntructionTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1980,7 +1980,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnSaleBill
             // 
             this.btnSaleBill.Location = new System.Drawing.Point(1608, 757);
-            this.btnSaleBill.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSaleBill.Margin = new System.Windows.Forms.Padding(4);
             this.btnSaleBill.Name = "btnSaleBill";
             this.btnSaleBill.Size = new System.Drawing.Size(167, 27);
             this.btnSaleBill.StyleController = this.layoutControl1;
@@ -1992,7 +1992,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.txtLoginName.Enabled = false;
             this.txtLoginName.Location = new System.Drawing.Point(516, 124);
-            this.txtLoginName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtLoginName.Margin = new System.Windows.Forms.Padding(4);
             this.txtLoginName.MenuManager = this.barManager1;
             this.txtLoginName.Name = "txtLoginName";
             this.txtLoginName.Size = new System.Drawing.Size(148, 22);
@@ -2008,7 +2008,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinDiscountDetailRatio.Location = new System.Drawing.Point(1055, 207);
-            this.spinDiscountDetailRatio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinDiscountDetailRatio.Margin = new System.Windows.Forms.Padding(4);
             this.spinDiscountDetailRatio.Name = "spinDiscountDetailRatio";
             this.spinDiscountDetailRatio.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2026,7 +2026,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // labelControl1
             // 
             this.labelControl1.Location = new System.Drawing.Point(1164, 207);
-            this.labelControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.labelControl1.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(12, 16);
             this.labelControl1.StyleController = this.layoutControl1;
@@ -2041,7 +2041,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinDiscountDetail.Location = new System.Drawing.Point(742, 207);
-            this.spinDiscountDetail.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinDiscountDetail.Margin = new System.Windows.Forms.Padding(4);
             this.spinDiscountDetail.Name = "spinDiscountDetail";
             this.spinDiscountDetail.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2061,7 +2061,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.lblExpMestCode.Appearance.ForeColor = System.Drawing.Color.Blue;
             this.lblExpMestCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblExpMestCode.Location = new System.Drawing.Point(98, 125);
-            this.lblExpMestCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblExpMestCode.Margin = new System.Windows.Forms.Padding(4);
             this.lblExpMestCode.Name = "lblExpMestCode";
             this.lblExpMestCode.Size = new System.Drawing.Size(96, 20);
             this.lblExpMestCode.StyleController = this.layoutControl1;
@@ -2072,7 +2072,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.panel1.Controls.Add(this.txtPatientDob);
             this.panel1.Controls.Add(this.dtPatientDob);
             this.panel1.Location = new System.Drawing.Point(1111, 36);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(179, 27);
             this.panel1.TabIndex = 36;
@@ -2081,7 +2081,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.txtPatientDob.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtPatientDob.Location = new System.Drawing.Point(0, 0);
-            this.txtPatientDob.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPatientDob.Margin = new System.Windows.Forms.Padding(4);
             this.txtPatientDob.Name = "txtPatientDob";
             this.txtPatientDob.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Down)});
@@ -2100,7 +2100,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.dtPatientDob.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtPatientDob.EditValue = null;
             this.dtPatientDob.Location = new System.Drawing.Point(0, 0);
-            this.dtPatientDob.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dtPatientDob.Margin = new System.Windows.Forms.Padding(4);
             this.dtPatientDob.Name = "dtPatientDob";
             this.dtPatientDob.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2122,7 +2122,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtAddress
             // 
             this.txtAddress.Location = new System.Drawing.Point(742, 69);
-            this.txtAddress.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtAddress.Margin = new System.Windows.Forms.Padding(4);
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Properties.MaxLength = 600;
             this.txtAddress.Size = new System.Drawing.Size(235, 22);
@@ -2133,7 +2133,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnSavePrint
             // 
             this.btnSavePrint.Location = new System.Drawing.Point(987, 757);
-            this.btnSavePrint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSavePrint.Margin = new System.Windows.Forms.Padding(4);
             this.btnSavePrint.Name = "btnSavePrint";
             this.btnSavePrint.Size = new System.Drawing.Size(97, 27);
             this.btnSavePrint.StyleController = this.layoutControl1;
@@ -2144,7 +2144,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // ddBtnPrint
             // 
             this.ddBtnPrint.Location = new System.Drawing.Point(1467, 757);
-            this.ddBtnPrint.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ddBtnPrint.Margin = new System.Windows.Forms.Padding(4);
             this.ddBtnPrint.Name = "ddBtnPrint";
             this.ddBtnPrint.Size = new System.Drawing.Size(71, 27);
             this.ddBtnPrint.StyleController = this.layoutControl1;
@@ -2155,7 +2155,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnNew
             // 
             this.btnNew.Location = new System.Drawing.Point(1181, 757);
-            this.btnNew.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnNew.Margin = new System.Windows.Forms.Padding(4);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(151, 27);
             this.btnNew.StyleController = this.layoutControl1;
@@ -2166,7 +2166,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnSave
             // 
             this.btnSave.Location = new System.Drawing.Point(1090, 757);
-            this.btnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(85, 27);
             this.btnSave.StyleController = this.layoutControl1;
@@ -2177,7 +2177,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // btnAdd
             // 
             this.btnAdd.Location = new System.Drawing.Point(1269, 235);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(145, 27);
             this.btnAdd.StyleController = this.layoutControl1;
@@ -2188,7 +2188,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtNote
             // 
             this.txtNote.Location = new System.Drawing.Point(742, 235);
-            this.txtNote.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtNote.Margin = new System.Windows.Forms.Padding(4);
             this.txtNote.Name = "txtNote";
             this.txtNote.Properties.MaxLength = 200;
             this.txtNote.Size = new System.Drawing.Size(521, 22);
@@ -2199,7 +2199,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtTutorial
             // 
             this.txtTutorial.Location = new System.Drawing.Point(98, 235);
-            this.txtTutorial.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTutorial.Margin = new System.Windows.Forms.Padding(4);
             this.txtTutorial.Name = "txtTutorial";
             this.txtTutorial.Properties.MaxLength = 1000;
             this.txtTutorial.Size = new System.Drawing.Size(563, 22);
@@ -2215,7 +2215,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinExpVatRatio.Location = new System.Drawing.Point(532, 207);
-            this.spinExpVatRatio.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinExpVatRatio.Margin = new System.Windows.Forms.Padding(4);
             this.spinExpVatRatio.Name = "spinExpVatRatio";
             this.spinExpVatRatio.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2237,7 +2237,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinExpPrice.Location = new System.Drawing.Point(292, 207);
-            this.spinExpPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinExpPrice.Margin = new System.Windows.Forms.Padding(4);
             this.spinExpPrice.Name = "spinExpPrice";
             this.spinExpPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinExpPrice.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -2258,7 +2258,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // checkImpExpPrice
             // 
             this.checkImpExpPrice.Location = new System.Drawing.Point(1143, 179);
-            this.checkImpExpPrice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkImpExpPrice.Margin = new System.Windows.Forms.Padding(4);
             this.checkImpExpPrice.Name = "checkImpExpPrice";
             this.checkImpExpPrice.Properties.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.Default;
             this.checkImpExpPrice.Properties.Caption = "";
@@ -2277,7 +2277,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             0,
             0});
             this.spinAmount.Location = new System.Drawing.Point(742, 179);
-            this.spinAmount.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.spinAmount.Margin = new System.Windows.Forms.Padding(4);
             this.spinAmount.Name = "spinAmount";
             this.spinAmount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -2296,7 +2296,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtDescription
             // 
             this.txtDescription.Location = new System.Drawing.Point(1031, 125);
-            this.txtDescription.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtDescription.Margin = new System.Windows.Forms.Padding(4);
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.Properties.MaxLength = 500;
             this.txtDescription.Size = new System.Drawing.Size(383, 22);
@@ -2308,7 +2308,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.txtVirPatientName.EditValue = "";
             this.txtVirPatientName.Location = new System.Drawing.Point(664, 35);
-            this.txtVirPatientName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtVirPatientName.Margin = new System.Windows.Forms.Padding(4);
             this.txtVirPatientName.Name = "txtVirPatientName";
             this.txtVirPatientName.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.txtVirPatientName.Properties.MaxLength = 150;
@@ -2320,7 +2320,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtPrescriptionCode
             // 
             this.txtPrescriptionCode.Location = new System.Drawing.Point(98, 36);
-            this.txtPrescriptionCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPrescriptionCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtPrescriptionCode.Name = "txtPrescriptionCode";
             this.txtPrescriptionCode.Properties.Appearance.Options.UseTextOptions = true;
             this.txtPrescriptionCode.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
@@ -2335,7 +2335,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // checkIsVisitor
             // 
             this.checkIsVisitor.Location = new System.Drawing.Point(722, 3);
-            this.checkIsVisitor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkIsVisitor.Margin = new System.Windows.Forms.Padding(4);
             this.checkIsVisitor.Name = "checkIsVisitor";
             this.checkIsVisitor.Properties.Caption = "";
             this.checkIsVisitor.Size = new System.Drawing.Size(54, 19);
@@ -2347,7 +2347,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // cboPatientType
             // 
             this.cboPatientType.Location = new System.Drawing.Point(517, 3);
-            this.cboPatientType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboPatientType.Margin = new System.Windows.Forms.Padding(4);
             this.cboPatientType.Name = "cboPatientType";
             this.cboPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboPatientType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -2365,7 +2365,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.txtExpMediStock.EditValue = "";
             this.txtExpMediStock.Enabled = false;
             this.txtExpMediStock.Location = new System.Drawing.Point(98, 3);
-            this.txtExpMediStock.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtExpMediStock.Margin = new System.Windows.Forms.Padding(4);
             this.txtExpMediStock.Name = "txtExpMediStock";
             this.txtExpMediStock.Properties.NullText = "[EditValue is null]";
             this.txtExpMediStock.Size = new System.Drawing.Size(338, 22);
@@ -2376,7 +2376,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             this.txtPresUser.EditValue = "";
             this.txtPresUser.Location = new System.Drawing.Point(664, 124);
-            this.txtPresUser.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPresUser.Margin = new System.Windows.Forms.Padding(4);
             this.txtPresUser.MenuManager = this.barManager1;
             this.txtPresUser.Name = "txtPresUser";
             this.txtPresUser.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -2404,7 +2404,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListMediMate.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeListMediMate.KeyFieldName = "CONCRETE_ID__IN_SETY";
             this.treeListMediMate.Location = new System.Drawing.Point(3, 268);
-            this.treeListMediMate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeListMediMate.Margin = new System.Windows.Forms.Padding(4);
             this.treeListMediMate.Name = "treeListMediMate";
             this.treeListMediMate.OptionsBehavior.PopulateServiceColumns = true;
             this.treeListMediMate.OptionsView.AutoWidth = false;
@@ -2566,7 +2566,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // cboGender
             // 
             this.cboGender.Location = new System.Drawing.Point(919, 36);
-            this.cboGender.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboGender.Margin = new System.Windows.Forms.Padding(4);
             this.cboGender.Name = "cboGender";
             this.cboGender.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboGender.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -2589,7 +2589,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // txtTreatmentCode
             // 
             this.txtTreatmentCode.Location = new System.Drawing.Point(271, 36);
-            this.txtTreatmentCode.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtTreatmentCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtTreatmentCode.MenuManager = this.barManager1;
             this.txtTreatmentCode.Name = "txtTreatmentCode";
             this.txtTreatmentCode.Properties.Appearance.Options.UseTextOptions = true;
@@ -3460,7 +3460,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "UCExpMestSaleCreate";
             this.Size = new System.Drawing.Size(1893, 825);
             this.Load += new System.EventHandler(this.UCExpMestSaleCreate_Load);
