@@ -136,13 +136,55 @@
     <value>Tìm (Ctrl F)</value>
   </data>
   <data name="HisTreatmentTypeForm.btnReset.Text" xml:space="preserve">
-    <value>Làm Lại (Ctrl R)</value>
+    <value>Làm lại (Ctrl R)</value>
   </data>
   <data name="HisTreatmentTypeForm.btnSave.Text" xml:space="preserve">
     <value>Lưu (Ctrl S)</value>
   </data>
-  <data name="HisTreatmentTypeForm.c.Text" xml:space="preserve">
-    <value>Mã diện điều trị theo BHYT:</value>
+  <data name="HisTreatmentTypeForm.chkAlwaysDisableDeposit.Properties.Caption" xml:space="preserve">
+    <value>Luôn disable</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkAlwaysDisableDeposit.ToolTip" xml:space="preserve">
+    <value>Không cho phép sử dụng "Tạm ứng" ở chức năng viện phí</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkAlwaysDisableServiceDeposit.Properties.Caption" xml:space="preserve">
+    <value>Luôn disable</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkCanhbao.Properties.Caption" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkCanhbaoFeeDebt.Properties.Caption" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkCanhbaoMax.Properties.Caption" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkCanhbaoTime.Properties.Caption" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkChan.Properties.Caption" xml:space="preserve">
+    <value>Chặn</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkChanFeeDebt.Properties.Caption" xml:space="preserve">
+    <value>Chặn</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkChanMax.Properties.Caption" xml:space="preserve">
+    <value>Chặn</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkChanTime.Properties.Caption" xml:space="preserve">
+    <value>Chặn</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkDisableFinishedDeposit.Properties.Caption" xml:space="preserve">
+    <value>Disable với BN kết thúc</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkDisableFinishedServiceDeposit.Properties.Caption" xml:space="preserve">
+    <value>Disable với BN kết thúc</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkIsRequiredServiceBed.ToolTip" xml:space="preserve">
+    <value>Bắt buộc chỉ định giường mới cho phép chỉ định, kê đơn</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkKhongKTFeeDebt.Properties.Caption" xml:space="preserve">
+    <value>Không KT</value>
   </data>
   <data name="HisTreatmentTypeForm.gclCode.Caption" xml:space="preserve">
     <value>Mã diện điều trị</value>
@@ -153,14 +195,23 @@
   <data name="HisTreatmentTypeForm.grclHeinCode.Caption" xml:space="preserve">
     <value>Mã diện điều trị theo BHYT</value>
   </data>
+  <data name="HisTreatmentTypeForm.gridColumn1.Caption" xml:space="preserve">
+    <value>Cho phép tiếp đón</value>
+  </data>
+  <data name="HisTreatmentTypeForm.gridColumn2.Caption" xml:space="preserve">
+    <value>Chặn mở sau khi KT</value>
+  </data>
+  <data name="HisTreatmentTypeForm.gridColumn3.Caption" xml:space="preserve">
+    <value>Cho phép nhập viện khi có đơn</value>
+  </data>
+  <data name="HisTreatmentTypeForm.gridColumn4.Caption" xml:space="preserve">
+    <value>Không cho nằm ghép giường</value>
+  </data>
   <data name="HisTreatmentTypeForm.grlSTT.Caption" xml:space="preserve">
     <value>STT</value>
   </data>
   <data name="HisTreatmentTypeForm.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
-  </data>
-  <data name="HisTreatmentTypeForm.layoutControl2.Text" xml:space="preserve">
-    <value>layoutControl2</value>
   </data>
   <data name="HisTreatmentTypeForm.layoutControl3.Text" xml:space="preserve">
     <value>layoutControl3</value>
@@ -168,43 +219,88 @@
   <data name="HisTreatmentTypeForm.layoutControl4.Text" xml:space="preserve">
     <value>layoutControl4</value>
   </data>
-  <data name="HisTreatmentTypeForm.layoutControl6.Text" xml:space="preserve">
-    <value>layoutControl6</value>
+  <data name="HisTreatmentTypeForm.layoutControlItem13.Text" xml:space="preserve">
+    <value>Diện điều trị theo BHYT:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem14.Text" xml:space="preserve">
+    <value>Cho phép tiếp đón:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem15.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chặn mở sau khi kết thúc</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem15.Text" xml:space="preserve">
+    <value>Chặn mở sau khi KT:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem16.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Cho phép nhập viện trong trường hợp có đơn phòng khám</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem16.Text" xml:space="preserve">
+    <value>Cho phép nhập viện khi có đơn:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem17.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tùy chọn không hiển thị nút “Tạm ứng DV” ở màn hình viện phí</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem17.Text" xml:space="preserve">
+    <value>Không cho phép “Tạm ứng DV”</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem18.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Không cho phép sử dụng “Hoàn ứng DV” ở chức năng viện phí</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem18.Text" xml:space="preserve">
+    <value>Không cho phép “Hoàn ứng DV”</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem19.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tùy chọn không hiển thị nút “Tạm ứng” ở màn hình viện phí</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem19.Text" xml:space="preserve">
+    <value>Không cho phép "Tạm ứng"</value>
   </data>
   <data name="HisTreatmentTypeForm.layoutControlItem2.Text" xml:space="preserve">
     <value>Mã diện điều trị:</value>
   </data>
-  <data name="HisTreatmentTypeForm.layoutControlItem3.Text" xml:space="preserve">
-    <value>Tên diện điều trị:</value>
+  <data name="HisTreatmentTypeForm.layoutControlItem20.Text" xml:space="preserve">
+    <value>Tiền tố sinh số ra viện:</value>
   </data>
-  <data name="HisTreatmentTypeForm.CanhBao.Text" xml:space="preserve">
-    <value>Cảnh báo</value>
+  <data name="HisTreatmentTypeForm.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tùy chọn khi thời gian thanh toán nhỏ hơn thời gian ra viện</value>
   </data>
-  <data name="HisTreatmentTypeForm.Chan.Text" xml:space="preserve">
-    <value>Chặn</value>
+  <data name="HisTreatmentTypeForm.layoutControlItem21.Text" xml:space="preserve">
+    <value>Thời gian thanh toán &lt; thời gian ra viện:</value>
   </data>
-  <data name="HisTreatmentTypeForm.Text" xml:space="preserve">
-    <value>HisTreatmentTypeForm</value>
+  <data name="HisTreatmentTypeForm.layoutControlItem22.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Dịch vụ bắt buộc chỉ định khi ra viện</value>
   </data>
-  <data name="HisTreatmentTypeForm.chkIsDisServiceDeposit.Text" xml:space="preserve">
-    <value>Không cho phép “Tạm ứng DV”</value>
+  <data name="HisTreatmentTypeForm.layoutControlItem22.Text" xml:space="preserve">
+    <value>DV bắt buộc chỉ định khi ra viện:</value>
   </data>
-  <data name="HisTreatmentTypeForm.chkIsDisServiceRepay.Text" xml:space="preserve">
-    <value>Không cho phép “Hoàn ứng DV”</value>
-  </data>
-  <data name="HisTreatmentTypeForm.chkCanhbaoFeeDebt.Properties.Caption" xml:space="preserve">
-    <value>Cảnh báo</value>
-  </data>
-  <data name="HisTreatmentTypeForm.chkChanFeeDebt.Properties.Caption" xml:space="preserve">
-    <value>Chặn</value>
-  </data>
-  <data name="HisTreatmentTypeForm.chkKhongKTFeeDebt.Properties.Caption" xml:space="preserve">
-    <value>Không KT</value>
+  <data name="HisTreatmentTypeForm.layoutControlItem26.Text" xml:space="preserve">
+    <value>Không cho phép nằm ghép giường:</value>
   </data>
   <data name="HisTreatmentTypeForm.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Kết thúc điều trị khi số tiền cần nộp thêm lớn hơn 0</value>
   </data>
   <data name="HisTreatmentTypeForm.layoutControlItem27.Text" xml:space="preserve">
     <value>Kết thúc điều trị khi nợ viện phí:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem3.Text" xml:space="preserve">
+    <value>Tên diện điều trị:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem30.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bắt buộc chỉ định giường mới cho phép chỉ định, kê đơn</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem30.Text" xml:space="preserve">
+    <value>Bắt buộc chỉ định giường:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số tiền tối đa của 1 đơn thuốc khi kê đơn</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem31.Text" xml:space="preserve">
+    <value>Số tiền tối đa 1 đơn thuốc:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem6.Text" xml:space="preserve">
+    <value>Kết thúc điều trị khi có văn bản chưa ký hết:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.Text" xml:space="preserve">
+    <value>HisTreatmentTypeForm</value>
   </data>
 </root>

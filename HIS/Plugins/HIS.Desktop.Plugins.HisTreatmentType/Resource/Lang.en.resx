@@ -119,106 +119,188 @@
   </resheader>
   <data name="HisTreatmentTypeForm.bar1.Text" xml:space="preserve">
     <value>Tools</value>
-    <comment>Tools</comment>
   </data>
   <data name="HisTreatmentTypeForm.bar2.Text" xml:space="preserve">
     <value>Tools</value>
-    <comment>Tools</comment>
   </data>
   <data name="HisTreatmentTypeForm.barButtonItem1.Caption" xml:space="preserve">
-    <value>Tìm(Ctrl F)</value>
-    <comment>Tìm(Ctrl F)</comment>
+    <value>Find(Ctrl F)</value>
   </data>
   <data name="HisTreatmentTypeForm.barButtonItem2.Caption" xml:space="preserve">
-    <value>Lưu (Ctrl S)</value>
-    <comment>Lưu (Ctrl S)</comment>
+    <value>Save (Ctrl S)</value>
   </data>
   <data name="HisTreatmentTypeForm.barButtonItem3.Caption" xml:space="preserve">
-    <value>Làm lại(Ctrl R)</value>
-    <comment>Làm lại(Ctrl R)</comment>
+    <value>Redo(Ctrl R)</value>
   </data>
   <data name="HisTreatmentTypeForm.btnFind.Text" xml:space="preserve">
-    <value>Tìm (Ctrl F)</value>
-    <comment>Tìm (Ctrl F)</comment>
+    <value>Find (Ctrl F)</value>
   </data>
   <data name="HisTreatmentTypeForm.btnReset.Text" xml:space="preserve">
-    <value>Làm Lại (Ctrl R)</value>
-    <comment>Làm Lại (Ctrl R)</comment>
+    <value>Redo (Ctrl R)</value>
   </data>
   <data name="HisTreatmentTypeForm.btnSave.Text" xml:space="preserve">
-    <value>Lưu (Ctrl S)</value>
-    <comment>Lưu (Ctrl S)</comment>
+    <value>Save (Ctrl S)</value>
   </data>
-  <data name="HisTreatmentTypeForm.c.Text" xml:space="preserve">
-    <value>Mã  diện điều trị theo BHYT:</value>
-    <comment>Mã  diện điều trị theo BHYT:</comment>
+  <data name="HisTreatmentTypeForm.chkAlwaysDisableDeposit.Properties.Caption" xml:space="preserve">
+    <value>Always disable</value>
   </data>
-  <data name="HisTreatmentTypeForm.gclCode.Caption" xml:space="preserve">
-    <value>Mã diện điều trị</value>
-    <comment>Mã diện điều trị</comment>
+  <data name="HisTreatmentTypeForm.chkAlwaysDisableDeposit.ToolTip" xml:space="preserve">
+    <value>It is not allowed to use \</value>
   </data>
-  <data name="HisTreatmentTypeForm.gclName.Caption" xml:space="preserve">
-    <value>Tên diện điều trị</value>
-    <comment>Tên diện điều trị</comment>
+  <data name="HisTreatmentTypeForm.chkAlwaysDisableServiceDeposit.Properties.Caption" xml:space="preserve">
+    <value>Always disable</value>
   </data>
-  <data name="HisTreatmentTypeForm.grclHeinCode.Caption" xml:space="preserve">
-    <value>Mã diện điều trị theo BHYT</value>
-    <comment>Mã diện điều trị theo BHYT</comment>
-  </data>
-  <data name="HisTreatmentTypeForm.grlSTT.Caption" xml:space="preserve">
-    <value>STT</value>
-    <comment>STT</comment>
-  </data>
-  <data name="HisTreatmentTypeForm.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
-    <comment>layoutControl1</comment>
-  </data>
-  <data name="HisTreatmentTypeForm.layoutControl2.Text" xml:space="preserve">
-    <value>layoutControl2</value>
-    <comment>layoutControl2</comment>
-  </data>
-  <data name="HisTreatmentTypeForm.layoutControl3.Text" xml:space="preserve">
-    <value>layoutControl3</value>
-    <comment>layoutControl3</comment>
-  </data>
-  <data name="HisTreatmentTypeForm.layoutControl4.Text" xml:space="preserve">
-    <value>layoutControl4</value>
-    <comment>layoutControl4</comment>
-  </data>
-  <data name="HisTreatmentTypeForm.layoutControl6.Text" xml:space="preserve">
-    <value>layoutControl6</value>
-    <comment>layoutControl6</comment>
-  </data>
-  <data name="HisTreatmentTypeForm.layoutControlItem2.Text" xml:space="preserve">
-    <value>Mã diện điều trị:</value>
-    <comment>Mã diện điều trị:</comment>
-  </data>
-  <data name="HisTreatmentTypeForm.layoutControlItem3.Text" xml:space="preserve">
-    <value>Tên diện điều trị:</value>
-    <comment>Tên diện điều trị:</comment>
-  </data>
-  <data name="HisTreatmentTypeForm.Text" xml:space="preserve">
-    <value>HisTreatmentTypeForm</value>
-    <comment>HisTreatmentTypeForm</comment>
+  <data name="HisTreatmentTypeForm.chkCanhbao.Properties.Caption" xml:space="preserve">
+    <value>Warning</value>
   </data>
   <data name="HisTreatmentTypeForm.chkCanhbaoFeeDebt.Properties.Caption" xml:space="preserve">
     <value>Warning</value>
-    <comment>Cảnh báo</comment>
+  </data>
+  <data name="HisTreatmentTypeForm.chkCanhbaoMax.Properties.Caption" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkCanhbaoTime.Properties.Caption" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkChan.Properties.Caption" xml:space="preserve">
+    <value>Block</value>
   </data>
   <data name="HisTreatmentTypeForm.chkChanFeeDebt.Properties.Caption" xml:space="preserve">
     <value>Block</value>
-    <comment>Chặn</comment>
+  </data>
+  <data name="HisTreatmentTypeForm.chkChanMax.Properties.Caption" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkChanTime.Properties.Caption" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkDisableFinishedDeposit.Properties.Caption" xml:space="preserve">
+    <value>Disable with BN ending</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkDisableFinishedServiceDeposit.Properties.Caption" xml:space="preserve">
+    <value>Disable with BN ending</value>
+  </data>
+  <data name="HisTreatmentTypeForm.chkIsRequiredServiceBed.ToolTip" xml:space="preserve">
+    <value>It is mandatory to designate new beds to allow for ordering and prescribing</value>
   </data>
   <data name="HisTreatmentTypeForm.chkKhongKTFeeDebt.Properties.Caption" xml:space="preserve">
     <value>No KT</value>
-    <comment>Không KT</comment>
+  </data>
+  <data name="HisTreatmentTypeForm.gclCode.Caption" xml:space="preserve">
+    <value>Treatment area code</value>
+  </data>
+  <data name="HisTreatmentTypeForm.gclName.Caption" xml:space="preserve">
+    <value>Name of treatment area</value>
+  </data>
+  <data name="HisTreatmentTypeForm.grclHeinCode.Caption" xml:space="preserve">
+    <value>Treatment code according to health insurance</value>
+  </data>
+  <data name="HisTreatmentTypeForm.gridColumn1.Caption" xml:space="preserve">
+    <value>Reception allowed</value>
+  </data>
+  <data name="HisTreatmentTypeForm.gridColumn2.Caption" xml:space="preserve">
+    <value>Block open after KT</value>
+  </data>
+  <data name="HisTreatmentTypeForm.gridColumn3.Caption" xml:space="preserve">
+    <value>Hospitalization is allowed upon request</value>
+  </data>
+  <data name="HisTreatmentTypeForm.gridColumn4.Caption" xml:space="preserve">
+    <value>Bed sharing is not allowed</value>
+  </data>
+  <data name="HisTreatmentTypeForm.grlSTT.Caption" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem13.Text" xml:space="preserve">
+    <value>Treatment coverage under health insurance:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem14.Text" xml:space="preserve">
+    <value>Reception allowed:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem15.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Block opening after completion</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem15.Text" xml:space="preserve">
+    <value>Block opening after KT:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem16.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Hospitalization is allowed in case of a clinic prescription</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem16.Text" xml:space="preserve">
+    <value>Hospitalization is allowed upon application:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem17.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Option to not display the \</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem17.Text" xml:space="preserve">
+    <value>“Service advance” is not allowed.</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem18.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>It is not allowed to use “Reimbursement of services” in the hospital fee function</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem18.Text" xml:space="preserve">
+    <value>“Refund of service” is not allowed.</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem19.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Option to not display the \</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem19.Text" xml:space="preserve">
+    <value>\</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem2.Text" xml:space="preserve">
+    <value>Treatment code:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem20.Text" xml:space="preserve">
+    <value>Prefix to generate hospital discharge number:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem21.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Optional when payment time is less than hospital discharge time</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem21.Text" xml:space="preserve">
+    <value>Payment time \u003c hospital discharge time:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem22.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mandatory services ordered upon discharge from hospital</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem22.Text" xml:space="preserve">
+    <value>Mandatory services prescribed when leaving the hospital:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem26.Text" xml:space="preserve">
+    <value>Bed sharing is not allowed:</value>
   </data>
   <data name="HisTreatmentTypeForm.layoutControlItem27.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>End treatment when the additional payment amount is greater than 0</value>
-    <comment>Kết thúc điều trị khi số tiền cần nộp thêm lớn hơn 0</comment>
   </data>
   <data name="HisTreatmentTypeForm.layoutControlItem27.Text" xml:space="preserve">
     <value>End of treatment when owing hospital fees:</value>
-    <comment>Kết thúc điều trị khi nợ viện phí:</comment>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem3.Text" xml:space="preserve">
+    <value>Name of treatment area:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem30.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>It is mandatory to designate new beds to allow for ordering and prescribing</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem30.Text" xml:space="preserve">
+    <value>Mandatory bed assignment:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem31.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Maximum amount of 1 prescription when prescribing</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem31.Text" xml:space="preserve">
+    <value>Maximum amount of 1 prescription:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.layoutControlItem6.Text" xml:space="preserve">
+    <value>End treatment when there is an unsigned document:</value>
+  </data>
+  <data name="HisTreatmentTypeForm.Text" xml:space="preserve">
+    <value>HisTreatmentTypeForm</value>
   </data>
 </root>

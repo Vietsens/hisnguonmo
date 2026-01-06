@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
-using HIS.Desktop.MIMS.Integration.Core;
 using HIS.Desktop.MIMS.Integration.Models;
+using HIS.Desktop.MIMS.Integration.Core;
 using HIS.Desktop.MIMS.Integration.View;
 
 namespace HIS.Desktop.MIMS.Integration.Modules
 {
-    public class DrugHealthService
+    public class DrugInfomationService
     {
         private static string BuildSimpleHtml(string message)
         {
@@ -14,13 +14,10 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             return "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
         }
 
-        /// <summary>
-        /// Kiểm tra Drug-Health Alert theo tài liệu MIMS (Prescribing + HealthIssueCodes ICD10).
-        /// </summary>
-        public MimsResult Check(List<DrugItem> drugs, List<string> icd10Codes)
+        public MimsResult Check(DrugItem drug)
         {
             var result = new MimsResult();
-            if (drugs == null || drugs.Count == 0 || !drugs.Exists(o=>o.MimsGuid!=null))
+            if (drug == null || drug.MimsGuid == null)
             {
                 result.Success = false;
                 result.Message = "Không có thông tin thuốc kiểm tra tương tác";
@@ -28,7 +25,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 ShowResult(result);
                 return result;
             }
-            string xmlRequest = MimsRequestBuilder.BuildDrugHealthAlertRequest(drugs, icd10Codes);
+            string xmlRequest = MimsRequestBuilder.BuildDrugInformationRequest(drug);
 
             bool isTimeout;
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xmlRequest, out isTimeout);
@@ -72,26 +69,23 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 return result;
             }
 
+            // Normal successful case
             result.Html = MimsResponseTransformer.XmlToHtml(xmlResponse);
             result.Success = !string.IsNullOrEmpty(result.Html);
 
-            // Parse chi tiết Drug-Health Alert theo Result XML trong tài liệu MIMS.
-            result.DrugHealthAlertDetails = MimsResultDetailParser.ParseDrugHealthAlerts(xmlResponse);
-
             return result;
         }
-
         public void ShowResult(MimsResult result)
         {
             if (result != null && !string.IsNullOrEmpty(result.Html))
             {
-                WebViewHelper.ShowHtml(result.Html, "Kiểm tra bệnh lý nền (Drug-Health Alert)");
+                WebViewHelper.ShowHtml(result.Html, "Thông tin thuốc");
             }
         }
 
-        public void ShowResultAsync(List<DrugItem> drugs, List<string> icd10Codes)
+        public void ShowResultAsync(DrugItem drug)
         {
-            WebViewHelper.ShowResultAsync(() => Check(drugs, icd10Codes), "Kiểm tra bệnh lý nền (Drug-Health Alert)");
+            WebViewHelper.ShowResultAsync(() => Check(drug), "Thông tin thuốc");
         }
     }
 }

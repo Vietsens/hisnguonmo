@@ -236,7 +236,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 _HanhChinhBenhNhan.MaBenhNhan = _Patient.PATIENT_CODE;
                 _HanhChinhBenhNhan.TenBenhNhan = _Treatment.TDL_PATIENT_NAME;
                 _HanhChinhBenhNhan.NgaySinh = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_Treatment.TDL_PATIENT_DOB) ?? DateTime.Now;
-                _HanhChinhBenhNhan.Tuoi = Inventec.Common.DateTime.Calculation.AgeString(_Treatment.TDL_PATIENT_DOB, caption__Tuoi, caption__ThangTuoi, caption__NgayTuoi, caption__GioTuoi, _Treatment.IN_TIME); //MPS.AgeUtil.CalculateFullAge(_Treatment.TDL_PATIENT_DOB);
+                _HanhChinhBenhNhan.Tuoi = Inventec.Common.DateTime.Calculation.AgeStringWithTime(_Treatment.TDL_PATIENT_DOB, caption__Tuoi, caption__ThangTuoi, caption__NgayTuoi, caption__GioTuoi, _Treatment.IN_TIME); //MPS.AgeUtil.CalculateFullAge(_Treatment.TDL_PATIENT_DOB);
                 _HanhChinhBenhNhan.GioiTinh = _Treatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE ? GioiTinh.Nam : _Treatment.TDL_PATIENT_GENDER_ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__FEMALE ? GioiTinh.Nu : GioiTinh.ChuaXacDinh;
                 _HanhChinhBenhNhan.DienThoaiLienLac = _Patient.PHONE;
                 _HanhChinhBenhNhan.NgheNghiep = _Patient.CAREER_NAME;

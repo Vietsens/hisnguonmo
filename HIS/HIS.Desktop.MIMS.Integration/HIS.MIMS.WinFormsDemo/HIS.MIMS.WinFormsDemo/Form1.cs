@@ -38,12 +38,17 @@ namespace HIS.MIMS.WinFormsDemo
         // 1. Use sample "Drug Information (Product)" from Postman collection
         private void btnTestDrugInfoProduct_Click(object sender, EventArgs e)
         {
-            const string xml = "<Request><Content><Product reference=\"{D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60}\" /></Content></Request>";
+            DrugItem drug = new DrugItem(null, "captopril 100mg Oral Tablet", "488F9F61-5D37-4989-925E-1742FFFDAA9E", MimsDrugType.GGPI);
 
-            // Call CDS endpoint directly and transform XML -> HTML via XSL
-            string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xml);
-            string html = MimsResponseTransformer.XmlToHtml(xmlResponse);
-            WebViewHelper.ShowHtml(html, "Thông tin thuốc");
+            var service = new DrugInfomationService();
+            service.ShowResultAsync(drug);
+
+            // const string xml = "<Request><Content><Product reference=\"{D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60}\" /></Content></Request>";
+
+            // // Call CDS endpoint directly and transform XML -> HTML via XSL
+            // string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xml);
+            // string html = MimsResponseTransformer.XmlToHtml(xmlResponse);
+            // WebViewHelper.ShowHtml(html, "Thông tin thuốc");
 
             //ShowHtml(html, string.IsNullOrEmpty(xmlResponse) ? "No response from MIMS API" : null);
         }
@@ -89,15 +94,21 @@ namespace HIS.MIMS.WinFormsDemo
             service.ShowResultAsync(hisCodes);
         }
 
-        // 5. Drug–Drug Alert test using the exact prescriptionquery from Postman collection
+        // 5. Drug–ICD Alert test using the exact prescriptionquery from Postman collection
         private void btnTestDrugDrugAlert_Click(object sender, EventArgs e)
         {
-            const string xml = "<Request><Interaction><Prescribing><GGPI reference=\"{488F9F61-5D37-4989-925E-1742FFFDAA9E}\"/><GGPI reference=\"{49102790-2259-457F-88B5-A968FA397EDA}\" /></Prescribing><References/></Interaction></Request>";
+            var current = new List<DrugItem>
+            {
+                //new DrugItem(null, "Vercef dispersible tab 125 mg", "D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60", MimsDrugType.Product),
+                new DrugItem(null, "", "775368B5-254F-4CF0-A605-B64846459BF8", MimsDrugType.Product),
+                new DrugItem(null, "hydroCHLOROthiazide 12.5mg - irbesartan 300mg film coated tablet", "49102790-2259-457F-88B5-A968FA397EDA", MimsDrugType.GGPI)
+            };
 
-            string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xml);
-            string html = MimsResponseTransformer.XmlToHtml(xmlResponse);
-            //ShowHtml(html, string.IsNullOrEmpty(xmlResponse) ? "No response from MIMS API" : null);
-            WebViewHelper.ShowHtml(html, "Tương tác thuốc");
+            var icdcodes = new List<string>();
+            icdcodes.Add("R00.1");
+
+            var service = new DrugHealthService();
+            service.ShowResultAsync(current,icdcodes);
         }
     }
 }
