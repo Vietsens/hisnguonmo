@@ -6,12 +6,11 @@ using HIS.Desktop.MIMS.Integration.View;
 
 namespace HIS.Desktop.MIMS.Integration.Modules
 {
-    public class DrugHealthService
+    public class DrugHealthService : BaseService
     {
-        private static string BuildSimpleHtml(string message)
+        public DrugHealthService()
         {
-            string safe = System.Security.SecurityElement.Escape(message ?? string.Empty);
-            return "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
+            NameText = "Kiểm tra tương tác thuốc, bệnh liên quan";
         }
 
         /// <summary>
@@ -25,7 +24,6 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 result.Success = false;
                 result.Message = "Không có thông tin thuốc kiểm tra tương tác";
                 result.Html = BuildSimpleHtml(result.Message);
-                ShowResult(result);
                 return result;
             }
             string xmlRequest = MimsRequestBuilder.BuildDrugHealthAlertRequest(drugs, icd10Codes);
@@ -81,27 +79,19 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             return result;
         }
 
-        public void ShowResult(MimsResult result)
-        {
-            if (result != null && !string.IsNullOrEmpty(result.Html))
-            {
-                WebViewHelper.ShowHtml(result.Html, "Kiểm tra bệnh lý nền (Drug-Health Alert)");
-            }
-        }
-
         public bool ShowDialog(List<DrugItem> drugs, List<string> icd10Codes)
         {
             MimsResult result = Check(drugs, icd10Codes);
             if (result != null && !string.IsNullOrEmpty(result.Html))
             {
-                return WebViewHelper.ShowDialog(result.Html, "Kiểm tra bệnh lý nền (Drug-Health Alert)");
+                return WebViewHelper.ShowDialog(result.Html, NameText);
             }
             return false;
         }
 
         public void ShowResultAsync(List<DrugItem> drugs, List<string> icd10Codes)
         {
-            WebViewHelper.ShowResultAsync(() => Check(drugs, icd10Codes), "Kiểm tra bệnh lý nền (Drug-Health Alert)");
+            WebViewHelper.ShowResultAsync(() => Check(drugs, icd10Codes), NameText);
         }
     }
 }

@@ -6,12 +6,11 @@ using HIS.Desktop.MIMS.Integration.View;
 
 namespace HIS.Desktop.MIMS.Integration.Modules
 {
-    public class VnContraindicationService
+    public class VnContraindicationService : BaseService
     {
-        private static string BuildSimpleHtml(string message)
+        public VnContraindicationService()
         {
-            string safe = System.Security.SecurityElement.Escape(message ?? string.Empty);
-            return "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
+            NameText = "Kiểm tra tương tác thuốc.";
         }
 
         public MimsResult Check(List<string> hisDrugCodes)
@@ -72,17 +71,9 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             return result;
         }
 
-        public void ShowResult(MimsResult result)
-		{
-			if (result != null && !string.IsNullOrEmpty(result.Html))
-			{
-				WebViewHelper.ShowHtml(result.Html, "Kiểm tra chống chỉ định Việt Nam");
-			}
-		}
-
         public void ShowResultAsync(List<string> hisDrugCodes)
         {
-            WebViewHelper.ShowResultAsync(() => Check(hisDrugCodes), "Kiểm tra chống chỉ định Việt Nam");
+            WebViewHelper.ShowResultAsync(() => Check(hisDrugCodes), NameText);
         }
 	}
 }

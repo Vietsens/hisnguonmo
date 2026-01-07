@@ -11,6 +11,11 @@ namespace HIS.Desktop.MIMS.Integration.Models
 
         public DrugItem() { }
 
+        public DrugItem(string hisDrugCode)
+        {
+            HisDrugCode = hisDrugCode;
+        }
+
         public DrugItem(string hisDrugCode, string name, string mimsGuid, MimsDrugType drugType)
         {
             HisDrugCode = hisDrugCode;

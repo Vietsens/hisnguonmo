@@ -6,12 +6,11 @@ using HIS.Desktop.MIMS.Integration.View;
 
 namespace HIS.Desktop.MIMS.Integration.Modules
 {
-    public class DrugDrugInteractionService
+    public class DrugDrugInteractionService : BaseService
     {
-        private static string BuildSimpleHtml(string message)
+        public DrugDrugInteractionService()
         {
-            string safe = System.Security.SecurityElement.Escape(message ?? string.Empty);
-            return "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
+            NameText = "Kiểm tra tương tác thuốc";
         }
 
         public MimsResult Check(List<DrugItem> current, List<DrugItem> previous)
@@ -74,17 +73,9 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             return result;
         }
 
-        public void ShowResult(MimsResult result)
-        {
-            if (result != null && !string.IsNullOrEmpty(result.Html))
-            {
-                WebViewHelper.ShowHtml(result.Html, "Kiểm tra tương tác thuốc");
-            }
-        }
-
         public void ShowResultAsync(List<DrugItem> current, List<DrugItem> previous)
         {
-            WebViewHelper.ShowResultAsync(() => Check(current, previous), "Kiểm tra tương tác thuốc");
+            WebViewHelper.ShowResultAsync(() => Check(current, previous), NameText);
         }
 
         public bool ShowDialog(List<DrugItem> drugs, List<DrugItem> previous)
@@ -92,7 +83,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             MimsResult result = Check(drugs, previous);
             if (result != null && !string.IsNullOrEmpty(result.Html))
             {
-                return WebViewHelper.ShowDialog(result.Html, "Kiểm tra tương tác thuốc");
+                return WebViewHelper.ShowDialog(result.Html, NameText);
             }
             return false;
         }

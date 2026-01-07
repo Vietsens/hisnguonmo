@@ -47,8 +47,14 @@
     <Reference Include="EO.WebBrowser.WinForm">
       <HintPath>..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebBrowser.WinForm.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,6 +69,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\BaseService.cs" />
     <Compile Include="Core\MimsClient.cs" />
     <Compile Include="Core\MimsConfig.cs" />
     <Compile Include="Core\MimsRequestBuilder.cs" />

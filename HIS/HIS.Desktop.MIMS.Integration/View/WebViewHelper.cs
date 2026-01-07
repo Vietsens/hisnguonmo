@@ -12,11 +12,8 @@ namespace HIS.Desktop.MIMS.Integration.View
         /// </summary>
         public static void ShowHtml(string html, string title = "MIMS")
         {
-
-            using (var form = new WebBrowser(html, title))
-            {
-                form.Show();
-            }
+            var form = new WebBrowser(html, title);
+            form.Show();
         }
 
         /// <summary>

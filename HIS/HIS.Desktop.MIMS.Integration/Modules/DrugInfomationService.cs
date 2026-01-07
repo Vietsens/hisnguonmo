@@ -6,12 +6,11 @@ using HIS.Desktop.MIMS.Integration.View;
 
 namespace HIS.Desktop.MIMS.Integration.Modules
 {
-    public class DrugInfomationService
+    public class DrugInfomationService : BaseService
     {
-        private static string BuildSimpleHtml(string message)
+        public DrugInfomationService()
         {
-            string safe = System.Security.SecurityElement.Escape(message ?? string.Empty);
-            return "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
+            NameText = "Thông tin thuốc";
         }
 
         public MimsResult Check(DrugItem drug)
@@ -20,9 +19,8 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             if (drug == null || drug.MimsGuid == null)
             {
                 result.Success = false;
-                result.Message = "Không có thông tin thuốc kiểm tra tương tác";
+                result.Message = "Không có thông tin thuốc";
                 result.Html = BuildSimpleHtml(result.Message);
-                ShowResult(result);
                 return result;
             }
             string xmlRequest = MimsRequestBuilder.BuildDrugInformationRequest(drug);
@@ -75,17 +73,10 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 
             return result;
         }
-        public void ShowResult(MimsResult result)
-        {
-            if (result != null && !string.IsNullOrEmpty(result.Html))
-            {
-                WebViewHelper.ShowHtml(result.Html, "Thông tin thuốc");
-            }
-        }
 
         public void ShowResultAsync(DrugItem drug)
         {
-            WebViewHelper.ShowResultAsync(() => Check(drug), "Thông tin thuốc");
+            WebViewHelper.ShowResultAsync(() => Check(drug), NameText);
         }
     }
 }
