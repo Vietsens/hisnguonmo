@@ -87,5 +87,25 @@ namespace HIS.UC.FormType.Config
             }
         }
 
+        private static List<SDA.EFMODEL.DataModels.SDA_NATIONAL> sdaNational;
+        public static List<SDA.EFMODEL.DataModels.SDA_NATIONAL> SdaNational
+        {
+            get
+            {
+                if (FormTypeDelegate.ProcessFormType != null) FormTypeDelegate.ProcessFormType(typeof(SDA.EFMODEL.DataModels.SDA_NATIONAL));
+                if (sdaNational == null || sdaNational.Count == 0)
+                {
+                    CommonParam param = new CommonParam();
+                    SDA.Filter.SdaNationalFilter filter = new SDA.Filter.SdaNationalFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    sdaNational = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>("api/SdaNational/Get", ApiConsumerStore.SdaConsumer, filter);
+                }
+                return sdaNational.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+            }
+            set
+            {
+                sdaNational = value;
+            }
+        }
     }
 }

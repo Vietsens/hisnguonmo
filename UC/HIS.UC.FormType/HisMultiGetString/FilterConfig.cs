@@ -325,6 +325,8 @@ namespace HIS.UC.FormType.HisMultiGetString
                         FilterTypeCode = "SDA_COMMUNE";
                     else if (_jsonOutput.Contains("PROVINCE_ID"))
                         FilterTypeCode = "SDA_PROVINCE";
+                    else if (_jsonOutput.Contains("NATIONAL_ID"))
+                        FilterTypeCode = "SDA_NATIONAL";
                     else if (_jsonOutput.Contains("INPUT_DATA_ID"))
                     {
                         RemoveStrOutput0(ref _jsonOutput);
