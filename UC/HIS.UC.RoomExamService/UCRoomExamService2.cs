@@ -15,22 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.UC.RoomExamService.ADO;
+using HIS.UC.ServiceRoom.ADO;
+using Inventec.Common.Controls.EditorLoader;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.UC.RoomExamService.ADO;
-using MOS.EFMODEL.DataModels;
-using Inventec.Common.Controls.EditorLoader;
-using MOS.SDO;
-using System.Resources;
-using System.Globalization;
-using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.UC.RoomExamService
 {
@@ -138,11 +139,12 @@ namespace HIS.UC.RoomExamService
             {
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SERVICE_CODE", "", 120, 1));
-                columnInfos.Add(new ColumnInfo("SERVICE_NAME", "", 300, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("SERVICE_NAME", "SERVICE_ID", columnInfos, false, 420);
+                columnInfos.Add(new ColumnInfo("SERVICE_NAME", "", 220, 2));
+                columnInfos.Add(new ColumnInfo("PRICE_DISPLAY", "Giá", 100, 3, true));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("SERVICE_NAME", "SERVICE_ID", columnInfos, false, 440);
                 ControlEditorLoader.Load(this.cboExamService, this.currentServiceRooms, controlEditorADO);
                 cboExamService.Properties.ImmediatePopup = true;
-                cboExamService.Properties.PopupFormSize = new System.Drawing.Size(420, cboExamService.Properties.PopupFormSize.Height);
+                cboExamService.Properties.PopupFormSize = new System.Drawing.Size(440, cboExamService.Properties.PopupFormSize.Height);
             }
             catch (Exception ex)
             {
@@ -154,14 +156,60 @@ namespace HIS.UC.RoomExamService
         {
             try
             {
-                this.cboExamService.Properties.DataSource = this.currentServiceRooms;
+                // Tạo danh sách với giá
+                var dataSourceWithPrice = new List<ServiceRoomWithPriceADO>();
+                if (this.currentServiceRooms != null && this.currentServiceRooms.Count > 0)
+                {
+                    long currentTime = Inventec.Common.DateTime.Get.Now() ?? 0;
+                    var allServicePaty = BackendDataWorker.Get<HIS_SERVICE_PATY>();
+                    foreach (var service in this.currentServiceRooms)
+                    {
+                        var servicePrice = GetServicePrice(service.SERVICE_ID, currentTime, allServicePaty);
+                        dataSourceWithPrice.Add(new ServiceRoomWithPriceADO(service, servicePrice));
+                    }
+                }
+                this.cboExamService.Properties.DataSource = dataSourceWithPrice;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        /// <summary>
+        /// Lấy giá dịch vụ theo đối tượng thanh toán hiện tại
+        /// Điều kiện:
+        /// - SERVICE_ID = SERVICE_ID (V_SERVICE_ROOM)
+        /// - PATIENT_TYPE_ID = ID (HIS_PATIENT_TYPE đối tượng thanh toán đang chọn)
+        /// - TO_TIME null hoặc >= thời gian hiện tại
+        /// - Lấy bản ghi có ID lớn nhất
+        /// </summary>
+        private decimal? GetServicePrice(long serviceId, long currentTime, List<HIS_SERVICE_PATY> allServicePaty)
+        {
+            try
+            {
+                if (this.currentPatientTypeAlter == null || allServicePaty == null || allServicePaty.Count == 0)
+                    return null;
+                long patientTypeId = this.currentPatientTypeAlter.PATIENT_TYPE_ID;
+                // Lọc theo SERVICE_ID và PATIENT_TYPE_ID
+                var servicePatyList = allServicePaty.Where(o =>
+                    o.SERVICE_ID == serviceId
+                    && o.PATIENT_TYPE_ID == patientTypeId
+                    && (o.TO_TIME == null || o.TO_TIME >= currentTime) // TO_TIME null hoặc >= thời gian hiện tại
+                ).ToList();
+                if (servicePatyList != null && servicePatyList.Count > 0)
+                {
+                    // Lấy bản ghi có ID lớn nhất
+                    var maxIdRecord = servicePatyList.OrderByDescending(o => o.ID).FirstOrDefault();
+                    return maxIdRecord != null ? maxIdRecord.PRICE : (decimal?)null;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
         private void InitComboRoom()
         {
             try

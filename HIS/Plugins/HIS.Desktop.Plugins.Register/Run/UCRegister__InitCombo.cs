@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -153,6 +153,7 @@ namespace HIS.Desktop.Plugins.Register.Run
 
                 var classify = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_CLASSIFY>().Where(p => p.IS_ACTIVE == 1).ToList();
                 this.InitComboCommon(this.cboPatientClassify, classify, "ID", "PATIENT_CLASSIFY_NAME", "PATIENT_CLASSIFY_CODE");
+                this.InitComboCustomerSource();
                 this.InitEmergencyTime();
                 this.InitTreatmentType();
                 this.InitOweType();
@@ -161,6 +162,40 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.InitWorkPlaceControl();
                 this.InitComboHisHospitalizeReason();
                 Inventec.Common.Logging.LogSystem.Debug("FillDataToControlsForm Finished!");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitComboCustomerSource()
+        {
+            try
+            {
+                List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE> datas = null;
+                if (BackendDataWorker.IsExistsKey<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>())
+                {
+                    datas = BackendDataWorker
+                        .Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
+                        .Where(o => o.IS_ACTIVE == 1)
+                        .ToList();
+                }
+                else
+                {
+                    // Nếu trong RAM chưa có thì có thể để trống (không load từ API)
+                    // hoặc tuỳ theo pattern của project, bạn có thể viết giống các hàm async khác.
+                    datas = BackendDataWorker
+                        .Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
+                        .Where(o => o.IS_ACTIVE == 1)
+                        .ToList();
+                }
+                this.InitComboCommon(
+                    this.cboCustomerSource,
+                    datas,
+                    "CUSTOMER_SOURCE_CODE",      // valueMember: lưu mã
+                    "CUSTOMER_SOURCE_NAME",      // displayMember: cột Tên
+                    "CUSTOMER_SOURCE_CODE"       // displayMemberCode: cột Mã
+                );
             }
             catch (Exception ex)
             {
