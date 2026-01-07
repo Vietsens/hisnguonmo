@@ -82,12 +82,21 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 
         public bool ShowDialog(List<DrugItem> drugs, List<string> icd10Codes)
         {
-            MimsResult result = Check(drugs, icd10Codes);
-            if (result != null && !string.IsNullOrEmpty(result.Html))
+            try
             {
-                return WebViewHelper.ShowDialog(result.Html, NameText);
+                MimsResult result = Check(drugs, icd10Codes);
+                if (result.Success 
+                    && (result.DrugHealthAlertDetails != null && result.DrugHealthAlertDetails.Count > 0) 
+                    && (result.DrugDrugAlertDetails != null && result.DrugDrugAlertDetails.Count > 0))
+                {
+                    return WebViewHelper.ShowDialog(result.Html, NameText);
+                }
             }
-            return false;
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
         }
 
         public void ShowResultAsync(List<DrugItem> drugs, List<string> icd10Codes)
