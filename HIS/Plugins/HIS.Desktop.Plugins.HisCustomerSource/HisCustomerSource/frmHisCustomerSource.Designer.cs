@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -63,7 +62,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
@@ -76,6 +75,8 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
+            this.txtSearch = new DevExpress.XtraEditors.TextEdit();
             this.lcInfor = new DevExpress.XtraLayout.LayoutControl();
             this.btnCancel = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
@@ -116,15 +117,19 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcInfor)).BeginInit();
             this.lcInfor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtCustomerSourceName.Properties)).BeginInit();
@@ -151,6 +156,9 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
@@ -273,6 +281,8 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.btnSearch);
+            this.layoutControl2.Controls.Add(this.txtSearch);
             this.layoutControl2.Controls.Add(this.lcInfor);
             this.layoutControl2.Controls.Add(this.layoutControl3);
             this.layoutControl2.Controls.Add(this.GridControlCustomerSource);
@@ -282,6 +292,27 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.layoutControl2.Size = new System.Drawing.Size(1232, 485);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(249, 2);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(72, 22);
+            this.btnSearch.StyleController = this.layoutControl2;
+            this.btnSearch.TabIndex = 10;
+            this.btnSearch.Text = "Tìm (Ctrl F)";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Location = new System.Drawing.Point(2, 2);
+            this.txtSearch.MenuManager = this.barManager1;
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
+            this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtSearch.Size = new System.Drawing.Size(243, 20);
+            this.txtSearch.StyleController = this.layoutControl2;
+            this.txtSearch.TabIndex = 9;
             // 
             // lcInfor
             // 
@@ -442,10 +473,10 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             // layoutControl3
             // 
             this.layoutControl3.Controls.Add(this.ucPaging2);
-            this.layoutControl3.Location = new System.Drawing.Point(2, 452);
+            this.layoutControl3.Location = new System.Drawing.Point(2, 459);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(951, 31);
+            this.layoutControl3.Size = new System.Drawing.Size(951, 24);
             this.layoutControl3.TabIndex = 7;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -453,7 +484,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             // 
             this.ucPaging2.Location = new System.Drawing.Point(2, 2);
             this.ucPaging2.Name = "ucPaging2";
-            this.ucPaging2.Size = new System.Drawing.Size(947, 27);
+            this.ucPaging2.Size = new System.Drawing.Size(947, 20);
             this.ucPaging2.TabIndex = 6;
             // 
             // layoutControlGroup2
@@ -464,7 +495,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.layoutControlItem14});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(951, 31);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(951, 24);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem14
@@ -472,13 +503,13 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.layoutControlItem14.Control = this.ucPaging2;
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(951, 31);
+            this.layoutControlItem14.Size = new System.Drawing.Size(951, 24);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // GridControlCustomerSource
             // 
-            this.GridControlCustomerSource.Location = new System.Drawing.Point(2, 2);
+            this.GridControlCustomerSource.Location = new System.Drawing.Point(2, 28);
             this.GridControlCustomerSource.MainView = this.GridViewCustomerSource;
             this.GridControlCustomerSource.MenuManager = this.barManager1;
             this.GridControlCustomerSource.Name = "GridControlCustomerSource";
@@ -487,7 +518,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.btnUnLock,
             this.btnDelete,
             this.btnVisibleDetele});
-            this.GridControlCustomerSource.Size = new System.Drawing.Size(951, 446);
+            this.GridControlCustomerSource.Size = new System.Drawing.Size(951, 427);
             this.GridControlCustomerSource.TabIndex = 6;
             this.GridControlCustomerSource.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.GridViewCustomerSource});
@@ -557,6 +588,8 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.grdColDelete.MinWidth = 30;
             this.grdColDelete.Name = "grdColDelete";
             this.grdColDelete.OptionsColumn.ShowCaption = false;
+            this.grdColDelete.OptionsFilter.AllowAutoFilter = false;
+            this.grdColDelete.OptionsFilter.AllowFilter = false;
             this.grdColDelete.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColDelete.Visible = true;
             this.grdColDelete.VisibleIndex = 2;
@@ -571,7 +604,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.grdColCustomerSourceCode.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.grdColCustomerSourceCode.Visible = true;
             this.grdColCustomerSourceCode.VisibleIndex = 3;
-            this.grdColCustomerSourceCode.Width = 98;
+            this.grdColCustomerSourceCode.Width = 108;
             // 
             // grdColCustomerSourceName
             // 
@@ -612,7 +645,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.grdColIsActive.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColIsActive.Visible = true;
             this.grdColIsActive.VisibleIndex = 5;
-            this.grdColIsActive.Width = 90;
+            this.grdColIsActive.Width = 80;
             // 
             // grdColCreateTime
             // 
@@ -702,7 +735,10 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.Root.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem4,
             this.layoutControlItem5,
-            this.layoutControlItem6});
+            this.layoutControlItem6,
+            this.layoutControlItem2,
+            this.layoutControlItem3,
+            this.emptySpaceItem1});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Size = new System.Drawing.Size(1232, 485);
@@ -711,18 +747,18 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.GridControlCustomerSource;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(955, 450);
+            this.layoutControlItem4.Size = new System.Drawing.Size(955, 431);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.layoutControl3;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 450);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 457);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(955, 35);
+            this.layoutControlItem5.Size = new System.Drawing.Size(955, 28);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -734,6 +770,32 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.layoutControlItem6.Size = new System.Drawing.Size(277, 485);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
+            // 
+            // layoutControlItem2
+            // 
+            this.layoutControlItem2.Control = this.txtSearch;
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem2.Name = "layoutControlItem2";
+            this.layoutControlItem2.Size = new System.Drawing.Size(247, 26);
+            this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem2.TextVisible = false;
+            // 
+            // layoutControlItem3
+            // 
+            this.layoutControlItem3.Control = this.btnSearch;
+            this.layoutControlItem3.Location = new System.Drawing.Point(247, 0);
+            this.layoutControlItem3.Name = "layoutControlItem3";
+            this.layoutControlItem3.Size = new System.Drawing.Size(76, 26);
+            this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem3.TextVisible = false;
+            // 
+            // emptySpaceItem1
+            // 
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(323, 0);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(632, 26);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup1
             // 
@@ -783,6 +845,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcInfor)).EndInit();
             this.lcInfor.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtCustomerSourceName.Properties)).EndInit();
@@ -809,6 +872,9 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
@@ -877,5 +943,10 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnVisibleDetele;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
+        private DevExpress.XtraEditors.SimpleButton btnSearch;
+        private DevExpress.XtraEditors.TextEdit txtSearch;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
     }
 }

@@ -141,6 +141,9 @@
   <data name="frmHisCustomerSource.btnEdit.Text" xml:space="preserve">
     <value>Sửa (Ctrl S)</value>
   </data>
+  <data name="frmHisCustomerSource.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
   <data name="frmHisCustomerSource.F2.Caption" xml:space="preserve">
     <value>F2</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="frmHisCustomerSource.Text" xml:space="preserve">
     <value>Nguồn khách</value>
+  </data>
+  <data name="frmHisCustomerSource.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
   </data>
   <data name="HisCustomerSource.btnAdd.Text" xml:space="preserve">
     <value>Thêm (Ctrl N)</value>

@@ -323,6 +323,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                 CommonParam paramCommon = new CommonParam(startPage, limit);
                 ApiResultObject<List<HIS_CUSTOMER_SOURCE>> apiResuilt = null;
                 HisCustomerSourceFilter filter = new HisCustomerSourceFilter();
+                filter.KEY_WORD = txtSearch.Text.Trim();
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 GridViewCustomerSource.BeginUpdate();
@@ -636,6 +637,10 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(datarow.MODIFY_TIME ?? 0);
                         }
+                        else if (e.Column.FieldName == "LOCK")
+                        {
+                            e.Value = datarow.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? "Mở" : "Khóa";
+                        }
                     }
                 }
             }
@@ -653,7 +658,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                 DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (e.RowHandle >= 0)
                 {
-                    HIS_CUSTOMER_SOURCE datarow = (HIS_CUSTOMER_SOURCE)((System.Collections.IList)((DevExpress.XtraGrid.Views.Base.BaseView)sender).DataSource)[e.RowHandle];
+                    HIS_CUSTOMER_SOURCE datarow = view.GetRow(e.RowHandle) as HIS_CUSTOMER_SOURCE;
                     if (e.Column.FieldName == "LOCK")
                     {
                         e.RepositoryItem = (datarow.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? btnLock : btnUnLock);
@@ -822,5 +827,4 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             }
         }
     }
-
 }

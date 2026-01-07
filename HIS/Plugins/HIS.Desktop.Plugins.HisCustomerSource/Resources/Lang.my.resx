@@ -141,6 +141,9 @@
   <data name="frmHisCustomerSource.btnEdit.Text" xml:space="preserve">
     <value>တည်းဖြတ်ရန် (Ctrl S)</value>
   </data>
+  <data name="frmHisCustomerSource.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
   <data name="frmHisCustomerSource.F2.Caption" xml:space="preserve">
     <value>F2</value>
   </data>
@@ -203,6 +206,9 @@
   </data>
   <data name="frmHisCustomerSource.Text" xml:space="preserve">
     <value>frmHisCustomerSource</value>
+  </data>
+  <data name="frmHisCustomerSource.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>အဓိကစကားလုံးများကို ရှာဖွေပါ။</value>
   </data>
   <data name="HisCustomerSource.btnAdd.Text" xml:space="preserve">
     <value>ထည့်ပါ (Ctrl N)</value>
