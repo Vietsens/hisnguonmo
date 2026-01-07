@@ -4124,22 +4124,22 @@ namespace HIS.Desktop.Plugins.TrackingCreate
         {
             try
             {
-                if (ucIcd != null && icdProcessor != null)
-                {
-                    icdProcessor.Reload(ucIcd, null);
-                }
+                //if (ucIcd != null && icdProcessor != null)
+                //{
+                //    icdProcessor.Reload(ucIcd, null);
+                //}
 
-                // Clear ICD YHCT
-                if (ucIcdYhct != null && icdYhctProcessor != null)
-                {
-                    icdYhctProcessor.Reload(ucIcdYhct, null);
-                }
+                //// Clear ICD YHCT
+                //if (ucIcdYhct != null && icdYhctProcessor != null)
+                //{
+                //    icdYhctProcessor.Reload(ucIcdYhct, null);
+                //}
 
-                // Clear ICD phụ
-                if (ucSecondaryIcd != null && subIcdProcessor != null)
-                {
-                    subIcdProcessor.Reload(ucSecondaryIcd, null);
-                }
+                //// Clear ICD phụ
+                //if (ucSecondaryIcd != null && subIcdProcessor != null)
+                //{
+                //    subIcdProcessor.Reload(ucSecondaryIcd, null);
+                //}
                 positionHandleControl = -1;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError
                 (dxValidationProvider1, dxErrorProvider1);
