@@ -4978,9 +4978,16 @@ namespace HIS.Desktop.Plugins.Register.Run
                     if (this.cboCustomerSource.EditValue != null)
                     {
                         // Thêm điều kiện IS_ACTIVE == 1
-                        MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE customerSource = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
+                        //MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE customerSource = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
+                        //    .Where(o => o.IS_ACTIVE == 1)
+                        //    .SingleOrDefault(o => o.CUSTOMER_SOURCE_NAME == (this.cboCustomerSource.EditValue ?? "").ToString());
+                        var list = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>();
+
+                        var customerSource = list
                             .Where(o => o.IS_ACTIVE == 1)
-                            .SingleOrDefault(o => o.CUSTOMER_SOURCE_NAME == (this.cboCustomerSource.EditValue ?? "").ToString());
+                            .SingleOrDefault(o =>
+                                o.CUSTOMER_SOURCE_CODE == (this.cboCustomerSource.EditValue ?? "").ToString()
+                            );
                         if (customerSource != null)
                         {
                             this.txtCustomerSource.Text = customerSource.CUSTOMER_SOURCE_CODE;

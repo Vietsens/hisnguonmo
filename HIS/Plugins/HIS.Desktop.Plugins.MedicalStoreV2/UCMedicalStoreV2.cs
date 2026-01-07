@@ -1258,6 +1258,10 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                         {
                             e.Value = e.ListSourceRowIndex + 1 + startPageTreatment;
                         }
+                        else if (e.Column.FieldName == "TDL_TREATMENT_IN_CODES_STR")
+                        {
+                            e.Value = data.TDL_TREATMENT_IN_CODES;
+                        }
                         else if (e.Column.FieldName == "CREATE_TIME_STR")
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME ?? 0);
@@ -1818,6 +1822,10 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                         if (e.Column.FieldName == "STT")
                         {
                             e.Value = e.ListSourceRowIndex + 1 + startPageTreatment;
+                        }
+                        else if (e.Column.FieldName == "IN_CODE_STR")
+                        {
+                            e.Value = data.IN_CODE;
                         }
                         else if (e.Column.FieldName == "IN_TIME_STR")
                         {
