@@ -331,7 +331,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     else
                         this.LoadNgayThangNamSinhBNToForm(patientDTO.DOB, false);
                 }
-
+            
                 MOS.EFMODEL.DataModels.HIS_GENDER gioitinh = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_GENDER>().SingleOrDefault(o => o.ID == patientDTO.GENDER_ID);
                 if (gioitinh != null)
                 {
@@ -351,7 +351,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     this.cboEthnic.EditValue = ethnic.ETHNIC_NAME;
                     this.txtEthnicCode.Text = ethnic.ETHNIC_CODE;
                 }
-
+                
                 //LogSystem.Debug(patientDTO.HeinCardNumber);
                 MOS.EFMODEL.DataModels.HIS_CAREER career = this.GetCareerByBhytWhiteListConfig(patientDTO.HeinCardNumber);
 
