@@ -174,7 +174,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.ethnicName = ucServiceRequestRegiter.cboEthnic.Text;
                 this.ethnicCode = ucServiceRequestRegiter.txtEthnicCode.Text;
                 this.customerSourceCode = ucServiceRequestRegiter.txtCustomerSource.Text;
-                this.customerSourceName = (string)ucServiceRequestRegiter.cboCustomerSource.EditValue;
+                this.customerSourceName = ucServiceRequestRegiter.cboCustomerSource.Text;
                 this.customerSourceCodeDetail = ucServiceRequestRegiter.txtCustomerSourceDetail.Text;
                 if (ucServiceRequestRegiter.cboGender.EditValue != null)
                     this.GenderId = (long)(ucServiceRequestRegiter.cboGender.EditValue);
