@@ -28,12 +28,15 @@ namespace HIS.Desktop.MIMS.Integration.Models
         {
             return string.Format("{0} ({1})", Name, HisDrugCode);
         }
+
     }
 
     public enum MimsDrugType
     {
         GGPI = 1,
         Product = 2,
-        GenericItem = 3
+        GenericItem = 3,
+        Molecule = 4,
+        SubstanceClass = 5
     }
 }

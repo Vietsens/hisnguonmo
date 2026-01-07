@@ -15,6 +15,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 
 		public MimsResult Check(List<DrugItem> drugs)
 		{
+            this.MappingMIMS(drugs);
 			string xmlRequest = MimsRequestBuilder.BuildDrugInteractionRequest(drugs);
 
             bool isTimeout;

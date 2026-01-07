@@ -15,6 +15,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 
         public MimsResult Check(DrugItem drug)
         {
+            this.MappingMIMS(drug);
             var result = new MimsResult();
             if (drug == null || drug.MimsGuid == null)
             {

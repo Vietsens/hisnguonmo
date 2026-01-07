@@ -18,6 +18,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// </summary>
         public MimsResult Check(List<DrugItem> drugs, List<string> icd10Codes)
         {
+            this.MappingMIMS(drugs);
             var result = new MimsResult();
             if (drugs == null || drugs.Count == 0 || !drugs.Exists(o=>o.MimsGuid!=null))
             {
