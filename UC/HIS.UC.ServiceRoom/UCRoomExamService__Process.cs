@@ -134,11 +134,14 @@ namespace HIS.UC.ServiceRoom
             try
             {
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("SERVICE_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("SERVICE_NAME", "", 250, 2));
+                columnInfos.Add(new ColumnInfo("SERVICE_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("SERVICE_NAME", "Tên", 250, 2));
                 columnInfos.Add(new ColumnInfo("PRICE_DISPLAY", "Giá", 120, 3, true));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("SERVICE_NAME", "SERVICE_ID", columnInfos, false, 470);
                 ControlEditorLoader.Load(this.cboExamService, this.currentServiceRooms, controlEditorADO);
+                var view = this.cboExamService.Properties.View;
+                view.OptionsView.ShowColumnHeaders = true;     
+                view.OptionsView.ShowIndicator = false;
             }
             catch (Exception ex)
             {
