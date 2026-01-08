@@ -342,7 +342,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 List<MediMatyTypeADO> mediMatyTypeADOMerges = new List<MediMatyTypeADO>();
                 foreach (var pres in this.MediMatyTypeADOs)
                 {
-                    if (pres.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
+                    if (pres.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC) 
                     {
                         //đối tượng thanh toán, hao phí... khiến cho 2 dòng có cùng loại thuốc nhưng các trường thông tin khác không giống nhau hoàn toàn thì vẫn gửi lên server như bình thường hiện tại.
                         //Còn trường hợp 2 dòng giống hệt nhau thì client khi gửi lên server nên gộp lại thành 1 dòng số lượng.

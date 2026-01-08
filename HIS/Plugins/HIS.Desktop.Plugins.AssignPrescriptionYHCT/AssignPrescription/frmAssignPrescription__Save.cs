@@ -19,9 +19,12 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;   
+using HIS.Desktop.MIMS.Integration.Models;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionYHCT.Resources;
@@ -30,6 +33,8 @@ using HIS.Desktop.Plugins.Library.PrintBordereau;
 using HIS.Desktop.Plugins.Library.PrintBordereau.ADO;
 using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.Desktop.Utility;
+using HIS.UC.Icd.ADO;
+using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
@@ -41,13 +46,9 @@ using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using HIS.Desktop.LibraryMessage;
-using HIS.UC.Icd.ADO;
-using HIS.UC.SecondaryIcd.ADO;
-using HIS.Desktop.LocalStorage.HisConfig;
-using System.Text;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 {
@@ -362,6 +363,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
                 this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
+
+                if (!CheckMIMS(this.mediMatyTypeADOs))
+                {
+                    return;
+                }
                 if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
                 {
                     LoadVServiceReq();
@@ -1350,6 +1356,62 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private bool CheckMIMS(List<MediMatyTypeADO> lstMediMatyTypeADOs)
+        {
+            bool check = false;
+            try
+            {
+                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0 && HisConfigCFG.ConnectDrugInterventionInfo == "2")
+                {
+                    List<HIS.Desktop.MIMS.Integration.Models.DrugItem> lstDrugItem = new List<MIMS.Integration.Models.DrugItem>();
+                    var service = new HIS.Desktop.MIMS.Integration.Modules.DrugHealthService();
+
+                    foreach (var item in lstMediMatyTypeADOs)
+                    {
+                        MimsDrugType mimsDrugType = new MimsDrugType();
+                        switch (item.MIMS_TYPE)
+                        {
+                            case 1:
+                                mimsDrugType = MimsDrugType.GGPI;
+                                break;
+                            case 2:
+                                mimsDrugType = MimsDrugType.Product;
+                                break;
+                            case 3:
+                                mimsDrugType = MimsDrugType.GenericItem;
+                                break;
+                            default:
+                                mimsDrugType = MimsDrugType.GenericItem;
+                                break;
+                        }
+                        HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, mimsDrugType);
+                        lstDrugItem.Add(drugItem);
+                    }
+                    List<string> lstICD = new List<string>();
+                    var icdValue = (IcdInputADO)this.icdProcessor.GetValue(this.ucIcd);
+                    var icdValueSecond = (SecondaryIcdDataADO)this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
+                    if (!string.IsNullOrWhiteSpace(icdValue.ICD_CODE))
+                    {
+                        lstICD.AddRange(icdValueSecond.ICD_SUB_CODE.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
+                    }
+
+                    check = service.ShowDialog(lstDrugItem, lstICD);
+                }
+
+                if (check)
+                {
+
+                }
+
+                return check;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return check;
+            }
         }
     }
 }

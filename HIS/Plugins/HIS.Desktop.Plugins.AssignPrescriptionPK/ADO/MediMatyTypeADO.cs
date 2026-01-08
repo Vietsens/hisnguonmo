@@ -333,7 +333,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                 var mst = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == inputData.TDL_MEDI_STOCK_ID);
                 if (mst != null)
                 {
-                    this.MEDI_STOCK_ID = mst.ID;
+                    this.MEDI_STOCK_ID = mst.ID;   
                     this.MEDI_STOCK_CODE = mst.MEDI_STOCK_CODE;
                     this.MEDI_STOCK_NAME = mst.MEDI_STOCK_NAME;
                     MestMetyUnitWorker.UpdateUnit(this, GlobalStore.HisMestMetyUnit);
@@ -388,6 +388,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     this.ATC_GROUP_CODES = mety.ATC_GROUP_CODES;
                     this.ACTIVE_INGR_BHYT_CODE = mety.ACTIVE_INGR_BHYT_CODE;
                     this.ACTIVE_INGR_BHYT_NAME = mety.ACTIVE_INGR_BHYT_NAME;
+
+                    /// bổ sung các trường tương tác thuốc
+                    this.MIMS_MAPPING_STATUS = mety.MIMS_MAPPING_STATUS;
+                    this.MIMS_MAPPING_NOTE = mety.MIMS_MAPPING_NOTE;
+                    this.MIMS_TYPE = mety.MIMS_TYPE;
+                    this.MIMS_NAME = mety.MIMS_NAME;
+                    this.MIMS_LAST_SYNC_TIME = mety.MIMS_LAST_SYNC_TIME;
+                    this.MIMS_GUID = mety.MIMS_GUID;
                 }
 
 
@@ -567,6 +575,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                     this.ATC_GROUP_CODES = mety.ATC_GROUP_CODES;
                     this.ACTIVE_INGR_BHYT_CODE = mety.ACTIVE_INGR_BHYT_CODE;
                     this.ACTIVE_INGR_BHYT_NAME = mety.ACTIVE_INGR_BHYT_NAME;
+
+                    /// bổ sung các trường tương tác thuốc
+                    this.MIMS_MAPPING_STATUS = mety.MIMS_MAPPING_STATUS;
+                    this.MIMS_MAPPING_NOTE = mety.MIMS_MAPPING_NOTE;
+                    this.MIMS_TYPE = mety.MIMS_TYPE;
+                    this.MIMS_NAME = mety.MIMS_NAME;
+                    this.MIMS_LAST_SYNC_TIME = mety.MIMS_LAST_SYNC_TIME;
+                    this.MIMS_GUID = mety.MIMS_GUID;
                 }
 
                 this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
@@ -1745,7 +1761,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
                         if (useForm != null)
                         {
                             medicineTypeSDO.MEDICINE_USE_FORM_ID = useForm.ID;
-                            medicineTypeSDO.MEDICINE_USE_FORM_CODE = useForm.MEDICINE_USE_FORM_CODE;
+                            medicineTypeSDO.MEDICINE_USE_FORM_CODE = useForm.MEDICINE_USE_FORM_CODE; 
                             medicineTypeSDO.MEDICINE_USE_FORM_NAME = useForm.MEDICINE_USE_FORM_NAME;
                             hasUseForm = true;
                         }

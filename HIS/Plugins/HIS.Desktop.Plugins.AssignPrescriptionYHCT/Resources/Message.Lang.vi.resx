@@ -189,6 +189,12 @@
   <data name="Plugin_AssignPrescription__BanChuaChonKhoXuat" xml:space="preserve">
     <value>Bạn chưa chọn kho xuất</value>
   </data>
+	<data name="Plugin_AssignPrescription__PopupMenu_ThongTinThuoc" xml:space="preserve">
+    <value>Thông tin thuốc</value>
+  </data>
+	<data name="Plugin_AssignPrescription__PopupMenu_DanhGiaThongTinThuoc" xml:space="preserve">
+    <value>Đánh giá đơn thuốc</value>
+  </data>
   <data name="Plugin_AssignPrescription__BanChuaNhapLyDoXuat" xml:space="preserve">
     <value>Bạn chưa nhập lý do xuất</value>
   </data>

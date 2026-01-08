@@ -19,7 +19,12 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO
         public string Status { get; set; }
         public string ErrorCode { get; set; }
         public string ErrorDesc { get; set; }
-        public List<string> ErrInfo { get; set; }
+        public List<ErrInfo> ErrInfo { get; set; }
+    }
+    public class ErrInfo
+    {
+        public string errInfCode { get; set; }
+        public string errInfDesc { get; set; }
     }
 
     public class StandardResponseData<T>
@@ -43,6 +48,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO
         public string PatientDateOfBirth { get; set; }
         public string PatientCccd { get; set; }
         public string Signature { get; set; }
+        public string HospitalCode { get; set; }
         public string Token { get; set; }
     }
     #endregion

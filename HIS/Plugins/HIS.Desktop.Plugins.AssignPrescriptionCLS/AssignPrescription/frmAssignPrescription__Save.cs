@@ -20,6 +20,7 @@ using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.MIMS.Integration.Models;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Resources;
@@ -30,6 +31,7 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt;
 using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.Base;
 using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.UC.MenuPrint.ADO;
+using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -209,6 +211,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
+
                 bool valid = true;
                 this.positionHandleControl = -1;
 
@@ -220,6 +223,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                 paramCommon = new CommonParam();
                 this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
+
+                if (!CheckMIMS(this.mediMatyTypeADOs))
+                {
+                    return;
+                }
 
                 //Inventec.Common.Logging.LogSystem.Debug("Du lieu thuoc/vat tu da chon de ke truoc khi xu ly luu____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.mediMatyTypeADOs), this.mediMatyTypeADOs));
                 string validFolow = "";
@@ -563,5 +571,59 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             return valid;
         }
 
+        private bool CheckMIMS(List<MediMatyTypeADO> lstMediMatyTypeADOs)
+        {
+            bool check = false;
+            try
+            {
+                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0 && HisConfigCFG.ConnectDrugInterventionInfo == "2")
+                {
+                    List<HIS.Desktop.MIMS.Integration.Models.DrugItem> lstDrugItem = new List<MIMS.Integration.Models.DrugItem>();
+                    var service = new HIS.Desktop.MIMS.Integration.Modules.DrugHealthService();
+
+                    foreach (var item in lstMediMatyTypeADOs)
+                    {
+                        MimsDrugType mimsDrugType = new MimsDrugType();
+                        switch (item.MIMS_TYPE)
+                        {
+                            case 1:
+                                mimsDrugType = MimsDrugType.GGPI;
+                                break;
+                            case 2:
+                                mimsDrugType = MimsDrugType.Product;
+                                break;
+                            case 3:
+                                mimsDrugType = MimsDrugType.GenericItem;
+                                break;
+                            default:
+                                mimsDrugType = MimsDrugType.GenericItem;
+                                break;
+                        }
+                        HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, mimsDrugType);
+                        lstDrugItem.Add(drugItem);
+                    }
+                    List<string> lstICD = new List<string>();
+                    lstICD.Add(txtIcdCode.Text);
+                    if (!string.IsNullOrWhiteSpace(txtIcdSubCode.Text))
+                    {
+                        lstICD.AddRange(txtIcdSubCode.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
+                    }
+
+                    check = service.ShowDialog(lstDrugItem, lstICD);
+                }
+
+                if (check)
+                {
+
+                }
+
+                return check;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return check;
+            }
+        }
     }
 }

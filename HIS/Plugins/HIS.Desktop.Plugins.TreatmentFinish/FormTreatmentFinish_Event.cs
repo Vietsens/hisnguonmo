@@ -269,11 +269,12 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentFinishSDO), hisTreatmentFinishSDO));
                 hisTreatmentResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_TREATMENT>(ApiConsumer.HisRequestUriStore.HIS_TREATMENT_FINISH, ApiConsumer.ApiConsumers.MosConsumer, hisTreatmentFinishSDO, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
-                CallApiSevereIllnessInfo();
-
                 WaitingManager.Hide();
                 if (hisTreatmentResult != null)
                 {
+                    WaitingManager.Show();
+                    CallApiSevereIllnessInfo();
+                    WaitingManager.Hide();
                     Inventec.Common.Logging.LogSystem.Debug("Ket qua khi goi api HisTreatment/Finish " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisTreatmentResult), hisTreatmentResult));
                     success = true;
                     btnPrint.Enabled = true;
@@ -610,7 +611,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 hisTreatmentFinishSDO.EyeTensionLeft = txtEyeTensionLeft.Text;
                 hisTreatmentFinishSDO.EyeTensionRight = txtEyeTensionRight.Text;
 
-                hisTreatmentFinishSDO.TreatmentMethod = txtMethod.Text; 
 
                 if (lciOutPatientDateFrom.Enabled == true
                 && lciOutPatientDateTo.Enabled == true)
@@ -619,7 +619,17 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     hisTreatmentFinishSDO.OutPatientDateTo = dtOutPatientDateTo.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtOutPatientDateTo.DateTime) : null;
                 }
 
-                hisTreatmentFinishSDO.NewTreatmentInTime = hisTreatmentFinishSDO_process.NewTreatmentInTime;
+                //hisTreatmentFinishSDO.NewTreatmentInTime = hisTreatmentFinishSDO_process.NewTreatmentInTime;
+                // Gán NewTreatmentInTime đầy đủ cho cả lưu và lưu tạm
+                if (hisTreatmentFinishSDO_process != null && hisTreatmentFinishSDO_process.NewTreatmentInTime.HasValue)
+                {
+                    hisTreatmentFinishSDO.NewTreatmentInTime = hisTreatmentFinishSDO_process.NewTreatmentInTime;
+                }
+                else if (chKTaoHoSoMoi.Checked && dtNewTreatmentTime.EditValue != null)
+                {
+                    // Trường hợp lưu tạm, lấy trực tiếp từ control thời gian tạo hồ sơ mới
+                    hisTreatmentFinishSDO.NewTreatmentInTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtNewTreatmentTime.DateTime);
+                }
 
                 if (!string.IsNullOrEmpty(txtEndDeptSubsHead.Text) && cboEndDeptSubsHead.EditValue != null)
                 {
@@ -675,16 +685,16 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 //    hisTreatmentFinishSDO.Valid1Year = currentTreatmentFinishSDO.Valid1Year;
                 //}
                 if (hisTreatmentFinishSDO_process != null)
-                    {
-                         if (string.IsNullOrWhiteSpace(hisTreatmentFinishSDO.SurgeryName))
-                         hisTreatmentFinishSDO.SurgeryName = hisTreatmentFinishSDO_process.SurgeryName;
-                         if (!hisTreatmentFinishSDO.SurgeryBeginTime.HasValue)
-                         hisTreatmentFinishSDO.SurgeryBeginTime = hisTreatmentFinishSDO_process.SurgeryBeginTime;
-                         if (!hisTreatmentFinishSDO.SurgeryEndTime.HasValue)
-                         hisTreatmentFinishSDO.SurgeryEndTime = hisTreatmentFinishSDO_process.SurgeryEndTime;
-                         if (!hisTreatmentFinishSDO.Valid1Year)
-                         hisTreatmentFinishSDO.Valid1Year = hisTreatmentFinishSDO_process.Valid1Year;
-                    }
+                {
+                    if (string.IsNullOrWhiteSpace(hisTreatmentFinishSDO.SurgeryName))
+                        hisTreatmentFinishSDO.SurgeryName = hisTreatmentFinishSDO_process.SurgeryName;
+                    if (!hisTreatmentFinishSDO.SurgeryBeginTime.HasValue)
+                        hisTreatmentFinishSDO.SurgeryBeginTime = hisTreatmentFinishSDO_process.SurgeryBeginTime;
+                    if (!hisTreatmentFinishSDO.SurgeryEndTime.HasValue)
+                        hisTreatmentFinishSDO.SurgeryEndTime = hisTreatmentFinishSDO_process.SurgeryEndTime;
+                    if (!hisTreatmentFinishSDO.Valid1Year)
+                        hisTreatmentFinishSDO.Valid1Year = hisTreatmentFinishSDO_process.Valid1Year;
+                }
             }
             catch (Exception ex)
             {

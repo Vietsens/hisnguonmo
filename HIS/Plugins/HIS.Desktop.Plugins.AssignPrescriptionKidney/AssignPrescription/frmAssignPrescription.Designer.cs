@@ -690,10 +690,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barbtnSaveShortcut,
@@ -792,29 +788,33 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1772, 38);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barDockControlTop.Size = new System.Drawing.Size(1329, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 814);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1772, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1329, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 776);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1772, 38);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 776);
+            this.barDockControlRight.Location = new System.Drawing.Point(1329, 29);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
             // 
             // layoutControl6
             // 
@@ -861,12 +861,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControl6.Controls.Add(this.txtExpMestTemplateCode);
             this.layoutControl6.Controls.Add(this.cboUser);
             this.layoutControl6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl6.Location = new System.Drawing.Point(0, 38);
+            this.layoutControl6.Location = new System.Drawing.Point(0, 29);
+            this.layoutControl6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.layoutControl6.Name = "layoutControl6";
             this.layoutControl6.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(0, 147, 490, 350);
             this.layoutControl6.OptionsFocus.EnableAutoTabOrder = false;
             this.layoutControl6.Root = this.layoutControlGroup5;
-            this.layoutControl6.Size = new System.Drawing.Size(1772, 776);
+            this.layoutControl6.Size = new System.Drawing.Size(1329, 632);
             this.layoutControl6.TabIndex = 5;
             this.layoutControl6.Text = "layoutControl6";
             // 
@@ -874,9 +875,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.pbClose.Image = global::HIS.Desktop.Plugins.AssignPrescriptionKidney.Properties.Resources.arrow_up;
             this.pbClose.ImageLocation = "";
-            this.pbClose.Location = new System.Drawing.Point(1714, 349);
+            this.pbClose.Location = new System.Drawing.Point(1254, 263);
+            this.pbClose.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pbClose.Name = "pbClose";
-            this.pbClose.Size = new System.Drawing.Size(25, 25);
+            this.pbClose.Size = new System.Drawing.Size(26, 27);
             this.pbClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pbClose.TabIndex = 149;
             this.pbClose.TabStop = false;
@@ -885,9 +887,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // pbOpen
             // 
             this.pbOpen.Image = global::HIS.Desktop.Plugins.AssignPrescriptionKidney.Properties.Resources.arrow_down;
-            this.pbOpen.Location = new System.Drawing.Point(1745, 349);
+            this.pbOpen.Location = new System.Drawing.Point(1284, 263);
+            this.pbOpen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pbOpen.Name = "pbOpen";
-            this.pbOpen.Size = new System.Drawing.Size(24, 25);
+            this.pbOpen.Size = new System.Drawing.Size(26, 27);
             this.pbOpen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pbOpen.TabIndex = 148;
             this.pbOpen.TabStop = false;
@@ -895,18 +898,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // pnlUCPanelRightTop
             // 
-            this.pnlUCPanelRightTop.Location = new System.Drawing.Point(1388, 141);
+            this.pnlUCPanelRightTop.Location = new System.Drawing.Point(1027, 55);
+            this.pnlUCPanelRightTop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlUCPanelRightTop.Name = "pnlUCPanelRightTop";
-            this.pnlUCPanelRightTop.Size = new System.Drawing.Size(381, 202);
+            this.pnlUCPanelRightTop.Size = new System.Drawing.Size(283, 204);
             this.pnlUCPanelRightTop.TabIndex = 146;
             // 
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.layoutControl9);
-            this.layoutControl2.Location = new System.Drawing.Point(1385, 377);
+            this.layoutControl2.Location = new System.Drawing.Point(1025, 292);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(387, 150);
+            this.layoutControl2.Size = new System.Drawing.Size(287, 150);
             this.layoutControl2.TabIndex = 145;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -940,20 +945,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControl9.Controls.Add(this.lblBMI);
             this.layoutControl9.Controls.Add(this.btnConnectBloodPressure);
             this.layoutControl9.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl9.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl9.Name = "layoutControl9";
             this.layoutControl9.Root = this.layoutControlItemDHSTInfo;
-            this.layoutControl9.Size = new System.Drawing.Size(366, 192);
+            this.layoutControl9.Size = new System.Drawing.Size(270, 170);
             this.layoutControl9.TabIndex = 4;
             this.layoutControl9.Text = "layoutControl9";
             // 
             // lblACRPCR
             // 
             this.lblACRPCR.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblACRPCR.Location = new System.Drawing.Point(260, 168);
-            this.lblACRPCR.Margin = new System.Windows.Forms.Padding(4);
+            this.lblACRPCR.Location = new System.Drawing.Point(223, 147);
             this.lblACRPCR.Name = "lblACRPCR";
-            this.lblACRPCR.Size = new System.Drawing.Size(102, 20);
+            this.lblACRPCR.Size = new System.Drawing.Size(44, 20);
             this.lblACRPCR.StyleController = this.layoutControl9;
             this.lblACRPCR.TabIndex = 1;
             // 
@@ -961,8 +964,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.dtExecuteTime.EditValue = null;
             this.dtExecuteTime.Enabled = false;
-            this.dtExecuteTime.Location = new System.Drawing.Point(76, 4);
-            this.dtExecuteTime.Margin = new System.Windows.Forms.Padding(4);
+            this.dtExecuteTime.Location = new System.Drawing.Point(75, 3);
             this.dtExecuteTime.Name = "dtExecuteTime";
             this.dtExecuteTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -973,7 +975,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.dtExecuteTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtExecuteTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtExecuteTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtExecuteTime.Size = new System.Drawing.Size(84, 22);
+            this.dtExecuteTime.Size = new System.Drawing.Size(50, 20);
             this.dtExecuteTime.StyleController = this.layoutControl9;
             this.dtExecuteTime.TabIndex = 0;
             // 
@@ -985,8 +987,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinPulse.Enabled = false;
-            this.spinPulse.Location = new System.Drawing.Point(76, 32);
-            this.spinPulse.Margin = new System.Windows.Forms.Padding(4);
+            this.spinPulse.Location = new System.Drawing.Point(75, 27);
             this.spinPulse.Name = "spinPulse";
             this.spinPulse.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinPulse.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1000,7 +1001,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinPulse.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinPulse.Size = new System.Drawing.Size(55, 22);
+            this.spinPulse.Size = new System.Drawing.Size(50, 20);
             this.spinPulse.StyleController = this.layoutControl9;
             this.spinPulse.TabIndex = 4;
             // 
@@ -1012,8 +1013,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinBloodPressureMax.Enabled = false;
-            this.spinBloodPressureMax.Location = new System.Drawing.Point(75, 59);
-            this.spinBloodPressureMax.Margin = new System.Windows.Forms.Padding(4);
+            this.spinBloodPressureMax.Location = new System.Drawing.Point(75, 51);
             this.spinBloodPressureMax.Name = "spinBloodPressureMax";
             this.spinBloodPressureMax.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinBloodPressureMax.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1027,7 +1027,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinBloodPressureMax.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinBloodPressureMax.Size = new System.Drawing.Size(32, 22);
+            this.spinBloodPressureMax.Size = new System.Drawing.Size(26, 20);
             this.spinBloodPressureMax.StyleController = this.layoutControl9;
             this.spinBloodPressureMax.TabIndex = 6;
             // 
@@ -1039,8 +1039,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinWeight.Enabled = false;
-            this.spinWeight.Location = new System.Drawing.Point(76, 84);
-            this.spinWeight.Margin = new System.Windows.Forms.Padding(4);
+            this.spinWeight.Location = new System.Drawing.Point(75, 75);
             this.spinWeight.Name = "spinWeight";
             this.spinWeight.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinWeight.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1053,7 +1052,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinWeight.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinWeight.Size = new System.Drawing.Size(55, 22);
+            this.spinWeight.Size = new System.Drawing.Size(50, 20);
             this.spinWeight.StyleController = this.layoutControl9;
             this.spinWeight.TabIndex = 9;
             // 
@@ -1065,8 +1064,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinHeight.Enabled = false;
-            this.spinHeight.Location = new System.Drawing.Point(76, 112);
-            this.spinHeight.Margin = new System.Windows.Forms.Padding(4);
+            this.spinHeight.Location = new System.Drawing.Point(75, 99);
             this.spinHeight.Name = "spinHeight";
             this.spinHeight.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinHeight.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1079,27 +1077,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinHeight.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinHeight.Size = new System.Drawing.Size(55, 22);
+            this.spinHeight.Size = new System.Drawing.Size(50, 20);
             this.spinHeight.StyleController = this.layoutControl9;
             this.spinHeight.TabIndex = 11;
             // 
             // txtNote
             // 
             this.txtNote.Enabled = false;
-            this.txtNote.Location = new System.Drawing.Point(76, 140);
-            this.txtNote.Margin = new System.Windows.Forms.Padding(4);
+            this.txtNote.Location = new System.Drawing.Point(75, 123);
             this.txtNote.Name = "txtNote";
-            this.txtNote.Size = new System.Drawing.Size(58, 22);
+            this.txtNote.Size = new System.Drawing.Size(33, 20);
             this.txtNote.StyleController = this.layoutControl9;
             this.txtNote.TabIndex = 13;
             // 
             // lblLeatherArea
             // 
             this.lblLeatherArea.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblLeatherArea.Location = new System.Drawing.Point(110, 168);
-            this.lblLeatherArea.Margin = new System.Windows.Forms.Padding(4);
+            this.lblLeatherArea.Location = new System.Drawing.Point(87, 147);
             this.lblLeatherArea.Name = "lblLeatherArea";
-            this.lblLeatherArea.Size = new System.Drawing.Size(43, 18);
+            this.lblLeatherArea.Size = new System.Drawing.Size(44, 20);
             this.lblLeatherArea.StyleController = this.layoutControl9;
             this.lblLeatherArea.TabIndex = 1;
             // 
@@ -1107,10 +1103,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl13.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl13.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl13.Location = new System.Drawing.Point(159, 168);
-            this.labelControl13.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl13.Location = new System.Drawing.Point(135, 147);
             this.labelControl13.Name = "labelControl13";
-            this.labelControl13.Size = new System.Drawing.Size(21, 18);
+            this.labelControl13.Size = new System.Drawing.Size(10, 20);
             this.labelControl13.StyleController = this.layoutControl9;
             this.labelControl13.TabIndex = 1;
             this.labelControl13.Text = " m²";
@@ -1118,10 +1113,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // lblIsToCalculateEgfr
             // 
             this.lblIsToCalculateEgfr.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblIsToCalculateEgfr.Location = new System.Drawing.Point(186, 140);
-            this.lblIsToCalculateEgfr.Margin = new System.Windows.Forms.Padding(4);
+            this.lblIsToCalculateEgfr.Location = new System.Drawing.Point(149, 123);
             this.lblIsToCalculateEgfr.Name = "lblIsToCalculateEgfr";
-            this.lblIsToCalculateEgfr.Size = new System.Drawing.Size(176, 18);
+            this.lblIsToCalculateEgfr.Size = new System.Drawing.Size(118, 20);
             this.lblIsToCalculateEgfr.StyleController = this.layoutControl9;
             this.lblIsToCalculateEgfr.TabIndex = 1;
             // 
@@ -1129,10 +1123,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl5.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl5.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl5.Location = new System.Drawing.Point(137, 112);
-            this.labelControl5.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl5.Location = new System.Drawing.Point(129, 99);
             this.labelControl5.Name = "labelControl5";
-            this.labelControl5.Size = new System.Drawing.Size(43, 18);
+            this.labelControl5.Size = new System.Drawing.Size(16, 20);
             this.labelControl5.StyleController = this.layoutControl9;
             this.labelControl5.TabIndex = 1;
             this.labelControl5.Text = "cm";
@@ -1141,10 +1134,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl12.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl12.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl12.Location = new System.Drawing.Point(137, 84);
-            this.labelControl12.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl12.Location = new System.Drawing.Point(129, 75);
             this.labelControl12.Name = "labelControl12";
-            this.labelControl12.Size = new System.Drawing.Size(43, 18);
+            this.labelControl12.Size = new System.Drawing.Size(16, 20);
             this.labelControl12.StyleController = this.layoutControl9;
             this.labelControl12.TabIndex = 1;
             this.labelControl12.Text = "kg";
@@ -1157,8 +1149,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinBloodPressureMin.Enabled = false;
-            this.spinBloodPressureMin.Location = new System.Drawing.Point(107, 59);
-            this.spinBloodPressureMin.Margin = new System.Windows.Forms.Padding(4);
+            this.spinBloodPressureMin.Location = new System.Drawing.Point(101, 51);
             this.spinBloodPressureMin.Name = "spinBloodPressureMin";
             this.spinBloodPressureMin.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinBloodPressureMin.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1172,7 +1163,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinBloodPressureMin.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinBloodPressureMin.Size = new System.Drawing.Size(28, 22);
+            this.spinBloodPressureMin.Size = new System.Drawing.Size(28, 20);
             this.spinBloodPressureMin.StyleController = this.layoutControl9;
             this.spinBloodPressureMin.TabIndex = 7;
             // 
@@ -1180,10 +1171,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl14.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl14.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl14.Location = new System.Drawing.Point(137, 32);
-            this.labelControl14.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl14.Location = new System.Drawing.Point(129, 27);
             this.labelControl14.Name = "labelControl14";
-            this.labelControl14.Size = new System.Drawing.Size(43, 18);
+            this.labelControl14.Size = new System.Drawing.Size(16, 20);
             this.labelControl14.StyleController = this.layoutControl9;
             this.labelControl14.TabIndex = 1;
             this.labelControl14.Text = "lần/phút";
@@ -1196,8 +1186,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinTemperature.Enabled = false;
-            this.spinTemperature.Location = new System.Drawing.Point(257, 32);
-            this.spinTemperature.Margin = new System.Windows.Forms.Padding(4);
+            this.spinTemperature.Location = new System.Drawing.Point(220, 27);
             this.spinTemperature.Name = "spinTemperature";
             this.spinTemperature.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinTemperature.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1210,7 +1199,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinTemperature.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinTemperature.Size = new System.Drawing.Size(52, 22);
+            this.spinTemperature.Size = new System.Drawing.Size(11, 20);
             this.spinTemperature.StyleController = this.layoutControl9;
             this.spinTemperature.TabIndex = 5;
             // 
@@ -1218,10 +1207,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl10.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl10.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl10.Location = new System.Drawing.Point(140, 60);
-            this.labelControl10.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl10.Location = new System.Drawing.Point(133, 51);
             this.labelControl10.Name = "labelControl10";
-            this.labelControl10.Size = new System.Drawing.Size(40, 18);
+            this.labelControl10.Size = new System.Drawing.Size(12, 20);
             this.labelControl10.StyleController = this.layoutControl9;
             this.labelControl10.TabIndex = 1;
             this.labelControl10.Text = "mmHG";
@@ -1234,8 +1222,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinSPO2.Enabled = false;
-            this.spinSPO2.Location = new System.Drawing.Point(257, 4);
-            this.spinSPO2.Margin = new System.Windows.Forms.Padding(4);
+            this.spinSPO2.Location = new System.Drawing.Point(220, 3);
             this.spinSPO2.Name = "spinSPO2";
             this.spinSPO2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinSPO2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1254,7 +1241,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinSPO2.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinSPO2.Size = new System.Drawing.Size(52, 22);
+            this.spinSPO2.Size = new System.Drawing.Size(11, 20);
             this.spinSPO2.StyleController = this.layoutControl9;
             toolTipItem1.Text = "Độ bão hòa oxy trong máu ngoại vi (mao mạch), được đo thông qua da";
             superToolTip1.Items.Add(toolTipItem1);
@@ -1269,8 +1256,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinBreathRate.Enabled = false;
-            this.spinBreathRate.Location = new System.Drawing.Point(257, 60);
-            this.spinBreathRate.Margin = new System.Windows.Forms.Padding(4);
+            this.spinBreathRate.Location = new System.Drawing.Point(220, 51);
             this.spinBreathRate.Name = "spinBreathRate";
             this.spinBreathRate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinBreathRate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1283,7 +1269,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinBreathRate.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinBreathRate.Size = new System.Drawing.Size(52, 22);
+            this.spinBreathRate.Size = new System.Drawing.Size(11, 20);
             this.spinBreathRate.StyleController = this.layoutControl9;
             this.spinBreathRate.TabIndex = 8;
             // 
@@ -1295,8 +1281,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinChest.Enabled = false;
-            this.spinChest.Location = new System.Drawing.Point(257, 84);
-            this.spinChest.Margin = new System.Windows.Forms.Padding(4);
+            this.spinChest.Location = new System.Drawing.Point(220, 75);
             this.spinChest.Name = "spinChest";
             this.spinChest.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinChest.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1309,7 +1294,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinChest.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinChest.Size = new System.Drawing.Size(52, 22);
+            this.spinChest.Size = new System.Drawing.Size(11, 20);
             this.spinChest.StyleController = this.layoutControl9;
             this.spinChest.TabIndex = 10;
             // 
@@ -1321,8 +1306,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinBelly.Enabled = false;
-            this.spinBelly.Location = new System.Drawing.Point(257, 112);
-            this.spinBelly.Margin = new System.Windows.Forms.Padding(4);
+            this.spinBelly.Location = new System.Drawing.Point(220, 99);
             this.spinBelly.Name = "spinBelly";
             this.spinBelly.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinBelly.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1335,7 +1319,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0});
             this.spinBelly.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinBelly.Size = new System.Drawing.Size(52, 22);
+            this.spinBelly.Size = new System.Drawing.Size(11, 20);
             this.spinBelly.StyleController = this.layoutControl9;
             this.spinBelly.TabIndex = 12;
             // 
@@ -1343,10 +1327,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl6.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl6.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl6.Location = new System.Drawing.Point(315, 84);
-            this.labelControl6.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl6.Location = new System.Drawing.Point(235, 75);
             this.labelControl6.Name = "labelControl6";
-            this.labelControl6.Size = new System.Drawing.Size(47, 18);
+            this.labelControl6.Size = new System.Drawing.Size(32, 20);
             this.labelControl6.StyleController = this.layoutControl9;
             this.labelControl6.TabIndex = 1;
             this.labelControl6.Text = "cm";
@@ -1355,10 +1338,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl3.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl3.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl3.Location = new System.Drawing.Point(315, 60);
-            this.labelControl3.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl3.Location = new System.Drawing.Point(235, 51);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(47, 18);
+            this.labelControl3.Size = new System.Drawing.Size(32, 20);
             this.labelControl3.StyleController = this.layoutControl9;
             this.labelControl3.TabIndex = 1;
             this.labelControl3.Text = "lần/phút";
@@ -1367,10 +1349,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl1.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl1.Location = new System.Drawing.Point(315, 32);
-            this.labelControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl1.Location = new System.Drawing.Point(235, 27);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(47, 18);
+            this.labelControl1.Size = new System.Drawing.Size(32, 20);
             this.labelControl1.StyleController = this.layoutControl9;
             this.labelControl1.TabIndex = 1;
             this.labelControl1.Text = "oC";
@@ -1379,10 +1360,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl9.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl9.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl9.Location = new System.Drawing.Point(315, 4);
-            this.labelControl9.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl9.Location = new System.Drawing.Point(235, 3);
             this.labelControl9.Name = "labelControl9";
-            this.labelControl9.Size = new System.Drawing.Size(47, 18);
+            this.labelControl9.Size = new System.Drawing.Size(32, 20);
             this.labelControl9.StyleController = this.layoutControl9;
             this.labelControl9.TabIndex = 1;
             this.labelControl9.Text = "%";
@@ -1391,10 +1371,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.labelControl8.Appearance.Font = new System.Drawing.Font("Tahoma", 7F);
             this.labelControl8.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl8.Location = new System.Drawing.Point(315, 112);
-            this.labelControl8.Margin = new System.Windows.Forms.Padding(4);
+            this.labelControl8.Location = new System.Drawing.Point(235, 99);
             this.labelControl8.Name = "labelControl8";
-            this.labelControl8.Size = new System.Drawing.Size(47, 18);
+            this.labelControl8.Size = new System.Drawing.Size(32, 20);
             this.labelControl8.StyleController = this.layoutControl9;
             this.labelControl8.TabIndex = 1;
             this.labelControl8.Text = "cm";
@@ -1402,10 +1381,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // lblBMI
             // 
             this.lblBMI.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblBMI.Location = new System.Drawing.Point(36, 168);
-            this.lblBMI.Margin = new System.Windows.Forms.Padding(4);
+            this.lblBMI.Location = new System.Drawing.Point(35, 147);
             this.lblBMI.Name = "lblBMI";
-            this.lblBMI.Size = new System.Drawing.Size(36, 20);
+            this.lblBMI.Size = new System.Drawing.Size(16, 20);
             this.lblBMI.StyleController = this.layoutControl9;
             this.lblBMI.TabIndex = 1;
             // 
@@ -1413,8 +1391,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.btnConnectBloodPressure.Image = ((System.Drawing.Image)(resources.GetObject("btnConnectBloodPressure.Image")));
             this.btnConnectBloodPressure.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnConnectBloodPressure.Location = new System.Drawing.Point(163, 1);
-            this.btnConnectBloodPressure.Margin = new System.Windows.Forms.Padding(4);
+            this.btnConnectBloodPressure.Location = new System.Drawing.Point(127, 1);
             this.btnConnectBloodPressure.Name = "btnConnectBloodPressure";
             this.btnConnectBloodPressure.Size = new System.Drawing.Size(20, 24);
             this.btnConnectBloodPressure.StyleController = this.layoutControl9;
@@ -1431,7 +1408,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItemDHSTInfo.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItemDHSTInfo.Name = "layoutControlItemDHSTInfo";
             this.layoutControlItemDHSTInfo.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItemDHSTInfo.Size = new System.Drawing.Size(366, 192);
+            this.layoutControlItemDHSTInfo.Size = new System.Drawing.Size(270, 170);
             this.layoutControlItemDHSTInfo.TextVisible = false;
             // 
             // lcgDHST
@@ -1468,7 +1445,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lcgDHST.Location = new System.Drawing.Point(0, 0);
             this.lcgDHST.Name = "lcgDHST";
             this.lcgDHST.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgDHST.Size = new System.Drawing.Size(366, 192);
+            this.lcgDHST.Size = new System.Drawing.Size(270, 170);
             this.lcgDHST.Spacing = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.lcgDHST.Text = "Dấu hiệu sinh tồn";
             this.lcgDHST.TextVisible = false;
@@ -1481,7 +1458,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciExecuteTime.CustomizationFormText = "Thời gian đo:";
             this.lciExecuteTime.Location = new System.Drawing.Point(0, 0);
             this.lciExecuteTime.Name = "lciExecuteTime";
-            this.lciExecuteTime.Size = new System.Drawing.Size(162, 28);
+            this.lciExecuteTime.Size = new System.Drawing.Size(126, 24);
             this.lciExecuteTime.Text = "Thời gian đo:";
             this.lciExecuteTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciExecuteTime.TextSize = new System.Drawing.Size(70, 20);
@@ -1493,9 +1470,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciPulse.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPulse.Control = this.spinPulse;
             this.lciPulse.CustomizationFormText = "Mạch:";
-            this.lciPulse.Location = new System.Drawing.Point(0, 28);
+            this.lciPulse.Location = new System.Drawing.Point(0, 24);
             this.lciPulse.Name = "lciPulse";
-            this.lciPulse.Size = new System.Drawing.Size(133, 28);
+            this.lciPulse.Size = new System.Drawing.Size(126, 24);
             this.lciPulse.Text = "Mạch:";
             this.lciPulse.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPulse.TextSize = new System.Drawing.Size(70, 20);
@@ -1507,12 +1484,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciBloodPressure.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBloodPressure.Control = this.spinBloodPressureMax;
             this.lciBloodPressure.CustomizationFormText = "Huyết áp:";
-            this.lciBloodPressure.Location = new System.Drawing.Point(0, 56);
+            this.lciBloodPressure.Location = new System.Drawing.Point(0, 48);
             this.lciBloodPressure.MaxSize = new System.Drawing.Size(0, 24);
             this.lciBloodPressure.MinSize = new System.Drawing.Size(100, 24);
             this.lciBloodPressure.Name = "lciBloodPressure";
             this.lciBloodPressure.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciBloodPressure.Size = new System.Drawing.Size(106, 24);
+            this.lciBloodPressure.Size = new System.Drawing.Size(100, 24);
             this.lciBloodPressure.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciBloodPressure.Text = "Huyết áp:";
             this.lciBloodPressure.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1525,9 +1502,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciWeight.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciWeight.Control = this.spinWeight;
             this.lciWeight.CustomizationFormText = "Cân nặng:";
-            this.lciWeight.Location = new System.Drawing.Point(0, 80);
+            this.lciWeight.Location = new System.Drawing.Point(0, 72);
             this.lciWeight.Name = "lciWeight";
-            this.lciWeight.Size = new System.Drawing.Size(133, 28);
+            this.lciWeight.Size = new System.Drawing.Size(126, 24);
             this.lciWeight.Text = "Cân nặng:";
             this.lciWeight.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciWeight.TextSize = new System.Drawing.Size(70, 20);
@@ -1539,9 +1516,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciHeight.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciHeight.Control = this.spinHeight;
             this.lciHeight.CustomizationFormText = "Chiều cao:";
-            this.lciHeight.Location = new System.Drawing.Point(0, 108);
+            this.lciHeight.Location = new System.Drawing.Point(0, 96);
             this.lciHeight.Name = "lciHeight";
-            this.lciHeight.Size = new System.Drawing.Size(133, 28);
+            this.lciHeight.Size = new System.Drawing.Size(126, 24);
             this.lciHeight.Text = "Chiều cao:";
             this.lciHeight.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHeight.TextSize = new System.Drawing.Size(70, 20);
@@ -1553,9 +1530,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciNote.Control = this.txtNote;
             this.lciNote.CustomizationFormText = "Khác:";
-            this.lciNote.Location = new System.Drawing.Point(0, 136);
+            this.lciNote.Location = new System.Drawing.Point(0, 120);
             this.lciNote.Name = "lciNote";
-            this.lciNote.Size = new System.Drawing.Size(136, 28);
+            this.lciNote.Size = new System.Drawing.Size(109, 24);
             this.lciNote.Text = "Khác:";
             this.lciNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciNote.TextSize = new System.Drawing.Size(70, 20);
@@ -1567,11 +1544,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciLeatherArea.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciLeatherArea.Control = this.lblLeatherArea;
             this.lciLeatherArea.CustomizationFormText = "Diện tích da:";
-            this.lciLeatherArea.Location = new System.Drawing.Point(74, 164);
+            this.lciLeatherArea.Location = new System.Drawing.Point(52, 144);
             this.lciLeatherArea.MaxSize = new System.Drawing.Size(0, 24);
             this.lciLeatherArea.MinSize = new System.Drawing.Size(80, 24);
             this.lciLeatherArea.Name = "lciLeatherArea";
-            this.lciLeatherArea.Size = new System.Drawing.Size(81, 26);
+            this.lciLeatherArea.Size = new System.Drawing.Size(80, 24);
             this.lciLeatherArea.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciLeatherArea.Text = "DTD:";
             this.lciLeatherArea.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1582,11 +1559,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem63.Control = this.labelControl13;
             this.layoutControlItem63.CustomizationFormText = "layoutControlItem63";
-            this.layoutControlItem63.Location = new System.Drawing.Point(155, 164);
+            this.layoutControlItem63.Location = new System.Drawing.Point(132, 144);
             this.layoutControlItem63.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem63.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem63.Name = "layoutControlItem63";
-            this.layoutControlItem63.Size = new System.Drawing.Size(27, 26);
+            this.layoutControlItem63.Size = new System.Drawing.Size(14, 24);
             this.layoutControlItem63.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem63.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem63.TextVisible = false;
@@ -1597,12 +1574,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItem32.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem32.Control = this.lblIsToCalculateEgfr;
             this.layoutControlItem32.CustomizationFormText = "MLCT:";
-            this.layoutControlItem32.Location = new System.Drawing.Point(182, 136);
+            this.layoutControlItem32.Location = new System.Drawing.Point(146, 120);
             this.layoutControlItem32.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem32.MinSize = new System.Drawing.Size(80, 24);
             this.layoutControlItem32.Name = "layoutControlItem32";
             this.layoutControlItem32.OptionsToolTip.ToolTip = "Mức lọc cầu thận";
-            this.layoutControlItem32.Size = new System.Drawing.Size(182, 28);
+            this.layoutControlItem32.Size = new System.Drawing.Size(122, 24);
             this.layoutControlItem32.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem32.Text = "MLCT:";
             this.layoutControlItem32.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1614,11 +1591,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem55.Control = this.labelControl5;
             this.layoutControlItem55.CustomizationFormText = "layoutControlItem55";
-            this.layoutControlItem55.Location = new System.Drawing.Point(133, 108);
+            this.layoutControlItem55.Location = new System.Drawing.Point(126, 96);
             this.layoutControlItem55.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem55.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem55.Name = "layoutControlItem55";
-            this.layoutControlItem55.Size = new System.Drawing.Size(49, 28);
+            this.layoutControlItem55.Size = new System.Drawing.Size(20, 24);
             this.layoutControlItem55.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem55.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem55.TextVisible = false;
@@ -1627,11 +1604,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem54.Control = this.labelControl12;
             this.layoutControlItem54.CustomizationFormText = "layoutControlItem54";
-            this.layoutControlItem54.Location = new System.Drawing.Point(133, 80);
+            this.layoutControlItem54.Location = new System.Drawing.Point(126, 72);
             this.layoutControlItem54.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem54.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem54.Name = "layoutControlItem54";
-            this.layoutControlItem54.Size = new System.Drawing.Size(49, 28);
+            this.layoutControlItem54.Size = new System.Drawing.Size(20, 24);
             this.layoutControlItem54.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem54.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem54.TextVisible = false;
@@ -1640,7 +1617,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem51.Control = this.spinBloodPressureMin;
             this.layoutControlItem51.CustomizationFormText = "layoutControlItem51";
-            this.layoutControlItem51.Location = new System.Drawing.Point(106, 56);
+            this.layoutControlItem51.Location = new System.Drawing.Point(100, 48);
             this.layoutControlItem51.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem51.MinSize = new System.Drawing.Size(30, 24);
             this.layoutControlItem51.Name = "layoutControlItem51";
@@ -1654,11 +1631,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem52.Control = this.labelControl14;
             this.layoutControlItem52.CustomizationFormText = "layoutControlItem52";
-            this.layoutControlItem52.Location = new System.Drawing.Point(133, 28);
+            this.layoutControlItem52.Location = new System.Drawing.Point(126, 24);
             this.layoutControlItem52.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem52.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem52.Name = "layoutControlItem52";
-            this.layoutControlItem52.Size = new System.Drawing.Size(49, 28);
+            this.layoutControlItem52.Size = new System.Drawing.Size(20, 24);
             this.layoutControlItem52.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem52.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem52.TextVisible = false;
@@ -1669,11 +1646,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciTemperature.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTemperature.Control = this.spinTemperature;
             this.lciTemperature.CustomizationFormText = "Nhiệt độ:";
-            this.lciTemperature.Location = new System.Drawing.Point(182, 28);
+            this.lciTemperature.Location = new System.Drawing.Point(146, 24);
             this.lciTemperature.MaxSize = new System.Drawing.Size(0, 24);
             this.lciTemperature.MinSize = new System.Drawing.Size(80, 24);
             this.lciTemperature.Name = "lciTemperature";
-            this.lciTemperature.Size = new System.Drawing.Size(129, 28);
+            this.lciTemperature.Size = new System.Drawing.Size(86, 24);
             this.lciTemperature.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciTemperature.Text = "Nhiệt độ:";
             this.lciTemperature.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1684,11 +1661,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem53.Control = this.labelControl10;
             this.layoutControlItem53.CustomizationFormText = "layoutControlItem53";
-            this.layoutControlItem53.Location = new System.Drawing.Point(136, 56);
+            this.layoutControlItem53.Location = new System.Drawing.Point(130, 48);
             this.layoutControlItem53.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem53.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem53.Name = "layoutControlItem53";
-            this.layoutControlItem53.Size = new System.Drawing.Size(46, 24);
+            this.layoutControlItem53.Size = new System.Drawing.Size(16, 24);
             this.layoutControlItem53.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem53.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem53.TextVisible = false;
@@ -1699,11 +1676,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciSpo2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSpo2.Control = this.spinSPO2;
             this.lciSpo2.CustomizationFormText = "SPO2:";
-            this.lciSpo2.Location = new System.Drawing.Point(182, 0);
+            this.lciSpo2.Location = new System.Drawing.Point(146, 0);
             this.lciSpo2.MaxSize = new System.Drawing.Size(0, 24);
             this.lciSpo2.MinSize = new System.Drawing.Size(80, 24);
             this.lciSpo2.Name = "lciSpo2";
-            this.lciSpo2.Size = new System.Drawing.Size(129, 28);
+            this.lciSpo2.Size = new System.Drawing.Size(86, 24);
             this.lciSpo2.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciSpo2.Text = "SPO2:";
             this.lciSpo2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1716,11 +1693,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciBreathRate.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBreathRate.Control = this.spinBreathRate;
             this.lciBreathRate.CustomizationFormText = "Nhịp thở:";
-            this.lciBreathRate.Location = new System.Drawing.Point(182, 56);
+            this.lciBreathRate.Location = new System.Drawing.Point(146, 48);
             this.lciBreathRate.MaxSize = new System.Drawing.Size(0, 24);
             this.lciBreathRate.MinSize = new System.Drawing.Size(80, 24);
             this.lciBreathRate.Name = "lciBreathRate";
-            this.lciBreathRate.Size = new System.Drawing.Size(129, 24);
+            this.lciBreathRate.Size = new System.Drawing.Size(86, 24);
             this.lciBreathRate.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciBreathRate.Text = "Nhịp thở:";
             this.lciBreathRate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1733,11 +1710,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciChest.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciChest.Control = this.spinChest;
             this.lciChest.CustomizationFormText = "Vòng ngực:";
-            this.lciChest.Location = new System.Drawing.Point(182, 80);
+            this.lciChest.Location = new System.Drawing.Point(146, 72);
             this.lciChest.MaxSize = new System.Drawing.Size(0, 24);
             this.lciChest.MinSize = new System.Drawing.Size(80, 24);
             this.lciChest.Name = "lciChest";
-            this.lciChest.Size = new System.Drawing.Size(129, 28);
+            this.lciChest.Size = new System.Drawing.Size(86, 24);
             this.lciChest.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciChest.Text = "Vòng ngực:";
             this.lciChest.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1750,11 +1727,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciBelly.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBelly.Control = this.spinBelly;
             this.lciBelly.CustomizationFormText = "Vòng bụng:";
-            this.lciBelly.Location = new System.Drawing.Point(182, 108);
+            this.lciBelly.Location = new System.Drawing.Point(146, 96);
             this.lciBelly.MaxSize = new System.Drawing.Size(0, 24);
             this.lciBelly.MinSize = new System.Drawing.Size(80, 24);
             this.lciBelly.Name = "lciBelly";
-            this.lciBelly.Size = new System.Drawing.Size(129, 28);
+            this.lciBelly.Size = new System.Drawing.Size(86, 24);
             this.lciBelly.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciBelly.Text = "Vòng bụng:";
             this.lciBelly.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1765,11 +1742,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem58.Control = this.labelControl6;
             this.layoutControlItem58.CustomizationFormText = "layoutControlItem58";
-            this.layoutControlItem58.Location = new System.Drawing.Point(311, 80);
+            this.layoutControlItem58.Location = new System.Drawing.Point(232, 72);
             this.layoutControlItem58.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem58.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem58.Name = "layoutControlItem58";
-            this.layoutControlItem58.Size = new System.Drawing.Size(53, 28);
+            this.layoutControlItem58.Size = new System.Drawing.Size(36, 24);
             this.layoutControlItem58.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem58.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem58.TextVisible = false;
@@ -1778,11 +1755,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem57.Control = this.labelControl3;
             this.layoutControlItem57.CustomizationFormText = "layoutControlItem57";
-            this.layoutControlItem57.Location = new System.Drawing.Point(311, 56);
+            this.layoutControlItem57.Location = new System.Drawing.Point(232, 48);
             this.layoutControlItem57.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem57.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem57.Name = "layoutControlItem57";
-            this.layoutControlItem57.Size = new System.Drawing.Size(53, 24);
+            this.layoutControlItem57.Size = new System.Drawing.Size(36, 24);
             this.layoutControlItem57.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem57.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem57.TextVisible = false;
@@ -1791,11 +1768,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem56.Control = this.labelControl1;
             this.layoutControlItem56.CustomizationFormText = "layoutControlItem56";
-            this.layoutControlItem56.Location = new System.Drawing.Point(311, 28);
+            this.layoutControlItem56.Location = new System.Drawing.Point(232, 24);
             this.layoutControlItem56.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem56.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem56.Name = "layoutControlItem56";
-            this.layoutControlItem56.Size = new System.Drawing.Size(53, 28);
+            this.layoutControlItem56.Size = new System.Drawing.Size(36, 24);
             this.layoutControlItem56.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem56.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem56.TextVisible = false;
@@ -1804,11 +1781,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem65.Control = this.labelControl9;
             this.layoutControlItem65.CustomizationFormText = "layoutControlItem65";
-            this.layoutControlItem65.Location = new System.Drawing.Point(311, 0);
+            this.layoutControlItem65.Location = new System.Drawing.Point(232, 0);
             this.layoutControlItem65.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem65.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem65.Name = "layoutControlItem65";
-            this.layoutControlItem65.Size = new System.Drawing.Size(53, 28);
+            this.layoutControlItem65.Size = new System.Drawing.Size(36, 24);
             this.layoutControlItem65.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem65.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem65.TextVisible = false;
@@ -1817,11 +1794,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem62.Control = this.labelControl8;
             this.layoutControlItem62.CustomizationFormText = "layoutControlItem62";
-            this.layoutControlItem62.Location = new System.Drawing.Point(311, 108);
+            this.layoutControlItem62.Location = new System.Drawing.Point(232, 96);
             this.layoutControlItem62.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem62.MinSize = new System.Drawing.Size(14, 24);
             this.layoutControlItem62.Name = "layoutControlItem62";
-            this.layoutControlItem62.Size = new System.Drawing.Size(53, 28);
+            this.layoutControlItem62.Size = new System.Drawing.Size(36, 24);
             this.layoutControlItem62.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem62.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem62.TextVisible = false;
@@ -1832,9 +1809,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciBMI.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBMI.Control = this.lblBMI;
             this.lciBMI.CustomizationFormText = "BMI:";
-            this.lciBMI.Location = new System.Drawing.Point(0, 164);
+            this.lciBMI.Location = new System.Drawing.Point(0, 144);
             this.lciBMI.Name = "lciBMI";
-            this.lciBMI.Size = new System.Drawing.Size(74, 26);
+            this.lciBMI.Size = new System.Drawing.Size(52, 24);
             this.lciBMI.Text = "BMI:";
             this.lciBMI.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBMI.TextSize = new System.Drawing.Size(30, 20);
@@ -1844,12 +1821,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.layoutControlItem73.Control = this.btnConnectBloodPressure;
             this.layoutControlItem73.CustomizationFormText = "layoutControlItem73";
-            this.layoutControlItem73.Location = new System.Drawing.Point(162, 0);
+            this.layoutControlItem73.Location = new System.Drawing.Point(126, 0);
             this.layoutControlItem73.MaxSize = new System.Drawing.Size(20, 24);
             this.layoutControlItem73.MinSize = new System.Drawing.Size(20, 24);
             this.layoutControlItem73.Name = "layoutControlItem73";
             this.layoutControlItem73.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem73.Size = new System.Drawing.Size(20, 28);
+            this.layoutControlItem73.Size = new System.Drawing.Size(20, 24);
             this.layoutControlItem73.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem73.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem73.TextVisible = false;
@@ -1857,9 +1834,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // emptySpaceItem9
             // 
             this.emptySpaceItem9.AllowHotTrack = false;
-            this.emptySpaceItem9.Location = new System.Drawing.Point(136, 136);
+            this.emptySpaceItem9.Location = new System.Drawing.Point(109, 120);
             this.emptySpaceItem9.Name = "emptySpaceItem9";
-            this.emptySpaceItem9.Size = new System.Drawing.Size(46, 28);
+            this.emptySpaceItem9.Size = new System.Drawing.Size(37, 24);
             this.emptySpaceItem9.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciARCPCR
@@ -1867,9 +1844,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciARCPCR.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciARCPCR.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciARCPCR.Control = this.lblACRPCR;
-            this.lciARCPCR.Location = new System.Drawing.Point(182, 164);
+            this.lciARCPCR.Location = new System.Drawing.Point(146, 144);
             this.lciARCPCR.Name = "lciARCPCR";
-            this.lciARCPCR.Size = new System.Drawing.Size(182, 26);
+            this.lciARCPCR.Size = new System.Drawing.Size(122, 24);
             this.lciARCPCR.Text = "uACR:";
             this.lciARCPCR.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciARCPCR.TextSize = new System.Drawing.Size(69, 20);
@@ -1886,7 +1863,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.OptionsItemText.TextToControlDistance = 4;
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(366, 192);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(270, 170);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem20
@@ -1895,17 +1872,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItem20.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem20.Name = "layoutControlItem20";
             this.layoutControlItem20.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem20.Size = new System.Drawing.Size(366, 192);
+            this.layoutControlItem20.Size = new System.Drawing.Size(270, 170);
             this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem20.TextVisible = false;
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(1388, 349);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(1027, 263);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(320, 25);
+            this.label1.Size = new System.Drawing.Size(223, 27);
             this.label1.TabIndex = 144;
             this.label1.Text = "   Dấu hiệu sinh tồn";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -1918,10 +1894,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControl4.Controls.Add(this.lblDob);
             this.layoutControl4.Controls.Add(this.lblGenderName);
             this.layoutControl4.Controls.Add(this.lblHeinCardNumberInfo);
-            this.layoutControl4.Location = new System.Drawing.Point(1388, 530);
+            this.layoutControl4.Location = new System.Drawing.Point(1027, 444);
+            this.layoutControl4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(381, 186);
+            this.layoutControl4.Size = new System.Drawing.Size(283, 136);
             this.layoutControl4.TabIndex = 104;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -1930,9 +1907,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lblTreatmentTypeName.AllowHtmlString = true;
             this.lblTreatmentTypeName.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblTreatmentTypeName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblTreatmentTypeName.Location = new System.Drawing.Point(73, 81);
+            this.lblTreatmentTypeName.Location = new System.Drawing.Point(72, 74);
+            this.lblTreatmentTypeName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lblTreatmentTypeName.Name = "lblTreatmentTypeName";
-            this.lblTreatmentTypeName.Size = new System.Drawing.Size(305, 20);
+            this.lblTreatmentTypeName.Size = new System.Drawing.Size(209, 20);
             this.lblTreatmentTypeName.StyleController = this.layoutControl4;
             this.lblTreatmentTypeName.TabIndex = 98;
             // 
@@ -1941,9 +1919,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lblPatientTypeName.AllowHtmlString = true;
             this.lblPatientTypeName.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblPatientTypeName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPatientTypeName.Location = new System.Drawing.Point(73, 55);
+            this.lblPatientTypeName.Location = new System.Drawing.Point(72, 50);
+            this.lblPatientTypeName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lblPatientTypeName.Name = "lblPatientTypeName";
-            this.lblPatientTypeName.Size = new System.Drawing.Size(305, 20);
+            this.lblPatientTypeName.Size = new System.Drawing.Size(209, 20);
             this.lblPatientTypeName.StyleController = this.layoutControl4;
             this.lblPatientTypeName.TabIndex = 30;
             // 
@@ -1952,9 +1931,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lblPatientName.AllowHtmlString = true;
             this.lblPatientName.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblPatientName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblPatientName.Location = new System.Drawing.Point(73, 3);
+            this.lblPatientName.Location = new System.Drawing.Point(72, 2);
+            this.lblPatientName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lblPatientName.Name = "lblPatientName";
-            this.lblPatientName.Size = new System.Drawing.Size(305, 20);
+            this.lblPatientName.Size = new System.Drawing.Size(209, 20);
             this.lblPatientName.StyleController = this.layoutControl4;
             this.lblPatientName.TabIndex = 87;
             // 
@@ -1963,9 +1943,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lblDob.AllowHtmlString = true;
             this.lblDob.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblDob.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblDob.Location = new System.Drawing.Point(73, 29);
+            this.lblDob.Location = new System.Drawing.Point(72, 26);
+            this.lblDob.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lblDob.Name = "lblDob";
-            this.lblDob.Size = new System.Drawing.Size(138, 20);
+            this.lblDob.Size = new System.Drawing.Size(85, 20);
             this.lblDob.StyleController = this.layoutControl4;
             this.lblDob.TabIndex = 89;
             // 
@@ -1974,9 +1955,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lblGenderName.AllowHtmlString = true;
             this.lblGenderName.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblGenderName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblGenderName.Location = new System.Drawing.Point(287, 29);
+            this.lblGenderName.Location = new System.Drawing.Point(231, 26);
+            this.lblGenderName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lblGenderName.Name = "lblGenderName";
-            this.lblGenderName.Size = new System.Drawing.Size(91, 20);
+            this.lblGenderName.Size = new System.Drawing.Size(50, 20);
             this.lblGenderName.StyleController = this.layoutControl4;
             this.lblGenderName.TabIndex = 88;
             // 
@@ -1986,9 +1968,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lblHeinCardNumberInfo.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblHeinCardNumberInfo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.lblHeinCardNumberInfo.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblHeinCardNumberInfo.Location = new System.Drawing.Point(73, 107);
+            this.lblHeinCardNumberInfo.Location = new System.Drawing.Point(72, 98);
+            this.lblHeinCardNumberInfo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lblHeinCardNumberInfo.Name = "lblHeinCardNumberInfo";
-            this.lblHeinCardNumberInfo.Size = new System.Drawing.Size(305, 34);
+            this.lblHeinCardNumberInfo.Size = new System.Drawing.Size(209, 36);
             this.lblHeinCardNumberInfo.StyleController = this.layoutControl4;
             this.lblHeinCardNumberInfo.TabIndex = 97;
             // 
@@ -2006,7 +1989,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(381, 186);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(283, 136);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // lciDob
@@ -2014,9 +1997,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciDob.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDob.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciDob.Control = this.lblDob;
-            this.lciDob.Location = new System.Drawing.Point(0, 26);
+            this.lciDob.Location = new System.Drawing.Point(0, 24);
             this.lciDob.Name = "lciDob";
-            this.lciDob.Size = new System.Drawing.Size(214, 26);
+            this.lciDob.Size = new System.Drawing.Size(159, 24);
             this.lciDob.Text = "Ngày sinh:";
             this.lciDob.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDob.TextSize = new System.Drawing.Size(65, 20);
@@ -2029,7 +2012,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciPatientName.Control = this.lblPatientName;
             this.lciPatientName.Location = new System.Drawing.Point(0, 0);
             this.lciPatientName.Name = "lciPatientName";
-            this.lciPatientName.Size = new System.Drawing.Size(381, 26);
+            this.lciPatientName.Size = new System.Drawing.Size(283, 24);
             this.lciPatientName.Text = "Bệnh nhân:";
             this.lciPatientName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientName.TextSize = new System.Drawing.Size(65, 20);
@@ -2040,11 +2023,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciHeinCardNumberInfo.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciHeinCardNumberInfo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciHeinCardNumberInfo.Control = this.lblHeinCardNumberInfo;
-            this.lciHeinCardNumberInfo.Location = new System.Drawing.Point(0, 104);
+            this.lciHeinCardNumberInfo.Location = new System.Drawing.Point(0, 96);
             this.lciHeinCardNumberInfo.MaxSize = new System.Drawing.Size(0, 40);
             this.lciHeinCardNumberInfo.MinSize = new System.Drawing.Size(85, 40);
             this.lciHeinCardNumberInfo.Name = "lciHeinCardNumberInfo";
-            this.lciHeinCardNumberInfo.Size = new System.Drawing.Size(381, 82);
+            this.lciHeinCardNumberInfo.Size = new System.Drawing.Size(283, 40);
             this.lciHeinCardNumberInfo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciHeinCardNumberInfo.Text = "Thẻ BHYT:";
             this.lciHeinCardNumberInfo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -2056,9 +2039,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciGenderName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciGenderName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciGenderName.Control = this.lblGenderName;
-            this.lciGenderName.Location = new System.Drawing.Point(214, 26);
+            this.lciGenderName.Location = new System.Drawing.Point(159, 24);
             this.lciGenderName.Name = "lciGenderName";
-            this.lciGenderName.Size = new System.Drawing.Size(167, 26);
+            this.lciGenderName.Size = new System.Drawing.Size(124, 24);
             this.lciGenderName.Text = "Giới tính:";
             this.lciGenderName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciGenderName.TextSize = new System.Drawing.Size(65, 20);
@@ -2069,9 +2052,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciPatientTypeName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPatientTypeName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPatientTypeName.Control = this.lblPatientTypeName;
-            this.lciPatientTypeName.Location = new System.Drawing.Point(0, 52);
+            this.lciPatientTypeName.Location = new System.Drawing.Point(0, 48);
             this.lciPatientTypeName.Name = "lciPatientTypeName";
-            this.lciPatientTypeName.Size = new System.Drawing.Size(381, 26);
+            this.lciPatientTypeName.Size = new System.Drawing.Size(283, 24);
             this.lciPatientTypeName.Text = "Đối tượng:";
             this.lciPatientTypeName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientTypeName.TextSize = new System.Drawing.Size(65, 20);
@@ -2082,10 +2065,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciTreatmentTypeName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTreatmentTypeName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTreatmentTypeName.Control = this.lblTreatmentTypeName;
-            this.lciTreatmentTypeName.Location = new System.Drawing.Point(0, 78);
+            this.lciTreatmentTypeName.Location = new System.Drawing.Point(0, 72);
             this.lciTreatmentTypeName.Name = "lciTreatmentTypeName";
             this.lciTreatmentTypeName.OptionsToolTip.ToolTip = "Diện đối tượng";
-            this.lciTreatmentTypeName.Size = new System.Drawing.Size(381, 26);
+            this.lciTreatmentTypeName.Size = new System.Drawing.Size(283, 24);
             this.lciTreatmentTypeName.Text = "Diện ĐT:";
             this.lciTreatmentTypeName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTreatmentTypeName.TextSize = new System.Drawing.Size(65, 20);
@@ -2104,10 +2087,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControl1.Controls.Add(this.spinAmount);
             this.layoutControl1.Controls.Add(this.txtTutorial);
             this.layoutControl1.Controls.Add(this.btnAddTutorial);
-            this.layoutControl1.Location = new System.Drawing.Point(3, 169);
+            this.layoutControl1.Location = new System.Drawing.Point(2, 79);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(952, 89);
+            this.layoutControl1.Size = new System.Drawing.Size(705, 74);
             this.layoutControl1.TabIndex = 116;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -2118,7 +2102,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0,
             0});
-            this.spinSoLuongNgay.Location = new System.Drawing.Point(96, 3);
+            this.spinSoLuongNgay.Location = new System.Drawing.Point(95, 2);
+            this.spinSoLuongNgay.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.spinSoLuongNgay.MenuManager = this.barManager1;
             this.spinSoLuongNgay.Name = "spinSoLuongNgay";
             this.spinSoLuongNgay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2136,7 +2121,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0,
             0});
-            this.spinSoLuongNgay.Size = new System.Drawing.Size(129, 22);
+            this.spinSoLuongNgay.Size = new System.Drawing.Size(72, 20);
             this.spinSoLuongNgay.StyleController = this.layoutControl1;
             this.spinSoLuongNgay.TabIndex = 13;
             this.spinSoLuongNgay.EditValueChanged += new System.EventHandler(this.spinSoLuongNgay_EditValueChanged);
@@ -2145,14 +2130,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // spinSang
             // 
             this.spinSang.EditValue = "";
-            this.spinSang.Location = new System.Drawing.Point(286, 3);
+            this.spinSang.Location = new System.Drawing.Point(226, 2);
+            this.spinSang.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.spinSang.MenuManager = this.barManager1;
             this.spinSang.Name = "spinSang";
             this.spinSang.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinSang.Properties.Appearance.Options.UseTextOptions = true;
             this.spinSang.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.spinSang.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered;
-            this.spinSang.Size = new System.Drawing.Size(117, 22);
+            this.spinSang.Size = new System.Drawing.Size(73, 20);
             this.spinSang.StyleController = this.layoutControl1;
             this.spinSang.TabIndex = 14;
             this.spinSang.InvalidValue += new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.spinSang_InvalidValue);
@@ -2164,14 +2150,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // spinTrua
             // 
             this.spinTrua.EditValue = "";
-            this.spinTrua.Location = new System.Drawing.Point(464, 3);
+            this.spinTrua.Location = new System.Drawing.Point(358, 2);
+            this.spinTrua.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.spinTrua.MenuManager = this.barManager1;
             this.spinTrua.Name = "spinTrua";
             this.spinTrua.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinTrua.Properties.Appearance.Options.UseTextOptions = true;
             this.spinTrua.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.spinTrua.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered;
-            this.spinTrua.Size = new System.Drawing.Size(120, 22);
+            this.spinTrua.Size = new System.Drawing.Size(75, 20);
             this.spinTrua.StyleController = this.layoutControl1;
             this.spinTrua.TabIndex = 15;
             this.spinTrua.InvalidValue += new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.spinTrua_InvalidValue);
@@ -2187,7 +2174,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0,
             0});
-            this.spinTocDoTruyen.Location = new System.Drawing.Point(96, 31);
+            this.spinTocDoTruyen.Location = new System.Drawing.Point(95, 26);
+            this.spinTocDoTruyen.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.spinTocDoTruyen.MenuManager = this.barManager1;
             this.spinTocDoTruyen.Name = "spinTocDoTruyen";
             this.spinTocDoTruyen.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2207,7 +2195,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0,
             0});
-            this.spinTocDoTruyen.Size = new System.Drawing.Size(129, 22);
+            this.spinTocDoTruyen.Size = new System.Drawing.Size(72, 20);
             this.spinTocDoTruyen.StyleController = this.layoutControl1;
             toolTipItem2.Text = "Tốc độ truyền (giọt/phút)";
             superToolTip2.Items.Add(toolTipItem2);
@@ -2217,14 +2205,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // spinChieu
             // 
             this.spinChieu.EditValue = "";
-            this.spinChieu.Location = new System.Drawing.Point(645, 3);
+            this.spinChieu.Location = new System.Drawing.Point(492, 2);
+            this.spinChieu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.spinChieu.MenuManager = this.barManager1;
             this.spinChieu.Name = "spinChieu";
             this.spinChieu.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinChieu.Properties.Appearance.Options.UseTextOptions = true;
             this.spinChieu.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.spinChieu.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered;
-            this.spinChieu.Size = new System.Drawing.Size(116, 22);
+            this.spinChieu.Size = new System.Drawing.Size(72, 20);
             this.spinChieu.StyleController = this.layoutControl1;
             this.spinChieu.TabIndex = 16;
             this.spinChieu.InvalidValue += new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.spinChieu_InvalidValue);
@@ -2236,14 +2225,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // spinToi
             // 
             this.spinToi.EditValue = "";
-            this.spinToi.Location = new System.Drawing.Point(822, 3);
+            this.spinToi.Location = new System.Drawing.Point(623, 2);
+            this.spinToi.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.spinToi.MenuManager = this.barManager1;
             this.spinToi.Name = "spinToi";
             this.spinToi.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinToi.Properties.Appearance.Options.UseTextOptions = true;
             this.spinToi.Properties.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.spinToi.Properties.EditValueChangedFiringMode = DevExpress.XtraEditors.Controls.EditValueChangedFiringMode.Buffered;
-            this.spinToi.Size = new System.Drawing.Size(127, 22);
+            this.spinToi.Size = new System.Drawing.Size(80, 20);
             this.spinToi.StyleController = this.layoutControl1;
             this.spinToi.TabIndex = 17;
             this.spinToi.InvalidValue += new DevExpress.XtraEditors.Controls.InvalidValueExceptionEventHandler(this.spinToi_InvalidValue);
@@ -2254,7 +2244,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // cboHtu
             // 
-            this.cboHtu.Location = new System.Drawing.Point(296, 31);
+            this.cboHtu.Location = new System.Drawing.Point(236, 26);
+            this.cboHtu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboHtu.MenuManager = this.barManager1;
             this.cboHtu.Name = "cboHtu";
             this.cboHtu.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2265,7 +2256,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.cboHtu.Properties.NullText = "";
             this.cboHtu.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.StartsWith;
             this.cboHtu.Properties.View = this.gridView1;
-            this.cboHtu.Size = new System.Drawing.Size(167, 22);
+            this.cboHtu.Size = new System.Drawing.Size(107, 20);
             this.cboHtu.StyleController = this.layoutControl1;
             this.cboHtu.TabIndex = 18;
             this.cboHtu.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHtu_Closed);
@@ -2284,7 +2275,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.cboMedicineUseForm.Enabled = false;
             this.cboMedicineUseForm.EnterMoveNextControl = true;
-            this.cboMedicineUseForm.Location = new System.Drawing.Point(544, 31);
+            this.cboMedicineUseForm.Location = new System.Drawing.Point(422, 26);
+            this.cboMedicineUseForm.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboMedicineUseForm.MenuManager = this.barManager1;
             this.cboMedicineUseForm.Name = "cboMedicineUseForm";
             this.cboMedicineUseForm.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2296,7 +2288,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.cboMedicineUseForm.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.StartsWith;
             this.cboMedicineUseForm.Properties.ReadOnly = true;
             this.cboMedicineUseForm.Properties.View = this.gridView6;
-            this.cboMedicineUseForm.Size = new System.Drawing.Size(188, 22);
+            this.cboMedicineUseForm.Size = new System.Drawing.Size(120, 20);
             this.cboMedicineUseForm.StyleController = this.layoutControl1;
             this.cboMedicineUseForm.TabIndex = 19;
             this.cboMedicineUseForm.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboDuongDung__Medicine_Closed);
@@ -2318,27 +2310,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0,
             0});
-            this.spinAmount.Location = new System.Drawing.Point(823, 31);
+            this.spinAmount.Location = new System.Drawing.Point(631, 26);
+            this.spinAmount.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.spinAmount.Name = "spinAmount";
             this.spinAmount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinAmount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spinAmount.Properties.MaxLength = 14;
             this.spinAmount.Properties.NullValuePromptShowForEmptyValue = true;
-            this.spinAmount.Size = new System.Drawing.Size(126, 22);
+            this.spinAmount.Size = new System.Drawing.Size(72, 20);
             this.spinAmount.StyleController = this.layoutControl1;
             this.spinAmount.TabIndex = 20;
             this.spinAmount.KeyDown += new System.Windows.Forms.KeyEventHandler(this.spinAmount__MedicinePage_KeyDown);
             // 
             // txtTutorial
             // 
-            this.txtTutorial.Location = new System.Drawing.Point(96, 59);
+            this.txtTutorial.Location = new System.Drawing.Point(95, 50);
+            this.txtTutorial.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtTutorial.MenuManager = this.barManager1;
             this.txtTutorial.Name = "txtTutorial";
             this.txtTutorial.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown)});
             this.txtTutorial.Properties.MaxLength = 1000;
-            this.txtTutorial.Size = new System.Drawing.Size(741, 22);
+            this.txtTutorial.Size = new System.Drawing.Size(525, 20);
             this.txtTutorial.StyleController = this.layoutControl1;
             this.txtTutorial.TabIndex = 21;
             this.txtTutorial.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtTutorial_ButtonClick);
@@ -2346,9 +2340,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // btnAddTutorial
             // 
-            this.btnAddTutorial.Location = new System.Drawing.Point(843, 59);
+            this.btnAddTutorial.Location = new System.Drawing.Point(624, 50);
+            this.btnAddTutorial.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnAddTutorial.Name = "btnAddTutorial";
-            this.btnAddTutorial.Size = new System.Drawing.Size(106, 27);
+            this.btnAddTutorial.Size = new System.Drawing.Size(79, 22);
             this.btnAddTutorial.StyleController = this.layoutControl1;
             toolTipItem3.Text = "Lưu mẫu hướng dẫn sử dụng";
             superToolTip3.Items.Add(toolTipItem3);
@@ -2377,7 +2372,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(952, 89);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(705, 74);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // lciSoLuongNgay
@@ -2387,7 +2382,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciSoLuongNgay.Control = this.spinSoLuongNgay;
             this.lciSoLuongNgay.Location = new System.Drawing.Point(0, 0);
             this.lciSoLuongNgay.Name = "lciSoLuongNgay";
-            this.lciSoLuongNgay.Size = new System.Drawing.Size(228, 28);
+            this.lciSoLuongNgay.Size = new System.Drawing.Size(169, 24);
             this.lciSoLuongNgay.Text = "Số ngày:";
             this.lciSoLuongNgay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSoLuongNgay.TextSize = new System.Drawing.Size(88, 20);
@@ -2398,9 +2393,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciSang.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSang.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSang.Control = this.spinSang;
-            this.lciSang.Location = new System.Drawing.Point(228, 0);
+            this.lciSang.Location = new System.Drawing.Point(169, 0);
             this.lciSang.Name = "lciSang";
-            this.lciSang.Size = new System.Drawing.Size(178, 28);
+            this.lciSang.Size = new System.Drawing.Size(132, 24);
             this.lciSang.Text = "Sáng:";
             this.lciSang.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSang.TextSize = new System.Drawing.Size(50, 20);
@@ -2411,9 +2406,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciTrua.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTrua.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTrua.Control = this.spinTrua;
-            this.lciTrua.Location = new System.Drawing.Point(406, 0);
+            this.lciTrua.Location = new System.Drawing.Point(301, 0);
             this.lciTrua.Name = "lciTrua";
-            this.lciTrua.Size = new System.Drawing.Size(181, 28);
+            this.lciTrua.Size = new System.Drawing.Size(134, 24);
             this.lciTrua.Text = "Trưa:";
             this.lciTrua.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTrua.TextSize = new System.Drawing.Size(50, 20);
@@ -2424,9 +2419,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciChieu.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciChieu.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciChieu.Control = this.spinChieu;
-            this.lciChieu.Location = new System.Drawing.Point(587, 0);
+            this.lciChieu.Location = new System.Drawing.Point(435, 0);
             this.lciChieu.Name = "lciChieu";
-            this.lciChieu.Size = new System.Drawing.Size(177, 28);
+            this.lciChieu.Size = new System.Drawing.Size(131, 24);
             this.lciChieu.Text = "Chiều:";
             this.lciChieu.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciChieu.TextSize = new System.Drawing.Size(50, 20);
@@ -2437,9 +2432,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciToi.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciToi.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciToi.Control = this.spinToi;
-            this.lciToi.Location = new System.Drawing.Point(764, 0);
+            this.lciToi.Location = new System.Drawing.Point(566, 0);
             this.lciToi.Name = "lciToi";
-            this.lciToi.Size = new System.Drawing.Size(188, 28);
+            this.lciToi.Size = new System.Drawing.Size(139, 24);
             this.lciToi.Text = "Tối:";
             this.lciToi.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciToi.TextSize = new System.Drawing.Size(50, 20);
@@ -2450,9 +2445,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciTocDoTruyen.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTocDoTruyen.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTocDoTruyen.Control = this.spinTocDoTruyen;
-            this.lciTocDoTruyen.Location = new System.Drawing.Point(0, 28);
+            this.lciTocDoTruyen.Location = new System.Drawing.Point(0, 24);
             this.lciTocDoTruyen.Name = "lciTocDoTruyen";
-            this.lciTocDoTruyen.Size = new System.Drawing.Size(228, 28);
+            this.lciTocDoTruyen.Size = new System.Drawing.Size(169, 24);
             this.lciTocDoTruyen.Text = "Tốc độ truyền:";
             this.lciTocDoTruyen.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTocDoTruyen.TextSize = new System.Drawing.Size(88, 20);
@@ -2463,9 +2458,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciHtu.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciHtu.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciHtu.Control = this.cboHtu;
-            this.lciHtu.Location = new System.Drawing.Point(228, 28);
+            this.lciHtu.Location = new System.Drawing.Point(169, 24);
             this.lciHtu.Name = "lciHtu";
-            this.lciHtu.Size = new System.Drawing.Size(238, 28);
+            this.lciHtu.Size = new System.Drawing.Size(176, 24);
             this.lciHtu.Text = "Cách dùng:";
             this.lciHtu.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHtu.TextSize = new System.Drawing.Size(60, 20);
@@ -2476,9 +2471,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciMedicineUseForm.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciMedicineUseForm.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMedicineUseForm.Control = this.cboMedicineUseForm;
-            this.lciMedicineUseForm.Location = new System.Drawing.Point(466, 28);
+            this.lciMedicineUseForm.Location = new System.Drawing.Point(345, 24);
             this.lciMedicineUseForm.Name = "lciMedicineUseForm";
-            this.lciMedicineUseForm.Size = new System.Drawing.Size(269, 28);
+            this.lciMedicineUseForm.Size = new System.Drawing.Size(199, 24);
             this.lciMedicineUseForm.Text = "Đường dùng:";
             this.lciMedicineUseForm.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMedicineUseForm.TextSize = new System.Drawing.Size(70, 20);
@@ -2491,9 +2486,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciAmount.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAmount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAmount.Control = this.spinAmount;
-            this.lciAmount.Location = new System.Drawing.Point(735, 28);
+            this.lciAmount.Location = new System.Drawing.Point(544, 24);
             this.lciAmount.Name = "lciAmount";
-            this.lciAmount.Size = new System.Drawing.Size(217, 28);
+            this.lciAmount.Size = new System.Drawing.Size(161, 24);
             this.lciAmount.Text = "Số lượng (F3):";
             this.lciAmount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAmount.TextSize = new System.Drawing.Size(80, 20);
@@ -2504,9 +2499,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciHuongDan.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciHuongDan.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciHuongDan.Control = this.txtTutorial;
-            this.lciHuongDan.Location = new System.Drawing.Point(0, 56);
+            this.lciHuongDan.Location = new System.Drawing.Point(0, 48);
             this.lciHuongDan.Name = "lciHuongDan";
-            this.lciHuongDan.Size = new System.Drawing.Size(840, 33);
+            this.lciHuongDan.Size = new System.Drawing.Size(622, 26);
             this.lciHuongDan.Text = "Hướng dẫn:";
             this.lciHuongDan.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHuongDan.TextSize = new System.Drawing.Size(88, 20);
@@ -2515,19 +2510,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnAddTutorial;
-            this.layoutControlItem4.Location = new System.Drawing.Point(840, 56);
+            this.layoutControlItem4.Location = new System.Drawing.Point(622, 48);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(112, 33);
+            this.layoutControlItem4.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // chkHomePres
             // 
-            this.chkHomePres.Location = new System.Drawing.Point(905, 31);
+            this.chkHomePres.Location = new System.Drawing.Point(679, -46);
+            this.chkHomePres.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.chkHomePres.MenuManager = this.barManager1;
             this.chkHomePres.Name = "chkHomePres";
             this.chkHomePres.Properties.Caption = "";
-            this.chkHomePres.Size = new System.Drawing.Size(257, 19);
+            this.chkHomePres.Size = new System.Drawing.Size(24, 19);
             this.chkHomePres.StyleController = this.layoutControl6;
             this.chkHomePres.TabIndex = 115;
             // 
@@ -2538,27 +2534,30 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0,
             0});
-            this.spinPrice.Location = new System.Drawing.Point(995, 141);
+            this.spinPrice.Location = new System.Drawing.Point(745, 55);
+            this.spinPrice.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.spinPrice.MenuManager = this.barManager1;
             this.spinPrice.Name = "spinPrice";
             this.spinPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinPrice.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spinPrice.Size = new System.Drawing.Size(79, 22);
+            this.spinPrice.Size = new System.Drawing.Size(50, 20);
             this.spinPrice.StyleController = this.layoutControl6;
             this.spinPrice.TabIndex = 25;
             // 
             // panelControlCauseIcd
             // 
             this.panelControlCauseIcd.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlCauseIcd.Location = new System.Drawing.Point(1165, 28);
+            this.panelControlCauseIcd.Location = new System.Drawing.Point(705, -48);
+            this.panelControlCauseIcd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panelControlCauseIcd.Name = "panelControlCauseIcd";
-            this.panelControlCauseIcd.Size = new System.Drawing.Size(607, 28);
+            this.panelControlCauseIcd.Size = new System.Drawing.Size(607, 24);
             this.panelControlCauseIcd.TabIndex = 3;
             // 
             // cboNhaThuoc
             // 
-            this.cboNhaThuoc.Location = new System.Drawing.Point(702, 109);
+            this.cboNhaThuoc.Location = new System.Drawing.Point(544, 26);
+            this.cboNhaThuoc.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboNhaThuoc.MenuManager = this.barManager1;
             this.cboNhaThuoc.Name = "cboNhaThuoc";
             this.cboNhaThuoc.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2567,7 +2566,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "", null, null, true)});
             this.cboNhaThuoc.Properties.NullText = "";
             this.cboNhaThuoc.Properties.View = this.gridView11;
-            this.cboNhaThuoc.Size = new System.Drawing.Size(254, 22);
+            this.cboNhaThuoc.Size = new System.Drawing.Size(164, 20);
             this.cboNhaThuoc.StyleController = this.layoutControl6;
             this.cboNhaThuoc.TabIndex = 11;
             this.cboNhaThuoc.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboNhaThuoc_ButtonClick);
@@ -2582,7 +2581,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // cboPatientType
             // 
-            this.cboPatientType.Location = new System.Drawing.Point(1256, 141);
+            this.cboPatientType.Location = new System.Drawing.Point(947, 55);
+            this.cboPatientType.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboPatientType.MenuManager = this.barManager1;
             this.cboPatientType.Name = "cboPatientType";
             this.cboPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2590,7 +2590,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboPatientType.Properties.NullText = "";
             this.cboPatientType.Properties.View = this.gridView10;
-            this.cboPatientType.Size = new System.Drawing.Size(126, 22);
+            this.cboPatientType.Size = new System.Drawing.Size(76, 20);
             this.cboPatientType.StyleController = this.layoutControl6;
             this.cboPatientType.TabIndex = 27;
             // 
@@ -2606,18 +2606,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lblNotice.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNotice.Appearance.ForeColor = System.Drawing.Color.Maroon;
             this.lblNotice.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblNotice.Location = new System.Drawing.Point(967, 109);
+            this.lblNotice.Location = new System.Drawing.Point(717, 26);
+            this.lblNotice.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lblNotice.Name = "lblNotice";
-            this.lblNotice.Size = new System.Drawing.Size(294, 20);
+            this.lblNotice.Size = new System.Drawing.Size(217, 20);
             this.lblNotice.StyleController = this.layoutControl6;
             this.lblNotice.TabIndex = 113;
             // 
             // btnDichVuHenKham
             // 
             this.btnDichVuHenKham.Enabled = false;
-            this.btnDichVuHenKham.Location = new System.Drawing.Point(489, 746);
+            this.btnDichVuHenKham.Location = new System.Drawing.Point(382, 608);
+            this.btnDichVuHenKham.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDichVuHenKham.Name = "btnDichVuHenKham";
-            this.btnDichVuHenKham.Size = new System.Drawing.Size(149, 27);
+            this.btnDichVuHenKham.Size = new System.Drawing.Size(107, 22);
             this.btnDichVuHenKham.StyleController = this.layoutControl6;
             this.btnDichVuHenKham.TabIndex = 35;
             this.btnDichVuHenKham.Text = "Dịch vụ hẹn khám";
@@ -2626,7 +2628,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // cboEquipment
             // 
-            this.cboEquipment.Location = new System.Drawing.Point(1166, 197);
+            this.cboEquipment.Location = new System.Drawing.Point(882, 103);
+            this.cboEquipment.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboEquipment.MenuManager = this.barManager1;
             this.cboEquipment.Name = "cboEquipment";
             this.cboEquipment.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2635,7 +2638,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "", null, null, true)});
             this.cboEquipment.Properties.NullText = "";
             this.cboEquipment.Properties.View = this.gridView8;
-            this.cboEquipment.Size = new System.Drawing.Size(216, 22);
+            this.cboEquipment.Size = new System.Drawing.Size(141, 20);
             this.cboEquipment.StyleController = this.layoutControl6;
             this.cboEquipment.TabIndex = 29;
             this.cboEquipment.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboEquipment_Closed);
@@ -2650,9 +2653,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // btnBoSungPhacDo
             // 
-            this.btnBoSungPhacDo.Location = new System.Drawing.Point(644, 746);
+            this.btnBoSungPhacDo.Location = new System.Drawing.Point(493, 608);
+            this.btnBoSungPhacDo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnBoSungPhacDo.Name = "btnBoSungPhacDo";
-            this.btnBoSungPhacDo.Size = new System.Drawing.Size(124, 27);
+            this.btnBoSungPhacDo.Size = new System.Drawing.Size(89, 22);
             this.btnBoSungPhacDo.StyleController = this.layoutControl6;
             this.btnBoSungPhacDo.TabIndex = 36;
             this.btnBoSungPhacDo.Text = "Bổ sung phác đồ";
@@ -2661,7 +2665,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // cboPhieuDieuTri
             // 
-            this.cboPhieuDieuTri.Location = new System.Drawing.Point(1166, 169);
+            this.cboPhieuDieuTri.Location = new System.Drawing.Point(882, 79);
+            this.cboPhieuDieuTri.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboPhieuDieuTri.MenuManager = this.barManager1;
             this.cboPhieuDieuTri.Name = "cboPhieuDieuTri";
             this.cboPhieuDieuTri.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2670,7 +2675,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "", null, null, true)});
             this.cboPhieuDieuTri.Properties.NullText = "";
             this.cboPhieuDieuTri.Properties.View = this.gridLookUpEdit1View;
-            this.cboPhieuDieuTri.Size = new System.Drawing.Size(216, 22);
+            this.cboPhieuDieuTri.Size = new System.Drawing.Size(141, 20);
             this.cboPhieuDieuTri.StyleController = this.layoutControl6;
             this.cboPhieuDieuTri.TabIndex = 28;
             this.cboPhieuDieuTri.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPhieuDieuTri_Closed);
@@ -2685,14 +2690,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // txtMediMatyForPrescription
             // 
-            this.txtMediMatyForPrescription.Location = new System.Drawing.Point(98, 141);
+            this.txtMediMatyForPrescription.Location = new System.Drawing.Point(97, 55);
+            this.txtMediMatyForPrescription.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtMediMatyForPrescription.MenuManager = this.barManager1;
             this.txtMediMatyForPrescription.Name = "txtMediMatyForPrescription";
             this.txtMediMatyForPrescription.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.DropDown)});
             this.txtMediMatyForPrescription.Properties.NullValuePrompt = "Chọn thuốc - vật tư";
             this.txtMediMatyForPrescription.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtMediMatyForPrescription.Size = new System.Drawing.Size(503, 22);
+            this.txtMediMatyForPrescription.Size = new System.Drawing.Size(348, 20);
             this.txtMediMatyForPrescription.StyleController = this.layoutControl6;
             this.txtMediMatyForPrescription.TabIndex = 12;
             this.txtMediMatyForPrescription.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.txtMediMatyForPrescription_ButtonClick);
@@ -2701,10 +2707,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // layoutControlPrintAssignPrescription
             // 
-            this.layoutControlPrintAssignPrescription.Location = new System.Drawing.Point(1061, 743);
+            this.layoutControlPrintAssignPrescription.Location = new System.Drawing.Point(874, 606);
+            this.layoutControlPrintAssignPrescription.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.layoutControlPrintAssignPrescription.Name = "layoutControlPrintAssignPrescription";
             this.layoutControlPrintAssignPrescription.Root = this.Root;
-            this.layoutControlPrintAssignPrescription.Size = new System.Drawing.Size(244, 33);
+            this.layoutControlPrintAssignPrescription.Size = new System.Drawing.Size(71, 26);
             this.layoutControlPrintAssignPrescription.TabIndex = 40;
             this.layoutControlPrintAssignPrescription.Text = "layoutControl1";
             // 
@@ -2715,21 +2722,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(244, 33);
+            this.Root.Size = new System.Drawing.Size(71, 26);
             this.Root.TextVisible = false;
             // 
             // pnlUCDate
             // 
             this.pnlUCDate.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.pnlUCDate.Location = new System.Drawing.Point(0, 0);
+            this.pnlUCDate.Location = new System.Drawing.Point(0, -72);
+            this.pnlUCDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pnlUCDate.Name = "pnlUCDate";
-            this.pnlUCDate.Size = new System.Drawing.Size(470, 28);
+            this.pnlUCDate.Size = new System.Drawing.Size(348, 24);
             this.pnlUCDate.TabIndex = 0;
             // 
             // panelControlSubIcd
             // 
             this.panelControlSubIcd.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlSubIcd.Location = new System.Drawing.Point(1165, 56);
+            this.panelControlSubIcd.Location = new System.Drawing.Point(705, -24);
+            this.panelControlSubIcd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panelControlSubIcd.Name = "panelControlSubIcd";
             this.panelControlSubIcd.Size = new System.Drawing.Size(607, 24);
             this.panelControlSubIcd.TabIndex = 4;
@@ -2737,38 +2746,43 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // panelControlIcd
             // 
             this.panelControlIcd.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlIcd.Location = new System.Drawing.Point(1165, 0);
+            this.panelControlIcd.Location = new System.Drawing.Point(705, -72);
+            this.panelControlIcd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panelControlIcd.Name = "panelControlIcd";
-            this.panelControlIcd.Size = new System.Drawing.Size(607, 28);
+            this.panelControlIcd.Size = new System.Drawing.Size(607, 24);
             this.panelControlIcd.TabIndex = 2;
             // 
             // separatorControl1
             // 
-            this.separatorControl1.Location = new System.Drawing.Point(3, 83);
+            this.separatorControl1.Location = new System.Drawing.Point(2, 2);
+            this.separatorControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.separatorControl1.Name = "separatorControl1";
-            this.separatorControl1.Size = new System.Drawing.Size(1258, 20);
+            this.separatorControl1.Padding = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.separatorControl1.Size = new System.Drawing.Size(932, 20);
             this.separatorControl1.TabIndex = 9;
             // 
             // rdOpionGroup
             // 
             this.rdOpionGroup.EditValue = 1;
             this.rdOpionGroup.Enabled = false;
-            this.rdOpionGroup.Location = new System.Drawing.Point(18, 109);
+            this.rdOpionGroup.Location = new System.Drawing.Point(17, 26);
+            this.rdOpionGroup.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rdOpionGroup.MenuManager = this.barManager1;
             this.rdOpionGroup.Name = "rdOpionGroup";
             this.rdOpionGroup.Properties.Items.AddRange(new DevExpress.XtraEditors.Controls.RadioGroupItem[] {
             new DevExpress.XtraEditors.Controls.RadioGroupItem(1, "Thuốc chạy thận")});
             this.rdOpionGroup.Properties.ReadOnly = true;
-            this.rdOpionGroup.Size = new System.Drawing.Size(583, 26);
+            this.rdOpionGroup.Size = new System.Drawing.Size(428, 25);
             this.rdOpionGroup.StyleController = this.layoutControl6;
             this.rdOpionGroup.TabIndex = 10;
             this.rdOpionGroup.SelectedIndexChanged += new System.EventHandler(this.rdOpionGroup_SelectedIndexChanged);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(961, 169);
+            this.btnAdd.Location = new System.Drawing.Point(711, 79);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(124, 67);
+            this.btnAdd.Size = new System.Drawing.Size(92, 69);
             this.btnAdd.StyleController = this.layoutControl6;
             this.btnAdd.TabIndex = 23;
             this.btnAdd.Text = "Bổ sung (Ctrl A)";
@@ -2776,24 +2790,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // txtUnitOther
             // 
-            this.txtUnitOther.Location = new System.Drawing.Point(1109, 141);
+            this.txtUnitOther.Location = new System.Drawing.Point(828, 55);
+            this.txtUnitOther.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtUnitOther.MenuManager = this.barManager1;
             this.txtUnitOther.Name = "txtUnitOther";
             this.txtUnitOther.Properties.NullValuePrompt = "Đơn vị tính";
             this.txtUnitOther.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtUnitOther.Size = new System.Drawing.Size(76, 22);
+            this.txtUnitOther.Size = new System.Drawing.Size(50, 20);
             this.txtUnitOther.StyleController = this.layoutControl6;
             this.txtUnitOther.TabIndex = 26;
             this.txtUnitOther.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtUnitOther_PreviewKeyDown);
             // 
             // txtMedicineTypeOther
             // 
-            this.txtMedicineTypeOther.Location = new System.Drawing.Point(702, 141);
+            this.txtMedicineTypeOther.Location = new System.Drawing.Point(544, 55);
+            this.txtMedicineTypeOther.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtMedicineTypeOther.MenuManager = this.barManager1;
             this.txtMedicineTypeOther.Name = "txtMedicineTypeOther";
             this.txtMedicineTypeOther.Properties.NullValuePrompt = "Tên thuốc";
             this.txtMedicineTypeOther.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtMedicineTypeOther.Size = new System.Drawing.Size(252, 22);
+            this.txtMedicineTypeOther.Size = new System.Drawing.Size(162, 20);
             this.txtMedicineTypeOther.StyleController = this.layoutControl6;
             this.txtMedicineTypeOther.TabIndex = 24;
             this.txtMedicineTypeOther.Leave += new System.EventHandler(this.txtMedicineTypeOther_Leave);
@@ -2803,18 +2819,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.lblTongTien.Appearance.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTongTien.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblTongTien.Location = new System.Drawing.Point(1255, 722);
+            this.lblTongTien.Location = new System.Drawing.Point(943, 584);
+            this.lblTongTien.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.lblTongTien.Name = "lblTongTien";
-            this.lblTongTien.Size = new System.Drawing.Size(127, 18);
+            this.lblTongTien.Size = new System.Drawing.Size(80, 20);
             this.lblTongTien.StyleController = this.layoutControl6;
             this.lblTongTien.TabIndex = 33;
             // 
             // txtLoginName
             // 
-            this.txtLoginName.Location = new System.Drawing.Point(521, 30);
+            this.txtLoginName.Location = new System.Drawing.Point(411, -46);
+            this.txtLoginName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtLoginName.MenuManager = this.barManager1;
             this.txtLoginName.Name = "txtLoginName";
-            this.txtLoginName.Size = new System.Drawing.Size(112, 22);
+            this.txtLoginName.Size = new System.Drawing.Size(58, 20);
             this.txtLoginName.StyleController = this.layoutControl6;
             this.txtLoginName.TabIndex = 7;
             this.txtLoginName.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtLoginName_PreviewKeyDown);
@@ -2826,7 +2844,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0,
             0});
-            this.spinSoNgay.Location = new System.Drawing.Point(98, 31);
+            this.spinSoNgay.Location = new System.Drawing.Point(97, -46);
+            this.spinSoNgay.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.spinSoNgay.MenuManager = this.barManager1;
             this.spinSoNgay.Name = "spinSoNgay";
             this.spinSoNgay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2845,7 +2864,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             0,
             0,
             0});
-            this.spinSoNgay.Size = new System.Drawing.Size(111, 22);
+            this.spinSoNgay.Size = new System.Drawing.Size(58, 20);
             this.spinSoNgay.StyleController = this.layoutControl6;
             this.spinSoNgay.TabIndex = 5;
             this.spinSoNgay.EditValueChanged += new System.EventHandler(this.spinSoNgay_EditValueChanged);
@@ -2854,9 +2873,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(1308, 746);
+            this.btnNew.Location = new System.Drawing.Point(947, 608);
+            this.btnNew.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(74, 20);
+            this.btnNew.Size = new System.Drawing.Size(76, 22);
             this.btnNew.StyleController = this.layoutControl6;
             this.btnNew.TabIndex = 41;
             this.btnNew.Text = "Mới (Ctrl N)";
@@ -2865,9 +2885,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // btnShowDetail
             // 
-            this.btnShowDetail.Location = new System.Drawing.Point(774, 746);
+            this.btnShowDetail.Location = new System.Drawing.Point(586, 608);
+            this.btnShowDetail.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnShowDetail.Name = "btnShowDetail";
-            this.btnShowDetail.Size = new System.Drawing.Size(94, 20);
+            this.btnShowDetail.Size = new System.Drawing.Size(96, 22);
             this.btnShowDetail.StyleController = this.layoutControl6;
             this.btnShowDetail.TabIndex = 37;
             this.btnShowDetail.Text = "Yêu cầu dịch vụ";
@@ -2876,8 +2897,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // gridControlServiceProcess
             // 
-            this.gridControlServiceProcess.Location = new System.Drawing.Point(3, 264);
+            this.gridControlServiceProcess.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gridControlServiceProcess.Location = new System.Drawing.Point(2, 157);
             this.gridControlServiceProcess.MainView = this.gridViewServiceProcess;
+            this.gridControlServiceProcess.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.gridControlServiceProcess.Name = "gridControlServiceProcess";
             this.gridControlServiceProcess.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemcboPatientType_TabMedicine,
@@ -2908,7 +2931,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.repositoryItemchkIsExpendType_Enable,
             this.repositoryItemchkIsExpendType_Disable,
             this.repositoryItemSpinAmount_Disable__MedicinePage});
-            this.gridControlServiceProcess.Size = new System.Drawing.Size(1379, 452);
+            this.gridControlServiceProcess.Size = new System.Drawing.Size(1021, 423);
             this.gridControlServiceProcess.TabIndex = 26;
             this.gridControlServiceProcess.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewServiceProcess});
@@ -3737,21 +3760,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // txtAdvise
             // 
-            this.txtAdvise.Location = new System.Drawing.Point(1362, 83);
+            this.txtAdvise.Location = new System.Drawing.Point(1033, 2);
+            this.txtAdvise.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtAdvise.Name = "txtAdvise";
             this.txtAdvise.Properties.NullValuePrompt = "F5 để chọn thư viện nội dung";
             this.txtAdvise.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtAdvise.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtAdvise.Size = new System.Drawing.Size(407, 52);
+            this.txtAdvise.Size = new System.Drawing.Size(277, 49);
             this.txtAdvise.StyleController = this.layoutControl6;
             this.txtAdvise.TabIndex = 32;
             this.txtAdvise.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtLoiDanBacSi_KeyUp);
             // 
             // btnSaveAndPrint
             // 
-            this.btnSaveAndPrint.Location = new System.Drawing.Point(874, 746);
+            this.btnSaveAndPrint.Location = new System.Drawing.Point(686, 608);
+            this.btnSaveAndPrint.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSaveAndPrint.Name = "btnSaveAndPrint";
-            this.btnSaveAndPrint.Size = new System.Drawing.Size(94, 20);
+            this.btnSaveAndPrint.Size = new System.Drawing.Size(96, 22);
             this.btnSaveAndPrint.StyleController = this.layoutControl6;
             this.btnSaveAndPrint.TabIndex = 38;
             this.btnSaveAndPrint.Text = "Lưu In (Ctrl I)";
@@ -3760,18 +3785,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // txtLadder
             // 
-            this.txtLadder.Location = new System.Drawing.Point(310, 31);
+            this.txtLadder.Location = new System.Drawing.Point(254, -46);
+            this.txtLadder.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtLadder.MenuManager = this.barManager1;
             this.txtLadder.Name = "txtLadder";
             this.txtLadder.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
-            this.txtLadder.Size = new System.Drawing.Size(111, 22);
+            this.txtLadder.Size = new System.Drawing.Size(58, 20);
             this.txtLadder.StyleController = this.layoutControl6;
             this.txtLadder.TabIndex = 6;
             this.txtLadder.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtLadder_PreviewKeyDown);
             // 
             // cboExpMestTemplate
             // 
-            this.cboExpMestTemplate.Location = new System.Drawing.Point(1241, 224);
+            this.cboExpMestTemplate.Location = new System.Drawing.Point(918, 127);
+            this.cboExpMestTemplate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboExpMestTemplate.Name = "cboExpMestTemplate";
             this.cboExpMestTemplate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExpMestTemplate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -3779,7 +3806,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "", null, null, true)});
             this.cboExpMestTemplate.Properties.NullText = "";
             this.cboExpMestTemplate.Properties.View = this.gridView7;
-            this.cboExpMestTemplate.Size = new System.Drawing.Size(142, 22);
+            this.cboExpMestTemplate.Size = new System.Drawing.Size(105, 20);
             this.cboExpMestTemplate.StyleController = this.layoutControl6;
             this.cboExpMestTemplate.TabIndex = 31;
             this.cboExpMestTemplate.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboTemplate_Medicine_Closed);
@@ -3797,14 +3824,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // cboMediStockExport
             // 
             this.cboMediStockExport.EnterMoveNextControl = true;
-            this.cboMediStockExport.Location = new System.Drawing.Point(534, 3);
+            this.cboMediStockExport.Location = new System.Drawing.Point(411, -70);
+            this.cboMediStockExport.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboMediStockExport.Name = "cboMediStockExport";
             this.cboMediStockExport.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "", null, null, true)});
             this.cboMediStockExport.Properties.NullText = "";
             this.cboMediStockExport.Properties.View = this.gridView3;
-            this.cboMediStockExport.Size = new System.Drawing.Size(628, 22);
+            this.cboMediStockExport.Size = new System.Drawing.Size(292, 20);
             this.cboMediStockExport.StyleController = this.layoutControl6;
             this.cboMediStockExport.TabIndex = 1;
             this.cboMediStockExport.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboMediStockExport_TabMedicine_ButtonClick);
@@ -3819,9 +3847,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // btnSaveTemplate
             // 
-            this.btnSaveTemplate.Location = new System.Drawing.Point(409, 746);
+            this.btnSaveTemplate.Location = new System.Drawing.Point(302, 608);
+            this.btnSaveTemplate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSaveTemplate.Name = "btnSaveTemplate";
-            this.btnSaveTemplate.Size = new System.Drawing.Size(74, 20);
+            this.btnSaveTemplate.Size = new System.Drawing.Size(76, 22);
             this.btnSaveTemplate.StyleController = this.layoutControl6;
             this.btnSaveTemplate.TabIndex = 34;
             this.btnSaveTemplate.Text = "Lưu mẫu";
@@ -3830,9 +3859,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(974, 746);
+            this.btnSave.Location = new System.Drawing.Point(786, 608);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(84, 20);
+            this.btnSave.Size = new System.Drawing.Size(86, 22);
             this.btnSave.StyleController = this.layoutControl6;
             this.btnSave.TabIndex = 39;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -3841,16 +3871,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // txtExpMestTemplateCode
             // 
-            this.txtExpMestTemplateCode.Location = new System.Drawing.Point(1165, 224);
+            this.txtExpMestTemplateCode.Location = new System.Drawing.Point(882, 127);
+            this.txtExpMestTemplateCode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtExpMestTemplateCode.Name = "txtExpMestTemplateCode";
-            this.txtExpMestTemplateCode.Size = new System.Drawing.Size(76, 22);
+            this.txtExpMestTemplateCode.Size = new System.Drawing.Size(36, 20);
             this.txtExpMestTemplateCode.StyleController = this.layoutControl6;
             this.txtExpMestTemplateCode.TabIndex = 30;
             this.txtExpMestTemplateCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTemplate_Medicine_PreviewKeyDown);
             // 
             // cboUser
             // 
-            this.cboUser.Location = new System.Drawing.Point(633, 30);
+            this.cboUser.Location = new System.Drawing.Point(469, -46);
+            this.cboUser.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboUser.Name = "cboUser";
             this.cboUser.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -3858,7 +3890,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.cboUser.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
             this.cboUser.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboUser.Properties.View = this.gridView5;
-            this.cboUser.Size = new System.Drawing.Size(186, 22);
+            this.cboUser.Size = new System.Drawing.Size(137, 20);
             this.cboUser.StyleController = this.layoutControl6;
             this.cboUser.TabIndex = 8;
             this.cboUser.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboUser_Closed);
@@ -3924,28 +3956,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciUCBottomPanel,
             this.layoutControlItem25,
             this.layoutControlItem26});
-            this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup5.Location = new System.Drawing.Point(0, -72);
             this.layoutControlGroup5.Name = "Root";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup5.Size = new System.Drawing.Size(1772, 776);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(1312, 704);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 743);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 678);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(406, 33);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(300, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnShowDetail;
-            this.layoutControlItem9.Location = new System.Drawing.Point(771, 743);
+            this.layoutControlItem9.Location = new System.Drawing.Point(584, 678);
             this.layoutControlItem9.MaxSize = new System.Drawing.Size(100, 26);
             this.layoutControlItem9.MinSize = new System.Drawing.Size(100, 26);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(100, 33);
+            this.layoutControlItem9.Size = new System.Drawing.Size(100, 26);
             this.layoutControlItem9.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
@@ -3953,11 +3985,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // lcibtnSaveAndPrint
             // 
             this.lcibtnSaveAndPrint.Control = this.btnSaveAndPrint;
-            this.lcibtnSaveAndPrint.Location = new System.Drawing.Point(871, 743);
+            this.lcibtnSaveAndPrint.Location = new System.Drawing.Point(684, 678);
             this.lcibtnSaveAndPrint.MaxSize = new System.Drawing.Size(100, 26);
             this.lcibtnSaveAndPrint.MinSize = new System.Drawing.Size(100, 26);
             this.lcibtnSaveAndPrint.Name = "lcibtnSaveAndPrint";
-            this.lcibtnSaveAndPrint.Size = new System.Drawing.Size(100, 33);
+            this.lcibtnSaveAndPrint.Size = new System.Drawing.Size(100, 26);
             this.lcibtnSaveAndPrint.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnSaveAndPrint.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnSaveAndPrint.TextVisible = false;
@@ -3965,20 +3997,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.gridControlServiceProcess;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 261);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 227);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(1385, 458);
+            this.layoutControlItem8.Size = new System.Drawing.Size(1025, 427);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // lciTongTien
             // 
             this.lciTongTien.Control = this.lblTongTien;
-            this.lciTongTien.Location = new System.Drawing.Point(1198, 719);
+            this.lciTongTien.Location = new System.Drawing.Point(887, 654);
             this.lciTongTien.MaxSize = new System.Drawing.Size(190, 24);
             this.lciTongTien.MinSize = new System.Drawing.Size(100, 24);
             this.lciTongTien.Name = "lciTongTien";
-            this.lciTongTien.Size = new System.Drawing.Size(187, 24);
+            this.lciTongTien.Size = new System.Drawing.Size(138, 24);
             this.lciTongTien.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciTongTien.Text = "Tổng tiền:";
             this.lciTongTien.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -3990,9 +4022,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciMediStockExpMest.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciMediStockExpMest.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMediStockExpMest.Control = this.cboMediStockExport;
-            this.lciMediStockExpMest.Location = new System.Drawing.Point(470, 0);
+            this.lciMediStockExpMest.Location = new System.Drawing.Point(348, 0);
             this.lciMediStockExpMest.Name = "lciMediStockExpMest";
-            this.lciMediStockExpMest.Size = new System.Drawing.Size(695, 28);
+            this.lciMediStockExpMest.Size = new System.Drawing.Size(357, 24);
             this.lciMediStockExpMest.Text = "Kho xuất:";
             this.lciMediStockExpMest.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMediStockExpMest.TextSize = new System.Drawing.Size(56, 20);
@@ -4001,11 +4033,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.btnAdd;
-            this.layoutControlItem1.Location = new System.Drawing.Point(958, 166);
+            this.layoutControlItem1.Location = new System.Drawing.Point(709, 149);
             this.layoutControlItem1.MaxSize = new System.Drawing.Size(0, 73);
             this.layoutControlItem1.MinSize = new System.Drawing.Size(89, 73);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(130, 95);
+            this.layoutControlItem1.Size = new System.Drawing.Size(96, 78);
             this.layoutControlItem1.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
@@ -4015,9 +4047,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem6.Control = this.spinSoNgay;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 28);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(212, 28);
+            this.layoutControlItem6.Size = new System.Drawing.Size(157, 24);
             this.layoutControlItem6.Text = "Số ngày:";
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(90, 20);
@@ -4028,9 +4060,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciLadder.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciLadder.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciLadder.Control = this.txtLadder;
-            this.lciLadder.Location = new System.Drawing.Point(212, 28);
+            this.lciLadder.Location = new System.Drawing.Point(157, 24);
             this.lciLadder.Name = "lciLadder_TabMedicine";
-            this.lciLadder.Size = new System.Drawing.Size(212, 28);
+            this.lciLadder.Size = new System.Drawing.Size(157, 24);
             this.lciLadder.Text = "Số thang:";
             this.lciLadder.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciLadder.TextSize = new System.Drawing.Size(90, 20);
@@ -4044,12 +4076,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lcitxtLoginName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcitxtLoginName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcitxtLoginName.Control = this.txtLoginName;
-            this.lcitxtLoginName.Location = new System.Drawing.Point(424, 28);
+            this.lcitxtLoginName.Location = new System.Drawing.Point(314, 24);
             this.lcitxtLoginName.MaxSize = new System.Drawing.Size(0, 24);
             this.lcitxtLoginName.MinSize = new System.Drawing.Size(100, 24);
             this.lcitxtLoginName.Name = "lcitxtLoginName";
             this.lcitxtLoginName.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lcitxtLoginName.Size = new System.Drawing.Size(209, 28);
+            this.lcitxtLoginName.Size = new System.Drawing.Size(155, 24);
             this.lcitxtLoginName.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcitxtLoginName.Text = "Người chỉ định:";
             this.lcitxtLoginName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -4059,10 +4091,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.cboUser;
-            this.layoutControlItem2.Location = new System.Drawing.Point(633, 28);
+            this.layoutControlItem2.Location = new System.Drawing.Point(469, 24);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem2.Size = new System.Drawing.Size(188, 28);
+            this.layoutControlItem2.Size = new System.Drawing.Size(139, 24);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -4071,9 +4103,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItem13.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem13.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem13.Control = this.txtMedicineTypeOther;
-            this.layoutControlItem13.Location = new System.Drawing.Point(604, 138);
+            this.layoutControlItem13.Location = new System.Drawing.Point(447, 125);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(353, 28);
+            this.layoutControlItem13.Size = new System.Drawing.Size(261, 24);
             this.layoutControlItem13.Text = "Thuốc khác:";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(90, 20);
@@ -4084,9 +4116,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItem14.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem14.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem14.Control = this.txtUnitOther;
-            this.layoutControlItem14.Location = new System.Drawing.Point(1077, 138);
+            this.layoutControlItem14.Location = new System.Drawing.Point(797, 125);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(111, 28);
+            this.layoutControlItem14.Size = new System.Drawing.Size(83, 24);
             this.layoutControlItem14.Text = "ĐVT:";
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(24, 20);
@@ -4097,12 +4129,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciExpMestTemplate.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciExpMestTemplate.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciExpMestTemplate.Control = this.txtExpMestTemplateCode;
-            this.lciExpMestTemplate.Location = new System.Drawing.Point(1088, 222);
+            this.lciExpMestTemplate.Location = new System.Drawing.Point(805, 197);
             this.lciExpMestTemplate.MaxSize = new System.Drawing.Size(0, 24);
             this.lciExpMestTemplate.MinSize = new System.Drawing.Size(108, 24);
             this.lciExpMestTemplate.Name = "lciExpMestTemplate";
             this.lciExpMestTemplate.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciExpMestTemplate.Size = new System.Drawing.Size(153, 39);
+            this.lciExpMestTemplate.Size = new System.Drawing.Size(113, 30);
             this.lciExpMestTemplate.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciExpMestTemplate.Text = "Đơn mẫu:";
             this.lciExpMestTemplate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -4112,21 +4144,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // lciTemplateMedicine
             // 
             this.lciTemplateMedicine.Control = this.cboExpMestTemplate;
-            this.lciTemplateMedicine.Location = new System.Drawing.Point(1241, 222);
+            this.lciTemplateMedicine.Location = new System.Drawing.Point(918, 197);
             this.lciTemplateMedicine.Name = "lciTemplateMedicine";
             this.lciTemplateMedicine.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.lciTemplateMedicine.Size = new System.Drawing.Size(144, 39);
+            this.lciTemplateMedicine.Size = new System.Drawing.Size(107, 30);
             this.lciTemplateMedicine.TextSize = new System.Drawing.Size(0, 0);
             this.lciTemplateMedicine.TextVisible = false;
             // 
             // lcibtnSave
             // 
             this.lcibtnSave.Control = this.btnSave;
-            this.lcibtnSave.Location = new System.Drawing.Point(971, 743);
+            this.lcibtnSave.Location = new System.Drawing.Point(784, 678);
             this.lcibtnSave.MaxSize = new System.Drawing.Size(90, 26);
             this.lcibtnSave.MinSize = new System.Drawing.Size(90, 26);
             this.lcibtnSave.Name = "lcibtnSave";
-            this.lcibtnSave.Size = new System.Drawing.Size(90, 33);
+            this.lcibtnSave.Size = new System.Drawing.Size(90, 26);
             this.lcibtnSave.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnSave.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnSave.TextVisible = false;
@@ -4134,11 +4166,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // lbibtnformNew
             // 
             this.lbibtnformNew.Control = this.btnNew;
-            this.lbibtnformNew.Location = new System.Drawing.Point(1305, 743);
+            this.lbibtnformNew.Location = new System.Drawing.Point(945, 678);
             this.lbibtnformNew.MaxSize = new System.Drawing.Size(80, 26);
             this.lbibtnformNew.MinSize = new System.Drawing.Size(80, 26);
             this.lbibtnformNew.Name = "lbibtnformNew";
-            this.lbibtnformNew.Size = new System.Drawing.Size(80, 33);
+            this.lbibtnformNew.Size = new System.Drawing.Size(80, 26);
             this.lbibtnformNew.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lbibtnformNew.TextSize = new System.Drawing.Size(0, 0);
             this.lbibtnformNew.TextVisible = false;
@@ -4146,12 +4178,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.panelControlIcd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(1165, 0);
+            this.layoutControlItem7.Location = new System.Drawing.Point(705, 0);
             this.layoutControlItem7.MaxSize = new System.Drawing.Size(607, 0);
             this.layoutControlItem7.MinSize = new System.Drawing.Size(607, 24);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem7.Size = new System.Drawing.Size(607, 28);
+            this.layoutControlItem7.Size = new System.Drawing.Size(607, 24);
             this.layoutControlItem7.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
@@ -4159,9 +4191,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem22
             // 
             this.layoutControlItem22.Control = this.separatorControl1;
-            this.layoutControlItem22.Location = new System.Drawing.Point(0, 80);
+            this.layoutControlItem22.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem22.Name = "layoutControlItem22";
-            this.layoutControlItem22.Size = new System.Drawing.Size(1264, 26);
+            this.layoutControlItem22.Size = new System.Drawing.Size(936, 24);
             this.layoutControlItem22.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem22.TextVisible = false;
             // 
@@ -4170,9 +4202,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem5.Control = this.rdOpionGroup;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 106);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(604, 32);
+            this.layoutControlItem5.Size = new System.Drawing.Size(447, 29);
             this.layoutControlItem5.Text = " ";
             this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem5.TextSize = new System.Drawing.Size(10, 20);
@@ -4183,9 +4215,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciLoiDanBacSi.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciLoiDanBacSi.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciLoiDanBacSi.Control = this.txtAdvise;
-            this.lciLoiDanBacSi.Location = new System.Drawing.Point(1264, 80);
+            this.lciLoiDanBacSi.Location = new System.Drawing.Point(936, 72);
             this.lciLoiDanBacSi.Name = "lciLoiDanBacSi";
-            this.lciLoiDanBacSi.Size = new System.Drawing.Size(508, 58);
+            this.lciLoiDanBacSi.Size = new System.Drawing.Size(376, 53);
             this.lciLoiDanBacSi.Text = "Lời dặn:";
             this.lciLoiDanBacSi.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciLoiDanBacSi.TextSize = new System.Drawing.Size(90, 20);
@@ -4197,17 +4229,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lcipnlUCDate.Location = new System.Drawing.Point(0, 0);
             this.lcipnlUCDate.Name = "lcipnlUCDate";
             this.lcipnlUCDate.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcipnlUCDate.Size = new System.Drawing.Size(470, 28);
+            this.lcipnlUCDate.Size = new System.Drawing.Size(348, 24);
             this.lcipnlUCDate.TextSize = new System.Drawing.Size(0, 0);
             this.lcipnlUCDate.TextVisible = false;
             // 
             // lciPrintAssignPrescription
             // 
             this.lciPrintAssignPrescription.Control = this.layoutControlPrintAssignPrescription;
-            this.lciPrintAssignPrescription.Location = new System.Drawing.Point(1061, 743);
+            this.lciPrintAssignPrescription.Location = new System.Drawing.Point(874, 678);
             this.lciPrintAssignPrescription.Name = "lciPrintAssignPrescription";
             this.lciPrintAssignPrescription.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lciPrintAssignPrescription.Size = new System.Drawing.Size(244, 33);
+            this.lciPrintAssignPrescription.Size = new System.Drawing.Size(71, 26);
             this.lciPrintAssignPrescription.TextSize = new System.Drawing.Size(0, 0);
             this.lciPrintAssignPrescription.TextVisible = false;
             // 
@@ -4218,9 +4250,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem12.Control = this.txtMediMatyForPrescription;
-            this.layoutControlItem12.Location = new System.Drawing.Point(0, 138);
+            this.layoutControlItem12.Location = new System.Drawing.Point(0, 125);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(604, 28);
+            this.layoutControlItem12.Size = new System.Drawing.Size(447, 24);
             this.layoutControlItem12.Text = "Chọn:";
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(90, 20);
@@ -4229,11 +4261,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // lcibtnSaveTemplate
             // 
             this.lcibtnSaveTemplate.Control = this.btnSaveTemplate;
-            this.lcibtnSaveTemplate.Location = new System.Drawing.Point(406, 743);
+            this.lcibtnSaveTemplate.Location = new System.Drawing.Point(300, 678);
             this.lcibtnSaveTemplate.MaxSize = new System.Drawing.Size(80, 26);
             this.lcibtnSaveTemplate.MinSize = new System.Drawing.Size(80, 26);
             this.lcibtnSaveTemplate.Name = "lcibtnSaveTemplate";
-            this.lcibtnSaveTemplate.Size = new System.Drawing.Size(80, 33);
+            this.lcibtnSaveTemplate.Size = new System.Drawing.Size(80, 26);
             this.lcibtnSaveTemplate.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcibtnSaveTemplate.TextSize = new System.Drawing.Size(0, 0);
             this.lcibtnSaveTemplate.TextVisible = false;
@@ -4243,9 +4275,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciPhieuDieuTri.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPhieuDieuTri.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPhieuDieuTri.Control = this.cboPhieuDieuTri;
-            this.lciPhieuDieuTri.Location = new System.Drawing.Point(1088, 166);
+            this.lciPhieuDieuTri.Location = new System.Drawing.Point(805, 149);
             this.lciPhieuDieuTri.Name = "lciPhieuDieuTri";
-            this.lciPhieuDieuTri.Size = new System.Drawing.Size(297, 28);
+            this.lciPhieuDieuTri.Size = new System.Drawing.Size(220, 24);
             this.lciPhieuDieuTri.Text = "Tờ điều trị:";
             this.lciPhieuDieuTri.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPhieuDieuTri.TextSize = new System.Drawing.Size(70, 20);
@@ -4254,9 +4286,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnBoSungPhacDo;
-            this.layoutControlItem10.Location = new System.Drawing.Point(641, 743);
+            this.layoutControlItem10.Location = new System.Drawing.Point(491, 678);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(130, 33);
+            this.layoutControlItem10.Size = new System.Drawing.Size(93, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -4265,9 +4297,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciEquipment.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciEquipment.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciEquipment.Control = this.cboEquipment;
-            this.lciEquipment.Location = new System.Drawing.Point(1088, 194);
+            this.lciEquipment.Location = new System.Drawing.Point(805, 173);
             this.lciEquipment.Name = "lciEquipment";
-            this.lciEquipment.Size = new System.Drawing.Size(297, 28);
+            this.lciEquipment.Size = new System.Drawing.Size(220, 24);
             this.lciEquipment.Text = "Bộ vật tư:";
             this.lciEquipment.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciEquipment.TextSize = new System.Drawing.Size(70, 20);
@@ -4276,26 +4308,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnDichVuHenKham;
-            this.layoutControlItem11.Location = new System.Drawing.Point(486, 743);
+            this.layoutControlItem11.Location = new System.Drawing.Point(380, 678);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(155, 33);
+            this.layoutControlItem11.Size = new System.Drawing.Size(111, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 719);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 654);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(1198, 24);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(887, 24);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.lblNotice;
-            this.layoutControlItem16.Location = new System.Drawing.Point(959, 106);
+            this.layoutControlItem16.Location = new System.Drawing.Point(710, 96);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(305, 32);
+            this.layoutControlItem16.Size = new System.Drawing.Size(226, 29);
             this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 20);
             this.layoutControlItem16.TextToControlDistance = 5;
@@ -4305,9 +4337,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciPatientType.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPatientType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPatientType.Control = this.cboPatientType;
-            this.lciPatientType.Location = new System.Drawing.Point(1188, 138);
+            this.lciPatientType.Location = new System.Drawing.Point(880, 125);
             this.lciPatientType.Name = "lciPatientType";
-            this.lciPatientType.Size = new System.Drawing.Size(197, 28);
+            this.lciPatientType.Size = new System.Drawing.Size(145, 24);
             this.lciPatientType.Text = "ĐTTT:";
             this.lciPatientType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientType.TextSize = new System.Drawing.Size(60, 20);
@@ -4318,9 +4350,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItem17.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem17.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem17.Control = this.cboNhaThuoc;
-            this.layoutControlItem17.Location = new System.Drawing.Point(604, 106);
+            this.layoutControlItem17.Location = new System.Drawing.Point(447, 96);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(355, 32);
+            this.layoutControlItem17.Size = new System.Drawing.Size(263, 29);
             this.layoutControlItem17.Text = "Nhà thuốc:";
             this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(90, 20);
@@ -4329,12 +4361,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // lciNguyenNhanNgoai
             // 
             this.lciNguyenNhanNgoai.Control = this.panelControlCauseIcd;
-            this.lciNguyenNhanNgoai.Location = new System.Drawing.Point(1165, 28);
+            this.lciNguyenNhanNgoai.Location = new System.Drawing.Point(705, 24);
             this.lciNguyenNhanNgoai.MaxSize = new System.Drawing.Size(607, 0);
             this.lciNguyenNhanNgoai.MinSize = new System.Drawing.Size(607, 24);
             this.lciNguyenNhanNgoai.Name = "lciNguyenNhanNgoai";
             this.lciNguyenNhanNgoai.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lciNguyenNhanNgoai.Size = new System.Drawing.Size(607, 28);
+            this.lciNguyenNhanNgoai.Size = new System.Drawing.Size(607, 24);
             this.lciNguyenNhanNgoai.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lciNguyenNhanNgoai.TextSize = new System.Drawing.Size(0, 0);
             this.lciNguyenNhanNgoai.TextVisible = false;
@@ -4342,7 +4374,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.panelControlSubIcd;
-            this.layoutControlItem3.Location = new System.Drawing.Point(1165, 56);
+            this.layoutControlItem3.Location = new System.Drawing.Point(705, 48);
             this.layoutControlItem3.MaxSize = new System.Drawing.Size(607, 0);
             this.layoutControlItem3.MinSize = new System.Drawing.Size(607, 24);
             this.layoutControlItem3.Name = "layoutControlItem3";
@@ -4355,9 +4387,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 56);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 48);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(1165, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(705, 24);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem18
@@ -4365,9 +4397,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem18.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem18.Control = this.spinPrice;
-            this.layoutControlItem18.Location = new System.Drawing.Point(957, 138);
+            this.layoutControlItem18.Location = new System.Drawing.Point(708, 125);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(120, 28);
+            this.layoutControlItem18.Size = new System.Drawing.Size(89, 24);
             this.layoutControlItem18.Text = "Giá:";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(30, 20);
@@ -4378,37 +4410,37 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.lciHomePres.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciHomePres.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciHomePres.Control = this.chkHomePres;
-            this.lciHomePres.Location = new System.Drawing.Point(821, 28);
+            this.lciHomePres.Location = new System.Drawing.Point(608, 24);
             this.lciHomePres.Name = "lciHomePres";
-            this.lciHomePres.Size = new System.Drawing.Size(344, 28);
+            this.lciHomePres.Size = new System.Drawing.Size(97, 24);
             this.lciHomePres.Text = "Mang đơn về:";
-            this.lciHomePres.TextSize = new System.Drawing.Size(78, 16);
+            this.lciHomePres.TextSize = new System.Drawing.Size(66, 13);
             // 
             // lciInputForMediMaty
             // 
             this.lciInputForMediMaty.Control = this.layoutControl1;
-            this.lciInputForMediMaty.Location = new System.Drawing.Point(0, 166);
+            this.lciInputForMediMaty.Location = new System.Drawing.Point(0, 149);
             this.lciInputForMediMaty.Name = "lciInputForMediMaty";
-            this.lciInputForMediMaty.Size = new System.Drawing.Size(958, 95);
+            this.lciInputForMediMaty.Size = new System.Drawing.Size(709, 78);
             this.lciInputForMediMaty.TextSize = new System.Drawing.Size(0, 0);
             this.lciInputForMediMaty.TextVisible = false;
             // 
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(1385, 743);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(1025, 678);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(387, 33);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(287, 26);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem6
             // 
             this.emptySpaceItem6.AllowHotTrack = false;
-            this.emptySpaceItem6.Location = new System.Drawing.Point(1385, 719);
+            this.emptySpaceItem6.Location = new System.Drawing.Point(1025, 654);
             this.emptySpaceItem6.MinSize = new System.Drawing.Size(10, 10);
             this.emptySpaceItem6.Name = "emptySpaceItem6";
             this.emptySpaceItem6.ShowInCustomizationForm = false;
-            this.emptySpaceItem6.Size = new System.Drawing.Size(387, 24);
+            this.emptySpaceItem6.Size = new System.Drawing.Size(287, 24);
             this.emptySpaceItem6.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
@@ -4416,10 +4448,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem23
             // 
             this.layoutControlItem23.Control = this.pnlUCPanelRightTop;
-            this.layoutControlItem23.Location = new System.Drawing.Point(1385, 138);
+            this.layoutControlItem23.Location = new System.Drawing.Point(1025, 125);
             this.layoutControlItem23.MinSize = new System.Drawing.Size(7, 208);
             this.layoutControlItem23.Name = "layoutControlItem23";
-            this.layoutControlItem23.Size = new System.Drawing.Size(387, 208);
+            this.layoutControlItem23.Size = new System.Drawing.Size(287, 208);
             this.layoutControlItem23.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem23.TextVisible = false;
@@ -4427,11 +4459,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.label1;
-            this.layoutControlItem15.Location = new System.Drawing.Point(1385, 346);
+            this.layoutControlItem15.Location = new System.Drawing.Point(1025, 333);
             this.layoutControlItem15.MaxSize = new System.Drawing.Size(0, 31);
             this.layoutControlItem15.MinSize = new System.Drawing.Size(31, 31);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(326, 31);
+            this.layoutControlItem15.Size = new System.Drawing.Size(227, 31);
             this.layoutControlItem15.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
@@ -4439,12 +4471,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.layoutControl2;
-            this.layoutControlItem19.Location = new System.Drawing.Point(1385, 377);
+            this.layoutControlItem19.Location = new System.Drawing.Point(1025, 364);
             this.layoutControlItem19.MaxSize = new System.Drawing.Size(0, 150);
             this.layoutControlItem19.MinSize = new System.Drawing.Size(244, 150);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem19.Size = new System.Drawing.Size(387, 150);
+            this.layoutControlItem19.Size = new System.Drawing.Size(287, 150);
             this.layoutControlItem19.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
@@ -4452,16 +4484,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // lciUCBottomPanel
             // 
             this.lciUCBottomPanel.Control = this.layoutControl4;
-            this.lciUCBottomPanel.Location = new System.Drawing.Point(1385, 527);
+            this.lciUCBottomPanel.Location = new System.Drawing.Point(1025, 514);
             this.lciUCBottomPanel.Name = "lciUCBottomPanel";
-            this.lciUCBottomPanel.Size = new System.Drawing.Size(387, 192);
+            this.lciUCBottomPanel.Size = new System.Drawing.Size(287, 140);
             this.lciUCBottomPanel.TextSize = new System.Drawing.Size(0, 0);
             this.lciUCBottomPanel.TextVisible = false;
             // 
             // layoutControlItem25
             // 
             this.layoutControlItem25.Control = this.pbOpen;
-            this.layoutControlItem25.Location = new System.Drawing.Point(1742, 346);
+            this.layoutControlItem25.Location = new System.Drawing.Point(1282, 333);
             this.layoutControlItem25.MinSize = new System.Drawing.Size(30, 26);
             this.layoutControlItem25.Name = "layoutControlItem25";
             this.layoutControlItem25.Size = new System.Drawing.Size(30, 31);
@@ -4472,10 +4504,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // layoutControlItem26
             // 
             this.layoutControlItem26.Control = this.pbClose;
-            this.layoutControlItem26.Location = new System.Drawing.Point(1711, 346);
+            this.layoutControlItem26.Location = new System.Drawing.Point(1252, 333);
             this.layoutControlItem26.MinSize = new System.Drawing.Size(30, 26);
             this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(31, 31);
+            this.layoutControlItem26.Size = new System.Drawing.Size(30, 31);
             this.layoutControlItem26.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem26.TextVisible = false;
@@ -4497,11 +4529,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.popupControlContainerMediMaty.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainerMediMaty.Controls.Add(this.popupControlContainerTutorial);
             this.popupControlContainerMediMaty.Controls.Add(this.gridControlMediMaty);
-            this.popupControlContainerMediMaty.Location = new System.Drawing.Point(216, 9);
+            this.popupControlContainerMediMaty.Location = new System.Drawing.Point(162, 7);
             this.popupControlContainerMediMaty.Manager = this.barManager1;
-            this.popupControlContainerMediMaty.Margin = new System.Windows.Forms.Padding(4);
             this.popupControlContainerMediMaty.Name = "popupControlContainerMediMaty";
-            this.popupControlContainerMediMaty.Size = new System.Drawing.Size(733, 46);
+            this.popupControlContainerMediMaty.Size = new System.Drawing.Size(550, 37);
             this.popupControlContainerMediMaty.TabIndex = 15;
             this.popupControlContainerMediMaty.Visible = false;
             this.popupControlContainerMediMaty.CloseUp += new System.EventHandler(this.popupControlContainerMediMaty_CloseUp);
@@ -4510,24 +4541,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             this.popupControlContainerTutorial.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainerTutorial.Controls.Add(this.gridControlTutorial);
-            this.popupControlContainerTutorial.Location = new System.Drawing.Point(11, -39);
+            this.popupControlContainerTutorial.Location = new System.Drawing.Point(8, -32);
             this.popupControlContainerTutorial.Manager = this.barManager1;
-            this.popupControlContainerTutorial.Margin = new System.Windows.Forms.Padding(4);
             this.popupControlContainerTutorial.Name = "popupControlContainerTutorial";
-            this.popupControlContainerTutorial.Size = new System.Drawing.Size(733, 46);
+            this.popupControlContainerTutorial.Size = new System.Drawing.Size(550, 37);
             this.popupControlContainerTutorial.TabIndex = 16;
             this.popupControlContainerTutorial.Visible = false;
             // 
             // gridControlTutorial
             // 
             this.gridControlTutorial.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlTutorial.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlTutorial.Location = new System.Drawing.Point(0, 0);
             this.gridControlTutorial.MainView = this.gridViewTutorial;
-            this.gridControlTutorial.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlTutorial.MenuManager = this.barManager1;
             this.gridControlTutorial.Name = "gridControlTutorial";
-            this.gridControlTutorial.Size = new System.Drawing.Size(733, 46);
+            this.gridControlTutorial.Size = new System.Drawing.Size(550, 37);
             this.gridControlTutorial.TabIndex = 0;
             this.gridControlTutorial.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewTutorial});
@@ -4545,13 +4573,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // gridControlMediMaty
             // 
             this.gridControlMediMaty.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlMediMaty.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlMediMaty.Location = new System.Drawing.Point(0, 0);
             this.gridControlMediMaty.MainView = this.gridViewMediMaty;
-            this.gridControlMediMaty.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlMediMaty.MenuManager = this.barManager1;
             this.gridControlMediMaty.Name = "gridControlMediMaty";
-            this.gridControlMediMaty.Size = new System.Drawing.Size(733, 46);
+            this.gridControlMediMaty.Size = new System.Drawing.Size(550, 37);
             this.gridControlMediMaty.TabIndex = 0;
             this.gridControlMediMaty.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewMediMaty});
@@ -4576,9 +4602,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             // 
             // frmAssignPrescription
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1772, 814);
+            this.ClientSize = new System.Drawing.Size(1329, 661);
             this.Controls.Add(this.popupControlContainerMediMaty);
             this.Controls.Add(this.layoutControl6);
             this.Controls.Add(this.barDockControlLeft);
@@ -4586,7 +4612,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmAssignPrescription";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Đơn nội trú (chạy thận)";

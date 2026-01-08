@@ -407,6 +407,12 @@
   <data name="Plugin_AssignPrescription__PopupMenu_SuaSoNgay" xml:space="preserve">
     <value>Edit number of days</value>
   </data>
+	<data name="Plugin_AssignPrescription__PopupMenu_ThongTinThuoc" xml:space="preserve">
+    <value>Information</value>
+  </data>
+	<data name="Plugin_AssignPrescription__PopupMenu_DanhGiaThongTinThuoc" xml:space="preserve">
+    <value>Information Evaluation</value>
+  </data>
   <data name="Plugin_AssignPrescription__Sang" xml:space="preserve">
     <value>A.m {0} {1}</value>
   </data>

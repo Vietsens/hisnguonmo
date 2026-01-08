@@ -2270,7 +2270,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 LogSystem.Debug("LoadDataTracking => 1");
                 //Init Control
                 CommonParam param = new CommonParam();
-                if (!GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
+                if (!GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet && HisConfigCFG.IsTrackingRequired != "2")
                 {
                     this.isInitTracking = false;
                     lciPhieuDieuTri.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;

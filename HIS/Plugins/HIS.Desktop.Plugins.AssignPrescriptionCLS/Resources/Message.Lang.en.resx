@@ -204,6 +204,12 @@
   <data name="Plugin_AssignPrescription__ThuocKhongCoHoatChat" xml:space="preserve">
     <value>{0} Medicine has no active ingredients</value>
   </data>
+	<data name="Plugin_AssignPrescription__PopupMenu_ThongTinThuoc" xml:space="preserve">
+    <value>Information</value>
+  </data>
+	<data name="Plugin_AssignPrescription__PopupMenu_DanhGiaThongTinThuoc" xml:space="preserve">
+    <value>Information Evaluation</value>
+  </data>
   <data name="Plugin_AssignPrescription__ThuocKhongCoTrongKho" xml:space="preserve">
     <value>The medicine is out of stock</value>
   </data>

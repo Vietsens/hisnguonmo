@@ -18,6 +18,7 @@
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.XtraBars;
+using DevExpress.XtraBars.Docking2010.DragEngine;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
@@ -26,6 +27,7 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraLayout.Utils;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
@@ -34,6 +36,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.MIMS.Integration.Models;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Advise;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.Base;
@@ -60,6 +63,7 @@ using HIS.UC.TreatmentFinish.Run;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.PopupLoader;
 using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Common.SignLibrary.DTO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
@@ -79,6 +83,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 {
@@ -115,6 +120,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal long InstructionTime { get; set; }
         public List<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE_ACIN> ListMedicineTypeAcin { get; set; }
         public List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_MEDICINE> ListMedicineTypeOld { get; set; }
+        public List<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST_MEDICINE> ListMedicineTypePreviousPrescription { get; set; }
 
         internal bool limitHeinMedicinePrice = false;
         internal V_HIS_SERE_SERV currentSereServ { get; set; }
@@ -1193,6 +1199,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 LogSystem.Debug("frmAssignPrescription_Load. 8");
                 LogSystem.Debug("frmAssignPrescription_Load. 9");
 
+                if (HisConfigCFG.CheckPreviousPrescriptionDetail == "1")
+                {
+                    this.GetHisExpMestMedicine();
+                }
+
+                if (HisConfigCFG.IsTrackingRequired == "2")
+                {
+                    this.CheckToDieuTri();
+                }
+
                 this.timerInitForm.Interval = 500;//Fix
                 this.timerInitForm.Enabled = true;
                 this.timerInitForm.Start();
@@ -1446,7 +1462,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     //    this.currentTreatmentWithPatientType = this.LoadDataToCurrentTreatmentData(treatmentId, this.InstructionTime);
                     searchMedicineFilter.TDL_PATIENT_ID = VHistreatment.PATIENT_ID;
                 }
-                ListMedicineTypeOld = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>(HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, searchMedicineFilter, ProcessLostToken, param);
+                if (ListMedicineTypeOld == null  || ListMedicineTypeOld.Count < 0)
+                {
+                    ListMedicineTypeOld = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>(HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, searchMedicineFilter, ProcessLostToken, param);
+                }
+                
 
                 Inventec.Common.Logging.LogSystem.Debug("GetListEMMedicineAcinInteractive___" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListMedicineTypeOld), ListMedicineTypeOld));
                 if (ListMedicineTypeOld != null && ListMedicineTypeOld.Count > 0)
@@ -2231,6 +2251,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
                 if (mediMatyTypeADOs == null || mediMatyTypeADOs.Count == 0)
                     return;
+
+                if (this.VHistreatment != null &&
+                    (this.VHistreatment.IS_EMERGENCY == 1 ||
+                     this.VHistreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU) &&
+                    HisConfigCFG.IsTrackingRequired == "2" &&
+                    (cboPhieuDieuTri.Text == null || cboPhieuDieuTri.Text == ""))
+                {
+                    XtraMessageBox.Show("Trường tờ điều trị bắt buộc nhập", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    cboPhieuDieuTri.Focus();
+                    return;
+                }
+
+                if (!CheckMIMS(this.mediMatyTypeADOs))
+                {
+                    return;
+                }
+
                 var NotHasSerialNumber = GetMaterialReusableOrIdentityManager().Where(maty => string.IsNullOrEmpty(maty.SERIAL_NUMBER)).ToList();
                 if (NotHasSerialNumber.Count > 0)
                 {
@@ -3314,6 +3352,24 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         return;
                     }
                 }
+
+                if(ListMedicineTypePreviousPrescription != null && ListMedicineTypePreviousPrescription.Count > 0)
+                {
+                    foreach (var item in ListMedicineTypePreviousPrescription.OrderByDescending(o => o.USE_TIME_TO))
+                    {
+                        if (item.MEDICINE_TYPE_NAME == txtMediMatyForPrescription.Text)
+                        {
+                            DialogResult result = MessageBox.Show(string.Format("Bệnh nhân đã có đơn thuốc cũ còn sử dụng tới ngày {0}. \nBạn có muốn tiếp tục?", Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(item.USE_TIME_TO ?? 0)),"Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                            if (result == DialogResult.No)
+                            {
+                                return;
+                            }
+
+                            break;
+                        }
+                    }
+                }
                 bool valid = true;
                 this.positionHandleControl = -1;
                 var selectedOpionGroup = GetSelectedOpionGroup();
@@ -3377,7 +3433,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             }
         }
 
-        private Boolean CheckMediMatyType(List<MediMatyTypeADO> LstMediMatyTypeADO)
+        private bool CheckMediMatyType(List<MediMatyTypeADO> LstMediMatyTypeADO)
         {
             try
             {
@@ -10399,6 +10455,11 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     }
                 }
                 EnableCheckTemporaryPres();
+
+                if (HisConfigCFG.CheckPreviousPrescriptionDetail == "1")
+                {
+                    this.GetHisExpMestMedicine();
+                }
             }
             catch (Exception ex)
             {
@@ -12804,7 +12865,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 else
                 {
                     cboPhieuDieuTri.Enabled = true;
-                    if (HisConfigCFG.IsTrackingRequired)
+                    if (HisConfigCFG.IsTrackingRequired == "1")
                     {
                         ValidationSingleControl(cboPhieuDieuTri, dxValidationProviderControl, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc), ValidTracking);
                         this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
@@ -12822,6 +12883,10 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
+                if (HisConfigCFG.CheckPreviousPrescriptionDetail == "1")
+                {
+                    this.GetHisExpMestMedicine();
+                }
             }
             catch (Exception ex)
             {
@@ -13524,6 +13589,116 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        private void GetHisExpMestMedicine()
+        {
+            try
+            {
+                ListMedicineTypePreviousPrescription = new List<V_HIS_EXP_MEST_MEDICINE>();
+
+                CommonParam param = new CommonParam();
+                HisExpMestMedicineViewFilter searchMedicineFilter = new HisExpMestMedicineViewFilter();
+
+                searchMedicineFilter.USE_TIME_TO_FROM = Int64.Parse(this.intructionTimeSelecteds.OrderByDescending(o => o).Last().ToString().Substring(0, 8) + "000000");
+
+                searchMedicineFilter.TDL_PATIENT_ID = VHistreatment.PATIENT_ID;
+                searchMedicineFilter.IS_INCLUDE_DELETED = false;
+                searchMedicineFilter.DATA_DOMAIN_FILTER = false;
+
+                ListMedicineTypeOld = new BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE>>(HisRequestUriStore.HIS_EXP_MEST_MEDICINE_GETVIEW, ApiConsumers.MosConsumer, searchMedicineFilter, ProcessLostToken, param);
+
+                DateTime fullDateTime = dtInstructionTime.DateTime.Date.Add(timeIntruction.TimeSpan);
+
+                long result = long.Parse(fullDateTime.ToString("yyyyMMddHHmmss"));
+                foreach (var item in ListMedicineTypeOld.Where(o => o.USE_TIME_TO != null).ToList())
+                {
+                    if (item.USE_TIME_TO >= result)
+                    {
+                        ListMedicineTypePreviousPrescription.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool CheckMIMS(List<MediMatyTypeADO> lstMediMatyTypeADOs)
+        {
+            bool check = false;
+            try
+            {
+                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0 && HisConfigCFG.ConnectDrugInterventionInfo == "2")
+                {
+                    List<HIS.Desktop.MIMS.Integration.Models.DrugItem> lstDrugItem = new List<MIMS.Integration.Models.DrugItem>();
+                    var service = new HIS.Desktop.MIMS.Integration.Modules.DrugHealthService();
+
+                    foreach (var item in lstMediMatyTypeADOs)
+                    {
+                        MimsDrugType mimsDrugType = new MimsDrugType();
+                        switch (item.MIMS_TYPE)
+                        {
+                            case 1:
+                                mimsDrugType = MimsDrugType.GGPI;
+                                break;
+                            case 2:
+                                mimsDrugType = MimsDrugType.Product;
+                                break;
+                            case 3:
+                                mimsDrugType = MimsDrugType.GenericItem;
+                                break;
+                            default:
+                                mimsDrugType = MimsDrugType.GenericItem;
+                                break;
+                        }
+                        HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, mimsDrugType);
+                        lstDrugItem.Add(drugItem);
+                    }
+                    List<string> lstICD = new List<string>();
+                    lstICD.Add(txtIcdCode.Text);
+                    if (!string.IsNullOrWhiteSpace(txtIcdCodeCause.Text))
+                    {
+                        lstICD.AddRange(txtIcdCodeCause.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
+                    }
+
+                    check = service.ShowDialog(lstDrugItem, lstICD);
+                }
+
+                if (check)
+                {
+
+                }
+
+                return check;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return check;
+            }
+        }
+
+        private void CheckToDieuTri()
+        {
+            try
+            {
+                if (this.VHistreatment != null && (this.VHistreatment.IS_EMERGENCY == 1 || this.VHistreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU))
+                {
+                    this.lciPhieuDieuTri.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+                }
+                else
+                {
+                    lciPhieuDieuTri.Visibility = LayoutVisibility.Never;
+                    this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

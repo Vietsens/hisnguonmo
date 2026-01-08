@@ -328,7 +328,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 ValidationSingleControlWithMaxLength(txtIcdCodeCause, false, 10);
                 ValidationSingleControlWithMaxLength(txtIcdMainTextCause, false, 500);
-                if (HisConfigCFG.IsTrackingRequired)
+                if (HisConfigCFG.IsTrackingRequired == "1")
                 {
                     ValidationSingleControl(cboPhieuDieuTri, dxValidationProviderControl, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc), ValidTracking);
                     this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;

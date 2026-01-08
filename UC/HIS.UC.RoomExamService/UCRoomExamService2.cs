@@ -138,11 +138,14 @@ namespace HIS.UC.RoomExamService
             try
             {
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("SERVICE_CODE", "", 120, 1));
-                columnInfos.Add(new ColumnInfo("SERVICE_NAME", "", 220, 2));
+                columnInfos.Add(new ColumnInfo("SERVICE_CODE", "Mã", 120, 1));
+                columnInfos.Add(new ColumnInfo("SERVICE_NAME", "Tên", 220, 2));
                 columnInfos.Add(new ColumnInfo("PRICE_DISPLAY", "Giá", 100, 3, true));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("SERVICE_NAME", "SERVICE_ID", columnInfos, false, 440);
                 ControlEditorLoader.Load(this.cboExamService, this.currentServiceRooms, controlEditorADO);
+                var view = this.cboExamService.Properties.View;
+                view.OptionsView.ShowColumnHeaders = true;    
+                view.OptionsView.ShowIndicator = false;
                 cboExamService.Properties.ImmediatePopup = true;
                 cboExamService.Properties.PopupFormSize = new System.Drawing.Size(440, cboExamService.Properties.PopupFormSize.Height);
             }
