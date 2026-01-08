@@ -1,6 +1,9 @@
 ﻿using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
 using Inventec.Common.Logging;
+using Inventec.Common.WebApiClient;
+using Inventec.Core;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,36 +18,80 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
 {
     public class ApiConsumer
     {
-        private string baseUri;
+        private string hasUri;
+        private string acsUri;
         private string applicationCode;
         private string limet;
         private string cskcbbd;
+        private string Username;
+        private string Password;
         private HttpClient _httpClient;
+        private CommonParam common;
 
-        public ApiConsumer(string baseUri, string applicationCode, string limet, string cskcbbd)
+        public ApiConsumer(string hasUri, string acsUri, string applicationCode, string limet, string cskcbbd, string user, string pass)
         {
-            this.baseUri = baseUri;
+            this.hasUri = hasUri;
+            this.acsUri = acsUri;
             this.applicationCode = applicationCode;
             this.limet = limet;
             this.cskcbbd = cskcbbd;
+            this.Username = user;
+            this.Password = pass;
             _httpClient = new HttpClient();
+        }
+
+        private ApiConsumerWrapper emrConsumerWrapper;
+        public ApiConsumerWrapper EmrConsumerWrapper
+        {
+            get
+            {
+                if (emrConsumerWrapper == null)
+                {
+                    emrConsumerWrapper = new ApiConsumerWrapper(true, applicationCode, hasUri, acsUri, Username, Password);
+                    emrConsumerWrapper.UseRegistry(false);
+                }
+                return emrConsumerWrapper;
+            }
         }
 
 
         public T CreateRequest<T>(string requestUri, object sendData)
         {
-            _httpClient.BaseAddress = new Uri(baseUri);
+            _httpClient.BaseAddress = new Uri(hasUri);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.Timeout = TimeSpan.FromSeconds(180);
             _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+
+            try
+            {
+                string token = this.EmrConsumerWrapper.GetTokenCode();
+                LogSystem.Info("TokenCode" + token);
+                if (!string.IsNullOrEmpty(token))
+                {
+                    if (_httpClient.DefaultRequestHeaders.Contains("TokenCode"))
+                    {
+                        _httpClient.DefaultRequestHeaders.Remove("TokenCode");
+                    }
+                    _httpClient.DefaultRequestHeaders.Add("TokenCode ", token);
+                }
+                else
+                {
+                    LogSystem.Warn("EmrConsumerWrapper token is null or empty."); 
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
             //_httpClient.DefaultRequestHeaders.Add("HospitalCode", this.cskcbbd);  
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             string requestJson = JsonConvert.SerializeObject(sendData);
             LogSystem.Info("requestJson " + requestJson);
-            LogSystem.Info("baseUri " + baseUri);
+            LogSystem.Info("hasUri " + hasUri);
             LogSystem.Info("requestUri " + requestUri);
+            
             HttpResponseMessage resp = null;
 
             try
@@ -62,7 +109,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
             if (resp == null || !resp.IsSuccessStatusCode)
             {
                 int statusCode = resp.StatusCode.GetHashCode();
-                Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", this.baseUri, requestUri, statusCode));
+                Inventec.Common.Logging.LogSystem.Error(string.Format("Loi khi goi API: {0}{1}. StatusCode: {2}", this.hasUri, requestUri, statusCode));
                 Inventec.Common.Logging.LogSystem.Info("________________________sendJsonData : " + requestJson);
                 Inventec.Common.Logging.LogSystem.Error("_______________________responseData: " + responseData);
             }
@@ -118,5 +165,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
             string noAccent = RemoveVietnameseAccent(input);
             return noAccent.ToLowerInvariant().Trim();
         }
+
+        
     }
 }

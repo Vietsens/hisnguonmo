@@ -43,6 +43,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO
         public string PatientDateOfBirth { get; set; }
         public string PatientCccd { get; set; }
         public string Signature { get; set; }
+        public string HospitalCode { get; set; }
         public string Token { get; set; }
     }
     #endregion
