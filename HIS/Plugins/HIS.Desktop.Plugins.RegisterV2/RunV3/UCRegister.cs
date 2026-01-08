@@ -413,6 +413,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         {
                             chkSignExam.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == chkXemTruoc.Name)
+                        {
+                            chkXemTruoc.Checked = item.VALUE == "1";
+                        }
                     }
                 }
                 this.currentControlStateRDOModuleLink = controlStateWorker.GetData(moduleLinkConfigCall);
@@ -1150,6 +1154,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         private void SaveAndPrintAction()
         {
             IsActionSavePrint = true;
+            if (chkXemTruoc.Checked)
+            {
+                IsActionSavePrint = false;
+            }
             Save(true);
         }
 
@@ -2096,7 +2104,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     if (parts.Length >= 3)
                     {
                         // Phần 1: Địa chỉ
-                        string guaranteeAddress = parts[0].Trim();
+                        string[] guaranteeAddress = parts[0].Split(';');
+                        string uriHast = guaranteeAddress.Length > 0 ? guaranteeAddress[0].Trim() : "";
+                        string acsPort = guaranteeAddress.Length > 1 ? guaranteeAddress[1].Trim() : "";
 
                         // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
                         string[] credentials = parts[1].Split(':');
@@ -2118,10 +2128,14 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
                         MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
                         DataInput data = new DataInput();
-                        data.baseUri = guaranteeAddress;
+                        data.hasUri = uriHast;
+                        data.acsUri = acsPort;
+                        data.username = guaranteeUsername;
+                        data.password = guaranteePassword;
                         data.applicationCode = guaranteeAppCode;
                         data.limet = guaranteeDefaultLimit;
                         data.cskcbbd = branchHeinMediOrgCode;
+
                         if (chkBaoLanh.Checked)
                         {
                             data.registerUseRequest = new RegisterUseRequest
@@ -2191,6 +2205,36 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkXemTruoc_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "chkXemTruoc" && o.MODULE_LINK == "HIS.Desktop.Plugins.RegisterV2").FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkXemTruoc.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = "chkXemTruoc";
+                    csAddOrUpdate.VALUE = (chkXemTruoc.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = "HIS.Desktop.Plugins.RegisterV2";
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

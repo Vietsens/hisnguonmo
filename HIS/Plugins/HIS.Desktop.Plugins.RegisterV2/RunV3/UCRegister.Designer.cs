@@ -168,6 +168,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
             this.chkBaoLanh = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkXemTruoc = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
@@ -234,6 +236,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBaoLanh.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkXemTruoc.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -257,6 +261,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             // 
             // layoutControl4
             // 
+            this.layoutControl4.Controls.Add(this.chkXemTruoc);
             this.layoutControl4.Controls.Add(this.chkBaoLanh);
             this.layoutControl4.Controls.Add(this.chkSignExam);
             this.layoutControl4.Controls.Add(this.chkAutoPay);
@@ -351,7 +356,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             this.layoutControlItem26,
             this.layoutControlItem17,
             this.layoutControlItem31, 
-            this.layoutControlItem32});
+            this.layoutControlItem32,
+            this.layoutControlItem33});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1380,6 +1386,25 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             this.layoutControlItem32.TextVisible = false;
             //
 
+            // chkXemTruoc
+            // 
+            this.chkXemTruoc.Location = new System.Drawing.Point(2, 48);
+            this.chkXemTruoc.Name = "chkXemTruoc";
+            this.chkXemTruoc.Properties.Caption = "Xem trước in";
+            this.chkXemTruoc.Size = new System.Drawing.Size(128, 19);
+            this.chkXemTruoc.StyleController = this.layoutControl4;
+            this.chkXemTruoc.TabIndex = 20;
+            this.chkXemTruoc.CheckedChanged += new System.EventHandler(this.chkXemTruoc_CheckedChanged);
+            // 
+            // layoutControlItem33
+            // 
+            this.layoutControlItem33.Control = this.chkXemTruoc;
+            this.layoutControlItem33.Location = new System.Drawing.Point(0, 46);
+            this.layoutControlItem33.Name = "layoutControlItem33";
+            this.layoutControlItem33.Size = new System.Drawing.Size(132, 44);
+            this.layoutControlItem33.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem33.TextVisible = false;
+
             // UCRegister
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1454,6 +1479,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkBaoLanh.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkXemTruoc.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1548,5 +1575,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         internal HIS.UC.UCPatientRaw.UCPatientRaw ucPatientRaw1;
         internal DevExpress.XtraEditors.CheckEdit chkBaoLanh;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem32;
+        internal DevExpress.XtraEditors.CheckEdit chkXemTruoc;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem33;
     }
 }
