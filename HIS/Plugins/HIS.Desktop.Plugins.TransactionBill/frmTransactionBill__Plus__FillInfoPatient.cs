@@ -96,17 +96,20 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         {
                             txtMaQH.Text = "";
                         }
+                        string autoLoadData = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.TransactionBill.AutoLoadOrgAndTaxCodeByPatient");
+
                         txtBuyerTaxCode.Text = data.TDL_PATIENT_TAX_CODE ?? "";
-                        txtBuyerTaxCode2.Text =  data.TDL_PATIENT_TAX_CODE ?? "";
+                        txtBuyerTaxCode2.Text = (autoLoadData == "1") ? (data?.TDL_PATIENT_TAX_CODE ?? "") : "";
+
                         if (data.TDL_PATIENT_WORK_PLACE_ID.HasValue)
                         {
                             //cboBuyerOrganization.EditValue = dtWorkPlace.Where(o => o.ID == data.TDL_PATIENT_WORK_PLACE_ID).FirstOrDefault().ID;
-                            cboBuyerOrganization.EditValue = data.TDL_PATIENT_WORK_PLACE_ID;
+                            cboBuyerOrganization.EditValue = (autoLoadData == "1") ? data.TDL_PATIENT_WORK_PLACE_ID : null;
                             txtBuyerOrganization.Text = "";
                             chkOther.Checked = false;
 
-                            cboBuyerOrganzation2.EditValue = data.TDL_PATIENT_WORK_PLACE_ID;
-                            txtBuyerTaxCode2.Text = !string.IsNullOrEmpty(data?.TDL_PATIENT_TAX_CODE) ? data.TDL_PATIENT_TAX_CODE : dtWorkPlace?.FirstOrDefault(o => o.ID == data.TDL_PATIENT_WORK_PLACE_ID)?.TAX_CODE;
+                            cboBuyerOrganzation2.EditValue = (autoLoadData == "1") ? data.TDL_PATIENT_WORK_PLACE_ID : null;
+                            txtBuyerTaxCode2.Text = (autoLoadData == "1") ? (data?.TDL_PATIENT_TAX_CODE ?? dtWorkPlace?.FirstOrDefault(o => o.ID == data?.TDL_PATIENT_WORK_PLACE_ID)?.TAX_CODE) : null;
                         }
                         else if (!string.IsNullOrEmpty(data.TDL_PATIENT_WORK_PLACE))
                         {
