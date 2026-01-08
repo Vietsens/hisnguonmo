@@ -206,10 +206,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     this.lciMaterialTypeMap.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 this.lciMaterialTypeMap.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    InitCheck(cboMaterialTypeMapId, SelectionGrid__MaterialTypeMap);
-                    List<HIS_MATERIAL_TYPE> datasource = BackendDataWorker.Get<HIS_MATERIAL_TYPE>().Where(o => o.ID != this.materialTypeId).ToList();
-                    InitCombo(cboMaterialTypeMapId, datasource, "MATERIAL_TYPE_NAME", "ID", "MATERIAL_TYPE_CODE");
-               
+                InitCheck(cboMaterialTypeMapId, SelectionGrid__MaterialTypeMap);
+                List<HIS_MATERIAL_TYPE> datasource = BackendDataWorker.Get<HIS_MATERIAL_TYPE>().Where(o => o.ID != this.materialTypeId).ToList();
+                InitCombo(cboMaterialTypeMapId, datasource, "MATERIAL_TYPE_NAME", "ID", "MATERIAL_TYPE_CODE");
+
                 //List<HIS_MATERIAL_TYPE_MAP> dataMaterialTypeMapId = new List<HIS_MATERIAL_TYPE_MAP>();
 
                 //dataMaterialTypeMapId = BackendDataWorker.Get<HIS_MATERIAL_TYPE_MAP>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
@@ -265,7 +265,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+
         private async Task InitServiceUnit()
         {
             try
@@ -368,7 +368,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 if (gridCheckMark != null)
                 {
                     gridCheckMark.ClearSelection(cboMaterialTypeMapId.Properties.View);
-                   
+
                 }
             }
             catch (Exception ex)
@@ -407,6 +407,55 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 {
                     if (rv != null)
                         MaterialTypeMap__Seleced.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitSupplier()
+        {
+            try
+            {
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("SUPPLIER_CODE", "Mã NCC", 100, 1));
+                columnInfos.Add(new ColumnInfo("SUPPLIER_NAME", "Tên NCC", 350, 2));
+
+                HisSupplierFilter filter = new HisSupplierFilter();
+                filter.IS_ACTIVE = 1;
+
+                var suppliers = new BackendAdapter(new CommonParam()).Get<List<HIS_SUPPLIER>>("api/HisSupplier/Get", ApiConsumers.MosConsumer, filter, null);
+
+                if (suppliers == null) suppliers = new List<HIS_SUPPLIER>();
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("SUPPLIER_NAME", "ID", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboSupplier, suppliers, controlEditorADO);
+                this.cboSupplier.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboSupplier_CustomDisplayText);
+                InitCheck(cboSupplier, SelectionGrid__Supplier);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SelectionGrid__Supplier(object sender, EventArgs e)
+        {
+            try
+            {
+                Supplier__Selected = new List<HIS_SUPPLIER>();
+                foreach (HIS_SUPPLIER rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        Supplier__Selected.Add(rv);
+                }
+                if (cboSupplier.Properties.View.IsFocusedView || cboSupplier.IsPopupOpen)
+                {
+                    string displayText = String.Join(", ", Supplier__Selected.Select(s => s.SUPPLIER_NAME));
+
+                    // Nếu đang mở popup thì set trực tiếp Text để người dùng thấy ngay
+                    cboSupplier.Text = displayText;
                 }
             }
             catch (Exception ex)
