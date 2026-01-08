@@ -56,6 +56,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         private const string ElectronicInvoicePublishingDelayTimeCFG = "HIS.Desktop.Plugins.TransactionBill.ElectronicInvoicePublishingDelayTime";
 
         private const string SelectPayFormByAccountBook = "HIS.Desktop.Plugins.TransactionTwoBill.SelectPayFormByAccountBook";
+        private const string AutoLoadOrgAndTaxCodeByPatient = "HIS.Desktop.Plugins.TransactionBill.AutoLoadOrgAndTaxCodeByPatient";
 
         internal static int E_BILL__PRINT_NUM_COPY;
         internal static int PlatformOption;
@@ -90,6 +91,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
         internal static string OLD_SYSTEM__OPTION;
         internal static bool IsCheckAutoRepayAsDefault;
         internal static decimal ElectronicInvoicePublishingDelayTime;
+        internal static string AutoLoad;
 
         static bool Get(string code)
         {
@@ -140,6 +142,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.Config
 
                 string delayTime = HisConfigs.Get<string>(ElectronicInvoicePublishingDelayTimeCFG) ?? "0";
                 ElectronicInvoicePublishingDelayTime = Decimal.Parse(delayTime, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture);
+                AutoLoad = GetValue(AutoLoadOrgAndTaxCodeByPatient);
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)
