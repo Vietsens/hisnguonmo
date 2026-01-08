@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             ValidMaxlengthTxtBhytCodes();
             ValidMaxlengthTxtModel();
             ValidationImpUnitConverRatio(spUnitConvertRatio, cboImpUnit);
+            GetSelectedSupplierIds();
         }
 
        

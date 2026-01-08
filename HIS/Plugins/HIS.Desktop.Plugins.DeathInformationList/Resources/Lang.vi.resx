@@ -169,7 +169,13 @@
     <value>Thất bại</value>
   </data>
   <data name="UcDeathInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
-    <value>Ký số</value>
+    <value>Ký số </value>
+  </data>
+  <data name="UcDeathInformationList.chkTreatmentEndType.Properties.Caption" xml:space="preserve">
+    <value>Loại ra viện tử vong</value>
+  </data>
+  <data name="UcDeathInformationList.chkTreatmentResult.Properties.Caption" xml:space="preserve">
+    <value>Kết quả tử vong</value>
   </data>
   <data name="UcDeathInformationList.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>
@@ -204,11 +210,8 @@
   <data name="UcDeathInformationList.gridColumn18.Caption" xml:space="preserve">
     <value>Nơi cấp</value>
   </data>
-  <data name="UcDeathInformationList.gridColumn19.Caption" xml:space="preserve">
-    <value />
-  </data>
   <data name="UcDeathInformationList.gridColumn2.Caption" xml:space="preserve">
-    <value>Số giầy tờ</value>
+    <value>Số giấy tờ</value>
   </data>
   <data name="UcDeathInformationList.gridColumn20.Caption" xml:space="preserve">
     <value>Trạng thái tử vong</value>
@@ -218,6 +221,15 @@
   </data>
   <data name="UcDeathInformationList.gridColumn22.Caption" xml:space="preserve">
     <value>Lý do đồng bộ ca tử vong</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn23.Caption" xml:space="preserve">
+    <value>Mã định danh</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn24.Caption" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn25.Caption" xml:space="preserve">
+    <value>Mã ICD</value>
   </data>
   <data name="UcDeathInformationList.gridColumn3.Caption" xml:space="preserve">
     <value>Ngày cấp</value>
@@ -258,6 +270,21 @@
   <data name="UcDeathInformationList.layoutControl6.Text" xml:space="preserve">
     <value>layoutControl6</value>
   </data>
+  <data name="UcDeathInformationList.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControl9.Text" xml:space="preserve">
+    <value>layoutControl9</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControlItem3.Text" xml:space="preserve">
+    <value>Từ:</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControlItem4.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
   <data name="UcDeathInformationList.layoutControlItem8.Text" xml:space="preserve">
     <value>Từ:</value>
   </data>
@@ -275,6 +302,15 @@
   </data>
   <data name="UcDeathInformationList.navBarGroup3.Caption" xml:space="preserve">
     <value>Khoa kết thúc điều trị</value>
+  </data>
+  <data name="UcDeathInformationList.navBarGroup4.Caption" xml:space="preserve">
+    <value>Ngày cấp giấy</value>
+  </data>
+  <data name="UcDeathInformationList.navBarGroup5.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UcDeathInformationList.navBarGroup6.Caption" xml:space="preserve">
+    <value>Trạng thái ca tử vong</value>
   </data>
   <data name="UcDeathInformationList.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã bệnh nhân</value>

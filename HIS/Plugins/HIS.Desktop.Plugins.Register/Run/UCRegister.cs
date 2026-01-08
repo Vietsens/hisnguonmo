@@ -20,7 +20,6 @@ using DevExpress.Utils.Menu;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
-using His.UC.UCHein;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -55,7 +54,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Resources;
-using System.Runtime.InteropServices.Expando;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -4934,6 +4932,99 @@ namespace HIS.Desktop.Plugins.Register.Run
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void txtCustomerSource_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    string searchCode = ((sender as DevExpress.XtraEditors.TextEdit).Text);
+                    if (String.IsNullOrEmpty(searchCode))
+                    {
+                        this.cboCustomerSource.EditValue = null;
+                        this.FocusShowpopup(this.cboCustomerSource, false);
+                    }
+                    else
+                    {
+                        var data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>().Where(o => o.IS_ACTIVE == 1 && o.CUSTOMER_SOURCE_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
+                        var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.CUSTOMER_SOURCE_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
+                        if (searchResult != null && searchResult.Count == 1)
+                        {
+                            this.cboCustomerSource.EditValue = searchResult[0].CUSTOMER_SOURCE_NAME;
+                            this.txtCustomerSource.Text = searchResult[0].CUSTOMER_SOURCE_CODE;
+                        }
+                        else
+                        {
+                            this.cboCustomerSource.EditValue = null;
+                            this.FocusShowpopup(this.cboCustomerSource, false);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboCustomerSource_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (this.cboCustomerSource.EditValue != null)
+                    {
+                        // Thêm điều kiện IS_ACTIVE == 1
+                        //MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE customerSource = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
+                        //    .Where(o => o.IS_ACTIVE == 1)
+                        //    .SingleOrDefault(o => o.CUSTOMER_SOURCE_NAME == (this.cboCustomerSource.EditValue ?? "").ToString());
+                        var list = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>();
+
+                        var customerSource = list
+                            .Where(o => o.IS_ACTIVE == 1)
+                            .SingleOrDefault(o =>
+                                o.CUSTOMER_SOURCE_CODE == (this.cboCustomerSource.EditValue ?? "").ToString()
+                            );
+                        if (customerSource != null)
+                        {
+                            this.txtCustomerSource.Text = customerSource.CUSTOMER_SOURCE_CODE;
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboCustomerSource_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (this.cboCustomerSource.EditValue != null)
+                    {
+                        // Thêm điều kiện IS_ACTIVE == 1
+                        MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
+                            .Where(o => o.IS_ACTIVE == 1)
+                            .SingleOrDefault(o => o.CUSTOMER_SOURCE_NAME == (this.cboCustomerSource.EditValue ?? "").ToString());
+                        if (data != null)
+                        {
+                            this.txtCustomerSource.Text = data.CUSTOMER_SOURCE_CODE;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
     }
 }

@@ -2012,6 +2012,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessageManager.ThuocVatTuKhongNamTrongGoiThau, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
                         return;
                 }
+
+                if (!IsContinueAfterSupplierWarning(this.currrentServiceAdo))
+                {
+                    return;
+                }
+
                 if (this.currentContract == null && this.CheckInBid(this.currrentServiceAdo) && spinCanImpAmount.Value < spinImpAmount.Value)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessageManager.SoLuongNhapLonHonSoLuongKhaNhapTrongGoiThau, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaCanhBao);
@@ -2030,7 +2036,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessageManager.VatNhapKhacVoiVatNhapTrongGoiThau, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaCanhBao, DevExpress.Utils.DefaultBoolean.True);
                 }
 
-
+               
                 if (this.currentContract != null)
                 {
                     long timeNow = Inventec.Common.DateTime.Get.StartDay() ?? 0;
@@ -6195,7 +6201,55 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool IsContinueAfterSupplierWarning(VHisServiceADO serviceADO)
+        {
+            try
+            {
+                string warningDifferenceSupplier = HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.IsWarningDifferenceSupplier");
+                if (warningDifferenceSupplier != "1") return true;
 
+                if (serviceADO?.HisMedicine == null) return true;
 
+                MOS.Filter.HisMedicineTypeFilter filter = new HisMedicineTypeFilter();
+                filter.ID = serviceADO.HisMedicine.MEDICINE_TYPE_ID;
+
+                var dataMedi = new BackendAdapter(new CommonParam())
+                    .Get<List<HIS_MEDICINE_TYPE>>("api/HisMedicineType/Get", ApiConsumers.MosConsumer, filter, null)
+                    .FirstOrDefault();
+
+                if (dataMedi != null && !string.IsNullOrEmpty(dataMedi.SUPPLIER_IDS))
+                {
+                    string selectedSupplierId = txtNhaCC.EditValue?.ToString();
+
+                    if (!string.IsNullOrEmpty(selectedSupplierId))
+                    {
+                        var allowedSupplierList = dataMedi.SUPPLIER_IDS
+                            .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(p => p.Trim())
+                            .ToList();
+
+                        if (!allowedSupplierList.Contains(selectedSupplierId))
+                        {
+                            DialogResult result = DevExpress.XtraEditors.XtraMessageBox.Show(
+                                "Thông tin Nhà cung cấp khác với nhà cung cấp đã cấu hình ở Loại thuốc. Bạn có muốn tiếp tục?",
+                                "Cảnh báo",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Warning);
+
+                            if (result == DialogResult.No)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return true; 
+        }
     }
 }

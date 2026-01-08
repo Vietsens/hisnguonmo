@@ -94,6 +94,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
         public bool isCalledApi = false;
         public bool isClickPick = false;
 
+        private List<HIS_SUPPLIER> Supplier__Selected = new List<HIS_SUPPLIER>();
         #endregion
 
         #region Contructor
@@ -153,8 +154,13 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 ValidataForm();
                 InitCheck(cboBlockDepartment, SelectionGrid__BlockDepartment);
                 InitCombo(cboBlockDepartment, BackendDataWorker.Get<HIS_DEPARTMENT>(), "DEPARTMENT_NAME", "ID");
+                InitCheck(cboSupplier, SelectionGrid__Supplier);
+                this.cboSupplier.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboSupplier_CustomDisplayText);
                 SetIcon();
                 SetCaptionByLanguageKey();
+
+                InitSupplier();
+
                 SetDataToControl();
                 FillBlockDepartment();
                 FillDataToGridConrolServicePaty();
@@ -351,6 +357,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 {
                     SetNullToSpinControl();
                 }
+                FillSupplierData();
 
             }
             catch (Exception ex)
@@ -1175,6 +1182,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 UpdateHeinServiceType(materialType.HIS_SERVICE);
 
                 materialType.HIS_SERVICE.SERVICE_UNIT_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboServiceUnit.EditValue ?? "").ToString());
+                materialType.SUPPLIER_IDS = GetSelectedSupplierIds();
 
                 if (txtHeinLimitPrice.EditValue != null)
                 {
@@ -4227,6 +4235,26 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             }
         }
 
+        private void cboSupplier_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                // Nếu không có dữ liệu chọn thì thoát
+                if (Supplier__Selected == null || Supplier__Selected.Count == 0) return;
+
+                // Nối tên các nhà cung cấp ngăn cách bởi dấu phẩy
+                string displayText = String.Join(", ", Supplier__Selected.Select(s => s.SUPPLIER_NAME));
+
+                // Gán vào text hiển thị và tooltip
+                e.DisplayText = displayText;
+                cboSupplier.ToolTip = displayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void SelectionGrid__BlockDepartment(object sender, EventArgs e)
         {
             try
@@ -4963,6 +4991,125 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             }
         }
 
+
+        private string GetSelectedSupplierIds()
+        {
+            try
+            {
+                // Lấy đối tượng GridCheckMarksSelection từ Tag của control (đã được gán khi InitCheck)
+                GridCheckMarksSelection gridCheckMark = cboSupplier.Properties.Tag as GridCheckMarksSelection;
+
+                if (gridCheckMark != null && gridCheckMark.Selection.Count > 0)
+                {
+                    List<long> ids = new List<long>();
+                    foreach (object item in gridCheckMark.Selection)
+                    {
+                        if (item is HIS_SUPPLIER supplier)
+                        {
+                            ids.Add(supplier.ID);
+                        }
+                    }
+                    if (ids.Count > 0)
+                    {
+                        return string.Join(",", ids);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        private void FillSupplierData()
+        {
+            try
+            {
+                List<long> selectedIds = new List<long>();
+
+                // 1. Lấy chuỗi ID từ dữ liệu đã lưu (nếu đang Sửa)
+                if (this.ActionType == GlobalVariables.ActionEdit && this.materialTypeId > 0)
+                {
+                    // Gọi API lấy thông tin mới nhất để đảm bảo có trường SUPPLIER_IDS
+                    HisMaterialTypeFilter filterMT = new HisMaterialTypeFilter();
+                    filterMT.ID = this.materialTypeId;
+                    var listMT = new BackendAdapter(new CommonParam()).Get<List<HIS_MATERIAL_TYPE>>("api/HisMaterialType/Get", ApiConsumers.MosConsumer, filterMT, null);
+
+                    if (listMT != null && listMT.Count > 0)
+                    {
+                        var currentMaterial = listMT.FirstOrDefault();
+                        if (!string.IsNullOrEmpty(currentMaterial.SUPPLIER_IDS))
+                        {
+                            // Tách chuỗi "1,2,3" thành List<long>
+                            selectedIds = currentMaterial.SUPPLIER_IDS
+                                            .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                            .Select(x => long.Parse(x))
+                                            .ToList();
+                        }
+                    }
+                }
+
+                // 2. Lấy danh sách tất cả NCC (DataSource)
+                var allSuppliers = cboSupplier.Properties.DataSource as List<HIS_SUPPLIER>;
+                // Nếu datasource chưa có thì load lại
+                if (allSuppliers == null || allSuppliers.Count == 0)
+                {
+                    HisSupplierFilter filter = new HisSupplierFilter();
+                    filter.IS_ACTIVE = 1;
+                    allSuppliers = new BackendAdapter(new CommonParam()).Get<List<HIS_SUPPLIER>>("api/HisSupplier/Get", ApiConsumers.MosConsumer, filter, null);
+                }
+
+                if (allSuppliers != null && allSuppliers.Count > 0)
+                {
+                    // 3. Sắp xếp: Đưa các NCC đã chọn lên đầu danh sách
+                    if (selectedIds.Count > 0)
+                    {
+                        allSuppliers = allSuppliers
+                                       .OrderByDescending(o => selectedIds.Contains(o.ID))
+                                       .ThenBy(o => o.SUPPLIER_CODE)
+                                       .ToList();
+                    }
+                    else
+                    {
+                        allSuppliers = allSuppliers.OrderBy(o => o.SUPPLIER_CODE).ToList();
+                    }
+
+                    // Gán lại Datasource đã sắp xếp
+                    cboSupplier.Properties.DataSource = allSuppliers;
+
+                    // 4. QUAN TRỌNG: Tick chọn các dòng trong GridCheckMarksSelection
+                    GridCheckMarksSelection gridCheckMark = cboSupplier.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboSupplier.Properties.View);
+
+                        if (selectedIds.Count > 0)
+                        {
+                            // Lọc ra các object supplier tương ứng với ID đã lưu
+                            var selectedItems = allSuppliers.Where(o => selectedIds.Contains(o.ID)).ToList();
+
+                            // Tick chọn trong grid (Logic nội tại của GridCheckMarksSelection)
+                            gridCheckMark.SelectAll(selectedItems);
+
+                            // CẬP NHẬT BIẾN TOÀN CỤC ĐỂ HIỂN THỊ TEXT
+                            this.Supplier__Selected = selectedItems;
+                        }
+                        else
+                        {
+                            this.Supplier__Selected = new List<HIS_SUPPLIER>();
+                        }
+                    }
+                }
+
+                // 5. Ép control vẽ lại Text ngay lập tức
+                cboSupplier.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
 

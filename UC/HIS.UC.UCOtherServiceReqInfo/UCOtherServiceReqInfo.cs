@@ -118,6 +118,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.ValidateNumOrderPriority();
                 this.ValidateMaxlength(txtGuaranteeReason, 500);
                 this.ValidateMaxlength(txtNote, 1000);
+                this.ValidateMaxlength(txtNguonKhachCT, 1000);
+
                 Inventec.Common.Logging.LogSystem.Debug("UCOtherServiceReqInfo_Load .2");
             }
             catch (Exception ex)
@@ -139,6 +141,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 await this.LoadFunds();
                 await this.LoadPatientClassify();
                 await this.LoadGuarantee();
+                this.LoadNguonKhach();
                 this.LoadOtherPaySource();
                 this.InitComboHisHospitalizeReason();
                 this.SetHeinRighRouteTypeByTime();
@@ -610,6 +613,22 @@ namespace HIS.UC.UCOtherServiceReqInfo
 
                 this.InitComboCommon(this.cboGuaranteeUsername, dataUser, "LOGINNAME", "USERNAME", "LOGINNAME");
                 cboGuaranteeUsername.Properties.ImmediatePopup = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadNguonKhach()
+        {
+            try
+            {
+                List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE> dataOtherPaySources = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>();
+                dataOtherPaySources = dataOtherPaySources != null ? dataOtherPaySources.Where(o => o.IS_ACTIVE == 1).ToList() : null;
+
+                this.InitComboCommon(this.cboNguonKhach, dataOtherPaySources, "CUSTOMER_SOURCE_CODE", "CUSTOMER_SOURCE_NAME", "CUSTOMER_SOURCE_CODE");
+                cboNguonKhach.Properties.ImmediatePopup = true;
             }
             catch (Exception ex)
             {
@@ -1826,6 +1845,41 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void cboNguonKhach_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                this.txtNguonKhach.Text = "";
+                if (this.cboNguonKhach.EditValue != null)
+                {
+                    var user = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE>().FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE == cboNguonKhach.EditValue.ToString());
+                    if (user != null)
+                    {
+                        txtNguonKhach.Text = user.CUSTOMER_SOURCE_CODE;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboNguonKhach_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    this.cboNguonKhach.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

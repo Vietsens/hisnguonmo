@@ -93,7 +93,7 @@
             this.btnTestDrugDrugAlert.Name = "btnTestDrugDrugAlert";
             this.btnTestDrugDrugAlert.Size = new System.Drawing.Size(160, 30);
             this.btnTestDrugDrugAlert.TabIndex = 5;
-            this.btnTestDrugDrugAlert.Text = "Drug-Drug Alert";
+            this.btnTestDrugDrugAlert.Text = "Drug-ICD Alert";
             this.btnTestDrugDrugAlert.UseVisualStyleBackColor = true;
             this.btnTestDrugDrugAlert.Click += new System.EventHandler(this.btnTestDrugDrugAlert_Click);
             // 

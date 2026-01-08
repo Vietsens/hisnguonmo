@@ -123,4 +123,7 @@
   <data name="KhongLayDuocChungThu2" xml:space="preserve">
     <value>The certificate information is not obtained or the certificate is invalid.</value>
   </data>
+  <data name="SaiDiaChi" xml:space="preserve">
+    <value>Configuring declaration of connection information to synchronize death certificate data with incorrect format</value>
+  </data>
 </root>

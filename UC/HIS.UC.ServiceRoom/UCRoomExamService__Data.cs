@@ -98,8 +98,6 @@ namespace HIS.UC.ServiceRoom
                 {
                     this.currentServiceRooms = new List<V_HIS_SERVICE_ROOM>();
                     var curRoomIds = currentRoomExts.Select(t => t.ROOM_ID).ToList();
-                    //- Combobox "Yêu cầu", sửa để chỉ hiển thị ra các dịch vụ khám cho phép thực hiện ở TẤT CẢ CÁC PHÒNG ĐƯỢC CHỌN.
-                    //this.currentServiceRooms = hisServiceRooms != null ? hisServiceRooms.Where(o => curRoomIds.Contains(o.ROOM_ID)).ToList() : null;
                     var gServices = hisServiceRooms != null ? hisServiceRooms.GroupBy(o => o.SERVICE_ID).ToList() : null;
                     if (gServices != null)
                     {
@@ -117,29 +115,39 @@ namespace HIS.UC.ServiceRoom
                         }
                     }
                 }
-                this.currentServiceRooms = this.currentServiceRooms.OrderBy(o => o.SERVICE_ID).ToList();
-                this.cboExamService.Properties.DataSource = this.currentServiceRooms;
+                // Tạo danh sách với giá
+                var dataSourceWithPrice = new List<ServiceRoomWithPriceADO>();
+                if (this.currentServiceRooms != null && this.currentServiceRooms.Count > 0)
+                {
+                    long currentTime = Inventec.Common.DateTime.Get.Now() ?? 0;
+                    var allServicePaty = BackendDataWorker.Get<HIS_SERVICE_PATY>();
+                    foreach (var service in this.currentServiceRooms.OrderBy(o => o.SERVICE_ID))
+                    {
+                        var servicePrice = GetServicePrice(service.SERVICE_ID, currentTime, allServicePaty);
+                        dataSourceWithPrice.Add(new ServiceRoomWithPriceADO(service, servicePrice));
+                    }
+                }
+                this.cboExamService.Properties.DataSource = dataSourceWithPrice;
                 this.cboExamService.EditValue = null;
                 if (this.serviceId.HasValue &&
-                    this.currentServiceRooms != null
-                    && this.currentServiceRooms.Count > 0
-                    && this.currentServiceRooms.Any(o => o.SERVICE_ID == this.serviceId.Value))
+                    dataSourceWithPrice != null
+                    && dataSourceWithPrice.Count > 0
+                    && dataSourceWithPrice.Any(o => o.SERVICE_ID == this.serviceId.Value))
                 {
                     this.cboExamService.EditValue = this.serviceId.Value;
                     this.serviceId = null;
                 }
-                else if (this.currentServiceRooms != null && this.currentServiceRooms.Count == 1)
+                else if (dataSourceWithPrice != null && dataSourceWithPrice.Count == 1)
                 {
-                    this.cboExamService.EditValue = this.currentServiceRooms.FirstOrDefault().SERVICE_ID;
+                    this.cboExamService.EditValue = dataSourceWithPrice.FirstOrDefault().SERVICE_ID;
                 }
-                else if (this.currentServiceRooms != null && this.currentServiceRooms.Count > 1)
+                else if (dataSourceWithPrice != null && dataSourceWithPrice.Count > 1)
                 {
                     var curRoomIds = currentRoomExts.Select(t => t.ROOM_ID).ToList();
                     var checkDfRoom = this.hisRooms.Where(o => curRoomIds.Contains(o.ID)).ToList();
                     if (checkDfRoom != null && checkDfRoom.Count > 0)
                     {
-                        var lstServiceRoom = this.currentServiceRooms.Where(o => checkDfRoom.Exists(p => p.DEFAULT_SERVICE_ID == o.SERVICE_ID)).ToList();
-
+                        var lstServiceRoom = dataSourceWithPrice.Where(o => checkDfRoom.Exists(p => p.DEFAULT_SERVICE_ID == o.SERVICE_ID)).ToList();
                         if (lstServiceRoom != null && lstServiceRoom.Count > 0)
                         {
                             this.cboExamService.EditValue = lstServiceRoom.First().SERVICE_ID;
@@ -150,6 +158,41 @@ namespace HIS.UC.ServiceRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        /// <summary>
+        /// Lấy giá dịch vụ theo đối tượng thanh toán hiện tại
+        /// Điều kiện:
+        /// - SERVICE_ID = SERVICE_ID (V_SERVICE_ROOM)
+        /// - PATIENT_TYPE_ID = ID (HIS_PATIENT_TYPE đối tượng thanh toán đang chọn)
+        /// - TO_TIME null hoặc >= thời gian hiện tại
+        /// - Lấy bản ghi có ID lớn nhất
+        /// </summary>
+        private decimal? GetServicePrice(long serviceId, long currentTime, List<HIS_SERVICE_PATY> allServicePaty)
+        {
+            try
+            {
+                if (this.currentPatientTypeAlter == null || allServicePaty == null || allServicePaty.Count == 0)
+                    return null;
+                long patientTypeId = this.currentPatientTypeAlter.PATIENT_TYPE_ID;
+                // Lọc theo SERVICE_ID và PATIENT_TYPE_ID
+                var servicePatyList = allServicePaty.Where(o =>
+                    o.SERVICE_ID == serviceId
+                    && o.PATIENT_TYPE_ID == patientTypeId
+                    && (o.TO_TIME == null || o.TO_TIME >= currentTime) // TO_TIME null hoặc >= thời gian hiện tại
+                ).ToList();
+                if (servicePatyList != null && servicePatyList.Count > 0)
+                {
+                    // Lấy bản ghi có ID lớn nhất
+                    var maxIdRecord = servicePatyList.OrderByDescending(o => o.ID).FirstOrDefault();
+                    return maxIdRecord != null ? maxIdRecord.PRICE : (decimal?)null;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
             }
         }
 

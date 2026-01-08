@@ -40,6 +40,9 @@ namespace HIS.UC.FormType.HisMultiGetString
 
                 else if (value == "SDA_PROVINCE") datasuft = Config.SdaFormTypeConfig.SdaProvince.Select(o => new DataGet { ID = o.ID, CODE = o.PROVINCE_CODE, NAME = o.PROVINCE_NAME }).ToList();
 
+
+                else if (value == "SDA_NATIONAL") datasuft = Config.SdaFormTypeConfig.SdaNational.Select(o => new DataGet { ID = o.ID, CODE = o.NATIONAL_CODE, NAME = o.NATIONAL_NAME }).ToList();
+
                 datasuft = datasuft.OrderBy(o => o.NAME).ToList();
             }
             catch (Exception ex)

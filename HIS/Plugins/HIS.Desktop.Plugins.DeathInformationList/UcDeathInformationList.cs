@@ -116,13 +116,69 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.DeathInformationList.Resources.Lang", typeof(UcDeathInformationList).Assembly);
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                //this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn18.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn18.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn7.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn7.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn8.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn8.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn9.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn9.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn10.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn10.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn11.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn11.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn12.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn12.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn13.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn13.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn14.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn14.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn15.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn15.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn15.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn15.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn16.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn16.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn17.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn17.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                //this.gridColumn19.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn19.Caption", 
+                //    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn20.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn20.Caption",
+                //    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn21.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn21.Caption",
+                //    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn22.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn22.Caption",
+                //    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                //this.bar1.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.bbtnRefresh.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.bbtnRefresh.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.chkSignFileCertUtil.Properties.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.chkSignFileCertUtil.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.btnDongBo.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.btnDongBo.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBo.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                //this.btnDongBoCTV.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBoCTV.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.btnDongBoCTV.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBoCTV.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+      
+                //this.txtPatientCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UcDeathInformationList.txtPatientCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.btnRefresh.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnRefresh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.btnSearch.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.navBarControl1.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.navBarGroup1.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem8.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControlItem8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControl5.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControl6.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.cboDepartment.Properties.NullText = Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboDepartment.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.navBarGroup2.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.navBarGroup3.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.txtPatientName.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UcDeathInformationList.txtPatientName.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.txtTreatmentCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UcDeathInformationList.txtTreatmentCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn18.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn18.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn20.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn20.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn7.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn7.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -130,34 +186,27 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 this.gridColumn9.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn9.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn10.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn10.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn11.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn11.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn15.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn15.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn12.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn12.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn13.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn13.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn14.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn14.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn15.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn15.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn15.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn15.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn18.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn18.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn23.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn23.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn16.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn16.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn17.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn17.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-
-                this.gridColumn19.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn19.Caption", 
-                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn20.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn20.Caption",
-                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn21.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn21.Caption",
-                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn22.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn22.Caption",
-                    Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-
+                this.gridColumn21.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn21.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn22.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn22.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnRefresh.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.bbtnRefresh.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnDongBoCTV.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBoCTV.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnDongBoCTV.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBoCTV.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkSignFileCertUtil.Properties.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.chkSignFileCertUtil.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnDongBo.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnDongBo.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBo.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-
-                this.btnDongBoCTV.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBoCTV.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnDongBoCTV.ToolTip = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnDongBoCTV.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-      
                 this.txtPatientCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UcDeathInformationList.txtPatientCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnRefresh.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnRefresh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -169,10 +218,27 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                 this.layoutControl5.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl6.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboDepartment.Properties.NullText = Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboDepartment.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl7.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl8.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkTreatmentEndType.Properties.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.chkTreatmentEndType.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkTreatmentResult.Properties.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.chkTreatmentResult.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl9.Text = Inventec.Common.Resource.Get.Value("UcDeathInformationList.layoutControl9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.navBarGroup4.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navBarGroup2.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navBarGroup3.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.navBarGroup5.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.navBarGroup6.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.navBarGroup6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtPatientName.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UcDeathInformationList.txtPatientName.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtTreatmentCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UcDeathInformationList.txtTreatmentCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn24.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn24.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn25.Caption = Inventec.Common.Resource.Get.Value("UcDeathInformationList.gridColumn25.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+
+
+                //
+
                 this.cboSYNC_RESULT_TYPE.Properties.Items.AddRange(new object[] {
             Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboSYNC_RESULT_TYPE.Properties.1", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()),
             Inventec.Common.Resource.Get.Value("UcDeathInformationList.cboSYNC_RESULT_TYPE.Properties.2", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture()),

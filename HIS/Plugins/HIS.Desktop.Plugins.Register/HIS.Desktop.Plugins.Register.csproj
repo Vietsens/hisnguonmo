@@ -80,6 +80,10 @@
     <Reference Include="His.Bhyt.InsuranceExpertise">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.InsuranceExpertise\His.Bhyt.InsuranceExpertise.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.SdaConfigKey">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.TreeSereServ7V2\HIS.Desktop.LocalStorage.SdaConfigKey.dll</HintPath>
     </Reference>
@@ -117,8 +121,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\His.UC.LibraryMessage\His.UC.LibraryMessage.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.RoomExamService">
-      <HintPath>..\..\..\..\lib\HIS\HIS.UC.RoomExamService\HIS.UC.RoomExamService.dll</HintPath>
+    <Reference Include="HIS.UC.RoomExamService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UC\HIS.UC.RoomExamService\bin\Debug\HIS.UC.RoomExamService.dll</HintPath>
+    </Reference>
+    <Reference Include="His.UC.UCHein, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\His.UC.UCHein.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.WorkPlace, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -440,10 +449,6 @@
     <Compile Include="ValidationRule\ValidControl.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\His.UC.UCHein\His.UC.UCHein.csproj">
-      <Project>{a96b3683-4fdc-496e-b630-bf62adddbd5e}</Project>
-      <Name>His.UC.UCHein</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>
@@ -459,10 +464,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
-      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
-      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
@@ -504,7 +505,6 @@
     <EmbeddedResource Include="ExtensionInfo\frmPatientExtend.resx">
       <DependentUpon>frmPatientExtend.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

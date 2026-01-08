@@ -1,25 +1,9 @@
-/* IVT
- * @Project : hisnguonmo
- * Copyright (C) 2017 INVENTEC
- *  
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *  
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
- * GNU General Public License for more details.
- *  
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
 
 namespace HIS.Desktop.Plugins.MedicineTypeCreate.Validtion
 {
@@ -33,7 +17,12 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Validtion
             bool valid = false;
             try
             {
-                if ((isValidCode && string.IsNullOrEmpty(txtMedicineTypeCode.Text)) || string.IsNullOrEmpty(txtMedicineTypeName.Text))
+                // Kiểm tra config SERVICE_CODE_OPTION
+                bool isCodeRequired = HisConfigCFG.ServiceCodeOption != "1"; // Nếu = 1 thì không bắt buộc mã
+                
+                // Nếu bắt buộc mã (config != 1) và đang ở chế độ cần validate mã
+                if ((isValidCode && isCodeRequired && string.IsNullOrEmpty(txtMedicineTypeCode.Text)) 
+                    || string.IsNullOrEmpty(txtMedicineTypeName.Text))
                 {
                     this.ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
                     return valid;

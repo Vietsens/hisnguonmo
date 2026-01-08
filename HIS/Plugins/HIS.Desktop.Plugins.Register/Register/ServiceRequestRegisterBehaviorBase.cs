@@ -64,6 +64,9 @@ namespace HIS.Desktop.Plugins.Register.Register
         protected long dob { get; set; }
         protected string email { get; set; }
         protected string ethnicName { get; set; }
+        protected string customerSourceName { get; set; }
+        protected string customerSourceCode { get; set; }
+        protected string customerSourceCodeDetail { get; set; }
         protected string ethnicCode { get; set; }
         protected long GenderId { get; set; }
         protected string nationalName { get; set; }
@@ -170,6 +173,9 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.dob = (long)(Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(ucServiceRequestRegiter.dtPatientDob.DateTime));
                 this.ethnicName = ucServiceRequestRegiter.cboEthnic.Text;
                 this.ethnicCode = ucServiceRequestRegiter.txtEthnicCode.Text;
+                this.customerSourceCode = ucServiceRequestRegiter.txtCustomerSource.Text;
+                this.customerSourceName = ucServiceRequestRegiter.cboCustomerSource.Text;
+                this.customerSourceCodeDetail = ucServiceRequestRegiter.txtCustomerSourceDetail.Text;
                 if (ucServiceRequestRegiter.cboGender.EditValue != null)
                     this.GenderId = (long)(ucServiceRequestRegiter.cboGender.EditValue);
                 this.nationalName = ucServiceRequestRegiter.cboNational.Text;
@@ -508,6 +514,9 @@ namespace HIS.Desktop.Plugins.Register.Register
                     }
                 }
 
+                this.patientProfile.HisTreatment.CUSTOMER_SOURCE_CODE = this.customerSourceCode;
+                this.patientProfile.HisTreatment.CUSTOMER_SOURCE_NAME = this.customerSourceName;
+                this.patientProfile.HisTreatment.CUSTOMER_SOURCE_DETAIL = this.customerSourceCodeDetail;
                 this.patientProfile.ProvinceCode = provinceCode;
                 this.patientProfile.DistrictCode = districtCode;
                 this.patientProfile.TreatmentTime = intructionTime;

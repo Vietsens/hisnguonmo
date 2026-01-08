@@ -80,5 +80,17 @@ namespace HIS.Desktop.MIMS.Integration.View
                     update();
             });
         }
+
+        /// <summary>
+        /// Hiển thị form WebBrowser dạng dialog, trả về kết quả người dùng chọn (Xác nhận, Bỏ qua, Đóng form).
+        /// </summary>
+        public static bool ShowDialog(string html, string title = "MIMS", int width = 900, int height = 700)
+        {
+            using (var form = new WebBrowser(html, title, width, height, true))
+            {
+                form.ShowDialog();
+                return form.Result == WebBrowser.WebBrowserResult.Confirmed;
+            }
+        }
     }
 }

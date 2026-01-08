@@ -583,11 +583,7 @@ namespace HIS.Desktop.Plugins.HisAdr
             // 
             // spinBoSung
             // 
-            this.spinBoSung.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
+            this.spinBoSung.EditValue = null;
             this.spinBoSung.Location = new System.Drawing.Point(232, 26);
             this.spinBoSung.MenuManager = this.barManager1;
             this.spinBoSung.Name = "spinBoSung";
@@ -680,11 +676,7 @@ namespace HIS.Desktop.Plugins.HisAdr
             // 
             // spinLanDau
             // 
-            this.spinLanDau.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
+            this.spinLanDau.EditValue = null;
             this.spinLanDau.Location = new System.Drawing.Point(109, 26);
             this.spinLanDau.MenuManager = this.barManager1;
             this.spinLanDau.Name = "spinLanDau";

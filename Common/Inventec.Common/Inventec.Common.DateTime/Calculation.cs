@@ -347,10 +347,26 @@ namespace Inventec.Common.DateTime
                                 //- Trên 72 tháng tuổi: tính chính xác đến năm: tuổi= năm hiện tại - năm sinh
                                 else
                                 {
-                                    var yearNow = dtNow.Year;
-                                    if (isTuoiHienTai == true) yearNow = System.DateTime.Now.Year;
-                                    int year = yearNow - dtNgSinh.Year;
-                                    result = (year + " " + tuoi);
+                                    if (isTuoiHienTai == true)
+                                    {
+                                        var yearNow = System.DateTime.Now.Year;
+                                        int year = yearNow - dtNgSinh.Year;
+                                        result = (year + " " + tuoi);
+                                    }
+                                    else
+                                    {
+                                        var yearNow = dtNow.Year;
+                                        if (dtNow.Month < dtNgSinh.Month||(dtNow.Month == dtNgSinh.Month && dtNow.Day < dtNgSinh.Day))
+                                        {
+                                            int year = yearNow - dtNgSinh.Year -1;
+                                            result = (year + " " + tuoi);
+                                        }
+                                        else
+                                        {
+                                            int year = yearNow - dtNgSinh.Year;
+                                            result = (year + " " + tuoi);
+                                        }
+                                    }
                                 }
                             }
                         }

@@ -94,20 +94,24 @@ namespace HIS.MIMS.WinFormsDemo
             service.ShowResultAsync(hisCodes);
         }
 
-        // 5. Drug–Drug Alert test using the exact prescriptionquery from Postman collection
+        // 5. Drug–ICD Alert test using the exact prescriptionquery from Postman collection
         private void btnTestDrugDrugAlert_Click(object sender, EventArgs e)
         {
             var current = new List<DrugItem>
             {
                 //new DrugItem(null, "Vercef dispersible tab 125 mg", "D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60", MimsDrugType.Product),
-                new DrugItem(null, "captopril 100mg Oral Tablet", "488F9F61-5D37-4989-925E-1742FFFDAA9E", MimsDrugType.GGPI),
+                new DrugItem(null, "", "775368B5-254F-4CF0-A605-B64846459BF8", MimsDrugType.Product),
                 new DrugItem(null, "hydroCHLOROthiazide 12.5mg - irbesartan 300mg film coated tablet", "49102790-2259-457F-88B5-A968FA397EDA", MimsDrugType.GGPI)
             };
 
-            var previous = new List<DrugItem>();
+            var icdcodes = new List<string>();
+            icdcodes.Add("R00.1");
 
-            var service = new DrugDrugInteractionService();
-            service.ShowResultAsync(current, previous);
+            var service = new DrugHealthService();
+            var isContinue = service.ShowDialog(current, icdcodes);
+            if (isContinue)
+            {
+            }
         }
     }
 }

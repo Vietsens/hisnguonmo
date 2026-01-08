@@ -6,16 +6,15 @@ using HIS.Desktop.MIMS.Integration.View;
 
 namespace HIS.Desktop.MIMS.Integration.Modules
 {
-	public class DrugAllergyService
+	public class DrugAllergyService : BaseService
 	{
-        private static string BuildSimpleHtml(string message)
+        public DrugAllergyService()
         {
-            string safe = System.Security.SecurityElement.Escape(message ?? string.Empty);
-            return "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
+            NameText = "Kiểm tra dị ứng thuốc";
         }
-
 		public MimsResult Check(List<DrugItem> drugs, List<AllergyItem> allergies)
 		{
+            this.MappingMIMS(drugs);
 			string xmlRequest = MimsRequestBuilder.BuildDrugAllergyRequest(drugs, allergies);
 
             bool isTimeout;
@@ -72,17 +71,9 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 			return result;
 		}
 
-		public void ShowResult(MimsResult result)
-		{
-			if (result != null && !string.IsNullOrEmpty(result.Html))
-			{
-				WebViewHelper.ShowHtml(result.Html, "Kiểm tra dị ứng thuốc");
-			}
-		}
-
         public void ShowResultAsync(List<DrugItem> drugs, List<AllergyItem> allergies)
         {
-            WebViewHelper.ShowResultAsync(() => Check(drugs, allergies), "Kiểm tra dị ứng thuốc");
+            WebViewHelper.ShowResultAsync(() => Check(drugs, allergies), NameText);
         }
 	}
 }

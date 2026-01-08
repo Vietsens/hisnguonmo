@@ -15,41 +15,42 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Views.Base;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.TreatmentType;
+using HIS.Desktop.Plugins.TreatmentType.Properties;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Linq;
+using System.Resources;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors;
-using HIS.Desktop.Common;
-using Inventec.Common.Logging;
-using HIS.Desktop.Utility;
-using HIS.Desktop.LocalStorage.LocalData;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using Inventec.Core;
-using HIS.Desktop.Controls.Session;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using HIS.Desktop.LibraryMessage;
-using DevExpress.XtraEditors.DXErrorProvider;
-using DevExpress.Data;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraEditors.ViewInfo;
-using MOS.Filter;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.TreatmentType;
-using DevExpress.XtraEditors.Controls;
 
 namespace HIS.Desktop.Plugins.HisTreatmentType
 {
@@ -391,34 +392,77 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControl1.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkChanMax.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkChanMax.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar2.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.bar2.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.barButtonItem3.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.barButtonItem3.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.barButtonItem1.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.barButtonItem1.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.barButtonItem2.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.barButtonItem2.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkCanhbaoMax.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkCanhbaoMax.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsRequiredServiceBed.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkIsRequiredServiceBed.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsRequiredServiceBed.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkIsRequiredServiceBed.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkKhongKTFeeDebt.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkKhongKTFeeDebt.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkChanFeeDebt.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkChanFeeDebt.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkCanhbaoFeeDebt.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkCanhbaoFeeDebt.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsNotAllowShareBed.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkIsNotAllowShareBed.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkDisableFinishedServiceDeposit.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkDisableFinishedServiceDeposit.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkDisableFinishedDeposit.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkDisableFinishedDeposit.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkChanTime.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkChanTime.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkCanhbaoTime.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkCanhbaoTime.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboRequiredService.Properties.NullText = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.cboRequiredService.Properties.NullText", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkAlwaysDisableDeposit.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkAlwaysDisableDeposit.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkAlwaysDisableDeposit.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkAlwaysDisableDeposit.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsDisServiceRepay.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkIsDisServiceRepay.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkAlwaysDisableServiceDeposit.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkAlwaysDisableServiceDeposit.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkChan.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkChan.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkCanhbao.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkCanhbao.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkAllowHospitalizeWhenPres.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkAllowHospitalizeWhenPres.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIS_NOT_ALLOW_UNPAUSE.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkIS_NOT_ALLOW_UNPAUSE.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkAllowReception.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkAllowReception.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboHeinTreatmentType.Properties.NullText = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.cboHeinTreatmentType.Properties.NullText", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.btnSave.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnReset.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.btnReset.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControl3.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControl4.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grlSTT.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.grlSTT.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gclCode.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.gclCode.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gclName.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.gclName.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grclHeinCode.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.grclHeinCode.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnReset.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.btnReset.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                //   this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControl2.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.gridColumn1.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.gridColumn2.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.gridColumn4.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.gridColumn3.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnFind.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.btnFind.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem2.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem3.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                //this.c.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.c.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem13.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem14.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem14.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem15.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem15.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem15.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem15.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem16.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem16.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem16.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem16.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem6.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem19.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem19.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem19.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem19.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem20.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem20.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem22.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem22.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem22.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem22.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem21.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem21.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem21.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem21.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem17.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem17.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem17.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem17.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem18.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem18.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem18.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem18.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem26.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem26.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem27.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem27.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem27.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem27.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem30.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem30.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem30.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem30.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem31.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem31.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem31.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem31.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.bar1.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkCanhbao.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.CanhBao.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkChan.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.Chan.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                txtFind.Text = "";
-                this.chkCanhbaoFeeDebt.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkCanhbaoFeeDebt.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkChanFeeDebt.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkChanFeeDebt.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkKhongKTFeeDebt.Properties.Caption = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.chkKhongKTFeeDebt.Properties.Caption", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem27.Text = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem27.Text", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem27.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("HisTreatmentTypeForm.layoutControlItem27.OptionsToolTip.ToolTip", Resource.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
+                spMaxPrescriptionAmount.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -503,6 +547,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                 currentDTO.TREATMENT_TYPE_CODE = txtCode.Text.Trim();
                 currentDTO.TREATMENT_TYPE_NAME = txtName.Text.Trim();
                 currentDTO.END_CODE_PREFIX = txtEndCodePrefix.Text.Trim();
+                currentDTO.MAX_PRESCRIPTION_AMOUNT = spMaxPrescriptionAmount.EditValue == null ? (decimal?)null : (decimal)spMaxPrescriptionAmount.EditValue;
                 currentDTO.HEIN_TREATMENT_TYPE_CODE = cboHeinTreatmentType.EditValue.ToString();
                 if (cboRequiredService.EditValue != null)
                     currentDTO.REQUIRED_SERVICE_ID = (long)cboRequiredService.EditValue;
@@ -602,6 +647,19 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                     currentDTO.FEE_DEBT_OPTION = null;
                 }
 
+                if (chkCanhbaoMax.Checked)
+                {
+                    currentDTO.MAX_PRESCRIPTION_AMOUNT_OPTION = 1;
+                }
+                else if (chkChanMax.Checked)
+                {
+                    currentDTO.MAX_PRESCRIPTION_AMOUNT_OPTION = 2;
+                }
+                else
+                {
+                    currentDTO.MAX_PRESCRIPTION_AMOUNT_OPTION = null;
+                }
+
             }
             catch (Exception ex)
             {
@@ -637,23 +695,39 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                 chkChan.Checked = false;
                 chkCanhbaoTime.Checked = false;
                 chkChanTime.Checked = false;
+                chkCanhbaoMax.Checked = false;
+                chkChanMax.Checked = false;
                 chkAllowReception.Checked = false;
                 txtFind.Text = "";
                 cboHeinTreatmentType.EditValue = null;
                 chkKhongKTFeeDebt.Checked = false;
                 chkChanFeeDebt.Checked = false;
                 chkCanhbaoFeeDebt.Checked = false;
+                chkIsNotAllowShareBed.Checked = false;
+                chkIsRequiredServiceBed.Checked = false;
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProvider1, dxErrorProvider1);
                 ResetFormData();
                 SetFocusEditor();
                 this.chkCanhbao.Properties.Caption = "Cảnh báo";
                 this.chkChan.Properties.Caption = "Chặn";
+                this.chkCanhbaoMax.Properties.Caption = "Cảnh báo";
+                this.chkChanMax.Properties.Caption = "Chặn";
+                this.chkCanhbaoTime.Properties.Caption = "Cảnh báo";
+                this.chkChanTime.Properties.Caption = "Chặn";
+                this.chkCanhbaoFeeDebt.Properties.Caption = "Cảnh báo";
+                this.chkChanFeeDebt.Properties.Caption = "Chặn";
+                this.chkKhongKTFeeDebt.Properties.Caption = "Không KT";
+                this.chkAlwaysDisableServiceDeposit.Text = "Luôn disable";
+                this.chkDisableFinishedServiceDeposit.Text = "Disable với BN kết thúc";
+                this.chkAlwaysDisableDeposit.Text = "Luôn disable";
+                this.chkDisableFinishedDeposit.Text = "Disable với BN kết thúc";
                 chkAlwaysDisableServiceDeposit.Checked = false;
                 chkDisableFinishedServiceDeposit.Checked = false;
                 chkIsDisServiceRepay.Checked = false;
                 chkAlwaysDisableDeposit.Checked = false;
                 chkDisableFinishedDeposit.Checked = false;
                 FillDatagctFormList();
+
 
             }
             catch (Exception ex)
@@ -800,6 +874,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                     txtCode.Text = data.TREATMENT_TYPE_CODE;
                     txtName.Text = data.TREATMENT_TYPE_NAME;
                     txtEndCodePrefix.Text = data.END_CODE_PREFIX;
+                    spMaxPrescriptionAmount.EditValue = data.MAX_PRESCRIPTION_AMOUNT;
                     cboHeinTreatmentType.EditValue = data.HEIN_TREATMENT_TYPE_CODE;
                     cboRequiredService.EditValue = data.REQUIRED_SERVICE_ID;
                     chkAllowReception.Checked = data.IS_ALLOW_RECEPTION == 1;
@@ -882,6 +957,20 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                         chkCanhbaoFeeDebt.Checked = false;
                         chkChanFeeDebt.Checked = false;
                         chkKhongKTFeeDebt.Checked = false;
+                    }
+
+                    if (data.MAX_PRESCRIPTION_AMOUNT_OPTION == 1)
+                    {
+                        chkCanhbaoMax.Checked = true;
+                    }
+                    else if (data.MAX_PRESCRIPTION_AMOUNT_OPTION == 2)
+                    {
+                        chkChanMax.Checked = true;
+                    }
+                    else
+                    {
+                        chkCanhbaoMax.Checked = false;
+                        chkChanMax.Checked = false;
                     }
                 }
             }
@@ -1501,6 +1590,66 @@ namespace HIS.Desktop.Plugins.HisTreatmentType
                 if (e.KeyCode == Keys.Enter)
                 {
                     btnSave.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkCanhbaoMax_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkChanMax.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkChanMax_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkCanhbaoMax.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkCanhbaoMax_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkCanhbaoMax.Checked)
+                {
+                    chkChanMax.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkChanMax_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkChanMax.Checked)
+                {
+                    chkCanhbaoMax.Checked = false;
                 }
             }
             catch (Exception ex)

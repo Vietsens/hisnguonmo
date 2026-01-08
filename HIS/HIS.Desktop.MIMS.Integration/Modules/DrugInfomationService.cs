@@ -6,26 +6,31 @@ using HIS.Desktop.MIMS.Integration.View;
 
 namespace HIS.Desktop.MIMS.Integration.Modules
 {
-    public class DrugInfomationService
+    public class DrugInfomationService : BaseService
     {
-        private static string BuildSimpleHtml(string message)
+        public DrugInfomationService()
         {
-            string safe = System.Security.SecurityElement.Escape(message ?? string.Empty);
-            return "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
+            NameText = "Thông tin thuốc";
         }
 
         public MimsResult Check(DrugItem drug)
         {
+            this.MappingMIMS(drug);
+            var result = new MimsResult();
+            if (drug == null || drug.MimsGuid == null)
+            {
+                result.Success = false;
+                result.Message = "Không có thông tin thuốc";
+                result.Html = BuildSimpleHtml(result.Message);
+                return result;
+            }
             string xmlRequest = MimsRequestBuilder.BuildDrugInformationRequest(drug);
 
             bool isTimeout;
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xmlRequest, out isTimeout);
 
-            var result = new MimsResult
-            {
-                RawXml = xmlResponse,
-                IsTimeout = isTimeout
-            };
+            result.RawXml = xmlResponse;
+            result.IsTimeout = isTimeout;
 
             if (isTimeout)
             {
@@ -69,17 +74,10 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 
             return result;
         }
-        public void ShowResult(MimsResult result)
-        {
-            if (result != null && !string.IsNullOrEmpty(result.Html))
-            {
-                WebViewHelper.ShowHtml(result.Html, "Thông tin thuốc");
-            }
-        }
 
         public void ShowResultAsync(DrugItem drug)
         {
-            WebViewHelper.ShowResultAsync(() => Check(drug), "Thông tin thuốc");
+            WebViewHelper.ShowResultAsync(() => Check(drug), NameText);
         }
     }
 }

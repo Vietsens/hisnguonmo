@@ -6,12 +6,11 @@ using HIS.Desktop.MIMS.Integration.View;
 
 namespace HIS.Desktop.MIMS.Integration.Modules
 {
-    public class DrugHealthService
+    public class DrugHealthService : BaseService
     {
-        private static string BuildSimpleHtml(string message)
+        public DrugHealthService()
         {
-            string safe = System.Security.SecurityElement.Escape(message ?? string.Empty);
-            return "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
+            NameText = "Kiểm tra tương tác thuốc, bệnh liên quan";
         }
 
         /// <summary>
@@ -19,16 +18,22 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// </summary>
         public MimsResult Check(List<DrugItem> drugs, List<string> icd10Codes)
         {
+            this.MappingMIMS(drugs);
+            var result = new MimsResult();
+            if (drugs == null || drugs.Count == 0 || !drugs.Exists(o=>o.MimsGuid!=null))
+            {
+                result.Success = false;
+                result.Message = "Không có thông tin thuốc kiểm tra tương tác";
+                result.Html = BuildSimpleHtml(result.Message);
+                return result;
+            }
             string xmlRequest = MimsRequestBuilder.BuildDrugHealthAlertRequest(drugs, icd10Codes);
 
             bool isTimeout;
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xmlRequest, out isTimeout);
 
-            var result = new MimsResult
-            {
-                RawXml = xmlResponse,
-                IsTimeout = isTimeout
-            };
+            result.RawXml = xmlResponse;
+            result.IsTimeout = isTimeout;
 
             if (isTimeout)
             {
@@ -75,17 +80,28 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             return result;
         }
 
-        public void ShowResult(MimsResult result)
+        public bool ShowDialog(List<DrugItem> drugs, List<string> icd10Codes)
         {
-            if (result != null && !string.IsNullOrEmpty(result.Html))
+            try
             {
-                WebViewHelper.ShowHtml(result.Html, "Kiểm tra bệnh lý nền (Drug-Health Alert)");
+                MimsResult result = Check(drugs, icd10Codes);
+                if (result.Success 
+                    && (result.DrugHealthAlertDetails != null && result.DrugHealthAlertDetails.Count > 0) 
+                    && (result.DrugDrugAlertDetails != null && result.DrugDrugAlertDetails.Count > 0))
+                {
+                    return WebViewHelper.ShowDialog(result.Html, NameText);
+                }
             }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
         }
 
         public void ShowResultAsync(List<DrugItem> drugs, List<string> icd10Codes)
         {
-            WebViewHelper.ShowResultAsync(() => Check(drugs, icd10Codes), "Kiểm tra bệnh lý nền (Drug-Health Alert)");
+            WebViewHelper.ShowResultAsync(() => Check(drugs, icd10Codes), NameText);
         }
     }
 }

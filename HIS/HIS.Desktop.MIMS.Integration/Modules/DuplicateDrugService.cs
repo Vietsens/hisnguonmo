@@ -6,16 +6,16 @@ using HIS.Desktop.MIMS.Integration.View;
 
 namespace HIS.Desktop.MIMS.Integration.Modules
 {
-	public class DuplicateDrugService
+	public class DuplicateDrugService : BaseService
 	{
-        private static string BuildSimpleHtml(string message)
+        public DuplicateDrugService()
         {
-            string safe = System.Security.SecurityElement.Escape(message ?? string.Empty);
-            return "<html><head><meta charset=\"utf-8\"/></head><body><h3>" + safe + "</h3></body></html>";
+            NameText = "Kiểm tra trùng lặp thuốc";
         }
 
 		public MimsResult Check(List<DrugItem> drugs)
 		{
+            this.MappingMIMS(drugs);
 			string xmlRequest = MimsRequestBuilder.BuildDrugInteractionRequest(drugs);
 
             bool isTimeout;
@@ -68,17 +68,9 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 			return result;
 		}
 
-		public void ShowResult(MimsResult result)
-		{
-			if (result != null && !string.IsNullOrEmpty(result.Html))
-			{
-				WebViewHelper.ShowHtml(result.Html, "Kiểm tra trùng lặp thuốc");
-			}
-		}
-
         public void ShowResultAsync(List<DrugItem> drugs)
         {
-            WebViewHelper.ShowResultAsync(() => Check(drugs), "Kiểm tra trùng lặp thuốc");
+            WebViewHelper.ShowResultAsync(() => Check(drugs), NameText);
         }
 	}
 }

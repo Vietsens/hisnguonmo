@@ -47,8 +47,14 @@
     <Reference Include="EO.WebBrowser.WinForm">
       <HintPath>..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebBrowser.WinForm.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.EFMODEL">
+      <HintPath>..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,6 +69,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\BaseService.cs" />
     <Compile Include="Core\MimsClient.cs" />
     <Compile Include="Core\MimsConfig.cs" />
     <Compile Include="Core\MimsRequestBuilder.cs" />
@@ -84,6 +91,11 @@
     <Compile Include="Modules\DuplicateDrugService.cs" />
     <Compile Include="Modules\VNContraindicationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="View\WebBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -269,6 +281,11 @@
     <Folder Include="Resources\Scripts\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\WebBrowser.resx">
       <DependentUpon>WebBrowser.cs</DependentUpon>
     </EmbeddedResource>

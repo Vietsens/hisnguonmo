@@ -11,6 +11,11 @@ namespace HIS.Desktop.MIMS.Integration.Models
 
         public DrugItem() { }
 
+        public DrugItem(string hisDrugCode)
+        {
+            HisDrugCode = hisDrugCode;
+        }
+
         public DrugItem(string hisDrugCode, string name, string mimsGuid, MimsDrugType drugType)
         {
             HisDrugCode = hisDrugCode;
@@ -23,12 +28,15 @@ namespace HIS.Desktop.MIMS.Integration.Models
         {
             return string.Format("{0} ({1})", Name, HisDrugCode);
         }
+
     }
 
     public enum MimsDrugType
     {
-        Product,
-        GGPI,
-        GenericItem
+        GGPI = 1,
+        Product = 2,
+        GenericItem = 3,
+        Molecule = 4,
+        SubstanceClass = 5
     }
 }
