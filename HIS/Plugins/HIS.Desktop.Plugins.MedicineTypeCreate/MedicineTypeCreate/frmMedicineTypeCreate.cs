@@ -15,46 +15,47 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.BackendData.ADO;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.MedicineTypeCreate.ADO;
+using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
+using HIS.Desktop.Plugins.MedicineTypeCreate.Popup;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.LocalStorage.BackendData;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using HIS.Desktop.Controls.Session;
-using HIS.Desktop.Common;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.LocalStorage.BackendData.ADO;
-using SDA.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.MedicineTypeCreate.ADO;
-using System.Windows;
 using MOS.SDO;
-using HIS.Desktop.Utilities.Extensions;
-using System.Text;
-using DevExpress.XtraEditors.Repository;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Views.Grid;
+using SDA.EFMODEL.DataModels;
+using System;
 using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Columns;
+using System.Collections.Generic;
 using System.Drawing;
-using DevExpress.Utils;
-using DevExpress.Data;
-using HIS.Desktop.Plugins.MedicineTypeCreate.Popup;
-using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
-using HIS.Desktop.ADO;
-using HIS.Desktop.Utility;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 {
@@ -87,7 +88,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         V_HIS_MEDICINE_TYPE MedicineType;
         HIS_BRANCH BranchID;
         string newValue = "";
-
+        List<HIS_SUPPLIER> lstSupplier { get; set; }
         List<HIS_DEPARTMENT> BlockDepartment__Seleced = new List<HIS_DEPARTMENT>();
         List<long> oldBlockDepartmentIds = null;
         List<HIS_CONTRAINDICATION> contraindicationSelecteds = new List<HIS_CONTRAINDICATION>();
@@ -101,6 +102,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         List<AConfigADO> lstConfig { get; set; }
         private bool chkKD = false;
         private bool _isReloadingConfigCombo = false;
+        private const string KEY_NCC_SELECTED = "cboNCC_Selected";
         enum ContainerClick
         {
             None,
@@ -123,6 +125,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         private List<HIS_DEPA_PATIENT_TYPE> depaPatientTypes = new List<HIS_DEPA_PATIENT_TYPE>();
         public bool isCalledApi = false;
         public bool isClickPick = false;
+        List<SupplierADO> lstSupplierChecked = new List<SupplierADO>();
 
         #endregion
 
@@ -206,7 +209,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 InitComboNguonGoc();
                 LoadCboLoaiThuoc();
                 LoadCboConfig();
-
+                LoadCboNCC();
 
                 if (ChkIsSpecificHeinPrice.Checked)
                 {
@@ -276,6 +279,319 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private string convertToUnSign3(string s)
+        {
+            Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
+            string temp = s.Normalize(NormalizationForm.FormD);
+            return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
+        }
+        private void LoadCboNCC()
+        {
+            try
+            {
+                List<SupplierADO> listADO = new List<SupplierADO>();
+                lstSupplier = BackendDataWorker.Get<HIS_SUPPLIER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                foreach (var item in lstSupplier)
+                {
+                    SupplierADO Emp = new SupplierADO();
+                    Emp.ID = item.ID;
+                    Emp.SUPPLIER_CODE = item.SUPPLIER_CODE;
+                    Emp.SUPPLIER_NAME = item.SUPPLIER_NAME;
+                    Emp.SUPPLIER_NAME_UNSIGN = convertToUnSign3(item.SUPPLIER_NAME);
+                    Emp.isChecked = false;
+                    listADO.Add(Emp);
+                }
+                
+                // Khởi tạo lstSupplierChecked từ listADO (tất cả đều chưa check)
+                lstSupplierChecked = listADO.Select(x => new SupplierADO
+                {
+                    ID = x.ID,
+                    SUPPLIER_CODE = x.SUPPLIER_CODE,
+                    SUPPLIER_NAME = x.SUPPLIER_NAME,
+                    SUPPLIER_NAME_UNSIGN = x.SUPPLIER_NAME_UNSIGN,
+                    isChecked = false
+                }).ToList();
+
+                InitComboNCC(listADO);
+                InitComboNCCCheck();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitComboNCCCheck()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboNCC.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check_NCC);
+                cboNCC.Properties.Tag = gridCheck;
+                cboNCC.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cboNCC.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboNCC.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void Event_Check_NCC(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                lstSupplier = new List<HIS_SUPPLIER>();
+                if (gridCheckMark != null)
+                {
+                    List<HIS_SUPPLIER> erSelectedNews = new List<HIS_SUPPLIER>();
+                    foreach (HIS_SUPPLIER er in (sender as GridCheckMarksSelection).Selection)
+                    {
+                        if (er != null)
+                        {
+                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            sb.Append(er.SUPPLIER_NAME);
+                            erSelectedNews.Add(er);
+                        }
+                    }
+                    this.lstSupplier = new List<HIS_SUPPLIER>();
+                    this.lstSupplier.AddRange(erSelectedNews);
+                }
+
+                this.cboNCC.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboNCC(List<SupplierADO> listADO)
+        {
+            try
+            {
+                // Sync isChecked từ lstSupplierChecked vào listADO
+                if (lstSupplierChecked != null && lstSupplierChecked.Count > 0)
+                {
+                    var checkedIds = lstSupplierChecked.Where(x => x.isChecked).Select(x => x.ID).ToList();
+                    foreach (var item in listADO)
+                    {
+                        item.isChecked = checkedIds.Contains(item.ID);
+                    }
+                }
+                
+                // Sắp xếp: items đã check lên đầu
+                var sortedList = listADO.OrderByDescending(o => o.isChecked).ToList();
+                
+                cboNCC.Properties.View.Columns.Clear();
+                cboNCC.Properties.DataSource = sortedList;
+                cboNCC.Properties.DisplayMember = "SUPPLIER_NAME";
+                cboNCC.Properties.ValueMember = "ID";
+                cboNCC.Properties.NullText = "";
+                cboNCC.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cboNCC.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+                cboNCC.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                cboNCC.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                cboNCC.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cboNCC.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+                cboNCC.Properties.View.OptionsView.ShowDetailButtons = false;
+                cboNCC.Properties.View.OptionsView.ShowGroupPanel = false;
+                cboNCC.Properties.View.OptionsView.ShowIndicator = false;
+                                
+                cboNCC.Properties.View.RowCellClick += CboNCC_RowCellClick;
+                cboNCC.Closed += CboNCC_Closed;
+
+                DevExpress.XtraGrid.Columns.GridColumn column = cboNCC.Properties.View.Columns.AddField("SUPPLIER_CODE");
+                column.Caption = "Mã";
+                column.Visible = true;
+                column.VisibleIndex = 1;
+                column.Width = 60;
+                column.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                column.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Default;
+
+                DevExpress.XtraGrid.Columns.GridColumn columnCode = cboNCC.Properties.View.Columns.AddField("SUPPLIER_NAME");
+                columnCode.Caption = "Tên";
+                columnCode.Visible = true;
+                columnCode.VisibleIndex = 2;
+                columnCode.Width = 200;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cboNCC.Properties.View.Columns.AddField("SUPPLIER_NAME_UNSIGN");
+                aColumnNameUnsign.Visible = true;
+                aColumnNameUnsign.VisibleIndex = -1;
+                aColumnNameUnsign.Width = 340;
+
+                cboNCC.Properties.View.Columns["SUPPLIER_NAME_UNSIGN"].Width = 0;
+
+                //column.Caption = "Tất cả";
+                cboNCC.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cboNCC.Properties.View.OptionsSelection.MultiSelect = true;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CboNCC_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            try
+            {
+                if (e.RowHandle < 0) return;
+                
+                var view = sender as GridView;
+                var clickedItem = view.GetRow(e.RowHandle) as SupplierADO;
+                
+                if (clickedItem == null) return;
+                
+                // Toggle isChecked
+                clickedItem.isChecked = !clickedItem.isChecked;
+                
+                // Cập nhật hoặc thêm vào lstSupplierChecked
+                var existingItem = lstSupplierChecked.FirstOrDefault(x => x.ID == clickedItem.ID);
+                if (existingItem != null)
+                {
+                    // Cập nhật trạng thái trong danh sách
+                    existingItem.isChecked = clickedItem.isChecked;
+                }
+                else
+                {
+                    // Thêm mới vào danh sách
+                    var newItem = new SupplierADO
+                    {
+                        ID = clickedItem.ID,
+                        SUPPLIER_CODE = clickedItem.SUPPLIER_CODE,
+                        SUPPLIER_NAME = clickedItem.SUPPLIER_NAME,
+                        SUPPLIER_NAME_UNSIGN = clickedItem.SUPPLIER_NAME_UNSIGN,
+                        isChecked = clickedItem.isChecked
+                    };
+                    lstSupplierChecked.Add(newItem);
+                }
+                
+                // Refresh ngay tại row hiện tại thay vì refresh toàn bộ
+                //view.RefreshRow(e.RowHandle);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        
+        private void CboNCC_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
+                    // Sắp xếp lại datasource sau khi đóng popup
+                    var currentDataSource = cboNCC.Properties.DataSource as List<SupplierADO>;
+                    if (currentDataSource == null) return;
+                    
+                    // Sync lại isChecked từ lstSupplierChecked
+                    var checkedIds = lstSupplierChecked.Where(x => x.isChecked).Select(x => x.ID).ToList();
+                    foreach (var item in currentDataSource)
+                    {
+                        item.isChecked = checkedIds.Contains(item.ID);
+                    }
+                    
+                    // Sắp xếp: checked items lên đầu
+                    var sortedList = currentDataSource.OrderByDescending(o => o.isChecked).ToList();
+
+                    // Refresh datasource
+                    cboNCC.Properties.DataSource = null;
+                    cboNCC.Properties.DataSource = sortedList;
+                    cboNCC.Properties.View.RefreshData();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        
+
+        private void cboNCC_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string roomName = "";
+                if (this.lstSupplier != null && this.lstSupplier.Count > 0)
+                {
+                    foreach (var item in this.lstSupplier)
+                    {
+                        roomName += item.SUPPLIER_NAME + ",";
+
+                    }
+                }
+                e.DisplayText = roomName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+
+            }
+        }
+
+        List<SupplierADO> lstSupplierIndex = new List<SupplierADO>();
+        private void ProcessSelectNCC(string p, GridCheckMarksSelection gridCheckMark)
+        {
+            try
+            {
+                List<SupplierADO> ds = cboNCC.Properties.DataSource as List<SupplierADO>;
+                string[] arrays = p.Split(',');
+                if (arrays != null && arrays.Length > 0)
+                {
+                    List<SupplierADO> selects = new List<SupplierADO>();
+                    foreach (var item in arrays)
+                    {
+                        var row = ds != null ? ds.FirstOrDefault(o => o.ID.ToString() == item) : null;
+                        if (row != null)
+                        {
+                            row.isChecked = true;
+                            selects.Add(row);
+                            lstSupplierIndex.Add(row);
+                            
+                            // Cập nhật lstSupplierChecked
+                            var existingItem = lstSupplierChecked.FirstOrDefault(x => x.ID == row.ID);
+                            if (existingItem != null)
+                            {
+                                existingItem.isChecked = true;
+                            }
+                            else
+                            {
+                                lstSupplierChecked.Add(new SupplierADO
+                                {
+                                    ID = row.ID,
+                                    SUPPLIER_CODE = row.SUPPLIER_CODE,
+                                    SUPPLIER_NAME = row.SUPPLIER_NAME,
+                                    SUPPLIER_NAME_UNSIGN = row.SUPPLIER_NAME_UNSIGN,
+                                    isChecked = true
+                                });
+                            }
+                        }
+                    }
+                    gridCheckMark.SelectAll(selects);
+                    
+                    // Sắp xếp lại datasource: items đã check lên đầu
+                    var sortedList = ds.OrderByDescending(o => o.isChecked).ToList();
+                    cboNCC.Properties.DataSource = null;
+                    cboNCC.Properties.DataSource = sortedList;
+                    cboNCC.Properties.View.RefreshData();
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -1257,6 +1573,12 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                 SetCauHinhFromData(hIS_MEDICINE_TYPE, HIS_Services);
 
+
+                GridCheckMarksSelection gridCheckNCC = cboNCC.Properties.Tag as GridCheckMarksSelection;
+                if (hIS_MEDICINE_TYPE.SUPPLIER_IDS != null)
+                {
+                    ProcessSelectNCC(hIS_MEDICINE_TYPE.SUPPLIER_IDS, gridCheckNCC);
+                }
 
                 //#region config
                 //GridCheckMarksSelection gridCheckConfig = cboConfig.Properties.Tag as GridCheckMarksSelection;
@@ -2250,6 +2572,13 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 medicineType.MEDICINE_TYPE_CODE = txtMedicineTypeCode.Text.Trim();
                 medicineType.MEDICINE_TYPE_NAME = txtMedicineTypeName.Text;
                 medicineType.DOSAGE_FORM = cboDosageForm.Text.Trim();
+
+
+                if (lstSupplier != null && lstSupplier.Count > 0)
+                {
+                    medicineType.SUPPLIER_IDS =
+                        string.Join(",", lstSupplier.Select(e => e.ID));
+                }
 
                 if (spinAlertExpiredDate.EditValue != null)
                 {
@@ -3511,6 +3840,28 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 this.positionHandleControlMedicineTypeInfo = -1;
                 if (!dxValidationMedicineType.Validate())
                     return;
+                
+                // Kiểm tra trùng mã nếu SERVICE_CODE_OPTION = 1 và người dùng có nhập mã
+                if (HisConfigCFG.ServiceCodeOption == "1" && !string.IsNullOrEmpty(txtMedicineTypeCode.Text.Trim()))
+                {
+                    // Kiểm tra xem mã đã tồn tại chưa
+                    var existingMedicine = BackendDataWorker.Get<HIS_MEDICINE_TYPE>()
+                        .FirstOrDefault(o => o.MEDICINE_TYPE_CODE.ToUpper().Trim() == txtMedicineTypeCode.Text.ToUpper().Trim()
+                                          && (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd 
+                                              || o.ID != this.currentMedicineTypeId));
+                    
+                    if (existingMedicine != null)
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show(
+                            String.Format("Mã {0} đã tồn tại trong hệ thống", txtMedicineTypeCode.Text),
+                            "Thông báo",
+                            System.Windows.Forms.MessageBoxButtons.OK,
+                            System.Windows.Forms.MessageBoxIcon.Warning);
+                        txtMedicineTypeCode.Focus();
+                        txtMedicineTypeCode.SelectAll();
+                        return;
+                    }
+                }
                 if (!(bool)nationalProcessor.ValidationNational(ucNational))
                     return;
                 if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionView)
@@ -7232,7 +7583,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     {
                         cboMedicineLine.Properties.Buttons[1].Visible = true;
                         ValidatecboMedicineUseForm(medicineLine.DO_NOT_REQUIRED_USE_FORM != 1);
-                        if (medicineLine.ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                        if (medicineLine.ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT && txtActiveIngrBhytCode.EditValue != null)
                         {
                             dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
                             ValidatecboDosageForm(true);
@@ -8383,20 +8734,48 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                if(txtActiveIngrBhytCode.EditValue != null && txtActiveIngrBhytCode.EditValue != "")
+                if (cboMedicineLine.EditValue != null)
                 {
-                    ValidatecboDosageForm(true);
+                    var medicineLine = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_LINE>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMedicineLine.EditValue ?? "").ToString()));
+                    if (medicineLine != null)
+                    {
+                        if (medicineLine.ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
+                        {
+                            if (txtActiveIngrBhytCode.EditValue != null && txtActiveIngrBhytCode.EditValue != "")
+                            {
+                                ValidatecboDosageForm(true);
+                            }
+                            else
+                            {
+                                dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
+                                ValidatecboDosageForm(false);
+                            }
+                        }
+                        else
+                        {
+                            dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
+                            ValidatecboDosageForm(false);
+                        }
+                    }
                 }
-                else
-                {
-                    dxValidationMedicineType.SetValidationRule(cboDosageForm, null);
-                    ValidatecboDosageForm(false);
-                }
+
             }
             catch (Exception ex)
             {
 
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboNCC_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }
