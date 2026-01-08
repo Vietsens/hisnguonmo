@@ -17,8 +17,9 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
         {
             try
             {
+                LogSystem.Info("input GuaranteeRegisterUse " + registerUse);
                 LogSystem.Info("Start GuaranteeRegisterUse " + LogUtil.TraceData("input: ", registerUse.registerUseRequest));
-                LogSystem.Info("input GuaranteeRegisterUse " + registerUse.registerUseRequest);
+                LogSystem.Info("input GuaranteeRegisterUse " + registerUse.registerUseRequest); 
                 RegisterUseResponse registerUseResponse = new RegisterUseResponse();
                 if (!this.ValidateRegisterUse(registerUse.registerUseRequest, ref registerUseResponse))
                 {
@@ -33,6 +34,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                     string Signature = name + registerUse.registerUseRequest.PatientDateOfBirth + registerUse.registerUseRequest.PatientCccd + registerUse.registerUseRequest.RequestAmount + registerUse.applicationCode;
                     registerUse.registerUseRequest.Signature = consumer.ConvertSHA256(Signature);
                 }
+                registerUse.registerUseRequest.PatientFullName = registerUse.registerUseRequest.PatientFullName.Trim();
                 LogSystem.Info("Start GuaranteeRegisterUse API" + LogUtil.TraceData("input: ", registerUse.registerUseRequest));
                 LogSystem.Info("input GuaranteeRegisterUse API" + registerUse.registerUseRequest);
                 // Gọi API Register Use
