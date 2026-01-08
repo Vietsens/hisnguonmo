@@ -68,5 +68,8 @@ namespace HIS.UC.UCOtherServiceReqInfo.ADO
         //qtcode
         public bool IsCAPD { get; set; }
         public short? IS_CAPD { get; set; }
+        public string NguonKhachCode { get; set; }
+        public string NguonKhachName { get; set; }
+        public string NguonKhachCTName { get; set; }
     }
 }
