@@ -2814,7 +2814,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Resources
             {
                 try
                 {
-                    return Inventec.Common.Resource.Get.Value("Plugin_AssignPrescription__PopupMenu_TongTinThuoc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    return Inventec.Common.Resource.Get.Value("Plugin_AssignPrescription__PopupMenu_ThongTinThuoc", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
                 catch (Exception ex)
                 {

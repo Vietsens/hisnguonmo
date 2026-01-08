@@ -243,7 +243,13 @@
   <data name="Plugin_AssignPrescription__SoLuongXuatLonHonSpoLuongKhadungTrongKho" xml:space="preserve">
     <value>Số lượng kê đã vượt quá số khả dụng trong kho.</value>
   </data>
-  <data name="Plugin_AssignPrescription__SoTienDaKeChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+	<data name="Plugin_AssignPrescription__PopupMenu_ThongTinThuoc" xml:space="preserve">
+    <value>Thông tin thuốc</value>
+  </data>
+	<data name="Plugin_AssignPrescription__PopupMenu_DanhGiaThongTinThuoc" xml:space="preserve">
+    <value>Đánh giá thông tin thuốc</value>
+  </data>
+	<data name="Plugin_AssignPrescription__SoTienDaKeChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
     <value>Số tiền đã kê {0} cho BHYT đã vượt quá mức giới hạn {1}</value>
   </data>
   <data name="Plugin_AssignPrescription__SuaDonThuocDuLieuTruyenVaoKhongHopLe" xml:space="preserve">

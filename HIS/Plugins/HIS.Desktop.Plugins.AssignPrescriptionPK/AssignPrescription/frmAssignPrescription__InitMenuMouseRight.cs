@@ -56,9 +56,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Info("InitMenu.1");
                 if (menu == null)
                     menu = new PopupMenu(barManager1);
-                // Add item and show
+
                 menu.ItemLinks.Clear();
-                if (CheckEditDayNum() && !GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
+
+                var selectedItemsForMenu = GetMediMatySelected();
+                if (selectedItemsForMenu == null || selectedItemsForMenu.Count == 0)
+                    return;
+
+                if (selectedItemsForMenu.Count == 1 && CheckEditDayNum() && !GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
                 {
                     Inventec.Common.Logging.LogSystem.Info("InitMenu.2");
                     BarButtonItem itemEditDayNum = new BarButtonItem(barManager1, ResourceMessage.PopupMenu_SuaSoNgay, 1);
@@ -96,18 +101,23 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 if (HisConfigCFG.ConnectDrugInterventionInfo == "2")
                 {
+                    if (selectedItemsForMenu.Count == 1)
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("InitMenu.5");
+                        BarButtonItem itemInformation = new BarButtonItem(barManager1, ResourceMessage.ThongTinThuoc, 1);
+                        itemInformation.Tag = MOUSE_RIGHT_TYPE.INFORMATION;
+                        itemInformation.ItemClick += new ItemClickEventHandler(setProcessMenu);
+                        menu.AddItems(new BarButtonItem[] { itemInformation });
+                    }
 
-                    Inventec.Common.Logging.LogSystem.Info("InitMenu.5");
-                    BarButtonItem itemInformation = new BarButtonItem(barManager1, ResourceMessage.ThongTinThuoc, 1);
-                    itemInformation.Tag = MOUSE_RIGHT_TYPE.INFORMATION;
-                    itemInformation.ItemClick += new ItemClickEventHandler(setProcessMenu);
-                    menu.AddItems(new BarButtonItem[] { itemInformation });
-
-                    Inventec.Common.Logging.LogSystem.Info("InitMenu.6");
-                    BarButtonItem itemInformationEvaluation = new BarButtonItem(barManager1, ResourceMessage.DanhGiaThongTinThuoc, 1);
-                    itemInformationEvaluation.Tag = MOUSE_RIGHT_TYPE.INFORMATION_EVALUATION;
-                    itemInformationEvaluation.ItemClick += new ItemClickEventHandler(setProcessMenu);
-                    menu.AddItems(new BarButtonItem[] { itemInformationEvaluation });
+                    if (selectedItemsForMenu.Count > 1)
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("InitMenu.6");
+                        BarButtonItem itemInformationEvaluation = new BarButtonItem(barManager1, ResourceMessage.DanhGiaThongTinThuoc, 1);
+                        itemInformationEvaluation.Tag = MOUSE_RIGHT_TYPE.INFORMATION_EVALUATION;
+                        itemInformationEvaluation.ItemClick += new ItemClickEventHandler(setProcessMenu);
+                        menu.AddItems(new BarButtonItem[] { itemInformationEvaluation });
+                    }
                 }
 
                 if (menu.ItemLinks.Count > 0)
@@ -179,7 +189,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                     mimsDrugType = MimsDrugType.GenericItem;
                                     break;
                             }
-                            service.ShowResultAsync(new HIS.Desktop.MIMS.Integration.Models.DrugItem(null, null, MediMatyTypeInformation.FirstOrDefault().MIMS_GUID, mimsDrugType));
+                            service.ShowResultAsync(new HIS.Desktop.MIMS.Integration.Models.DrugItem(MediMatyTypeInformation.FirstOrDefault().MEDICINE_TYPE_CODE, null, null, mimsDrugType));
                         }
                         break;
                     case MOUSE_RIGHT_TYPE.INFORMATION_EVALUATION:
@@ -187,7 +197,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         if (MediMatyTypeInformationEvluation != null && MediMatyTypeInformationEvluation.Count > 0)
                         {
                             List<HIS.Desktop.MIMS.Integration.Models.DrugItem> lstDrugItem = new List<MIMS.Integration.Models.DrugItem>();
-                            var service = new HIS.Desktop.MIMS.Integration.Modules.DrugDrugInteractionService();
+                            var service = new HIS.Desktop.MIMS.Integration.Modules.DrugHealthService();
 
                             foreach (var item in MediMatyTypeInformationEvluation)
                             {
@@ -207,11 +217,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                         mimsDrugType = MimsDrugType.GenericItem;
                                         break;
                                 }
-                                HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(null, null, item.MIMS_GUID, mimsDrugType);
+                                HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, mimsDrugType);
                                 lstDrugItem.Add(drugItem);
                             }
                             
-                            service.ShowResultAsync(lstDrugItem, null);
+                            List<string> lstICD = new List<string>();
+                            lstICD.Add(txtIcdCode.Text);
+                            if (!string.IsNullOrWhiteSpace(txtIcdCodeCause.Text))
+                            {
+                                lstICD.AddRange(txtIcdCodeCause.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
+                            }
+                            service.ShowResultAsync(lstDrugItem, lstICD);
                         }
                         break;
                     default:
