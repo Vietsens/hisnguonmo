@@ -378,6 +378,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                 {
                     this.ALERT_MAX_IN_PRESCRIPTION = mety.ALERT_MAX_IN_PRESCRIPTION;
                     this.TDL_GENDER_ID = mety.TDL_GENDER_ID;
+                    /// bổ sung các trường tương tác thuốc
+                    this.MIMS_MAPPING_STATUS = mety.MIMS_MAPPING_STATUS;
+                    this.MIMS_MAPPING_NOTE = mety.MIMS_MAPPING_NOTE;
+                    this.MIMS_TYPE = mety.MIMS_TYPE;
+                    this.MIMS_NAME = mety.MIMS_NAME;
+                    this.MIMS_LAST_SYNC_TIME = mety.MIMS_LAST_SYNC_TIME;
+                    this.MIMS_GUID = mety.MIMS_GUID;
                 }
 
                 this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
@@ -489,6 +496,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                 {
                     this.ALERT_MAX_IN_PRESCRIPTION = mety.ALERT_MAX_IN_PRESCRIPTION;
                     this.TDL_GENDER_ID = mety.TDL_GENDER_ID;
+                    /// bổ sung các trường tương tác thuốc
+                    this.MIMS_MAPPING_STATUS = mety.MIMS_MAPPING_STATUS;
+                    this.MIMS_MAPPING_NOTE = mety.MIMS_MAPPING_NOTE;
+                    this.MIMS_TYPE = mety.MIMS_TYPE;
+                    this.MIMS_NAME = mety.MIMS_NAME;
+                    this.MIMS_LAST_SYNC_TIME = mety.MIMS_LAST_SYNC_TIME;
+                    this.MIMS_GUID = mety.MIMS_GUID;
                 }
 
                 this.SERVICE_UNIT_NAME = inputData.SERVICE_UNIT_NAME;
@@ -1037,6 +1051,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.ADO
                     V_HIS_MEDICINE_TYPE mety = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.SERVICE_ID == medicineTypeSDO.SERVICE_ID);
                     if (mety != null)
                     {
+                        /// bổ sung các trường tương tác thuốc
+                        medicineTypeSDO.MIMS_MAPPING_STATUS = mety.MIMS_MAPPING_STATUS;
+                        medicineTypeSDO.MIMS_MAPPING_NOTE = mety.MIMS_MAPPING_NOTE;
+                        medicineTypeSDO.MIMS_TYPE = mety.MIMS_TYPE;
+                        medicineTypeSDO.MIMS_NAME = mety.MIMS_NAME;
+                        medicineTypeSDO.MIMS_LAST_SYNC_TIME = mety.MIMS_LAST_SYNC_TIME;
+                        medicineTypeSDO.MIMS_GUID = mety.MIMS_GUID;
+                        //////////////////////////////////////
+                        
                         MOS.EFMODEL.DataModels.HIS_MEDICINE_USE_FORM useForm = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_USE_FORM>().FirstOrDefault(o => o.ID == mety.MEDICINE_USE_FORM_ID);
                         if (useForm != null)
                         {

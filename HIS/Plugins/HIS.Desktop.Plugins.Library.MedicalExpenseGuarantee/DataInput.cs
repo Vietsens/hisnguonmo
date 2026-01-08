@@ -9,7 +9,10 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
 {
     public class DataInput
     {
-        public string baseUri { get; set; }
+        public string hasUri { get; set; }
+        public string acsUri { get; set; }
+        public string username { get; set; }
+        public string password { get; set; }
         public string applicationCode { get; set; }
         public string limet { get; set; }
         public string cskcbbd { get; set; }

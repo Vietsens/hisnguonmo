@@ -285,6 +285,12 @@
   <data name="Plugin_AssignPrescription__Message__VuotQuaSoLuongKhaDungTrongKho__CoMuonTiepTuc" xml:space="preserve">
     <value>vượt quá số lượng khả dụng hoặc không có trong kho. Bạn có muốn chuyển các thuốc không đủ khả dụng sang thuốc ngoài kho hay không?</value>
   </data>
+	<data name="Plugin_AssignPrescription__PopupMenu_ThongTinThuoc" xml:space="preserve">
+    <value>Thông tin thuốc</value>
+  </data>
+	<data name="Plugin_AssignPrescription__PopupMenu_DanhGiaThongTinThuoc" xml:space="preserve">
+    <value>Đánh giá thông tin thuốc</value>
+  </data>
   <data name="Plugin_AssignPrescription__NgayUong" xml:space="preserve">
     <value>Ngày {0}{1} {2} chia {3} lần, </value>
   </data>

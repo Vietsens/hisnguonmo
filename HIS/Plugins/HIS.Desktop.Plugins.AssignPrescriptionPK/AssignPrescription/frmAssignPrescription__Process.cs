@@ -3598,7 +3598,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         item.AmountAlert = null;
                         if (item.MEDI_STOCK_ID == null || item.MEDI_STOCK_ID == 0)
-                        {
+                        { 
                             item.MEDI_STOCK_ID = null;
                             item.MEDI_STOCK_CODE = null;
                             item.MEDI_STOCK_NAME = null;

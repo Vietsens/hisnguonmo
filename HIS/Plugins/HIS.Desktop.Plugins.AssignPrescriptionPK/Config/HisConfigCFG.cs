@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION_DETAIL = "HIS.Desktop.Plugins.AssignPrescriptionPK.IsCheckPreviousPrescriptionDetail";      
         private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";      
         private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT";
@@ -227,7 +228,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         ///+ 1 dòng là số lượng phần bù, và có đánh dấu là IsNotPres = true
         /// </summary>
         internal static string SplitOffset;
-        internal static bool IsTrackingRequired;
+        internal static string IsTrackingRequired;
 
         /// <summary>
         /// 1: Tự động làm tròn căn cứ theo đơn vị quy đổi. Trong trường hợp kê thuốc/vật tư theo đơn vị quy đổi và tỷ lệ quy đổi > 1 , thì tự động làm tròn để tính ra số lượng theo đơn vị gốc luôn là số nguyên. 0: Không tự động
@@ -434,6 +435,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string IcdCodeToApplyRestrictPatientTypeByOtherSourcePaid;
         internal static string WarningHeinPatientTypeCode;
         internal static string WarningOverTransfer;
+        internal static string CheckPreviousPrescriptionDetail;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -469,6 +471,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                CheckPreviousPrescriptionDetail = GetValue(CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION_DETAIL);
                 WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE);
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 HisIcdServiceHasRequirePatientBhyt = GetValue(CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT);
@@ -533,7 +536,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
                 {
                     WarningOptionWhenExceedingMaxOfAppointmentDays = null;
                 }
-                IsTrackingRequired = GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_PRESCRIPTION_IS_TRACKING_REQUIRED) == GlobalVariables.CommonStringTrue;
+                IsTrackingRequired = GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_PRESCRIPTION_IS_TRACKING_REQUIRED);
                 BhytColorCode = GetValue(CONFIG_KEY__BhytColorCode);
                 UserMustHaveDiploma = GetValue(CONFIG_KEY__MOS_HIS_SERVICE_REQ_REQ_USER_MUST_HAVE_DIPLOMA) == GlobalVariables.CommonStringTrue;
                 IsShowingInTheSameDepartment = GetValue(CONFIG_KEY__IsShowingInTheSameDepartment) == GlobalVariables.CommonStringTrue;
