@@ -75,6 +75,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string CONFIG_KEY__BhytColorCode = "HIS.Desktop.Plugins.AssignService.BhytServiceColorCode";
         private const string CONFIG_KEY__SetRequestRoomByBedRoomWhenBeingInSurgery = "HIS.Desktop.Plugins.AssignService.SetRequestRoomByBedRoomWhenBeingInSurgery";
         private const string CONFIG_KEY__IS_TRACKING_REQUIRED = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICES.IS_TRACKING_REQUIRED";
+        private const string CONFIG_KEY__IS_TRACKING_REQUIRED_PRESCRIPTION = "MOS.HIS_SERVICE_REQ.PRESCRIPTION.IS_TRACKING_REQUIRED";
         private const string CONFIG_KEY__ALLOW_SHOWING_ANAPATHOLY = "HIS.Desktop.Plugins.AssignService.AllowShowingAnapathology";
         private const string CONFIG_KEY__EPAYMENT__IS_USING_EXECUTE_ROOM_PAYMENT = "MOS.EPAYMENT.IS_USING_EXECUTE_ROOM_PAYMENT";
         public const string CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_WARNING_MAX_PATIENT_BY_DAY_OPTION = "HIS.DESKTOP.ASSIGN_SERVICE.WARNING_MAX_PATIENT_BY_DAY.OPTION";
@@ -150,6 +151,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         internal static bool IcdServiceHasRequireCheck;
         internal static bool IsIcdServiceHasRequireCheckPatientBHYT;
         internal static bool IsRequiredTracking;
+        internal static bool IsRequiredTrackingPrescription;
         internal static string IcdServiceAllowUpdate;
         internal static bool IsSearchAll;
         internal static string BedServiceType_NotAllow_For_OutPatient;
@@ -254,6 +256,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
                 IsAllowingChooseServiceWhichInAttachments = GetValue(CONFIG_KEY__IsAllowingChooseServiceWhichInAttachments) == GlobalVariables.CommonStringTrue;
                 IsReqUserMustHaveDiploma = GetValue(CONFIG_KEY__ReqUserMustHaveDiploma) == GlobalVariables.CommonStringTrue;
                 IsRequiredTracking = GetValue(CONFIG_KEY__IS_TRACKING_REQUIRED) == GlobalVariables.CommonStringTrue;
+                // qtcode
+                IsRequiredTrackingPrescription = GetValue(CONFIG_KEY__IS_TRACKING_REQUIRED_PRESCRIPTION) == "2";
                 IsShowingInTheSameDepartment = GetValue(CONFIG_KEY__IsShowingInTheSameDepartment) == GlobalVariables.CommonStringTrue;
                 IsloadIcdFromExamServiceExecute = GetValue(CONFIG_KEY__IsloadIcdFromExamServiceExecute) == GlobalVariables.CommonStringTrue;
                 IsAutoCheckPriorityForPrioritizedExam = GetValue(CONFIG_KEY__IsAutoCheckPriorityForPrioritizedExam) == GlobalVariables.CommonStringTrue;

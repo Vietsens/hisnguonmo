@@ -125,7 +125,16 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.ValidControlCboUser();
                 this.ValidControlProvisionalDiagnosis();
                 this.ValdateSecondaryIcd();
+                
+                // Xử lý cho key IS_TRACKING_REQUIRED = 1
                 if (HisConfigCFG.IsRequiredTracking && this.currentHisPatientTypeAlter != null && (this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU || this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU))
+                {
+                    ValidControlCboTracking(true);
+                    lciTracking.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+                }
+                // Xử lý cho key IS_TRACKING_REQUIRED_PRESCRIPTION = 2
+                else if (HisConfigCFG.IsRequiredTrackingPrescription && this.currentTreatment != null 
+                    && (this.currentTreatment.IS_EMERGENCY == 1 || this.currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU))
                 {
                     ValidControlCboTracking(true);
                     lciTracking.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
@@ -184,6 +193,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 TrackingValidationRule rule = new TrackingValidationRule();
                 rule.cboTracking = cboTracking;
                 rule.isRequired = isRequied;
+                cboTracking.Focus(); 
                 dxValidationProviderControl.SetValidationRule(cboTracking, rule);
             }
             catch (Exception ex)

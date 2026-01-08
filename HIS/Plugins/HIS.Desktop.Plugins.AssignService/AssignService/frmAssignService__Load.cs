@@ -3893,6 +3893,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     cboTracking.Enabled = true;
                 }
+                else if (HisConfigCFG.IsRequiredTrackingPrescription && this.currentTreatment != null
+                    && (this.currentTreatment.IS_EMERGENCY == 1 || this.currentTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU))
+                {
+                    cboTracking.Enabled = true;
+                }
                 else
                 {
                     cboTracking.Enabled = false;
