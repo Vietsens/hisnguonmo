@@ -72,7 +72,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
                     {
                         _httpClient.DefaultRequestHeaders.Remove("TokenCode");
                     }
-                    _httpClient.DefaultRequestHeaders.Add("TokenCode ", token);
+                    _httpClient.DefaultRequestHeaders.Add("TokenCode", token);
                 }
                 else
                 {
