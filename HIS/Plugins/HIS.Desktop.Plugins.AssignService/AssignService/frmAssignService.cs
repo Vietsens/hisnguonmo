@@ -138,6 +138,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServWithTreatment = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServsInTreatment = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServsInTreatmentRaw = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
+        List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> ssGuarantee = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         Inventec.Desktop.Common.Modules.Module currentModule;
 
         Dictionary<long, List<V_HIS_SERVICE_PATY>> servicePatyInBranchs;

@@ -101,6 +101,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("qtcode LoadTotalSereServByHeinWithTreatment");
                 CommonParam param = new CommonParam();
                 HisSereServFilter hisSereServFilter = new HisSereServFilter();
                 hisSereServFilter.TREATMENT_ID = treatmentId;
@@ -3957,8 +3958,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //{
                 try
                 {
-                    // Dùng thư viện chung
-                    //ConfigApplicationWorker.Get<long>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
+                    //ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
                     var guaranteeConnection = Config.HisConfigCFG.GuaranteeConnectionInfo;
 
                     if (string.IsNullOrEmpty(guaranteeConnection))
@@ -3999,9 +3999,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     dataInput.applicationCode = guaranteeAppCode;
                     dataInput.limet = guaranteeDefaultLimit;
                     dataInput.cskcbbd = branchHeinMediOrgCode;
+                    dataInput.username = guaranteeUsername;
+                    dataInput.password = guaranteePassword;
                     dataInput.registerUseRequest = new RegisterUseRequest
                     {
-                        PatientFullName = this.currentHisTreatment.TDL_PATIENT_NAME,
+                        PatientFullName = this.currentHisTreatment.TDL_PATIENT_NAME.Trim(),
                         PatientDateOfBirth = this.currentHisTreatment.TDL_PATIENT_DOB != 0 ? this.currentHisTreatment.TDL_PATIENT_DOB.ToString() : "",
                         PatientCccd = this.currentHisTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentHisTreatment.TDL_PATIENT_CMND_NUMBER,
                         RequestAmount = guaranteeDefaultLimit,
@@ -4012,14 +4014,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                     Inventec.Common.Logging.LogSystem.Debug("Bắt đầu gọi API RegisterUse để lấy RequestId");
                     RegisterUseResponse registerResponse = medicalExpenseGuarantee.GuaranteeRegisterUse(dataInput);
-                    //dataInput.availableBalanceInfoRequest = new AvailableBalanceInfoRequest
-                    //{
-                    //    RequestId = registerResponse.Data.RequestId,
-                    //    PatientFullName = this.currentHisTreatment.TDL_PATIENT_NAME,
-                    //    PatientDateOfBirth = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this.currentHisTreatment.TDL_PATIENT_DOB),
-                    //    PatientCccd = this.currentHisTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentHisTreatment.TDL_PATIENT_CMND_NUMBER,
-                    //    ApplicationCode = guaranteeAppCode
-                    //};
                     if (registerResponse == null || !registerResponse.Success || registerResponse.Data == null)
                     {
                         string errorMsg = registerResponse != null ? registerResponse.Message : "Không có phản hồi từ API RegisterUse";
@@ -4032,16 +4026,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     dataInput.availableBalanceInfoRequest = new AvailableBalanceInfoRequest
                     {
                         RequestId = registerResponse.Data.RequestId,
-                        PatientFullName = this.currentHisTreatment.TDL_PATIENT_NAME,
+                        PatientFullName = this.currentHisTreatment.TDL_PATIENT_NAME.Trim(),
                         PatientDateOfBirth = this.currentHisTreatment.TDL_PATIENT_DOB.ToString(),
                         PatientCccd = this.currentHisTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentHisTreatment.TDL_PATIENT_CMND_NUMBER,
                         ApplicationCode = guaranteeAppCode,
                         Remark = "Tra cứu hạn mức bảo lãnh"
                     };
                     AvailableBalanceInfoResponse balanceInfoResponse = new AvailableBalanceInfoResponse();
-                    Inventec.Common.Logging.LogSystem.Debug("INPUT API GuaranteeAvailableBalanceInfoResponse qtcode" + Inventec.Common.Logging.LogUtil.TraceData("DataA", dataInput));
                     balanceInfoResponse = medicalExpenseGuarantee.GuaranteeAvailableBalanceInfoResponse(dataInput);
-                    Inventec.Common.Logging.LogSystem.Debug("outNPUT API GuaranteeAvailableBalanceInfoResponse qtcode" + Inventec.Common.Logging.LogUtil.TraceData("DataA", dataInput));
                     if (balanceInfoResponse != null && balanceInfoResponse.Success == true)
                     {
                         this.guaranteeInfo = new GuaranteeInfoADO
@@ -4086,13 +4078,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         this.Invoke(new MethodInvoker(delegate
                         {
-                            lblGuarantee.Text = Inventec.Common.Number.Convert.NumberToString(guaranteeInfo.GUARANTEE_REGISTER, ConfigApplications.NumberSeperator);
+                            lblGuarantee.Text = Inventec.Common.Number.Convert.NumberToString(guaranteeInfo.GUARANTEE_BALANCE, ConfigApplications.NumberSeperator);
                             lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                         }));
                     }
                     else
                     {
-                        lblGuarantee.Text = Inventec.Common.Number.Convert.NumberToString(guaranteeInfo.GUARANTEE_REGISTER, ConfigApplications.NumberSeperator);
+                        lblGuarantee.Text = Inventec.Common.Number.Convert.NumberToString(guaranteeInfo.GUARANTEE_BALANCE, ConfigApplications.NumberSeperator);
                         lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     }
                 }
@@ -4141,9 +4133,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //}
 
                 decimal totalGuarantee;
-                if (decimal.TryParse(lblTotalGuarantee.Text, out totalGuarantee) && totalGuarantee > this.guaranteeInfo.GUARANTEE_REGISTER)
+                if (decimal.TryParse(lblTotalGuarantee.Text, out totalGuarantee) && totalGuarantee > this.guaranteeInfo.GUARANTEE_BALANCE)
                 {
-                    message = "Tổng tiền dịch vụ đã vượt hạn mức vui lòng kiểm tra lại.";
+                    message = "Tổng tiền dịch vụ đã vượt hạn mức bảo lãnh, vui lòng kiểm tra lại.";
                     return false;
                 }
 
@@ -4182,6 +4174,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("qtcode UpdateTotalGuaranteePrice");
                 if (this.InvokeRequired)
                 {
                     this.Invoke(new Action(UpdateTotalGuaranteePrice));
@@ -4304,8 +4297,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 LogSystem.Error(ex);
             }
+            if (this.ssGuarantee.Count == 0)
+            {
+                CommonParam param = new CommonParam();
+                HisSereServFilter hisSereServFilter = new HisSereServFilter();
+                hisSereServFilter.TREATMENT_ID = this.treatmentId;
+                //hisSereServFilter.PATIENT_TYPE_ID = HisConfigCFG.PatientTypeId__BHYT;
+                this.ssGuarantee = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, hisSereServFilter, param);
+            }
+            //var totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.PRICE) : 0;
 
-            var totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.PRICE) : 0;
+            var totalGuaranteeOriginal = this.ssGuarantee != null ? this.ssGuarantee.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.PRICE) : 0;
             totalGuaranteePrice += totalGuaranteeOriginal;
             return totalGuaranteePrice;
         }
