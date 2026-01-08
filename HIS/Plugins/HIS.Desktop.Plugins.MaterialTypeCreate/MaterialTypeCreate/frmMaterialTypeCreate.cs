@@ -1182,6 +1182,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 UpdateHeinServiceType(materialType.HIS_SERVICE);
 
                 materialType.HIS_SERVICE.SERVICE_UNIT_ID = Inventec.Common.TypeConvert.Parse.ToInt64((cboServiceUnit.EditValue ?? "").ToString());
+                materialType.SUPPLIER_IDS = GetSelectedSupplierIds();
 
                 if (txtHeinLimitPrice.EditValue != null)
                 {
