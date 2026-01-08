@@ -4390,10 +4390,13 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 var use = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.DataInput();
                 string remark = "Thanh toán viện phí cho bệnh nhân " + currentTreatment?.TDL_PATIENT_NAME;
 
-                use.baseUri = p[0];
+                use.hasUri = p[0].Split(';')[0];
+                use.acsUri = p[0].Split(';')[1];
+                use.username = p[1].Split(':')[1];
+                use.password = p[1].Split(':')[2];
                 use.applicationCode = p[1].Split(':')[0];
                 use.limet = p[2];
-                use.cskcbbd = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE; ;
+                use.cskcbbd = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE; 
 
                 use.useRequest = new Library.MedicalExpenseGuarantee.ADO.UseRequest();
                 use.useRequest.RequestId = currentTreatment?.GUARANTEE_REQUEST_CODE;
@@ -4403,6 +4406,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 use.useRequest.PatientFullName = currentTreatment?.TDL_PATIENT_NAME;
                 use.useRequest.PatientDateOfBirth = currentTreatment?.TDL_PATIENT_DOB.ToString();
                 use.useRequest.PatientCccd = currentTreatment?.TDL_PATIENT_CCCD_NUMBER;
+                use.useRequest.HospitalCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
                 var res = form.GuaranteeUse(use);
                 if (res?.Success == true && res.Data?.Data != null)
                 {
@@ -4417,7 +4421,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 else
                 {
                     WaitingManager.Hide();
-                    XtraMessageBox.Show("Bảo lãnh viện phí thất bại.", "Thông báo");
+                    MessageBox.Show("Bảo lãnh viện phí thất bại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     e.Cancel = true;
                 }
                 WaitingManager.Hide();
