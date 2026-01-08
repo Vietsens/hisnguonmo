@@ -50,7 +50,6 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UcDeathInformationList));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -80,6 +79,8 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn25 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn24 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -93,7 +94,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -173,9 +174,9 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerRefreshForm = new System.Windows.Forms.Timer(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.timerRefreshForm = new System.Windows.Forms.Timer();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -269,7 +270,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1135, 722);
+            this.layoutControl1.Size = new System.Drawing.Size(1135, 654);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -280,15 +281,15 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControl3.Location = new System.Drawing.Point(235, 2);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(898, 718);
+            this.layoutControl3.Size = new System.Drawing.Size(898, 650);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // ucPaging
             // 
-            this.ucPaging.Location = new System.Drawing.Point(2, 672);
+            this.ucPaging.Location = new System.Drawing.Point(2, 608);
             this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(894, 44);
+            this.ucPaging.Size = new System.Drawing.Size(894, 40);
             this.ucPaging.TabIndex = 5;
             // 
             // gridControl1
@@ -299,7 +300,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemButtonEdit1});
-            this.gridControl1.Size = new System.Drawing.Size(894, 666);
+            this.gridControl1.Size = new System.Drawing.Size(894, 602);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -318,6 +319,8 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn10,
             this.gridColumn11,
             this.gridColumn15,
+            this.gridColumn25,
+            this.gridColumn24,
             this.gridColumn12,
             this.gridColumn13,
             this.gridColumn14,
@@ -369,7 +372,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 3;
-            this.gridColumn4.Width = 95;
+            this.gridColumn4.Width = 83;
             // 
             // gridColumn20
             // 
@@ -379,7 +382,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn20.OptionsColumn.AllowEdit = false;
             this.gridColumn20.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 21;
+            this.gridColumn20.VisibleIndex = 23;
             this.gridColumn20.Width = 150;
             // 
             // gridColumn5
@@ -391,7 +394,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 4;
-            this.gridColumn5.Width = 106;
+            this.gridColumn5.Width = 93;
             // 
             // gridColumn6
             // 
@@ -402,7 +405,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 5;
-            this.gridColumn6.Width = 100;
+            this.gridColumn6.Width = 91;
             // 
             // gridColumn7
             // 
@@ -413,7 +416,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 6;
-            this.gridColumn7.Width = 182;
+            this.gridColumn7.Width = 169;
             // 
             // gridColumn8
             // 
@@ -445,7 +448,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
             this.gridColumn10.VisibleIndex = 9;
-            this.gridColumn10.Width = 194;
+            this.gridColumn10.Width = 136;
             // 
             // gridColumn11
             // 
@@ -469,6 +472,24 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn15.VisibleIndex = 11;
             this.gridColumn15.Width = 110;
             // 
+            // gridColumn25
+            // 
+            this.gridColumn25.Caption = "Mã ICD";
+            this.gridColumn25.FieldName = "ICD_CODE";
+            this.gridColumn25.Name = "gridColumn25";
+            this.gridColumn25.Visible = true;
+            this.gridColumn25.VisibleIndex = 12;
+            this.gridColumn25.Width = 66;
+            // 
+            // gridColumn24
+            // 
+            this.gridColumn24.Caption = "Chẩn đoán chính";
+            this.gridColumn24.FieldName = "ICD_NAME";
+            this.gridColumn24.Name = "gridColumn24";
+            this.gridColumn24.Visible = true;
+            this.gridColumn24.VisibleIndex = 13;
+            this.gridColumn24.Width = 150;
+            // 
             // gridColumn12
             // 
             this.gridColumn12.Caption = "Khoa";
@@ -476,7 +497,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.OptionsColumn.AllowEdit = false;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 12;
+            this.gridColumn12.VisibleIndex = 14;
             this.gridColumn12.Width = 130;
             // 
             // gridColumn13
@@ -487,7 +508,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 13;
+            this.gridColumn13.VisibleIndex = 15;
             this.gridColumn13.Width = 130;
             // 
             // gridColumn14
@@ -498,7 +519,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 14;
+            this.gridColumn14.VisibleIndex = 16;
             this.gridColumn14.Width = 130;
             // 
             // gridColumn2
@@ -509,7 +530,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 15;
+            this.gridColumn2.VisibleIndex = 17;
             this.gridColumn2.Width = 100;
             // 
             // gridColumn3
@@ -520,7 +541,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 16;
+            this.gridColumn3.VisibleIndex = 18;
             this.gridColumn3.Width = 110;
             // 
             // gridColumn18
@@ -531,7 +552,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn18.OptionsColumn.AllowEdit = false;
             this.gridColumn18.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn18.Visible = true;
-            this.gridColumn18.VisibleIndex = 17;
+            this.gridColumn18.VisibleIndex = 19;
             this.gridColumn18.Width = 100;
             // 
             // gridColumn23
@@ -540,7 +561,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn23.FieldName = "DEATH_IDENTITY_NUMBER";
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 18;
+            this.gridColumn23.VisibleIndex = 20;
             this.gridColumn23.Width = 150;
             // 
             // gridColumn16
@@ -551,7 +572,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn16.OptionsColumn.AllowEdit = false;
             this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 19;
+            this.gridColumn16.VisibleIndex = 21;
             this.gridColumn16.Width = 130;
             // 
             // gridColumn17
@@ -561,8 +582,8 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn17.Name = "gridColumn17";
             this.gridColumn17.OptionsColumn.AllowEdit = false;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 20;
-            this.gridColumn17.Width = 150;
+            this.gridColumn17.VisibleIndex = 22;
+            this.gridColumn17.Width = 193;
             // 
             // gridColumn19
             // 
@@ -573,7 +594,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn19.OptionsColumn.ShowCaption = false;
             this.gridColumn19.Visible = true;
             this.gridColumn19.VisibleIndex = 2;
-            this.gridColumn19.Width = 40;
+            this.gridColumn19.Width = 30;
             // 
             // repositoryItemButtonEdit1
             // 
@@ -591,8 +612,8 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 22;
-            this.gridColumn21.Width = 150;
+            this.gridColumn21.VisibleIndex = 24;
+            this.gridColumn21.Width = 176;
             // 
             // gridColumn22
             // 
@@ -601,7 +622,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 23;
+            this.gridColumn22.VisibleIndex = 25;
             this.gridColumn22.Width = 150;
             // 
             // barManager1
@@ -657,7 +678,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 751);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 683);
             this.barDockControlBottom.Size = new System.Drawing.Size(1135, 0);
             // 
             // barDockControlLeft
@@ -665,14 +686,14 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 722);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 654);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1135, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 722);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 654);
             // 
             // layoutControlGroup2
             // 
@@ -683,7 +704,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem15});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(898, 718);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(898, 650);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem14
@@ -691,16 +712,16 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem14.Control = this.gridControl1;
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(898, 670);
+            this.layoutControlItem14.Size = new System.Drawing.Size(898, 606);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.ucPaging;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 670);
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 606);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(898, 48);
+            this.layoutControlItem15.Size = new System.Drawing.Size(898, 44);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
@@ -718,13 +739,13 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControl2.Location = new System.Drawing.Point(2, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(229, 718);
+            this.layoutControl2.Size = new System.Drawing.Size(229, 650);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // btnDongBoCTV
             // 
-            this.btnDongBoCTV.Location = new System.Drawing.Point(2, 668);
+            this.btnDongBoCTV.Location = new System.Drawing.Point(2, 600);
             this.btnDongBoCTV.Name = "btnDongBoCTV";
             this.btnDongBoCTV.Size = new System.Drawing.Size(121, 22);
             this.btnDongBoCTV.StyleController = this.layoutControl2;
@@ -735,7 +756,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // 
             // chkSignFileCertUtil
             // 
-            this.chkSignFileCertUtil.Location = new System.Drawing.Point(127, 642);
+            this.chkSignFileCertUtil.Location = new System.Drawing.Point(127, 574);
             this.chkSignFileCertUtil.MenuManager = this.barManager1;
             this.chkSignFileCertUtil.Name = "chkSignFileCertUtil";
             this.chkSignFileCertUtil.Properties.AllowFocused = false;
@@ -748,7 +769,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // btnDongBo
             // 
             this.btnDongBo.Enabled = false;
-            this.btnDongBo.Location = new System.Drawing.Point(2, 642);
+            this.btnDongBo.Location = new System.Drawing.Point(2, 574);
             this.btnDongBo.Name = "btnDongBo";
             this.btnDongBo.Size = new System.Drawing.Size(121, 22);
             this.btnDongBo.StyleController = this.layoutControl2;
@@ -771,7 +792,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(127, 694);
+            this.btnRefresh.Location = new System.Drawing.Point(127, 626);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(100, 22);
             this.btnRefresh.StyleController = this.layoutControl2;
@@ -782,7 +803,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(2, 694);
+            this.btnSearch.Location = new System.Drawing.Point(2, 626);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(121, 22);
             this.btnSearch.StyleController = this.layoutControl2;
@@ -810,7 +831,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.navBarControl1.Location = new System.Drawing.Point(2, 74);
             this.navBarControl1.Name = "navBarControl1";
             this.navBarControl1.OptionsNavPane.ExpandedWidth = 225;
-            this.navBarControl1.Size = new System.Drawing.Size(225, 564);
+            this.navBarControl1.Size = new System.Drawing.Size(225, 496);
             this.navBarControl1.TabIndex = 8;
             this.navBarControl1.Text = "navBarControl1";
             // 
@@ -1355,7 +1376,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.emptySpaceItem1});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(229, 718);
+            this.Root.Size = new System.Drawing.Size(229, 650);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem5
@@ -1381,14 +1402,14 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem7.Control = this.navBarControl1;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(229, 568);
+            this.layoutControlItem7.Size = new System.Drawing.Size(229, 500);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.btnSearch;
-            this.layoutControlItem12.Location = new System.Drawing.Point(0, 692);
+            this.layoutControlItem12.Location = new System.Drawing.Point(0, 624);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Size = new System.Drawing.Size(125, 26);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
@@ -1397,7 +1418,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.btnRefresh;
-            this.layoutControlItem13.Location = new System.Drawing.Point(125, 692);
+            this.layoutControlItem13.Location = new System.Drawing.Point(125, 624);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Size = new System.Drawing.Size(104, 26);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
@@ -1415,7 +1436,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnDongBo;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 640);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 572);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(125, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -1424,7 +1445,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.chkSignFileCertUtil;
-            this.layoutControlItem18.Location = new System.Drawing.Point(125, 640);
+            this.layoutControlItem18.Location = new System.Drawing.Point(125, 572);
             this.layoutControlItem18.Name = "layoutControlItem18";
             this.layoutControlItem18.Size = new System.Drawing.Size(104, 26);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
@@ -1433,7 +1454,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // layoutControlItem23
             // 
             this.layoutControlItem23.Control = this.btnDongBoCTV;
-            this.layoutControlItem23.Location = new System.Drawing.Point(0, 666);
+            this.layoutControlItem23.Location = new System.Drawing.Point(0, 598);
             this.layoutControlItem23.Name = "layoutControlItem23";
             this.layoutControlItem23.Size = new System.Drawing.Size(125, 26);
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
@@ -1442,7 +1463,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(125, 666);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(125, 598);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(104, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -1456,7 +1477,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem2});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1135, 722);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1135, 654);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -1464,7 +1485,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem1.Control = this.layoutControl2;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(233, 722);
+            this.layoutControlItem1.Size = new System.Drawing.Size(233, 654);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -1473,7 +1494,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.layoutControlItem2.Control = this.layoutControl3;
             this.layoutControlItem2.Location = new System.Drawing.Point(233, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(902, 722);
+            this.layoutControlItem2.Size = new System.Drawing.Size(902, 654);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -1495,7 +1516,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Name = "UcDeathInformationList";
-            this.Size = new System.Drawing.Size(1135, 751);
+            this.Size = new System.Drawing.Size(1135, 683);
             this.Load += new System.EventHandler(this.UcDeathInformationList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -1699,5 +1720,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private System.Windows.Forms.BindingSource bindingSource1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn23;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn25;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn24;
     }
 }

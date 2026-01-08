@@ -144,17 +144,17 @@
   <data name="UcDeathInformationList.btnSearch.Text" xml:space="preserve">
     <value>Find (Ctrl F)</value>
   </data>
-  <data name="UcDeathInformationList.cboDeathCaseSyncResult.Properties.3" xml:space="preserve">
-    <value>Success</value>
-  </data>
-  <data name="UcDeathInformationList.cboDeathCaseSyncResult.Properties.4" xml:space="preserve">
-    <value>Failure</value>
-  </data>
   <data name="UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.1" xml:space="preserve">
     <value>All</value>
   </data>
   <data name="UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.2" xml:space="preserve">
     <value>Unsynchronized</value>
+  </data>
+  <data name="UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.3" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.4" xml:space="preserve">
+    <value>Failure</value>
   </data>
   <data name="UcDeathInformationList.cboSYNC_RESULT_TYPE.Properties.1" xml:space="preserve">
     <value>All</value>
@@ -170,6 +170,12 @@
   </data>
   <data name="UcDeathInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
     <value>Digitally sign using USB token</value>
+  </data>
+  <data name="UcDeathInformationList.chkTreatmentEndType.Properties.Caption" xml:space="preserve">
+    <value>Discharged from hospital and died</value>
+  </data>
+  <data name="UcDeathInformationList.chkTreatmentResult.Properties.Caption" xml:space="preserve">
+    <value>Result of death</value>
   </data>
   <data name="UcDeathInformationList.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>
@@ -204,9 +210,6 @@
   <data name="UcDeathInformationList.gridColumn18.Caption" xml:space="preserve">
     <value>Issued by</value>
   </data>
-  <data name="UcDeathInformationList.gridColumn19.Caption" xml:space="preserve">
-    <value />
-  </data>
   <data name="UcDeathInformationList.gridColumn2.Caption" xml:space="preserve">
     <value>Number of shoes</value>
   </data>
@@ -218,6 +221,15 @@
   </data>
   <data name="UcDeathInformationList.gridColumn22.Caption" xml:space="preserve">
     <value>Death Sync Reason</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn23.Caption" xml:space="preserve">
+    <value>Identifier</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn24.Caption" xml:space="preserve">
+    <value>Primary diagnosis</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn25.Caption" xml:space="preserve">
+    <value>ICD code</value>
   </data>
   <data name="UcDeathInformationList.gridColumn3.Caption" xml:space="preserve">
     <value>Date Range</value>
@@ -258,6 +270,21 @@
   <data name="UcDeathInformationList.layoutControl6.Text" xml:space="preserve">
     <value>layoutControl6</value>
   </data>
+  <data name="UcDeathInformationList.layoutControl7.Text" xml:space="preserve">
+    <value>layoutControl7</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControl8.Text" xml:space="preserve">
+    <value>layoutControl8</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControl9.Text" xml:space="preserve">
+    <value>layoutControl9</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControlItem3.Text" xml:space="preserve">
+    <value>From:</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControlItem4.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
   <data name="UcDeathInformationList.layoutControlItem8.Text" xml:space="preserve">
     <value>From:</value>
   </data>
@@ -275,6 +302,15 @@
   </data>
   <data name="UcDeathInformationList.navBarGroup3.Caption" xml:space="preserve">
     <value>Department ends treatment</value>
+  </data>
+  <data name="UcDeathInformationList.navBarGroup4.Caption" xml:space="preserve">
+    <value>Date of issue</value>
+  </data>
+  <data name="UcDeathInformationList.navBarGroup5.Caption" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="UcDeathInformationList.navBarGroup6.Caption" xml:space="preserve">
+    <value>Status of deaths</value>
   </data>
   <data name="UcDeathInformationList.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Patient code</value>

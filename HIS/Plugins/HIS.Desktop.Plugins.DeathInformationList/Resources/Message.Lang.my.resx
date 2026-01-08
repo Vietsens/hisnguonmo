@@ -118,12 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="KhongLayDuocChungThu" xml:space="preserve">
-    <value>The certificate information is not obtained or the certificate is invalid. Do you want to continue with HSM?</value>
+    <value>ပိုင်ဆိုင်မှုအချက်အလက်ကို ရယူ၍မရပါ သို့မဟုတ် စာရွက်စာတမ်းသည် တရားမဝင်ပါ။ HSM နဲ့ ဆက်လုပ်လိုပါသလား။</value>
   </data>
   <data name="KhongLayDuocChungThu2" xml:space="preserve">
-    <value>The certificate information is not obtained or the certificate is invalid.</value>
+    <value>ပိုင်ဆိုင်မှုအချက်အလက်ကို ရယူ၍မရပါ သို့မဟုတ် စာရွက်စာတမ်းသည် တရားမဝင်ပါ။</value>
   </data>
   <data name="SaiDiaChi" xml:space="preserve">
-    <value>Configuring declaration of connection information to synchronize death certificate data with incorrect format</value>
+    <value>သေဆုံးလက်မှတ်ဒေတာကို မမှန်ကန်သောဖော်မတ်ဖြင့် တစ်ပြိုင်တည်းလုပ်ဆောင်ရန် ချိတ်ဆက်မှုအချက်အလက်ကြေညာခြင်းကို ပုံစံသတ်မှတ်ခြင်း။</value>
   </data>
 </root>
