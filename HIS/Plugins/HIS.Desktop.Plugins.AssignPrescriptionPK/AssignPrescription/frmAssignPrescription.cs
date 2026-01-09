@@ -13663,12 +13663,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         lstICD.AddRange(txtIcdCodeCause.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                     }
 
-                    check = service.ShowDialog(lstDrugItem, lstICD);
-                }
-
-                if (check)
-                {
-
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, VHistreatment.ID, this.serviceReqMain.ID, VHistreatment.PATIENT_ID);
                 }
 
                 return check;
