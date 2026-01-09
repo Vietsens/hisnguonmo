@@ -99,10 +99,14 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         private decimal totalPrice = 0;
         private decimal transferAmount = 0;
 
+        private const string CFG__AUTO_LOAD_ORG_AND_TAX_BY_PATIENT = "HIS.Desktop.Plugins.TransactionBill.AutoLoadOrgAndTaxCodeByPatient";
+
         public frmMedicineSaleBill()
         {
             InitializeComponent();
         }
+
+        
 
         public frmMedicineSaleBill(Inventec.Desktop.Common.Modules.Module module,
             List<long> expMestIds, DelegateSelectData _delegateSelectData, V_HIS_TRANSACTION _OriginalTransaction)
@@ -999,7 +1003,33 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool IsAutoLoadOrgAndTaxCodeByPatient()
+        {
+            try
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CFG__AUTO_LOAD_ORG_AND_TAX_BY_PATIENT) == "1";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
 
+        private HIS_WORK_PLACE GetWorkPlaceById(long id)
+        {
+            try
+            {
+                var filter = new HisWorkPlaceFilter { ID = id };
+                var list = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, filter, null);
+                return list != null ? list.FirstOrDefault() : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
+            }
+        }
         private void SetBuyerInfo()
         {
             try
@@ -1030,6 +1060,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
                 // Kiểm tra null cho currentTreatment
                 long? feeWorkPlaceId = currentTreatment?.TDL_PATIENT_WORK_PLACE_ID;
+                bool autoLoadOrgTax = IsAutoLoadOrgAndTaxCodeByPatient();
 
                 // Cá nhân
                 if (rdoCaNhan.Checked)
@@ -1074,36 +1105,38 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
                     txtEmail.Text = GetPatientEmail(expMest.TDL_PATIENT_ID ?? 0) ?? "";
 
-                    if (feeWorkPlaceId != null)
+                    if (autoLoadOrgTax)
                     {
-                        var workPlaceFilter = new HisWorkPlaceFilter { ID = feeWorkPlaceId.Value };
-                        var workPlaces = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, workPlaceFilter, null);
-                        var workPlaceOfFee = workPlaces?.FirstOrDefault();
-                        cboBuyerOrganization.EditValue = workPlaceOfFee?.ID;
-                    }
-
-                    if (!string.IsNullOrEmpty(currentTreatment?.TDL_PATIENT_TAX_CODE))
-                    {
-                        txtBuyerTaxCode1.Text = currentTreatment.TDL_PATIENT_TAX_CODE;
-                    }
-
-                    if (cboBuyerOrganization.EditValue != null)
-                    {
-                        long id;
-                        if (long.TryParse(cboBuyerOrganization.EditValue.ToString(), out id))
+                        // Combobox “Đơn vị” theo nơi làm việc của người bệnh (TDL_PATIENT_WORK_PLACE_ID)
+                        if (feeWorkPlaceId.HasValue)
                         {
-                            var filter = new HisWorkPlaceFilter { ID = id };
-                            var list = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, filter, null);
-                            var workPlaceBuyer = list?.FirstOrDefault();
-                            if (workPlaceBuyer != null && !string.IsNullOrEmpty(workPlaceBuyer.TAX_CODE) && string.IsNullOrEmpty(txtBuyerTaxCode1.Text))
-                            {
-                                txtBuyerTaxCode1.Text = workPlaceBuyer.TAX_CODE;
-                            }
-                            if (workPlaceBuyer != null && !string.IsNullOrEmpty(workPlaceBuyer.BUD_REL_UNIT_CODE) && string.IsNullOrEmpty(txtBudRelUnitCode.Text))
-                            {
-                                txtBudRelUnitCode.Text = workPlaceBuyer.BUD_REL_UNIT_CODE;
-                            }
+                            cboBuyerOrganization.EditValue = feeWorkPlaceId.Value;
                         }
+                        else
+                        {
+                            cboBuyerOrganization.EditValue = null;
+                        }
+
+                        // Textbox “Mã số thuế”: ưu tiên MST của người bệnh, nếu không có thì lấy MST của đơn vị
+                        if (!string.IsNullOrEmpty(currentTreatment?.TDL_PATIENT_TAX_CODE))
+                        {
+                            txtBuyerTaxCode1.Text = currentTreatment.TDL_PATIENT_TAX_CODE;
+                        }
+                        else if (feeWorkPlaceId.HasValue)
+                        {
+                            var wp = GetWorkPlaceById(feeWorkPlaceId.Value);
+                            txtBuyerTaxCode1.Text = wp != null ? (wp.TAX_CODE ?? "") : "";
+                        }
+                        else
+                        {
+                            txtBuyerTaxCode1.Text = "";
+                        }
+                    }
+                    else
+                    {
+                        // Không auto-load: để trống cho người dùng tự chọn/nhập
+                        cboBuyerOrganization.EditValue = null;
+                        txtBuyerTaxCode1.Text = "";
                     }
                 }
                 // Cơ quan
@@ -1119,31 +1152,15 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         txtBuyerOrganization1.Visible = false;
                         cboBuyerOrganization1.Visible = true;
 
-                        if (feeWorkPlaceId != null)
+                        if (autoLoadOrgTax)
                         {
-                            var workPlaceFilter = new HisWorkPlaceFilter { ID = feeWorkPlaceId.Value };
-                            var workPlaces = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, workPlaceFilter, null);
-                            var workPlaceOfFee = workPlaces?.FirstOrDefault();
-                            cboBuyerOrganization1.EditValue = workPlaceOfFee?.ID;
+                            // Combobox “Đơn vị” theo nơi làm việc bệnh nhân, ngược lại để trống
+                            cboBuyerOrganization1.EditValue = feeWorkPlaceId.HasValue ? (object)feeWorkPlaceId.Value : null;
                         }
-                    }
-
-                    if (cboBuyerOrganization1.EditValue != null)
-                    {
-                        long id;
-                        if (long.TryParse(cboBuyerOrganization1.EditValue.ToString(), out id))
+                        else
                         {
-                            var filter = new HisWorkPlaceFilter { ID = id };
-                            var list = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, filter, null);
-                            var workPlaceBuyer = list?.FirstOrDefault();
-                            if (workPlaceBuyer != null && !string.IsNullOrEmpty(workPlaceBuyer.TAX_CODE) && string.IsNullOrEmpty(txtBuyerTaxCode.Text))
-                            {
-                                txtBuyerTaxCode.Text = workPlaceBuyer.TAX_CODE;
-                            }
-                            if (workPlaceBuyer != null && !string.IsNullOrEmpty(workPlaceBuyer.BUD_REL_UNIT_CODE) && string.IsNullOrEmpty(txtBudRelUnitCode1.Text))
-                            {
-                                txtBudRelUnitCode1.Text = workPlaceBuyer.BUD_REL_UNIT_CODE;
-                            }
+                            // Không auto-load: để trống cho người dùng tự chọn
+                            cboBuyerOrganization1.EditValue = null;
                         }
                     }
 
@@ -3153,25 +3170,28 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             {
                 if (cboBuyerOrganization.EditValue == null) return;
                 long id = Convert.ToInt64(cboBuyerOrganization.EditValue);
-                var filter = new HisWorkPlaceFilter { ID = id };
-                var list = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, filter, null);
-                var workPlace = list?.FirstOrDefault();
-                if (workPlace.TAX_CODE != null)
+                var workPlace = GetWorkPlaceById(id);
+                if (workPlace != null)
                 {
-                    txtBuyerTaxCode1.Text = workPlace.TAX_CODE;
+                    // Khi người dùng chọn lại đơn vị: nếu có MST thì luôn load theo đơn vị
+                    if (!string.IsNullOrEmpty(workPlace.TAX_CODE))
+                    {
+                        txtBuyerTaxCode1.Text = workPlace.TAX_CODE;
+                    }
+                    else
+                    {
+                        txtBuyerTaxCode1.Text = "";
+                    }
+
+                    if (!string.IsNullOrEmpty(workPlace.BUD_REL_UNIT_CODE))
+                    {
+                        txtBudRelUnitCode.Text = workPlace.BUD_REL_UNIT_CODE;
+                    }
+                    else
+                    {
+                        txtBudRelUnitCode.Text = "";
+                    }
                 }
-                else if(workPlace.TAX_CODE == null)
-                {
-                    txtBuyerTaxCode1.Text = "";
-                }
-                if (workPlace != null && !string.IsNullOrEmpty(workPlace.BUD_REL_UNIT_CODE))
-                {
-                    txtBudRelUnitCode.Text = workPlace.BUD_REL_UNIT_CODE;
-                }
-                else if (workPlace.BUD_REL_UNIT_CODE == null)
-                {
-                    txtBudRelUnitCode.Text = "";
-                }    
             }
             catch (Exception ex)    
             {
@@ -3217,24 +3237,26 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             {
                 if (cboBuyerOrganization1.EditValue == null) return;
                 long id = Convert.ToInt64(cboBuyerOrganization1.EditValue);
-                var filter = new HisWorkPlaceFilter { ID = id };
-                var list = new BackendAdapter(new CommonParam()).Get<List<HIS_WORK_PLACE>>("api/HisWorkPlace/Get", ApiConsumers.MosConsumer, filter, null);
-                var workPlace = list?.FirstOrDefault();
-                if (workPlace.TAX_CODE != null)
+                var workPlace = GetWorkPlaceById(id);
+                if (workPlace != null)
                 {
-                    txtBuyerTaxCode.Text = workPlace.TAX_CODE;
-                }
-                else if (workPlace.TAX_CODE == null)
-                {
-                    txtBuyerTaxCode.Text = "";
-                }
-                if (workPlace != null && !string.IsNullOrEmpty(workPlace.BUD_REL_UNIT_CODE))
-                {
-                    txtBudRelUnitCode1.Text = workPlace.BUD_REL_UNIT_CODE;
-                }
-                else if (workPlace.BUD_REL_UNIT_CODE == null)
-                {
-                    txtBudRelUnitCode1.Text = "";
+                    if (!string.IsNullOrEmpty(workPlace.TAX_CODE))
+                    {
+                        txtBuyerTaxCode.Text = workPlace.TAX_CODE;
+                    }
+                    else
+                    {
+                        txtBuyerTaxCode.Text = "";
+                    }
+
+                    if (!string.IsNullOrEmpty(workPlace.BUD_REL_UNIT_CODE))
+                    {
+                        txtBudRelUnitCode1.Text = workPlace.BUD_REL_UNIT_CODE;
+                    }
+                    else
+                    {
+                        txtBudRelUnitCode1.Text = "";
+                    }
                 }
             }
             catch (Exception ex)
