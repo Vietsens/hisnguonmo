@@ -76,6 +76,7 @@
     <Compile Include="Core\MimsResponseTransformer.cs" />
     <Compile Include="Core\MimsResultDetailParser.cs" />
     <Compile Include="Models\ActiveMedication.cs" />
+    <Compile Include="Models\AlertSeverity.cs" />
     <Compile Include="Models\AllergyItem.cs" />
     <Compile Include="Models\DrugAllergyAlertDetail.cs" />
     <Compile Include="Models\DrugHealthAlertDetail.cs" />

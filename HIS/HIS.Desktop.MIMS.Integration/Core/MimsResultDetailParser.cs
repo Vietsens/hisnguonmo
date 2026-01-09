@@ -110,7 +110,11 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     detail.InteractingDrugReference = (molecule != null && molecule.Attribute("reference") != null) ? (string)molecule.Attribute("reference") : secondaryDrugRef;
                     detail.PrescribingClassName = prescribingClass != null ? (string)prescribingClass.Attribute("name") : null;
                     detail.InteractingClassName = interactionClass != null ? (string)interactionClass.Attribute("name") : null;
-                    detail.Severity = (string)ci.Element("Severity");
+
+                    var severityText = (string)ci.Element("Severity");
+                    detail.Severity = severityText;
+                    detail.SeverityLevel = ParseDrugInteractionSeverity(severityText);
+
                     detail.Likelihood = (string)ci.Element("Likelihood");
                     detail.Documentation = (string)ci.Element("Documentation");
                     detail.ProfessionalText = (ci.Element("Interaction") != null && ci.Element("Interaction").Element("Professional") != null) ? (string)ci.Element("Interaction").Element("Professional") : null;
@@ -269,7 +273,16 @@ namespace HIS.Desktop.MIMS.Integration.Core
                                 detail.PrescribingClassName = prescribingClass != null ? (string)prescribingClass.Attribute("name") : null;
                                 detail.PrescribingClassDescription = prescribingClass != null ? (string)prescribingClass.Attribute("description") : null;
                                 detail.PrescribingMoleculeName = (prescribingClass != null && prescribingClass.Element("PrescribingMolecule") != null) ? (string)prescribingClass.Element("PrescribingMolecule").Attribute("name") : null;
-                                detail.Severity = severityElem != null ? ((string)severityElem.Attribute("name") != null ? (string)severityElem.Attribute("name") : severityElem.Value) : null;
+
+                                string severityText = null;
+                                if (severityElem != null)
+                                {
+                                    var nameAttr = (string)severityElem.Attribute("name");
+                                    severityText = !string.IsNullOrEmpty(nameAttr) ? nameAttr : severityElem.Value;
+                                }
+                                detail.Severity = severityText;
+                                detail.SeverityLevel = ParseDrugHealthSeverity(severityText);
+
                                 detail.Likelihood = likelihoodElem != null ? ((string)likelihoodElem.Attribute("name") != null ? (string)likelihoodElem.Attribute("name") : likelihoodElem.Value) : null;
                                 detail.Documentation = documentationElem != null ? ((string)documentationElem.Attribute("name") != null ? (string)documentationElem.Attribute("name") : documentationElem.Value) : null;
                                 detail.ProfessionalText = (interactionElem != null && interactionElem.Element("Professional") != null) ? (string)interactionElem.Element("Professional") : null;
@@ -348,6 +361,43 @@ namespace HIS.Desktop.MIMS.Integration.Core
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return null;
+            }
+        }
+        private static DrugInteractionSeverity ParseDrugInteractionSeverity(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return DrugInteractionSeverity.Unknown;
+
+            var normalized = value.Trim().ToLowerInvariant();
+            switch (normalized)
+            {
+                case "severe":
+                    return DrugInteractionSeverity.Severe;
+                case "moderate":
+                    return DrugInteractionSeverity.Moderate;
+                case "minor":
+                    return DrugInteractionSeverity.Minor;
+                case "caution":
+                    return DrugInteractionSeverity.Caution;
+                default:
+                    return DrugInteractionSeverity.Unknown;
+            }
+        }
+
+        private static DrugHealthSeverity ParseDrugHealthSeverity(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return DrugHealthSeverity.Unknown;
+
+            var normalized = value.Trim().ToLowerInvariant();
+            switch (normalized)
+            {
+                case "contraindicated":
+                    return DrugHealthSeverity.Contraindicated;
+                case "extreme caution":
+                    return DrugHealthSeverity.ExtremeCaution;
+                default:
+                    return DrugHealthSeverity.Unknown;
             }
         }
     }

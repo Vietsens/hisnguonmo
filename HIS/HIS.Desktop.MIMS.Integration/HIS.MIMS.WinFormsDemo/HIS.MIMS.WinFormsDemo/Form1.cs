@@ -108,10 +108,8 @@ namespace HIS.MIMS.WinFormsDemo
             icdcodes.Add("R00.1");
 
             var service = new DrugHealthService();
-            var isContinue = service.ShowDialog(current, icdcodes);
-            if (isContinue)
-            {
-            }
+            service.ShowDialog(current, icdcodes);
+            //var isContinue = service.ShowDialog(current, icdcodes);
         }
     }
 }

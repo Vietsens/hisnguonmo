@@ -74,8 +74,10 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             result.Html = MimsResponseTransformer.XmlToHtml(xmlResponse);
             result.Success = !string.IsNullOrEmpty(result.Html);
 
-            // Parse chi tiết Drug-Health Alert theo Result XML trong tài liệu MIMS.
+            // Parse chi tiết CDS Drug-Health Alert 
             result.DrugHealthAlertDetails = MimsResultDetailParser.ParseDrugHealthAlerts(xmlResponse);
+            // Parse chi tiết CDS Drug–Drug Alert
+            result.DrugDrugAlertDetails = MimsResultDetailParser.ParseDrugDrugAlerts(xmlResponse);
 
             return result;
         }
@@ -85,9 +87,9 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             try
             {
                 MimsResult result = Check(drugs, icd10Codes);
-                if (result.Success 
-                    && (result.DrugHealthAlertDetails != null && result.DrugHealthAlertDetails.Count > 0) 
-                    && (result.DrugDrugAlertDetails != null && result.DrugDrugAlertDetails.Count > 0))
+                if (!result.Success) return true;
+                if ((result.DrugHealthAlertDetails != null && result.DrugHealthAlertDetails.Count > 0 && result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel != DrugHealthSeverity.Unknown))
+                    || (result.DrugDrugAlertDetails != null && result.DrugDrugAlertDetails.Count > 0 && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown)))
                 {
                     return WebViewHelper.ShowDialog(result.Html, NameText);
                 }

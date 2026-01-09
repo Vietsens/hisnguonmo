@@ -69,7 +69,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             result.Html = MimsResponseTransformer.XmlToHtml(xmlResponse);
             result.Success = !string.IsNullOrEmpty(result.Html);
 
-            // Parse chi tiết CDS Drug–Drug Alert (theo mẫu "Drug–Drug Alert" trong Postman)
+            // Parse chi tiết CDS Drug–Drug Alert 
             result.DrugDrugAlertDetails = MimsResultDetailParser.ParseDrugDrugAlerts(xmlResponse);
 
             return result;
