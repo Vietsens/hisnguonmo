@@ -45,17 +45,14 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.dteDiscountToDate = new DevExpress.XtraEditors.DateEdit();
-            this.barManagerShotcut = new DevExpress.XtraBars.BarManager();
+            this.barManagerShotcut = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barBtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.barBtnSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dteDiscountFromDate = new DevExpress.XtraEditors.DateEdit();
             this.btnVentureAgreening = new DevExpress.XtraEditors.SimpleButton();
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
@@ -104,7 +101,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.xtraTabMetyMate = new DevExpress.XtraTab.XtraTabControl();
             this.tabMedicineType = new DevExpress.XtraTab.XtraTabPage();
             this.pnMedicineType = new DevExpress.XtraEditors.PanelControl();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.grdVentureAgreening = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -165,12 +162,16 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.lciConcentra = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderContract = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidationProviderMetyMate = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.dxValidationProviderContract = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProviderMetyMate = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
-            this.dxErrorProviderContract = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxErrorProviderMetyMate = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.dxErrorProviderContract = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxErrorProviderMetyMate = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -370,10 +371,6 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             // 
             this.barManagerShotcut.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManagerShotcut.DockControls.Add(this.barDockControlTop);
-            this.barManagerShotcut.DockControls.Add(this.barDockControlBottom);
-            this.barManagerShotcut.DockControls.Add(this.barDockControlLeft);
-            this.barManagerShotcut.DockControls.Add(this.barDockControlRight);
             this.barManagerShotcut.Form = this;
             this.barManagerShotcut.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnAdd,
@@ -417,34 +414,6 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.bbtnNew.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N));
             this.bbtnNew.Name = "bbtnNew";
             this.bbtnNew.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnNew_ItemClick);
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1320, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 611);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 582);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 582);
             // 
             // dteDiscountFromDate
             // 
@@ -1804,6 +1773,34 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem12.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1320, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 611);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 582);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 582);
             // 
             // dxValidationProviderContract
             // 
