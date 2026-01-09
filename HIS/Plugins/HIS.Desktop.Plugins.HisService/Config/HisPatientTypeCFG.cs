@@ -26,6 +26,23 @@ namespace HIS.Desktop.Plugins.HisService.Config
 {
     class HisPatientTypeCFG
     {
+
+        private static long serviceCodeOption;
+        public static long SERVICE_CODE_OPTION
+        {
+            get
+            {
+                if (serviceCodeOption == 0)
+                {
+                    serviceCodeOption = GetId(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE.SERVICE_CODE_OPTION"));
+                }
+                return serviceCodeOption;
+            }
+            set
+            {
+                serviceCodeOption = value;
+            }
+        }
         private static long patientTypeIdIsFee;
         public static long PATIENT_TYPE_ID__IS_FEE
         {
