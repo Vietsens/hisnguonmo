@@ -208,18 +208,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 }
                 else
                 {
-                    if (availableBalanceInfoResponse.Data.IsValid)
-                    {
-                        Inventec.Common.Logging.LogSystem.Info("GuaranteeAvailableBalanceInfoResponse Success - data: " + availableBalanceInfoResponse.Data);
-                        return availableBalanceInfoResponse;
-                    }
-                    else
-                    {
-                        var errorCode = availableBalanceInfoResponse.Data?.ErrorCode;
-                        var errorDesc = availableBalanceInfoResponse.Data?.ErrorMessage;
-                        Inventec.Common.Logging.LogSystem.Error("API Error - Code: " + errorCode + " Desc: " + errorDesc);
-                        return null;
-                    }
+                    Inventec.Common.Logging.LogSystem.Info("GuaranteeAvailableBalanceInfoResponse Success - data: " + availableBalanceInfoResponse.Data);
+                    return availableBalanceInfoResponse;
                 }
             }
             catch (Exception ex)
@@ -246,6 +236,10 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 else if (string.IsNullOrWhiteSpace(dataUser.Amount))
                 {
                     mess = "Không xác định được số tiền thanh toán (Amount)";
+                }
+                else if (dataUser.Amount == "0" || dataUser.Amount == "")
+                {
+                    mess = "Số tiền không hợp lệ, số tiền dịch vụ phải > 0";
                 }
                 else if (string.IsNullOrWhiteSpace(dataUser.Remark))
                 {
@@ -357,6 +351,10 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.Amount))
                 {
                     mess = "Không xác định được số tiền thanh toán (Amount)";
+                }
+                else if (dataCancelRegisterUse.Amount == "0" || dataCancelRegisterUse.Amount == "")
+                {
+                    mess = "Số tiền không hợp lệ, số tiền dịch vụ phải > 0";
                 }
                 else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.Remark))
                 {
