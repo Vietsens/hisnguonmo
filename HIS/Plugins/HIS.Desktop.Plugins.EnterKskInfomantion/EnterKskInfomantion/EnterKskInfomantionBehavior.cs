@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -40,22 +40,37 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
             try
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
+                string serviceReqCode = null;
 
-                if (entity.GetType() == typeof(object[]))
+                if (entity != null && entity.Length > 0)
                 {
-                    if (entity != null && entity.Count() > 0)
+                    for (int i = 0; i < entity.Length; i++)
                     {
-                        for (int i = 0; i < entity.Count(); i++)
+                        // 1. Lấy module
+                        if (entity[i] is Inventec.Desktop.Common.Modules.Module)
                         {
-                            if (entity[i] is Inventec.Desktop.Common.Modules.Module)
-                            {
-                                moduleData = (Inventec.Desktop.Common.Modules.Module)entity[i];
-                            }
+                            moduleData = (Inventec.Desktop.Common.Modules.Module)entity[i];
+                            continue;
+                        }
+
+                        // 2. Nếu framework truyền thẳng string
+                        if (entity[i] is string)
+                        {
+                            serviceReqCode = entity[i].ToString();
+                            continue;
+                        }
+
+                        // 3. Trường hợp chuẩn của Inventec: List<object>
+                        if (entity[i] is List<object> list && list.Count > 0)
+                        {
+                            var code = list.FirstOrDefault(x => x is string);
+                            if (code != null)
+                                serviceReqCode = code.ToString();
                         }
                     }
                 }
 
-                return new frmEnterKskInfomantion(moduleData);
+                return new frmEnterKskInfomantion(moduleData, serviceReqCode);
             }
             catch (Exception ex)
             {

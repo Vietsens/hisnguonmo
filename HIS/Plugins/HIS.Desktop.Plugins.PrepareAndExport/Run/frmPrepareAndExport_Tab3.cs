@@ -165,7 +165,15 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                                 break;
                             }
                         }
+                        try
+                        {
+                            gvPrepareMedicine.ActiveFilterString = "";
+                            gvPrepareMedicine.ClearColumnsFilter();
+                            gvPrepareMedicine.SetRowCellValue(DevExpress.XtraGrid.GridControl.AutoFilterRowHandle, gridColumn26, null);
+                        }
+                        catch { }
                         LoadTab3();
+
                         currentCall = null;
                         txtCurrentCall.Text = "";
                     }
@@ -223,6 +231,13 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                             }
                         }
                         success = true;
+                        try
+                        {
+                            gvPrepareMedicine.ActiveFilterString = "";
+                            gvPrepareMedicine.ClearColumnsFilter();
+                            gvPrepareMedicine.SetRowCellValue(DevExpress.XtraGrid.GridControl.AutoFilterRowHandle, gridColumn26, null);
+                        }
+                        catch { }
                         LoadTab3();
                         currentCall = null;
                         txtCurrentCall.Text = "";
@@ -274,21 +289,27 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                     this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
 
                 var target = GetTargetFromPrepareGrid();
-                if (target != null)
+
+                if (currentCall != null)
                 {
-                    if (currentCall == null || currentCall.ID != target.ID)
+                    if (target != null && target.ID != currentCall.ID)
                     {
-                        currentCall = target;
-                        CallSpecific(currentCall);
                         return;
                     }
-
-                    bool recallRs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString(), currentCall.GATE_CODE);
+                    bool recallRs = this.clienttManager.RecallOrderDataClientBool(
+                        currentCall.NUM_ORDER.ToString(),
+                        txtGateCodeString
+                    );
                     Inventec.Common.Logging.LogSystem.Error("GỌI LẠI ___ " + recallRs);
                     return;
                 }
 
-                currentCall = null;
+                if (target != null)
+                {
+                    CallSpecific(target);
+                    return;
+                }
+
                 CallPatientCPA();
             }
             catch (Exception ex)

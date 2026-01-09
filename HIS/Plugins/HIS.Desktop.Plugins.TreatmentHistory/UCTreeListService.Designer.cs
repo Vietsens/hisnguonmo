@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCTreeListService));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -79,9 +78,14 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.treeSereServ = new DevExpress.XtraTreeList.TreeList();
             this.tc_SendTestServiceReq = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.BtnKsk = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.tc_ServiceCode = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.tc_ServiceName = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.isRation = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -97,7 +101,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.rep_btnEdit_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.rep_btnDelete_Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.rep_btnDelete_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
+            this.repositoryItemKsk = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -111,6 +116,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnEdit_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Enable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Disable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemKsk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             this.SuspendLayout();
@@ -120,10 +126,9 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControl1.Controls.Add(this.treeSereServ);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1409, 609);
+            this.layoutControl1.Size = new System.Drawing.Size(1057, 495);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -131,6 +136,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // 
             this.treeSereServ.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
             this.tc_SendTestServiceReq,
+            this.BtnKsk,
             this.tc_ServiceCode,
             this.tc_ServiceName,
             this.isRation,
@@ -140,8 +146,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.tc_TdlMedicineConcentra});
             this.treeSereServ.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeSereServ.KeyFieldName = "CONCRETE_ID__IN_SETY";
-            this.treeSereServ.Location = new System.Drawing.Point(3, 3);
-            this.treeSereServ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.treeSereServ.Location = new System.Drawing.Point(2, 2);
             this.treeSereServ.Name = "treeSereServ";
             this.treeSereServ.OptionsBehavior.AllowIndeterminateCheckState = true;
             this.treeSereServ.OptionsBehavior.AllowPixelScrolling = DevExpress.Utils.DefaultBoolean.True;
@@ -170,9 +175,10 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.rep_btnEdit_Enable,
             this.rep_btnEdit_Disable,
             this.rep_btnDelete_Enable,
-            this.rep_btnDelete_Disable});
+            this.rep_btnDelete_Disable,
+            this.repositoryItemKsk});
             this.treeSereServ.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
-            this.treeSereServ.Size = new System.Drawing.Size(1403, 603);
+            this.treeSereServ.Size = new System.Drawing.Size(1053, 491);
             this.treeSereServ.TabIndex = 4;
             this.treeSereServ.ToolTipController = this.toolTipController2;
             this.treeSereServ.GetStateImage += new DevExpress.XtraTreeList.GetStateImageEventHandler(this.treeSereServ_GetStateImage);
@@ -199,6 +205,16 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.tc_SendTestServiceReq.VisibleIndex = 0;
             this.tc_SendTestServiceReq.Width = 50;
             // 
+            // BtnKsk
+            // 
+            this.BtnKsk.Caption = " ";
+            this.BtnKsk.CustomizationCaption = " ";
+            this.BtnKsk.FieldName = "btnKsk";
+            this.BtnKsk.Name = "BtnKsk";
+            this.BtnKsk.Visible = true;
+            this.BtnKsk.VisibleIndex = 1;
+            this.BtnKsk.Width = 50;
+            // 
             // tc_ServiceCode
             // 
             this.tc_ServiceCode.AppearanceCell.Options.UseTextOptions = true;
@@ -207,7 +223,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.tc_ServiceCode.FieldName = "SERVICE_CODE";
             this.tc_ServiceCode.Name = "tc_ServiceCode";
             this.tc_ServiceCode.Visible = true;
-            this.tc_ServiceCode.VisibleIndex = 1;
+            this.tc_ServiceCode.VisibleIndex = 2;
             this.tc_ServiceCode.Width = 150;
             // 
             // tc_ServiceName
@@ -219,7 +235,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.tc_ServiceName.Name = "tc_ServiceName";
             this.tc_ServiceName.OptionsColumn.AllowEdit = false;
             this.tc_ServiceName.Visible = true;
-            this.tc_ServiceName.VisibleIndex = 2;
+            this.tc_ServiceName.VisibleIndex = 3;
             this.tc_ServiceName.Width = 118;
             // 
             // isRation
@@ -228,7 +244,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.isRation.FieldName = "PATIENT_TYPE_NAME";
             this.isRation.Name = "isRation";
             this.isRation.Visible = true;
-            this.isRation.VisibleIndex = 3;
+            this.isRation.VisibleIndex = 4;
             // 
             // tc_Number
             // 
@@ -240,7 +256,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.tc_Number.OptionsColumn.AllowEdit = false;
             this.tc_Number.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.tc_Number.Visible = true;
-            this.tc_Number.VisibleIndex = 4;
+            this.tc_Number.VisibleIndex = 5;
             this.tc_Number.Width = 100;
             // 
             // tc_NoteAdo
@@ -253,7 +269,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.tc_NoteAdo.OptionsColumn.AllowEdit = false;
             this.tc_NoteAdo.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.tc_NoteAdo.Visible = true;
-            this.tc_NoteAdo.VisibleIndex = 5;
+            this.tc_NoteAdo.VisibleIndex = 6;
             this.tc_NoteAdo.Width = 150;
             // 
             // tc_RequestDepartmentName
@@ -265,7 +281,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.tc_RequestDepartmentName.Name = "tc_RequestDepartmentName";
             this.tc_RequestDepartmentName.OptionsColumn.AllowEdit = false;
             this.tc_RequestDepartmentName.Visible = true;
-            this.tc_RequestDepartmentName.VisibleIndex = 6;
+            this.tc_RequestDepartmentName.VisibleIndex = 7;
             this.tc_RequestDepartmentName.Width = 200;
             // 
             // tc_TdlMedicineConcentra
@@ -275,7 +291,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.tc_TdlMedicineConcentra.Name = "tc_TdlMedicineConcentra";
             this.tc_TdlMedicineConcentra.OptionsColumn.AllowEdit = false;
             this.tc_TdlMedicineConcentra.Visible = true;
-            this.tc_TdlMedicineConcentra.VisibleIndex = 7;
+            this.tc_TdlMedicineConcentra.VisibleIndex = 8;
             this.tc_TdlMedicineConcentra.Width = 180;
             // 
             // repositoryItemButton__Send
@@ -348,6 +364,17 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.rep_btnDelete_Disable.Name = "rep_btnDelete_Disable";
             this.rep_btnDelete_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
+            // repositoryItemKsk
+            // 
+            this.repositoryItemKsk.AllowMouseWheel = false;
+            this.repositoryItemKsk.AutoHeight = false;
+            this.repositoryItemKsk.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TreatmentHistory.Properties.Resources.kham_suc_khoe, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Thông tin khám sức khỏe", null, null, true)});
+            this.repositoryItemKsk.Name = "repositoryItemKsk";
+            this.repositoryItemKsk.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemKsk.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemKsk_ButtonClick);
+            this.repositoryItemKsk.Click += new System.EventHandler(this.repositoryItemKsk_Click);
+            // 
             // toolTipController2
             // 
             this.toolTipController2.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController2_GetActiveObjectInfo);
@@ -360,7 +387,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1409, 609);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1057, 495);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -368,18 +395,17 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.layoutControlItem1.Control = this.treeSereServ;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1409, 609);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1057, 495);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // UCTreeListService
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "UCTreeListService";
-            this.Size = new System.Drawing.Size(1409, 609);
+            this.Size = new System.Drawing.Size(1057, 495);
             this.Load += new System.EventHandler(this.UCTreeListService_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -392,6 +418,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnEdit_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Enable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rep_btnDelete_Disable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemKsk)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             this.ResumeLayout(false);
@@ -422,5 +449,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
 		private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit rep_btnDelete_Enable;
 		private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit rep_btnDelete_Disable;
         private DevExpress.XtraTreeList.Columns.TreeListColumn tc_TdlMedicineConcentra;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn BtnKsk;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemKsk;
     }
 }

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     LoadCurrent(this.currentData, ref updateDTO);
                 }
                 UpdateDTOFromDataForm(ref updateDTO);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("updateDTO__:", updateDTO));
                 var resultData = new BackendAdapter(param).Post<MOS.SDO.KskExecuteResultSDO>(HisRequestUriStore.MOS_HIS_SERVICE_REQ_KSK_EXECUTE, ApiConsumers.MosConsumer, updateDTO, param);
                 if (resultData != null)
                 {
@@ -117,7 +118,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 currentDTO.OccupationalDisease = txtOccupationalDiseaseTab2.Text.Trim();
                 currentDTO.ProvisionalDiagnosis = txtProvisionalDiagnosisTab2.Text.Trim();
                 //Tab Kham chung
-                MOS.SDO.HisKskGeneralSDO kskGeneral = new MOS.SDO.HisKskGeneralSDO();
+                var kskGeneral = currentDTO.KskGeneral ?? new MOS.SDO.HisKskGeneralSDO();
+                currentDTO.KskGeneral = kskGeneral;
                 HIS_DHST dhstGeneral = new HIS_DHST();
                 if (txtHeightTab1.EditValue != null)
                     dhstGeneral.HEIGHT = txtHeightTab1.Value;
@@ -232,7 +234,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 kskGeneral.ExamTraditionalRank = cboExamTraditionalRank.EditValue != null ? (long?)cboExamTraditionalRank.EditValue : null;
                 kskGeneral.ExamNutrionRank = cboExamNutrionRank.EditValue != null ? (long?)cboExamNutrionRank.EditValue : null;
                 kskGeneral.HeinMediOrgCode = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId()).HEIN_MEDI_ORG_CODE;
-                currentDTO.KskGeneral = kskGeneral;
                 //Tab Benh nghe nghiep
                 MOS.SDO.HisKskOccupationalSDO kskOccupational = new MOS.SDO.HisKskOccupationalSDO();
                 HIS_DHST dhstOccupational = new HIS_DHST();
@@ -338,9 +339,222 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 kskOccupational.Diseases = txtDiseasesTab3.Text.Trim();
                 kskOccupational.TreatmentInstruction = txtTreatmentInstructionTab3.Text.Trim();
                 kskOccupational.Conclusion = txtConclusionTab3.Text.Trim();
+                //tab kham suc khoe
 
+                kskGeneral.PathologicalHistory = memoPathologicalHistory.Text.Trim();
+
+                // 2. Tuổi bắt đầu kinh nguyệt
+                kskGeneral.MenstrualStartAge = spnMenarcheAge.EditValue != null
+                    ? (long?)spnMenarcheAge.Value
+                    : null;
+                //cuoi
+                if (chkMarriedYes.Checked)
+                    kskGeneral.IsMarried = 1;
+                else if (chkMarriedNo.Checked)
+                    kskGeneral.IsMarried = 0;
+                else
+                    kskGeneral.IsMarried = null;
+
+
+                // 3. Tính chất kinh nguyệt
+                // Đều = 1 | Không đều = 0 | Không chọn = null
+                if (chkMenstrualRegular.Checked)
+                    kskGeneral.MenstrualNature = 1;
+                else if (chkMenstrualIrregular.Checked)
+                    kskGeneral.MenstrualNature = 0;
+                else
+                    kskGeneral.MenstrualNature = null;
+
+                // 4. Đau bụng kinh
+                // Có = 1 | Không = 0 | Không chọn = null
+                if (chkMenstrualYes.Checked)
+                    kskGeneral.MenstrualAbdominalPains = 1;
+                else if (chkMenstrualNo.Checked)
+                    kskGeneral.MenstrualAbdominalPains = 0;
+                else
+                    kskGeneral.MenstrualAbdominalPains = null;
+
+                // 5. Chu kỳ kinh
+                kskGeneral.MenstrualCycleFrom = spnCycleFromDay.EditValue != null ? (long?)spnCycleFromDay.Value : null;
+                kskGeneral.MenstrualCycleTo = spnCycleToDay.EditValue != null ? (long?)spnCycleToDay.Value : null;
+
+                // 6. Lượng kinh
+                kskGeneral.MenstrualAmountFrom = spnMenstrualDurationFrom.EditValue != null ? (long?)spnMenstrualDurationFrom.Value : null;
+                kskGeneral.MenstrualAmountTo = spnMenstrualDurationTo.EditValue != null ? (long?)spnMenstrualDurationTo.Value : null;
+
+                // 8. Para (mỗi ô tối đa 2 số)
+                kskGeneral.Pregnancy = spnPara1.EditValue != null ? (short?)spnPara1.Value : null;
+                kskGeneral.Abortus = spnPara2.EditValue != null ? (short?)spnPara2.Value : null;
+                kskGeneral.Recurrent = spnPara3.EditValue != null ? (short?)spnPara3.Value : null;
+                kskGeneral.Alive = spnPara4.EditValue != null ? (short?)spnPara4.Value : null;
+
+                // 9. Số lần mổ sản phụ khoa + ghi chú
+                kskGeneral.NumberOfSurgeries = spnSurgeriesCount.EditValue != null
+                    ? (short?)spnSurgeriesCount.Value
+                    : null;
+                kskGeneral.NoteSurgical = txtObstetricSurgeryNote.Text.Trim();
+
+                // 10. Chưa mổ
+                kskGeneral.IsNotSurgery = (short)(chkObstetricSurgeryNone.Checked ? 1 : 0);
+
+                // 11. Biện pháp tránh thai
+                // Có = 1 | Không = 0 | Không chọn = null
+                if (chkContraceptionYes.Checked)
+                    kskGeneral.IsUsingContraceptives = 1;
+                else if (chkContraceptionNo.Checked)
+                    kskGeneral.IsUsingContraceptives = 0;
+                else
+                    kskGeneral.IsUsingContraceptives = null;
+
+                // 12. Ghi chú biện pháp tránh thai
+                kskGeneral.NoteContraceptives = txtContraceptionNote.Text.Trim();
+
+                // 13. Kham the luc
+                kskGeneral.HisDhst.HEIGHT = spnHeightCm.EditValue != null ? (decimal?)spnHeightCm.Value : null;
+                kskGeneral.HisDhst.WEIGHT = spnWeightKg.EditValue != null ? (decimal?)spnWeightKg.Value : null;
+                try
+                {
+                    Decimal n;
+                    bool isNumeric = Decimal.TryParse(lblBmi.Text, out n);
+                    if (isNumeric)
+                    {
+                        kskGeneral.HisDhst.VIR_BMI = n;
+                    }
+                    else
+                    {
+                        kskGeneral.HisDhst.VIR_BMI = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                    Inventec.Common.Logging.LogSystem.Warn("ERROR: kskGeneral.HisDhst.VIR_BMI");
+                }
+                kskGeneral.HisDhst.PULSE = spnPulse.EditValue != null ? (long?)spnPulse.Value : null;
+                kskGeneral.HisDhst.BLOOD_PRESSURE_MAX = spnBloodPressureMax.EditValue != null ? (long?)spnBloodPressureMax.Value : null;
+                kskGeneral.HisDhst.BLOOD_PRESSURE_MIN = spnBloodPressureMin.EditValue != null ? (long?)spnBloodPressureMin.Value : null;
+                kskGeneral.DhstRank = cboDhstRank.EditValue != null
+                ? Convert.ToInt32(cboDhstRank.EditValue)
+                : (int?)null;
+                //kham can lam sang
+                kskGeneral.ExamCirculation = txtCirculatory.Text.Trim();
+                kskGeneral.ExamCirculationRank = cboCirculatoryRank.EditValue != null
+                    ? (long?)cboCirculatoryRank.EditValue
+                    : null;
+                kskGeneral.ExamRespiratory = txtRespiratory.Text.Trim();
+                kskGeneral.ExamRespiratoryRank = cboRespiratoryRank.EditValue != null
+                    ? (long?)cboRespiratoryRank.EditValue
+                    : null;
+                kskGeneral.ExamDigestion = txtDigestion.Text.Trim();
+                kskGeneral.ExamDigestionRank = cboDigestionRank.EditValue != null
+                    ? (long?)cboDigestionRank.EditValue
+                    : null;
+                kskGeneral.ExamKidneyUrology = txtUrology.Text.Trim();
+                kskGeneral.ExamKidneyUrologyRank = cboUrologyRank.EditValue != null
+                    ? (long?)cboUrologyRank.EditValue
+                    : null;
+                kskGeneral.ExamOend = txtOend.Text.Trim();
+                kskGeneral.ExamOendRank = cboOendRank.EditValue != null
+                    ? (long?)cboOendRank.EditValue
+                    : null;
+                kskGeneral.ExamMuscleBone = txtMuscule.Text.Trim();
+                kskGeneral.ExamMuscleBoneRank = cboMusculeRank.EditValue != null
+                    ? (long?)cboMusculeRank.EditValue
+                    : null;
+                kskGeneral.ExamNeurological = txtNeurological.Text.Trim();
+                kskGeneral.ExamNeurologicalRank = cboNeurologicalRank.EditValue != null
+                    ? (long?)cboNeurologicalRank.EditValue
+                    : null;
+                kskGeneral.ExamMental = txtMental.Text.Trim();
+                kskGeneral.ExamMentalRank = cboMentalRank.EditValue != null
+                    ? (long?)cboMentalRank.EditValue
+                    : null;
+                kskGeneral.ExamSurgery = txtSurgeryExam.Text.Trim();
+                kskGeneral.ExamSurgeryRank = cboSurgeryRank.EditValue != null
+                    ? (long?)cboSurgeryRank.EditValue
+                    : null;
+                kskGeneral.ExamDermatology = txtDermatology.Text.Trim();
+                kskGeneral.ExamDermatologyRank = cboDermatologyRank.EditValue != null
+                    ? (long?)cboDermatologyRank.EditValue
+                    : null;
+                kskGeneral.ExamObstetric = txtObstetricExam.Text.Trim();
+                kskGeneral.ExamObstetricRank = cboObstetricRank.EditValue != null
+                    ? (long?)cboObstetricRank.EditValue
+                    : null;
+                kskGeneral.ExamEyesightLeft = txtVisionNoGlassLeft.Text.Trim();
+                kskGeneral.ExamEyesightRight = txtVisionNoGlassRight.Text.Trim();
+                kskGeneral.ExamEyesightGlassLeft = txtVisionWithGlassLeft.Text.Trim();
+                kskGeneral.ExamEyesightGlassRight = txtVisionWithGlassRight.Text.Trim();
+                kskGeneral.ExamEye = txtEyeDisease.Text.Trim();
+                kskGeneral.ExamEyeRank = cboEyeRank.EditValue != null
+                    ? (long?)cboEyeRank.EditValue
+                    : null;
+                kskGeneral.ExamEntRightNormal = txtEarRightNormal.Text.Trim();
+                kskGeneral.ExamEntRightWhisper = txtEarRightWhisper.Text.Trim();
+                kskGeneral.ExamEntLeftNormal = txtEarLeftNormal.Text.Trim();
+                kskGeneral.ExamEntLeftWhisper = txtEarLeftWhisper.Text.Trim();
+                kskGeneral.ExamEnt = txtEntDisease.Text.Trim();
+                kskGeneral.ExamEntRank = cboEntRank.EditValue != null
+                    ? (long?)cboEntRank.EditValue
+                    : null;
+                kskGeneral.ExamStomatologyLower = txtStomatologyLower.Text.Trim();
+                kskGeneral.ExamStomatologyUpper = txtStomatologyUpper.Text.Trim();
+                kskGeneral.ExamStomatology = txtStomatology.Text.Trim();
+                kskGeneral.ExamStomatologyRank = cboStomatologyRank.EditValue != null
+                    ? (long?)cboStomatologyRank.EditValue
+                    : null;
+
+
+                // 15. Kết quả CLS + đánh giá
+                kskGeneral.ResultSubclinical = memoSubclinicalResult.Text.Trim(); 
+                kskGeneral.NoteSubclinical = memoSubclinicalNote.Text.Trim();     
+
+                // 16. Kết luận – bệnh tật – hướng xử lý – liên hệ
+                kskGeneral.HealthExamRankId = cboHealthRank.EditValue != null
+                    ? (long?)cboHealthRank.EditValue
+                    : null;
+                kskGeneral.Diseases = memoDiseases.Text.Trim();
+                kskGeneral.TreatmentInstruction = memoTreatmentDirection.Text.Trim();
+                kskGeneral.Contact = txtContact.Text.Trim();
+                var userTab5 = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME.ToUpper() == cboConclusionDoctor.EditValue.ToString().ToUpper());
+                if (userTab5 != null)
+                {
+                    kskGeneral.ConcluderLoginName = userTab5.LOGINNAME;
+                    kskGeneral.ConcluderUserName = userTab5.USERNAME;
+                }
                 currentDTO.KskOccupational = kskOccupational;
+                if (kskGeneral.HisDhst != null)
+                {
+                    var d = kskGeneral.HisDhst;
+                    bool empty =
+                        d.HEIGHT == null &&
+                        d.WEIGHT == null &&
+                        d.VIR_BMI == null &&
+                        d.PULSE == null &&
+                        d.BLOOD_PRESSURE_MAX == null &&
+                        d.BLOOD_PRESSURE_MIN == null &&
+                        d.TEMPERATURE == null &&
+                        d.BREATH_RATE == null;
 
+                    if (empty) kskGeneral.HisDhst = null;
+                }
+
+                // --- chặn insert DHST rỗng (Occupational) nếu cũng bị
+                if (currentDTO.KskOccupational?.HisDhst != null)
+                {
+                    var d = currentDTO.KskOccupational.HisDhst;
+                    bool empty =
+                        d.HEIGHT == null &&
+                        d.WEIGHT == null &&
+                        d.VIR_BMI == null &&
+                        d.PULSE == null &&
+                        d.BLOOD_PRESSURE_MAX == null &&
+                        d.BLOOD_PRESSURE_MIN == null &&
+                        d.TEMPERATURE == null &&
+                        d.BREATH_RATE == null;
+
+                    if (empty) currentDTO.KskOccupational.HisDhst = null;
+                }
             }
             catch (Exception ex)
             {
