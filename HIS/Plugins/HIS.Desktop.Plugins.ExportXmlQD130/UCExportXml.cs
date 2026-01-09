@@ -1233,20 +1233,20 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
 
                         bool addSereServ = false;
-                      
+
                         string allowZeroPriceKey = HisConfigCFG.QD_130_BYT__LAY_CA_DVU_0_DONG;
 
                         if (allowZeroPriceKey == "1")
-                        { 
-                      
+                        {
+
                             addSereServ = (sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && (sereServ.PRICE > 0 || sereServ.PRICE == 0))
                                 || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("gia tri key 0 dong = 1", sereServ));
                         }
                         else
-                        { 
-                          
+                        {
+
                             addSereServ = (sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0)
                                 || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
@@ -1566,7 +1566,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             Inventec.Common.Logging.LogSystem.Error("Run130_XML12: " + errorMessXml12);
                         }
                         if (rs != null)
-                        {                           
+                        {
                             if (viewXml)
                             {
                                 memoryStream = rs;
@@ -1935,7 +1935,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             if (File.Exists(saveFilePathXml12))
                             {
                                 File.Delete(saveFilePathXml12);
-                            }                            
+                            }
                         }
                         if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
                         {
@@ -4399,44 +4399,73 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             {
                                 string errMessage = "";
                                 bool success = false;
+                                bool signSuccess = true; 
+
                                 try
                                 {
-                                    //qtcode để ý
-                                    resultSync = xmlProcessor.RunCollinearXml(ref errorMess);
-                                    if (string.IsNullOrEmpty(errMessage)) success = true;
+                                    resultSync = xmlProcessor.RunCollinearXml(ref errMessage);
+                                    if (string.IsNullOrEmpty(errMessage))
+                                    {
+                                        success = true;
+                                    }
                                 }
                                 catch (Exception error)
                                 {
                                     success = false;
-                                    errorMess = error.Message;
+                                    errMessage = error.Message;
                                 }
+
                                 if (resultSync != null)
                                 {
+                                    if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
+                                    {
+                                        string fullFileName = xmlProcessor.GetFileName();
+                                        saveFilePathXml = string.Format("{0}/{1}{2}",this.configSync.folderPath,"XML",fullFileName);
+
+                                        using (FileStream fs = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write))
+                                        {
+                                            resultSync.WriteTo(fs);
+                                        }
+                                        resultSync.Close();
+
+                                        Inventec.Common.Logging.LogSystem.Debug("__Luu XML vao client folder thanh cong. Path: " + saveFilePathXml);
+
+                                        if (!isNotFileSign)
+                                        {
+                                            signSuccess = sendXMLSign(xmlProcessor, saveFilePathXml, ref syncResult);
+
+                                            if (!signSuccess)
+                                            {
+                                               if (File.Exists(saveFilePathXml))
+                                                {
+                                                    try
+                                                    {
+                                                        File.Delete(saveFilePathXml);
+                                                        Inventec.Common.Logging.LogSystem.Warn("Ky so that bai -> da xoa file XML: " + saveFilePathXml);
+                                                    }
+                                                    catch (Exception ex)
+                                                    {
+                                                        Inventec.Common.Logging.LogSystem.Error("Khong xoa duoc file XML khi ky so loi: " + ex);
+                                                    }
+                                                }
+                                                return;
+                                            }
+                                        }
+                                    }
                                     HisTreatmentXmlResultSDO xmlResultSDO = new HisTreatmentXmlResultSDO();
                                     xmlResultSDO.TreatmentId = treatment.ID;
                                     xmlResultSDO.XmlResult = success ? 2 : 1;
                                     xmlResultSDO.Description = errMessage;
-                                    //xmlResultSDO.CheckCode = syncResult.CheckCode;
-                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO), xmlResultSDO));
-                                    var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
-                                    //luu file
-                                    if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
-                                    {
-                                        string fullFileName = xmlProcessor.GetFileName();
-                                        saveFilePathXml = String.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
-                                        FileStream file12 = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write);
-                                        resultSync.WriteTo(file12);
-                                        file12.Close();
-                                        resultSync.Close();
-                                        success = true;
-                                        Inventec.Common.Logging.LogSystem.Debug("__Luu XMl vao client folder thanh cong. path: " + saveFilePathXml);
-                                        if (isNotFileSign == false)
-                                        {
-                                            sendXMLSign(xmlProcessor, saveFilePathXml, ref syncResult);
-                                        }
-                                    }
-                                }
 
+                                    Inventec.Common.Logging.LogSystem.Debug(
+                                        Inventec.Common.Logging.LogUtil.TraceData(
+                                            Inventec.Common.Logging.LogUtil.GetMemberName(() => xmlResultSDO),
+                                            xmlResultSDO
+                                        )
+                                    );
+
+                                    var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info",ApiConsumers.MosConsumer,xmlResultSDO,paramUpdateXml130);
+                                }
                             }
                             count++;
                         }
@@ -4448,146 +4477,261 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        private void sendXMLSign(His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor, string sourceFile, ref SyncResultADO syncResult)
+        #region
+        //private void sendXMLSign(His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor, string sourceFile, ref SyncResultADO syncResult)
+        //{
+        //    try
+        //    {
+        //        if (SettingSignADO == null)
+        //        {
+        //            Inventec.Common.Logging.LogSystem.Error("Không có thông tin cài đặt ký số sendXMLSign");
+        //            return;
+        //        }
+        //        string currentDirectory = Directory.GetCurrentDirectory();
+        //        string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+        //        Directory.CreateDirectory(tempFolderPath);
+        //        string fullFileName = xmlProcessor.GetFileName();
+        //        string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
+        //        File.Create(tempFilePath).Close();
+        //        string pathAfterFileSign = null;
+        //        WcfSignDCO wcfSignDCO = null;
+        //        if (SettingSignADO.IsHsm)
+        //        {
+        //            var xmlBase64 = SourceFileSignApi(ReadFileContent(sourceFile));
+        //            if (!string.IsNullOrEmpty(xmlBase64))
+        //            {
+        //                try
+        //                {
+        //                    var xmlBytes = Convert.FromBase64String(xmlBase64);
+        //                    File.WriteAllBytes(tempFilePath, xmlBytes);
+        //                    pathAfterFileSign = tempFilePath;
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    Inventec.Common.Logging.LogSystem.Error("Error saving xmlBase64 to file: " + ex);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (File.Exists(sourceFile))
+        //                {
+        //                    File.Delete(sourceFile);
+        //                }
+        //                if (!isAutoSync)
+        //                {
+        //                    //XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
+        //                    return;
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            wcfSignDCO = new WcfSignDCO();
+        //            wcfSignDCO.SerialNumber = SettingSignADO.SerialNumber;
+        //            wcfSignDCO.OutputFile = tempFilePath;
+        //            wcfSignDCO.PIN = "";
+        //            wcfSignDCO.SourceFile = sourceFile;
+        //            wcfSignDCO.fieldSigned = "CHUKYDONVI";
+        //            string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+        //            SignProcessorClient signProcessorClient = new SignProcessorClient();
+        //            pathAfterFileSign = sourceFile;
+        //            if (VerifyServiceSignProcessorIsRunning())
+        //            {
+        //                var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+        //                if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
+        //                {
+        //                    pathAfterFileSign = wcfSignResultDCO.OutputFile;
+        //                }
+        //                else
+        //                {
+        //                    //XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
+        //                    return;
+        //                }
+        //            }
+        //        }
+        //        if (configSync != null && !this.configSync.dontSend)
+        //        {
+        //            //gọi api đẩy cổng ...
+        //            //...
+        //            SyncResultADO syncResultADO = new SyncResultADO();
+        //            Task task = Task.Run(async () => syncResultADO = await xmlProcessor.SendFileSign(pathAfterFileSign));
+        //            task.Wait();
+        //            syncResult = syncResultADO;
+        //            if (syncResult != null && !syncResult.Success)
+        //            {
+        //                if (File.Exists(sourceFile))
+        //                {
+        //                    File.Delete(sourceFile);
+        //                }
+        //                if (!isAutoSync)
+        //                {
+        //                    XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
+        //                    return;
+        //                }
+        //            }
+        //        }
+        //        if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
+        //        {
+        //            if (wcfSignDCO != null)
+        //            {
+        //                if (wcfSignDCO.SourceFile.Trim() != pathAfterFileSign.Trim())
+        //                {
+        //                    if (File.Exists(wcfSignDCO.SourceFile))
+        //                    {
+        //                        File.Delete(wcfSignDCO.SourceFile);
+        //                    }
+        //                }
+        //                File.Copy(pathAfterFileSign, wcfSignDCO.SourceFile);
+        //            }
+        //            else if (SettingSignADO.IsHsm)
+        //            {
+
+        //                if (sourceFile != pathAfterFileSign.Trim())
+        //                {
+        //                    if (File.Exists(sourceFile))
+        //                    {
+        //                        File.Delete(sourceFile);
+        //                    }
+        //                }
+        //                File.Copy(pathAfterFileSign, sourceFile);
+        //            }
+        //        }
+
+        //        foreach (string file in Directory.GetFiles(tempFolderPath))
+        //        {
+        //            File.Delete(file);
+        //        }
+        //        if (configSync != null && !this.configSync.dontSend && string.IsNullOrEmpty(this.configSync.folderPath))
+        //        {
+        //            if (wcfSignDCO != null && File.Exists(wcfSignDCO.SourceFile))
+        //            {
+        //                File.Delete(wcfSignDCO.SourceFile);
+        //            }
+        //            else if (SettingSignADO.IsHsm)
+        //            {
+        //                File.Delete(sourceFile);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+        #endregion
+        private bool sendXMLSign(His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor, string sourceFile, ref SyncResultADO syncResult)
         {
             try
             {
                 if (SettingSignADO == null)
                 {
-                    Inventec.Common.Logging.LogSystem.Error("Không có thông tin cài đặt ký số sendXMLSign");
-                    return;
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "Không có thông tin cài đặt ký số sendXMLSign"
+                    );
+                    return false;
                 }
+
                 string currentDirectory = Directory.GetCurrentDirectory();
                 string tempFolderPath = Path.Combine(currentDirectory, "Temp");
                 Directory.CreateDirectory(tempFolderPath);
+
                 string fullFileName = xmlProcessor.GetFileName();
                 string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
                 File.Create(tempFilePath).Close();
+
                 string pathAfterFileSign = null;
                 WcfSignDCO wcfSignDCO = null;
+
+                // ====== KÝ FILE ======
                 if (SettingSignADO.IsHsm)
                 {
                     var xmlBase64 = SourceFileSignApi(ReadFileContent(sourceFile));
-                    if (!string.IsNullOrEmpty(xmlBase64))
+                    if (string.IsNullOrEmpty(xmlBase64))
                     {
-                        try
-                        {
-                            var xmlBytes = Convert.FromBase64String(xmlBase64);
-                            File.WriteAllBytes(tempFilePath, xmlBytes);
-                            pathAfterFileSign = tempFilePath;
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Error("Error saving xmlBase64 to file: " + ex);
-                        }
+                        Inventec.Common.Logging.LogSystem.Warn("Ký HSM thất bại");
+                        return false;
                     }
-                    else
-                    {
-                        if (File.Exists(sourceFile))
-                        {
-                            File.Delete(sourceFile);
-                        }
-                        if (!isAutoSync)
-                        {
-                            XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
-                            return;
-                        }
-                    }
+
+                    var xmlBytes = Convert.FromBase64String(xmlBase64);
+                    File.WriteAllBytes(tempFilePath, xmlBytes);
+                    pathAfterFileSign = tempFilePath;
                 }
                 else
                 {
-                    wcfSignDCO = new WcfSignDCO();
-                    wcfSignDCO.SerialNumber = SettingSignADO.SerialNumber;
-                    wcfSignDCO.OutputFile = tempFilePath;
-                    wcfSignDCO.PIN = "";
-                    wcfSignDCO.SourceFile = sourceFile;
-                    wcfSignDCO.fieldSigned = "CHUKYDONVI";
+                    wcfSignDCO = new WcfSignDCO
+                    {
+                        SerialNumber = SettingSignADO.SerialNumber,
+                        OutputFile = tempFilePath,
+                        PIN = "",
+                        SourceFile = sourceFile,
+                        fieldSigned = "CHUKYDONVI"
+                    };
+
                     string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
                     SignProcessorClient signProcessorClient = new SignProcessorClient();
-                    pathAfterFileSign = sourceFile;
-                    if (VerifyServiceSignProcessorIsRunning())
+
+                    if (!VerifyServiceSignProcessorIsRunning())
                     {
-                        var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
-                        if (wcfSignResultDCO != null && wcfSignResultDCO.Success)
-                        {
-                            pathAfterFileSign = wcfSignResultDCO.OutputFile;
-                        }
-                        else
-                        {
-                            XtraMessageBox.Show("Ký số thất bại. Không tạo file XML.", "Thông báo");
-                            return;
-                        }
+                        return false;
                     }
+
+                    var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                    if (wcfSignResultDCO == null || !wcfSignResultDCO.Success)
+                    {
+                        return false;
+                    }
+
+                    pathAfterFileSign = wcfSignResultDCO.OutputFile;
                 }
-                if (configSync != null && !this.configSync.dontSend)
+
+                // ====== GỬI FILE ======
+                if (configSync != null && !configSync.dontSend)
                 {
-                    //gọi api đẩy cổng ...
-                    //...
-                    SyncResultADO syncResultADO = new SyncResultADO();
-                    Task task = Task.Run(async () => syncResultADO = await xmlProcessor.SendFileSign(pathAfterFileSign));
+                    SyncResultADO syncResultADO = null;
+                    Task task = Task.Run(async () =>
+                        syncResultADO = await xmlProcessor.SendFileSign(pathAfterFileSign)
+                    );
                     task.Wait();
+
                     syncResult = syncResultADO;
-                    if (syncResult != null && !syncResult.Success)
+
+                    if (syncResult == null || !syncResult.Success)
                     {
-                        if (File.Exists(sourceFile))
-                        {
-                            File.Delete(sourceFile);
-                        }
-                        if (!isAutoSync)
-                        {
-                            XtraMessageBox.Show("Ký số thất bại: " + syncResult.Message, Resources.ResourceMessageLang.ThongBao);
-                            return;
-                        }
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "Gửi file ký số thất bại: " + syncResult?.Message
+                        );
+                        return false;
                     }
                 }
-                if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
+
+                // ====== COPY FILE VỀ THƯ MỤC ======
+                if (configSync != null && !string.IsNullOrEmpty(configSync.folderPath))
                 {
                     if (wcfSignDCO != null)
                     {
-                        if (wcfSignDCO.SourceFile.Trim() != pathAfterFileSign.Trim())
-                        {
-                            if (File.Exists(wcfSignDCO.SourceFile))
-                            {
-                                File.Delete(wcfSignDCO.SourceFile);
-                            }
-                        }
-                        File.Copy(pathAfterFileSign, wcfSignDCO.SourceFile);
+                        File.Copy(pathAfterFileSign, wcfSignDCO.SourceFile, true);
                     }
                     else if (SettingSignADO.IsHsm)
                     {
-
-                        if (sourceFile != pathAfterFileSign.Trim())
-                        {
-                            if (File.Exists(sourceFile))
-                            {
-                                File.Delete(sourceFile);
-                            }
-                        }
-                        File.Copy(pathAfterFileSign, sourceFile);
+                        File.Copy(pathAfterFileSign, sourceFile, true);
                     }
                 }
 
+                // ====== CLEAN TEMP ======
                 foreach (string file in Directory.GetFiles(tempFolderPath))
                 {
                     File.Delete(file);
                 }
-                if (configSync != null && !this.configSync.dontSend && string.IsNullOrEmpty(this.configSync.folderPath))
-                {
-                    if (wcfSignDCO != null && File.Exists(wcfSignDCO.SourceFile))
-                    {
-                        File.Delete(wcfSignDCO.SourceFile);
-                    }
-                    else if (SettingSignADO.IsHsm)
-                    {
-                        File.Delete(sourceFile);
-                    }
-                }
+
+                return true; // 🎯 QUAN TRỌNG
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
         }
+
         private void gridViewTreatment_PopupMenuShowing(object sender, PopupMenuShowingEventArgs e)
         {
             try
