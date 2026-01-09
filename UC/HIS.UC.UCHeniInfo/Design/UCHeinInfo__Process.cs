@@ -308,7 +308,22 @@ namespace HIS.UC.UCHeniInfo
                 this.cboNoiSong.EditValue = ((liveArea != null) ? liveArea.HeinLiveCode : null);
                 //this.chkJoin5Year.Checked = this.chkPaid6Month.Checked = false;
                 this.chkPaid6Month.Checked = false;
-                this.txtAddress.Text = dataHein.Address;
+                if (!String.IsNullOrEmpty(dataHein.MediOrgCode)
+                        && !String.IsNullOrEmpty(dataHein.PatientName)
+                        && !String.IsNullOrEmpty(dataHein.Dob)
+                        && !String.IsNullOrEmpty(dataHein.Gender))
+                {
+                    //xuandv
+                    string _address = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.Address);
+                    if (string.IsNullOrEmpty(_address))
+                    {
+                        this.txtAddress.Text = dataHein.Address;
+                    }
+                    else
+                        this.txtAddress.Text = _address;
+                }
+                else
+                    this.txtAddress.Text = dataHein.Address;
                 if ((MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.NATIONAL == HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT
                         || MOS.LibraryHein.Bhyt.HeinLevel.HeinLevelCode.PROVINCE == HIS.Desktop.LocalStorage.HisConfig.HisHeinLevelCFG.HEIN_LEVEL_CODE__CURRENT)
                         && !HIS.Desktop.LocalStorage.HisConfig.HisMediOrgCFG.MEDI_ORG_VALUE__CURRENT.Equals(this.txtMaDKKCBBD.Text)
