@@ -1141,6 +1141,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             }
                         }
                         ado.AMOUNT = itemGr.Sum(o => o.AMOUNT);
+                        // qtcode
+                        ado.TH_AMOUNT = itemGr.Sum(o => o.TH_AMOUNT);
                         ado.AMOUNT_REQUEST_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.AMOUNT)));
                         ado.AMOUNT_EXECUTE_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.AMOUNT_EXCUTE)));
                         ado.AMOUNT_EXPORT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.AMOUNT_EXPORTED)));
@@ -1227,6 +1229,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             }
                         }
                         ado.AMOUNT = itemGr.Sum(o => o.AMOUNT);
+                        // qtcode
+                        ado.TH_AMOUNT = itemGr.Sum(o => o.TH_AMOUNT);
                         ado.AMOUNT_REQUEST_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.AMOUNT)));
                         ado.AMOUNT_EXECUTE_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.AMOUNT_EXCUTE)));
                         ado.AMOUNT_EXPORT_STRING = Inventec.Common.String.Convert.CurrencyToVneseString(string.Format("{0:0.####}", Inventec.Common.Number.Convert.NumberToNumberRoundMax4(ado.AMOUNT_EXPORTED)));

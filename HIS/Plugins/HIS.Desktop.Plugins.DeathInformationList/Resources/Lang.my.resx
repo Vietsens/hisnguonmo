@@ -132,11 +132,29 @@
   <data name="UcDeathInformationList.btnDongBo.ToolTip" xml:space="preserve">
     <value>ကျန်းမာရေးဝန်ကြီးဌာနပေါ်တယ်သို့ ဒေတာကို ထပ်တူပြုပါ။</value>
   </data>
+  <data name="UcDeathInformationList.btnDongBoCTV.Text" xml:space="preserve">
+    <value>ထပ်တူကျသေဆုံးမှုများ</value>
+  </data>
+  <data name="UcDeathInformationList.btnDongBoCTV.ToolTip" xml:space="preserve">
+    <value>ဒေတာကို ဆေးစစ်မှုနှင့် ကုသမှုစီမံခန့်ခွဲမှုစနစ်သို့ ထပ်တူပြုပါ။</value>
+  </data>
   <data name="UcDeathInformationList.btnRefresh.Text" xml:space="preserve">
     <value>ပြန်လုပ်ပါ (Ctrl R)</value>
   </data>
   <data name="UcDeathInformationList.btnSearch.Text" xml:space="preserve">
     <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.1" xml:space="preserve">
+    <value>အားလုံး</value>
+  </data>
+  <data name="UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.2" xml:space="preserve">
+    <value>ထပ်တူပြု၍မရပါ။</value>
+  </data>
+  <data name="UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.3" xml:space="preserve">
+    <value>အောင်မြင်မှု</value>
+  </data>
+  <data name="UcDeathInformationList.cboDeath_Case_Sync_Result.Properties.4" xml:space="preserve">
+    <value>ပျက်ကွက်ခြင်း။</value>
   </data>
   <data name="UcDeathInformationList.cboSYNC_RESULT_TYPE.Properties.1" xml:space="preserve">
     <value>အားလုံး</value>
@@ -152,6 +170,12 @@
   </data>
   <data name="UcDeathInformationList.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
     <value>USB တိုကင်ကို အသုံးပြု၍ ဒစ်ဂျစ်တယ်ဖြင့် လက်မှတ်ထိုးပါ။</value>
+  </data>
+  <data name="UcDeathInformationList.chkTreatmentEndType.Properties.Caption" xml:space="preserve">
+    <value>ဆေးရုံကဆင်းပြီး သေဆုံးသွားတယ်။</value>
+  </data>
+  <data name="UcDeathInformationList.chkTreatmentResult.Properties.Caption" xml:space="preserve">
+    <value>သေခြင်း၏ရလဒ်</value>
   </data>
   <data name="UcDeathInformationList.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>
@@ -188,6 +212,24 @@
   </data>
   <data name="UcDeathInformationList.gridColumn2.Caption" xml:space="preserve">
     <value>ဖိနပ်အရေအတွက်</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn20.Caption" xml:space="preserve">
+    <value>သေဆုံးမှုအခြေအနေ</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn21.Caption" xml:space="preserve">
+    <value>သေဆုံးချိန်ကို ထပ်တူပြုခြင်း။</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn22.Caption" xml:space="preserve">
+    <value>သေဆုံးရခြင်းအကြောင်းရင်းကို ထပ်တူပြုထားသည်။</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn23.Caption" xml:space="preserve">
+    <value>အမှတ်အသား</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn24.Caption" xml:space="preserve">
+    <value>အဓိကရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="UcDeathInformationList.gridColumn25.Caption" xml:space="preserve">
+    <value>ICD ကုဒ်</value>
   </data>
   <data name="UcDeathInformationList.gridColumn3.Caption" xml:space="preserve">
     <value>ရက်စွဲအပိုင်းအခြား</value>
@@ -228,6 +270,21 @@
   <data name="UcDeathInformationList.layoutControl6.Text" xml:space="preserve">
     <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
   </data>
+  <data name="UcDeathInformationList.layoutControl7.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControl8.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၈</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControl9.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၉</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControlItem3.Text" xml:space="preserve">
+    <value>မှ-</value>
+  </data>
+  <data name="UcDeathInformationList.layoutControlItem4.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
   <data name="UcDeathInformationList.layoutControlItem8.Text" xml:space="preserve">
     <value>မှ-</value>
   </data>
@@ -245,6 +302,15 @@
   </data>
   <data name="UcDeathInformationList.navBarGroup3.Caption" xml:space="preserve">
     <value>ကုသရေးဌာနအဆုံးသတ်</value>
+  </data>
+  <data name="UcDeathInformationList.navBarGroup4.Caption" xml:space="preserve">
+    <value>ထုတ်ဝေသည့်ရက်စွဲ</value>
+  </data>
+  <data name="UcDeathInformationList.navBarGroup5.Caption" xml:space="preserve">
+    <value>အဆင့်အတန်း</value>
+  </data>
+  <data name="UcDeathInformationList.navBarGroup6.Caption" xml:space="preserve">
+    <value>သေဆုံးမှုအခြေအနေ</value>
   </data>
   <data name="UcDeathInformationList.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>လူနာကုဒ်</value>

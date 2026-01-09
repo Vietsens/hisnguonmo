@@ -182,6 +182,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 //qtcode
                 dataServiceReqInfoADO.IsCAPD = this.chkCAPD.Checked;
                 dataServiceReqInfoADO.IS_CAPD = this.chkCAPD.Checked ? (short?)1 : (short?)null;
+                dataServiceReqInfoADO.NguonKhachCode = txtNguonKhach.Text.Trim();
+                dataServiceReqInfoADO.NguonKhachName = cboNguonKhach.Text;
+                dataServiceReqInfoADO.NguonKhachCTName = txtNguonKhachCT.Text.Trim();
                 if (chkCapMaMS.Checked)
                     dataServiceReqInfoADO.IsCapMaMS = true;
                 else
@@ -208,7 +211,6 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     var dataCHeck = BackendDataWorker.Get<HIS_OWE_TYPE>().FirstOrDefault(p => p.IS_ACTIVE == 1 && p.ID == dataServiceReqInfoADO.OweType_ID);
                     if (dataCHeck == null || dataCHeck.ID <= 0)
                         dataServiceReqInfoADO.OweType_ID = 0;
-
                 }
                 if (this.cboTreatmentType.EditValue != null)
                     dataServiceReqInfoADO.TreatmentType_ID = (long)this.cboTreatmentType.EditValue;
@@ -394,7 +396,27 @@ namespace HIS.UC.UCOtherServiceReqInfo
                         this.cboGuaranteeUsername.EditValue = dataServiceReqInfoADO.GUARANTEE_LOGINNAME;
                     }
                     else
-                        this.cboGuaranteeUsername.EditValue = null;
+                        this.cboGuaranteeUsername.EditValue = null;                   
+
+                    //if(!String.IsNullOrEmpty(dataServiceReqInfoADO.NguonKhachCode))
+                    //{
+                    //    this.txtNguonKhach.Text = dataServiceReqInfoADO.NguonKhachCode;
+                    //}
+                    //else
+                    //    this.txtNguonKhach.Text = null;
+
+                    //if (!String.IsNullOrEmpty(dataServiceReqInfoADO.NguonKhachName))
+                    //{
+                    //    this.cboNguonKhach.EditValue = dataServiceReqInfoADO.NguonKhachCode;
+                    //}
+                    //else
+                    //    this.cboNguonKhach.EditValue = null;
+                    //if (!String.IsNullOrEmpty(dataServiceReqInfoADO.NguonKhachCTName))
+                    //{
+                    //    this.txtNguonKhachCT.Text = dataServiceReqInfoADO.NguonKhachCTName;
+                    //}
+                    //else
+                    //    this.txtNguonKhachCT.Text = null;
 
                     this.txtGuaranteeReason.Text = dataServiceReqInfoADO.GUARANTEE_REASON;
                     this.txtNote.Text = dataServiceReqInfoADO.NOTE;
@@ -558,6 +580,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.chkPriority.Checked = false;
                 this.cboPriorityType.EditValue = null;
                 this.cboOtherPaySource.EditValue = null;
+                this.txtNguonKhach.Text = null;
+                this.cboNguonKhach.EditValue = null;
+                this.txtNguonKhachCT.Text = null;
                 this.cboEmergencyTime.Enabled = false;
                 this.chkIsHiv.Checked = false;
                 this.cboHosReason.EditValue = null;

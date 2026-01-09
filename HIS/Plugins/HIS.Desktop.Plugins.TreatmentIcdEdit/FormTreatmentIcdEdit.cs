@@ -47,6 +47,7 @@ using HIS.Desktop.Plugins.TreatmentIcdEdit.Validation;
 using HIS.Desktop.Plugins.TreatmentIcdEdit.ADO;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Utility;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 {
@@ -94,6 +95,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
         //internal List<HIS_HOSPITALIZE_REASON> listReason { get; set; }
         internal List<HIS_HOSPITALIZE_REASON> HisHospitalizeReason;
+        internal List<HIS_CUSTOMER_SOURCE> HisCutomerSource;
 
         internal IcdProcessor icdYhctProcessor;
         internal UserControl ucIcdYhct;
@@ -580,6 +582,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 LoadCboDoctor();
 
                 LoadCboReaSonNT();
+                LoadCboSourceCustomer();
 
                 WaitingManager.Show();
 
@@ -1121,6 +1124,24 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         txtReasonVV.Text = "";
                     }
 
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.CUSTOMER_SOURCE_CODE))
+                    {
+                        cboSourceCustomer.EditValue = currentVHisTreatment.CUSTOMER_SOURCE_CODE;
+                    }
+                    else
+                    {
+                        cboSourceCustomer.EditValue = "";
+                    }
+
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.CUSTOMER_SOURCE_DETAIL))
+                    {
+                        txtCustomerDetail.Text = currentVHisTreatment.CUSTOMER_SOURCE_DETAIL;
+                    }
+                    else
+                    {
+                        txtCustomerDetail.Text = null;
+                    }
+
                     //if (!String.IsNullOrEmpty(currentVHisTreatment.HEIN_PATIENT_TYPE_CODE))
                     //{
                     //    txtHeinPatientTypeCode.Text = currentVHisTreatment.HEIN_PATIENT_TYPE_CODE;
@@ -1432,7 +1453,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtReasonVV, 200, false);
                 ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
                 ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
-
+                ValidTextControlMaxlength(this.txtCustomerDetail, 1000, false);
                 ValidTextControlMaxlength(this.txtPatientNote, 2000, false);
 
                 layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
@@ -1965,6 +1986,22 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         data.HospitalizeReasonName = checkReasonNT.HOSPITALIZE_REASON_NAME;
                     }
                 }
+                LogSystem.Debug("cboSourceCustomer.EditValue" + cboSourceCustomer.EditValue);
+                if (cboSourceCustomer.EditValue != null)
+                {
+                    var cusomter = this.HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.ToUpper() == cboSourceCustomer.EditValue.ToString().ToUpper());
+                    if (cusomter != null)
+                    {
+                        data.CustomerSourceCode = cusomter.CUSTOMER_SOURCE_CODE;
+                        data.CustomerSourceName = cusomter.CUSTOMER_SOURCE_NAME;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(txtCustomerDetail.Text))
+                {
+                    data.CustomerSourceDetail = txtCustomerDetail.Text;
+                }
+
                 if (chkTuberculosis.Checked == true)
                 {
                     data.IsTuberculosis = 1;
@@ -2776,6 +2813,28 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadCboSourceCustomer()
+        {
+            try
+            {
+
+                HisCustomerSourceFilter filter = new HisCustomerSourceFilter();
+                filter.IS_ACTIVE = 1;
+                HisCutomerSource = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>().Where(o => o.IS_ACTIVE == 1).ToList() ;
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("CUSTOMER_SOURCE_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("CUSTOMER_SOURCE_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("CUSTOMER_SOURCE_CODE", "CUSTOMER_SOURCE_NAME", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboSourceCustomer, HisCutomerSource, controlEditorADO);
+                cboSourceCustomer.Properties.DisplayMember = "CUSTOMER_SOURCE_NAME";
+                cboSourceCustomer.Properties.ValueMember = "CUSTOMER_SOURCE_CODE";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void LoadCboDtKCB()
         {
             try
@@ -3520,8 +3579,141 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
          
             cboDtKCB.Properties.ImmediatePopup = true;
           
-        } 
+        }
 
-      
+        private void cboSourceCustomer_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboSourceCustomer.EditValue = null;
+                    txtSourceCustomer.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboSourceCustomer_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    if (cboSourceCustomer.EditValue != null)
+                    {
+                        var data = this.HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.ToLower() == cboSourceCustomer.EditValue.ToString().ToLower());
+                        if (data != null)
+                        {
+                            txtSourceCustomer.Text = data.CUSTOMER_SOURCE_CODE;
+                            cboSourceCustomer.Properties.Buttons[1].Visible = true;
+                        }
+
+                    }
+                    else
+                    {
+                        txtSourceCustomer.Text = null;
+                        cboSourceCustomer.Properties.Buttons[1].Visible = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboSourceCustomer_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboSourceCustomer.EditValue != null)
+                {
+                    cboSourceCustomer.Properties.Buttons[1].Visible = true;
+
+                    var data = this.HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.Equals(cboSourceCustomer.EditValue.ToString(), StringComparison.OrdinalIgnoreCase));
+                    if (data != null)
+                    {
+                        txtSourceCustomer.Text = data.CUSTOMER_SOURCE_CODE;
+                    }
+                }
+                else
+                {
+                    cboSourceCustomer.Properties.Buttons[1].Visible = false;
+                    txtSourceCustomer.Text = null; 
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboSourceCustomer_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (cboSourceCustomer.EditValue != null)
+                    {
+                        var data = this.HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.ToLower() == cboSourceCustomer.EditValue.ToString().ToLower());
+                        if (data != null)
+                        {
+                            txtSourceCustomer.Text = data.CUSTOMER_SOURCE_CODE;
+                            cboSourceCustomer.Properties.Buttons[1].Visible = true;
+                        }
+                    }
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    cboSourceCustomer.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtSourceCustomer_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    string code = txtSourceCustomer.Text.Trim().ToUpper();
+                    if (!string.IsNullOrEmpty(code))
+                    {
+
+                        var customer = HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.ToUpper() == code);
+                        if (customer != null)
+                        {
+                            cboSourceCustomer.EditValue = customer.CUSTOMER_SOURCE_CODE;
+                            cboSourceCustomer.Properties.Buttons[1].Visible = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Mã nguồn khách không hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            cboSourceCustomer.EditValue = null;
+                            cboSourceCustomer.Properties.Buttons[1].Visible = false;
+                        }
+                    }
+                    else
+                    {
+                        cboSourceCustomer.EditValue = null;
+                        cboSourceCustomer.Properties.Buttons[1].Visible = false;
+                    }
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

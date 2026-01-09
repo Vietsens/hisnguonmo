@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
         private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         internal const string TUTORIAL_FORMAT = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormat";
         internal const string CONFIG_KEY__DONT_PRES_EXPIRED_ITEM = "MOS.HIS_MEDI_STOCK.DONT_PRES_EXPIRED_ITEM";
@@ -206,6 +207,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
 
         internal static bool IsAutoCreateSaleExpMest;
         internal static string WarningHeinPatientTypeCode;
+        internal static string ConnectDrugInterventionInfo;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -242,6 +244,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         {
             try
             {
+                ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
                 WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE);
                 //dangth
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);

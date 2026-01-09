@@ -301,6 +301,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.ATC_GROUP_CODES = mety.ATC_GROUP_CODES;
                     this.ACTIVE_INGR_BHYT_CODE = mety.ACTIVE_INGR_BHYT_CODE;
                     this.ACTIVE_INGR_BHYT_NAME = mety.ACTIVE_INGR_BHYT_NAME;
+                    /// bổ sung các trường tương tác thuốc
+                    this.MIMS_MAPPING_STATUS = mety.MIMS_MAPPING_STATUS;
+                    this.MIMS_MAPPING_NOTE = mety.MIMS_MAPPING_NOTE;
+                    this.MIMS_TYPE = mety.MIMS_TYPE;
+                    this.MIMS_NAME = mety.MIMS_NAME;
+                    this.MIMS_LAST_SYNC_TIME = mety.MIMS_LAST_SYNC_TIME;
+                    this.MIMS_GUID = mety.MIMS_GUID;
                 }
                 if (isEdit)
                 {
@@ -417,6 +424,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.ATC_GROUP_CODES = mety.ATC_GROUP_CODES;
                     this.ACTIVE_INGR_BHYT_CODE = mety.ACTIVE_INGR_BHYT_CODE;
                     this.ACTIVE_INGR_BHYT_NAME = mety.ACTIVE_INGR_BHYT_NAME;
+                    /// bổ sung các trường tương tác thuốc
+                    this.MIMS_MAPPING_STATUS = mety.MIMS_MAPPING_STATUS;
+                    this.MIMS_MAPPING_NOTE = mety.MIMS_MAPPING_NOTE;
+                    this.MIMS_TYPE = mety.MIMS_TYPE;
+                    this.MIMS_NAME = mety.MIMS_NAME;
+                    this.MIMS_LAST_SYNC_TIME = mety.MIMS_LAST_SYNC_TIME;
+                    this.MIMS_GUID = mety.MIMS_GUID;
                 }
                 this.TotalPrice = ((inputData.PRICE ?? 0) * inputData.AMOUNT) * (1 + (inputData.VAT_RATIO ?? 0));
                 var checkMatyInStock = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getDataAmountOutOfStock(this, inputData.SERVICE_ID, inputData.MEDI_STOCK_ID);
@@ -941,6 +955,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                         }
                         medicineTypeSDO.CONTRAINDICATION = mety.CONTRAINDICATION;
                         medicineTypeSDO.DO_NOT_REQUIRED_USE_FORM = mety.DO_NOT_REQUIRED_USE_FORM;
+
+                        /// bổ sung các trường tương tác thuốc
+                        medicineTypeSDO.MIMS_MAPPING_STATUS = mety.MIMS_MAPPING_STATUS;
+                        medicineTypeSDO.MIMS_MAPPING_NOTE = mety.MIMS_MAPPING_NOTE;
+                        medicineTypeSDO.MIMS_TYPE = mety.MIMS_TYPE;
+                        medicineTypeSDO.MIMS_NAME = mety.MIMS_NAME;
+                        medicineTypeSDO.MIMS_LAST_SYNC_TIME = mety.MIMS_LAST_SYNC_TIME;
+                        medicineTypeSDO.MIMS_GUID = mety.MIMS_GUID;
+                        //////////////////////////////////////
                     }
                 }
                 if (!hasUseForm)

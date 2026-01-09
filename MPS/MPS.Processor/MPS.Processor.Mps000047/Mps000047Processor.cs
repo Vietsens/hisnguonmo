@@ -352,11 +352,20 @@ namespace MPS.Processor.Mps000047
                         {
                             System.Reflection.PropertyInfo piServiceId = typeof(ExpMestAggregatePrintByPageADO).GetProperty("SERVICE_ID" + i);
                             System.Reflection.PropertyInfo piAmount = typeof(ExpMestAggregatePrintADO).GetProperty("AMOUNT" + i);
+                            System.Reflection.PropertyInfo piThAmount = typeof(ExpMestAggregatePrintADO).GetProperty("TH_AMOUNT" + i);
                             if (piServiceId != null && piAmount != null)
                             {
                                 decimal? amount = trains.Where(o => o.SERVICE_ID == (long)(piServiceId.GetValue(sdo))).Sum(o => o.AMOUNT);
                                 amount = (amount == 0 ? null : amount);
                                 piAmount.SetValue(trainPrint, amount);
+                            }
+
+                            // qtcode
+                            if (piServiceId != null && piThAmount != null)
+                            {
+                                decimal? thAmount = trains.Where(o => o.SERVICE_ID == (long)(piServiceId.GetValue(sdo))).Sum(o => o.TH_AMOUNT);
+                                thAmount = (thAmount == 0 ? null : thAmount);
+                                piThAmount.SetValue(trainPrint, thAmount);
                             }
                         }
 
@@ -392,11 +401,18 @@ namespace MPS.Processor.Mps000047
                         {
                             System.Reflection.PropertyInfo piServiceId = typeof(ExpMestAggregatePrintByPageADO).GetProperty("SERVICE_ID" + i);
                             System.Reflection.PropertyInfo piAmount = typeof(ExpMestAggregatePrintADO).GetProperty("AMOUNT" + i);
+                            System.Reflection.PropertyInfo piThAmount = typeof(ExpMestAggregatePrintADO).GetProperty("TH_AMOUNT" + i);
                             if (piServiceId != null && piAmount != null)
                             {
                                 decimal? amount = trains.Where(o => o.SERVICE_ID == (long)(piServiceId.GetValue(sdo))).Sum(o => o.AMOUNT);
                                 amount = (amount == 0 ? null : amount);
                                 piAmount.SetValue(trainPrint, amount);
+                            }
+                            if (piServiceId != null && piThAmount != null)
+                            {
+                                decimal? thAmount = trains.Where(o => o.SERVICE_ID == (long)(piServiceId.GetValue(sdo))).Sum(o => o.TH_AMOUNT);
+                                thAmount = (thAmount == 0 ? null : thAmount);
+                                piThAmount.SetValue(trainPrint, thAmount);
                             }
                         }
 

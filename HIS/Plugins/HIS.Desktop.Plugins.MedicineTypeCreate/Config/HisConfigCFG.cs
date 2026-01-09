@@ -28,7 +28,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Config
     class HisConfigCFG
     {
         private const string CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION = "HIS.DESKTOP.PRESCRIPTION.ATC_CODE_OVERLAP.WARNING_OPTION";
+        private const string CONFIG_KEY__SERVICE_CODE_OPTION = "MOS.HIS_SERVICE.SERVICE_CODE_OPTION";
+        
         internal static string AtcCodeOverlarWarningOption;
+        internal static string ServiceCodeOption;
 
         private static string GetValue(string code)
         {
@@ -50,6 +53,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Config
             try
             {
                 AtcCodeOverlarWarningOption = GetValue(CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION);
+                ServiceCodeOption = GetValue(CONFIG_KEY__SERVICE_CODE_OPTION);
             }
             catch (Exception ex)
             {

@@ -214,8 +214,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                     }
                                     //Cau hinh in tu dong sau khi luu thanh cong
                                     this.isPrintNow = printNow;
-
-
                                     if ((this.isSaveWithRoomHasConfigAllowNotChooseService || printNow) && (chkPrintExam.Checked || chkSignExam.Checked))
                                         this.Print(true);
 

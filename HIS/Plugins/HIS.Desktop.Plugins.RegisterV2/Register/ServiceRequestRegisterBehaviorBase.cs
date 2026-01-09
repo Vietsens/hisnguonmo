@@ -264,6 +264,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected bool isCheckBaoLanh { get; set; }
         protected string Guarantee_Code { get; set; }
         protected string Guarantee_Request_Code { get; set; }
+        protected string NguonKhachCode { get; set; }
+        protected string NguonKhachName { get; set; }
+        protected string NguonKhachCTName { get; set; }
 
         internal ServiceRequestRegisterBehaviorBase(CommonParam param, UCRegister ucServiceRequestRegiter)
             : base(param)
@@ -365,6 +368,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.GUARANTEE_LOGINNAME = this.serviceReqInfoValue.GUARANTEE_LOGINNAME;
                 this.GUARANTEE_USERNAME = this.serviceReqInfoValue.GUARANTEE_USERNAME;
                 this.GUARANTEE_REASON = this.serviceReqInfoValue.GUARANTEE_REASON;
+
+                this.NguonKhachCode = this.serviceReqInfoValue.NguonKhachCode;
+                this.NguonKhachName = this.serviceReqInfoValue.NguonKhachName;
+                this.NguonKhachCTName = this.serviceReqInfoValue.NguonKhachCTName;
+
                 this.NOTE = this.serviceReqInfoValue.NOTE;
                 this.IsWarningForNext = this.serviceReqInfoValue.IsWarningForNext;
                 this.IsHiv = this.serviceReqInfoValue.IsHiv;
@@ -915,6 +923,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisTreatment.HOSPITALIZE_REASON_CODE = this.HospitalizeReasonCode;
                 this.patientProfile.HisTreatment.HOSPITALIZE_REASON_NAME = this.HospitalizeReasonName;
                 this.patientProfile.HisTreatment.HOSPITALIZATION_REASON = this.HospitalizationReason;
+                this.patientProfile.HisTreatment.CUSTOMER_SOURCE_CODE = this.NguonKhachCode;
+                this.patientProfile.HisTreatment.CUSTOMER_SOURCE_NAME = this.NguonKhachName;
+                this.patientProfile.HisTreatment.CUSTOMER_SOURCE_DETAIL = this.NguonKhachCTName;
+
             }
             catch (Exception ex)
             {

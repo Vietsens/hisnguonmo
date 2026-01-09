@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
 {
     class HisConfigCFG
     {
+        private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
         private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION = "MOS.HIS_SERVICE_REQ.MANY_DAYS_PRESCRIPTION_OPTION";
         private const string CONFIG_KEY__IsAllowAssignPresByPackage = "HIS.Desktop.Plugins.IsAllowAssignPresByPackage";
@@ -183,6 +184,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         internal static bool InPatientPrescription__ShowRoundAvailableAmount;
 
         internal static bool IsReasonRequired;
+        internal static string ConnectDrugInterventionInfo;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -218,6 +220,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         {
             try
             {
+                ConnectDrugInterventionInfo = GetValue(CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO);
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 //qtcode
                 AllowSignaturePrintModuleLinks = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);

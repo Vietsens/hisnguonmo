@@ -61,13 +61,17 @@
       <HintPath>..\..\..\..\LIB\HIS\HIS.Common\HIS.Common.Treatment\HIS.Common.Treatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.MIMS.Integration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.MIMS.Integration\HIS.Desktop.MIMS.Integration.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.CheckIcd">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.CheckIcd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.ConnectWhoCnd">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.ConnectWhoCnd\HIS.Desktop.Plugins.Library.ConnectWhoCnd.dll</HintPath>
@@ -83,10 +87,10 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintPrescription\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -108,10 +112,10 @@
       <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.UC.Icd.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.MenuPrint">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.MenuPrint.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.MenuPrint.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.PatientSelect">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.UC.PatientSelect.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.PatientSelect.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.PeriousExpMestList">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.PeriousExpMestList\HIS.UC.PeriousExpMestList.dll</HintPath>
@@ -120,9 +124,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SecondaryIcd\HIS.UC.SecondaryIcd.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.TreatmentFinish, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC.TreatmentFinish\bin\Debug\HIS.UC.TreatmentFinish.dll</HintPath>
+    <Reference Include="HIS.UC.TreatmentFinish">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.TreatmentFinish.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -141,7 +144,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.FlexCelPrint">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelPrint.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
@@ -169,7 +172,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.SignLibrary">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Inventec.Common.SignLibrary.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ThreadCustom, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -221,7 +224,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.Plugin\Inventec.Desktop.Plugins.Plugin.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -232,7 +235,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
@@ -334,6 +337,9 @@
     <Compile Include="ADO\StringUtil.cs" />
     <Compile Include="ADO\TrackingADO.cs" />
     <Compile Include="AssignPrescription\frmAssignPrescription__Dispose.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AssignPrescription\frmAssignPrescription__InitMenuMouseRight.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AssignPrescription\frmAssignPrescription__SearchHightLight.cs">
@@ -579,57 +585,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
-echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
-if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
-xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
-if not exist "$(ProjectDir)bin\$(Configuration)\vi" mkdir "$(ProjectDir)bin\$(Configuration)\vi"
-if not exist "$(ProjectDir)bin\$(Configuration)\en" mkdir "$(ProjectDir)bin\$(Configuration)\en"
-xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
-rem Histest
-for %25%25I in ("$(SolutionDir)\..\..") do set ParentDir=%25%25~fI
-set srcDirModule=$(TargetDir)$(TargetName).dll
-set srcDirVi=$(ProjectDir)bin\$(Configuration)\vi\$(TargetName).resources.dll
-set srcDirEn=$(ProjectDir)bin\$(Configuration)\en\$(TargetName).resources.dll
-set x64module=%25ParentDir%25\histest\x64\Plugins\Module
-set x64reference=%25ParentDir%25\histest\x64\ReferencedAssemblies
-set x64vi=%25ParentDir%25\histest\x64\vi
-set x64en=%25ParentDir%25\histest\x64\en
-for /f "usebackq tokens=*" %25%25P in (`powershell -command "Get-Process HIS -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Path"`) do set HISexe=%25%25P
-if "%25HISexe%25"=="%25ParentDir%25\histest\x64\HIS.exe" (
-	echo msgbox "HIS.exe dang chay. Khong the sao chep DLL.", vbExclamation, "Thong bao" &gt; %25temp%25\popup.vbs
-	cscript //nologo %25temp%25\popup.vbs
-	del %25temp%25\popup.vbs
-) else (
-	if exist "%25x64vi%25" (
-		if exist "%25srcDirVi%25" xcopy "%25srcDirVi%25" "%25x64vi%25" /Y /I
-	)
-	if exist "%25x64en%25" (
-		if exist "%25srcDirEn%25" xcopy "%25srcDirEn%25" "%25x64en%25" /Y /I
-	)
-	for %25%25D in ("%25x64module%25" "%25x64reference%25") do (
-		if exist "%25%25D\$(TargetName).dll" (
-			xcopy "%25srcDirModule%25" "%25%25D" /Y /I
-		)
-	)
-)
-rem Histest
-if errorlevel 1 goto BuildEventFailed
-REM Exit properly because the build will not fail
-REM unless the final step exits with an error code
-goto BuildEventOK
-:BuildEventFailed
-echo PREBUILDSTEP for $(ProjectName) FAILED
-exit 1
-:BuildEventOK
-echo PREBUILDSTEP for $(ProjectName) COMPLETED OK
-echo.
-echo.
-echo $(TargetDir)
-echo.
-echo.</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

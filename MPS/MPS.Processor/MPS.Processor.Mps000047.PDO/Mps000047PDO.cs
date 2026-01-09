@@ -139,6 +139,7 @@ namespace MPS.Processor.Mps000047.PDO
         public decimal AMOUNT_EXPORTED { get; set; }
         public decimal AMOUNT_EXCUTE { get; set; }
         public decimal AMOUNT { get; set; }
+        public decimal? TH_AMOUNT { get; set; }
 
         public string AMOUNT_EXPORT_STRING { get; set; }
         public string AMOUNT_EXECUTE_STRING { get; set; }
@@ -783,6 +784,108 @@ namespace MPS.Processor.Mps000047.PDO
         public decimal? AMOUNT98 { get; set; }
         public decimal? AMOUNT99 { get; set; }
         public decimal? AMOUNT100 { get; set; }
+
+        // qtcode
+        public decimal? TH_AMOUNT1 { get; set; }
+        public decimal? TH_AMOUNT2 { get; set; }
+        public decimal? TH_AMOUNT3 { get; set; }
+        public decimal? TH_AMOUNT4 { get; set; }
+        public decimal? TH_AMOUNT5 { get; set; }
+        public decimal? TH_AMOUNT6 { get; set; }
+        public decimal? TH_AMOUNT7 { get; set; }
+        public decimal? TH_AMOUNT8 { get; set; }
+        public decimal? TH_AMOUNT9 { get; set; }
+        public decimal? TH_AMOUNT10 { get; set; }
+        public decimal? TH_AMOUNT11 { get; set; }
+        public decimal? TH_AMOUNT12 { get; set; }
+        public decimal? TH_AMOUNT13 { get; set; }
+        public decimal? TH_AMOUNT14 { get; set; }
+        public decimal? TH_AMOUNT15 { get; set; }
+        public decimal? TH_AMOUNT16 { get; set; }
+        public decimal? TH_AMOUNT17 { get; set; }
+        public decimal? TH_AMOUNT18 { get; set; }
+        public decimal? TH_AMOUNT19 { get; set; }
+        public decimal? TH_AMOUNT20 { get; set; }
+        public decimal? TH_AMOUNT21 { get; set; }
+        public decimal? TH_AMOUNT22 { get; set; }
+        public decimal? TH_AMOUNT23 { get; set; }
+        public decimal? TH_AMOUNT24 { get; set; }
+        public decimal? TH_AMOUNT25 { get; set; }
+        public decimal? TH_AMOUNT26 { get; set; }
+        public decimal? TH_AMOUNT27 { get; set; }
+        public decimal? TH_AMOUNT28 { get; set; }
+        public decimal? TH_AMOUNT29 { get; set; }
+        public decimal? TH_AMOUNT30 { get; set; }
+        public decimal? TH_AMOUNT31 { get; set; }
+        public decimal? TH_AMOUNT32 { get; set; }
+        public decimal? TH_AMOUNT33 { get; set; }
+        public decimal? TH_AMOUNT34 { get; set; }
+        public decimal? TH_AMOUNT35 { get; set; }
+        public decimal? TH_AMOUNT36 { get; set; }
+        public decimal? TH_AMOUNT37 { get; set; }
+        public decimal? TH_AMOUNT38 { get; set; }
+        public decimal? TH_AMOUNT39 { get; set; }
+        public decimal? TH_AMOUNT40 { get; set; }
+        public decimal? TH_AMOUNT41 { get; set; }
+        public decimal? TH_AMOUNT42 { get; set; }
+        public decimal? TH_AMOUNT43 { get; set; }
+        public decimal? TH_AMOUNT44 { get; set; }
+        public decimal? TH_AMOUNT45 { get; set; }
+        public decimal? TH_AMOUNT46 { get; set; }
+        public decimal? TH_AMOUNT47 { get; set; }
+        public decimal? TH_AMOUNT48 { get; set; }
+        public decimal? TH_AMOUNT49 { get; set; }
+        public decimal? TH_AMOUNT50 { get; set; }
+        public decimal? TH_AMOUNT51 { get; set; }
+        public decimal? TH_AMOUNT52 { get; set; }
+        public decimal? TH_AMOUNT53 { get; set; }
+        public decimal? TH_AMOUNT54 { get; set; }
+        public decimal? TH_AMOUNT55 { get; set; }
+        public decimal? TH_AMOUNT56 { get; set; }
+        public decimal? TH_AMOUNT57 { get; set; }
+        public decimal? TH_AMOUNT58 { get; set; }
+        public decimal? TH_AMOUNT59 { get; set; }
+        public decimal? TH_AMOUNT60 { get; set; }
+        public decimal? TH_AMOUNT61 { get; set; }
+        public decimal? TH_AMOUNT62 { get; set; }
+        public decimal? TH_AMOUNT63 { get; set; }
+        public decimal? TH_AMOUNT64 { get; set; }
+        public decimal? TH_AMOUNT65 { get; set; }
+        public decimal? TH_AMOUNT66 { get; set; }
+        public decimal? TH_AMOUNT67 { get; set; }
+        public decimal? TH_AMOUNT68 { get; set; }
+        public decimal? TH_AMOUNT69 { get; set; }
+        public decimal? TH_AMOUNT70 { get; set; }
+        public decimal? TH_AMOUNT71 { get; set; }
+        public decimal? TH_AMOUNT72 { get; set; }
+        public decimal? TH_AMOUNT73 { get; set; }
+        public decimal? TH_AMOUNT74 { get; set; }
+        public decimal? TH_AMOUNT75 { get; set; }
+        public decimal? TH_AMOUNT76 { get; set; }
+        public decimal? TH_AMOUNT77 { get; set; }
+        public decimal? TH_AMOUNT78 { get; set; }
+        public decimal? TH_AMOUNT79 { get; set; }
+        public decimal? TH_AMOUNT80 { get; set; }
+        public decimal? TH_AMOUNT81 { get; set; }
+        public decimal? TH_AMOUNT82 { get; set; }
+        public decimal? TH_AMOUNT83 { get; set; }
+        public decimal? TH_AMOUNT84 { get; set; }
+        public decimal? TH_AMOUNT85 { get; set; }
+        public decimal? TH_AMOUNT86 { get; set; }
+        public decimal? TH_AMOUNT87 { get; set; }
+        public decimal? TH_AMOUNT88 { get; set; }
+        public decimal? TH_AMOUNT89 { get; set; }
+        public decimal? TH_AMOUNT90 { get; set; }
+        public decimal? TH_AMOUNT91 { get; set; }
+        public decimal? TH_AMOUNT92 { get; set; }
+        public decimal? TH_AMOUNT93 { get; set; }
+        public decimal? TH_AMOUNT94 { get; set; }
+        public decimal? TH_AMOUNT95 { get; set; }
+        public decimal? TH_AMOUNT96 { get; set; }
+        public decimal? TH_AMOUNT97 { get; set; }
+        public decimal? TH_AMOUNT98 { get; set; }
+        public decimal? TH_AMOUNT99 { get; set; }
+        public decimal? TH_AMOUNT100 { get; set; }
     }
 }
 

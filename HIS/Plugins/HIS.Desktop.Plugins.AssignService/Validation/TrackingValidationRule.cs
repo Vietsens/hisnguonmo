@@ -41,7 +41,7 @@ namespace HIS.Desktop.Plugins.AssignService.Validation
                 if (cboTracking == null) return valid;
                 if (cboTracking.EditValue == null && isRequired)
                 {
-                    ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    ErrorText = "Trường tờ điều trị bắt buộc nhập";
                     ErrorType = ErrorType.Warning;
                     return valid;
                 }
