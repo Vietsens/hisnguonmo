@@ -1967,10 +1967,17 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                 lblRepayAmount.Text = "0";
                 RepayAmount = 0;
+                LogSystem.Debug("chkBaoLanhVP.Checked" + chkBaoLanhVP.Checked);
+                LogSystem.Debug("totalPatientPrice" + totalPatientPrice);
+
                 if (chkCoKetChuyen.CheckState == CheckState.Unchecked)
                 {
                     canthuAmount = (totalPatientPrice - totalFund - this.totalDiscount) - SoTienChuyenKhoan;
-                    lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(((totalPatientPrice - totalFund - this.totalDiscount - SoTienChuyenKhoan)), ConfigApplications.NumberSeperator);
+                    if (chkBaoLanhVP.Checked)
+                    {
+                        canthuAmount = canthuAmount - Inventec.Common.TypeConvert.Parse.ToDecimal(lblBaoLanh.Text);
+                    }
+                    lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(canthuAmount, ConfigApplications.NumberSeperator);
                     RepayAmount = totalHienDu;
                     lblRepayAmount.Text = Inventec.Common.Number.Convert.NumberToString(RepayAmount.Value, ConfigApplications.NumberSeperator);
                 }
@@ -1983,7 +1990,11 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     else
                     {
                         canthuAmount = (totalPatientPrice - totalFund - this.totalDiscount) - totalHienDu - SoTienChuyenKhoan;
-                        lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(((totalPatientPrice - totalFund - this.totalDiscount) - totalHienDu - SoTienChuyenKhoan), ConfigApplications.NumberSeperator);
+                        if (chkBaoLanhVP.Checked)
+                        {
+                            canthuAmount = canthuAmount - Inventec.Common.TypeConvert.Parse.ToDecimal(lblBaoLanh.Text);
+                        }
+                        lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(canthuAmount, ConfigApplications.NumberSeperator);
                     }
 
                     if (totalHienDu > totalPatientPrice)
@@ -4378,9 +4389,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     // Cộng lại tiền đã bảo lãnh
                     receiveAmount = receiveAmount + tienBaoLanh;
 
-                    lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(
-                        receiveAmount, ConfigApplications.NumberSeperator
-                    );
+                    //lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(
+                    //    receiveAmount, ConfigApplications.NumberSeperator
+                    //);
+                    //CalcuCanThu();
                     this.txtSoGiaoDich.Text = string.Empty;
                     // Cho phép bỏ check
                     return;
@@ -4416,7 +4428,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     // Trừ bảo lãnh và gán lại
                     receiveAmount -= tienBaoLanh;
                     if (receiveAmount < 0) receiveAmount = 0;
-                    lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(receiveAmount, ConfigApplications.NumberSeperator);
+                    //lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(receiveAmount, ConfigApplications.NumberSeperator);
                 }
                 else
                 {
@@ -4424,7 +4436,22 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     MessageBox.Show("Bảo lãnh viện phí thất bại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     e.Cancel = true;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
                 WaitingManager.Hide();
+            }
+        }
+
+        private void chkBaoLanhVP_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
