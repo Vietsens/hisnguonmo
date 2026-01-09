@@ -53,8 +53,14 @@ namespace HIS.Desktop.MIMS.Integration.Models
 
         /// <summary>
         /// Mức độ nghiêm trọng (Severity/@name), ví dụ: "Contraindicated", "Extreme Caution".
+        /// Raw text từ MIMS.
         /// </summary>
         public string Severity { get; set; }
+
+        /// <summary>
+        /// Mức độ nghiêm trọng dạng enum, được parse từ <see cref="Severity"/>.
+        /// </summary>
+        public DrugHealthSeverity SeverityLevel { get; set; }
 
         /// <summary>
         /// Khả năng xảy ra (Likelihood/@name).

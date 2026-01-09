@@ -47,11 +47,37 @@
     <Reference Include="EO.WebBrowser.WinForm">
       <HintPath>..\..\..\lib\Library packages\EO.WebBrowser.20.3.34\EO.WebBrowser.WinForm.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ApiConsumer">
+      <HintPath>..\..\..\lib\HIS\HIS.Desktop.IsAdmin\HIS.Desktop.ApiConsumer.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Adapter">
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.DateTime, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.Common.DateTime.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.WebApiClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Inventec.Common\Inventec.Common.Adapter\Inventec.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
@@ -76,6 +102,7 @@
     <Compile Include="Core\MimsResponseTransformer.cs" />
     <Compile Include="Core\MimsResultDetailParser.cs" />
     <Compile Include="Models\ActiveMedication.cs" />
+    <Compile Include="Models\AlertSeverity.cs" />
     <Compile Include="Models\AllergyItem.cs" />
     <Compile Include="Models\DrugAllergyAlertDetail.cs" />
     <Compile Include="Models\DrugHealthAlertDetail.cs" />

@@ -52,14 +52,14 @@
     </Reference>
     <Reference Include="EMR.WCF.DCO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\WCF\EMR.WCF\EMR.WCF.DCO\EMR.WCF.DCO.dll</HintPath>
+      <HintPath>..\..\..\..\svn\EMR.SignProcessor\EMR.WCF.Service.SignProcessor\bin\Debug\EMR.WCF.DCO.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml\His.Bhyt.ExportXml.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.dll</HintPath>
+      <HintPath>..\..\..\..\common\HISUTIL\His.Bhyt\His.Bhyt.ExportXml.XML130\bin\Debug\His.Bhyt.ExportXml.XML130.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML1, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -143,6 +143,10 @@
     <Reference Include="Inventec.Common.FlexCelExport">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelExport\Inventec.Common.FlexCelExport.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.LocalStorage.SdaConfig\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
     </Reference>
@@ -162,7 +166,8 @@
     <Reference Include="Inventec.Common.SignFile">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignFile.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.SignLibrary">
+    <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String">
@@ -287,6 +292,7 @@
     <EmbeddedResource Include="frmSettingConfigSync.resx">
       <DependentUpon>frmSettingConfigSync.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

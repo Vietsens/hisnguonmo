@@ -39,9 +39,14 @@ namespace HIS.Desktop.MIMS.Integration.Models
         public string InteractingClassName { get; set; }
 
         /// <summary>
-        /// Mức độ nghiêm trọng (Severity)
+        /// Mức độ nghiêm trọng (Severity) - raw text từ MIMS (ví dụ: "Severe", "Moderate").
         /// </summary>
         public string Severity { get; set; }
+
+        /// <summary>
+        /// Mức độ nghiêm trọng dạng enum, được parse từ <see cref="Severity"/>.
+        /// </summary>
+        public DrugInteractionSeverity SeverityLevel { get; set; }
 
         /// <summary>
         /// Khả năng xảy ra (Likelihood)
