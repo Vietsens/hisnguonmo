@@ -1322,34 +1322,34 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             }
                         }
                         //// Bổ sung logic xử lý GPBL_STORE_CODE
-                        //if (gpblStoreCodeOption == "1"
-                        //    && currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL 
-                        //    && item.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL)
-                        //{
-                        //    if (ext == null || ext.GPBL_STORE_CODE == null)
-                        //    {
-                        //        string roomCode = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentServiceReq.EXECUTE_ROOM_ID).ROOM_CODE;
+                        if (gpblStoreCodeOption == "1"
+                            && currentServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__DXL
+                            && item.TDL_SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__GPBL)
+                        {
+                            if (ext == null || ext.GPBL_STORE_CODE == null)
+                            {
+                                string roomCode = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentServiceReq.EXECUTE_ROOM_ID).ROOM_CODE;
 
-                        //        GpblStoreCodeSDO gpblPayload = new GpblStoreCodeSDO
+                                GpblStoreCodeSDO gpblPayload = new GpblStoreCodeSDO
 
-                        //        {
-                        //            //ServiceReqConstruct.START_TIME
-                        //            seedCodeTime = currentServiceReq.START_TIME ?? 0,
-                        //            seedCode = roomCode,
-                        //            formatOption = long.Parse(gpblStoreCodeOption)
-                        //        };
-                        //        string storeCode = CallGpblStoreCodeApi(gpblPayload); // Gọi API sinh số lưu trữ
-                        //        if (!string.IsNullOrEmpty(storeCode))
-                        //        {
-                        //            ado.GPBL_STORE_CODE = storeCode;
-                        //        }
-                        //    }
-                        //    else
-                        //    {
-                        //        // Trường hợp dữ liệu HIS_SERE_SERV_EXT đã có GPBL_STORE_CODE
-                        //        ado.GPBL_STORE_CODE = ext.GPBL_STORE_CODE; // Hiển thị số lưu trữ sẵn có
-                        //    }
-                        //}
+                                {
+                                    //ServiceReqConstruct.START_TIME
+                                    seedCodeTime = currentServiceReq.START_TIME ?? 0,
+                                    seedCode = roomCode,
+                                    formatOption = long.Parse(gpblStoreCodeOption)
+                                };
+                                string storeCode = CallGpblStoreCodeApi(gpblPayload); // Gọi API sinh số lưu trữ
+                                if (!string.IsNullOrEmpty(storeCode))
+                                {
+                                    ado.GPBL_STORE_CODE = storeCode;
+                                }
+                            }
+                            else
+                            {
+                                // Trường hợp dữ liệu HIS_SERE_SERV_EXT đã có GPBL_STORE_CODE
+                                ado.GPBL_STORE_CODE = ext.GPBL_STORE_CODE; // Hiển thị số lưu trữ sẵn có
+                            }
+                        }
                         listServiceADO.Add(ado);
                     }
 
@@ -1510,18 +1510,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                     var result = lstService.FirstOrDefault(o => o.ID == sereServ.SERVICE_ID);
 
-                    //if (sereServExt != null && !string.IsNullOrEmpty(sereServExt.GPBL_STORE_CODE))
-                    //{
-                    //    txtGPBL.Text = sereServExt.GPBL_STORE_CODE;
-                    //}
-                    //else if (!string.IsNullOrEmpty(sereServ.GPBL_STORE_CODE))
-                    //{
-                    //    txtGPBL.Text = sereServ.GPBL_STORE_CODE;
-                    //}
-                    //else
-                    //{
-                    //    txtGPBL.Text = "";
-                    //}
+                    if (sereServExt != null && !string.IsNullOrEmpty(sereServExt.GPBL_STORE_CODE))
+                    {
+                        txtGPBL.Text = sereServExt.GPBL_STORE_CODE;
+                    }
+                    else if (!string.IsNullOrEmpty(sereServ.GPBL_STORE_CODE))
+                    {
+                        txtGPBL.Text = sereServ.GPBL_STORE_CODE;
+                    }
+                    else
+                    {
+                        txtGPBL.Text = "";
+                    }
 
                     if (result != null && result.FILM_SIZE_ID > 0 && (sereServExt == null || sereServExt.FILM_SIZE_ID == null))
                     {
@@ -4508,14 +4508,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     this.sereServExt.NUMBER_OF_FILM = null;
                 }
-                //if (!String.IsNullOrEmpty(txtGPBL.Text.Trim()))
-                //{
-                //    this.sereServExt.GPBL_STORE_CODE = txtGPBL.Text;
-                //}
-                //else
-                //{
-                //    this.sereServExt.GPBL_STORE_CODE = null;
-                //}
+                if (!String.IsNullOrEmpty(txtGPBL.Text.Trim()))
+                {
+                    this.sereServExt.GPBL_STORE_CODE = txtGPBL.Text;
+                }
+                else
+                {
+                    this.sereServExt.GPBL_STORE_CODE = null;
+                }
                 this.sereServExt.FILM_SIZE_ID = cboSizeOfFilm.EditValue != null ? (long?)cboSizeOfFilm.EditValue : null;
 
 
