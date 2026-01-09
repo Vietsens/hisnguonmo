@@ -17,7 +17,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
         {
             try
             {
-                LogSystem.Info("input GuaranteeRegisterUse " + registerUse);
+                LogSystem.Info("input GuaranteeRegisterUse " + registerUse); 
                 LogSystem.Info("Start GuaranteeRegisterUse " + LogUtil.TraceData("input: ", registerUse.registerUseRequest));
                 LogSystem.Info("input GuaranteeRegisterUse " + registerUse.registerUseRequest); 
                 RegisterUseResponse registerUseResponse = new RegisterUseResponse();
@@ -28,13 +28,18 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 }
 
                 Base.ApiConsumer consumer = new Base.ApiConsumer(registerUse.hasUri, registerUse.acsUri, registerUse.applicationCode, registerUse.limet, registerUse.cskcbbd, registerUse.username, registerUse.password);
-                if (registerUse.registerUseRequest.Signature == null || registerUse.registerUseRequest.Signature == "")
+                if (registerUse.registerUseRequest != null)
                 {
-                    string name = ApiConsumer.NormalizeString(registerUse.registerUseRequest.PatientFullName);
-                    string Signature = name + registerUse.registerUseRequest.PatientDateOfBirth + registerUse.registerUseRequest.PatientCccd + registerUse.registerUseRequest.RequestAmount + registerUse.applicationCode;
-                    registerUse.registerUseRequest.Signature = consumer.ConvertSHA256(Signature);
+                    registerUse.registerUseRequest.RequestAmount = registerUse.registerUseRequest.RequestAmount.Replace(".", "").Replace(",", "");
+
+                    if (registerUse.registerUseRequest.Signature == null || registerUse.registerUseRequest.Signature == "")
+                    {
+                        string name = ApiConsumer.NormalizeString(registerUse.registerUseRequest.PatientFullName);
+                        string Signature = name + registerUse.registerUseRequest.PatientDateOfBirth + registerUse.registerUseRequest.PatientCccd + registerUse.registerUseRequest.RequestAmount + registerUse.applicationCode;
+                        registerUse.registerUseRequest.Signature = consumer.ConvertSHA256(Signature);
+                    }
                 }
-                registerUse.registerUseRequest.PatientFullName = registerUse.registerUseRequest.PatientFullName.Trim();
+                
                 LogSystem.Info("Start GuaranteeRegisterUse API" + LogUtil.TraceData("input: ", registerUse.registerUseRequest));
                 LogSystem.Info("input GuaranteeRegisterUse API" + registerUse.registerUseRequest);
                 // Gọi API Register Use
@@ -74,11 +79,18 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 // Khởi tạo API Consumer
                 Base.ApiConsumer consumer = new Base.ApiConsumer(use.hasUri, use.acsUri, use.applicationCode, use.limet, use.cskcbbd, use.username, use.password);
 
-                if (use.useRequest.Signature == null || use.useRequest.Signature == "")
+                if (use.useRequest != null)
                 {
-                    string Signature = use.useRequest.RequestId + use.useRequest.Amount;
-                    use.useRequest.Signature = consumer.ConvertSHA256(Signature);
+                    use.useRequest.Amount = use.useRequest.Amount.Replace(".", "").Replace(",", "");
+
+                    if (use.useRequest.Signature == null || use.useRequest.Signature == "")
+                    {
+                        string Signature = use.useRequest.RequestId + use.useRequest.Amount;
+                        use.useRequest.Signature = consumer.ConvertSHA256(Signature);
+                    }
                 }
+
+                
                 LogSystem.Info("Start GuaranteeUse API" + LogUtil.TraceData("input: ", use.useRequest));
                 LogSystem.Info("input GuaranteeUse API" + use.useRequest);
                 // Gọi API Use
@@ -130,10 +142,15 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
 
                 Base.ApiConsumer consumer = new Base.ApiConsumer(cancelRegisterUse.hasUri, cancelRegisterUse.acsUri, cancelRegisterUse.applicationCode, cancelRegisterUse.limet, cancelRegisterUse.cskcbbd, cancelRegisterUse.username, cancelRegisterUse.password);
 
-                if (cancelRegisterUse.cancelRegisterUseRequest.Signature == null || cancelRegisterUse.cancelRegisterUseRequest.Signature == "")
+                if (cancelRegisterUse.cancelRegisterUseRequest != null)
                 {
-                    string Signature = cancelRegisterUse.cancelRegisterUseRequest.RequestId + cancelRegisterUse.cancelRegisterUseRequest.Amount;
-                    cancelRegisterUse.cancelRegisterUseRequest.Signature = consumer.ConvertSHA256(Signature);
+                    cancelRegisterUse.cancelRegisterUseRequest.Amount = cancelRegisterUse.cancelRegisterUseRequest.Amount.Replace(".", "").Replace(",", "");
+
+                    if (cancelRegisterUse.cancelRegisterUseRequest.Signature == null || cancelRegisterUse.cancelRegisterUseRequest.Signature == "")
+                    {
+                        string Signature = cancelRegisterUse.cancelRegisterUseRequest.RequestId + cancelRegisterUse.cancelRegisterUseRequest.Amount;
+                        cancelRegisterUse.cancelRegisterUseRequest.Signature = consumer.ConvertSHA256(Signature);
+                    }
                 }
 
                 LogSystem.Info("Start GuaranteeCancelRegisterUse API" + LogUtil.TraceData("input: ", cancelRegisterUse.cancelRegisterUseRequest));
@@ -191,18 +208,8 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 }
                 else
                 {
-                    if (availableBalanceInfoResponse.Data.IsValid)
-                    {
-                        Inventec.Common.Logging.LogSystem.Info("GuaranteeAvailableBalanceInfoResponse Success - data: " + availableBalanceInfoResponse.Data);
-                        return availableBalanceInfoResponse;
-                    }
-                    else
-                    {
-                        var errorCode = availableBalanceInfoResponse.Data?.ErrorCode;
-                        var errorDesc = availableBalanceInfoResponse.Data?.ErrorMessage;
-                        Inventec.Common.Logging.LogSystem.Error("API Error - Code: " + errorCode + " Desc: " + errorDesc);
-                        return null;
-                    }
+                    Inventec.Common.Logging.LogSystem.Info("GuaranteeAvailableBalanceInfoResponse Success - data: " + availableBalanceInfoResponse.Data);
+                    return availableBalanceInfoResponse;
                 }
             }
             catch (Exception ex)
@@ -229,6 +236,10 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 else if (string.IsNullOrWhiteSpace(dataUser.Amount))
                 {
                     mess = "Không xác định được số tiền thanh toán (Amount)";
+                }
+                else if (dataUser.Amount == "0" || dataUser.Amount == "")
+                {
+                    mess = "Số tiền không hợp lệ, số tiền dịch vụ phải > 0";
                 }
                 else if (string.IsNullOrWhiteSpace(dataUser.Remark))
                 {
@@ -340,6 +351,10 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.Amount))
                 {
                     mess = "Không xác định được số tiền thanh toán (Amount)";
+                }
+                else if (dataCancelRegisterUse.Amount == "0" || dataCancelRegisterUse.Amount == "")
+                {
+                    mess = "Số tiền không hợp lệ, số tiền dịch vụ phải > 0";
                 }
                 else if (string.IsNullOrWhiteSpace(dataCancelRegisterUse.Remark))
                 {
