@@ -175,18 +175,9 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             try
             {
                 MimsResult result = Check(drugs, icd10Codes);
-                if (!result.Success) return true;
-                if ((result.DrugHealthAlertDetails != null && result.DrugHealthAlertDetails.Count > 0 && result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel != DrugHealthSeverity.Unknown))
-                    || (result.DrugDrugAlertDetails != null && result.DrugDrugAlertDetails.Count > 0 && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown)))
+                if (result != null && !string.IsNullOrEmpty(result.Html))
                 {
-                    bool rs = WebViewHelper.ShowDialog(result.Html, NameText);
-                    if (rs)
-                    {
-                        HIS_MIMS_INTERACTION_LOG data = new HIS_MIMS_INTERACTION_LOG();
-
-                        CommonParam param = new CommonParam();
-                        bool checkFollow = new BackendAdapter(param).Post<bool>("api/HisMimsInteractionLog/Create", ApiConsumers.MosConsumer, data, param);
-                    }
+                    return WebViewHelper.ShowDialog(result.Html, NameText);
                 }
             }
             catch (System.Exception ex)
