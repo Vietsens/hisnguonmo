@@ -152,6 +152,7 @@ namespace HIS.UC.TreeSereServ7.Run
 
                     SetVisibleSearchPanel();
                     trvService.ToolTipController = toolTipController1;
+
                 }
             }
             catch (Exception ex)
@@ -296,6 +297,11 @@ namespace HIS.UC.TreeSereServ7.Run
                         treeListColumn.VisibleIndex = svtr.VisibleIndex;
                         treeListColumn.Caption = svtr.Caption;
                         treeListColumn.ImageAlignment = StringAlignment.Center;
+                        treeListColumn.Caption = " ";
+                        treeListColumn.OptionsColumn.FixedWidth = true;
+                        treeListColumn.MinWidth = 28;
+                        treeListColumn.Width = 28;
+                        treeListColumn.Visible = true;
                         trvService.Columns.Add(treeListColumn);
                     }
                 }
@@ -1086,6 +1092,21 @@ namespace HIS.UC.TreeSereServ7.Run
                     {
                         var o = hi.Node;
                         var data = (SereServADO)trvService.GetDataRecordByNode(o);
+                        if (hi.Column != null && hi.Column.FieldName == "btnKsk")
+                        {
+                            if (data != null
+                                && !o.HasChildren
+                                && data.ID > 0
+                                && data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                                && !string.IsNullOrWhiteSpace(data.TDL_SERVICE_REQ_CODE))
+                            {
+                                string textKsk = "Thông tin khám sức khỏe";
+                                info = new DevExpress.Utils.ToolTipControlInfo(o, textKsk);
+                                e.Info = info;
+                                return;
+                            }
+                            return;
+                        }
                         if (data != null && data.Baby != null && data.Baby.ID > 0 && hi.Column.FieldName == "TDL_SERVICE_NAME")
                         {
                             string text = "";

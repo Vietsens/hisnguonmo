@@ -669,6 +669,18 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                             info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
                             e.Info = info;
                         }
+                        if (hi.Column != null && hi.Column.FieldName == "btnKsk")
+                        {
+                            var dataKsk = (SereServADO)treeSereServ.GetDataRecordByNode(o);
+                            if (dataKsk != null
+                                && !o.HasChildren
+                                && dataKsk.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
+                            {
+                                string textx = "Thông tin khám sức khỏe";
+                                info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
+                                e.Info = info;
+                            }
+                        }
                         if (hi.Column != null && hi.Column.FieldName == "Delete")
                         {
                             string textx = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());

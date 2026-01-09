@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     LoadCurrent(this.currentData, ref updateDTO);
                 }
                 UpdateDTOFromDataForm(ref updateDTO);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("updateDTO__:", updateDTO));
                 var resultData = new BackendAdapter(param).Post<MOS.SDO.KskExecuteResultSDO>(HisRequestUriStore.MOS_HIS_SERVICE_REQ_KSK_EXECUTE, ApiConsumers.MosConsumer, updateDTO, param);
                 if (resultData != null)
                 {
@@ -117,7 +118,8 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 currentDTO.OccupationalDisease = txtOccupationalDiseaseTab2.Text.Trim();
                 currentDTO.ProvisionalDiagnosis = txtProvisionalDiagnosisTab2.Text.Trim();
                 //Tab Kham chung
-                MOS.SDO.HisKskGeneralSDO kskGeneral = new MOS.SDO.HisKskGeneralSDO();
+                var kskGeneral = currentDTO.KskGeneral ?? new MOS.SDO.HisKskGeneralSDO();
+                currentDTO.KskGeneral = kskGeneral;
                 HIS_DHST dhstGeneral = new HIS_DHST();
                 if (txtHeightTab1.EditValue != null)
                     dhstGeneral.HEIGHT = txtHeightTab1.Value;
@@ -232,7 +234,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 kskGeneral.ExamTraditionalRank = cboExamTraditionalRank.EditValue != null ? (long?)cboExamTraditionalRank.EditValue : null;
                 kskGeneral.ExamNutrionRank = cboExamNutrionRank.EditValue != null ? (long?)cboExamNutrionRank.EditValue : null;
                 kskGeneral.HeinMediOrgCode = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId()).HEIN_MEDI_ORG_CODE;
-                currentDTO.KskGeneral = kskGeneral;
                 //Tab Benh nghe nghiep
                 MOS.SDO.HisKskOccupationalSDO kskOccupational = new MOS.SDO.HisKskOccupationalSDO();
                 HIS_DHST dhstOccupational = new HIS_DHST();
@@ -375,7 +376,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
 
                 // 5. Chu kỳ kinh
                 kskGeneral.MenstrualCycleFrom = spnCycleFromDay.EditValue != null ? (long?)spnCycleFromDay.Value : null;
-                kskGeneral.MenstrualCycleTo = spnCycleFromDay.EditValue != null ? (long?)spnCycleFromDay.Value : null;
+                kskGeneral.MenstrualCycleTo = spnCycleToDay.EditValue != null ? (long?)spnCycleToDay.Value : null;
 
                 // 6. Lượng kinh
                 kskGeneral.MenstrualAmountFrom = spnMenstrualDurationFrom.EditValue != null ? (long?)spnMenstrualDurationFrom.Value : null;
@@ -431,18 +432,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 }
                 kskGeneral.HisDhst.PULSE = spnPulse.EditValue != null ? (long?)spnPulse.Value : null;
                 kskGeneral.HisDhst.BLOOD_PRESSURE_MAX = spnBloodPressureMax.EditValue != null ? (long?)spnBloodPressureMax.Value : null;
-                kskGeneral.HisDhst.BLOOD_PRESSURE_MAX = spnBloodPressureMin.EditValue != null ? (long?)spnBloodPressureMin.Value : null;
+                kskGeneral.HisDhst.BLOOD_PRESSURE_MIN = spnBloodPressureMin.EditValue != null ? (long?)spnBloodPressureMin.Value : null;
                 kskGeneral.DhstRank = cboDhstRank.EditValue != null
-                    ? (int?)cboDhstRank.EditValue
-                    : null;
+                ? Convert.ToInt32(cboDhstRank.EditValue)
+                : (int?)null;
                 //kham can lam sang
                 kskGeneral.ExamCirculation = txtCirculatory.Text.Trim();
                 kskGeneral.ExamCirculationRank = cboCirculatoryRank.EditValue != null
                     ? (long?)cboCirculatoryRank.EditValue
                     : null;
                 kskGeneral.ExamRespiratory = txtRespiratory.Text.Trim();
-                kskGeneral.ExamCirculationRank = cboCirculatoryRank.EditValue != null
-                    ? (long?)cboCirculatoryRank.EditValue
+                kskGeneral.ExamRespiratoryRank = cboRespiratoryRank.EditValue != null
+                    ? (long?)cboRespiratoryRank.EditValue
                     : null;
                 kskGeneral.ExamDigestion = txtDigestion.Text.Trim();
                 kskGeneral.ExamDigestionRank = cboDigestionRank.EditValue != null
@@ -510,7 +511,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
 
                 // 16. Kết luận – bệnh tật – hướng xử lý – liên hệ
                 kskGeneral.HealthExamRankId = cboHealthRank.EditValue != null
-                    ? (long?)cboPLSucKhoeTab1.EditValue
+                    ? (long?)cboHealthRank.EditValue
                     : null;
                 kskGeneral.Diseases = memoDiseases.Text.Trim();
                 kskGeneral.TreatmentInstruction = memoTreatmentDirection.Text.Trim();
@@ -521,9 +522,39 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     kskGeneral.ConcluderLoginName = userTab5.LOGINNAME;
                     kskGeneral.ConcluderUserName = userTab5.USERNAME;
                 }
-
                 currentDTO.KskOccupational = kskOccupational;
+                if (kskGeneral.HisDhst != null)
+                {
+                    var d = kskGeneral.HisDhst;
+                    bool empty =
+                        d.HEIGHT == null &&
+                        d.WEIGHT == null &&
+                        d.VIR_BMI == null &&
+                        d.PULSE == null &&
+                        d.BLOOD_PRESSURE_MAX == null &&
+                        d.BLOOD_PRESSURE_MIN == null &&
+                        d.TEMPERATURE == null &&
+                        d.BREATH_RATE == null;
 
+                    if (empty) kskGeneral.HisDhst = null;
+                }
+
+                // --- chặn insert DHST rỗng (Occupational) nếu cũng bị
+                if (currentDTO.KskOccupational?.HisDhst != null)
+                {
+                    var d = currentDTO.KskOccupational.HisDhst;
+                    bool empty =
+                        d.HEIGHT == null &&
+                        d.WEIGHT == null &&
+                        d.VIR_BMI == null &&
+                        d.PULSE == null &&
+                        d.BLOOD_PRESSURE_MAX == null &&
+                        d.BLOOD_PRESSURE_MIN == null &&
+                        d.TEMPERATURE == null &&
+                        d.BREATH_RATE == null;
+
+                    if (empty) currentDTO.KskOccupational.HisDhst = null;
+                }
             }
             catch (Exception ex)
             {

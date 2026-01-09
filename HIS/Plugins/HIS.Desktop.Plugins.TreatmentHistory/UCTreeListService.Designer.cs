@@ -207,6 +207,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             // 
             // BtnKsk
             // 
+            this.BtnKsk.Caption = " ";
+            this.BtnKsk.CustomizationCaption = " ";
             this.BtnKsk.FieldName = "btnKsk";
             this.BtnKsk.Name = "BtnKsk";
             this.BtnKsk.Visible = true;
@@ -367,7 +369,7 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             this.repositoryItemKsk.AllowMouseWheel = false;
             this.repositoryItemKsk.AutoHeight = false;
             this.repositoryItemKsk.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TreatmentHistory.Properties.Resources.kham_suc_khoe, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TreatmentHistory.Properties.Resources.kham_suc_khoe, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Thông tin khám sức khỏe", null, null, true)});
             this.repositoryItemKsk.Name = "repositoryItemKsk";
             this.repositoryItemKsk.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemKsk.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemKsk_ButtonClick);
