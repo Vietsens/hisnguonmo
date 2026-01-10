@@ -738,6 +738,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 chkCapLanDau.Checked = true;
                 chkCapLai.Checked = false;
                 cboHisBirthSertBook.Enabled = true;
+                cboFatherDanToc.EditValue = null;
+                dteFatherCCCDDate.EditValue = null;
+                dteFatherCCCDDate.EditValue = null;
+                txtFatherCCCD.Text = null;
+                txtFatherCCCDPlace.Text = null;
             }
             catch (Exception ex)
             {
