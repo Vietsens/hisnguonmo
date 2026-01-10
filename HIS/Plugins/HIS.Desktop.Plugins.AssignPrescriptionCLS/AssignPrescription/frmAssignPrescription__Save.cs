@@ -17,6 +17,7 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
@@ -32,6 +33,8 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentEndTypeExt.Base;
 using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.UC.MenuPrint.ADO;
 using HIS.UC.SecondaryIcd.ADO;
+using IMSys.DbConfig.HIS_RS;
+using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -224,7 +227,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 paramCommon = new CommonParam();
                 this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
 
-                if (!CheckMIMS(this.mediMatyTypeADOs))
+
+                if (HisConfigCFG.ConnectDrugInterventionInfo == "2" && !CheckMIMS(this.mediMatyTypeADOs))
                 {
                     return;
                 }
@@ -271,7 +275,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                 if (Histreatment != null)
                 {
-                    var treatmentType = BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == Histreatment.TDL_TREATMENT_TYPE_ID);
+                    var treatmentType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == Histreatment.TDL_TREATMENT_TYPE_ID);
                     if (treatmentType != null && treatmentType.MAX_PRESCRIPTION_AMOUNT != null && treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION != null)
                     {
                         decimal tongTien = 0;
@@ -315,7 +319,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 var rsData = (isave != null ? isave.Run() : null);
                 if (rsData != null)
                 {
-                    HIS_SERVICE_REQ serviceReqResult = null;
+                    MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqResult = null;
                     if (rsData.GetType() == typeof(InPatientPresResultSDO))
                     {
                         InPatientPresResultSDO patientPresResultSDO = rsData as InPatientPresResultSDO;
@@ -325,6 +329,27 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     {
                         SubclinicalPresResultSDO outPatientPresResultSDO = rsData as SubclinicalPresResultSDO;
                         serviceReqResult = outPatientPresResultSDO.ServiceReqs.FirstOrDefault();
+                    }
+
+                    try
+                    {
+                        if (this.mimsInteractionLog != null && this.mimsInteractionLog.HAS_ALERT > 0)
+                        {
+                            this.mimsInteractionLog.TREATMENT_ID = Histreatment.ID;
+                            this.mimsInteractionLog.PATIENT_ID = Histreatment.PATIENT_ID;
+                            this.mimsInteractionLog.SERVICE_REQ_ID = serviceReqResult.ID;
+
+                            bool logCreated = new BackendAdapter(new CommonParam()).Post<bool>("api/HisMimsInteractionLog/Create", ApiConsumers.MosConsumer, this.mimsInteractionLog, new CommonParam());
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                    finally
+                    {
+                        this.mimsInteractionLog = null; // luôn clear
                     }
 
                     this.oldServiceReq = serviceReqResult;
@@ -502,8 +527,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                HIS_TREATMENT treatment = new HIS_TREATMENT();
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, currentTreatmentWithPatientType);
+                MOS.EFMODEL.DataModels.HIS_TREATMENT treatment = new MOS.EFMODEL.DataModels.HIS_TREATMENT();
+                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_TREATMENT>(treatment, currentTreatmentWithPatientType);
 
                 PrintTreatmentFinishProcessor printTreatmentFinishProcessor = new PrintTreatmentFinishProcessor(treatment, currentModule != null ? currentModule.RoomId : 0);
                 printTreatmentFinishProcessor.Print(PrintEnum.IN_BANT__MPS000174);
@@ -576,7 +601,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             bool check = false;
             try
             {
-                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0 && HisConfigCFG.ConnectDrugInterventionInfo == "2")
+                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0)
                 {
                     List<HIS.Desktop.MIMS.Integration.Models.DrugItem> lstDrugItem = new List<MIMS.Integration.Models.DrugItem>();
                     var service = new HIS.Desktop.MIMS.Integration.Modules.DrugHealthService();
@@ -609,12 +634,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         lstICD.AddRange(txtIcdSubCode.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                     }
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.Histreatment.ID, this.icdExam.ID, this.Histreatment.PATIENT_ID);
-                }
+                    this.mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
 
-                if (check)
-                {
-
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.mimsInteractionLog);
                 }
 
                 return check;

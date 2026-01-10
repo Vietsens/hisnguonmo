@@ -197,6 +197,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
         List<V_HIS_EXP_MEST_MATERIAL> expMestMaterialEditPrints { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_METY> serviceReqMetys { get; set; }
         List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ_MATY> serviceReqMatys { get; set; }
+        HIS_MIMS_INTERACTION_LOG mimsInteractionLog;
         #endregion
 
         #region Construct
@@ -3782,19 +3783,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
         {
             try
             {
-                //if (GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet || GlobalStore.IsExecutePTTT)
+                //if (GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet || GlobalStore.)
                 //    return;
 
-                //GridHitInfo hitInfo = e.HitInfo;
-                //if (hitInfo.InRowCell)
-                //{
-                //    int visibleRowHandle = this.gridViewServiceProcess.GetVisibleRowHandle(hitInfo.RowHandle);
-                //    int[] selectedRows = this.gridViewServiceProcess.GetSelectedRows();
-                //    if (selectedRows != null && selectedRows.Length > 0 && selectedRows.Contains(visibleRowHandle))
-                //    {
-                //        this.InitMenu();
-                //    }
-                //}
+                GridHitInfo hitinfo = e.HitInfo;
+                if (hitinfo.InRow)
+                {
+                    int visiblerowhandle = this.gridViewServiceProcess.GetVisibleRowHandle(hitinfo.RowHandle);
+                    int[] selectedrows = this.gridViewServiceProcess.GetSelectedRows();
+                    if (selectedrows != null && selectedrows.Length > 0 && selectedrows.Contains(visiblerowhandle))
+                    {
+                        this.InitMenu();
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -126,14 +126,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                                         mimsDrugType = MimsDrugType.GenericItem;
                                         break;
                                 }
-                                HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(null, null, item.MIMS_GUID, mimsDrugType);
+                                HIS.Desktop.MIMS.Integration.Models.DrugItem drugItem = new HIS.Desktop.MIMS.Integration.Models.DrugItem(item.MEDICINE_TYPE_CODE, null, null, mimsDrugType);
                                 lstDrugItem.Add(drugItem);
                             }
 
                             List<string> lstICD = new List<string>();
                             var icdValue = (IcdInputADO)this.icdProcessor.GetValue(this.ucIcd);
+                            lstICD.Add(icdValue.ToString());
                             var icdValueSecond = (SecondaryIcdDataADO)this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
-                            if (!string.IsNullOrWhiteSpace(icdValue.ICD_CODE))
+                            if (!string.IsNullOrWhiteSpace(icdValueSecond.ICD_SUB_CODE))
                             {
                                 lstICD.AddRange(icdValueSecond.ICD_SUB_CODE.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                             }
