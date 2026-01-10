@@ -4122,8 +4122,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //    //}
                 //}
 
-                decimal totalGuarantee;
-                if (decimal.TryParse(lblTotalGuarantee.Text, out totalGuarantee) && totalGuarantee > this.guaranteeInfo.GUARANTEE_BALANCE)
+                //decimal totalGuarantee;
+                //if (decimal.TryParse(lblTotalGuarantee.Text, out totalGuarantee) && (totalGuarantee - this.totalGuaranteeOriginal) > this.guaranteeInfo.GUARANTEE_BALANCE)
+                //{
+                //    message = "Tổng tiền dịch vụ đã vượt hạn mức bảo lãnh, vui lòng kiểm tra lại.";
+                //    return false;
+                //}
+                
+                if (this.totalGuaranteeArise > this.guaranteeInfo.GUARANTEE_BALANCE)
                 {
                     message = "Tổng tiền dịch vụ đã vượt hạn mức bảo lãnh, vui lòng kiểm tra lại.";
                     return false;
@@ -4299,9 +4305,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.ssGuarantee = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, hisSereServFilter, param);
             }
             //var totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.PRICE) : 0;
-
-            var totalGuaranteeOriginal = this.ssGuarantee != null ? this.ssGuarantee.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
-            totalGuaranteePrice += totalGuaranteeOriginal;
+            if (this.totalGuaranteeOriginal == 0)
+                this.totalGuaranteeOriginal = this.ssGuarantee != null ? this.ssGuarantee.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
+            this.totalGuaranteeArise = totalGuaranteePrice; 
+            totalGuaranteePrice += this.totalGuaranteeOriginal;
             return totalGuaranteePrice;
         }
 
