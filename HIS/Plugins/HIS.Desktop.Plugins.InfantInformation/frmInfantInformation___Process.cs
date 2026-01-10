@@ -112,6 +112,16 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 }
                 currentDTO.TreatmentId = this.treatmentId;
 
+                //Thong tin cha
+
+                currentDTO.FatherDob = Inventec.Common.TypeConvert.Parse.ToInt64(dteFatherDob.DateTime.ToString("yyyyMMdd000000"));
+                currentDTO.FatherEthnicCode = cboFatherDanToc.EditValue != null ? cboFatherDanToc.EditValue.ToString() : null;
+                currentDTO.FatherEthnicName = cboFatherDanToc.Text;
+                currentDTO.FatherIdentityNumber = txtFatherCCCD.Text;
+                currentDTO.FatherIssueDate = Inventec.Common.TypeConvert.Parse.ToInt64(dteFatherCCCDDate.DateTime.ToString("yyyyMMdd000000"));
+                currentDTO.FatherIssuePlace = txtFatherCCCDPlace.Text;
+
+
                 if (!String.IsNullOrEmpty(cboHisBirthSertBook.Text))
                 {
                     currentDTO.BirthCertBookID = Inventec.Common.TypeConvert.Parse.ToInt64(cboHisBirthSertBook.EditValue.ToString());  //Sổ chứng sinh
