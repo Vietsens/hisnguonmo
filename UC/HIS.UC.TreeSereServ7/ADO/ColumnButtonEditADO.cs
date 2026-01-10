@@ -34,5 +34,6 @@ namespace HIS.UC.TreeSereServ7
         public string Tooltip { get; set; }
         public Image Image { get; set; }
         public SereServHandler ActionHandler { get; set; }
+        public string FieldName { get; set; }
     }
 }

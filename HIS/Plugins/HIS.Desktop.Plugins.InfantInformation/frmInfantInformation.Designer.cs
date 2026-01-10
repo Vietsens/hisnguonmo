@@ -100,16 +100,17 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkCapLai = new DevExpress.XtraEditors.CheckEdit();
+            this.txtFatherCCCDPlace = new DevExpress.XtraEditors.TextEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.dteFatherCCCDDate = new DevExpress.XtraEditors.DateEdit();
+            this.txtFatherCCCD = new DevExpress.XtraEditors.TextEdit();
+            this.dteFatherDob = new DevExpress.XtraEditors.DateEdit();
+            this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
+            this.chkCapLai = new DevExpress.XtraEditors.CheckEdit();
             this.chkCapLanDau = new DevExpress.XtraEditors.CheckEdit();
             this.toggleCheck = new DevExpress.XtraEditors.ToggleSwitch();
             this.cboDirectorUsername = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -208,7 +209,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -257,6 +257,12 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem79 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem81 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem82 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem83 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem84 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem85 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem87 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem86 = new DevExpress.XtraLayout.LayoutControlItem();
             this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.txtNumberOfPregnancies = new DevExpress.XtraEditors.TextEdit();
@@ -373,6 +379,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.gridView16 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barManager2 = new DevExpress.XtraBars.BarManager(this.components);
@@ -384,6 +395,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.cboFatherDanToc = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.layoutControlItem88 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.gridView18 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -391,8 +405,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.xtraTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkCapLai.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFatherCCCDPlace.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteFatherCCCDDate.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteFatherCCCDDate.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFatherCCCD.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteFatherDob.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteFatherDob.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCapLai.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCapLanDau.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleCheck.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDirectorUsername.Properties)).BeginInit();
@@ -491,7 +511,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
@@ -540,6 +559,12 @@ namespace HIS.Desktop.Plugins.InfantInformation
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem79)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem81)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem82)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem83)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem84)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem85)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem86)).BeginInit();
             this.xtraTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
@@ -621,11 +646,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboFatherDanToc.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem88)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView18)).BeginInit();
             this.SuspendLayout();
             // 
             // lcEditorInfo
@@ -665,6 +694,12 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.cboFatherDanToc);
+            this.layoutControl1.Controls.Add(this.txtFatherCCCDPlace);
+            this.layoutControl1.Controls.Add(this.dteFatherCCCDDate);
+            this.layoutControl1.Controls.Add(this.txtFatherCCCD);
+            this.layoutControl1.Controls.Add(this.dteFatherDob);
+            this.layoutControl1.Controls.Add(this.labelControl5);
             this.layoutControl1.Controls.Add(this.chkCapLai);
             this.layoutControl1.Controls.Add(this.chkCapLanDau);
             this.layoutControl1.Controls.Add(this.toggleCheck);
@@ -738,26 +773,19 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkCapLai
+            // txtFatherCCCDPlace
             // 
-            this.chkCapLai.Enabled = false;
-            this.chkCapLai.Location = new System.Drawing.Point(438, 2);
-            this.chkCapLai.MenuManager = this.barManager1;
-            this.chkCapLai.Name = "chkCapLai";
-            this.chkCapLai.Properties.Caption = "";
-            this.chkCapLai.Size = new System.Drawing.Size(143, 19);
-            this.chkCapLai.StyleController = this.layoutControl1;
-            this.chkCapLai.TabIndex = 70;
-            this.chkCapLai.CheckedChanged += new System.EventHandler(this.chkCapLai_CheckedChanged);
+            this.txtFatherCCCDPlace.Location = new System.Drawing.Point(167, 653);
+            this.txtFatherCCCDPlace.MenuManager = this.barManager1;
+            this.txtFatherCCCDPlace.Name = "txtFatherCCCDPlace";
+            this.txtFatherCCCDPlace.Size = new System.Drawing.Size(414, 20);
+            this.txtFatherCCCDPlace.StyleController = this.layoutControl1;
+            this.txtFatherCCCDPlace.TabIndex = 75;
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
@@ -802,39 +830,68 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.barButtonItem3.Name = "barButtonItem3";
             this.barButtonItem3.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem3_ItemClick);
             // 
-            // barDockControlTop
+            // dteFatherCCCDDate
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1428, 29);
+            this.dteFatherCCCDDate.EditValue = null;
+            this.dteFatherCCCDDate.Location = new System.Drawing.Point(414, 629);
+            this.dteFatherCCCDDate.MenuManager = this.barManager1;
+            this.dteFatherCCCDDate.Name = "dteFatherCCCDDate";
+            this.dteFatherCCCDDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteFatherCCCDDate.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteFatherCCCDDate.Size = new System.Drawing.Size(167, 20);
+            this.dteFatherCCCDDate.StyleController = this.layoutControl1;
+            this.dteFatherCCCDDate.TabIndex = 74;
             // 
-            // barDockControlBottom
+            // txtFatherCCCD
             // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 762);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1428, 0);
+            this.txtFatherCCCD.Location = new System.Drawing.Point(167, 629);
+            this.txtFatherCCCD.MenuManager = this.barManager1;
+            this.txtFatherCCCD.Name = "txtFatherCCCD";
+            this.txtFatherCCCD.Size = new System.Drawing.Size(168, 20);
+            this.txtFatherCCCD.StyleController = this.layoutControl1;
+            this.txtFatherCCCD.TabIndex = 73;
             // 
-            // barDockControlLeft
+            // dteFatherDob
             // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 733);
+            this.dteFatherDob.EditValue = null;
+            this.dteFatherDob.Location = new System.Drawing.Point(167, 605);
+            this.dteFatherDob.MenuManager = this.barManager1;
+            this.dteFatherDob.Name = "dteFatherDob";
+            this.dteFatherDob.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteFatherDob.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dteFatherDob.Size = new System.Drawing.Size(168, 20);
+            this.dteFatherDob.StyleController = this.layoutControl1;
+            this.dteFatherDob.TabIndex = 72;
             // 
-            // barDockControlRight
+            // labelControl5
             // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1428, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 733);
+            this.labelControl5.Location = new System.Drawing.Point(195, 557);
+            this.labelControl5.Name = "labelControl5";
+            this.labelControl5.Size = new System.Drawing.Size(386, 20);
+            this.labelControl5.StyleController = this.layoutControl1;
+            this.labelControl5.TabIndex = 71;
+            // 
+            // chkCapLai
+            // 
+            this.chkCapLai.Enabled = false;
+            this.chkCapLai.Location = new System.Drawing.Point(438, -189);
+            this.chkCapLai.MenuManager = this.barManager1;
+            this.chkCapLai.Name = "chkCapLai";
+            this.chkCapLai.Properties.Caption = "";
+            this.chkCapLai.Size = new System.Drawing.Size(143, 19);
+            this.chkCapLai.StyleController = this.layoutControl1;
+            this.chkCapLai.TabIndex = 70;
+            this.chkCapLai.CheckedChanged += new System.EventHandler(this.chkCapLai_CheckedChanged);
             // 
             // chkCapLanDau
             // 
             this.chkCapLanDau.EditValue = true;
             this.chkCapLanDau.Enabled = false;
-            this.chkCapLanDau.Location = new System.Drawing.Point(167, 2);
+            this.chkCapLanDau.Location = new System.Drawing.Point(167, -189);
             this.chkCapLanDau.MenuManager = this.barManager1;
             this.chkCapLanDau.Name = "chkCapLanDau";
             this.chkCapLanDau.Properties.Caption = "";
@@ -845,7 +902,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // toggleCheck
             // 
-            this.toggleCheck.Location = new System.Drawing.Point(55, 504);
+            this.toggleCheck.Location = new System.Drawing.Point(55, 313);
             this.toggleCheck.MenuManager = this.barManager1;
             this.toggleCheck.Name = "toggleCheck";
             this.toggleCheck.Properties.OffText = "";
@@ -858,7 +915,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboDirectorUsername
             // 
-            this.cboDirectorUsername.Location = new System.Drawing.Point(243, 556);
+            this.cboDirectorUsername.Location = new System.Drawing.Point(243, 365);
             this.cboDirectorUsername.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.cboDirectorUsername.MenuManager = this.barManager1;
             this.cboDirectorUsername.Name = "cboDirectorUsername";
@@ -886,7 +943,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtDirectorLoginname
             // 
-            this.txtDirectorLoginname.Location = new System.Drawing.Point(167, 556);
+            this.txtDirectorLoginname.Location = new System.Drawing.Point(167, 365);
             this.txtDirectorLoginname.MenuManager = this.barManager1;
             this.txtDirectorLoginname.Name = "txtDirectorLoginname";
             this.txtDirectorLoginname.Size = new System.Drawing.Size(76, 20);
@@ -896,7 +953,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtNote
             // 
-            this.txtNote.Location = new System.Drawing.Point(167, 290);
+            this.txtNote.Location = new System.Drawing.Point(167, 99);
             this.txtNote.MenuManager = this.barManager1;
             this.txtNote.Name = "txtNote";
             this.txtNote.Size = new System.Drawing.Size(414, 20);
@@ -906,7 +963,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboCommuneNameHospital
             // 
-            this.cboCommuneNameHospital.Location = new System.Drawing.Point(243, 532);
+            this.cboCommuneNameHospital.Location = new System.Drawing.Point(243, 341);
             this.cboCommuneNameHospital.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.cboCommuneNameHospital.MenuManager = this.barManager1;
             this.cboCommuneNameHospital.Name = "cboCommuneNameHospital";
@@ -935,7 +992,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtBirthPlace
             // 
-            this.txtBirthPlace.Location = new System.Drawing.Point(444, 532);
+            this.txtBirthPlace.Location = new System.Drawing.Point(444, 341);
             this.txtBirthPlace.MenuManager = this.barManager1;
             this.txtBirthPlace.Name = "txtBirthPlace";
             this.txtBirthPlace.Size = new System.Drawing.Size(137, 20);
@@ -945,7 +1002,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtCommuneCodeHospital
             // 
-            this.txtCommuneCodeHospital.Location = new System.Drawing.Point(167, 532);
+            this.txtCommuneCodeHospital.Location = new System.Drawing.Point(167, 341);
             this.txtCommuneCodeHospital.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.txtCommuneCodeHospital.MenuManager = this.barManager1;
             this.txtCommuneCodeHospital.Name = "txtCommuneCodeHospital";
@@ -957,7 +1014,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboDistrictNameHospital
             // 
-            this.cboDistrictNameHospital.Location = new System.Drawing.Point(525, 506);
+            this.cboDistrictNameHospital.Location = new System.Drawing.Point(525, 315);
             this.cboDistrictNameHospital.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.cboDistrictNameHospital.MenuManager = this.barManager1;
             this.cboDistrictNameHospital.Name = "cboDistrictNameHospital";
@@ -986,7 +1043,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboProvinceNameHospital
             // 
-            this.cboProvinceNameHospital.Location = new System.Drawing.Point(274, 506);
+            this.cboProvinceNameHospital.Location = new System.Drawing.Point(274, 315);
             this.cboProvinceNameHospital.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.cboProvinceNameHospital.MenuManager = this.barManager1;
             this.cboProvinceNameHospital.Name = "cboProvinceNameHospital";
@@ -1015,7 +1072,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtDistrictCodeHospital
             // 
-            this.txtDistrictCodeHospital.Location = new System.Drawing.Point(444, 506);
+            this.txtDistrictCodeHospital.Location = new System.Drawing.Point(444, 315);
             this.txtDistrictCodeHospital.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.txtDistrictCodeHospital.MenuManager = this.barManager1;
             this.txtDistrictCodeHospital.Name = "txtDistrictCodeHospital";
@@ -1027,7 +1084,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtProvinceCodeHospital
             // 
-            this.txtProvinceCodeHospital.Location = new System.Drawing.Point(183, 506);
+            this.txtProvinceCodeHospital.Location = new System.Drawing.Point(183, 315);
             this.txtProvinceCodeHospital.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.txtProvinceCodeHospital.MenuManager = this.barManager1;
             this.txtProvinceCodeHospital.Name = "txtProvinceCodeHospital";
@@ -1040,7 +1097,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboBirthHospital
             // 
-            this.cboBirthHospital.Location = new System.Drawing.Point(167, 482);
+            this.cboBirthHospital.Location = new System.Drawing.Point(167, 291);
             this.cboBirthHospital.MenuManager = this.barManager1;
             this.cboBirthHospital.Name = "cboBirthHospital";
             this.cboBirthHospital.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1063,7 +1120,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // dteIssue
             // 
             this.dteIssue.EditValue = null;
-            this.dteIssue.Location = new System.Drawing.Point(444, 434);
+            this.dteIssue.Location = new System.Drawing.Point(444, 243);
             this.dteIssue.MenuManager = this.barManager1;
             this.dteIssue.Name = "dteIssue";
             this.dteIssue.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1082,17 +1139,17 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtHeinCardTmp
             // 
-            this.txtHeinCardTmp.Location = new System.Drawing.Point(444, 362);
+            this.txtHeinCardTmp.Location = new System.Drawing.Point(107, 171);
             this.txtHeinCardTmp.MenuManager = this.barManager1;
             this.txtHeinCardTmp.Name = "txtHeinCardTmp";
-            this.txtHeinCardTmp.Size = new System.Drawing.Size(137, 20);
+            this.txtHeinCardTmp.Size = new System.Drawing.Size(474, 20);
             this.txtHeinCardTmp.StyleController = this.layoutControl1;
             this.txtHeinCardTmp.TabIndex = 51;
             this.txtHeinCardTmp.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtHeinCardTmp_KeyUp);
             // 
             // chkIsSurgery
             // 
-            this.chkIsSurgery.Location = new System.Drawing.Point(444, 242);
+            this.chkIsSurgery.Location = new System.Drawing.Point(444, 51);
             this.chkIsSurgery.MenuManager = this.barManager1;
             this.chkIsSurgery.Name = "chkIsSurgery";
             this.chkIsSurgery.Properties.Caption = "";
@@ -1105,7 +1162,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // dtDeathDate
             // 
             this.dtDeathDate.EditValue = null;
-            this.dtDeathDate.Location = new System.Drawing.Point(444, 122);
+            this.dtDeathDate.Location = new System.Drawing.Point(444, -69);
             this.dtDeathDate.MenuManager = this.barManager1;
             this.dtDeathDate.Name = "dtDeathDate";
             this.dtDeathDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1119,7 +1176,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtHTAddress
             // 
-            this.txtHTAddress.Location = new System.Drawing.Point(414, 724);
+            this.txtHTAddress.Location = new System.Drawing.Point(414, 533);
             this.txtHTAddress.MenuManager = this.barManager1;
             this.txtHTAddress.Name = "txtHTAddress";
             this.txtHTAddress.Size = new System.Drawing.Size(167, 20);
@@ -1129,7 +1186,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtHTCommuneCode
             // 
-            this.txtHTCommuneCode.Location = new System.Drawing.Point(167, 724);
+            this.txtHTCommuneCode.Location = new System.Drawing.Point(167, 533);
             this.txtHTCommuneCode.MenuManager = this.barManager1;
             this.txtHTCommuneCode.Name = "txtHTCommuneCode";
             this.txtHTCommuneCode.Size = new System.Drawing.Size(76, 20);
@@ -1141,7 +1198,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtHTDistrictCode
             // 
-            this.txtHTDistrictCode.Location = new System.Drawing.Point(414, 700);
+            this.txtHTDistrictCode.Location = new System.Drawing.Point(414, 509);
             this.txtHTDistrictCode.MenuManager = this.barManager1;
             this.txtHTDistrictCode.Name = "txtHTDistrictCode";
             this.txtHTDistrictCode.Size = new System.Drawing.Size(65, 20);
@@ -1153,7 +1210,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtHTProvinceCode
             // 
-            this.txtHTProvinceCode.Location = new System.Drawing.Point(167, 700);
+            this.txtHTProvinceCode.Location = new System.Drawing.Point(167, 509);
             this.txtHTProvinceCode.MenuManager = this.barManager1;
             this.txtHTProvinceCode.Name = "txtHTProvinceCode";
             this.txtHTProvinceCode.Size = new System.Drawing.Size(76, 20);
@@ -1165,7 +1222,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(414, 676);
+            this.txtAddress.Location = new System.Drawing.Point(414, 485);
             this.txtAddress.MenuManager = this.barManager1;
             this.txtAddress.Name = "txtAddress";
             this.txtAddress.Size = new System.Drawing.Size(167, 20);
@@ -1175,7 +1232,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtCommuneCode
             // 
-            this.txtCommuneCode.Location = new System.Drawing.Point(167, 676);
+            this.txtCommuneCode.Location = new System.Drawing.Point(167, 485);
             this.txtCommuneCode.MenuManager = this.barManager1;
             this.txtCommuneCode.Name = "txtCommuneCode";
             this.txtCommuneCode.Size = new System.Drawing.Size(76, 20);
@@ -1186,7 +1243,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtDistrictCode
             // 
-            this.txtDistrictCode.Location = new System.Drawing.Point(414, 652);
+            this.txtDistrictCode.Location = new System.Drawing.Point(414, 461);
             this.txtDistrictCode.MenuManager = this.barManager1;
             this.txtDistrictCode.Name = "txtDistrictCode";
             this.txtDistrictCode.Size = new System.Drawing.Size(65, 20);
@@ -1197,7 +1254,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtProvinceCode
             // 
-            this.txtProvinceCode.Location = new System.Drawing.Point(167, 652);
+            this.txtProvinceCode.Location = new System.Drawing.Point(167, 461);
             this.txtProvinceCode.MenuManager = this.barManager1;
             this.txtProvinceCode.Name = "txtProvinceCode";
             this.txtProvinceCode.Size = new System.Drawing.Size(76, 20);
@@ -1209,7 +1266,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtNoicap
             // 
-            this.txtNoicap.Location = new System.Drawing.Point(414, 628);
+            this.txtNoicap.Location = new System.Drawing.Point(414, 437);
             this.txtNoicap.MenuManager = this.barManager1;
             this.txtNoicap.Name = "txtNoicap";
             this.txtNoicap.Size = new System.Drawing.Size(167, 20);
@@ -1219,7 +1276,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtCMT
             // 
-            this.txtCMT.Location = new System.Drawing.Point(167, 604);
+            this.txtCMT.Location = new System.Drawing.Point(167, 413);
             this.txtCMT.MenuManager = this.barManager1;
             this.txtCMT.Name = "txtCMT";
             this.txtCMT.Size = new System.Drawing.Size(414, 20);
@@ -1231,7 +1288,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // labelControl4
             // 
             this.labelControl4.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
-            this.labelControl4.Location = new System.Drawing.Point(195, 580);
+            this.labelControl4.Location = new System.Drawing.Point(195, 389);
             this.labelControl4.Name = "labelControl4";
             this.labelControl4.Size = new System.Drawing.Size(386, 20);
             this.labelControl4.StyleController = this.layoutControl1;
@@ -1239,7 +1296,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtUserGCS
             // 
-            this.txtUserGCS.Location = new System.Drawing.Point(167, 434);
+            this.txtUserGCS.Location = new System.Drawing.Point(167, 243);
             this.txtUserGCS.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.txtUserGCS.MenuManager = this.barManager1;
             this.txtUserGCS.Name = "txtUserGCS";
@@ -1251,7 +1308,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtInfantMidwife3
             // 
-            this.txtInfantMidwife3.Location = new System.Drawing.Point(444, 410);
+            this.txtInfantMidwife3.Location = new System.Drawing.Point(444, 219);
             this.txtInfantMidwife3.MenuManager = this.barManager1;
             this.txtInfantMidwife3.Name = "txtInfantMidwife3";
             this.txtInfantMidwife3.Size = new System.Drawing.Size(137, 20);
@@ -1261,7 +1318,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtInfantMidwife2
             // 
-            this.txtInfantMidwife2.Location = new System.Drawing.Point(167, 410);
+            this.txtInfantMidwife2.Location = new System.Drawing.Point(167, 219);
             this.txtInfantMidwife2.MenuManager = this.barManager1;
             this.txtInfantMidwife2.Name = "txtInfantMidwife2";
             this.txtInfantMidwife2.Size = new System.Drawing.Size(168, 20);
@@ -1271,7 +1328,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtInfantMidwife1
             // 
-            this.txtInfantMidwife1.Location = new System.Drawing.Point(167, 386);
+            this.txtInfantMidwife1.Location = new System.Drawing.Point(167, 195);
             this.txtInfantMidwife1.MenuManager = this.barManager1;
             this.txtInfantMidwife1.Name = "txtInfantMidwife1";
             this.txtInfantMidwife1.Size = new System.Drawing.Size(414, 20);
@@ -1281,10 +1338,10 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtFather
             // 
-            this.txtFather.Location = new System.Drawing.Point(167, 362);
+            this.txtFather.Location = new System.Drawing.Point(167, 581);
             this.txtFather.MenuManager = this.barManager1;
             this.txtFather.Name = "txtFather";
-            this.txtFather.Size = new System.Drawing.Size(168, 20);
+            this.txtFather.Size = new System.Drawing.Size(414, 20);
             this.txtFather.StyleController = this.layoutControl1;
             this.txtFather.TabIndex = 25;
             this.txtFather.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtFather_KeyUp);
@@ -1296,7 +1353,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             0,
             0,
             0});
-            this.spnInfantHeight.Location = new System.Drawing.Point(444, 338);
+            this.spnInfantHeight.Location = new System.Drawing.Point(444, 147);
             this.spnInfantHeight.MenuManager = this.barManager1;
             this.spnInfantHeight.Name = "spnInfantHeight";
             this.spnInfantHeight.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1315,7 +1372,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             0,
             0,
             0});
-            this.spnInfanthead.Location = new System.Drawing.Point(167, 338);
+            this.spnInfanthead.Location = new System.Drawing.Point(167, 147);
             this.spnInfanthead.MenuManager = this.barManager1;
             this.spnInfanthead.Name = "spnInfanthead";
             this.spnInfanthead.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1334,7 +1391,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             0,
             0,
             0});
-            this.spnInfantWeight.Location = new System.Drawing.Point(444, 314);
+            this.spnInfantWeight.Location = new System.Drawing.Point(444, 123);
             this.spnInfantWeight.MenuManager = this.barManager1;
             this.spnInfantWeight.Name = "spnInfantWeight";
             this.spnInfantWeight.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1349,7 +1406,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtInfantWeek
             // 
-            this.txtInfantWeek.Location = new System.Drawing.Point(444, 266);
+            this.txtInfantWeek.Location = new System.Drawing.Point(444, 75);
             this.txtInfantWeek.MenuManager = this.barManager1;
             this.txtInfantWeek.Name = "txtInfantWeek";
             this.txtInfantWeek.Size = new System.Drawing.Size(137, 20);
@@ -1360,7 +1417,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtInfantMonth
             // 
-            this.txtInfantMonth.Location = new System.Drawing.Point(167, 266);
+            this.txtInfantMonth.Location = new System.Drawing.Point(167, 75);
             this.txtInfantMonth.MenuManager = this.barManager1;
             this.txtInfantMonth.Name = "txtInfantMonth";
             this.txtInfantMonth.Size = new System.Drawing.Size(168, 20);
@@ -1370,7 +1427,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // chkInfantcheck
             // 
-            this.chkInfantcheck.Location = new System.Drawing.Point(167, 242);
+            this.chkInfantcheck.Location = new System.Drawing.Point(167, 51);
             this.chkInfantcheck.MenuManager = this.barManager1;
             this.chkInfantcheck.Name = "chkInfantcheck";
             this.chkInfantcheck.Properties.Caption = "";
@@ -1387,7 +1444,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             0,
             0,
             0});
-            this.spnChildLive.Location = new System.Drawing.Point(444, 194);
+            this.spnChildLive.Location = new System.Drawing.Point(444, 3);
             this.spnChildLive.MenuManager = this.barManager1;
             this.spnChildLive.Name = "spnChildLive";
             this.spnChildLive.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1407,7 +1464,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             0,
             0,
             0});
-            this.spnInfantMonth.Location = new System.Drawing.Point(167, 194);
+            this.spnInfantMonth.Location = new System.Drawing.Point(167, 3);
             this.spnInfantMonth.MenuManager = this.barManager1;
             this.spnInfantMonth.Name = "spnInfantMonth";
             this.spnInfantMonth.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -1421,7 +1478,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtInfantBorntime
             // 
-            this.txtInfantBorntime.Location = new System.Drawing.Point(444, 146);
+            this.txtInfantBorntime.Location = new System.Drawing.Point(444, -45);
             this.txtInfantBorntime.MenuManager = this.barManager1;
             this.txtInfantBorntime.Name = "txtInfantBorntime";
             this.txtInfantBorntime.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1442,7 +1499,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // txtInfantName
             // 
-            this.txtInfantName.Location = new System.Drawing.Point(167, 98);
+            this.txtInfantName.Location = new System.Drawing.Point(167, -93);
             this.txtInfantName.MenuManager = this.barManager1;
             this.txtInfantName.Name = "txtInfantName";
             this.txtInfantName.Size = new System.Drawing.Size(168, 20);
@@ -1454,7 +1511,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             this.labelControl3.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.labelControl3.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl3.Location = new System.Drawing.Point(195, 74);
+            this.labelControl3.Location = new System.Drawing.Point(195, -117);
             this.labelControl3.Name = "labelControl3";
             this.labelControl3.Size = new System.Drawing.Size(386, 20);
             this.labelControl3.StyleController = this.layoutControl1;
@@ -1463,7 +1520,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // lblHisBirthCertNum
             // 
             this.lblHisBirthCertNum.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblHisBirthCertNum.Location = new System.Drawing.Point(444, 50);
+            this.lblHisBirthCertNum.Location = new System.Drawing.Point(444, -141);
             this.lblHisBirthCertNum.Name = "lblHisBirthCertNum";
             this.lblHisBirthCertNum.Size = new System.Drawing.Size(137, 20);
             this.lblHisBirthCertNum.StyleController = this.layoutControl1;
@@ -1474,7 +1531,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             this.labelControl1.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl1.Location = new System.Drawing.Point(195, 26);
+            this.labelControl1.Location = new System.Drawing.Point(195, -165);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(386, 20);
             this.labelControl1.StyleController = this.layoutControl1;
@@ -1482,7 +1539,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboInfantGendercode
             // 
-            this.cboInfantGendercode.Location = new System.Drawing.Point(444, 98);
+            this.cboInfantGendercode.Location = new System.Drawing.Point(444, -93);
             this.cboInfantGendercode.MenuManager = this.barManager1;
             this.cboInfantGendercode.Name = "cboInfantGendercode";
             this.cboInfantGendercode.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1506,7 +1563,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboHisBirthSertBook
             // 
-            this.cboHisBirthSertBook.Location = new System.Drawing.Point(167, 50);
+            this.cboHisBirthSertBook.Location = new System.Drawing.Point(167, -141);
             this.cboHisBirthSertBook.MenuManager = this.barManager1;
             this.cboHisBirthSertBook.Name = "cboHisBirthSertBook";
             this.cboHisBirthSertBook.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1531,7 +1588,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboInfantResult
             // 
-            this.cboInfantResult.Location = new System.Drawing.Point(167, 122);
+            this.cboInfantResult.Location = new System.Drawing.Point(167, -69);
             this.cboInfantResult.MenuManager = this.barManager1;
             this.cboInfantResult.Name = "cboInfantResult";
             this.cboInfantResult.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1556,7 +1613,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // dtdInfantdate
             // 
             this.dtdInfantdate.EditValue = null;
-            this.dtdInfantdate.Location = new System.Drawing.Point(167, 146);
+            this.dtdInfantdate.Location = new System.Drawing.Point(167, -45);
             this.dtdInfantdate.MenuManager = this.barManager1;
             this.dtdInfantdate.Name = "dtdInfantdate";
             this.dtdInfantdate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1571,7 +1628,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboInfantTybe
             // 
-            this.cboInfantTybe.Location = new System.Drawing.Point(167, 170);
+            this.cboInfantTybe.Location = new System.Drawing.Point(167, -21);
             this.cboInfantTybe.MenuManager = this.barManager1;
             this.cboInfantTybe.Name = "cboInfantTybe";
             this.cboInfantTybe.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1595,7 +1652,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboInfantPosition
             // 
-            this.cboInfantPosition.Location = new System.Drawing.Point(444, 170);
+            this.cboInfantPosition.Location = new System.Drawing.Point(444, -21);
             this.cboInfantPosition.MenuManager = this.barManager1;
             this.cboInfantPosition.Name = "cboInfantPosition";
             this.cboInfantPosition.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1619,7 +1676,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboEthnic
             // 
-            this.cboEthnic.Location = new System.Drawing.Point(167, 314);
+            this.cboEthnic.Location = new System.Drawing.Point(167, 123);
             this.cboEthnic.MenuManager = this.barManager1;
             this.cboEthnic.Name = "cboEthnic";
             this.cboEthnic.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1644,7 +1701,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboUserGCS
             // 
-            this.cboUserGCS.Location = new System.Drawing.Point(243, 434);
+            this.cboUserGCS.Location = new System.Drawing.Point(243, 243);
             this.cboUserGCS.Margin = new System.Windows.Forms.Padding(0, 3, 3, 3);
             this.cboUserGCS.MenuManager = this.barManager1;
             this.cboUserGCS.Name = "cboUserGCS";
@@ -1670,7 +1727,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // txtNgaycap
             // 
             this.txtNgaycap.EditValue = null;
-            this.txtNgaycap.Location = new System.Drawing.Point(167, 628);
+            this.txtNgaycap.Location = new System.Drawing.Point(167, 437);
             this.txtNgaycap.MenuManager = this.barManager1;
             this.txtNgaycap.Name = "txtNgaycap";
             this.txtNgaycap.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1691,7 +1748,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboHTProvinceName
             // 
-            this.cboHTProvinceName.Location = new System.Drawing.Point(243, 700);
+            this.cboHTProvinceName.Location = new System.Drawing.Point(243, 509);
             this.cboHTProvinceName.MenuManager = this.barManager1;
             this.cboHTProvinceName.Name = "cboHTProvinceName";
             this.cboHTProvinceName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1710,7 +1767,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboHTDistrictName
             // 
-            this.cboHTDistrictName.Location = new System.Drawing.Point(479, 700);
+            this.cboHTDistrictName.Location = new System.Drawing.Point(479, 509);
             this.cboHTDistrictName.MenuManager = this.barManager1;
             this.cboHTDistrictName.Name = "cboHTDistrictName";
             this.cboHTDistrictName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1729,7 +1786,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboHTCommuneName
             // 
-            this.cboHTCommuneName.Location = new System.Drawing.Point(243, 724);
+            this.cboHTCommuneName.Location = new System.Drawing.Point(243, 533);
             this.cboHTCommuneName.MenuManager = this.barManager1;
             this.cboHTCommuneName.Name = "cboHTCommuneName";
             this.cboHTCommuneName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1748,7 +1805,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboCommuneName
             // 
-            this.cboCommuneName.Location = new System.Drawing.Point(243, 676);
+            this.cboCommuneName.Location = new System.Drawing.Point(243, 485);
             this.cboCommuneName.MenuManager = this.barManager1;
             this.cboCommuneName.Name = "cboCommuneName";
             this.cboCommuneName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1775,7 +1832,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboProvinceName
             // 
-            this.cboProvinceName.Location = new System.Drawing.Point(243, 652);
+            this.cboProvinceName.Location = new System.Drawing.Point(243, 461);
             this.cboProvinceName.MenuManager = this.barManager1;
             this.cboProvinceName.Name = "cboProvinceName";
             this.cboProvinceName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1802,7 +1859,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboDistrictName
             // 
-            this.cboDistrictName.Location = new System.Drawing.Point(479, 652);
+            this.cboDistrictName.Location = new System.Drawing.Point(479, 461);
             this.cboDistrictName.MenuManager = this.barManager1;
             this.cboDistrictName.Name = "cboDistrictName";
             this.cboDistrictName.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1834,7 +1891,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             0,
             0,
             0});
-            this.txtNumberChildrenBirth.Location = new System.Drawing.Point(167, 218);
+            this.txtNumberChildrenBirth.Location = new System.Drawing.Point(167, 27);
             this.txtNumberChildrenBirth.MenuManager = this.barManager1;
             this.txtNumberChildrenBirth.Name = "txtNumberChildrenBirth";
             this.txtNumberChildrenBirth.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -1854,7 +1911,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             0,
             0,
             0});
-            this.txtNumberOfBirth.Location = new System.Drawing.Point(444, 218);
+            this.txtNumberOfBirth.Location = new System.Drawing.Point(444, 27);
             this.txtNumberOfBirth.MenuManager = this.barManager1;
             this.txtNumberOfBirth.Name = "txtNumberOfBirth";
             this.txtNumberOfBirth.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -1869,7 +1926,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             // cboBirthPlaceType
             // 
-            this.cboBirthPlaceType.Location = new System.Drawing.Point(167, 458);
+            this.cboBirthPlaceType.Location = new System.Drawing.Point(167, 267);
             this.cboBirthPlaceType.MenuManager = this.barManager1;
             this.cboBirthPlaceType.Name = "cboBirthPlaceType";
             this.cboBirthPlaceType.Properties.AutoComplete = false;
@@ -1913,7 +1970,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem18,
             this.layoutControlItem19,
             this.layoutControlItem22,
-            this.layoutControlItem26,
             this.layoutControlItem27,
             this.layoutControlItem29,
             this.layoutControlItem31,
@@ -1961,11 +2017,18 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem80,
             this.layoutControlItem79,
             this.layoutControlItem81,
-            this.layoutControlItem82});
-            this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem82,
+            this.layoutControlItem83,
+            this.layoutControlItem26,
+            this.layoutControlItem84,
+            this.layoutControlItem87,
+            this.layoutControlItem86,
+            this.layoutControlItem88,
+            this.layoutControlItem85});
+            this.layoutControlGroup2.Location = new System.Drawing.Point(0, -191);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(583, 746);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(583, 866);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem1
@@ -2218,19 +2281,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem22.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem22.TextToControlDistance = 5;
-            // 
-            // layoutControlItem26
-            // 
-            this.layoutControlItem26.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem26.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem26.Control = this.txtFather;
-            this.layoutControlItem26.Location = new System.Drawing.Point(0, 360);
-            this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(337, 24);
-            this.layoutControlItem26.Text = "Tên thân nhân:";
-            this.layoutControlItem26.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem26.TextSize = new System.Drawing.Size(160, 20);
-            this.layoutControlItem26.TextToControlDistance = 5;
             // 
             // layoutControlItem27
             // 
@@ -2621,9 +2671,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem64.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem64.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem64.Control = this.txtHeinCardTmp;
-            this.layoutControlItem64.Location = new System.Drawing.Point(337, 360);
+            this.layoutControlItem64.Location = new System.Drawing.Point(0, 360);
             this.layoutControlItem64.Name = "layoutControlItem64";
-            this.layoutControlItem64.Size = new System.Drawing.Size(246, 24);
+            this.layoutControlItem64.Size = new System.Drawing.Size(583, 24);
             this.layoutControlItem64.Text = "Thẻ tạm:";
             this.layoutControlItem64.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem64.TextSize = new System.Drawing.Size(100, 20);
@@ -2879,11 +2929,102 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem82.TextSize = new System.Drawing.Size(140, 20);
             this.layoutControlItem82.TextToControlDistance = 5;
             // 
+            // layoutControlItem83
+            // 
+            this.layoutControlItem83.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.layoutControlItem83.AppearanceItemCaption.Options.UseFont = true;
+            this.layoutControlItem83.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem83.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Near;
+            this.layoutControlItem83.Control = this.labelControl5;
+            this.layoutControlItem83.Location = new System.Drawing.Point(0, 746);
+            this.layoutControlItem83.Name = "layoutControlItem83";
+            this.layoutControlItem83.Padding = new DevExpress.XtraLayout.Utils.Padding(50, 2, 2, 2);
+            this.layoutControlItem83.Size = new System.Drawing.Size(583, 24);
+            this.layoutControlItem83.Text = "Thông tin cha";
+            this.layoutControlItem83.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem83.TextSize = new System.Drawing.Size(140, 20);
+            this.layoutControlItem83.TextToControlDistance = 5;
+            // 
+            // layoutControlItem26
+            // 
+            this.layoutControlItem26.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem26.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem26.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem26.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem26.Control = this.txtFather;
+            this.layoutControlItem26.Location = new System.Drawing.Point(0, 770);
+            this.layoutControlItem26.Name = "layoutControlItem26";
+            this.layoutControlItem26.Size = new System.Drawing.Size(583, 24);
+            this.layoutControlItem26.Text = "Họ tên cha:";
+            this.layoutControlItem26.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem26.TextSize = new System.Drawing.Size(160, 20);
+            this.layoutControlItem26.TextToControlDistance = 5;
+            // 
+            // layoutControlItem84
+            // 
+            this.layoutControlItem84.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem84.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem84.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem84.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem84.Control = this.dteFatherDob;
+            this.layoutControlItem84.Location = new System.Drawing.Point(0, 794);
+            this.layoutControlItem84.Name = "layoutControlItem84";
+            this.layoutControlItem84.Size = new System.Drawing.Size(337, 24);
+            this.layoutControlItem84.Text = "Ngày sinh:";
+            this.layoutControlItem84.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem84.TextSize = new System.Drawing.Size(160, 13);
+            this.layoutControlItem84.TextToControlDistance = 5;
+            // 
+            // layoutControlItem85
+            // 
+            this.layoutControlItem85.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem85.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem85.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem85.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem85.Control = this.txtFatherCCCD;
+            this.layoutControlItem85.Location = new System.Drawing.Point(0, 818);
+            this.layoutControlItem85.Name = "layoutControlItem85";
+            this.layoutControlItem85.Size = new System.Drawing.Size(337, 24);
+            this.layoutControlItem85.Text = "CCCD/CMND/Hộ chiếu:";
+            this.layoutControlItem85.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem85.TextSize = new System.Drawing.Size(160, 13);
+            this.layoutControlItem85.TextToControlDistance = 5;
+            // 
+            // layoutControlItem87
+            // 
+            this.layoutControlItem87.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem87.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem87.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem87.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem87.Control = this.txtFatherCCCDPlace;
+            this.layoutControlItem87.Location = new System.Drawing.Point(0, 842);
+            this.layoutControlItem87.Name = "layoutControlItem87";
+            this.layoutControlItem87.Size = new System.Drawing.Size(583, 24);
+            this.layoutControlItem87.Text = "Nơi cấp:";
+            this.layoutControlItem87.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem87.TextSize = new System.Drawing.Size(160, 13);
+            this.layoutControlItem87.TextToControlDistance = 5;
+            // 
+            // layoutControlItem86
+            // 
+            this.layoutControlItem86.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem86.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem86.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem86.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem86.Control = this.dteFatherCCCDDate;
+            this.layoutControlItem86.Location = new System.Drawing.Point(337, 818);
+            this.layoutControlItem86.Name = "layoutControlItem86";
+            this.layoutControlItem86.Size = new System.Drawing.Size(246, 24);
+            this.layoutControlItem86.Text = "Ngày cấp:";
+            this.layoutControlItem86.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem86.TextSize = new System.Drawing.Size(70, 13);
+            this.layoutControlItem86.TextToControlDistance = 5;
+            // 
             // xtraTabPage2
             // 
             this.xtraTabPage2.Controls.Add(this.layoutControl3);
             this.xtraTabPage2.Name = "xtraTabPage2";
-            this.xtraTabPage2.Size = new System.Drawing.Size(538, 600);
+            this.xtraTabPage2.Size = new System.Drawing.Size(600, 675);
             this.xtraTabPage2.Text = "Thông tin bổ sung";
             // 
             // layoutControl3
@@ -2917,7 +3058,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup3;
-            this.layoutControl3.Size = new System.Drawing.Size(538, 600);
+            this.layoutControl3.Size = new System.Drawing.Size(600, 675);
             this.layoutControl3.TabIndex = 0;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -2926,18 +3067,18 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.txtNumberOfPregnancies.Location = new System.Drawing.Point(227, 26);
             this.txtNumberOfPregnancies.MenuManager = this.barManager1;
             this.txtNumberOfPregnancies.Name = "txtNumberOfPregnancies";
-            this.txtNumberOfPregnancies.Size = new System.Drawing.Size(309, 20);
+            this.txtNumberOfPregnancies.Size = new System.Drawing.Size(371, 20);
             this.txtNumberOfPregnancies.StyleController = this.layoutControl3;
             this.txtNumberOfPregnancies.TabIndex = 30;
             this.txtNumberOfPregnancies.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumberOfPregnancies_KeyPress);
             // 
             // chkIsEarlyNewBornCare
             // 
-            this.chkIsEarlyNewBornCare.Location = new System.Drawing.Point(498, 194);
+            this.chkIsEarlyNewBornCare.Location = new System.Drawing.Point(529, 194);
             this.chkIsEarlyNewBornCare.MenuManager = this.barManager1;
             this.chkIsEarlyNewBornCare.Name = "chkIsEarlyNewBornCare";
             this.chkIsEarlyNewBornCare.Properties.Caption = "";
-            this.chkIsEarlyNewBornCare.Size = new System.Drawing.Size(38, 19);
+            this.chkIsEarlyNewBornCare.Size = new System.Drawing.Size(69, 19);
             this.chkIsEarlyNewBornCare.StyleController = this.layoutControl3;
             this.chkIsEarlyNewBornCare.TabIndex = 28;
             // 
@@ -2947,7 +3088,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.chkIsTestBloodSugar.MenuManager = this.barManager1;
             this.chkIsTestBloodSugar.Name = "chkIsTestBloodSugar";
             this.chkIsTestBloodSugar.Properties.Caption = "";
-            this.chkIsTestBloodSugar.Size = new System.Drawing.Size(39, 19);
+            this.chkIsTestBloodSugar.Size = new System.Drawing.Size(70, 19);
             this.chkIsTestBloodSugar.StyleController = this.layoutControl3;
             this.chkIsTestBloodSugar.TabIndex = 27;
             // 
@@ -2956,7 +3097,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.txtNumOfMiscarriage.Location = new System.Drawing.Point(227, 74);
             this.txtNumOfMiscarriage.MenuManager = this.barManager1;
             this.txtNumOfMiscarriage.Name = "txtNumOfMiscarriage";
-            this.txtNumOfMiscarriage.Size = new System.Drawing.Size(309, 20);
+            this.txtNumOfMiscarriage.Size = new System.Drawing.Size(371, 20);
             this.txtNumOfMiscarriage.StyleController = this.layoutControl3;
             this.txtNumOfMiscarriage.TabIndex = 22;
             this.txtNumOfMiscarriage.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumOfMiscarriage_KeyPress);
@@ -2966,7 +3107,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.txtNumOfPrematureBirth.Location = new System.Drawing.Point(227, 50);
             this.txtNumOfPrematureBirth.MenuManager = this.barManager1;
             this.txtNumOfPrematureBirth.Name = "txtNumOfPrematureBirth";
-            this.txtNumOfPrematureBirth.Size = new System.Drawing.Size(309, 20);
+            this.txtNumOfPrematureBirth.Size = new System.Drawing.Size(371, 20);
             this.txtNumOfPrematureBirth.StyleController = this.layoutControl3;
             this.txtNumOfPrematureBirth.TabIndex = 21;
             this.txtNumOfPrematureBirth.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumOfPrematureBirth_KeyPress);
@@ -2976,39 +3117,39 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.txtNumOfFullTermBirth.Location = new System.Drawing.Point(227, 2);
             this.txtNumOfFullTermBirth.MenuManager = this.barManager1;
             this.txtNumOfFullTermBirth.Name = "txtNumOfFullTermBirth";
-            this.txtNumOfFullTermBirth.Size = new System.Drawing.Size(309, 20);
+            this.txtNumOfFullTermBirth.Size = new System.Drawing.Size(371, 20);
             this.txtNumOfFullTermBirth.StyleController = this.layoutControl3;
             this.txtNumOfFullTermBirth.TabIndex = 20;
             this.txtNumOfFullTermBirth.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNumOfFullTermBirth_KeyPress);
             // 
             // chkIsFetalDeath22Weeks
             // 
-            this.chkIsFetalDeath22Weeks.Location = new System.Drawing.Point(498, 336);
+            this.chkIsFetalDeath22Weeks.Location = new System.Drawing.Point(529, 336);
             this.chkIsFetalDeath22Weeks.MenuManager = this.barManager1;
             this.chkIsFetalDeath22Weeks.Name = "chkIsFetalDeath22Weeks";
             this.chkIsFetalDeath22Weeks.Properties.Caption = "";
-            this.chkIsFetalDeath22Weeks.Size = new System.Drawing.Size(38, 19);
+            this.chkIsFetalDeath22Weeks.Size = new System.Drawing.Size(69, 19);
             this.chkIsFetalDeath22Weeks.StyleController = this.layoutControl3;
             this.chkIsFetalDeath22Weeks.TabIndex = 19;
             // 
             // chkPostpartumCare6
             // 
-            this.chkPostpartumCare6.Location = new System.Drawing.Point(498, 312);
+            this.chkPostpartumCare6.Location = new System.Drawing.Point(529, 312);
             this.chkPostpartumCare6.MenuManager = this.barManager1;
             this.chkPostpartumCare6.Name = "chkPostpartumCare6";
             this.chkPostpartumCare6.Properties.Caption = "";
-            this.chkPostpartumCare6.Size = new System.Drawing.Size(38, 19);
+            this.chkPostpartumCare6.Size = new System.Drawing.Size(69, 19);
             this.chkPostpartumCare6.StyleController = this.layoutControl3;
             this.chkPostpartumCare6.TabIndex = 18;
             this.chkPostpartumCare6.CheckedChanged += new System.EventHandler(this.chkPostpartumCare6_CheckedChanged);
             // 
             // chkPostpartumCare2
             // 
-            this.chkPostpartumCare2.Location = new System.Drawing.Point(498, 288);
+            this.chkPostpartumCare2.Location = new System.Drawing.Point(529, 288);
             this.chkPostpartumCare2.MenuManager = this.barManager1;
             this.chkPostpartumCare2.Name = "chkPostpartumCare2";
             this.chkPostpartumCare2.Properties.Caption = "";
-            this.chkPostpartumCare2.Size = new System.Drawing.Size(38, 19);
+            this.chkPostpartumCare2.Size = new System.Drawing.Size(69, 19);
             this.chkPostpartumCare2.StyleController = this.layoutControl3;
             this.chkPostpartumCare2.TabIndex = 17;
             this.chkPostpartumCare2.CheckedChanged += new System.EventHandler(this.chkPostpartumCare2_CheckedChanged);
@@ -3019,7 +3160,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.chkIsInjeckB.MenuManager = this.barManager1;
             this.chkIsInjeckB.Name = "chkIsInjeckB";
             this.chkIsInjeckB.Properties.Caption = "";
-            this.chkIsInjeckB.Size = new System.Drawing.Size(39, 19);
+            this.chkIsInjeckB.Size = new System.Drawing.Size(70, 19);
             this.chkIsInjeckB.StyleController = this.layoutControl3;
             this.chkIsInjeckB.TabIndex = 16;
             // 
@@ -3029,7 +3170,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.chkIsInjeckK1.MenuManager = this.barManager1;
             this.chkIsInjeckK1.Name = "chkIsInjeckK1";
             this.chkIsInjeckK1.Properties.Caption = "";
-            this.chkIsInjeckK1.Size = new System.Drawing.Size(39, 19);
+            this.chkIsInjeckK1.Size = new System.Drawing.Size(70, 19);
             this.chkIsInjeckK1.StyleController = this.layoutControl3;
             this.chkIsInjeckK1.TabIndex = 15;
             // 
@@ -3039,7 +3180,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.chkIsDifficultBirth.MenuManager = this.barManager1;
             this.chkIsDifficultBirth.Name = "chkIsDifficultBirth";
             this.chkIsDifficultBirth.Properties.Caption = "";
-            this.chkIsDifficultBirth.Size = new System.Drawing.Size(39, 19);
+            this.chkIsDifficultBirth.Size = new System.Drawing.Size(70, 19);
             this.chkIsDifficultBirth.StyleController = this.layoutControl3;
             this.chkIsDifficultBirth.TabIndex = 14;
             // 
@@ -3048,67 +3189,67 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.txtMethodStyle.Location = new System.Drawing.Point(227, 264);
             this.txtMethodStyle.MenuManager = this.barManager1;
             this.txtMethodStyle.Name = "txtMethodStyle";
-            this.txtMethodStyle.Size = new System.Drawing.Size(309, 20);
+            this.txtMethodStyle.Size = new System.Drawing.Size(371, 20);
             this.txtMethodStyle.StyleController = this.layoutControl3;
             this.txtMethodStyle.TabIndex = 13;
             // 
             // chkIsMotherDeath
             // 
-            this.chkIsMotherDeath.Location = new System.Drawing.Point(502, 241);
+            this.chkIsMotherDeath.Location = new System.Drawing.Point(552, 241);
             this.chkIsMotherDeath.MenuManager = this.barManager1;
             this.chkIsMotherDeath.Name = "chkIsMotherDeath";
             this.chkIsMotherDeath.Properties.Caption = "";
-            this.chkIsMotherDeath.Size = new System.Drawing.Size(34, 19);
+            this.chkIsMotherDeath.Size = new System.Drawing.Size(46, 19);
             this.chkIsMotherDeath.StyleController = this.layoutControl3;
             this.chkIsMotherDeath.TabIndex = 11;
             // 
             // chkIsTetanus
             // 
-            this.chkIsTetanus.Location = new System.Drawing.Point(402, 241);
+            this.chkIsTetanus.Location = new System.Drawing.Point(441, 241);
             this.chkIsTetanus.MenuManager = this.barManager1;
             this.chkIsTetanus.Name = "chkIsTetanus";
             this.chkIsTetanus.Properties.Caption = "";
-            this.chkIsTetanus.Size = new System.Drawing.Size(32, 19);
+            this.chkIsTetanus.Size = new System.Drawing.Size(43, 19);
             this.chkIsTetanus.StyleController = this.layoutControl3;
             this.chkIsTetanus.TabIndex = 10;
             // 
             // chkIsBacterialContamination
             // 
-            this.chkIsBacterialContamination.Location = new System.Drawing.Point(301, 241);
+            this.chkIsBacterialContamination.Location = new System.Drawing.Point(328, 241);
             this.chkIsBacterialContamination.MenuManager = this.barManager1;
             this.chkIsBacterialContamination.Name = "chkIsBacterialContamination";
             this.chkIsBacterialContamination.Properties.Caption = "";
-            this.chkIsBacterialContamination.Size = new System.Drawing.Size(33, 19);
+            this.chkIsBacterialContamination.Size = new System.Drawing.Size(45, 19);
             this.chkIsBacterialContamination.StyleController = this.layoutControl3;
             this.chkIsBacterialContamination.TabIndex = 9;
             // 
             // chkIsPuerperal
             // 
-            this.chkIsPuerperal.Location = new System.Drawing.Point(502, 218);
+            this.chkIsPuerperal.Location = new System.Drawing.Point(552, 218);
             this.chkIsPuerperal.MenuManager = this.barManager1;
             this.chkIsPuerperal.Name = "chkIsPuerperal";
             this.chkIsPuerperal.Properties.Caption = "";
-            this.chkIsPuerperal.Size = new System.Drawing.Size(34, 19);
+            this.chkIsPuerperal.Size = new System.Drawing.Size(46, 19);
             this.chkIsPuerperal.StyleController = this.layoutControl3;
             this.chkIsPuerperal.TabIndex = 8;
             // 
             // ChkIsHaemorrhage
             // 
-            this.ChkIsHaemorrhage.Location = new System.Drawing.Point(301, 218);
+            this.ChkIsHaemorrhage.Location = new System.Drawing.Point(328, 218);
             this.ChkIsHaemorrhage.MenuManager = this.barManager1;
             this.ChkIsHaemorrhage.Name = "ChkIsHaemorrhage";
             this.ChkIsHaemorrhage.Properties.Caption = "";
-            this.ChkIsHaemorrhage.Size = new System.Drawing.Size(33, 19);
+            this.ChkIsHaemorrhage.Size = new System.Drawing.Size(45, 19);
             this.ChkIsHaemorrhage.StyleController = this.layoutControl3;
             this.ChkIsHaemorrhage.TabIndex = 7;
             // 
             // chkIsUterineRupture
             // 
-            this.chkIsUterineRupture.Location = new System.Drawing.Point(402, 218);
+            this.chkIsUterineRupture.Location = new System.Drawing.Point(441, 218);
             this.chkIsUterineRupture.MenuManager = this.barManager1;
             this.chkIsUterineRupture.Name = "chkIsUterineRupture";
             this.chkIsUterineRupture.Properties.Caption = "";
-            this.chkIsUterineRupture.Size = new System.Drawing.Size(32, 19);
+            this.chkIsUterineRupture.Size = new System.Drawing.Size(43, 19);
             this.chkIsUterineRupture.StyleController = this.layoutControl3;
             this.chkIsUterineRupture.TabIndex = 6;
             // 
@@ -3117,7 +3258,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.labelControl2.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.labelControl2.Location = new System.Drawing.Point(217, 218);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(16, 13);
+            this.labelControl2.Size = new System.Drawing.Size(43, 13);
             this.labelControl2.StyleController = this.layoutControl3;
             this.labelControl2.TabIndex = 5;
             // 
@@ -3134,7 +3275,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.cboNumOfTest.Properties.PopupSizeable = false;
             this.cboNumOfTest.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboNumOfTest.Properties.View = this.gridView7;
-            this.cboNumOfTest.Size = new System.Drawing.Size(309, 20);
+            this.cboNumOfTest.Size = new System.Drawing.Size(371, 20);
             this.cboNumOfTest.StyleController = this.layoutControl3;
             this.cboNumOfTest.TabIndex = 23;
             this.cboNumOfTest.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboNumOfTest_ButtonClick);
@@ -3159,7 +3300,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.cboTestHiv.Properties.PopupSizeable = false;
             this.cboTestHiv.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboTestHiv.Properties.View = this.gridView8;
-            this.cboTestHiv.Size = new System.Drawing.Size(309, 20);
+            this.cboTestHiv.Size = new System.Drawing.Size(371, 20);
             this.cboTestHiv.StyleController = this.layoutControl3;
             this.cboTestHiv.TabIndex = 24;
             this.cboTestHiv.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTestHiv_ButtonClick);
@@ -3184,7 +3325,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.cboTestSyphilis.Properties.PopupSizeable = false;
             this.cboTestSyphilis.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboTestSyphilis.Properties.View = this.gridView9;
-            this.cboTestSyphilis.Size = new System.Drawing.Size(309, 20);
+            this.cboTestSyphilis.Size = new System.Drawing.Size(371, 20);
             this.cboTestSyphilis.StyleController = this.layoutControl3;
             this.cboTestSyphilis.TabIndex = 25;
             this.cboTestSyphilis.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTestSyphilis_ButtonClick);
@@ -3209,7 +3350,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.cboTestHepatitisB.Properties.PopupSizeable = false;
             this.cboTestHepatitisB.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboTestHepatitisB.Properties.View = this.gridView10;
-            this.cboTestHepatitisB.Size = new System.Drawing.Size(309, 20);
+            this.cboTestHepatitisB.Size = new System.Drawing.Size(371, 20);
             this.cboTestHepatitisB.StyleController = this.layoutControl3;
             this.cboTestHepatitisB.TabIndex = 26;
             this.cboTestHepatitisB.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTestHepatitisB_ButtonClick);
@@ -3234,7 +3375,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.cboNewBornCareAtHome.Properties.PopupSizeable = false;
             this.cboNewBornCareAtHome.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboNewBornCareAtHome.Properties.View = this.gridView11;
-            this.cboNewBornCareAtHome.Size = new System.Drawing.Size(309, 20);
+            this.cboNewBornCareAtHome.Size = new System.Drawing.Size(371, 20);
             this.cboNewBornCareAtHome.StyleController = this.layoutControl3;
             this.cboNewBornCareAtHome.TabIndex = 29;
             this.cboNewBornCareAtHome.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboNewBornCareAtHome_ButtonClick);
@@ -3279,7 +3420,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(538, 600);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(600, 675);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem3
@@ -3289,7 +3430,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem3.Control = this.labelControl2;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 216);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(235, 46);
+            this.layoutControlItem3.Size = new System.Drawing.Size(262, 46);
             this.layoutControlItem3.Text = "Tai biến sản khoa:";
             this.layoutControlItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(210, 13);
@@ -3302,7 +3443,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem45.Control = this.txtMethodStyle;
             this.layoutControlItem45.Location = new System.Drawing.Point(0, 262);
             this.layoutControlItem45.Name = "layoutControlItem45";
-            this.layoutControlItem45.Size = new System.Drawing.Size(538, 24);
+            this.layoutControlItem45.Size = new System.Drawing.Size(600, 24);
             this.layoutControlItem45.Text = "Cách thức, phương pháp đẻ:";
             this.layoutControlItem45.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem45.TextSize = new System.Drawing.Size(220, 20);
@@ -3315,7 +3456,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem46.Control = this.chkIsDifficultBirth;
             this.layoutControlItem46.Location = new System.Drawing.Point(0, 286);
             this.layoutControlItem46.Name = "layoutControlItem46";
-            this.layoutControlItem46.Size = new System.Drawing.Size(268, 24);
+            this.layoutControlItem46.Size = new System.Drawing.Size(299, 24);
             this.layoutControlItem46.Text = "Đẻ khó:";
             this.layoutControlItem46.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem46.TextSize = new System.Drawing.Size(220, 20);
@@ -3328,7 +3469,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem47.Control = this.chkIsInjeckK1;
             this.layoutControlItem47.Location = new System.Drawing.Point(0, 310);
             this.layoutControlItem47.Name = "layoutControlItem47";
-            this.layoutControlItem47.Size = new System.Drawing.Size(268, 24);
+            this.layoutControlItem47.Size = new System.Drawing.Size(299, 24);
             this.layoutControlItem47.Text = "Tiêm vitamin K1 cho trẻ:";
             this.layoutControlItem47.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem47.TextSize = new System.Drawing.Size(220, 20);
@@ -3341,7 +3482,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem48.Control = this.chkIsInjeckB;
             this.layoutControlItem48.Location = new System.Drawing.Point(0, 334);
             this.layoutControlItem48.Name = "layoutControlItem48";
-            this.layoutControlItem48.Size = new System.Drawing.Size(268, 24);
+            this.layoutControlItem48.Size = new System.Drawing.Size(299, 24);
             this.layoutControlItem48.Text = "Tiêm vacxin viêm gan B cho trẻ:";
             this.layoutControlItem48.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem48.TextSize = new System.Drawing.Size(220, 20);
@@ -3350,54 +3491,54 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // layoutControlItem38
             // 
             this.layoutControlItem38.Control = this.ChkIsHaemorrhage;
-            this.layoutControlItem38.Location = new System.Drawing.Point(235, 216);
+            this.layoutControlItem38.Location = new System.Drawing.Point(262, 216);
             this.layoutControlItem38.Name = "layoutControlItem38";
-            this.layoutControlItem38.Size = new System.Drawing.Size(101, 23);
+            this.layoutControlItem38.Size = new System.Drawing.Size(113, 23);
             this.layoutControlItem38.Text = "Băng huyết";
             this.layoutControlItem38.TextSize = new System.Drawing.Size(61, 13);
             // 
             // layoutControlItem37
             // 
             this.layoutControlItem37.Control = this.chkIsUterineRupture;
-            this.layoutControlItem37.Location = new System.Drawing.Point(336, 216);
+            this.layoutControlItem37.Location = new System.Drawing.Point(375, 216);
             this.layoutControlItem37.Name = "layoutControlItem37";
-            this.layoutControlItem37.Size = new System.Drawing.Size(100, 23);
+            this.layoutControlItem37.Size = new System.Drawing.Size(111, 23);
             this.layoutControlItem37.Text = "Vỡ tử cung";
             this.layoutControlItem37.TextSize = new System.Drawing.Size(61, 13);
             // 
             // layoutControlItem39
             // 
             this.layoutControlItem39.Control = this.chkIsPuerperal;
-            this.layoutControlItem39.Location = new System.Drawing.Point(436, 216);
+            this.layoutControlItem39.Location = new System.Drawing.Point(486, 216);
             this.layoutControlItem39.Name = "layoutControlItem39";
-            this.layoutControlItem39.Size = new System.Drawing.Size(102, 23);
+            this.layoutControlItem39.Size = new System.Drawing.Size(114, 23);
             this.layoutControlItem39.Text = "Sản giật";
             this.layoutControlItem39.TextSize = new System.Drawing.Size(61, 13);
             // 
             // layoutControlItem40
             // 
             this.layoutControlItem40.Control = this.chkIsBacterialContamination;
-            this.layoutControlItem40.Location = new System.Drawing.Point(235, 239);
+            this.layoutControlItem40.Location = new System.Drawing.Point(262, 239);
             this.layoutControlItem40.Name = "layoutControlItem40";
-            this.layoutControlItem40.Size = new System.Drawing.Size(101, 23);
+            this.layoutControlItem40.Size = new System.Drawing.Size(113, 23);
             this.layoutControlItem40.Text = "Nhiễm khuẩn";
             this.layoutControlItem40.TextSize = new System.Drawing.Size(61, 13);
             // 
             // layoutControlItem41
             // 
             this.layoutControlItem41.Control = this.chkIsTetanus;
-            this.layoutControlItem41.Location = new System.Drawing.Point(336, 239);
+            this.layoutControlItem41.Location = new System.Drawing.Point(375, 239);
             this.layoutControlItem41.Name = "layoutControlItem41";
-            this.layoutControlItem41.Size = new System.Drawing.Size(100, 23);
+            this.layoutControlItem41.Size = new System.Drawing.Size(111, 23);
             this.layoutControlItem41.Text = "Uốn ván";
             this.layoutControlItem41.TextSize = new System.Drawing.Size(61, 13);
             // 
             // layoutControlItem43
             // 
             this.layoutControlItem43.Control = this.chkIsMotherDeath;
-            this.layoutControlItem43.Location = new System.Drawing.Point(436, 239);
+            this.layoutControlItem43.Location = new System.Drawing.Point(486, 239);
             this.layoutControlItem43.Name = "layoutControlItem43";
-            this.layoutControlItem43.Size = new System.Drawing.Size(102, 23);
+            this.layoutControlItem43.Size = new System.Drawing.Size(114, 23);
             this.layoutControlItem43.Text = "Tử vong mẹ";
             this.layoutControlItem43.TextSize = new System.Drawing.Size(61, 13);
             // 
@@ -3408,7 +3549,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem52.Control = this.txtNumOfFullTermBirth;
             this.layoutControlItem52.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem52.Name = "layoutControlItem52";
-            this.layoutControlItem52.Size = new System.Drawing.Size(538, 24);
+            this.layoutControlItem52.Size = new System.Drawing.Size(600, 24);
             this.layoutControlItem52.Text = "Số lần đẻ đủ tháng:";
             this.layoutControlItem52.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem52.TextSize = new System.Drawing.Size(220, 20);
@@ -3421,7 +3562,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem53.Control = this.txtNumOfPrematureBirth;
             this.layoutControlItem53.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem53.Name = "layoutControlItem53";
-            this.layoutControlItem53.Size = new System.Drawing.Size(538, 24);
+            this.layoutControlItem53.Size = new System.Drawing.Size(600, 24);
             this.layoutControlItem53.Text = "Số lần đẻ non:";
             this.layoutControlItem53.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem53.TextSize = new System.Drawing.Size(220, 20);
@@ -3434,7 +3575,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem54.Control = this.txtNumOfMiscarriage;
             this.layoutControlItem54.Location = new System.Drawing.Point(0, 72);
             this.layoutControlItem54.Name = "layoutControlItem54";
-            this.layoutControlItem54.Size = new System.Drawing.Size(538, 24);
+            this.layoutControlItem54.Size = new System.Drawing.Size(600, 24);
             this.layoutControlItem54.Text = "Số lần sảy thai/Phá thai:";
             this.layoutControlItem54.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem54.TextSize = new System.Drawing.Size(220, 20);
@@ -3447,7 +3588,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem55.Control = this.cboNumOfTest;
             this.layoutControlItem55.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem55.Name = "layoutControlItem55";
-            this.layoutControlItem55.Size = new System.Drawing.Size(538, 24);
+            this.layoutControlItem55.Size = new System.Drawing.Size(600, 24);
             this.layoutControlItem55.Text = "Số lần kiểm tra:";
             this.layoutControlItem55.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem55.TextSize = new System.Drawing.Size(220, 20);
@@ -3460,7 +3601,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem56.Control = this.cboTestHiv;
             this.layoutControlItem56.Location = new System.Drawing.Point(0, 120);
             this.layoutControlItem56.Name = "layoutControlItem56";
-            this.layoutControlItem56.Size = new System.Drawing.Size(538, 24);
+            this.layoutControlItem56.Size = new System.Drawing.Size(600, 24);
             this.layoutControlItem56.Text = "Xét nghiệm HIV:";
             this.layoutControlItem56.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem56.TextSize = new System.Drawing.Size(220, 20);
@@ -3473,7 +3614,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem57.Control = this.cboTestSyphilis;
             this.layoutControlItem57.Location = new System.Drawing.Point(0, 144);
             this.layoutControlItem57.Name = "layoutControlItem57";
-            this.layoutControlItem57.Size = new System.Drawing.Size(538, 24);
+            this.layoutControlItem57.Size = new System.Drawing.Size(600, 24);
             this.layoutControlItem57.Text = "Xét nghiệm giang mai:";
             this.layoutControlItem57.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem57.TextSize = new System.Drawing.Size(220, 20);
@@ -3486,7 +3627,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem58.Control = this.cboTestHepatitisB;
             this.layoutControlItem58.Location = new System.Drawing.Point(0, 168);
             this.layoutControlItem58.Name = "layoutControlItem58";
-            this.layoutControlItem58.Size = new System.Drawing.Size(538, 24);
+            this.layoutControlItem58.Size = new System.Drawing.Size(600, 24);
             this.layoutControlItem58.Text = "Xét nghiệm viêm gan B:";
             this.layoutControlItem58.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem58.TextSize = new System.Drawing.Size(220, 20);
@@ -3499,7 +3640,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem59.Control = this.chkIsTestBloodSugar;
             this.layoutControlItem59.Location = new System.Drawing.Point(0, 192);
             this.layoutControlItem59.Name = "layoutControlItem59";
-            this.layoutControlItem59.Size = new System.Drawing.Size(268, 24);
+            this.layoutControlItem59.Size = new System.Drawing.Size(299, 24);
             this.layoutControlItem59.Text = "Xét nghiệm đường huyết:";
             this.layoutControlItem59.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem59.TextSize = new System.Drawing.Size(220, 20);
@@ -3510,9 +3651,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem60.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem60.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem60.Control = this.chkIsEarlyNewBornCare;
-            this.layoutControlItem60.Location = new System.Drawing.Point(268, 192);
+            this.layoutControlItem60.Location = new System.Drawing.Point(299, 192);
             this.layoutControlItem60.Name = "layoutControlItem60";
-            this.layoutControlItem60.Size = new System.Drawing.Size(270, 24);
+            this.layoutControlItem60.Size = new System.Drawing.Size(301, 24);
             this.layoutControlItem60.Text = "Được chăm sóc sơ sinh thiết yếu sớm:";
             this.layoutControlItem60.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem60.TextSize = new System.Drawing.Size(223, 20);
@@ -3525,7 +3666,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem61.Control = this.cboNewBornCareAtHome;
             this.layoutControlItem61.Location = new System.Drawing.Point(0, 358);
             this.layoutControlItem61.Name = "layoutControlItem61";
-            this.layoutControlItem61.Size = new System.Drawing.Size(538, 242);
+            this.layoutControlItem61.Size = new System.Drawing.Size(600, 317);
             this.layoutControlItem61.Text = "Chăm sóc sau sinh tại nhà:";
             this.layoutControlItem61.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem61.TextSize = new System.Drawing.Size(220, 20);
@@ -3536,9 +3677,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem49.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem49.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem49.Control = this.chkPostpartumCare2;
-            this.layoutControlItem49.Location = new System.Drawing.Point(268, 286);
+            this.layoutControlItem49.Location = new System.Drawing.Point(299, 286);
             this.layoutControlItem49.Name = "layoutControlItem49";
-            this.layoutControlItem49.Size = new System.Drawing.Size(270, 24);
+            this.layoutControlItem49.Size = new System.Drawing.Size(301, 24);
             this.layoutControlItem49.Text = "Chăm sóc 2 giờ sau đẻ:";
             this.layoutControlItem49.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem49.TextSize = new System.Drawing.Size(223, 20);
@@ -3549,9 +3690,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem50.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem50.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem50.Control = this.chkPostpartumCare6;
-            this.layoutControlItem50.Location = new System.Drawing.Point(268, 310);
+            this.layoutControlItem50.Location = new System.Drawing.Point(299, 310);
             this.layoutControlItem50.Name = "layoutControlItem50";
-            this.layoutControlItem50.Size = new System.Drawing.Size(270, 24);
+            this.layoutControlItem50.Size = new System.Drawing.Size(301, 24);
             this.layoutControlItem50.Text = "Chăm sóc 6 giờ sau đẻ:";
             this.layoutControlItem50.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem50.TextSize = new System.Drawing.Size(223, 20);
@@ -3562,9 +3703,9 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem51.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem51.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem51.Control = this.chkIsFetalDeath22Weeks;
-            this.layoutControlItem51.Location = new System.Drawing.Point(268, 334);
+            this.layoutControlItem51.Location = new System.Drawing.Point(299, 334);
             this.layoutControlItem51.Name = "layoutControlItem51";
-            this.layoutControlItem51.Size = new System.Drawing.Size(270, 24);
+            this.layoutControlItem51.Size = new System.Drawing.Size(301, 24);
             this.layoutControlItem51.Text = "Tử vong thai nhi từ 22 tuần đến khi đẻ:";
             this.layoutControlItem51.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem51.TextSize = new System.Drawing.Size(223, 20);
@@ -3577,7 +3718,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem2.Control = this.txtNumberOfPregnancies;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 24);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(538, 24);
+            this.layoutControlItem2.Size = new System.Drawing.Size(600, 24);
             this.layoutControlItem2.Text = "Số lần có thai:";
             this.layoutControlItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem2.TextSize = new System.Drawing.Size(220, 20);
@@ -3765,7 +3906,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             this.btnCapLaiEdit.AutoHeight = false;
             this.btnCapLaiEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnCapLaiEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Cấp lại giấy chứng sinh", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Cấp lại giấy chứng sinh", null, null, true)});
             this.btnCapLaiEdit.Name = "btnCapLaiEdit";
             this.btnCapLaiEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnCapLaiEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnCapLaiEdit_ButtonClick);
@@ -4239,6 +4380,41 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.layoutControlItem42.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem42.TextVisible = false;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1428, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 762);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1428, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 733);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1428, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 733);
+            // 
+            // gridView16
+            // 
+            this.gridView16.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView16.Name = "gridView16";
+            this.gridView16.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView16.OptionsView.ShowGroupPanel = false;
+            // 
             // dxValidationProviderEditorInfo
             // 
             this.dxValidationProviderEditorInfo.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
@@ -4299,6 +4475,42 @@ namespace HIS.Desktop.Plugins.InfantInformation
             // 
             this.dxErrorProvider1.ContainerControl = this;
             // 
+            // cboFatherDanToc
+            // 
+            this.cboFatherDanToc.Location = new System.Drawing.Point(414, 605);
+            this.cboFatherDanToc.MenuManager = this.barManager1;
+            this.cboFatherDanToc.Name = "cboFatherDanToc";
+            this.cboFatherDanToc.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboFatherDanToc.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboFatherDanToc.Properties.NullText = "";
+            this.cboFatherDanToc.Properties.View = this.gridView18;
+            this.cboFatherDanToc.Size = new System.Drawing.Size(167, 20);
+            this.cboFatherDanToc.StyleController = this.layoutControl1;
+            this.cboFatherDanToc.TabIndex = 76;
+            // 
+            // layoutControlItem88
+            // 
+            this.layoutControlItem88.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem88.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem88.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem88.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem88.Control = this.cboFatherDanToc;
+            this.layoutControlItem88.Location = new System.Drawing.Point(337, 794);
+            this.layoutControlItem88.Name = "layoutControlItem88";
+            this.layoutControlItem88.Size = new System.Drawing.Size(246, 24);
+            this.layoutControlItem88.Text = "Dân tộc:";
+            this.layoutControlItem88.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem88.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem88.TextToControlDistance = 5;
+            // 
+            // gridView18
+            // 
+            this.gridView18.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView18.Name = "gridView18";
+            this.gridView18.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView18.OptionsView.ShowGroupPanel = false;
+            // 
             // frmInfantInformation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4333,8 +4545,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
             this.xtraTabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkCapLai.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFatherCCCDPlace.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteFatherCCCDDate.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteFatherCCCDDate.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtFatherCCCD.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteFatherDob.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dteFatherDob.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCapLai.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCapLanDau.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.toggleCheck.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDirectorUsername.Properties)).EndInit();
@@ -4433,7 +4651,6 @@ namespace HIS.Desktop.Plugins.InfantInformation
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
@@ -4482,6 +4699,12 @@ namespace HIS.Desktop.Plugins.InfantInformation
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem79)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem81)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem82)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem83)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem84)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem85)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem87)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem86)).EndInit();
             this.xtraTabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
@@ -4563,11 +4786,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboFatherDanToc.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem88)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView18)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4863,5 +5090,20 @@ namespace HIS.Desktop.Plugins.InfantInformation
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repoChkCapLanDau;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn11;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repoChkCapLai;
+        private DevExpress.XtraEditors.LabelControl labelControl5;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem83;
+        private DevExpress.XtraEditors.GridLookUpEdit lciFatherEthnic;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView16;
+        private DevExpress.XtraEditors.TextEdit txtFatherCCCDPlace;
+        private DevExpress.XtraEditors.DateEdit dteFatherCCCDDate;
+        private DevExpress.XtraEditors.TextEdit txtFatherCCCD;
+        private DevExpress.XtraEditors.DateEdit dteFatherDob;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem84;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem85;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem86;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem87;
+        private DevExpress.XtraEditors.GridLookUpEdit cboFatherDanToc;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView18;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem88;
     }
 }

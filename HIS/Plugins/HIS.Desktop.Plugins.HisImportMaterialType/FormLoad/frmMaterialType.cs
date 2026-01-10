@@ -46,7 +46,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
     {
         #region Declare
         List<MaterialTypeImportADO> materialTypeAdos;
-        List<MaterialTypeImportADO> currentAdos;
+        List<MaterialTypeImportADO> currentAdos;    
         RefeshReference delegateRefresh;
         bool checkClick;
         bool addSuccess;
@@ -119,15 +119,20 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                 List<HIS_MATERIAL_TYPE> listMater = new List<HIS_MATERIAL_TYPE>();
                 foreach (var item in materialTypeAdos)
                 {
+                    if (!string.IsNullOrEmpty(item.ERROR) || item.SUPPLIER_CODE_ERROR == 1)
+                    {
+                        continue;
+                    }
                     HIS_MATERIAL_TYPE mater = new HIS_MATERIAL_TYPE();
                     HIS_SERVICE ser = new HIS_SERVICE();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MATERIAL_TYPE>(mater, item);
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE>(ser, item);
                     ser.SERVICE_UNIT_ID = item.SERVICE_UNIT_ID;
+                    mater.SUPPLIER_IDS = item.SUPPLIER_IDS;
                     ser.ID = 0;
                     ser.PARENT_ID = null;
                     mater.HIS_SERVICE = ser;
-                    mater.ID = 0;
+                    mater.ID = 0;                  
                     listMater.Add(mater);
                 }
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("listMater___:", listMater));
@@ -1631,11 +1636,60 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                             mateAdo.IDENTITY_MANAGEMEN_ERROR = 1;
                         }
                     }
+                    // ===== XỬ LÝ NHÀ CUNG CẤP (SUPPLIER) =====
+                    if (!string.IsNullOrWhiteSpace(item.SUPPLIER_CODE))
+                    {
+                        var listSupplier = BackendDataWorker.Get<HIS_SUPPLIER>();
+
+                        var rawCodes = item.SUPPLIER_CODE
+                            .Split(',')
+                            .Select(x => x.Trim())
+                            .Where(x => !string.IsNullOrEmpty(x))
+                            .ToList();
+
+                        var validSupplierNames = new List<string>();
+                        var validSupplierIds = new List<string>();
+                        var invalidSupplierCodes = new List<string>();
+
+                        foreach (var code in rawCodes)
+                        {
+                            var supplier = listSupplier.FirstOrDefault(x =>
+                                !string.IsNullOrEmpty(x.SUPPLIER_CODE)
+                                && x.SUPPLIER_CODE.Trim().Equals(code, StringComparison.OrdinalIgnoreCase));
+
+                            if (supplier != null)
+                            {
+                                validSupplierNames.Add(supplier.SUPPLIER_NAME);
+                                validSupplierIds.Add(supplier.ID.ToString());
+                            }
+                            else
+                            {
+                                invalidSupplierCodes.Add(code);
+                            }
+                        }
+
+                        if (invalidSupplierCodes.Count > 0)
+                        {
+                            error += string.Format(
+                                "Mã nhà cung cấp không đúng '{0}'. ",
+                                string.Join(", ", invalidSupplierCodes));
+
+                            mateAdo.SUPPLIER_CODE_ERROR = 1;
+                        }
+                        else
+                        {
+                            mateAdo.SUPPLIER_NAMES = string.Join(", ", validSupplierNames);
+                            mateAdo.SUPPLIER_IDS = string.Join(",", validSupplierIds);
+                            mateAdo.SUPPLIER_CODE_ERROR = 0;
+                        }
+                    }
 
                     mateAdo.ERROR = error;
                     mateAdo.ID = i;
                     mateAdo.IS_LEAF = 1;
-
+                    item.SUPPLIER_IDS = mateAdo.SUPPLIER_IDS;
+                    item.SUPPLIER_NAMES = mateAdo.SUPPLIER_NAMES;
+                    item.SUPPLIER_CODE_ERROR = mateAdo.SUPPLIER_CODE_ERROR;
                     _materialRef.Add(mateAdo);
                 }
             }

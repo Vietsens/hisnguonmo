@@ -35,6 +35,7 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.Desktop.Utility;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
+using IMSys.DbConfig.HIS_RS;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
@@ -364,10 +365,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
 
                 this.mediMatyTypeADOs = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
 
-                if (!CheckMIMS(this.mediMatyTypeADOs))
-                {
-                    return;
-                }
+                
                 if (!string.IsNullOrEmpty(HisConfigCFG.InstructionTimeServiceMustBeGreaterThanStartTimeExam))
                 {
                     LoadVServiceReq();
@@ -377,9 +375,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         return;
                     }
                 }
+
+                if (!CheckMIMS(this.mediMatyTypeADOs))
+                {
+                    return;
+                }
                 //this.lblTongTien.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPrice, ConfigApplications.NumberSeperator);
 
-                HIS_TREATMENT_TYPE treatmentType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == currentTreatmentWithPatientType.TDL_TREATMENT_TYPE_ID);
+                MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE treatmentType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.ID == currentTreatmentWithPatientType.TDL_TREATMENT_TYPE_ID);
                 if (treatmentType != null && treatmentType.MAX_PRESCRIPTION_AMOUNT != null && treatmentType.MAX_PRESCRIPTION_AMOUNT_OPTION != null)
                 {
                     if(this.tongTienDonNguoiDung > treatmentType.MAX_PRESCRIPTION_AMOUNT)
@@ -776,11 +779,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     return;
                 }
                 valid = valid && isValid;
-                HIS_TREATMENT checkTmWho = new HIS_TREATMENT();
+                MOS.EFMODEL.DataModels.HIS_TREATMENT checkTmWho = new MOS.EFMODEL.DataModels.HIS_TREATMENT();
                 bool isHasUcTreatmentFinish = ((!GlobalStore.IsTreatmentIn) && this.treatmentFinishProcessor != null && this.ucTreatmentFinish != null);
                 var treatUC1 = isHasUcTreatmentFinish ? treatmentFinishProcessor.GetDataOutput(this.ucTreatmentFinish) : null;
                 bool isHasTreatmentFinishChecked = (treatUC1 != null && treatUC1.IsAutoTreatmentFinish);
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(checkTmWho, Histreatment);
+                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_TREATMENT>(checkTmWho, Histreatment);
                 // Append ICD_SUB_CODE
                 checkTmWho.ICD_SUB_CODE = AppendIcd(
                     this.Histreatment.ICD_CODE,            // ICD chính
@@ -904,7 +907,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 if (rsData != null)
                 {
                     who.SendData();
-                    HIS_SERVICE_REQ serviceReqResult = null;
+                    MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqResult = null;
                     if (rsData.GetType() == typeof(InPatientPresResultSDO))
                     {
                         InPatientPresResultSDO patientPresResultSDO = rsData as InPatientPresResultSDO;
@@ -1100,8 +1103,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 if (this.processWhileAutoTreatmentEnd != null)
                     this.processWhileAutoTreatmentEnd();
 
-                HIS_TREATMENT treatment = new HIS_TREATMENT();
-                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, currentTreatmentWithPatientType);
+                MOS.EFMODEL.DataModels.HIS_TREATMENT treatment = new MOS.EFMODEL.DataModels.HIS_TREATMENT();
+                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_TREATMENT>(treatment, currentTreatmentWithPatientType);
 
                 PrintTreatmentFinishProcessor printTreatmentFinishProcessor = new PrintTreatmentFinishProcessor(treatment, currentModule != null ? currentModule.RoomId : 0);
                 var treatUC = treatmentFinishProcessor.GetDataOutput(ucTreatmentFinish);
@@ -1397,12 +1400,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         lstICD.AddRange(icdValueSecond.ICD_SUB_CODE.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                     }
 
-                    check = service.ShowDialog(lstDrugItem, lstICD);
-                }
-
-                if (check)
-                {
-
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.Histreatment.ID, this.icdExam.ID, this.Histreatment.PATIENT_ID);
                 }
 
                 return check;

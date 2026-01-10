@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -90,6 +90,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
         List<V_HIS_EXECUTE_ROOM> listExecuteRoom;
         List<V_HIS_EXECUTE_ROOM> _ExecuteRoomSearchSelecteds;
         List<V_HIS_EXECUTE_ROOM> listDepartmentRoom;
+        private string _serviceReqCode;
         #endregion
 
         public enum ServiceReqStatus
@@ -102,7 +103,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
 
         HIS_KSK_GENERAL HisKskGeneral = new HIS_KSK_GENERAL();
         #region Construct
-        public frmEnterKskInfomantion(Inventec.Desktop.Common.Modules.Module moduleData)
+        public frmEnterKskInfomantion(Inventec.Desktop.Common.Modules.Module moduleData, string serviceReqCode)
             : base(moduleData)
         {
             try
@@ -111,6 +112,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
 
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
+                _serviceReqCode = serviceReqCode;
                 gridControlServiceReq.ToolTipController = toolTipControllerGrid;
 
                 try
@@ -350,7 +352,229 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     FillDataToTabKhamChung(data);
                     FillDataToTabKetLuan(data);
                     FillDataToTabBenhNgheNghiep(data);
+                    FillDataToTabKhamSucKhoe(data);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void FillDataToTabKhamSucKhoe(ServiceReqADO data)
+        {
+            try
+            {
+                var kskGeneral = data?.KSK_GENERAL;
+
+                if (kskGeneral == null)
+                {
+                    memoPathologicalHistory.Text = null;
+                    spnMenarcheAge.EditValue = null;
+
+                    chkMarriedYes.Checked = false;
+                    chkMarriedNo.Checked = false;
+
+                    chkMenstrualRegular.Checked = false;
+                    chkMenstrualIrregular.Checked = false;
+
+                    chkMenstrualYes.Checked = false;
+                    chkMenstrualNo.Checked = false;
+
+                    spnCycleFromDay.EditValue = null;
+                    spnCycleToDay.EditValue = null;
+
+                    spnMenstrualDurationFrom.EditValue = null;
+                    spnMenstrualDurationTo.EditValue = null;
+
+                    spnPara1.EditValue = null;
+                    spnPara2.EditValue = null;
+                    spnPara3.EditValue = null;
+                    spnPara4.EditValue = null;
+
+                    spnSurgeriesCount.EditValue = null;
+                    txtObstetricSurgeryNote.Text = null;
+                    chkObstetricSurgeryNone.Checked = false;
+
+                    chkContraceptionYes.Checked = false;
+                    chkContraceptionNo.Checked = false;
+                    txtContraceptionNote.Text = null;
+
+                    spnHeightCm.EditValue = null;
+                    spnWeightKg.EditValue = null;
+                    lblBmi.Text = null;
+                    spnPulse.EditValue = null;
+                    spnBloodPressureMax.EditValue = null;
+                    spnBloodPressureMin.EditValue = null;
+                    cboDhstRank.EditValue = null;
+
+                    txtCirculatory.Text = null; cboCirculatoryRank.EditValue = null;
+                    txtRespiratory.Text = null; cboRespiratoryRank.EditValue = null;
+                    txtDigestion.Text = null; cboDigestionRank.EditValue = null;
+                    txtUrology.Text = null; cboUrologyRank.EditValue = null;
+                    txtOend.Text = null; cboOendRank.EditValue = null;
+                    txtMuscule.Text = null; cboMusculeRank.EditValue = null;
+                    txtNeurological.Text = null; cboNeurologicalRank.EditValue = null;
+                    txtMental.Text = null; cboMentalRank.EditValue = null;
+                    txtSurgeryExam.Text = null; cboSurgeryRank.EditValue = null;
+                    txtDermatology.Text = null; cboDermatologyRank.EditValue = null;
+                    txtObstetricExam.Text = null; cboObstetricRank.EditValue = null;
+
+                    txtVisionNoGlassLeft.Text = null;
+                    txtVisionNoGlassRight.Text = null;
+                    txtVisionWithGlassLeft.Text = null;
+                    txtVisionWithGlassRight.Text = null;
+                    txtEyeDisease.Text = null; cboEyeRank.EditValue = null;
+
+                    txtEarRightNormal.Text = null;
+                    txtEarRightWhisper.Text = null;
+                    txtEarLeftNormal.Text = null;
+                    txtEarLeftWhisper.Text = null;
+                    txtEntDisease.Text = null; cboEntRank.EditValue = null;
+
+                    txtStomatologyLower.Text = null;
+                    txtStomatologyUpper.Text = null;
+                    txtStomatology.Text = null; cboStomatologyRank.EditValue = null;
+
+                    memoSubclinicalResult.Text = null;
+                    memoSubclinicalNote.Text = null;
+
+                    cboPLSucKhoeTab1.EditValue = null;  
+                    memoDiseases.Text = null;
+                    memoTreatmentDirection.Text = null;
+                    txtContact.Text = null;
+                    cboConclusionDoctor.EditValue = null;
+
+                    return;
+                }
+
+                memoPathologicalHistory.Text = kskGeneral.PATHOLOGICAL_HISTORY ?? "";
+
+                spnMenarcheAge.EditValue = kskGeneral.MENSTRUAL_STAR_AGE;
+
+                chkMarriedYes.Checked = (kskGeneral.IS_MARRIED == 1);
+                chkMarriedNo.Checked = (kskGeneral.IS_MARRIED == 0);
+
+
+                chkMenstrualRegular.Checked = (kskGeneral.MENSTRUAL_NATURE == 1);
+                chkMenstrualIrregular.Checked = (kskGeneral.MENSTRUAL_NATURE == 0);
+
+                chkMenstrualYes.Checked = (kskGeneral.MENSTRUAL_ABDOMINAL_PAINS == 1);
+                chkMenstrualNo.Checked = (kskGeneral.MENSTRUAL_ABDOMINAL_PAINS == 0);
+
+                spnCycleFromDay.EditValue = kskGeneral.MENSTRUAL_CYCLE_FROM;
+                spnCycleToDay.EditValue = kskGeneral.MENSTRUAL_CYCLE_TO;
+
+                spnMenstrualDurationFrom.EditValue = kskGeneral.MENSTRUAL_AMOUNT_FROM;
+                spnMenstrualDurationTo.EditValue = kskGeneral.MENSTRUAL_AMOUNT_TO;
+
+                spnPara1.EditValue = kskGeneral.PREGNANCY;
+                spnPara2.EditValue = kskGeneral.ABORTUS;
+                spnPara3.EditValue = kskGeneral.RECURRENT;
+                spnPara4.EditValue = kskGeneral.ALIVE;
+
+                spnSurgeriesCount.EditValue = kskGeneral.NUMBER_OF_SURGERIES;
+                txtObstetricSurgeryNote.Text = kskGeneral.NOTE_SURGICAL ?? "";
+
+
+                chkObstetricSurgeryNone.Checked = (kskGeneral.IS_NOT_SURGERY == 1);
+
+                chkContraceptionYes.Checked = (kskGeneral.IS_USING_CONTRACEPTIVES == 1);
+                chkContraceptionNo.Checked = (kskGeneral.IS_USING_CONTRACEPTIVES == 0);
+
+                txtContraceptionNote.Text = kskGeneral.NOTE_CONTRACEPTIVES ?? "";
+
+                var dhst = kskGeneral.HIS_DHST;
+                if (dhst != null)
+                {
+                    spnHeightCm.EditValue = dhst.HEIGHT;
+                    spnWeightKg.EditValue = dhst.WEIGHT;
+
+                    lblBmi.Text = dhst.VIR_BMI.HasValue ? dhst.VIR_BMI.Value.ToString("0.##") : "";
+
+                    spnPulse.EditValue = dhst.PULSE;
+                    spnBloodPressureMax.EditValue = dhst.BLOOD_PRESSURE_MAX;
+                    spnBloodPressureMin.EditValue = dhst.BLOOD_PRESSURE_MIN; 
+                }
+                else
+                {
+                    spnHeightCm.EditValue = null;
+                    spnWeightKg.EditValue = null;
+                    lblBmi.Text = "";
+                    spnPulse.EditValue = null;
+                    spnBloodPressureMax.EditValue = null;
+                    spnBloodPressureMin.EditValue = null;
+                }
+
+                cboDhstRank.EditValue = kskGeneral.DHST_RANK;
+
+                // Khám lâm sàng + rank
+                txtCirculatory.Text = kskGeneral.EXAM_CIRCULATION ?? "";
+                cboCirculatoryRank.EditValue = kskGeneral.EXAM_CIRCULATION_RANK;
+
+                txtRespiratory.Text = kskGeneral.EXAM_RESPIRATORY ?? "";
+                cboRespiratoryRank.EditValue = kskGeneral.EXAM_RESPIRATORY_RANK;
+
+                txtDigestion.Text = kskGeneral.EXAM_DIGESTION ?? "";
+                cboDigestionRank.EditValue = kskGeneral.EXAM_DIGESTION_RANK;
+
+                txtUrology.Text = kskGeneral.EXAM_KIDNEY_UROLOGY ?? "";
+                cboUrologyRank.EditValue = kskGeneral.EXAM_KIDNEY_UROLOGY_RANK;
+
+                txtOend.Text = kskGeneral.EXAM_OEND ?? "";
+                cboOendRank.EditValue = kskGeneral.EXAM_OEND_RANK;
+
+                txtMuscule.Text = kskGeneral.EXAM_MUSCLE_BONE ?? "";
+                cboMusculeRank.EditValue = kskGeneral.EXAM_MUSCLE_BONE_RANK;
+
+                txtNeurological.Text = kskGeneral.EXAM_NEUROLOGICAL ?? "";
+                cboNeurologicalRank.EditValue = kskGeneral.EXAM_NEUROLOGICAL_RANK;
+
+                txtMental.Text = kskGeneral.EXAM_MENTAL ?? "";
+                cboMentalRank.EditValue = kskGeneral.EXAM_MENTAL_RANK;
+
+                txtSurgeryExam.Text = kskGeneral.EXAM_SURGERY ?? "";
+                cboSurgeryRank.EditValue = kskGeneral.EXAM_SURGERY_RANK;
+
+                txtDermatology.Text = kskGeneral.EXAM_DERMATOLOGY ?? "";
+                cboDermatologyRank.EditValue = kskGeneral.EXAM_DERMATOLOGY_RANK;
+
+                txtObstetricExam.Text = kskGeneral.EXAM_OBSTETRIC ?? "";
+                cboObstetricRank.EditValue = kskGeneral.EXAM_OBSTETRIC_RANK;
+
+                // Mắt
+                txtVisionNoGlassLeft.Text = kskGeneral.EXAM_EYESIGHT_LEFT ?? "";
+                txtVisionNoGlassRight.Text = kskGeneral.EXAM_EYESIGHT_RIGHT ?? "";
+                txtVisionWithGlassLeft.Text = kskGeneral.EXAM_EYESIGHT_GLASS_LEFT ?? "";
+                txtVisionWithGlassRight.Text = kskGeneral.EXAM_EYESIGHT_GLASS_RIGHT ?? "";
+                txtEyeDisease.Text = kskGeneral.EXAM_EYE ?? "";
+                cboEyeRank.EditValue = kskGeneral.EXAM_EYE_RANK;
+
+                // Tai mũi họng
+                txtEarRightNormal.Text = kskGeneral.EXAM_ENT_RIGHT_NORMAL ?? "";
+                txtEarRightWhisper.Text = kskGeneral.EXAM_ENT_RIGHT_WHISPER ?? "";
+                txtEarLeftNormal.Text = kskGeneral.EXAM_ENT_LEFT_NORMAL ?? "";
+                txtEarLeftWhisper.Text = kskGeneral.EXAM_ENT_LEFT_WHISPER ?? "";
+                txtEntDisease.Text = kskGeneral.EXAM_ENT ?? "";
+                cboEntRank.EditValue = kskGeneral.EXAM_ENT_RANK;
+
+                // Răng hàm mặt
+                txtStomatologyLower.Text = kskGeneral.EXAM_STOMATOLOGY_LOWER ?? "";
+                txtStomatologyUpper.Text = kskGeneral.EXAM_STOMATOLOGY_UPPER ?? "";
+                txtStomatology.Text = kskGeneral.EXAM_STOMATOLOGY ?? "";
+                cboStomatologyRank.EditValue = kskGeneral.EXAM_STOMATOLOGY_RANK;
+
+                // 15) CLS + đánh giá
+                memoSubclinicalResult.Text = kskGeneral.RESULT_SUBCLINICAL ?? "";
+                memoSubclinicalNote.Text = kskGeneral.NOTE_SUBCLINICAL ?? "";
+
+                // 16) Kết luận
+                cboHealthRank.EditValue = kskGeneral.HEALTH_EXAM_RANK_ID; 
+                memoDiseases.Text = kskGeneral.DISEASES ?? "";
+                memoTreatmentDirection.Text = kskGeneral.TREATMENT_INSTRUCTION ?? "";
+                txtContact.Text = kskGeneral.CONTACT ?? "";
+
+                cboConclusionDoctor.EditValue = kskGeneral.CONCLUDER_LOGINNAME; 
             }
             catch (Exception ex)
             {
@@ -369,6 +593,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     lblPatientCode.Text = data.TDL_PATIENT_CODE;
                     lblPatientName.Text = data.TDL_PATIENT_NAME;
                     lblGender.Text = data.TDL_PATIENT_GENDER_NAME;
+                    string gender = (data.TDL_PATIENT_GENDER_NAME).Trim().ToLower();
+                    bool isFemale = gender == "nữ" || gender == "nu";
+                    ApplyObstetricHistoryVisibility(isFemale);
                     if (data.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                         lblBirthDate.Text = data.TDL_PATIENT_DOB.ToString().Substring(0, 4);
                     else
@@ -400,6 +627,69 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     {
                         lblKSKContract.Text = "";
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ApplyObstetricHistoryVisibility(bool isFemale)
+        {
+            try
+            {
+                layoutControlTab1.BeginUpdate();
+                try
+                {
+                    var items = new DevExpress.XtraLayout.BaseLayoutItem[]
+                    {
+                        layoutControlItem154,
+                        layoutControlItem155,
+                        layoutControlItem156,
+                        layoutControlItem157,
+                        layoutControlItem158,
+                        layoutControlItem159,
+                        layoutControlItem160,
+                        layoutControlItem161,
+                        layoutControlItem162,
+                        layoutControlItem163,
+                        layoutControlItem164,
+                        layoutControlItem165,
+                        layoutControlItem166,
+                        layoutControlItem167,
+                        layoutControlItem168,
+                        layoutControlItem169,
+                        layoutControlItem170,
+                        layoutControlItem171,
+                        layoutControlItem172,
+                        layoutControlItem173,
+                        layoutControlItem174,
+                        layoutControlItem175,
+                        layoutControlItem176,
+                        layoutControlItem177,
+                        layoutControlItem178,
+                        layoutControlItem179,
+                        layoutControlItem180,
+                        layoutControlItem181,
+                        layoutControlItem182,
+
+                        // lciNoteContraceptives,
+                    };
+
+                    foreach (var it in items)
+                    {
+                        if (it == null) continue;
+                        it.Visibility = isFemale
+                            ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                            : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    }
+
+                    // optional: nếu ẩn thì có thể clear dữ liệu vùng này để tránh “dính dữ liệu nữ” qua nam
+                    // if (!isFemale) ClearObstetricHistoryControls();
+                }
+                finally
+                {
+                    layoutControlTab1.EndUpdate();
                 }
             }
             catch (Exception ex)
@@ -920,6 +1210,26 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 //Gan gia tri mac dinh
                 SetDefaultValue();
 
+                //an hien tab theo cau hinh
+                ApplyHiddenTabOption();
+
+                if (!string.IsNullOrWhiteSpace(_serviceReqCode))
+                {
+                    txtServiceReqCodeForSearch.Text = _serviceReqCode.Trim();
+                    FillDataToGridControl();
+                    if (listData != null && listData.Count > 0)
+                    {
+                        gridViewServiceReq.FocusedRowHandle = 0;
+                        var firstRow = listData[0];
+                        ChangedDataRow(firstRow);
+                    }
+                }
+                else
+                {
+                    //Load du lieu
+                    FillDataToGridControl();
+                }
+
                 //Load du lieu
                 FillDataToGridControl();
 
@@ -945,6 +1255,31 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void ApplyHiddenTabOption()
+        {
+            int opt = HIS.Desktop.Plugins.EnterKskInfomantion.Config.HisConfig.HiddenTabOption;
+
+            if (opt == 1)
+            {
+                xtraTabPage1.PageVisible = true;
+                xtraTabPage5.PageVisible = false;
+                xtraTabControl1.SelectedTabPage = xtraTabPage1;
+            }
+            else if (opt == 2)
+            {
+                xtraTabPage1.PageVisible = false;
+                xtraTabPage5.PageVisible = true;
+                xtraTabControl1.SelectedTabPage = xtraTabPage5;
+            }
+            else
+            {
+                // Mặc định: hiện cả 2 tab
+                xtraTabPage1.PageVisible = true;
+                xtraTabPage5.PageVisible = true;
+
+                xtraTabControl1.SelectedTabPage = xtraTabPage1;
             }
         }
 
@@ -3312,6 +3647,173 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void xtraTabPage5_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+        private void SelectDataResultTab5(object data)
+        {
+            try
+            {
+                if (data != null && data is string)
+                {
+                    string dienBien = data as string;
+                    memoSubclinicalResult.Text = dienBien;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+
+        }
+        private void ExclusiveNullablePair(DevExpress.XtraEditors.CheckEdit me,
+                                  DevExpress.XtraEditors.CheckEdit other)
+        {
+            if (Equals(me.Tag, "UPDATE")) return;
+
+            try
+            {
+                me.Tag = "UPDATE";
+                other.Tag = "UPDATE";
+                if(me.Checked)
+                {
+                    other.Checked = false;
+                }
+            }
+            finally
+            {
+                me.Tag = null;
+                other.Tag = null;
+            }
+        }
+
+        private void chkMarriedYes_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMarriedNo);
+        }
+
+        private void chkMarriedNo_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMarriedYes);
+        }
+
+        private void chkMenstrualRegular_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualIrregular);
+        }
+
+        private void chkMenstrualIrregular_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualRegular);
+        }
+
+        private void chkMenstrualYes_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualNo);
+        }
+
+        private void chkMenstrualNo_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkMenstrualYes);
+        }
+
+        private void chkContraceptionYes_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkContraceptionNo);
+        }
+
+        private void chkContraceptionNo_CheckedChanged_1(object sender, EventArgs e)
+        {
+            ExclusiveNullablePair((DevExpress.XtraEditors.CheckEdit)sender, chkContraceptionYes);
+        }
+
+        private void btnChooseResultTab5_Click_1(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.ContentSubclinical").FirstOrDefault();
+                if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.ContentSubclinical");
+                else if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.currentTreatmentId);
+                    listArgs.Add((HIS.Desktop.Common.DelegateSelectData)SelectDataResultTab5);
+                    listArgs.Add(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId));
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.moduleData.RoomId, this.moduleData.RoomTypeId), listArgs);
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    ((Form)extenceInstance).ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+
+        private void spnHeightCm_EditValueChanged(object sender, EventArgs e)
+        {
+            FillDataToDHSTBmiTab5();
+        }
+        private void FillDataToDHSTBmiTab5()
+        {
+            try
+            {
+                if (spnHeightCm.Value == null || spnWeightKg.Value == 0 || spnHeightCm.Value == null || spnWeightKg.Value == 0)
+                {
+                    lblBmi.Text = "";
+                    return;
+                }
+                decimal bmi = 0;
+                if (spnWeightKg.Value != null && spnHeightCm.Value != 0)
+                {
+                    bmi = (spnWeightKg.Value) / ((spnHeightCm.Value / 100) * (spnHeightCm.Value / 100));
+                }
+                lblBmi.Text = Math.Round(bmi, 2) + "";
+                if (bmi < 16)
+                {
+                    lblBmi.Text = Inventec.Common.Resource.Get.Value("frmEnterKskInfomantion.SKINNY.III", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
+                else if (16 <= bmi && bmi < 17)
+                {
+                    lblBmi.Text = Inventec.Common.Resource.Get.Value("frmEnterKskInfomantion.SKINNY.II", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
+                else if (17 <= bmi && bmi < (decimal)18.5)
+                {
+                    lblBmi.Text = Inventec.Common.Resource.Get.Value("frmEnterKskInfomantion.SKINNY.I", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
+                else if ((decimal)18.5 <= bmi && bmi < 25)
+                {
+                    lblBmi.Text = Inventec.Common.Resource.Get.Value("frmEnterKskInfomantion.BMIDISPLAY.NORMAL", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
+                else if (25 <= bmi && bmi < 30)
+                {
+                    lblBmi.Text = Inventec.Common.Resource.Get.Value("frmEnterKskInfomantion.BMIDISPLAY.OVERWEIGHT", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
+                else if (30 <= bmi && bmi < 35)
+                {
+                    lblBmi.Text = Inventec.Common.Resource.Get.Value("frmEnterKskInfomantion.BMIDISPLAY.OBESITY.I", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
+                else if (35 <= bmi && bmi < 40)
+                {
+                    lblBmi.Text = Inventec.Common.Resource.Get.Value("frmEnterKskInfomantion.BMIDISPLAY.OBESITY.II", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
+                else if (40 < bmi)
+                {
+                    lblBmi.Text = Inventec.Common.Resource.Get.Value("frmEnterKskInfomantion.BMIDISPLAY.OBESITY.III", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spnWeightKg_EditValueChanged(object sender, EventArgs e)
+        {
+            FillDataToDHSTBmiTab5();
         }
     }
 }

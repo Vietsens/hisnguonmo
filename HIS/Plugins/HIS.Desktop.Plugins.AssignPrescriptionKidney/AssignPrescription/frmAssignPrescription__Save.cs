@@ -432,7 +432,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                         }
                     }
 
-                    check = service.ShowDialog(lstDrugItem, lstICD);
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.VHistreatment.ID, this.serviceReqWorking.ID, this.VHistreatment.PATIENT_ID);
                 }
 
                 if (check)

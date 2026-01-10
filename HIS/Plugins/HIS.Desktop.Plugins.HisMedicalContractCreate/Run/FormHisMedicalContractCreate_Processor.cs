@@ -413,6 +413,8 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                     // lưu rồi thì mới trừ số lượng.                   
                     decimal checkAmount = spAmount.Value - (this.ActionType == GlobalVariables.ActionEdit && metyMatyADO != null && metyMatyADO.AMOUNT.HasValue && metyMatyADO.CONTRACT_MATY_METY_ID > 0 ? metyMatyADO.AMOUNT.Value : 0);
                     decimal VariableAmount = bidMedicine.AMOUNT * (1 + (bidMedicine.IMP_MORE_RATIO ?? 0)) - (bidMedicine.TDL_CONTRACT_AMOUNT ?? 0) + (bidMedicine.ADJUST_AMOUNT ?? 0);
+
+
                     if (VariableAmount < checkAmount)
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(Resources.ResourceLanguageManager.SoLuongHopDongVuotQuaSoLuongThau, Resources.ResourceLanguageManager.ThongBao);
@@ -794,32 +796,34 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                         }
                         if (!CheckAmount && DicBidMedicineType != null && DicBidMedicineType.Count > 0)
                         {
-                            var dt = medicines.GroupBy(o => o.ID).ToList();
+                           
+                            var dt = medicines
+                                .Where(o => (o.BID_METY_MATY_ID ?? 0) > 0)
+                                .GroupBy(o => o.BID_METY_MATY_ID)
+                                .ToList();
+
                             List<string> message = new List<string>();
                             foreach (var item in dt)
                             {
-                                var AmountTotal = item.ToList().Sum(o => o.AMOUNT);
-                                V_HIS_BID_MEDICINE_TYPE bidMedicine = null;
-                                if (this.ActionType == GlobalVariables.ActionEdit)
-                                {
-                                    if (DicBidMedicineType.ContainsKey(bidId))
-                                        bidMedicine = this.DicBidMedicineType[bidId].FirstOrDefault(o => o.ID == item.FirstOrDefault().BID_METY_MATY_ID);
+                                var first = item.FirstOrDefault();
+                                if (first == null) continue;
 
-                                }
-                                else if (this.ActionType == GlobalVariables.ActionAdd)
-                                {
-                                    if (DicBidMedicineType.ContainsKey(bidId))
-                                        bidMedicine = this.DicBidMedicineType[bidId].FirstOrDefault(o => o.SUPPLIER_ID == supplierId && o.MEDICINE_TYPE_ID == item.FirstOrDefault().ID && o.BID_GROUP_CODE == item.FirstOrDefault().BID_GROUP_CODE);
-                                }
+                                var amountTotal = item.Sum(o => o.AMOUNT);
+
+                                V_HIS_BID_MEDICINE_TYPE bidMedicine = null;
+                                if (DicBidMedicineType.ContainsKey(bidId))
+                                    bidMedicine = this.DicBidMedicineType[bidId].FirstOrDefault(o => o.ID == first.BID_METY_MATY_ID);
+
                                 if (bidMedicine != null)
                                 {
-                                    decimal VariableAmount = bidMedicine.AMOUNT * (1 + (bidMedicine.IMP_MORE_RATIO ?? 0)) + (bidMedicine.ADJUST_AMOUNT ?? 0);
-                                    if (AmountTotal > VariableAmount)
+                                    decimal variableAmount = bidMedicine.AMOUNT * (1 + (bidMedicine.IMP_MORE_RATIO ?? 0)) + (bidMedicine.ADJUST_AMOUNT ?? 0);
+                                    if (amountTotal > variableAmount)
                                     {
-                                        message.Add(string.Format("Thuốc {0} (Hợp đồng: {1} - Thầu: {2})", item.ToList().FirstOrDefault().MEDICINE_TYPE_NAME, AmountTotal, VariableAmount));
+                                        message.Add(string.Format("Thuốc {0} (Hợp đồng: {1} - Thầu: {2})", first.MEDICINE_TYPE_NAME, amountTotal, variableAmount));
                                     }
                                 }
                             }
+
                             if (message != null && message.Count > 0)
                             {
                                 IsHasMessageAdjustAmount = true;
@@ -850,32 +854,34 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
                         }
                         if (!CheckAmount && DicBidMaterialType != null && DicBidMaterialType.Count > 0)
                         {
-                            var dt = materials.GroupBy(o => o.ID).ToList();
+                            // Group by BID item (BID_METY_MATY_ID) so the contract amount is compared to the correct bid line.
+                            var dt = materials
+                                .Where(o => (o.BID_METY_MATY_ID ?? 0) > 0)
+                                .GroupBy(o => o.BID_METY_MATY_ID)
+                                .ToList();
+
                             List<string> message = new List<string>();
                             foreach (var item in dt)
                             {
-                                var AmountTotal = item.ToList().Sum(o => o.AMOUNT);
-                                V_HIS_BID_MATERIAL_TYPE bidMaterial = null;
-                                if (this.ActionType == GlobalVariables.ActionEdit)
-                                {
-                                    if (DicBidMaterialType.ContainsKey(bidId))
-                                        bidMaterial = this.DicBidMaterialType[bidId].FirstOrDefault(o => o.ID == item.FirstOrDefault().BID_METY_MATY_ID);
+                                var first = item.FirstOrDefault();
+                                if (first == null) continue;
 
-                                }
-                                else if (this.ActionType == GlobalVariables.ActionAdd)
-                                {
-                                    if (DicBidMaterialType.ContainsKey(bidId))
-                                        bidMaterial = this.DicBidMaterialType[bidId].FirstOrDefault(o => o.SUPPLIER_ID == supplierId && o.MATERIAL_TYPE_ID == item.FirstOrDefault().ID && o.BID_GROUP_CODE == item.FirstOrDefault().BID_GROUP_CODE);
-                                }
+                                var amountTotal = item.Sum(o => o.AMOUNT);
+
+                                V_HIS_BID_MATERIAL_TYPE bidMaterial = null;
+                                if (DicBidMaterialType.ContainsKey(bidId))
+                                    bidMaterial = this.DicBidMaterialType[bidId].FirstOrDefault(o => o.ID == first.BID_METY_MATY_ID);
+
                                 if (bidMaterial != null)
                                 {
-                                    decimal VariableAmount = bidMaterial.AMOUNT * (1 + (bidMaterial.IMP_MORE_RATIO ?? 0)) + (bidMaterial.ADJUST_AMOUNT ?? 0);
-                                    if (AmountTotal > VariableAmount)
+                                    decimal variableAmount = bidMaterial.AMOUNT * (1 + (bidMaterial.IMP_MORE_RATIO ?? 0)) + (bidMaterial.ADJUST_AMOUNT ?? 0);
+                                    if (amountTotal > variableAmount)
                                     {
-                                        message.Add(string.Format("Vật tư {0} (Hợp đồng: {1} - Thầu: {2})", item.ToList().FirstOrDefault().MEDICINE_TYPE_NAME, AmountTotal, VariableAmount));
+                                        message.Add(string.Format("Vật tư {0} (Hợp đồng: {1} - Thầu: {2})", first.MEDICINE_TYPE_NAME, amountTotal, variableAmount));
                                     }
                                 }
                             }
+
                             if (message != null && message.Count > 0)
                             {
                                 IsHasMessageAdjustAmount = true;

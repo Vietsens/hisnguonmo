@@ -30,6 +30,7 @@ using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisService.ADO;
 using HIS.Desktop.Utilities.Extensions;
@@ -2729,140 +2730,180 @@ namespace HIS.Desktop.Plugins.HisService
             CommonParam param = new CommonParam();
             try
             {
-                bool success = false;
-                if (!btnEdit.Enabled && !btnAdd.Enabled)
-                    return;
+                
+                    bool success = false;
+                    if (!btnEdit.Enabled && !btnAdd.Enabled)
+                        return;
 
-                positionHandle = -1;
+                    positionHandle = -1;
+                string serviceCodeOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE.SERVICE_CODE_OPTION"); ;
+                if (serviceCodeOption == "1")
+                {
+                   
+                    dxValidationProviderEditorInfo.SetValidationRule(txtMisuSerTypeCode, null);
+                    dxValidationProviderEditorInfo.RemoveControlError(txtMisuSerTypeCode);
+
+                    if (this.ActionType == GlobalVariables.ActionAdd)
+                    {
+                        string inputCode = (txtMisuSerTypeCode.Text ?? "").Trim();
+                        if (!String.IsNullOrEmpty(inputCode))
+                        {
+                            bool isDuplicate = false;
+
+                            
+                            List<V_HIS_SERVICE> dataSource = treeList1.DataSource as List<V_HIS_SERVICE>;
+                            IEnumerable<V_HIS_SERVICE> all = dataSource ?? BackendDataWorker.Get<V_HIS_SERVICE>();
+
+                            if (all != null)
+                            {
+                                isDuplicate = all.Any(o =>
+                                    !String.IsNullOrEmpty(o.SERVICE_CODE)
+                                    && String.Equals(o.SERVICE_CODE.Trim(), inputCode, StringComparison.OrdinalIgnoreCase));
+                            }
+
+                            if (isDuplicate)
+                            {
+                                DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    String.Format("Mã {0} đã tồn tại tên hệ thống", inputCode),
+                                    "Thông báo");
+                                txtMisuSerTypeCode.Focus();
+                                txtMisuSerTypeCode.SelectAll();
+                                return;
+                            }
+                        }
+                    }
+                }
                 if (!dxValidationProviderEditorInfo.Validate())
-                    return;
+                        return;
 
-                if (cboPackage.EditValue != null && txtPackagePrice.EditValue == null)
-                {
-                    dxErrorProvider.SetError(txtPackagePrice, "Chưa nhập trường dữ liệu bắt buộc", ErrorType.Warning);
-                    return;
-                }
-                else if (cboPackage.EditValue != null && txtPackagePrice.EditValue != null)
-                {
-                    dxErrorProvider.ClearErrors();
-                }
-
-                if (!CheckServiceTypeParent())
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("Xử lý thất bại. Loại dịch vụ của cha phải giống loại dịch vụ của con", "Thông báo");
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(txtBHYTCode.Text) && string.IsNullOrEmpty(txtBHYTName.Text))
-                {
-
-                }
-                else if (string.IsNullOrEmpty(txtBHYTCode.Text) || string.IsNullOrEmpty(txtBHYTName.Text))
-                {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("Phải nhập đầy đủ mã và tên DV BHYT", "Thông báo");
-                    return;
-                }
-
-                ValidationSingleControl(txtMisuSerTypeCode);
-                ValidationControlMaxLength(txtMisuSerTypeCode, 100, true);
-                ValidationControlMaxLength(txtTestingTechnique, 500, false);
-                ValidationSingleControl(txtMisuSerTypeName);
-                ValidationControlMaxLength(txtMisuSerTypeName, 3000, true);
-                ValidationControlMaxLength(txtBHYTName, 1500, false);
-                if (txtRatioSymbol.Enabled)
-                    ValidationControlMaxLength(txtRatioSymbol, 10, false);
-                if (txtOTHER_PAY_SOURCE.Enabled)
-                    ValidationControlMaxLength(txtOTHER_PAY_SOURCE, 200, false);
-                ValidationControlMaxLength(txtProcessCode, 50, false);
-
-                MOS.EFMODEL.DataModels.HIS_SERVICE updateDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE();
-
-                if (ActionType == GlobalVariables.ActionEdit)
-                {
-                    if (this.currentData != null && this.currentData.ID > 0)
+                    if (cboPackage.EditValue != null && txtPackagePrice.EditValue == null)
                     {
-                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE>(updateDTO, this.currentData);
-
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
+                        dxErrorProvider.SetError(txtPackagePrice, "Chưa nhập trường dữ liệu bắt buộc", ErrorType.Warning);
+                        return;
                     }
-                }
-
-                UpdateDTOFromDataForm(ref updateDTO);
-
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO.IS_AUTO_EXPEND), updateDTO.IS_AUTO_EXPEND));
-                WaitingManager.Show();
-                if (ActionType == GlobalVariables.ActionAdd)
-                {
-                    Inventec.Common.Logging.LogSystem.Debug("Api Add => Begin" + Inventec.Common.Logging.LogUtil.TraceData("", updateDTO));
-                    var resultData = new BackendAdapter(param).Post<HIS_SERVICE>(HisRequestUriStore.MOSHIS_SERVICE_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
-                    Inventec.Common.Logging.LogSystem.Info("Api Add => End");
-                    if (resultData != null)
+                    else if (cboPackage.EditValue != null && txtPackagePrice.EditValue != null)
                     {
-                        Inventec.Common.Logging.LogSystem.Info("LoaddataToTreeList Add => Begin");
-                        success = true;
+                        dxErrorProvider.ClearErrors();
+                    }
+
+                    if (!CheckServiceTypeParent())
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Xử lý thất bại. Loại dịch vụ của cha phải giống loại dịch vụ của con", "Thông báo");
+                        return;
+                    }
+
+                    if (string.IsNullOrEmpty(txtBHYTCode.Text) && string.IsNullOrEmpty(txtBHYTName.Text))
+                    {
+
+                    }
+                    else if (string.IsNullOrEmpty(txtBHYTCode.Text) || string.IsNullOrEmpty(txtBHYTName.Text))
+                    {
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Phải nhập đầy đủ mã và tên DV BHYT", "Thông báo");
+                        return;
+                    }
+
+                    //ValidationSingleControl(txtMisuSerTypeCode);
+                    //ValidationControlMaxLength(txtMisuSerTypeCode, 100, true);
+                    ValidationControlMaxLength(txtTestingTechnique, 500, false);
+                    ValidationSingleControl(txtMisuSerTypeName);
+                    ValidationControlMaxLength(txtMisuSerTypeName, 3000, true);
+                    ValidationControlMaxLength(txtBHYTName, 1500, false);
+                    if (txtRatioSymbol.Enabled)
+                        ValidationControlMaxLength(txtRatioSymbol, 10, false);
+                    if (txtOTHER_PAY_SOURCE.Enabled)
+                        ValidationControlMaxLength(txtOTHER_PAY_SOURCE, 200, false);
+                    ValidationControlMaxLength(txtProcessCode, 50, false);
+
+                    MOS.EFMODEL.DataModels.HIS_SERVICE updateDTO = new MOS.EFMODEL.DataModels.HIS_SERVICE();
+
+                    if (ActionType == GlobalVariables.ActionEdit)
+                    {
+                        if (this.currentData != null && this.currentData.ID > 0)
+                        {
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE>(updateDTO, this.currentData);
+
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
+                        }
+                    }
+
+                    UpdateDTOFromDataForm(ref updateDTO);
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO.IS_AUTO_EXPEND), updateDTO.IS_AUTO_EXPEND));
+                    WaitingManager.Show();
+                    if (ActionType == GlobalVariables.ActionAdd)
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("Api Add => Begin" + Inventec.Common.Logging.LogUtil.TraceData("", updateDTO));
+                        var resultData = new BackendAdapter(param).Post<HIS_SERVICE>(HisRequestUriStore.MOSHIS_SERVICE_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
+                        Inventec.Common.Logging.LogSystem.Info("Api Add => End");
+                        if (resultData != null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Info("LoaddataToTreeList Add => Begin");
+                            success = true;
+                            LoaddataToTreeList();
+                            Inventec.Common.Logging.LogSystem.Info("LoaddataToTreeList Add => End");
+                            btnRefesh_Click(null, null);
+                            Inventec.Common.Logging.LogSystem.Info("Reset Add => Begin");
+                            BackendDataWorker.Reset<V_HIS_SERVICE>();
+                            Inventec.Common.Logging.LogSystem.Info("Reset Add => End");
+                        }
+                    }
+                    else
+                    {
+                        HisServiceSDO sdo = new HisServiceSDO();
+                        sdo.HisService = updateDTO;
+
+                        if (chkUpdateAll.Checked)
+                        {
+                            sdo.UpdateSereServ = true;
+                        }
+                        else if (chkUpdateOnly.Checked)
+                        {
+                            sdo.UpdateSereServ = false;
+                        }
+                        else if (!chkUpdateAll.Checked && !chkUpdateOnly.Checked)
+                        {
+                            sdo.UpdateSereServ = null;
+                        }
+                        if (listHisSuimIndexChoose == null)
+                            listHisSuimIndexChoose = new List<HIS_SUIM_INDEX>();
+                        if (listHisSuimIndexDefault == null)
+                            listHisSuimIndexDefault = new List<HIS_SUIM_INDEX>();
+                        bool allElementsExistChoose = !listHisSuimIndexChoose.Except(listHisSuimIndexDefault).Any();
+                        bool allElementsExistDefault = !listHisSuimIndexDefault.Except(listHisSuimIndexChoose).Any();
+
+                        if (!(allElementsExistChoose && allElementsExistDefault))
+                            sdo.HisSuimIndexs = listHisSuimIndexChoose;
+
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(" ---------sdo_______     " + Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+                        Inventec.Common.Logging.LogSystem.Debug("Api EDIT => Begin" + Inventec.Common.Logging.LogUtil.TraceData("", sdo));
+                        var resultData = new BackendAdapter(param).Post<HIS_SERVICE>(HisRequestUriStore.MOSHIS_SERVICE_UPDATE, ApiConsumers.MosConsumer, sdo, param);
+                        Inventec.Common.Logging.LogSystem.Info("Api Edit => End");
+                        if (resultData != null)
+                        {
+                            Inventec.Common.Logging.LogSystem.Debug("resultData" + Inventec.Common.Logging.LogUtil.TraceData("", resultData));
+                            success = true;
+                            btnRefesh_Click(null, null);
+                            LoaddataToTreeList();
+                            BackendDataWorker.Reset<V_HIS_SERVICE>();
+                        }
+                    }
+
+                    if (success)
+                    {
+                        treeList1.RefreshDataSource();
                         LoaddataToTreeList();
-                        Inventec.Common.Logging.LogSystem.Info("LoaddataToTreeList Add => End");
-                        btnRefesh_Click(null, null);
-                        Inventec.Common.Logging.LogSystem.Info("Reset Add => Begin");
-                        BackendDataWorker.Reset<V_HIS_SERVICE>();
-                        Inventec.Common.Logging.LogSystem.Info("Reset Add => End");
+                        SetFocusEditor();
                     }
-                }
-                else
-                {
-                    HisServiceSDO sdo = new HisServiceSDO();
-                    sdo.HisService = updateDTO;
+                    WaitingManager.Hide();
+                    #region Hien thi message thong bao
+                    MessageManager.Show(this.ParentForm, param, success);
+                    #endregion
 
-                    if (chkUpdateAll.Checked)
-                    {
-                        sdo.UpdateSereServ = true;
-                    }
-                    else if (chkUpdateOnly.Checked)
-                    {
-                        sdo.UpdateSereServ = false;
-                    }
-                    else if (!chkUpdateAll.Checked && !chkUpdateOnly.Checked)
-                    {
-                        sdo.UpdateSereServ = null;
-                    }
-                    if (listHisSuimIndexChoose == null)
-                        listHisSuimIndexChoose = new List<HIS_SUIM_INDEX>();
-                    if (listHisSuimIndexDefault == null)
-                        listHisSuimIndexDefault = new List<HIS_SUIM_INDEX>();
-                    bool allElementsExistChoose = !listHisSuimIndexChoose.Except(listHisSuimIndexDefault).Any();
-                    bool allElementsExistDefault = !listHisSuimIndexDefault.Except(listHisSuimIndexChoose).Any();
+                    #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
+                    SessionManager.ProcessTokenLost(param);
+                    #endregion
+                
 
-                    if (!(allElementsExistChoose && allElementsExistDefault))
-                        sdo.HisSuimIndexs = listHisSuimIndexChoose;
-
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(" ---------sdo_______     " + Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
-                    Inventec.Common.Logging.LogSystem.Debug("Api EDIT => Begin" + Inventec.Common.Logging.LogUtil.TraceData("", sdo));
-                    var resultData = new BackendAdapter(param).Post<HIS_SERVICE>(HisRequestUriStore.MOSHIS_SERVICE_UPDATE, ApiConsumers.MosConsumer, sdo, param);
-                    Inventec.Common.Logging.LogSystem.Info("Api Edit => End");
-                    if (resultData != null)
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug("resultData" + Inventec.Common.Logging.LogUtil.TraceData("", resultData));
-                        success = true;
-                        btnRefesh_Click(null, null);
-                        LoaddataToTreeList();
-                        BackendDataWorker.Reset<V_HIS_SERVICE>();
-                    }
-                }
-
-                if (success)
-                {
-                    treeList1.RefreshDataSource();
-                    LoaddataToTreeList();
-                    SetFocusEditor();
-                }
-                WaitingManager.Hide();
-                #region Hien thi message thong bao
-                MessageManager.Show(this.ParentForm, param, success);
-                #endregion
-
-                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
-                SessionManager.ProcessTokenLost(param);
-                #endregion
             }
             catch (Exception ex)
             {

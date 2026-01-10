@@ -231,7 +231,14 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                             e.RepositoryItem = repositoryItemButton_IsUse;
                         }
                     }
+                    if (e.Column.FieldName == "btnKsk")
+                    {
+                        if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
+                        {
+                            e.RepositoryItem = repositoryItemKsk;
+                        }
 
+                    }
                 }
                 if (data != null && e.Node.HasChildren)
                 {
@@ -662,6 +669,18 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                             info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
                             e.Info = info;
                         }
+                        if (hi.Column != null && hi.Column.FieldName == "btnKsk")
+                        {
+                            var dataKsk = (SereServADO)treeSereServ.GetDataRecordByNode(o);
+                            if (dataKsk != null
+                                && !o.HasChildren
+                                && dataKsk.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
+                            {
+                                string textx = "Thông tin khám sức khỏe";
+                                info = new DevExpress.Utils.ToolTipControlInfo(o, textx);
+                                e.Info = info;
+                            }
+                        }
                         if (hi.Column != null && hi.Column.FieldName == "Delete")
                         {
                             string textx = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_BED_ROOM_PARTIAL__TREE_SERE_SERV__XOA", Resources.ResourceLanguageManager.LanguageResource__UCTreeListService, LanguageManager.GetCulture());
@@ -872,6 +891,62 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             }
             return result;
         }
+
+        private void repositoryItemKsk_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void repositoryItemKsk_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                // Lấy đúng node theo vị trí click (tránh lệch FocusedNode)
+                var hi = treeSereServ.CalcHitInfo(treeSereServ.PointToClient(Control.MousePosition));
+                var node = hi?.Node ?? treeSereServ.FocusedNode;
+                if (node == null) return;
+
+                var data = treeSereServ.GetDataRecordByNode(node) as SereServADO;
+                if (data == null) return;
+
+                // Chỉ xử lý KSK
+                if (data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH) return;
+                if (string.IsNullOrWhiteSpace(data.SERVICE_REQ_CODE)) return;
+
+                WaitingManager.Show();
+                try
+                {
+                    var moduleData = GlobalVariables.currentModuleRaws
+                        .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.EnterKskInfomantion");
+
+                    if (moduleData == null)
+                        throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.EnterKskInfomantion'");
+                    if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null)
+                        throw new NullReferenceException("Module 'HIS.Desktop.Plugins.EnterKskInfomantion' is not plugins");
+
+                    var listArgs = new List<object> { data.SERVICE_REQ_CODE };
+
+                    var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(
+                        HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId),
+                        listArgs);
+
+                    if (extenceInstance == null)
+                        throw new NullReferenceException("Khoi tao moduleData that bai. extenceInstance = null");
+
+                    ((Form)extenceInstance).ShowDialog();
+                }
+                finally
+                {
+                    WaitingManager.Hide();
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public void DisposeData()
         {
             try

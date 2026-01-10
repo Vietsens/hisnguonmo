@@ -39,7 +39,7 @@ using HIS.Desktop.Utility;
 using HIS.UC.SereServTree;
 using HIS.UC.SettingSignInfo;
 using Inventec.Common.Adapter;
-using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Controls.EditorLoader; 
 using Inventec.Common.Logging;
 using Inventec.Common.SignLibrary.ServiceSign;
 using Inventec.Core;
@@ -3655,13 +3655,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     }
                     if (configSync.isCheckOutTime)
                     {
-                        filter.OUT_TIME_FROM = Inventec.Common.DateTime.Get.StartDay();
+                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
                         filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                         filter.IS_PAUSE = true;
                     }
                     else
                     {
-                        filter.FEE_LOCK_TIME_FROM = Inventec.Common.DateTime.Get.StartDay();
+                        filter.FEE_LOCK_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
                         filter.FEE_LOCK_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                     }
                     if (configSync.isCheckCollinearXml)
