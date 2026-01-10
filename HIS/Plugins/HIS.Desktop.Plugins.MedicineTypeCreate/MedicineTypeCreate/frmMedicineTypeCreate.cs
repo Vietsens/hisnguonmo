@@ -4202,9 +4202,15 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 GridCheckMarksSelection gridcboCauHinh = cboConfig.Properties.Tag as GridCheckMarksSelection;
                 gridcboCauHinh.ClearSelection(cboConfig.Properties.View);
                 cboConfig.Text = "";
+                cboConfig.EditValue = null;
                 GridCheckMarksSelection gridcboThuoc = cboLoaiThuoc.Properties.Tag as GridCheckMarksSelection;
                 gridcboThuoc.ClearSelection(cboConfig.Properties.View);
                 cboLoaiThuoc.Text = "";
+                cboLoaiThuoc.EditValue = null;
+                GridCheckMarksSelection gridcboNCC = cboNCC.Properties.Tag as GridCheckMarksSelection;
+                gridcboNCC.ClearSelection(cboNCC.Properties.View);
+                cboNCC.Text = "";
+                cboNCC.EditValue = null;
             }
             catch (Exception ex)
             {

@@ -274,6 +274,7 @@
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
     <Compile Include="Validate\txtHeinCardTmpValidationRule.cs" />
+    <Compile Include="Validate\ValidateCCCD.cs" />
     <Compile Include="Validate\ValidateMaxLength.cs" />
     <Compile Include="Validate\ValidateMaxlengthCMNDCCCDNoRequired.cs" />
     <Compile Include="Validate\ValidateMaxlengthCMNDCCCD.cs" />
