@@ -91,7 +91,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// <summary>
         /// Kiểm tra Tương tác thuốc, bệnh lý. Hiển thị cảnh báo (nếu có) và ghi log.
         /// </summary>
-        public bool CheckAndAlert(List<DrugItem> drugs, List<string> icd10Codes, long? treatmentId = null, long? serviceReqId = null, long? patientId = null)
+        public bool CheckAndAlert(List<DrugItem> drugs, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog = null, long? treatmentId = null, long? serviceReqId = null, long? patientId = null)
         {
             try
             {
@@ -104,63 +104,8 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                     || (result.DrugDrugAlertDetails.Count > 0 && result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel != DrugInteractionSeverity.Unknown)))
                 {
                     bool rs = WebViewHelper.ShowDialog(result.Html, NameText);
-                    if (rs)
-                    {
-                        HIS_MIMS_INTERACTION_LOG data = new HIS_MIMS_INTERACTION_LOG();
-                        data.TREATMENT_ID = treatmentId;
-                        data.SERVICE_REQ_ID = serviceReqId;
-                        data.PATIENT_ID = patientId;
-                        data.MODULE_TYPE = 4; //4=Drug-Health
-                        data.REQUEST_TYPE = "INTERACTION";
-                        data.REQUEST_ENDPOINT = MimsConfig.CdsApiUrl;
-                        data.REQUEST_XML = xmlRequest;
-                        data.CHECKED_GUIDS = string.Join(";", drugs.Where(d => !string.IsNullOrWhiteSpace(d.MimsGuid)).Select(d => d.MimsGuid));
-                        data.DRUG_COUNT = (short)(drugs.Where(d => !string.IsNullOrWhiteSpace(d.MimsGuid)).Count());
-                        data.UNMAPPED_DRUG_COUNT = (short)(drugs.Where(d => string.IsNullOrWhiteSpace(d.MimsGuid)).Count());
-                        data.RESPONSE_XML = result.RawXml;
-                        data.RESPONSE_HTML = "";
-                        data.RESPONSE_TYPE = "xml";
-                        data.HAS_ALERT = 1;
-                        data.ALERT_COUNT = 1;
-                        data.HAS_SEVERE_ALERT = (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Severe)
-                                                || result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.Contraindicated))
-                                                ? (short?)1 : null;
-                        string highestSeverity = null;
-                        if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Severe))
-                        {
-                            highestSeverity = "SEVERE";
-                        }
-                        else if (result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.Contraindicated))
-                        {
-                            highestSeverity = "CONTRAINDICATED";
-                        }
-                        else if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Moderate))
-                        {
-                            highestSeverity = "MODERATE";
-                        }
-                        else if (result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.ExtremeCaution))
-                        {
-                            highestSeverity = "EXTREMECAUTION";
-                        }
-                        else if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Minor))
-                        {
-                            highestSeverity = "MINOR";
-                        }
-                        else if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Caution))
-                        {
-                            highestSeverity = "CAUTION";
-                        }
-                        data.HIGHEST_SEVERITY = highestSeverity;
-                        data.IS_SUCCESS = result.Success ? (short?)1 : (short?)0;
-                        data.ERROR_MESSAGE = result.Message;
-                        data.USER_ACKNOWLEDGED = 1;
-                        data.USER_OVERRIDE = 1;
-                        data.OVERRIDE_BY = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
-                        data.OVERRIDE_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(System.DateTime.Now);
-                        CommonParam param = new CommonParam();
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("MimsInteractionLog",data));
-                        bool logCreated = new BackendAdapter(param).Post<bool>("api/HisMimsInteractionLog/Create", ApiConsumers.MosConsumer, data, param);
-                    }
+                    if (rs && interactionLog != null) SaveDataInteractionLog(drugs, result, interactionLog, treatmentId, serviceReqId, patientId);
+                    return rs;
                 }
             }
             catch (System.Exception ex)
@@ -168,6 +113,69 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return true;
+        }
+
+        private void SaveDataInteractionLog(List<DrugItem> drugs, MimsResult result, HIS_MIMS_INTERACTION_LOG interactionLog, long? treatmentId, long? serviceReqId, long? patientId)
+        {
+            try
+            {
+                interactionLog.TREATMENT_ID = treatmentId;
+                interactionLog.SERVICE_REQ_ID = serviceReqId;
+                interactionLog.PATIENT_ID = patientId;
+                interactionLog.MODULE_TYPE = 4; //4=Drug-Health
+                interactionLog.REQUEST_TYPE = "INTERACTION";
+                interactionLog.REQUEST_ENDPOINT = MimsConfig.CdsApiUrl;
+                interactionLog.REQUEST_XML = xmlRequest;
+                interactionLog.CHECKED_GUIDS = string.Join(";", drugs.Where(d => !string.IsNullOrWhiteSpace(d.MimsGuid)).Select(d => d.MimsGuid));
+                interactionLog.DRUG_COUNT = (short)(drugs.Where(d => !string.IsNullOrWhiteSpace(d.MimsGuid)).Count());
+                interactionLog.UNMAPPED_DRUG_COUNT = (short)(drugs.Where(d => string.IsNullOrWhiteSpace(d.MimsGuid)).Count());
+                interactionLog.RESPONSE_XML = result.RawXml;
+                interactionLog.RESPONSE_HTML = "";
+                interactionLog.RESPONSE_TYPE = "xml";
+                interactionLog.HAS_ALERT = 1;
+                interactionLog.ALERT_COUNT = 1;
+                interactionLog.HAS_SEVERE_ALERT = (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Severe)
+                                        || result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.Contraindicated))
+                                        ? (short?)1 : null;
+                string highestSeverity = null;
+                if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Severe))
+                {
+                    highestSeverity = "SEVERE";
+                }
+                else if (result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.Contraindicated))
+                {
+                    highestSeverity = "CONTRAINDICATED";
+                }
+                else if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Moderate))
+                {
+                    highestSeverity = "MODERATE";
+                }
+                else if (result.DrugHealthAlertDetails.Exists(o => o.SeverityLevel == DrugHealthSeverity.ExtremeCaution))
+                {
+                    highestSeverity = "EXTREMECAUTION";
+                }
+                else if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Minor))
+                {
+                    highestSeverity = "MINOR";
+                }
+                else if (result.DrugDrugAlertDetails.Exists(o => o.SeverityLevel == DrugInteractionSeverity.Caution))
+                {
+                    highestSeverity = "CAUTION";
+                }
+                interactionLog.HIGHEST_SEVERITY = highestSeverity;
+                interactionLog.IS_SUCCESS = result.Success ? (short?)1 : (short?)0;
+                interactionLog.ERROR_MESSAGE = result.Message;
+                interactionLog.USER_ACKNOWLEDGED = 1;
+                interactionLog.USER_OVERRIDE = 1;
+                interactionLog.OVERRIDE_BY = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
+                interactionLog.OVERRIDE_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(System.DateTime.Now);
+                CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("MimsInteractionLog", interactionLog));
+            }
+            catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         public bool ShowDialog(List<DrugItem> drugs, List<string> icd10Codes)
