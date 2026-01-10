@@ -1307,7 +1307,7 @@ namespace HIS.Desktop.Plugins.HisMedicalContractCreate.Run
             ucContractMaty.PostEditor();
             CommonParam paramCommon = new CommonParam();
             bool success = false;
-
+               
             try
             {
                 this.positionHandle = -1;

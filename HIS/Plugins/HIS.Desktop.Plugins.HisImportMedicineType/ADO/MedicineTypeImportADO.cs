@@ -18,6 +18,7 @@
 using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,13 +37,13 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public string HEIN_LIMIT_RATIO_OLD_STR { get; set; }
         public string IMP_PRICE_STR { get; set; }
         public string IMP_VAT_RATIO_STR { get; set; }
-        public string INTERNAL_PRICE_STR { get; set; }
+        public string INTERNAL_PRICE_STR { get; set; } 
         public string COGS_STR { get; set; }
         public string NUM_ORDER_STR { get; set; }
         public string ALERT_MAX_IN_TREATMENT_STR { get; set; }
         public string ALERT_MAX_IN_PRESCRIPTION_STR { get; set; }
         public string ALERT_MAX_IN_DAY_STR { get; set; }
-        public string IS_BLOCK_MAX_IN_DAY_STR { get; set; }
+        public string IS_BLOCK_MAX_IN_DAY_STR { get; set; }   
         public string NATIONAL_CODE { get; set; }
         public string ALLOW_EXPORT_ODD { get; set; }
         public string ALLOW_ODD { get; set; }
@@ -72,6 +73,11 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public long? HTU_ID { get; set; }
         public string HTU_CODE { get; set; }
         public string HTU_NAME { get; set; }
+
+        public string SUPPLIER_CODE { get; set; }
+        public string SUPPLIER_NAMES { get; set; }
+        public string SUPPLIER_IDS { get; set; }
+        public int? SUPPLIER_CODE_ERROR { get; set; }
 
         public MedicineTypeImportADO()
         {

@@ -222,6 +222,8 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 columnInfos.Add(new ColumnInfo("ETHNIC_NAME", "", 100, 2, true));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("ETHNIC_NAME", "ETHNIC_CODE", columnInfos, false, 150);
                 ControlEditorLoader.Load(cboEthnic, ethnic, controlEditorADO);
+                ControlEditorLoader.Load(cboFatherDanToc, ethnic, controlEditorADO);
+
             }
             catch (Exception ex)
             {
@@ -392,6 +394,44 @@ namespace HIS.Desktop.Plugins.InfantInformation
                         dtDeathDate.EditValue = null;
                         lciDeathDate.Enabled = false;
                     }
+
+                    //Thong tin cha
+                    if(data.FATHER_DOB != null)
+                    {
+                        dteFatherDob.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.FATHER_DOB ?? 0);
+                    }
+                    else
+                    {
+                        dteFatherDob.EditValue = null;
+                    }
+
+                    if(data.FATHER_CCCD_NUMBER != null)
+                    {
+                        txtFatherCCCD.Text = data.FATHER_CCCD_NUMBER;
+                        dteFatherCCCDDate.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.FATHER_CCCD_DATE ?? 0);
+                        txtFatherCCCDPlace.Text = data.FATHER_CCCD_PLACE;
+                    }
+                    else if(data.FATHER_CMND_NUMBER != null)
+                    {
+                        txtFatherCCCD.Text = data.FATHER_CMND_NUMBER;
+                        dteFatherCCCDDate.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.FATHER_CMND_DATE ?? 0);
+                        txtFatherCCCDPlace.Text = data.FATHER_CMND_PLACE;
+                    }
+                    else if(data.FATHER_PASSPORT_NUMBER != null)
+                    {
+                        txtFatherCCCD.Text = data.FATHER_PASSPORT_NUMBER;
+                        dteFatherCCCDDate.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.FATHER_PASSPORT_DATE ?? 0);
+                        txtFatherCCCDPlace.Text = data.FATHER_PASSPORT_PLACE;
+                    }
+                    else
+                    {
+                        txtFatherCCCD.Text = null;
+                        dteFatherCCCDDate.EditValue = null;
+                        txtFatherCCCDPlace.Text = null;
+                    }
+                    cboFatherDanToc.EditValue = data.FATHER_ETHNIC_CODE;
+
+                    //End Thong tin cha
 
                     spnInfantMonth.EditValue = data.BABY_ORDER;
                     spnChildLive.EditValue = data.CURRENT_ALIVE;

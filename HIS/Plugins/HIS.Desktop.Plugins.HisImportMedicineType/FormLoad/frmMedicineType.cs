@@ -47,6 +47,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         #region Declare
         List<MedicineTypeImportADO> medicineTypeAdos;
         List<MedicineTypeImportADO> currentAdos;
+        List<HIS_SUPPLIER> listSupplier;
         RefeshReference delegateRefresh;
         bool addSuccess;
         bool checkClick;
@@ -111,7 +112,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         private void LoadValue()
         {
             try
@@ -133,6 +134,8 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                 listSourceMedicine = BackendDataWorker.Get<HIS_SOURCE_MEDICINE>().ToList();
                 // load service unit
                 listServiceUnit = BackendDataWorker.Get<HIS_SERVICE_UNIT>().ToList();
+
+                listSupplier = BackendDataWorker.Get<HIS_SUPPLIER>().ToList();
 
             }
             catch (Exception)
@@ -263,7 +266,8 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                                     && string.IsNullOrEmpty(item.CONTRAINDICATION)
                                     && string.IsNullOrEmpty(item.DISTRIBUTED_AMOUNT)
                                     && string.IsNullOrEmpty(item.DOSAGE_FORM)
-                                    && string.IsNullOrEmpty(item.VOLUME_STR);
+                                    && string.IsNullOrEmpty(item.VOLUME_STR)
+                                    && string.IsNullOrEmpty(item.SUPPLIER_CODE);
 
                                 if (checkNull)
                                 {
@@ -331,10 +335,14 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                 foreach (var item in medicineTypeAdos)
                 {
+                    if (item.SUPPLIER_CODE_ERROR == 1)
+                        continue;
+
                     HIS_MEDICINE_TYPE medi = new HIS_MEDICINE_TYPE();
                     HIS_SERVICE ser = new HIS_SERVICE();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MEDICINE_TYPE>(medi, item);
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MEDICINE_TYPE>(medi, item);                  
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE>(ser, item);
+                    medi.SUPPLIER_IDS = item.SUPPLIER_IDS;
                     ser.SERVICE_UNIT_ID = item.SERVICE_UNIT_ID;
                     ser.ID = 0;
                     ser.PARENT_ID = null;
@@ -348,7 +356,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             medi.HIS_MEDICINE_TYPE_ACIN.Add(_i);
                         }
                         
-                    }
+                    }                
                     listMedi.Add(medi);
                 }
                 
@@ -1052,7 +1060,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         private void addMedicineTypeToProcessList(List<MedicineTypeImportADO> _medicine, ref List<MedicineTypeImportADO> _medicineRef)
         {
             try
-            {
+            {               
                 _medicineRef = new List<MedicineTypeImportADO>();
                 long i = 0;
                 foreach (var item in _medicine)
@@ -1081,7 +1089,54 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                     //    }
                     //}
 
-                    // --- PARENT ---
+                    if (!string.IsNullOrEmpty(item.SUPPLIER_CODE))
+                    {
+                        string[] arrSupplierCode = item.SUPPLIER_CODE.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                        List<string> listSupplierName = new List<string>();
+                        List<long> listSupplierId = new List<long>();
+                        List<string> listErrorSupplier = new List<string>();
+
+                        foreach (var code in arrSupplierCode)
+                        {
+                            string trimCode = code.Trim();
+                            if (!string.IsNullOrEmpty(trimCode))
+                            {
+                                var supplier = listSupplier.FirstOrDefault(o =>
+                                    !string.IsNullOrEmpty(o.SUPPLIER_CODE) &&
+                                    o.SUPPLIER_CODE.Trim().Equals(trimCode, StringComparison.OrdinalIgnoreCase));
+
+                                if (supplier != null)
+                                {
+                                    listSupplierName.Add(supplier.SUPPLIER_NAME);
+                                    listSupplierId.Add(supplier.ID);
+                                }
+                                else
+                                {
+                                    listErrorSupplier.Add(trimCode);
+                                }
+                            }
+                        }
+
+                        if (listSupplierId.Count > 0)
+                        {
+                            mediAdo.SUPPLIER_IDS = string.Join(",", listSupplierId);
+                        }
+
+                        if (listSupplierName.Count > 0)
+                        {
+                            mediAdo.SUPPLIER_NAMES = string.Join(", ", listSupplierName);
+                        }
+                        else
+                        {
+                            mediAdo.SUPPLIER_NAMES = item.SUPPLIER_CODE;
+                        }
+
+                        if (listErrorSupplier.Count > 0)
+                        {
+                            error += string.Format("Mã nhà cung cấp không đúng '{0}'", string.Join(",", listErrorSupplier));
+                            mediAdo.SUPPLIER_CODE_ERROR = 1;
+                        }
+                    }
                     if (!string.IsNullOrEmpty(item.PARENT_CODE))
                     {
                         if (item.PARENT_CODE.Length > 25)
@@ -2480,7 +2535,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         }
                         
 
-
+                 
                     }
 
 

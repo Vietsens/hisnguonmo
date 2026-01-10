@@ -193,38 +193,30 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
         {
             try
             {
-                if (data != null)
+                if (data == null || e.Node == null) return;
+
+                // Xử lý riêng nút KSK
+                if (e.Column.FieldName == "btnKsk")
                 {
-                    if (!e.Node.HasChildren)
+                    bool isLeaf = !e.Node.HasChildren;
+                    bool isRealServiceRow = data.ID > 0;
+                    bool showKsk =
+                        isLeaf &&
+                        isRealServiceRow &&
+                        data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH &&
+                        !string.IsNullOrWhiteSpace(data.TDL_SERVICE_REQ_CODE);
+
+                    if (!showKsk)
+                        e.RepositoryItem = repositoryItemBlank;
+                }
+
+                // Xử lý riêng nút Xét nghiệm
+                else if (e.Column.FieldName == "SendTestServiceReq")
+                {
+                    if (!e.Node.HasChildren &&
+                        data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)
                     {
-                        if (e.Column.FieldName == "SendTestServiceReq")
-                        {
-                            if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__XN)//Xét nghiệm
-                            {
-                                //if (HIS.Desktop.LocalStorage.SdaConfigKey.Config.RocheIsIntergateCFG.ROCHE_IS_INTEGRATE == 1)
-                                //{
-                                e.RepositoryItem = repositoryItemButton__Send;
-                                //}
-                                //else
-                                //{
-                                //    e.RepositoryItem = repositoryItemButton__Send__Disable;
-                                //}
-                            }
-                        }
-                        //else if (e.Column.FieldName == "EditServiceReq")
-                        //{
-                        //    if (data.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL
-                        //        && data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC
-                        //        && data.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
-                        //        && data.CREATOR.Trim() == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName().Trim())
-                        //    {
-                        //        e.RepositoryItem = repositoryEditServiceReq__Enable;
-                        //    }
-                        //    else
-                        //    {
-                        //        e.RepositoryItem = repositoryEditServiceReq__Disable;
-                        //    }
-                        //}
+                        e.RepositoryItem = repositoryItemButton__Send;
                     }
                 }
             }

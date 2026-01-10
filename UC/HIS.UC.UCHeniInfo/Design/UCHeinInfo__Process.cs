@@ -309,9 +309,9 @@ namespace HIS.UC.UCHeniInfo
                 //this.chkJoin5Year.Checked = this.chkPaid6Month.Checked = false;
                 this.chkPaid6Month.Checked = false;
                 if (!String.IsNullOrEmpty(dataHein.MediOrgCode)
-                    && !String.IsNullOrEmpty(dataHein.PatientName)
-                    && !String.IsNullOrEmpty(dataHein.Dob)
-                    && !String.IsNullOrEmpty(dataHein.Gender))
+                        && !String.IsNullOrEmpty(dataHein.PatientName)
+                        && !String.IsNullOrEmpty(dataHein.Dob)
+                        && !String.IsNullOrEmpty(dataHein.Gender))
                 {
                     //xuandv
                     string _address = Inventec.Common.String.Convert.HexToUTF8Fix(dataHein.Address);

@@ -609,7 +609,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         lstICD.AddRange(txtIcdSubCode.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                     }
 
-                    check = service.ShowDialog(lstDrugItem, lstICD);
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.Histreatment.ID, this.icdExam.ID, this.Histreatment.PATIENT_ID);
                 }
 
                 if (check)

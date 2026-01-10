@@ -397,6 +397,14 @@ namespace HIS.Desktop.Plugins.InfantInformation
             ValidationSingleControl(txtNoicap, dxValidationProviderEditorInfo);
             ValidationSingleControl(txtNgaycap, dxValidationProviderEditorInfo);
             ValidationSingleControl(txtAddress, dxValidationProviderEditorInfo);
+
+            ValidationSingleControl(dteFatherCCCDDate, dxValidationProviderEditorInfo);
+            ValidationSingleControl(dteFatherDob, dxValidationProviderEditorInfo);
+            ValidateCCCDNumber(txtFatherCCCD, dxValidationProviderEditorInfo);
+            ValidationSingleControl(txtFatherCCCDPlace, dxValidationProviderEditorInfo);
+            ValidationSingleControl(cboFatherDanToc, dxValidationProviderEditorInfo);
+            ValidationSingleControl(txtFather, dxValidationProviderEditorInfo);
+
             ValidateGridLookupWithTextEdit(cboProvinceName, txtProvinceCode, dxValidationProviderEditorInfo);
             //ValidateGridLookupWithTextEdit(cboDistrictName, txtDistrictCode, dxValidationProviderEditorInfo);
             ValidateGridLookupWithTextEdit(cboCommuneName, txtCommuneCode, dxValidationProviderEditorInfo);
@@ -463,6 +471,22 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 validRule.maxLength = maxLength;
                 validRule.ErrorType = ErrorType.Warning;
                 validRule.isValid = IsValid;
+                dxValidationProviderEditor.SetValidationRule(txt, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void ValidateCCCDNumber(TextEdit txt, DXValidationProvider dxValidationProviderEditor)
+        {
+            try
+            {
+                ValidateCCCD validRule = new ValidateCCCD();
+                validRule.textEdit = txt;
+                validRule.ErrorType = ErrorType.Warning;
                 dxValidationProviderEditor.SetValidationRule(txt, validRule);
             }
             catch (Exception ex)

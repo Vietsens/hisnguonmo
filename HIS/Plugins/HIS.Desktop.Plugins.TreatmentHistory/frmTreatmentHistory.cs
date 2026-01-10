@@ -18,6 +18,7 @@
 using DevExpress.Data;
 using DevExpress.Utils;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
@@ -34,11 +35,11 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.TreatmentHistory;
 using HIS.Desktop.Plugins.TreatmentHistory.ADO;
 using HIS.Desktop.Plugins.TreatmentHistory.Resources;
 using HIS.Desktop.Utility;
 using HIS.UC.TreeSereServ7;
-using HIS.Desktop.Plugins.TreatmentHistory;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Core;
@@ -54,6 +55,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Text;
@@ -93,6 +95,8 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
         HIS_SERVICE_REQ serviceReq2Focus { get; set; }
 
         List<HIS_SERVICE_REQ> listServiceReq_CurrentTreatment = null;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemBlank;
+
 
         public frmTreatmentHistory()
         {
@@ -561,6 +565,12 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
                 ado.DepartmentID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId) != null ? HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId : 0;
                 ado.TreeSereServ7Columns = new List<TreeSereServ7Column>();
                 //ado.TreeSereServ7_CustomDrawNodeCell = treeSereServ_CustomDrawNodeCell;
+                repositoryItemBlank = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+                ((RepositoryItemButtonEdit)repositoryItemBlank).Buttons.Clear();
+                repositoryItemBlank.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+                repositoryItemBlank.ReadOnly = true;
+                ado.ColumnButtonEdits = new List<ColumnButtonEditADO>();
+                ado.ColumnButtonEdits.Add(new ColumnButtonEditADO() { Caption = "", Tooltip = "Thông tin khám sức khỏe", ActionHandler = btnKsk_Click, Image = Properties.Resources.kham_suc_khoe, VisibleIndex = 0 , FieldName = "btnKsk"});
 
                 //Sửa yêu cầu
                 //TreeSereServ7Column colEditServiceReq = new TreeSereServ7Column("   ", "EditServiceReq", 30, true);
@@ -602,6 +612,26 @@ namespace HIS.Desktop.Plugins.TreatmentHistory
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnKsk_Click(UC.TreeSereServ7.SereServADO data)
+        {
+            if (data.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH)
+            {
+                WaitingManager.Show();
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.EnterKskInfomantion").FirstOrDefault();
+                if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.EnterKskInfomantion'");
+                if (!moduleData.IsPlugin || moduleData.ExtensionInfo == null) throw new NullReferenceException("Module 'HIS.Desktop.Plugins.EnterKskInfomantion' is not plugins");
+
+                List<object> listArgs = new List<object>();
+
+                listArgs.Add(data.TDL_SERVICE_REQ_CODE);
+                var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(HIS.Desktop.Utility.PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId), listArgs);
+                if (extenceInstance == null) throw new NullReferenceException("Khoi tao moduleData that bai. extenceInstance = null");
+
+                WaitingManager.Hide();
+                ((Form)extenceInstance).ShowDialog();
             }
         }
 

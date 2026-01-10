@@ -814,10 +814,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 dicParam.Add("USER_NAME", UserName);
 
-                //if (sereServExt != null && sereServExt.GPBL_STORE_CODE != null)
-                //{
-                //    dicParam.Add("GPBL_STORE_CODE", sereServExt.GPBL_STORE_CODE);
-                //}
+                if (sereServExt != null && sereServExt.GPBL_STORE_CODE != null)
+                {
+                    dicParam.Add("GPBL_STORE_CODE", sereServExt.GPBL_STORE_CODE);
+                }
 
                 if (!isPressButtonSave)
                 {
