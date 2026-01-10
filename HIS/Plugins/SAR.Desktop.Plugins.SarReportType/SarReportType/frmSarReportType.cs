@@ -117,6 +117,7 @@ namespace SAR.Desktop.Plugins.SarReportType
                 //Fill data into datasource combo
                 FillDataToControlsForm();
                 LoadComboStatusHour();
+                LoadTkbPrefix();
 
                 //Load du lieu
                 FillDataToGridControl();
@@ -153,7 +154,7 @@ namespace SAR.Desktop.Plugins.SarReportType
                 this.TabTkb.Text = Inventec.Common.Resource.Get.Value("frmSarReportType.TabTkb.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl8.Text = Inventec.Common.Resource.Get.Value("frmSarReportType.layoutControl8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.CboTkbGroup.Properties.NullText = Inventec.Common.Resource.Get.Value("frmSarReportType.CboTkbGroup.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.LciTkbCode.Text = Inventec.Common.Resource.Get.Value("frmSarReportType.LciTkbCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.LciTkbCode.Text = Inventec.Common.Resource.Get.Value("frmSarReportType.LciTkbCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.LciTkbName.Text = Inventec.Common.Resource.Get.Value("frmSarReportType.LciTkbName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.LciTkbGroupType.Text = Inventec.Common.Resource.Get.Value("frmSarReportType.LciTkbGroupType.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.LciTbkDescription.Text = Inventec.Common.Resource.Get.Value("frmSarReportType.LciTbkDescription.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -255,6 +256,31 @@ namespace SAR.Desktop.Plugins.SarReportType
         /// <summary>
         /// Ham lay du lieu theo dieu kien tim kiem va gan du lieu vao danh sach
         /// </summary>
+        private void LoadTkbPrefix()
+        {
+            try
+            {
+                var prefixes = new List<ReportTypePrefix>
+        {
+            new ReportTypePrefix { Code = "TKB", Name = "TKB" },
+            new ReportTypePrefix { Code = "BCM", Name = "BCM" }
+        };
+
+                // CboTkbCodePrefix: GridLookUpEdit mới (thay TxtTkbCodePrefix dạng TextEdit)
+                List<ColumnInfo> cols = new List<ColumnInfo>();
+                cols.Add(new ColumnInfo("Name", "", 200, 1, true));
+
+                var ado = new ControlEditorADO("Name", "Code", cols, false, 250);
+                ControlEditorLoader.Load(CboTkbCodePrefix, prefixes, ado);
+
+                CboTkbCodePrefix.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public void FillDataToGridControl()
         {
             try
@@ -551,20 +577,24 @@ namespace SAR.Desktop.Plugins.SarReportType
                 if (data != null)
                 {
                     ResetFormData();
-                    if (data.REPORT_TYPE_CODE.Contains("TKB"))
+                    if (data.REPORT_TYPE_CODE != null && (data.REPORT_TYPE_CODE.StartsWith("TKB") || data.REPORT_TYPE_CODE.StartsWith("BCM")))
                     {
                         xtraTabControl.SelectedTabPage = TabTkb;
-                        TxtTkbCode.Text = data.REPORT_TYPE_CODE.Substring(3);
+
+                        var prefix = data.REPORT_TYPE_CODE.Substring(0, 3);
+                        var codePart = data.REPORT_TYPE_CODE.Length > 3 ? data.REPORT_TYPE_CODE.Substring(3) : "";
+
+                        CboTkbCodePrefix.EditValue = prefix;   
+                        TxtTkbCode.Text = codePart;
+
                         TxtTkbName.Text = data.REPORT_TYPE_NAME;
                         TxtTkbDescription.Text = data.DESCRIPTION;
                         CboTkbGroup.EditValue = data.REPORT_TYPE_GROUP_ID;
-                        if (data.SQL != null)
-                        {
-                            TxtTkbSql.Text = System.Text.Encoding.UTF8.GetString(data.SQL);
-                        }
+
+                        TxtTkbSql.Text = (data.SQL != null) ? System.Text.Encoding.UTF8.GetString(data.SQL) : "";
 
                         TabNormal.PageEnabled = false;
-                        ChkTkbImportan.Checked = data.IS_IMPORTANCE.HasValue && data.IS_IMPORTANCE.Value == (short)1;
+                        ChkTkbImportan.Checked = data.IS_IMPORTANCE.HasValue && data.IS_IMPORTANCE.Value == 1;
                         CboTkbHourFrom.EditValue = data.HOUR_FROM;
                         CboTkbHourTo.EditValue = data.HOUR_TO;
                     }
@@ -621,6 +651,7 @@ namespace SAR.Desktop.Plugins.SarReportType
                 txtCode.Text = "";
                 txtMoTa.Text = "";
                 txtName.Text = "";
+                CboTkbCodePrefix.EditValue = null;
                 TxtTkbCode.Text = "";
                 TxtTkbDescription.Text = "";
                 TxtTkbName.Text = "";
@@ -970,34 +1001,28 @@ namespace SAR.Desktop.Plugins.SarReportType
                 }
                 else if (xtraTabControl.SelectedTabPage == TabTkb)
                 {
-                    currentDTO.REPORT_TYPE_CODE = TxtTkbCodePrefix.Text.Trim() + TxtTkbCode.Text.Trim();
+                    // Prefix bắt buộc đã được validate, nhưng vẫn nên code an toàn:
+                    var prefix = CboTkbCodePrefix.EditValue?.ToString();
+                    currentDTO.REPORT_TYPE_CODE = (prefix ?? "") + TxtTkbCode.Text.Trim();
+
                     currentDTO.REPORT_TYPE_NAME = TxtTkbName.Text.Trim();
                     currentDTO.DESCRIPTION = TxtTkbDescription.Text.Trim();
-                    currentDTO.SQL = System.Text.Encoding.UTF8.GetBytes(TxtTkbSql.Text.Trim());
+
+                    // Truy vấn không bắt buộc -> nếu rỗng thì để null
+                    if (!string.IsNullOrWhiteSpace(TxtTkbSql.Text))
+                        currentDTO.SQL = System.Text.Encoding.UTF8.GetBytes(TxtTkbSql.Text.Trim());
+                    else
+                        currentDTO.SQL = null;
+
                     if (CboTkbGroup.EditValue != null)
-                    {
                         currentDTO.REPORT_TYPE_GROUP_ID = (long)CboTkbGroup.EditValue;
-                    }
 
-                    if (ChkTkbImportan.Checked)
-                    {
-                        currentDTO.IS_IMPORTANCE = 1;
-                    }
-                    else
-                    {
-                        currentDTO.IS_IMPORTANCE = null;
-                    }
+                    currentDTO.IS_IMPORTANCE = (ChkTkbImportan.Checked ? (short)1 : (short?)null);
 
-                    if (CboTkbHourFrom.EditValue != null)
-                        currentDTO.HOUR_FROM = CboTkbHourFrom.EditValue.ToString();
-                    else
-                        currentDTO.HOUR_FROM = null;
-
-                    if (CboTkbHourTo.EditValue != null)
-                        currentDTO.HOUR_TO = CboTkbHourTo.EditValue.ToString();
-                    else
-                        currentDTO.HOUR_TO = null;
+                    currentDTO.HOUR_FROM = CboTkbHourFrom.EditValue?.ToString();
+                    currentDTO.HOUR_TO = CboTkbHourTo.EditValue?.ToString();
                 }
+
             }
             catch (Exception ex)
             {
@@ -1017,7 +1042,8 @@ namespace SAR.Desktop.Plugins.SarReportType
 
                 ValidationMaxlength(dxValidationProviderTkb, TxtTkbCode, 10);
                 ValidationMaxlength(dxValidationProviderTkb, TxtTkbName, 100);
-                ValidationSingleControl(dxValidationProviderTkb, TxtTkbSql);
+                //ValidationSingleControl(dxValidationProviderTkb, TxtTkbSql);
+                ValidationSingleControl(dxValidationProviderTkb, CboTkbCodePrefix);
                 ValidationHourFromTo(dxValidationProviderTkb, CboTkbHourFrom, CboTkbHourTo);
             }
             catch (Exception ex)
