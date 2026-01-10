@@ -136,6 +136,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn69 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn71 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn70 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnSupplier = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.BtnExportErrorLine = new DevExpress.XtraEditors.SimpleButton();
@@ -244,6 +245,7 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.gridColumn16,
             this.gridColumn15,
             this.gridColumn14,
+            this.gridColumnSupplier,
             this.gridColumn12,
             this.gridColumn7,
             this.gridColumn27,
@@ -1307,6 +1309,16 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1648, 38);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 591);
+            //
+            // gridColumnSupplier
+            //
+            this.gridColumnSupplier.Caption = "Nhà cung cấp";
+            this.gridColumnSupplier.FieldName = "SUPPLIER_NAMES"; 
+            this.gridColumnSupplier.Name = "gridColumnSupplier";
+            this.gridColumnSupplier.OptionsColumn.AllowEdit = false;
+            this.gridColumnSupplier.Visible = true;
+            this.gridColumnSupplier.VisibleIndex = 30;
+            this.gridColumnSupplier.Width = 200;
             // 
             // frmMedicineType
             // 
@@ -1457,5 +1469,6 @@ namespace  HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn75;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn74;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn73;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnSupplier;
     }
 }

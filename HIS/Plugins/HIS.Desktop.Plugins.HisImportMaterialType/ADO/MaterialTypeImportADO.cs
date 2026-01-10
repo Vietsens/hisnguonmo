@@ -65,6 +65,11 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.ADO
         public string TDL_GENDER_CODE { get; set; }
         public string TDL_GENDER_NAME { get; set; }
 
+        public string SUPPLIER_CODE { get; set; } 
+        public string SUPPLIER_NAMES { get; set; }
+        public string SUPPLIER_IDS { get; set; } 
+        public int? SUPPLIER_CODE_ERROR { get; set; } 
+
         public MaterialTypeImportADO()
         {
         }
