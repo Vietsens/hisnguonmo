@@ -197,6 +197,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         HIS_TREATMENT Histreatment;
         HIS_MEDICINE_TYPE_TUT hisMedicineTypeTut { get; set; }
         List<HIS_PATIENT_TYPE> listSourcePatientType = new List<HIS_PATIENT_TYPE>();
+        HIS_MIMS_INTERACTION_LOG mimsInteractionLog;
         #endregion
 
         #region Construct
@@ -3191,8 +3192,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             try
             {
                 Inventec.Common.Logging.LogSystem.Info("gridViewServiceProcess_PopupMenuShowing.1");
-                if (GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet || GlobalStore.IsExecutePTTT)
-                    return;
+                
                 Inventec.Common.Logging.LogSystem.Info("gridViewServiceProcess_PopupMenuShowing.2");
                 GridHitInfo hitInfo = e.HitInfo;
                 if (hitInfo.InRowCell)

@@ -231,6 +231,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         public long Assign_time { get; set; }
         HIS_DHST currentDhst;
         decimal tongTienDonNguoiDung = 0;
+        HIS_MIMS_INTERACTION_LOG mimsInteractionLog;
         #endregion
 
         #region Construct
@@ -3795,8 +3796,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                if (this.gridViewServiceProcess == null || this.gridViewServiceProcess.SelectedRowsCount == 0) return;
-                var mediMatyTypeADO = (MediMatyTypeADO)this.gridViewServiceProcess.GetFocusedRow();
+                //if (this.gridControlServiceProcess == null || this.gridControlServiceProcess.SelectedRowsCount == 0) return;
+                var mediMatyTypeADO = (MediMatyTypeADO)this.gridViewServiceProcess.GetFocusedRow(); 
                 WaitingManager.Show();
                 if (mediMatyTypeADO != null && TakeOrReleaseBeanWorker.ProcessDeleteRowMediMaty(mediMatyTypeADO))
                 {
@@ -4848,6 +4849,35 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewServiceProcess_PopupMenuShowing(object sender, PopupMenuShowingEventArgs e)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("gridViewServiceProcess_PopupMenuShowing.1"); 
+                //if (GlobalStore.IsTreatmentIn || GlobalStore.IsCabinet || GlobalStore.IsExecutePTTT)
+                //if (GlobalStore.IsExecutePTTT)
+                //    return;
+                Inventec.Common.Logging.LogSystem.Info("gridViewServiceProcess_PopupMenuShowing.2");
+                GridHitInfo hitInfo = e.HitInfo;
+                if (hitInfo.InRowCell)
+                {
+                    Inventec.Common.Logging.LogSystem.Info("gridViewServiceProcess_PopupMenuShowing.3"); 
+                    int visibleRowHandle = this.gridViewServiceProcess.GetVisibleRowHandle(hitInfo.RowHandle);
+                    int[] selectedRows = this.gridViewServiceProcess.GetSelectedRows();
+                    if (selectedRows != null && selectedRows.Length > 0)// && selectedRows.Contains(visibleRowHandle)
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("gridViewServiceProcess_PopupMenuShowing.4");
+                        this.InitMenu();
+                    }
+                }
+                Inventec.Common.Logging.LogSystem.Info("gridViewServiceProcess_PopupMenuShowing.5");
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
         #endregion

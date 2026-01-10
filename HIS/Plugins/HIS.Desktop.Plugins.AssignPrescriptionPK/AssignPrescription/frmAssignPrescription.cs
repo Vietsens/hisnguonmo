@@ -359,6 +359,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         V_HIS_TREATMENT_FEE treatmentPrint;
         List<HIS_PATIENT_TYPE> listSourcePatientType = new List<HIS_PATIENT_TYPE>();
         string PrintPrescription = "";
+        HIS_MIMS_INTERACTION_LOG mimsInteractionLog;
         #endregion
 
         #region Construct
@@ -2264,7 +2265,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     return;
                 }
 
-                if (!CheckMIMS(this.mediMatyTypeADOs))
+                if (HisConfigCFG.ConnectDrugInterventionInfo == "2" && !CheckMIMS(this.mediMatyTypeADOs))
                 {
                     return;
                 }
@@ -13630,7 +13631,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             bool check = false;
             try
             {
-                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0 && HisConfigCFG.ConnectDrugInterventionInfo == "2")
+                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0 )
                 {
                     List<HIS.Desktop.MIMS.Integration.Models.DrugItem> lstDrugItem = new List<MIMS.Integration.Models.DrugItem>();
                     var service = new HIS.Desktop.MIMS.Integration.Modules.DrugHealthService();
@@ -13663,7 +13664,9 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         lstICD.AddRange(txtIcdCodeCause.Text.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                     }
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, VHistreatment.ID, this.serviceReqMain.ID, VHistreatment.PATIENT_ID);
+                    mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
+
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog);
                 }
 
                 return check;

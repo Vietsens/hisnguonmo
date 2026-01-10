@@ -32,6 +32,7 @@ using HIS.Desktop.Plugins.Library.PrintTreatmentFinish;
 using HIS.UC.Icd.ADO;
 using HIS.UC.MenuPrint.ADO;
 using HIS.UC.SecondaryIcd.ADO;
+using IMSys.DbConfig.HIS_RS;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
@@ -159,7 +160,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
         {
             try
             {
-                if (!CheckMIMS(this.mediMatyTypeADOs))
+                if (HisConfigCFG.ConnectDrugInterventionInfo == "2" && !CheckMIMS(this.mediMatyTypeADOs))
                 {
                     return;
                 }
@@ -210,7 +211,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                 var rsData = (isave != null ? isave.Run() : null);
                 if (rsData != null)
                 {
-                    HIS_SERVICE_REQ serviceReqResult = null;
+                    MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqResult = null;
                     if (rsData.GetType() == typeof(InPatientPresResultSDO))
                     {
                         InPatientPresResultSDO patientPresResultSDO = rsData as InPatientPresResultSDO;
@@ -220,6 +221,27 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     {
                         OutPatientPresResultSDO outPatientPresResultSDO = rsData as OutPatientPresResultSDO;
                         serviceReqResult = outPatientPresResultSDO.ServiceReqs.FirstOrDefault();
+                    }
+
+                    try
+                    {
+                        if (this.mimsInteractionLog != null && this.mimsInteractionLog.HAS_ALERT > 0)
+                        {
+                            this.mimsInteractionLog.TREATMENT_ID = VHistreatment.ID;
+                            this.mimsInteractionLog.PATIENT_ID = VHistreatment.PATIENT_ID;
+                            this.mimsInteractionLog.SERVICE_REQ_ID = serviceReqResult.ID;
+
+                            bool logCreated = new BackendAdapter(new CommonParam()).Post<bool>("api/HisMimsInteractionLog/Create", ApiConsumers.MosConsumer, this.mimsInteractionLog, new CommonParam());
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                    finally
+                    {
+                        this.mimsInteractionLog = null; // luôn clear
                     }
 
                     this.oldServiceReq = serviceReqResult;
@@ -391,7 +413,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
             bool check = false;
             try
             {
-                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0 && HisConfigCFG.ConnectDrugInterventionInfo == "2")
+                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0)
                 {
                     List<HIS.Desktop.MIMS.Integration.Models.DrugItem> lstDrugItem = new List<MIMS.Integration.Models.DrugItem>();
                     var service = new HIS.Desktop.MIMS.Integration.Modules.DrugHealthService();
@@ -426,18 +448,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                     if (this.ucSecondaryIcd != null)
                     {
                         var subIcd = this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
-                        if (subIcd != null && subIcd is SecondaryIcdDataADO)
+                        if (subIcd != null && subIcd is SecondaryIcdDataADO && (((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE != null && ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE != ""))
                         {
                             lstICD.AddRange(((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                         }
                     }
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.VHistreatment.ID, this.serviceReqWorking.ID, this.VHistreatment.PATIENT_ID);
-                }
+                    this.mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
 
-                if (check)
-                {
-
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.mimsInteractionLog);
                 }
 
                 return check;
