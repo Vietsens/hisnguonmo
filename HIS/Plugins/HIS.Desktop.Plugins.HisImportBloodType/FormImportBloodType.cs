@@ -20,6 +20,7 @@ using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.HisImportBloodType.Config;
 using Inventec.Common.Adapter;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
@@ -77,6 +78,7 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
         {
             try
             {
+                ConfigKey.GetConfigKey();
                 //Gan ngon ngu
                 LoadKeysFromlanguage();
 
@@ -286,6 +288,9 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
         {
             try
             {
+                var serviceCodeOption = ConfigKey.ServiceCodeOption ?? string.Empty;
+                var isAutoCode = string.Equals(serviceCodeOption, "1", StringComparison.OrdinalIgnoreCase);
+
                 if (ImpListProcessor != null && ImpListProcessor.Count > 0)
                 {
                     long i = 0;
@@ -332,27 +337,62 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
                         }
 
                         ado.BLOOD_TYPE_CODE = item.BLOOD_TYPE_CODE;
-                        if (string.IsNullOrWhiteSpace(item.BLOOD_TYPE_CODE))
+
+                        if (isAutoCode)
                         {
-                            errors.Add(string.Format(Resources.ResourceLanguageManager.KhongHopLe, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
+                            if (!string.IsNullOrWhiteSpace(item.BLOOD_TYPE_CODE))
+                            {
+                                if (item.BLOOD_TYPE_CODE.Length > 100)
+                                {
+                                    errors.Add(string.Format(
+                                        Resources.ResourceLanguageManager.Maxlength,
+                                        GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
+                                }
+
+                                var check = BackendDataWorker.Get<V_HIS_BLOOD_TYPE>()
+                                    .Exists(o => o.BLOOD_TYPE_CODE == item.BLOOD_TYPE_CODE);
+                                if (check)
+                                {
+                                    errors.Add(string.Format(
+                                        Resources.ResourceLanguageManager.DaTonTai,
+                                        GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
+                                }
+
+                                var checkExel = ListDataImport
+                                    .FirstOrDefault(o => o.BLOOD_TYPE_CODE == item.BLOOD_TYPE_CODE);
+                                if (checkExel != null)
+                                {
+                                    errors.Add(string.Format(
+                                        Resources.ResourceLanguageManager.BiTrung,
+                                        GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
+                                }
+                            }
+                            // Nếu bỏ trống mã trong chế độ auto-code thì không báo lỗi
                         }
                         else
                         {
-                            if (item.BLOOD_TYPE_CODE.Length > 100)
+                            if (string.IsNullOrWhiteSpace(item.BLOOD_TYPE_CODE))
                             {
-                                errors.Add(string.Format(Resources.ResourceLanguageManager.Maxlength, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
+                                errors.Add(string.Format(Resources.ResourceLanguageManager.KhongHopLe, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
                             }
-
-                            var check = BackendDataWorker.Get<V_HIS_BLOOD_TYPE>().Exists(o => o.BLOOD_TYPE_CODE == item.BLOOD_TYPE_CODE);
-                            if (check)
+                            else
                             {
-                                errors.Add(string.Format(Resources.ResourceLanguageManager.DaTonTai, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
-                            }
+                                if (item.BLOOD_TYPE_CODE.Length > 100)
+                                {
+                                    errors.Add(string.Format(Resources.ResourceLanguageManager.Maxlength, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
+                                }
 
-                            var checkExel = ListDataImport.FirstOrDefault(o => o.BLOOD_TYPE_CODE == item.BLOOD_TYPE_CODE);
-                            if (checkExel != null)
-                            {
-                                errors.Add(string.Format(Resources.ResourceLanguageManager.BiTrung, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
+                                var check = BackendDataWorker.Get<V_HIS_BLOOD_TYPE>().Exists(o => o.BLOOD_TYPE_CODE == item.BLOOD_TYPE_CODE);
+                                if (check)
+                                {
+                                    errors.Add(string.Format(Resources.ResourceLanguageManager.DaTonTai, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
+                                }
+
+                                var checkExel = ListDataImport.FirstOrDefault(o => o.BLOOD_TYPE_CODE == item.BLOOD_TYPE_CODE);
+                                if (checkExel != null)
+                                {
+                                    errors.Add(string.Format(Resources.ResourceLanguageManager.BiTrung, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_BLOOD_TYPE_CODE")));
+                                }
                             }
                         }
 
