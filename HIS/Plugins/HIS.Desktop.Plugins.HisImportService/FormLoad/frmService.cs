@@ -22,6 +22,7 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.Plugins.HisImportService.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Core;
@@ -49,6 +50,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
         bool checkClick;
         Inventec.Desktop.Common.Modules.Module currentModule;
         Dictionary<string, V_HIS_SERVICE> DicService;
+        string serviceCodeConfig;
 
         public frmService(Inventec.Desktop.Common.Modules.Module module, RefeshReference _delegate)
             : base(module)
@@ -557,10 +559,13 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                         var check = DicService.ContainsKey(item.SERVICE_CODE);
                         if (check)
                         {
-                            error += string.Format(Message.MessageImport.DaTonTai, "Mã dịch vụ");
+                            if (serviceCodeConfig == "1")
+                                error += string.Format("Mã {0} đã tồn tại trên hệ thống|", item.SERVICE_CODE);
+                            else
+                                error += string.Format(Message.MessageImport.DaTonTai, "Mã dịch vụ");
                         }
                     }
-                    else
+                    else if (serviceCodeConfig != "1")
                     {
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã dịch vụ");
                     }
@@ -764,7 +769,13 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                         error += string.Format(Message.MessageImport.ChiDuocNhapGiaGoiKhiCoGoi);
                     }
 
-                    if (_serviceRef.Exists(o => o.SERVICE_CODE == item.SERVICE_CODE))
+                    //if (_serviceRef.Exists(o => o.SERVICE_CODE == item.SERVICE_CODE))
+                    //{
+                    //    error += string.Format(Message.MessageImport.TonTaiTrungNhauTrongFileImport, "Mã dịch vụ");
+                    //}
+
+                    if ((serviceCodeConfig != "1" && !string.IsNullOrEmpty(item.SERVICE_CODE) && _serviceRef.Exists(o => o.SERVICE_CODE == item.SERVICE_CODE))
+                        || (serviceCodeConfig == "1" && !string.IsNullOrEmpty(item.SERVICE_CODE) && _serviceRef.Exists(o => !string.IsNullOrEmpty(o.SERVICE_CODE) && o.SERVICE_CODE == item.SERVICE_CODE)))
                     {
                         error += string.Format(Message.MessageImport.TonTaiTrungNhauTrongFileImport, "Mã dịch vụ");
                     }
@@ -1202,6 +1213,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                 btnSave.Enabled = false;
                 btnShowLineError.Enabled = false;
                 DicService = BackendDataWorker.Get<V_HIS_SERVICE>().ToDictionary(o => o.SERVICE_CODE, o => o);
+                serviceCodeConfig = HisConfigs.Get<string>("MOS.HIS_SERVICE.SERVICE_CODE_OPTION");
             }
             catch (Exception ex)
             {
