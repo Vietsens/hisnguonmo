@@ -3840,23 +3840,34 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 this.positionHandleControlMedicineTypeInfo = -1;
                 if (!dxValidationMedicineType.Validate())
                     return;
-                
+
                 // Kiểm tra trùng mã nếu SERVICE_CODE_OPTION = 1 và người dùng có nhập mã
                 if (HisConfigCFG.ServiceCodeOption == "1" && !string.IsNullOrEmpty(txtMedicineTypeCode.Text.Trim()))
                 {
-                    // Kiểm tra xem mã đã tồn tại chưa
-                    var existingMedicine = BackendDataWorker.Get<HIS_MEDICINE_TYPE>()
-                        .FirstOrDefault(o => o.MEDICINE_TYPE_CODE.ToUpper().Trim() == txtMedicineTypeCode.Text.ToUpper().Trim()
-                                          && (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd 
-                                              || o.ID != this.currentMedicineTypeId));
-                    
-                    if (existingMedicine != null)
+                    string inputCode = txtMedicineTypeCode.Text.Trim();
+
+                    // Lấy danh sách kiểm tra từ cache (BackendDataWorker) để tối ưu
+                    var listCheck = BackendDataWorker.Get<HIS_MEDICINE_TYPE>()
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                 && !string.IsNullOrEmpty(o.MEDICINE_TYPE_CODE)
+                                 && o.MEDICINE_TYPE_CODE.Equals(inputCode, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+
+                    // Nếu đang sửa (ActionEdit), loại bỏ chính bản thân nó ra khỏi danh sách check
+                    if (this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit && this.currentMedicineTypeId.HasValue)
+                    {
+                        listCheck = listCheck.Where(o => o.ID != this.currentMedicineTypeId.Value).ToList();
+                    }
+
+                    // Nếu danh sách > 0 nghĩa là đã tồn tại
+                    if (listCheck != null && listCheck.Count > 0)
                     {
                         DevExpress.XtraEditors.XtraMessageBox.Show(
-                            String.Format("Mã {0} đã tồn tại trong hệ thống", txtMedicineTypeCode.Text),
+                            string.Format("Mã {0} đã tồn tại trên hệ thống.", inputCode),
                             "Thông báo",
                             System.Windows.Forms.MessageBoxButtons.OK,
                             System.Windows.Forms.MessageBoxIcon.Warning);
+
                         txtMedicineTypeCode.Focus();
                         txtMedicineTypeCode.SelectAll();
                         return;
