@@ -46,7 +46,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
     {
         #region Declare
         List<MaterialTypeImportADO> materialTypeAdos;
-        List<MaterialTypeImportADO> currentAdos;    
+        List<MaterialTypeImportADO> currentAdos;
         RefeshReference delegateRefresh;
         bool checkClick;
         bool addSuccess;
@@ -115,6 +115,37 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             {
                 bool success = false;
                 WaitingManager.Show();
+                string serviceCodeOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE.SERVICE_CODE_OPTION");
+
+                if (serviceCodeOption == "1")
+                {
+                    foreach (var item in materialTypeAdos)
+                    {
+                        string inputCode = (item.MATERIAL_TYPE_CODE ?? "").Trim();
+
+                        if (!string.IsNullOrEmpty(inputCode))
+                        {
+                            var all = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>();
+
+                            bool isDuplicate = all != null && all.Any(o =>
+                                !string.IsNullOrEmpty(o.MATERIAL_TYPE_CODE)
+                                && String.Equals(
+                                    o.MATERIAL_TYPE_CODE.Trim(),
+                                    inputCode,
+                                    StringComparison.OrdinalIgnoreCase));
+
+                            if (isDuplicate)
+                            {
+                                WaitingManager.Hide();
+                                DevExpress.XtraEditors.XtraMessageBox.Show(
+                                    $"Mã {inputCode} đã tồn tại tên hệ thống",
+                                    "Thông báo");
+                                return;
+                            }
+                        }
+                    }
+                }
+
                 CommonParam param = new CommonParam();
                 List<HIS_MATERIAL_TYPE> listMater = new List<HIS_MATERIAL_TYPE>();
                 foreach (var item in materialTypeAdos)
@@ -132,7 +163,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     ser.ID = 0;
                     ser.PARENT_ID = null;
                     mater.HIS_SERVICE = ser;
-                    mater.ID = 0;                  
+                    mater.ID = 0;
                     listMater.Add(mater);
                 }
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("listMater___:", listMater));
@@ -375,7 +406,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                         {
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot Không hiển thị trên tờ điều trị", ex);
                         }
-                    }   
+                    }
                     else if (e.Column.FieldName == "BBNhapHSD")
                     {
                         try
@@ -538,10 +569,10 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay sua VatTuDinhDanh", ex);
                         }
                     }
-                    }
                 }
-            
-    
+            }
+
+
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -979,7 +1010,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                             mateAdo.MATERIAL_GROUP_BHYT_ERROR = 1;
                         }
                     }
-                    
+
                     if (!string.IsNullOrEmpty(item.ALLOW_ODD))
                     {
                         if (item.ALLOW_ODD.Trim().ToLower() == "x")
@@ -1421,6 +1452,8 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                         mateAdo.HEIN_LIMIT_PRICE_INTR_TIME_STR_ERROR = 1;
                     }
 
+                    string serviceCodeOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE.SERVICE_CODE_OPTION");
+
                     if (!string.IsNullOrEmpty(item.MATERIAL_TYPE_CODE))
                     {
                         if (!CheckMaxLenth(item.MATERIAL_TYPE_CODE, 100))
@@ -1428,25 +1461,39 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                             error += string.Format(Message.MessageImport.Maxlength, "Mã vật tư");
                             mateAdo.MATERIAL_TYPE_CODE_ERROR = 1;
                         }
-                        var check = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Exists(o => o.MATERIAL_TYPE_CODE == item.MATERIAL_TYPE_CODE);
+
+                        var check = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>()
+                            .Exists(o => o.MATERIAL_TYPE_CODE == item.MATERIAL_TYPE_CODE);
+
                         if (check)
                         {
                             error += string.Format(Message.MessageImport.DaTonTai, "Mã vật tư");
                             mateAdo.MATERIAL_TYPE_CODE_ERROR = 1;
                         }
 
-                        var checkExel = _materialRef.FirstOrDefault(o => o.MATERIAL_TYPE_CODE == item.MATERIAL_TYPE_CODE);
+                        var checkExel = _materialRef
+                            .FirstOrDefault(o => o.MATERIAL_TYPE_CODE == item.MATERIAL_TYPE_CODE);
+
                         if (checkExel != null)
                         {
-                            error += string.Format(Message.MessageImport.TonTaiTrungNhauTrongFileImport, "Mã vật tư");
+                            error += string.Format(
+                                Message.MessageImport.TonTaiTrungNhauTrongFileImport,
+                                "Mã vật tư");
                             mateAdo.MATERIAL_TYPE_CODE_ERROR = 1;
                         }
                     }
                     else
                     {
-                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã vật tư");
-                        mateAdo.MATERIAL_TYPE_CODE_ERROR = 1;
+                        // CHỈ vào đây khi KHÔNG nhập mã
+                        if (serviceCodeOption != "1")
+                        {
+                            error += string.Format(
+                                Message.MessageImport.ThieuTruongDL,
+                                "Mã vật tư");
+                            mateAdo.MATERIAL_TYPE_CODE_ERROR = 1;
+                        }
                     }
+
 
                     if (!string.IsNullOrEmpty(item.MATERIAL_TYPE_NAME))
                     {
