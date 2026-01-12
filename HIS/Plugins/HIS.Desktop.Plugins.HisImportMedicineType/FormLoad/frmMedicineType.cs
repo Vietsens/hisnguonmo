@@ -112,7 +112,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+
         private void LoadValue()
         {
             try
@@ -140,7 +140,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
@@ -330,7 +330,28 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
             {
                 bool success = false;
                 WaitingManager.Show();
+                string serviceCodeOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE.SERVICE_CODE_OPTION");
 
+                if (serviceCodeOption == "1")
+                {
+                    foreach (var item in medicineTypeAdos)
+                    {
+                        if (string.IsNullOrEmpty(item.MEDICINE_TYPE_CODE)) continue;
+
+                        var allMedicine = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+                        bool isDuplicate = allMedicine != null && allMedicine.Any(o =>
+                            !string.IsNullOrEmpty(o.MEDICINE_TYPE_CODE) &&
+                            o.MEDICINE_TYPE_CODE.Trim().Equals(item.MEDICINE_TYPE_CODE.Trim(), StringComparison.OrdinalIgnoreCase));
+
+                        if (isDuplicate)
+                        {
+                            WaitingManager.Hide();
+                            DevExpress.XtraEditors.XtraMessageBox.Show(
+                                string.Format("Mã {0} đã tồn tại tên hệ thống", item.MEDICINE_TYPE_CODE), "Thông báo");
+                            return;
+                        }
+                    }
+                }
                 List<HIS_MEDICINE_TYPE> listMedi = new List<HIS_MEDICINE_TYPE>();
 
                 foreach (var item in medicineTypeAdos)
@@ -340,7 +361,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                     HIS_MEDICINE_TYPE medi = new HIS_MEDICINE_TYPE();
                     HIS_SERVICE ser = new HIS_SERVICE();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MEDICINE_TYPE>(medi, item);                  
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MEDICINE_TYPE>(medi, item);
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE>(ser, item);
                     medi.SUPPLIER_IDS = item.SUPPLIER_IDS;
                     ser.SERVICE_UNIT_ID = item.SERVICE_UNIT_ID;
@@ -355,11 +376,11 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         {
                             medi.HIS_MEDICINE_TYPE_ACIN.Add(_i);
                         }
-                        
-                    }                
+
+                    }
                     listMedi.Add(medi);
                 }
-                
+
                 Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("listMedi", listMedi));
                 CommonParam param = new CommonParam();
 
@@ -1060,7 +1081,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
         private void addMedicineTypeToProcessList(List<MedicineTypeImportADO> _medicine, ref List<MedicineTypeImportADO> _medicineRef)
         {
             try
-            {               
+            {
                 _medicineRef = new List<MedicineTypeImportADO>();
                 long i = 0;
                 foreach (var item in _medicine)
@@ -1200,7 +1221,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         }
                     }
 
-                  
+
                     if (!string.IsNullOrEmpty(item.REQUIRE_HSD))
                     {
                         if (item.REQUIRE_HSD.Trim().ToLower() == "x")
@@ -1213,7 +1234,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.REQUIRE_HSD_ERROR = 1;
                         }
                     }
-                    
+
                     if (!string.IsNullOrEmpty(item.TDL_GENDER_CODE))
                     {
                         var gender = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(o => o.GENDER_CODE == item.TDL_GENDER_CODE);
@@ -1699,6 +1720,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         mediAdo.HEIN_LIMIT_PRICE_IN_TIME_STR_ERROR = 1;
                         mediAdo.HEIN_LIMIT_PRICE_INTR_TIME_STR_ERROR = 1;
                     }
+                    string serviceCodeOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_SERVICE.SERVICE_CODE_OPTION");
 
                     if (!string.IsNullOrEmpty(item.MEDICINE_TYPE_CODE))
                     {
@@ -1708,31 +1730,30 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
                         }
 
-                        var check = listMedicin.Exists(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE);
-                        var _Data = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE);
-                        Inventec.Common.Logging.LogSystem.Debug("_______Kiểm tra mã loại thuốc " + check);
-                        Inventec.Common.Logging.LogSystem.Debug("_______Kiểm tra mã loại thuốc data:" + Inventec.Common.Logging.LogUtil.TraceData("____HIS_MEDICINE_TYPE: ",_Data));
-                        if (check)
+                        if (listMedicin != null)
                         {
-                            Inventec.Common.Logging.LogSystem.Debug("_______Kiểm tra mã loại thuốc: mã loại thuốc đã tồn tại ");
-                            error += string.Format(Message.MessageImport.DaTonTai, "Mã loại thuốc");
-                            mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
+                            var isDuplicateDb = listMedicin.Any(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE.Trim());
+                            if (isDuplicateDb)
+                            {
+                                error += string.Format("Mã {0} đã tồn tại trên hệ thống|", item.MEDICINE_TYPE_CODE);
+                                mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
+                            }
                         }
 
-                        var checkExel = _medicineRef.FirstOrDefault(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE);
-                        
-                        if (checkExel != null)
+                        var isDuplicateExcel = _medicineRef.FirstOrDefault(o => !string.IsNullOrEmpty(o.MEDICINE_TYPE_CODE) && o.MEDICINE_TYPE_CODE.Trim() == item.MEDICINE_TYPE_CODE.Trim());
+                        if (isDuplicateExcel != null)
                         {
-
                             error += string.Format(Message.MessageImport.TonTaiTrungNhauTrongFileImport, "Mã loại thuốc");
                             mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
                         }
                     }
-
                     else
                     {
-                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã loại thuốc");
-                        mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
+                        if (serviceCodeOption != "1")
+                        {
+                            error += string.Format(Message.MessageImport.ThieuTruongDL, "Mã loại thuốc");
+                            mediAdo.MEDICINE_TYPE_CODE_ERROR = 1;
+                        }
                     }
 
                     if (!string.IsNullOrEmpty(item.MEDICINE_TYPE_NAME))
@@ -2505,7 +2526,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                                 if (_data != null)
                                 {
                                     //DialogResult rs = MessageBox.Show("tim thay " + _i + " voi ten: " + _data.ACTIVE_INGREDIENT_NAME);
-                                    
+
                                     HIS_MEDICINE_TYPE_ACIN mediAcin = new HIS_MEDICINE_TYPE_ACIN();
                                     mediAcin.ACTIVE_INGREDIENT_ID = _data.ID;
                                     if (!this.listMediAcin.Exists(s => s.ACTIVE_INGREDIENT_ID == _data.ID))
@@ -2519,23 +2540,25 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                                     error += string.Format("Mã hoạt chất " + _i + " không hợp lệ");
                                 }
                             }
-                            
-                            
+
+
                         }
-                        
+
                         if (this.listMediAcin != null && this.listMediAcin.Count > 0)
                         {
-                            listMediAcinCode.Add(item.MEDICINE_TYPE_CODE, this.listMediAcin);
+                            if (!string.IsNullOrEmpty(item.MEDICINE_TYPE_CODE) && !listMediAcinCode.ContainsKey(item.MEDICINE_TYPE_CODE))
+                            {
+                                listMediAcinCode.Add(item.MEDICINE_TYPE_CODE, this.listMediAcin);
+                            }
+
                             mediAdo.ACTIVE_INGREDIENT_CODE_STR = nameAcin;
                         }
                         else
                         {
-
                             mediAdo.ACTIVE_INGREDIENT_CODE_STR = item.ACTIVE_INGREDIENT_CODE_STR;
                         }
-                        
 
-                 
+
                     }
 
 
@@ -2552,9 +2575,9 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        
+
         List<HIS_MEDICINE_TYPE_ACIN> listMediAcin;
-        Dictionary<string,List<HIS_MEDICINE_TYPE_ACIN>> listMediAcinCode = new Dictionary<string,List<HIS_MEDICINE_TYPE_ACIN>>();
+        Dictionary<string, List<HIS_MEDICINE_TYPE_ACIN>> listMediAcinCode = new Dictionary<string, List<HIS_MEDICINE_TYPE_ACIN>>();
         private bool CheckMaxLenth(string Str, int Length)
         {
             try
