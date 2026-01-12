@@ -539,8 +539,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
         #endregion
         #region EvenGridView
         private void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
-        {
-            Inventec.Common.Logging.LogSystem.Debug("FieldName: " + e.Column.FieldName);
+        {            
             try
             {
                 if (e.IsGetData)
@@ -1268,7 +1267,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
 
                                                 CommonParam paramSign = new CommonParam();
 
-                                                Inventec.Common.Logging.LogSystem.Info("patientUpdateSdo: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => signXML), signXML));
+                                                Inventec.Common.Logging.LogSystem.Info("patientUpdataeSdo: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => signXML), signXML));
                                                 var emrSignBase64 = new BackendAdapter(paramSign).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumers.EmrConsumer, signXML, SessionManager.ActionLostToken, paramSign);
                                                 if (paramSign != null && param.Messages != null && paramSign.Messages.Count > 0)
                                                 {
@@ -1277,6 +1276,7 @@ namespace HIS.Desktop.Plugins.DeathInformationList
                                                     Inventec.Common.Logging.LogSystem.Warn(message);
                                                 }
                                                 sdo.FileBase64Str = emrSignBase64;
+                                                Inventec.Common.Logging.LogSystem.Info("emrSignBase64: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => emrSignBase64), emrSignBase64));
                                             }
 
                                             listDeathSyncSDO.Add(sdo);
