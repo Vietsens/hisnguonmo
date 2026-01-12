@@ -1522,7 +1522,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 var arr = new List<string>();
 
                 if (hIS_MEDICINE_TYPE.IS_VACCINE == 1)
-                    arr.Add("Vaccin");
+                    arr.Add("Vaccine");
 
                 if (hIS_MEDICINE_TYPE.IS_CHEMICAL_SUBSTANCE == 1)
                     arr.Add("Hóa chất");
@@ -1534,13 +1534,13 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     arr.Add("Generic");
 
                 if (hIS_MEDICINE_TYPE.IS_FUNCTIONAL_FOOD == 1)
-                    arr.Add("TPCN");
+                    arr.Add("Thực phẩm chức năng");
 
                 if (hIS_MEDICINE_TYPE.IS_VITAMIN_A == 1)
                     arr.Add("Vitamin A");
 
                 if (hIS_MEDICINE_TYPE.IS_TCMR == 1)
-                    arr.Add("TCMR");
+                    arr.Add("Tiêm chủng mở rộng");
 
                 if (hIS_MEDICINE_TYPE.IS_BIOLOGIC == 1)
                     arr.Add("Sinh phẩm");
@@ -1552,13 +1552,13 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     arr.Add("Biệt dược gốc");
 
                 if (hIS_MEDICINE_TYPE.IS_STAR_MARK == 1)
-                    arr.Add("Thuốc dấu *");
+                    arr.Add("Thuốc dấu sao *");
 
                 if (hIS_MEDICINE_TYPE.IS_KIDNEY == 1)
                     arr.Add("Thuốc chạy thận");
 
                 if (hIS_MEDICINE_TYPE.IS_RAW_MEDICINE == 1)
-                    arr.Add("NLBC");
+                    arr.Add("Nguyên liệu điều chế");
 
                 string listArrayMedicine = string.Join(", ", arr);
 
