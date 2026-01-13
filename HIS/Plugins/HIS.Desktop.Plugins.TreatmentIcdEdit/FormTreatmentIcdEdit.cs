@@ -15,39 +15,40 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */  
+using ACS.EFMODEL.DataModels;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.TreatmentIcdEdit.ADO;
+using HIS.Desktop.Plugins.TreatmentIcdEdit.Validation;
+using HIS.Desktop.Utility;
+using HIS.UC.Icd;
+using HIS.UC.Icd.ADO;
+using HIS.UC.SecondaryIcd;
+using HIS.UC.SecondaryIcd.ADO;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using DevExpress.XtraEditors.Controls;
-using HIS.UC.Icd;
-using HIS.UC.SecondaryIcd;
-using HIS.UC.Icd.ADO;
-using HIS.UC.SecondaryIcd.ADO;
-using HIS.Desktop.ApiConsumer;
-using MOS.SDO;
-using Inventec.Common.Adapter;
-using DevExpress.XtraEditors;
-using MOS.Filter;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.Plugins.TreatmentIcdEdit.Validation;
-using HIS.Desktop.Plugins.TreatmentIcdEdit.ADO;
-using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.Utility;
-using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 {
@@ -107,6 +108,9 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
         internal SecondaryIcdProcessor subInIcdProcessor;
         internal UserControl ucSecondaryInIcd;
+
+        internal List<ACS_USER> AcsUser;
+
         #endregion
 
         #region Construct
@@ -583,7 +587,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                 LoadCboReaSonNT();
                 LoadCboSourceCustomer();
-
+                LoadCboGuarantee();
                 WaitingManager.Show();
 
                 InitUcInIcd();
@@ -1142,6 +1146,23 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         txtCustomerDetail.Text = null;
                     }
 
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.GUARANTEE_LOGINNAME))
+                    {
+                        cboGuarantee.EditValue = currentVHisTreatment.GUARANTEE_LOGINNAME;
+                    }
+                    else
+                    {
+                        cboGuarantee.EditValue = "";
+                    }
+
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.GUARANTEE_REASON))
+                    {
+                        txtGuaranteeReason.Text = currentVHisTreatment.GUARANTEE_REASON;
+                    }
+                    else
+                    {
+                        txtGuaranteeReason.Text = null;
+                    }
                     //if (!String.IsNullOrEmpty(currentVHisTreatment.HEIN_PATIENT_TYPE_CODE))
                     //{
                     //    txtHeinPatientTypeCode.Text = currentVHisTreatment.HEIN_PATIENT_TYPE_CODE;
@@ -1455,6 +1476,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
                 ValidTextControlMaxlength(this.txtCustomerDetail, 1000, false);
                 ValidTextControlMaxlength(this.txtPatientNote, 2000, false);
+                ValidTextControlMaxlength(this.txtGuaranteeReason, 500, false);
 
                 layoutControlItem39.AppearanceItemCaption.ForeColor = Color.Black;
                 if (dtClinicalInTime.EditValue != null)
@@ -1986,7 +2008,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         data.HospitalizeReasonName = checkReasonNT.HOSPITALIZE_REASON_NAME;
                     }
                 }
-                LogSystem.Debug("cboSourceCustomer.EditValue" + cboSourceCustomer.EditValue);
                 if (cboSourceCustomer.EditValue != null)
                 {
                     var cusomter = this.HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.ToUpper() == cboSourceCustomer.EditValue.ToString().ToUpper());
@@ -2000,6 +2021,21 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 if (!string.IsNullOrEmpty(txtCustomerDetail.Text))
                 {
                     data.CustomerSourceDetail = txtCustomerDetail.Text;
+                }
+
+                if (cboGuarantee.EditValue != null)
+                {
+                    var baoLanh = this.AcsUser.FirstOrDefault(o => o.LOGINNAME.ToUpper() == cboGuarantee.EditValue.ToString().ToUpper());
+                    if (baoLanh != null)
+                    {
+                        data.guaranteeLoginname = baoLanh.LOGINNAME;
+                        data.guaranteeUsername = baoLanh.USERNAME;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(txtGuaranteeReason.Text))
+                {
+                    data.guaranteeReason = txtGuaranteeReason.Text;
                 }
 
                 if (chkTuberculosis.Checked == true)
@@ -3708,6 +3744,161 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         cboSourceCustomer.Properties.Buttons[1].Visible = false;
                     }
                     e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadCboGuarantee()
+        {
+            try
+            {
+                AcsUser = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(o => o.IS_ACTIVE == 1).ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("LOGINNAME", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("USERNAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "USERNAME", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboGuarantee, AcsUser, controlEditorADO);
+                cboGuarantee.Properties.DisplayMember = "USERNAME";
+                cboGuarantee.Properties.ValueMember = "LOGINNAME";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboGuarantee_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboGuarantee.EditValue = null;
+                    txtGuaranteeCode.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboGuarantee_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    if (cboGuarantee.EditValue != null)
+                    {
+                        var data = this.AcsUser.FirstOrDefault(o => o.LOGINNAME.ToLower() == cboGuarantee.EditValue.ToString().ToLower());
+                        if (data != null)
+                        {
+                            txtGuaranteeCode.Text = data.LOGINNAME;
+                            cboGuarantee.Properties.Buttons[1].Visible = true;
+                        }
+
+                    }
+                    else
+                    {
+                        txtGuaranteeCode.Text = null;
+                        cboGuarantee.Properties.Buttons[1].Visible = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboGuarantee_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboGuarantee.EditValue != null)
+                {
+                    cboGuarantee.Properties.Buttons[1].Visible = true;
+
+                    var data = this.AcsUser.FirstOrDefault(o => o.LOGINNAME.Equals(cboGuarantee.EditValue.ToString(), StringComparison.OrdinalIgnoreCase));
+                    if (data != null)
+                    {
+                        txtGuaranteeCode.Text = data.LOGINNAME;
+                    }
+                }
+                else
+                {
+                    cboGuarantee.Properties.Buttons[1].Visible = false;
+                    txtGuaranteeCode.Text = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtGuaranteeCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    string code = txtGuaranteeCode.Text.Trim().ToUpper();
+                    if (!string.IsNullOrEmpty(code))
+                    {
+
+                        var baoLanh = AcsUser.FirstOrDefault(o => o.LOGINNAME.ToUpper() == code);
+                        if (baoLanh != null)
+                        {
+                            cboGuarantee.EditValue = baoLanh.LOGINNAME;
+                            cboGuarantee.Properties.Buttons[1].Visible = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Mã bảo lãnh không hợp lệ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            cboGuarantee.EditValue = null;
+                            cboGuarantee.Properties.Buttons[1].Visible = false;
+                        }
+                    }
+                    else
+                    {
+                        cboGuarantee.EditValue = null;
+                        cboGuarantee.Properties.Buttons[1].Visible = false;
+                    }
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboGuarantee_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (cboGuarantee.EditValue != null)
+                    {
+                        var data = this.AcsUser.FirstOrDefault(o => o.LOGINNAME.ToLower() == cboGuarantee.EditValue.ToString().ToLower());
+                        if (data != null)
+                        {
+                            txtGuaranteeCode.Text = data.LOGINNAME;
+                            cboGuarantee.Properties.Buttons[1].Visible = true;
+                        }
+                    }
+                }
+                else if (e.KeyCode == Keys.Down)
+                {
+                    cboGuarantee.ShowPopup();
                 }
             }
             catch (Exception ex)
