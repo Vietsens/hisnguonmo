@@ -13,10 +13,16 @@ namespace HIS.Desktop.MIMS.Integration.Modules
             NameText = "Kiểm tra trùng lặp thuốc";
         }
 
-		public MimsResult Check(List<DrugItem> drugs)
+        public MimsResult Check(List<DrugItem> drugs)
+        {
+            return this.Check(drugs, null);
+        }
+
+        public MimsResult Check(List<DrugItem> current, List<DrugItem> previous)
 		{
-            this.MappingMIMS(drugs);
-			string xmlRequest = MimsRequestBuilder.BuildDrugInteractionRequest(drugs);
+            this.MappingMIMS(current);
+            this.MappingMIMS(previous);
+            string xmlRequest = MimsRequestBuilder.BuildDrugInteractionRequest(current, true);
 
             bool isTimeout;
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xmlRequest, out isTimeout);
@@ -71,6 +77,10 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         public void ShowResultAsync(List<DrugItem> drugs)
         {
             WebViewHelper.ShowResultAsync(() => Check(drugs), NameText);
+        }
+        public void ShowResultAsync(List<DrugItem> current, List<DrugItem> previous)
+        {
+            WebViewHelper.ShowResultAsync(() => Check(current, previous), NameText);
         }
 	}
 }

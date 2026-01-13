@@ -11,6 +11,9 @@ using HIS.Desktop.MIMS.Integration.Core;
 using HIS.Desktop.MIMS.Integration.Models;
 using HIS.Desktop.MIMS.Integration.Modules;
 using HIS.Desktop.MIMS.Integration.View;
+using DevExpress.XtraBars;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors;
 
 namespace HIS.MIMS.WinFormsDemo
 {
@@ -71,13 +74,14 @@ namespace HIS.MIMS.WinFormsDemo
             var current = new List<DrugItem>
             {
                 //new DrugItem(null, "Vercef dispersible tab 125 mg", "D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60", MimsDrugType.Product),
-                new DrugItem(null, "captopril 100mg Oral Tablet", "488F9F61-5D37-4989-925E-1742FFFDAA9E", MimsDrugType.GGPI),
-                new DrugItem(null, "hydroCHLOROthiazide 12.5mg - irbesartan 300mg film coated tablet", "49102790-2259-457F-88B5-A968FA397EDA", MimsDrugType.GGPI)
+                new DrugItem(null, "", "23F5183C-80AB-4E84-9F6A-11FEAD7BFA65", MimsDrugType.GGPI),
+                new DrugItem(null, "", "F0FDC06F-E5AD-4A26-8899-D71C800959FB", MimsDrugType.GenericItem)
             };
 
             var previous = new List<DrugItem>();
 
-            var service = new DrugDrugInteractionService();
+            //var service = new DrugDrugInteractionService();
+            var service = new DuplicateDrugService();
             service.ShowResultAsync(current, previous);
         }
 
@@ -110,6 +114,27 @@ namespace HIS.MIMS.WinFormsDemo
             var service = new DrugHealthService();
             service.ShowDialog(current, icdcodes);
             //var isContinue = service.ShowDialog(current, icdcodes);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            PopupControlContainer popup = popupControlContainer1;
+            popup.BorderStyle = BorderStyles.Simple;
+            popup.ShowCloseButton = false;
+            //popup.ShowShadow = true;
+            popup.Size = new Size(300, 80);
+
+            LabelControl lbl = new LabelControl();
+            lbl.Text = "Có kết quả xét nghiệm mới";
+            lbl.Dock = DockStyle.Fill;
+
+            popup.Controls.Add(lbl);
+
+            popup.ShowPopup(new Point(
+                Screen.PrimaryScreen.WorkingArea.Right - popup.Width - 10,
+                Screen.PrimaryScreen.WorkingArea.Bottom - popup.Height - 10
+            ));
+
         }
     }
 }

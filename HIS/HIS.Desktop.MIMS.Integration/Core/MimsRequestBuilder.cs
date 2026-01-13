@@ -35,7 +35,7 @@ namespace HIS.Desktop.MIMS.Integration.Core
 
         public static string BuildDrugDrugInteractionRequest(
             List<DrugItem> currentDrugs,
-            List<DrugItem> previousDrugs)
+            List<DrugItem> previousDrugs, bool checkDuplicateDrug = false)
         {
             var sb = new StringBuilder();
 
@@ -53,8 +53,12 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     sb.Append(BuildDrugTag(drug));
                 sb.Append("</Prescribed>");
             }
-            sb.Append("<References/></Interaction></Request>");
-
+            sb.Append("<References/>");
+            if (checkDuplicateDrug)
+            {
+                sb.Append("<DuplicateTherapy checkSameDrug=\"true\"/><DuplicateIngredient checkSameDrug=\"true\"/>");
+            }
+            sb.Append("</Interaction></Request>");
             return sb.ToString();
         }
 
@@ -63,9 +67,9 @@ namespace HIS.Desktop.MIMS.Integration.Core
         /// Ở đây tái sử dụng cấu trúc tương tự Drug-Drug Interaction nhưng
         /// chỉ truyền 1 danh sách thuốc hiện tại, không có thuốc lịch sử.
         /// </summary>
-        public static string BuildDrugInteractionRequest(List<DrugItem> drugs)
+        public static string BuildDrugInteractionRequest(List<DrugItem> drugs, bool checkDuplicateDrug = false)
         {
-            return BuildDrugDrugInteractionRequest(drugs, new List<DrugItem>());
+            return BuildDrugDrugInteractionRequest(drugs, new List<DrugItem>(), checkDuplicateDrug);
         }
 
         public static string BuildDrugAllergyRequest(
