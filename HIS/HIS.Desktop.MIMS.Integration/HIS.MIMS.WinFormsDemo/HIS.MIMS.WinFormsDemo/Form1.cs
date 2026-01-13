@@ -115,26 +115,5 @@ namespace HIS.MIMS.WinFormsDemo
             service.ShowDialog(current, icdcodes);
             //var isContinue = service.ShowDialog(current, icdcodes);
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            PopupControlContainer popup = popupControlContainer1;
-            popup.BorderStyle = BorderStyles.Simple;
-            popup.ShowCloseButton = false;
-            //popup.ShowShadow = true;
-            popup.Size = new Size(300, 80);
-
-            LabelControl lbl = new LabelControl();
-            lbl.Text = "Có kết quả xét nghiệm mới";
-            lbl.Dock = DockStyle.Fill;
-
-            popup.Controls.Add(lbl);
-
-            popup.ShowPopup(new Point(
-                Screen.PrimaryScreen.WorkingArea.Right - popup.Width - 10,
-                Screen.PrimaryScreen.WorkingArea.Bottom - popup.Height - 10
-            ));
-
-        }
     }
 }
