@@ -118,6 +118,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static string AllowManyTreatmentOpeningOption;
         private const string KEY_IsCheckValueMaxlengthOption = "HIS.Desktop.Plugins.TreatmentFinish.IsCheckValueMaxlengthOption";
         internal static string IsCheckValueMaxlengthOption;
+        private const string KEY_MOS_HIS_SERVICE_REQ_NOT_UPDATE_EXECUTE_LOGINNAME_WHEN_FINISH_EXAM = "MOS.HIS_SERVICE_REQ.NOT_UPDATE_EXECUTE_LOGINNAME_WHEN_FINISH_EXAM";
+        internal static string NotUpdateExecuteLoginNameWhenFinishExam;
         internal static void LoadConfig()
         {
             try
@@ -157,6 +159,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 AllowBhxhLeaveOver30days = GetValue(KEY_AllowBhxhLeaveOver30days);
                 IsEnableEditStartTime = GetValue(KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME);
                 AllowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION);
+                NotUpdateExecuteLoginNameWhenFinishExam = GetValue(KEY_MOS_HIS_SERVICE_REQ_NOT_UPDATE_EXECUTE_LOGINNAME_WHEN_FINISH_EXAM);
 
             }
             catch (Exception ex)
