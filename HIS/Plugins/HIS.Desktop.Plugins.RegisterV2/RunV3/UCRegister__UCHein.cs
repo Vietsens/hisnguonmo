@@ -133,6 +133,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
                 if (this.ucOtherServiceReqInfo1 != null)
                     this.ucOtherServiceReqInfo1.RefreshUserControl();
+                this.chkBaoLanh.Checked = false;
                 Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.7");
             }
             catch (Exception ex)
@@ -280,6 +281,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.TimDuocMotBenhNhanTheoThongTinNguoiDungNhapNeuKhongPhaiBNCuVuiLongNhanNutBNMoi, ResourceMessage.TieuDeCuaSoThongBaoLaThongBao, DevExpress.Utils.DefaultBoolean.True);
                 }
+                this.chkBaoLanh.Checked = false;
             }
             catch (Exception ex)
             {
