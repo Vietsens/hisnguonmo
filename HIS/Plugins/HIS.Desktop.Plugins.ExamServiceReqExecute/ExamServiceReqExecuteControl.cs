@@ -8068,26 +8068,26 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 isCheckAssignSimultaneityOption = false;
 
 
-                //   long treatmentId = this.HisServiceReqView?.TREATMENT_ID ?? this.treatmentId;
-                string LoginName = this.HisServiceReqView?.EXECUTE_LOGINNAME;
-                if (string.IsNullOrEmpty(LoginName))
-                    LoginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                ////   long treatmentId = this.HisServiceReqView?.TREATMENT_ID ?? this.treatmentId;
+                //string LoginName = this.HisServiceReqView?.EXECUTE_LOGINNAME;
+                //if (string.IsNullOrEmpty(LoginName))
+                //    LoginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
 
-                long CheckTimes = 0;
-                if (dtpStartTime.EditValue != null)
-                {
-                    CheckTimes = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)dtpStartTime.EditValue) ?? 0;
-                }
-                else if (this.HisServiceReqView != null && this.HisServiceReqView.START_TIME.HasValue)
-                {
-                    CheckTimes = this.HisServiceReqView.START_TIME.Value;
-                }
-                else if (this.dtpStartTime != null && this.dtpStartTime.EditValue != null)
-                {
-                    CheckTimes = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)this.dtpStartTime.EditValue) ?? 0;
-                }
+                //long CheckTimes = 0;
+                //if (dtpStartTime.EditValue != null)
+                //{
+                //    CheckTimes = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)dtpStartTime.EditValue) ?? 0;
+                //}
+                //else if (this.HisServiceReqView != null && this.HisServiceReqView.START_TIME.HasValue)
+                //{
+                //    CheckTimes = this.HisServiceReqView.START_TIME.Value;
+                //}
+                //else if (this.dtpStartTime != null && this.dtpStartTime.EditValue != null)
+                //{
+                //    CheckTimes = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber((DateTime)this.dtpStartTime.EditValue) ?? 0;
+                //}
                 // long CheckTimes = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) ?? 0;
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("input api/HisServiceReq/CheckSereTimes: ", CheckTimes + " | " + treatmentId + " | " + LoginName));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("input api/HisServiceReq/CheckSereTimes: ", sereTime.Value + " | " + treatmentId + " | " + loginName));
                 CommonParam param2 = new CommonParam();
                 HisServiceReqCheckAssignSimultaneitySDO sdo2 = new HisServiceReqCheckAssignSimultaneitySDO();
 
@@ -8097,8 +8097,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                                 {
                                                     new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
                                                     {
-                                                        LoginName = LoginName,
-                                                        CheckTimes = new List<long> { CheckTimes }
+                                                        LoginName = loginName,
+                                                        CheckTimes = new List<long> {  sereTime.Value  }
                                                     }
                                                 };
 
