@@ -205,6 +205,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     dataServiceReqInfoADO.IsPriority = true;
                 else
                     dataServiceReqInfoADO.IsPriority = false;
+                if (chkChamSocDa.Checked)
+                    dataServiceReqInfoADO.isChamSocDa = true;
+                else
+                    dataServiceReqInfoADO.isChamSocDa = false;
                 if (this.cboOweType.EditValue != null)
                 {
                     dataServiceReqInfoADO.OweType_ID = (long)this.cboOweType.EditValue;
@@ -607,6 +611,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.txtHosReasonNt.Text = null;
                 //qtcode
                 this.chkCAPD.Checked = false;
+                this.chkChamSocDa.Checked = false;
             }
             catch (Exception ex)
             {
