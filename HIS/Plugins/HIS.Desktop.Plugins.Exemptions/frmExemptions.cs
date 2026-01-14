@@ -420,13 +420,24 @@ namespace HIS.Desktop.Plugins.Exemptions
             try
             {
                 this.isReloadTree = false;
+                string discountReason = txtDiscountReasonSS.Text;
+                string discountTimeStr = dtDiscountTimeStr.Text;
                 if (trvService.Nodes != null)
                 {
                     foreach (TreeListNode node in trvService.Nodes)
                     {
                         ProcessTyLe(node);
+                        var row = trvService.GetDataRecordByNode(node) as SereServADO;
+                        if (row != null)
+                        {
+                            if (!string.IsNullOrWhiteSpace(discountReason))
+                                row.DISCOUNT_REASON = discountReason;
+                            if (!string.IsNullOrWhiteSpace(discountTimeStr))
+                                row.DISCOUNT_TIME_STR = discountTimeStr;
+                        }
                     }
                 }
+                trvService.RefreshDataSource();
             }
             catch (Exception ex)
             {
