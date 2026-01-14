@@ -4366,13 +4366,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
-                bool isUnchecking = !Convert.ToBoolean(e.NewValue);
-
-                if (isUnchecking && !string.IsNullOrEmpty(this.txtSoGiaoDich.Text))
-                {
-                    e.Cancel = true; // Chặn hành động uncheck
-                    return;
-                }
                 WaitingManager.Show();
 
                 var sysConfigValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO");
