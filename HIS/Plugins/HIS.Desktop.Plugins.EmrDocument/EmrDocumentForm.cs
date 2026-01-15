@@ -1468,8 +1468,331 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 STT = x.STT,
             }).ToList();
             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
-            return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
+
+            // Check config to determine download source
+            int downloadOption = 0;
+            int.TryParse(Config.ConfigKey.DownloadFileOption, out downloadOption);
+
+            if (downloadOption == 1)
+            {
+                // Download from FSS
+                return GetEmrDocumentFileFromFSS(document, docIds, IsMerge, IsShowPatientSign, IsShowWatermark);
+            }
+            else
+            {
+                // Download from EMR BE (existing behavior)
+                return new BackendAdapter(paramCommon).Post<List<EmrDocumentFileSDO>>("api/EmrDocument/DownloadFile", ApiConsumers.EmrConsumer, sdo, paramCommon);
+            }
         }
+
+
+        private List<EmrDocumentFileSDO> GetEmrDocumentFileFromFSS(V_EMR_DOCUMENT document, List<long> docIds, bool? IsMerge, bool? IsShowPatientSign, bool? IsShowWatermark)
+        {
+            List<EmrDocumentFileSDO> result = new List<EmrDocumentFileSDO>();
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                List<V_EMR_DOCUMENT> documents = new List<V_EMR_DOCUMENT>();
+
+                // Get document info
+                if (document != null)
+                {
+                    documents.Add(document);
+                }
+                else if (docIds != null && docIds.Count > 0)
+                {
+                    EmrDocumentViewFilter filter = new EmrDocumentViewFilter();
+                    filter.IDs = docIds;
+                    documents = new BackendAdapter(paramCommon).Get<List<V_EMR_DOCUMENT>>("api/EmrDocument/GetView", ApiConsumers.EmrConsumer, filter, paramCommon);
+                }
+                if (documents == null || documents.Count == 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("GetEmrDocumentFileFromFSS: No documents found");
+                    return result;
+                }
+                // Sort đúng thứ tự giao diện
+                var orderedDocs = documents
+                    .OrderBy(d => listNumOrderDocument.FindIndex(o => o.IdDocument == d.ID))
+                    .ToList();
+
+                // Lấy tất cả sign (chỉ dùng khi không merge)
+                List<EMR_SIGN> allSigns = new List<EMR_SIGN>();
+                bool needInsertSign = (IsMerge != true && IsShowPatientSign == true);
+                if (needInsertSign)
+                {
+                    EmrSignViewFilter signFilter = new EmrSignViewFilter();
+                    signFilter.DOCUMENT_IDs = documents.Select(d => d.ID).ToList();
+                    allSigns = new BackendAdapter(paramCommon).Get<List<EMR_SIGN>>("api/EmrSign/Get", ApiConsumers.EmrConsumer, signFilter, paramCommon) ?? new List<EMR_SIGN>();
+                }
+
+                foreach (var doc in orderedDocs)
+                {
+                    if (string.IsNullOrEmpty(doc.LAST_VERSION_URL)) continue;
+                    Inventec.Common.Logging.LogSystem.Debug("Tải file từ FSS: " + Inventec.Common.Logging.LogUtil.TraceData("LAST_VERSION_URL:", doc.LAST_VERSION_URL));
+                    using (MemoryStream rawStream = Inventec.Fss.Client.FileDownload.GetFile(doc.LAST_VERSION_URL))
+                    {
+
+                        if (rawStream == null || rawStream.Length == 0) continue;
+
+
+                        rawStream.Position = 0;
+
+                        MemoryStream finalStream = rawStream;
+                        string convertTpPdf = Utils.GenerateTempFileWithin();
+                        Stream sourceStreamCopy = new MemoryStream();
+                        sourceStreamCopy = new MemoryStream();
+                        finalStream.CopyTo(sourceStreamCopy);
+                        finalStream.Position = 0;
+                        if (!doc.LAST_VERSION_URL.EndsWith("pdf"))
+                        {
+                            var reader1 = new iTextSharp.text.pdf.PdfReader(finalStream);
+                            int pageCount = reader1.NumberOfPages;
+                            iTextSharp.text.Rectangle pageSize = reader1.GetPageSizeWithRotation(reader1.NumberOfPages);
+                            iTextSharp.text.Rectangle pageSize1 = new iTextSharp.text.Rectangle(pageSize.Left, pageSize.Bottom, pageSize.Right, (pageSize.Bottom + pageSize.Height), pageSize.Rotation);
+                            Stream streamConvert = new FileStream(convertTpPdf, FileMode.Create, FileAccess.Write);
+                            iTextSharp.text.Document iTextdocument = new iTextSharp.text.Document(pageSize1, 0, 0, 0, 0);
+                            iTextSharp.text.pdf.PdfWriter writer = iTextSharp.text.pdf.PdfWriter.GetInstance(iTextdocument, streamConvert);
+                            iTextdocument.Open();
+                            writer.Open();
+
+                            iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(finalStream);
+                            if (img.Height > img.Width)
+                            {
+                                float percentage = 0.0f;
+                                percentage = pageSize.Height / img.Height;
+                                img.ScalePercent(percentage * 100);
+                            }
+                            else
+                            {
+                                float percentage = 0.0f;
+                                percentage = pageSize.Width / img.Width;
+                                img.ScalePercent(percentage * 100);
+                            }
+                            iTextdocument.Add(img);
+                            iTextdocument.Close();
+                            writer.Close();
+                            try
+                            {
+                                reader1.Close();
+                            }
+                            catch { }
+
+                            string tempFilePath = Utils.GenerateTempFileWithin();
+                            //string base64 = Convert.ToBase64String(finalStream.ToArray());
+                            if (IsShowWatermark == true)
+                            {
+                                WaterMarkProcess.ProcessInsertWaterMark(convertTpPdf, tempFilePath, document);
+                                finalStream = new MemoryStream(File.ReadAllBytes(tempFilePath));
+                            }
+
+                            byte[] pdfBytes = File.ReadAllBytes(convertTpPdf);
+
+                            string base64 = Convert.ToBase64String(pdfBytes);
+
+                            result.Add(new EmrDocumentFileSDO
+                            {
+                                DocumentId = doc.ID,
+                                DocumentName = doc.DOCUMENT_NAME,
+                                Extension = "pdf",
+                                Base64Data = base64
+                            });
+
+                            if (!string.IsNullOrEmpty(tempFilePath) && File.Exists(tempFilePath))
+                            {
+                                try { File.Delete(tempFilePath); } catch { }
+                            }
+                            if (!string.IsNullOrEmpty(convertTpPdf) && File.Exists(convertTpPdf))
+                            {
+                                try { File.Delete(convertTpPdf); } catch { }
+                            }
+                        }
+                        else
+                        {
+
+                            string tempFilePath = Utils.GenerateTempFileWithin();
+
+                            if (needInsertSign)
+                            {
+                                var docPatientSigns = allSigns
+                                    .Where(s => s.DOCUMENT_ID == doc.ID
+                                        && s.IS_SIGN_ELECTRONIC == 1
+                                        && s.COOR_X_RECTANGLE > 0
+                                        && s.COOR_Y_RECTANGLE > 0)
+                                    .ToList();
+
+                                if (docPatientSigns.Count > 0)
+                                {
+                                    using (FileStream fs = new FileStream(tempFilePath, FileMode.Create))
+                                    {
+                                        rawStream.CopyTo(fs);
+                                    }
+
+                                    PdfReader reader = new PdfReader(tempFilePath);
+                                    ProcessInsertPatientSign(reader, tempFilePath, doc.ID, docPatientSigns);
+                                    reader.Close();
+
+                                    finalStream = new MemoryStream(File.ReadAllBytes(tempFilePath));
+                                }
+                            }
+                            string pdfAddFile = Utils.GenerateTempFileWithin();
+                            if (IsShowWatermark == true)
+                            {
+                                Utils.ByteToFile(Utils.StreamToByte(finalStream), pdfAddFile);
+                                WaterMarkProcess.ProcessInsertWaterMark(pdfAddFile, tempFilePath, document);
+                                finalStream = new MemoryStream(File.ReadAllBytes(tempFilePath));
+                            }
+                            string base64 = Convert.ToBase64String(finalStream.ToArray());
+
+                            result.Add(new EmrDocumentFileSDO
+                            {
+                                DocumentId = doc.ID,
+                                DocumentName = doc.DOCUMENT_NAME,
+                                Extension = "pdf",
+                                Base64Data = base64
+                            });
+
+                            if (!string.IsNullOrEmpty(tempFilePath) && File.Exists(tempFilePath))
+                            {
+                                try { File.Delete(tempFilePath); } catch { }
+                            }
+                            if (!string.IsNullOrEmpty(pdfAddFile) && File.Exists(pdfAddFile))
+                            {
+                                try { File.Delete(pdfAddFile); } catch { }
+                            }
+                        }
+
+
+                        try
+                        {
+                            if (finalStream != null)
+                                finalStream.Close();
+                        }
+                        catch { }
+                    }
+                }
+
+                // Merge chỉ khi IsMerge và không chèn sign
+                if (IsMerge == true && result.Count > 1)
+                {
+                    result = MergePdfDocumentsNoSign(result);
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+
+        private List<EmrDocumentFileSDO> MergePdfDocumentsNoSign(List<EmrDocumentFileSDO> documents)
+        {
+            try
+            {
+                MemoryStream mergedStream = new MemoryStream();
+                var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(mergedStream);  // Không dùng using
+
+                foreach (var item in documents)
+                {
+                    if ((item.Extension ?? "").ToLower() == "pdf")
+                    {
+                        byte[] bytes = Convert.FromBase64String(item.Base64Data);
+                        using (PdfReader reader = new PdfReader(bytes))  // Chỉ using cho reader (nó IDisposable)
+                        {
+                            pdfConcat.AddPages(reader);
+                        }
+                    }
+                }
+
+                pdfConcat.Close();  // Close thủ công để flush dữ liệu vào stream
+                mergedStream.Position = 0;  // Reset vị trí để đọc
+
+                string mergedBase64 = Convert.ToBase64String(mergedStream.ToArray());
+
+                return new List<EmrDocumentFileSDO>
+                    {
+                        new EmrDocumentFileSDO
+                        {
+                            DocumentId = documents.First().DocumentId,
+                            DocumentName = "Merged_Document",
+                            Extension = "pdf",
+                            Base64Data = mergedBase64
+                        }
+                    };
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return documents;
+            }
+        }
+
+        private List<EmrDocumentFileSDO> MergePdfDocuments_OLD(List<EmrDocumentFileSDO> documents)
+        {
+            try
+            {
+                List<string> tempFiles = new List<string>();
+
+                foreach (var doc in documents)
+                {
+                    if (doc.Extension.ToLower().Equals("pdf"))
+                    {
+                        string tempFile = Utils.GenerateTempFileWithin();
+                        Utils.ByteToFile(Utils.StreamToByte(new MemoryStream(Convert.FromBase64String(doc.Base64Data))), tempFile);
+                        tempFiles.Add(tempFile);
+                    }
+                }
+
+                if (tempFiles.Count > 0)
+                {
+                    string outputFile = Utils.GenerateTempFileWithin();
+                    Stream outputStream = File.Open(outputFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+                    var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(outputStream);
+
+                    foreach (var file in tempFiles)
+                    {
+                        iTextSharp.text.pdf.PdfReader pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                        List<int> pages = new List<int>();
+                        for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                        {
+                            pages.Add(i);
+                        }
+                        pdfReader.SelectPages(pages);
+                        pdfConcat.AddPages(pdfReader);
+                        pdfReader.Close();
+                    }
+
+                    pdfConcat.Close();
+                    outputStream.Close();
+
+                    // Read merged file
+                    byte[] mergedData = File.ReadAllBytes(outputFile);
+                    string mergedBase64 = Convert.ToBase64String(mergedData);
+
+                    foreach (var file in tempFiles)
+                    {
+                        try { if (File.Exists(file)) File.Delete(file); } catch { }
+                    }
+                    try { if (File.Exists(outputFile)) File.Delete(outputFile); } catch { }
+
+                    EmrDocumentFileSDO mergedDoc = new EmrDocumentFileSDO();
+                    mergedDoc.DocumentId = documents.First().DocumentId;
+                    mergedDoc.DocumentName = "Merged_Document";
+                    mergedDoc.Extension = "pdf";
+                    mergedDoc.Base64Data = mergedBase64;
+
+                    return new List<EmrDocumentFileSDO> { mergedDoc };
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return documents;
+        }
+
         private bool CanDeleteDocument(EmrDocumentADO doc)
         {
             try
