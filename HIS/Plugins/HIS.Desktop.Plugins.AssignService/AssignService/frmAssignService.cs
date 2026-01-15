@@ -2524,8 +2524,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             // qtcode3
                             // Tự động check bảo lãnh khi tích chọn dịch vụ
                             // sereServADO.SetIsGuarantee(true);
-                            sereServADO.IsGuarantee = true;
-                            UpdateTotalGuaranteePrice(); // update label số tiền cần bảo lãnh
+                            if (this.currentHisTreatment != null && !string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
+                            {
+                                sereServADO.IsGuarantee = true;
+                                UpdateTotalGuaranteePrice(); // update label số tiền cần bảo lãnh
+                            }
                             if (CheckExistServicePaymentLimit(sereServADO.TDL_SERVICE_CODE))
                             {
                                 MessageBox.Show(ResourceMessage.DichVuCLSCoGioiHanChiDinhThanhToanBHYT_DeNghiBSXemXetTruocKhiChiDinh, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
