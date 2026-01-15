@@ -41,8 +41,7 @@ namespace HIS.Desktop.Plugins.Exemptions
         public string VIR_PRICE_DISPLAY { get; set; }
         public string VAT_DISPLAY { get; set; }
         public string LOGIN_USERNAME { get; set; }
-            public string DISCOUNT_REASON { get; set; }
-            public string DISCOUNT_TIME_STR { get; set; }
+        public string DISCOUNT_TIME_STR { get; set; }
 
         public SereServADO()
         {

@@ -17,6 +17,7 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
@@ -42,6 +43,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -144,12 +146,20 @@ namespace HIS.Desktop.Plugins.Exemptions
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
+                // Set dtDiscountTimeStr to current date and time
+                if (dtDiscountTimeStr != null)
+                {
+                    dtDiscountTimeStr.EditValue = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                }
+
                 if (this.treatmentId > 0)
                 {
                     LoadSearch();
                 }
 
                 this.spinEditMienGiamTreatmnet.EditValue = 100;
+
+                this.ValidControl();
 
                 FillInfoPatient(currentTreatment);
 
@@ -426,18 +436,54 @@ namespace HIS.Desktop.Plugins.Exemptions
                 {
                     foreach (TreeListNode node in trvService.Nodes)
                     {
-                        ProcessTyLe(node);
-                        var row = trvService.GetDataRecordByNode(node) as SereServADO;
-                        if (row != null)
-                        {
-                            if (!string.IsNullOrWhiteSpace(discountReason))
-                                row.DISCOUNT_REASON = discountReason;
-                            if (!string.IsNullOrWhiteSpace(discountTimeStr))
-                                row.DISCOUNT_TIME_STR = discountTimeStr;
-                        }
+                        //ProcessTyLe(node); 
+                        ProcessCheckedLeafNodes(node, discountReason, discountTimeStr);
                     }
                 }
                 trvService.RefreshDataSource();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ProcessCheckedLeafNodes(TreeListNode node, string discountReason, string discountTimeStr)
+        {
+            try
+            {
+                if (node != null)
+                {
+                    // Nếu node không có con (là leaf node) VÀ được tích chọn
+                    if (!node.HasChildren && node.Checked)
+                    {
+                        var row = trvService.GetDataRecordByNode(node) as SereServADO;
+                        if (row != null && row.IsLeaf.HasValue && row.IsLeaf.Value)
+                        {
+                            // Xử lý tỷ lệ miễn giảm
+                            if (isReloadTree && row.DISCOUNT.HasValue)
+                            {
+                                row.VIR_TOTAL_DISCOUNT = row.DISCOUNT;
+                            }
+                            else
+                            {
+                                row.VIR_TOTAL_DISCOUNT = row.VIR_TOTAL_PATIENT_PRICE_NO_DC / 100 * spinEditTyLe.Value;
+                            }
+
+                            // Gán discount reason và time
+                            row.DISCOUNT_REASON = discountReason;
+                            row.DISCOUNT_TIME_STR = discountTimeStr;
+                        }
+                    }
+                    else if (node.HasChildren)
+                    {
+                        // Nếu có con, đệ quy xử lý các node con
+                        foreach (TreeListNode childNode in node.Nodes)
+                        {
+                            ProcessCheckedLeafNodes(childNode, discountReason, discountTimeStr);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -598,9 +644,10 @@ namespace HIS.Desktop.Plugins.Exemptions
                     sdo.AutoDiscountRatio = this.spinEditMienGiamTreatmnet.Value > 0 ? this.spinEditMienGiamTreatmnet.Value / 100 : 0;
                 }
                 sdo.IsAutoDiscount = chkMienGiamTreatment.Checked;
+                sdo.DiscountReason = txtDiscountReasonTrea.Text;
 
                 List<HIS_SERE_SERV> listUpdate = new List<HIS_SERE_SERV>();
-                if (this.currentTreatment.IS_LOCK_FEE != 1)
+                if (this.currentTreatment.IS_LOCK_FEE != 1) 
                 {
                     var dataChecks = this.GetListCheck();
                     if (dataChecks != null && dataChecks.Count > 0)
@@ -611,6 +658,7 @@ namespace HIS.Desktop.Plugins.Exemptions
                             HIS_SERE_SERV ado = new HIS_SERE_SERV();
                             Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(ado, item);
                             ado.DISCOUNT = item.VIR_TOTAL_DISCOUNT;
+                            ado.DISCOUNT_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.ParseExact(item.DISCOUNT_TIME_STR, "dd/MM/yyyy HH:mm", CultureInfo.InvariantCulture)); 
                             if (item.VIR_TOTAL_DISCOUNT > item.VIR_TOTAL_PATIENT_PRICE_NO_DC)
                             {
                                 mess += item.TDL_SERVICE_NAME + "; ";
@@ -681,5 +729,34 @@ namespace HIS.Desktop.Plugins.Exemptions
             btnNew_Click(null, null);
         }
 
+        private void ValidControl()
+        {
+            try
+            {
+                ValidationSingleControlWithMaxLength(txtDiscountReasonSS, false, 1000);
+                ValidationSingleControlWithMaxLength(txtDiscountReasonTrea, false, 1000);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void ValidationSingleControlWithMaxLength(Control control, bool isRequired, int? maxLength)
+        {
+            try
+            {
+                Inventec.Desktop.Common.Controls.ValidationRule.ControlMaxLengthValidationRule icdMainRule = new Inventec.Desktop.Common.Controls.ValidationRule.ControlMaxLengthValidationRule();
+                icdMainRule.editor = control;
+                icdMainRule.maxLength = maxLength;
+                icdMainRule.IsRequired = isRequired;
+                icdMainRule.ErrorType = ErrorType.Warning;
+                dxValidationProvider1.SetValidationRule(control, icdMainRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

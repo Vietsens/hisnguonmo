@@ -45,10 +45,9 @@ namespace HIS.Desktop.Plugins.Exemptions
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtDiscountReasonTrea = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem__Save = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem__New = new DevExpress.XtraBars.BarButtonItem();
@@ -132,6 +131,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtDiscountReasonTrea.Properties)).BeginInit();
@@ -184,6 +184,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -215,6 +216,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.txtDiscountReasonTrea.Location = new System.Drawing.Point(534, 609);
             this.txtDiscountReasonTrea.MenuManager = this.barManager1;
             this.txtDiscountReasonTrea.Name = "txtDiscountReasonTrea";
+            this.txtDiscountReasonTrea.Properties.MaxLength = 1000;
             this.txtDiscountReasonTrea.Size = new System.Drawing.Size(179, 20);
             this.txtDiscountReasonTrea.StyleController = this.layoutControl1;
             this.txtDiscountReasonTrea.TabIndex = 43;
@@ -294,6 +296,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.txtDiscountReasonSS.Location = new System.Drawing.Point(822, 2);
             this.txtDiscountReasonSS.MenuManager = this.barManager1;
             this.txtDiscountReasonSS.Name = "txtDiscountReasonSS";
+            this.txtDiscountReasonSS.Properties.MaxLength = 1000;
             this.txtDiscountReasonSS.Size = new System.Drawing.Size(148, 20);
             this.txtDiscountReasonSS.StyleController = this.layoutControl1;
             this.txtDiscountReasonSS.TabIndex = 42;
@@ -547,11 +550,12 @@ namespace HIS.Desktop.Plugins.Exemptions
             // treeListColumn
             // 
             this.treeListColumn.Caption = "Lý do miễn giảm";
-            this.treeListColumn.FieldName = "DISCOUNT_REASON ";
+            this.treeListColumn.FieldName = "DISCOUNT_REASON";
             this.treeListColumn.Name = "treeListColumn";
             this.treeListColumn.OptionsColumn.AllowEdit = false;
             this.treeListColumn.Visible = true;
             this.treeListColumn.VisibleIndex = 12;
+            this.treeListColumn.Width = 100;
             // 
             // treeListColumn2
             // 
@@ -561,6 +565,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeListColumn2.OptionsColumn.AllowEdit = false;
             this.treeListColumn2.Visible = true;
             this.treeListColumn2.VisibleIndex = 13;
+            this.treeListColumn2.Width = 100;
             // 
             // repositoryItemchkIsExpend__Enable
             // 
@@ -1271,6 +1276,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1364,5 +1370,6 @@ namespace HIS.Desktop.Plugins.Exemptions
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn2;
+        private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
     }
 }
