@@ -420,6 +420,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     lblCaptionDiagnostic.AppearanceItemCaption.ForeColor = Color.Black;
                     lblCaptionConclude.AppearanceItemCaption.ForeColor = Color.Black;
                 }
+                BuildBulletedInfoList();
                 isLoadingSer = false;
 
             }
