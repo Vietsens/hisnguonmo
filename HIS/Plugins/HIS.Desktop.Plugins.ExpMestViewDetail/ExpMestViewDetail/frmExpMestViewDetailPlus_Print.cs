@@ -2602,8 +2602,10 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                             bool lao = mediTs.Exists(o => o.ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__LAO);
 
                             var mediTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+                           
                             foreach (var item in this._ExpMestMetyReqs_Print)
                             {
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("_ExpMestMetyReqs_Prin :", _ExpMestMetyReqs_Print));
                                 var dataMedi = mediTypes.FirstOrDefault(p => p.ID == item.MEDICINE_TYPE_ID);
                                 if (dataMedi != null)
                                 {
@@ -2611,45 +2613,56 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                                     {
                                         _ExpMestMetyReq_GN_HTs.Add(item);
                                         _ExpMestMetyReq_GNs.Add(item);
+                                      
                                     }
                                     else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT && ht)
                                     {
-                                        _ExpMestMetyReq_GN_HTs.Add(item);
+                                        _ExpMestMetyReq_GN_HTs.Add(item); 
                                         _ExpMestMetyReq_HTs.Add(item);
+                                        
                                     }
                                     else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCGN && dcgn)
                                     {
                                         _ExpMestMetyReq_DC_GN_HTs.Add(item);
                                         _ExpMestMetyReq_DCGNs.Add(item);
+                                        _ExpMestMetyReq_Ts.Add(item);
+
                                     }
                                     else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HCHT && dcht)
                                     {
                                         _ExpMestMetyReq_DC_GN_HTs.Add(item);
                                         _ExpMestMetyReq_DCHTs.Add(item);
+                                        _ExpMestMetyReq_Ts.Add(item);
                                     }
                                     else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__DOC && doc)
                                     {
                                         _ExpMestMetyReq_TDs.Add(item);
+                                      
                                     }
                                     else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__PX && px)
                                     {
                                         _ExpMestMetyReq_PXs.Add(item);
+                                       
                                     }
                                     else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__CO && co)
                                     {
                                         _ExpMestMetyReq_COs.Add(item);
+                                        
                                     }
                                     else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__DICH_TRUYEN && dt)
                                     {
                                         _ExpMestMetyReq_DTs.Add(item);
+                                       
                                     }
                                     else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__KS && ks)
                                     {
                                         _ExpMestMetyReq_KSs.Add(item);
+                                       
                                     }
                                     else if (dataMedi.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__LAO && lao)
                                     {
                                         _ExpMestMetyReq_LAOs.Add(item);
+                                       
                                     }
                                     else if (dataMedi.IS_CHEMICAL_SUBSTANCE == 1)
                                     {
@@ -2670,9 +2683,9 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
 
                     richEditorMain.RunPrintTemplate("Mps000198", DelegateRunMps);
 
-                    richEditorMain.RunPrintTemplate("Mps000048", DelegateRunMps);
+                    richEditorMain.RunPrintTemplate("Mps000048", DelegateRunMps); 
                     #endregion
-
+                      
                     #region -----In Thuoc Thuong -----
                     if (_ExpMestMetyReq_Ts != null && _ExpMestMetyReq_Ts.Count > 0)
                     {
@@ -4852,6 +4865,48 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     result = MpsPrinterRun(null, printTypeCode, fileName, mps000086PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
                 }
                 #endregion
+                //#region ----  DC GN HT -----
+                //if (_ExpMestMetyReq_DC_GN_HTs != null && _ExpMestMetyReq_DC_GN_HTs.Count > 0)
+                //{
+                //    string keyDCGNHT = "";
+                //    if (roomIdByMediStockIdPrint == this._CurrentExpMest.REQ_ROOM_ID)
+                //    {
+                //        keyPhieuTra = 1;
+                //        keyDCGNHT = "PHIẾU TRẢ DƯỢC CHẤT GÂY NGHIỆN, HƯỚNG THẦN";
+                //    }
+                //    else
+                //    {
+                //        keyPhieuTra = 0;
+                //        keyDCGNHT = "PHIẾU LĨNH DƯỢC CHẤT GÂY NGHIỆN, HƯỚNG THẦN";
+                //    }
+
+                //    MPS.Processor.Mps000048.PDO.Mps000048PDO mps000048PDO = new MPS.Processor.Mps000048.PDO.Mps000048PDO
+                //  (
+                //    this._CurrentExpMest,
+                //   this._ExpMestMedicines_Print,
+                //   null,
+                //   null,
+                //   _ExpMestMetyReq_DC_GN_HTs,
+                //   null,
+                //   null,
+                //   Req_Department_Name,
+                //   Req_Room_Name,
+                //   Exp_Department_Name,
+                //   IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE,
+                //   IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE,
+                //   BackendDataWorker.Get<V_HIS_MEDI_STOCK>(),
+                //   BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
+                //   null,
+                //   null,
+                //   keyDCGNHT,
+                //   configKeyMert,
+                //   keyPhieuTra
+                //    );
+
+                //    result = MpsPrinterRun(null, printTypeCode, fileName, mps000048PDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show);
+                //}
+                //#endregion
+                
                 WaitingManager.Hide();
             }
             catch (Exception ex)

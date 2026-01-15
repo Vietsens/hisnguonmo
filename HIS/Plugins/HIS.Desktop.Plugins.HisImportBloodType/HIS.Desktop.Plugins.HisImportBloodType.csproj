@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\BloodTypeAdo.cs" />
+    <Compile Include="Config\ConfigKey.cs" />
     <Compile Include="FormImportBloodType.cs">
       <SubType>Form</SubType>
     </Compile>

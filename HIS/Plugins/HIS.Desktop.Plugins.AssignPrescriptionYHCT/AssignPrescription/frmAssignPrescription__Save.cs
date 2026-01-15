@@ -376,7 +376,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                 }
 
-                if (!CheckMIMS(this.mediMatyTypeADOs))
+                if (HisConfigCFG.ConnectDrugInterventionInfo == "2" && !CheckMIMS(this.mediMatyTypeADOs))
                 {
                     return;
                 }
@@ -919,6 +919,26 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                         serviceReqResult = outPatientPresResultSDO.ServiceReqs.FirstOrDefault();
                     }
 
+                    try
+                    {
+                        if (this.mimsInteractionLog != null && this.mimsInteractionLog.HAS_ALERT > 0)
+                        {
+                            this.mimsInteractionLog.TREATMENT_ID = Histreatment.ID;
+                            this.mimsInteractionLog.PATIENT_ID = Histreatment.PATIENT_ID;
+                            this.mimsInteractionLog.SERVICE_REQ_ID = serviceReqResult.ID;
+
+                            bool logCreated = new BackendAdapter(new CommonParam()).Post<bool>("api/HisMimsInteractionLog/Create", ApiConsumers.MosConsumer, this.mimsInteractionLog, new CommonParam());
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                    finally
+                    {
+                        this.mimsInteractionLog = null; // luôn clear 
+                    }
+
                     this.oldServiceReq = serviceReqResult;
                     if (assignPrescriptionEditADO != null && assignPrescriptionEditADO.DgRefeshData != null)
                     {
@@ -1366,7 +1386,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             bool check = false;
             try
             {
-                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0 && HisConfigCFG.ConnectDrugInterventionInfo == "2")
+                if (lstMediMatyTypeADOs != null && lstMediMatyTypeADOs.Count > 0)
                 {
                     List<HIS.Desktop.MIMS.Integration.Models.DrugItem> lstDrugItem = new List<MIMS.Integration.Models.DrugItem>();
                     var service = new HIS.Desktop.MIMS.Integration.Modules.DrugHealthService();
@@ -1395,12 +1415,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     List<string> lstICD = new List<string>();
                     var icdValue = (IcdInputADO)this.icdProcessor.GetValue(this.ucIcd);
                     var icdValueSecond = (SecondaryIcdDataADO)this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
-                    if (!string.IsNullOrWhiteSpace(icdValue.ICD_CODE))
+                    if (!string.IsNullOrWhiteSpace(icdValueSecond.ICD_SUB_CODE))
                     {
                         lstICD.AddRange(icdValueSecond.ICD_SUB_CODE.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                     }
 
-                    check = service.CheckAndAlert(lstDrugItem, lstICD, this.Histreatment.ID, this.icdExam.ID, this.Histreatment.PATIENT_ID);
+                    mimsInteractionLog = new HIS_MIMS_INTERACTION_LOG();
+
+                    check = service.CheckAndAlert(lstDrugItem, lstICD, mimsInteractionLog);
                 }
 
                 return check;

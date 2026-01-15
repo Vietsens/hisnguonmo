@@ -3641,6 +3641,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 }
                 else
                 {
+                    WaitingManager.Hide();
                     XtraMessageBox.Show(
                         "Đăng ký bảo lãnh thất lại",
                         "Thông báo",

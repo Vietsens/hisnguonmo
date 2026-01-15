@@ -52,6 +52,7 @@ namespace Inventec.Common.FlexCellExport
         const string TFlexCelUFCreateBarcode = "FlFuncCreateBarcode";
         const string TFlexCelUFFormatIcd = "FlFuncFormatIcd";
         const string TFlexCelUFEmployeeInfo = "FlFuncEmployeeInfo";
+        const string TFlexCelUFMergeData = "FlFuncMergeData";
         public Dictionary<string, object> DictionaryTemplateKey { get; set; }
         public bool IsUseCommentKey = true;//TODO
         public delegate string EmployeeInfoDelegate(string loginName, string infoKey);
@@ -138,6 +139,10 @@ namespace Inventec.Common.FlexCellExport
                 flexCel.SetUserFunction(TFlexCelUFCreateBarcode, new TFlexCelUFCreateBarcode());
                 flexCel.SetUserFunction(TFlexCelUFFormatIcd, new TFlexCelUFFormatIcd());
                 flexCel.SetUserFunction(TFlexCelUFEmployeeInfo, new TFlexCelUFEmployeeInfo());
+                for (int i = 0; i < 20; i++)
+                {
+                    flexCel.SetUserFunction(string.Format("{0}{1}", TFlexCelUFMergeData, i), new TFlexCelUFMergeData());
+                }
                 result = true;
             }
             catch (ArgumentNullException ex)

@@ -38,6 +38,7 @@ using System.Windows.Forms;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.Plugins.MedicineTypeCreate.Validtion;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.MedicineTypeCreate.Config;
 
 namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 {
@@ -439,13 +440,34 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
-                ValidMaxlengthTxtMedicineTypeCodeName validRule = new ValidMaxlengthTxtMedicineTypeCodeName();
-                validRule.txtMedicineTypeCode = txtMedicineTypeCode;
-                validRule.txtMedicineTypeName = txtMedicineTypeName;
-                validRule.isValidCode = (this.ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd);
-                validRule.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                validRule.ErrorType = ErrorType.Warning;
-                dxValidationMedicineType.SetValidationRule(txtMedicineTypeCode, validRule);
+                // KIỂM TRA CẤU HÌNH SERVICE_CODE_OPTION
+                if (HisConfigCFG.ServiceCodeOption == "1")
+                {
+                    ControlMaxLengthValidationRule validCode = new ControlMaxLengthValidationRule();
+                    validCode.editor = txtMedicineTypeCode;
+                    validCode.maxLength = 100;
+                    validCode.IsRequired = false;
+                    validCode.ErrorType = ErrorType.Warning;
+                    dxValidationMedicineType.SetValidationRule(txtMedicineTypeCode, validCode);
+
+                    ControlMaxLengthValidationRule validName = new ControlMaxLengthValidationRule();
+                    validName.editor = txtMedicineTypeName;
+                    validName.maxLength = 500;
+                    validName.IsRequired = true;
+                    validName.ErrorType = ErrorType.Warning;
+                    dxValidationMedicineType.SetValidationRule(txtMedicineTypeName, validName);
+                }
+                else
+                {
+                    // --- TRƯỜNG HỢP CŨ (OPTION = 2): GIỮ NGUYÊN LOGIC CŨ ---
+                    ValidMaxlengthTxtMedicineTypeCodeName validRule = new ValidMaxlengthTxtMedicineTypeCodeName();
+                    validRule.txtMedicineTypeCode = txtMedicineTypeCode;
+                    validRule.txtMedicineTypeName = txtMedicineTypeName;
+                    validRule.isValidCode = (this.ActionType != HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionAdd);
+                    validRule.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    validRule.ErrorType = ErrorType.Warning;
+                    dxValidationMedicineType.SetValidationRule(txtMedicineTypeCode, validRule);
+                }
             }
             catch (Exception ex)
             {
