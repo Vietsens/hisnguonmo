@@ -4362,91 +4362,6 @@ namespace HIS.Desktop.Plugins.TransactionBill
             }
         }
         
-        private void chkBaoLanhVP_EditValueChanging(object sender, ChangingEventArgs e)
-        {
-            try
-            {
-                WaitingManager.Show();
-
-                var sysConfigValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO");
-                string[] p = (sysConfigValue ?? "").Split('|');
-                if (p.Length < 3)
-                {
-                    e.Cancel = true;
-                    throw new Exception("Cấu hình MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO không đúng định dạng");
-                }
-
-                bool isChecking = Convert.ToBoolean(e.NewValue);
-
-                decimal receiveAmount = 0;
-                decimal tienBaoLanh = 0;
-
-                decimal.TryParse(lblReceiveAmount.Text.Replace(",", ""), out receiveAmount);
-                decimal.TryParse(lblBaoLanh.Text, out tienBaoLanh);
-
-                if (!isChecking)
-                {
-                    // Cộng lại tiền đã bảo lãnh
-                    receiveAmount = receiveAmount + tienBaoLanh;
-
-                    //lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(
-                    //    receiveAmount, ConfigApplications.NumberSeperator
-                    //);
-                    //CalcuCanThu();
-                    this.txtSoGiaoDich.Text = string.Empty;
-                    // Cho phép bỏ check
-                    return;
-                }
-
-                var form = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.MedicalExpenseGuaranteeProcessor();
-                var use = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.DataInput();
-                string remark = "Thanh toán viện phí cho bệnh nhân " + currentTreatment?.TDL_PATIENT_NAME;
-
-                use.hasUri = p[0].Split(';')[0];
-                use.acsUri = p[0].Split(';')[1];
-                use.username = p[1].Split(':')[1];
-                use.password = p[1].Split(':')[2];
-                use.applicationCode = p[1].Split(':')[0];
-                use.limet = p[2];
-                use.cskcbbd = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE; 
-
-                use.useRequest = new Library.MedicalExpenseGuarantee.ADO.UseRequest();
-                use.useRequest.RequestId = currentTreatment?.GUARANTEE_REQUEST_CODE;
-                use.useRequest.Amount = this.lblBaoLanh.Text;
-                use.useRequest.Remark = remark;
-                use.useRequest.ContractNumber = currentTreatment?.GUARANTEE_CODE;
-                use.useRequest.PatientFullName = currentTreatment?.TDL_PATIENT_NAME;
-                use.useRequest.PatientDateOfBirth = currentTreatment?.TDL_PATIENT_DOB.ToString();
-                use.useRequest.PatientCccd = currentTreatment?.TDL_PATIENT_CCCD_NUMBER;
-                use.useRequest.HospitalCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
-                var res = form.GuaranteeUse(use);
-                if (res?.Success == true && res.Data?.Data != null)
-                {
-                    this.guaranteeAmountRes = lblBaoLanh.Text ?? "0";
-                    this.txtSoGiaoDich.Text = res.Data.Data.RefNo ?? string.Empty;
-
-                    // Trừ bảo lãnh và gán lại
-                    receiveAmount -= tienBaoLanh;
-                    if (receiveAmount < 0) receiveAmount = 0;
-                    //lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(receiveAmount, ConfigApplications.NumberSeperator);
-                }
-                else
-                {
-                    WaitingManager.Hide();
-                    MessageBox.Show("Bảo lãnh viện phí thất bại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    e.Cancel = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            finally
-            {
-                WaitingManager.Hide();
-            }
-        }
-
         private void chkBaoLanhVP_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -4463,13 +4378,85 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             if (currentTreatment != null && !string.IsNullOrEmpty(currentTreatment.GUARANTEE_CODE))
             {
-                XtraMessageBox.Show("Bệnh nhân có đăng ký bảo lãnh viện phí. Vui lòng kiểm tra lại thông tin và check vào Bảo lãnh viện phí để thực hiện chốt số liệu.", "Thông báo");
+                chkBaoLanhVP.Checked = true;
+                CalcuCanThu();
             }
             else
             {
                 layoutControlItem64.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 layoutControlItem65.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 layoutControlItem66.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            }
+        }
+
+        private bool checkGuarantee()
+        {
+            try
+            {
+                if (!chkBaoLanhVP.Checked && currentTreatment != null && !string.IsNullOrEmpty(currentTreatment.GUARANTEE_CODE))
+                {
+                    WaitingManager.Hide();
+
+                    var result = XtraMessageBox.Show(this, "Hồ sơ này đã được đăng ký bảo lãnh viện phí nhưng hiện tại chưa chọn thanh toán bằng bảo lãnh. Bạn có muốn tiếp tục không?", "Thông báo",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (result == DialogResult.No)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        WaitingManager.Show();
+                    }
+                }
+                if (chkBaoLanhVP.Checked)
+                {
+                    var sysConfigValue = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO");
+                    string[] p = (sysConfigValue ?? "").Split('|');
+                    if (p.Length < 3)
+                    {
+                        throw new Exception("Cấu hình MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO không đúng định dạng");
+                    }
+
+                    var form = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.MedicalExpenseGuaranteeProcessor();
+                    var use = new HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.DataInput();
+                    string remark = "Thanh toán viện phí cho bệnh nhân " + currentTreatment?.TDL_PATIENT_NAME;
+
+                    use.hasUri = p[0].Split(';')[0];
+                    use.acsUri = p[0].Split(';')[1];
+                    use.username = p[1].Split(':')[1];
+                    use.password = p[1].Split(':')[2];
+                    use.applicationCode = p[1].Split(':')[0];
+                    use.limet = p[2];
+                    use.cskcbbd = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+
+                    use.useRequest = new Library.MedicalExpenseGuarantee.ADO.UseRequest();
+                    use.useRequest.RequestId = currentTreatment?.GUARANTEE_REQUEST_CODE;
+                    use.useRequest.Amount = this.lblBaoLanh.Text;
+                    use.useRequest.Remark = remark;
+                    use.useRequest.ContractNumber = currentTreatment?.GUARANTEE_CODE;
+                    use.useRequest.PatientFullName = currentTreatment?.TDL_PATIENT_NAME;
+                    use.useRequest.PatientDateOfBirth = currentTreatment?.TDL_PATIENT_DOB.ToString();
+                    use.useRequest.PatientCccd = currentTreatment?.TDL_PATIENT_CCCD_NUMBER;
+                    use.useRequest.HospitalCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+                    var res = form.GuaranteeUse(use);
+                    if (res?.Success == true && res.Data?.Data != null)
+                    {
+                        this.guaranteeAmountRes = lblBaoLanh.Text ?? "0";
+                        this.txtSoGiaoDich.Text = res.Data.Data.RefNo ?? string.Empty;
+                        return true;
+                    }
+                    else
+                    {
+                        WaitingManager.Hide();
+                        return false;
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
             }
         }
     }
