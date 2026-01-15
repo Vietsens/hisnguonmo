@@ -44,20 +44,19 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
         {
             try
             {
-                Action myaction = () =>
-                {
-                    lstTab3 = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE && o.IS_ABSENT != 1).OrderBy(o => o.LAST_APPROVAL_TIME).ToList();
-                };
-                Task task = new Task(myaction);
-                task.Start();
-                await task;
+                List<HIS_EXP_MEST> source = lstAll ?? new List<HIS_EXP_MEST>();
+
+                lstTab3 = await Task.Run(() => source.Where(o => o != null && o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE && o.IS_ABSENT != 1).OrderBy(o => o.LAST_APPROVAL_TIME).ToList());
+
                 gcPrepareMedicine.DataSource = null;
                 if (lstTab3 != null && lstTab3.Count > 0)
                 {
                     gcPrepareMedicine.DataSource = lstTab3;
                 }
+
                 Inventec.Common.Logging.LogSystem.Debug("QUẦY __" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => txtGateCodeString), txtGateCodeString));
                 Inventec.Common.Logging.LogSystem.Debug("IP __" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => txtIpCPA), txtIpCPA));
+
                 if (!string.IsNullOrEmpty(txtGateCodeString) && dteStt.DateTime.ToString("yyyyMMdd") == DateTime.Now.ToString("yyyyMMdd"))
                 {
                     CreateThreadCallPatientRefresh();

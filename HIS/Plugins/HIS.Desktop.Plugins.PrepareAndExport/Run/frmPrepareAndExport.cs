@@ -137,29 +137,60 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
 
         private void Refesh_()
         {
-
-            if (this.clienttManager == null)
-                this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
-            List<CPA.WCFClient.CallPatientClient.ADO.OrderDataADO> listData = new List<CPA.WCFClient.CallPatientClient.ADO.OrderDataADO>();
-            lstSendCPA = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE).ToList();
-            if (lstSendCPA != null && lstSendCPA.Count() > 0)
+            try
             {
-                foreach (var item in lstSendCPA)
+                if (lstAll == null || lstAll.Count == 0)
                 {
-                    CPA.WCFClient.CallPatientClient.ADO.OrderDataADO CallPatientInfoADO_ = new CPA.WCFClient.CallPatientClient.ADO.OrderDataADO();
-                    CallPatientInfoADO_.ExpMestId = item.ID;
-                    CallPatientInfoADO_.OrderNumber = item.NUM_ORDER;
-                    CallPatientInfoADO_.GateCode = item.GATE_CODE;
-                    CallPatientInfoADO_.IsPriority = item.PRIORITY == 1;
-                    CallPatientInfoADO_.OrderTime = item.LAST_APPROVAL_TIME;
-                    CallPatientInfoADO_.IsCalling = false;
-                    CallPatientInfoADO_.CallTime = item.CALL_TIME;
-                    CallPatientInfoADO_.PatientName = item.TDL_PATIENT_NAME;
-                    listData.Add(CallPatientInfoADO_);
+                    if (this.clienttManager == null && !string.IsNullOrEmpty(txtIpCPA))
+                        this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
+
+                    this.clienttManager?.UpdateListOrderDataCalling(txtGateCodeString, new List<CPA.WCFClient.CallPatientClient.ADO.OrderDataADO>());
+                    return;
                 }
-                listData = listData.OrderByDescending(o => o.CallTime).ToList();
+
+                if (this.clienttManager == null)
+                    this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
+
+                var listData = new List<CPA.WCFClient.CallPatientClient.ADO.OrderDataADO>();
+
+                try
+                {
+                    lstSendCPA = lstAll.Where(o => o != null && o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE).ToList();
+                }
+                catch
+                {
+                    lstSendCPA = new List<HIS_EXP_MEST>();
+                }
+
+                if (lstSendCPA != null && lstSendCPA.Count > 0)
+                {
+                    foreach (var item in lstSendCPA)
+                    {
+                        if (item == null) continue;
+
+                        var CallPatientInfoADO_ = new CPA.WCFClient.CallPatientClient.ADO.OrderDataADO
+                        {
+                            ExpMestId = item.ID,
+                            OrderNumber = item.NUM_ORDER,
+                            GateCode = item.GATE_CODE,
+                            IsPriority = item.PRIORITY == 1,
+                            OrderTime = item.LAST_APPROVAL_TIME,
+                            IsCalling = false,
+                            CallTime = item.CALL_TIME,
+                            PatientName = item.TDL_PATIENT_NAME
+                        };
+                        listData.Add(CallPatientInfoADO_);
+                    }
+
+                    listData = listData.OrderByDescending(o => o.CallTime).ToList();
+                }
+
+                this.clienttManager.UpdateListOrderDataCalling(txtGateCodeString, listData);
             }
-            this.clienttManager.UpdateListOrderDataCalling(txtGateCodeString, listData);
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void LoadListDataSource()
@@ -614,7 +645,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
         {
             try
             {
-                    Requirements popup = new Requirements(lstAll);
+                    HIS.Desktop.Plugins.PrepareAndExport.Popup.Requirements popup = new HIS.Desktop.Plugins.PrepareAndExport.Popup.Requirements(lstAll);
                     popup.ShowDialog();
             }
             catch (Exception ex)
