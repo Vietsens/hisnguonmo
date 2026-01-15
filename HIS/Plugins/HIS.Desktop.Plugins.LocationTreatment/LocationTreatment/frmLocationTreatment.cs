@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Data;
+using DevExpress.Data.WcfLinq;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
@@ -64,6 +65,7 @@ namespace HIS.Desktop.Plugins.LocationTreatment
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
         List<HIS_DATA_STORE> listDataStore = new List<HIS_DATA_STORE>();
+        List<HIS_LOCATION_STORE> listLocationStore;
         #endregion
 
         #region Construct
@@ -160,16 +162,16 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                 this.lciName.Text = Inventec.Common.Resource.Get.Value("frmLocationTreatment.lciName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmLocationTreatment.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtSearch.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmLocationTreatment.txtSearch.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnSTT.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnSTT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnCode.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnName.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnStatus.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnStatus.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnCreatTime.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnCreatTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnCreator.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnCreator.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnEditTime.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnEditTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnEditor.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnEditor.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumnSTT.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnSTT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumnCode.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumnName.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumnStatus.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnStatus.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumnCreatTime.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnCreatTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumnCreator.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnCreator.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumnEditTime.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnEditTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.gridColumnEditor.Caption = Inventec.Common.Resource.Get.Value("frmLocationTreatment.gridColumnEditor.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.dnNavigation.Text = Inventec.Common.Resource.Get.Value("frmLocationTreatment.dnNavigation.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmLocationTreatment.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
@@ -226,7 +228,7 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                 CommonParam param = new CommonParam();
                 param.Limit = rowCount;
                 param.Count = dataTotal;
-                ucPaging.Init(LoadPaging, param, numPageSize, this.gridControlLocationTreatment);
+                ucPaging.Init(LoadPaging, param, numPageSize, this.treeList1);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -249,17 +251,25 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                 filter.ORDER_DIRECTION = "DESC";
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 dnNavigation.DataSource = null;
-                gridViewLocationTreatment.BeginUpdate();
+                treeList1.BeginUpdate();
                 apiResult = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.HIS_LOCATION_STORE>>("api/HisLocationStore/Get", ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResult != null)
                 {
                     var data = (List<MOS.EFMODEL.DataModels.HIS_LOCATION_STORE>)apiResult.Data;
+                    listLocationStore = data.Where(o => o.PARENT_ID == null || data.Exists(p => p.PARENT_ID == o.ID)).ToList();
+
+                    this.InitComboParentID();
+
                     dnNavigation.DataSource = data;
-                    gridViewLocationTreatment.GridControl.DataSource = data;
+
+                    treeList1.KeyFieldName = "ID";
+                    treeList1.ParentFieldName = "PARENT_ID";
+                    treeList1.DataSource = data;
+
                     rowCount = (data == null ? 0 : data.Count);
                     dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                 }
-                gridViewLocationTreatment.EndUpdate();
+                treeList1.EndUpdate();
 
                 #region Process has exception
                 SessionManager.ProcessTokenLost(paramCommon);
@@ -268,6 +278,22 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+
+        private void InitComboParentID()
+        {
+            try
+            {
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("LOCATION_STORE_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("LOCATION_STORE_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("LOCATION_STORE_NAME", "ID", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboParent, listLocationStore, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -668,24 +694,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
 
         #endregion
 
-        private void gridViewLocationTreatment_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var rowData = (MOS.EFMODEL.DataModels.HIS_LOCATION_STORE)gridViewLocationTreatment.GetFocusedRow();
-                if (rowData != null)
-                {
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rowData), rowData));
-                    ChangedDataRow(rowData);
-                }
-                Inventec.Common.Logging.LogSystem.Warn("Log 1");
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void ChangedDataRow(HIS_LOCATION_STORE data)
         {
             try
@@ -701,236 +709,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                     btnEdit.Enabled = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
                     this.currentData = data;
                     positionHandle = -1;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void btnGLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            CommonParam param = new CommonParam();
-            HIS_LOCATION_STORE result = new HIS_LOCATION_STORE();
-            bool success = false;
-            try
-            {
-
-                HIS_LOCATION_STORE data = (HIS_LOCATION_STORE)gridViewLocationTreatment.GetFocusedRow();
-                WaitingManager.Show();
-                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_LOCATION_STORE>("api/HisLocationStore/Changelock", ApiConsumers.MosConsumer, data.ID, param);
-                WaitingManager.Hide();
-                if (result != null)
-                {
-                    success = true;
-                    FillDataToGridControl();
-                }
-
-                #region Hien thi message thong bao
-                MessageManager.Show(this, param, success);
-                #endregion
-
-                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
-                SessionManager.ProcessTokenLost(param);
-                #endregion
-            }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void btnGUnLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            CommonParam param = new CommonParam();
-            HIS_LOCATION_STORE result = new HIS_LOCATION_STORE();
-            bool success = false;
-            try
-            {
-
-                HIS_LOCATION_STORE data = (HIS_LOCATION_STORE)gridViewLocationTreatment.GetFocusedRow();
-                WaitingManager.Show();
-                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_LOCATION_STORE>("api/HisLocationStore/Changelock", ApiConsumers.MosConsumer, data.ID, param);
-                WaitingManager.Hide();
-                if (result != null)
-                {
-                    success = true;
-                    FillDataToGridControl();
-                }
-
-                #region Hien thi message thong bao
-                MessageManager.Show(this, param, success);
-                #endregion
-
-                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
-                SessionManager.ProcessTokenLost(param);
-                #endregion
-            }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void btnGDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            try
-            {
-                var rowData = (MOS.EFMODEL.DataModels.HIS_LOCATION_STORE)gridViewLocationTreatment.GetFocusedRow();
-                if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    WaitingManager.Show();
-                    if (rowData != null)
-                    {
-                        bool success = false;
-                        CommonParam param = new CommonParam();
-                        success = new BackendAdapter(param).Post<bool>("api/HisLocationStore/Delete", ApiConsumers.MosConsumer, rowData.ID, param);
-                        if (success)
-                        {
-                            BackendDataWorker.Reset<HIS_LOCATION_STORE>();
-                            FillDataToGridControl();
-                            btnReset_Click(null, null);
-
-
-                        }
-                        MessageManager.Show(this, param, success);
-                    }
-                    WaitingManager.Hide();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void gridViewLocationTreatment_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
-        {
-            try
-            {
-                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                if (e.RowHandle >= 0)
-                {
-
-                    HIS_LOCATION_STORE data = (HIS_LOCATION_STORE)((IList)((BaseView)sender).DataSource)[e.RowHandle];
-                    if (e.Column.FieldName == "LOCK")
-                    {
-                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? btnGUnLock : btnGLock);
-
-                    }
-                    else if (e.Column.FieldName == "DELETE")
-                    {
-                        try
-                        {
-                            if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                                e.RepositoryItem = btnGDelete;
-                            else
-                                e.RepositoryItem = btnGDisableDelete;
-
-                        }
-                        catch (Exception ex)
-                        {
-
-                            Inventec.Common.Logging.LogSystem.Error(ex);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void gridViewLocationTreatment_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
-        {
-            try
-            {
-                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
-                {
-                    MOS.EFMODEL.DataModels.HIS_LOCATION_STORE pData = (MOS.EFMODEL.DataModels.HIS_LOCATION_STORE)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                    short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
-                    if (e.Column.FieldName == "STT")
-                    {
-                        e.Value = e.ListSourceRowIndex + 1 + startPage;
-                    }
-                    else if (e.Column.FieldName == "CREATE_TIME_STR")
-                    {
-                        try
-                        {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)pData.CREATE_TIME) ?? "";
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Error(ex);
-                        }
-                    }
-                    else if (e.Column.FieldName == "MODIFIER_TIME_STR")
-                    {
-                        try
-                        {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)pData.MODIFY_TIME) ?? "";
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Error(ex);
-                        }
-                    }
-
-                    else if (e.Column.FieldName == "STATUS")
-                    {
-                        try
-                        {
-                            if (status == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
-                                e.Value = "Hoạt động";
-                            else
-                                e.Value = "Tạm khóa";
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Error(ex);
-                        }
-                    }
-                    else if (e.Column.FieldName == "DATA_STORE_STR")
-                    {
-                        try
-                        {
-                            var datastore = listDataStore.FirstOrDefault(o => o.ID == pData.DATA_STORE_ID);
-                            e.Value = datastore != null ? datastore.DATA_STORE_NAME : "";
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Error(ex);
-                        }
-                    }
-
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
-        private void gridViewLocationTreatment_RowCellStyle(object sender, DevExpress.XtraGrid.Views.Grid.RowCellStyleEventArgs e)
-        {
-            try
-            {
-                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                if (e.RowHandle >= 0)
-                {
-                    HIS_LOCATION_STORE data = (HIS_LOCATION_STORE)((IList)((BaseView)sender).DataSource)[e.RowHandle];
-                    if (e.Column.FieldName == "STATUS")
-                    {
-                        if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
-                            e.Appearance.ForeColor = Color.Red;
-                        else
-                            e.Appearance.ForeColor = Color.Green;
-                    }
                 }
             }
             catch (Exception ex)
@@ -980,13 +758,13 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                 }
                 else if (e.KeyCode == Keys.Down)
                 {
-                    gridViewLocationTreatment.Focus();
-                    gridViewLocationTreatment.FocusedRowHandle = 0;
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_LOCATION_STORE)gridViewLocationTreatment.GetFocusedRow();
-                    if (rowData != null)
-                    {
-                        ChangedDataRow(rowData);
-                    }
+                    //gridViewLocationTreatment.Focus();
+                    //gridViewLocationTreatment.FocusedRowHandle = 0;
+                    //var rowData = (MOS.EFMODEL.DataModels.HIS_LOCATION_STORE)gridViewLocationTreatment.GetFocusedRow();
+                    //if (rowData != null)
+                    //{
+                    //    ChangedDataRow(rowData);
+                    //}
                 }
             }
             catch (Exception ex)
@@ -1091,6 +869,178 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                 {
                     cboDataStore.EditValue = null;
                     txtDataStoreCode.Text = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void treeList1_CustomNodeCellEdit(object sender, DevExpress.XtraTreeList.GetCustomNodeCellEditEventArgs e)
+        {
+            try
+            {
+                var data = treeList1.GetDataRecordByNode(e.Node);
+                if (data != null && data is HIS_LOCATION_STORE)
+                {
+                    HIS_LOCATION_STORE rowData = data as HIS_LOCATION_STORE;
+                    if (rowData == null) return;
+                    else if (e.Column.FieldName == "LOCK")
+                    {
+                        e.RepositoryItem = (rowData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? unLockT : LockT);
+                    }
+                    else if (e.Column.FieldName == "Delete")
+                    {
+                        try
+                        {
+                            if (rowData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                                e.RepositoryItem = DeleteE;
+                            else
+                                e.RepositoryItem = DeleteD;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void treeList1_CustomUnboundColumnData(object sender, DevExpress.XtraTreeList.TreeListCustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData)
+                {
+                    HIS_LOCATION_STORE pData = (HIS_LOCATION_STORE)e.Row;
+                    short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
+                    if (pData == null || this.treeList1 == null) return;
+
+                    if (e.Column.FieldName == "CREATE_TIME_STR")
+                    {
+                        try
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(pData.CREATE_TIME.ToString()));
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay tao CREATE_TIME", ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "MODIFIER_TIME_STR")
+                    {
+                        try
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(pData.MODIFY_TIME.ToString()));
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay tao MODIFY_TIME", ex);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LockT_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            CommonParam param = new CommonParam();
+            bool result = false;
+            HIS_LOCATION_STORE success = new HIS_LOCATION_STORE();
+            try
+            {
+                var data = treeList1.GetDataRecordByNode(treeList1.FocusedNode);
+                HIS_LOCATION_STORE rowData = data as HIS_LOCATION_STORE;
+                if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    WaitingManager.Show();
+                    success = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_LOCATION_STORE>("api/HisLocationStore/Changelock", ApiConsumers.MosConsumer, rowData.ID, param);
+                    WaitingManager.Hide();
+                    if (success != null)
+                    {
+                        BackendDataWorker.Reset<HIS_LOCATION_STORE>();
+                        result = true;
+                        FillDataToGridControl();
+                    }
+                    MessageManager.Show(this.ParentForm, param, result);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void unLockT_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            CommonParam param = new CommonParam();
+            HIS_LOCATION_STORE result = new HIS_LOCATION_STORE();
+            bool success = false;
+            try
+            {
+
+                var data = treeList1.GetDataRecordByNode(treeList1.FocusedNode);
+                HIS_LOCATION_STORE rowData = data as HIS_LOCATION_STORE;
+                WaitingManager.Show();
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_LOCATION_STORE>("api/HisLocationStore/Changelock", ApiConsumers.MosConsumer, rowData.ID, param);
+                WaitingManager.Hide();
+                if (result != null)
+                {
+                    success = true;
+                    FillDataToGridControl();
+                }
+
+                #region Hien thi message thong bao
+                MessageManager.Show(this, param, success);
+                #endregion
+
+                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
+                SessionManager.ProcessTokenLost(param);
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void DeleteE_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var data = treeList1.GetDataRecordByNode(treeList1.FocusedNode);
+                HIS_LOCATION_STORE rowData = data as HIS_LOCATION_STORE;
+                if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    WaitingManager.Show();
+                    if (rowData != null)
+                    {
+                        bool success = false;
+                        CommonParam param = new CommonParam();
+                        success = new BackendAdapter(param).Post<bool>("api/HisLocationStore/Delete", ApiConsumers.MosConsumer, rowData.ID, param);
+                        if (success)
+                        {
+                            BackendDataWorker.Reset<HIS_LOCATION_STORE>();
+                            FillDataToGridControl();
+                            btnReset_Click(null, null);
+
+
+                        }
+                        MessageManager.Show(this, param, success);
+                    }
+                    WaitingManager.Hide();
                 }
             }
             catch (Exception ex)

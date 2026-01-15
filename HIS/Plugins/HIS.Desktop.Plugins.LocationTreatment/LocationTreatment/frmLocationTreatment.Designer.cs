@@ -45,33 +45,55 @@ namespace HIS.Desktop.Plugins.LocationTreatment
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmLocationTreatment));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.treeList1 = new DevExpress.XtraTreeList.TreeList();
+            this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn2 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn3 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn5 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn6 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn7 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn8 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn9 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn10 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn11 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn12 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.LockT = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.unLockT = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.DeleteD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.DeleteE = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
-            this.txtDataStoreCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.spinMax = new DevExpress.XtraEditors.SpinEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bar2 = new DevExpress.XtraBars.Bar();
+            this.txtPrefix = new DevExpress.XtraEditors.TextEdit();
+            this.cboParent = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.txtDataStoreCode = new DevExpress.XtraEditors.TextEdit();
             this.btnReset = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
@@ -88,67 +110,41 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.txtSearch = new DevExpress.XtraEditors.TextEdit();
-            this.gridControlLocationTreatment = new DevExpress.XtraGrid.GridControl();
-            this.gridViewLocationTreatment = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumnSTT = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnName = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnDataStore = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnStatus = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnCreatTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnCreator = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnEditTime = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumnEditor = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.btnGLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.btnGDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.btnGDisableDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.btnGUnLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcEditorInfoItem = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dnNavigation = new DevExpress.XtraEditors.DataNavigator();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.cboParent = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.txtPrefix = new DevExpress.XtraEditors.TextEdit();
-            this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.spinMax = new DevExpress.XtraEditors.SpinEdit();
-            this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.treeListLocationTreatment = new DevExpress.XtraTreeList.TreeList();
-            this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.treeListColumn2 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn3 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn4 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn5 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn6 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn7 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn8 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn9 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn10 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn11 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn12 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LockT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.unLockT)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DeleteD)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DeleteE)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtDataStoreCode.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinMax.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPrefix.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboParent.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDataStoreCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDataStore.Properties)).BeginInit();
@@ -162,41 +158,28 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlLocationTreatment)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewLocationTreatment)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGLock)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGDelete)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGDisableDelete)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGUnLock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfoItem)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboParent.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPrefix.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinMax.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.treeListLocationTreatment)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl2
             // 
-            this.layoutControl2.Controls.Add(this.treeListLocationTreatment);
+            this.layoutControl2.Controls.Add(this.treeList1);
             this.layoutControl2.Controls.Add(this.lcEditorInfo);
             this.layoutControl2.Controls.Add(this.ucPaging);
             this.layoutControl2.Controls.Add(this.btnSearch);
             this.layoutControl2.Controls.Add(this.txtSearch);
-            this.layoutControl2.Controls.Add(this.gridControlLocationTreatment);
             this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl2.Location = new System.Drawing.Point(0, 49);
             this.layoutControl2.Name = "layoutControl2";
@@ -204,6 +187,181 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.layoutControl2.Size = new System.Drawing.Size(1184, 462);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl1";
+            // 
+            // treeList1
+            // 
+            this.treeList1.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
+            this.treeListColumn1,
+            this.treeListColumn2,
+            this.treeListColumn3,
+            this.treeListColumn4,
+            this.treeListColumn5,
+            this.treeListColumn6,
+            this.treeListColumn7,
+            this.treeListColumn8,
+            this.treeListColumn9,
+            this.treeListColumn10,
+            this.treeListColumn11,
+            this.treeListColumn12});
+            this.treeList1.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.treeList1.Location = new System.Drawing.Point(12, 38);
+            this.treeList1.Name = "treeList1";
+            this.treeList1.OptionsView.AutoWidth = false;
+            this.treeList1.OptionsView.ShowIndicator = false;
+            this.treeList1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.LockT,
+            this.unLockT,
+            this.DeleteD,
+            this.DeleteE});
+            this.treeList1.Size = new System.Drawing.Size(810, 379);
+            this.treeList1.TabIndex = 10;
+            this.treeList1.CustomNodeCellEdit += new DevExpress.XtraTreeList.GetCustomNodeCellEditEventHandler(this.treeList1_CustomNodeCellEdit);
+            this.treeList1.CustomUnboundColumnData += new DevExpress.XtraTreeList.CustomColumnDataEventHandler(this.treeList1_CustomUnboundColumnData);
+            // 
+            // treeListColumn1
+            // 
+            this.treeListColumn1.Caption = " ";
+            this.treeListColumn1.FieldName = "LOCK";
+            this.treeListColumn1.Fixed = DevExpress.XtraTreeList.Columns.FixedStyle.Left;
+            this.treeListColumn1.Name = "treeListColumn1";
+            this.treeListColumn1.ToolTip = "Lock";
+            this.treeListColumn1.Visible = true;
+            this.treeListColumn1.VisibleIndex = 0;
+            // 
+            // treeListColumn2
+            // 
+            this.treeListColumn2.Caption = " ";
+            this.treeListColumn2.FieldName = "DELETE";
+            this.treeListColumn2.Fixed = DevExpress.XtraTreeList.Columns.FixedStyle.Left;
+            this.treeListColumn2.Name = "treeListColumn2";
+            this.treeListColumn2.ToolTip = "Xóa";
+            this.treeListColumn2.Visible = true;
+            this.treeListColumn2.VisibleIndex = 1;
+            // 
+            // treeListColumn3
+            // 
+            this.treeListColumn3.Caption = "Mã";
+            this.treeListColumn3.FieldName = "LOCATION_STORE_CODE";
+            this.treeListColumn3.Name = "treeListColumn3";
+            this.treeListColumn3.OptionsColumn.AllowEdit = false;
+            this.treeListColumn3.Visible = true;
+            this.treeListColumn3.VisibleIndex = 2;
+            // 
+            // treeListColumn4
+            // 
+            this.treeListColumn4.Caption = "Tên";
+            this.treeListColumn4.FieldName = "LOCATION_STORE_NAME";
+            this.treeListColumn4.Name = "treeListColumn4";
+            this.treeListColumn4.OptionsColumn.AllowEdit = false;
+            this.treeListColumn4.Visible = true;
+            this.treeListColumn4.VisibleIndex = 3;
+            // 
+            // treeListColumn5
+            // 
+            this.treeListColumn5.Caption = "Tủ bệnh án";
+            this.treeListColumn5.FieldName = "DATA_STORE_STR";
+            this.treeListColumn5.Name = "treeListColumn5";
+            this.treeListColumn5.OptionsColumn.AllowEdit = false;
+            this.treeListColumn5.Visible = true;
+            this.treeListColumn5.VisibleIndex = 4;
+            // 
+            // treeListColumn6
+            // 
+            this.treeListColumn6.Caption = "Trạng thái";
+            this.treeListColumn6.FieldName = "STATUS";
+            this.treeListColumn6.Name = "treeListColumn6";
+            this.treeListColumn6.OptionsColumn.AllowEdit = false;
+            this.treeListColumn6.Visible = true;
+            this.treeListColumn6.VisibleIndex = 5;
+            // 
+            // treeListColumn7
+            // 
+            this.treeListColumn7.Caption = "Thời gian tạo";
+            this.treeListColumn7.FieldName = "CREATE_TIME_STR";
+            this.treeListColumn7.Name = "treeListColumn7";
+            this.treeListColumn7.OptionsColumn.AllowEdit = false;
+            this.treeListColumn7.Visible = true;
+            this.treeListColumn7.VisibleIndex = 6;
+            // 
+            // treeListColumn8
+            // 
+            this.treeListColumn8.Caption = "Người tạo";
+            this.treeListColumn8.FieldName = "CREATOR";
+            this.treeListColumn8.Name = "treeListColumn8";
+            this.treeListColumn8.OptionsColumn.AllowEdit = false;
+            this.treeListColumn8.Visible = true;
+            this.treeListColumn8.VisibleIndex = 7;
+            // 
+            // treeListColumn9
+            // 
+            this.treeListColumn9.Caption = "Thời gian sửa";
+            this.treeListColumn9.FieldName = "MODIFIER_TIME_STR";
+            this.treeListColumn9.Name = "treeListColumn9";
+            this.treeListColumn9.OptionsColumn.AllowEdit = false;
+            this.treeListColumn9.Visible = true;
+            this.treeListColumn9.VisibleIndex = 8;
+            // 
+            // treeListColumn10
+            // 
+            this.treeListColumn10.Caption = "Người sửa";
+            this.treeListColumn10.FieldName = "MODIFIER";
+            this.treeListColumn10.Name = "treeListColumn10";
+            this.treeListColumn10.OptionsColumn.AllowEdit = false;
+            this.treeListColumn10.Visible = true;
+            this.treeListColumn10.VisibleIndex = 9;
+            // 
+            // treeListColumn11
+            // 
+            this.treeListColumn11.Caption = "Tiền tố";
+            this.treeListColumn11.FieldName = "PREFIX";
+            this.treeListColumn11.Name = "treeListColumn11";
+            this.treeListColumn11.OptionsColumn.AllowEdit = false;
+            this.treeListColumn11.Visible = true;
+            this.treeListColumn11.VisibleIndex = 10;
+            // 
+            // treeListColumn12
+            // 
+            this.treeListColumn12.Caption = "Số ô tối đa";
+            this.treeListColumn12.FieldName = "MAX_CHILD";
+            this.treeListColumn12.Name = "treeListColumn12";
+            this.treeListColumn12.Visible = true;
+            this.treeListColumn12.VisibleIndex = 11;
+            // 
+            // LockT
+            // 
+            this.LockT.AutoHeight = false;
+            this.LockT.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.LocationTreatment.Properties.Resources.mo_khoa, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            this.LockT.Name = "LockT";
+            this.LockT.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.LockT.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.LockT_ButtonClick);
+            // 
+            // unLockT
+            // 
+            this.unLockT.AccessibleDescription = "";
+            this.unLockT.AutoHeight = false;
+            this.unLockT.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.LocationTreatment.Properties.Resources.khoa, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            this.unLockT.Name = "unLockT";
+            this.unLockT.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.unLockT.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.unLockT_ButtonClick);
+            // 
+            // DeleteD
+            // 
+            this.DeleteD.AutoHeight = false;
+            this.DeleteD.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("DeleteD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            this.DeleteD.Name = "DeleteD";
+            this.DeleteD.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // DeleteE
+            // 
+            this.DeleteE.AutoHeight = false;
+            this.DeleteE.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("DeleteE.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            this.DeleteE.Name = "DeleteE";
+            this.DeleteE.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.DeleteE.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.DeleteE_ButtonClick);
             // 
             // lcEditorInfo
             // 
@@ -224,15 +382,21 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.lcEditorInfo.TabIndex = 8;
             this.lcEditorInfo.Text = "layoutControl2";
             // 
-            // txtDataStoreCode
+            // spinMax
             // 
-            this.txtDataStoreCode.Location = new System.Drawing.Point(117, 50);
-            this.txtDataStoreCode.MenuManager = this.barManager1;
-            this.txtDataStoreCode.Name = "txtDataStoreCode";
-            this.txtDataStoreCode.Size = new System.Drawing.Size(61, 20);
-            this.txtDataStoreCode.StyleController = this.lcEditorInfo;
-            this.txtDataStoreCode.TabIndex = 9;
-            this.txtDataStoreCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDataStoreCode_PreviewKeyDown);
+            this.spinMax.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinMax.Location = new System.Drawing.Point(117, 122);
+            this.spinMax.MenuManager = this.barManager1;
+            this.spinMax.Name = "spinMax";
+            this.spinMax.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinMax.Size = new System.Drawing.Size(227, 20);
+            this.spinMax.StyleController = this.lcEditorInfo;
+            this.spinMax.TabIndex = 13;
             // 
             // barManager1
             // 
@@ -304,6 +468,48 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.bar2.OptionsBar.UseWholeRow = true;
             this.bar2.Text = "Main menu";
             this.bar2.Visible = false;
+            // 
+            // txtPrefix
+            // 
+            this.txtPrefix.Location = new System.Drawing.Point(117, 98);
+            this.txtPrefix.MenuManager = this.barManager1;
+            this.txtPrefix.Name = "txtPrefix";
+            this.txtPrefix.Size = new System.Drawing.Size(227, 20);
+            this.txtPrefix.StyleController = this.lcEditorInfo;
+            this.txtPrefix.TabIndex = 12;
+            // 
+            // cboParent
+            // 
+            this.cboParent.Location = new System.Drawing.Point(117, 74);
+            this.cboParent.MenuManager = this.barManager1;
+            this.cboParent.Name = "cboParent";
+            this.cboParent.Properties.AutoComplete = false;
+            this.cboParent.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboParent.Properties.NullText = "";
+            this.cboParent.Properties.NullValuePromptShowForEmptyValue = true;
+            this.cboParent.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboParent.Properties.View = this.customGridViewWithFilterMultiColumn1;
+            this.cboParent.Size = new System.Drawing.Size(227, 20);
+            this.cboParent.StyleController = this.lcEditorInfo;
+            this.cboParent.TabIndex = 11;
+            // 
+            // customGridViewWithFilterMultiColumn1
+            // 
+            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
+            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
+            // 
+            // txtDataStoreCode
+            // 
+            this.txtDataStoreCode.Location = new System.Drawing.Point(117, 50);
+            this.txtDataStoreCode.MenuManager = this.barManager1;
+            this.txtDataStoreCode.Name = "txtDataStoreCode";
+            this.txtDataStoreCode.Size = new System.Drawing.Size(61, 20);
+            this.txtDataStoreCode.StyleController = this.lcEditorInfo;
+            this.txtDataStoreCode.TabIndex = 9;
+            this.txtDataStoreCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtDataStoreCode_PreviewKeyDown);
             // 
             // btnReset
             // 
@@ -497,6 +703,45 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
+            // layoutControlItem7
+            // 
+            this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem7.Control = this.cboParent;
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem7.Name = "layoutControlItem7";
+            this.layoutControlItem7.Size = new System.Drawing.Size(336, 24);
+            this.layoutControlItem7.Text = "Vị trí cha:";
+            this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem7.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem7.TextToControlDistance = 5;
+            // 
+            // layoutControlItem11
+            // 
+            this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem11.Control = this.txtPrefix;
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 96);
+            this.layoutControlItem11.Name = "layoutControlItem11";
+            this.layoutControlItem11.Size = new System.Drawing.Size(336, 24);
+            this.layoutControlItem11.Text = "Tiền tố:";
+            this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem11.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem11.TextToControlDistance = 5;
+            // 
+            // layoutControlItem12
+            // 
+            this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem12.Control = this.spinMax;
+            this.layoutControlItem12.Location = new System.Drawing.Point(0, 120);
+            this.layoutControlItem12.Name = "layoutControlItem12";
+            this.layoutControlItem12.Size = new System.Drawing.Size(336, 24);
+            this.layoutControlItem12.Text = "Số ô tối đa:";
+            this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem12.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem12.TextToControlDistance = 5;
+            // 
             // ucPaging
             // 
             this.ucPaging.Location = new System.Drawing.Point(12, 421);
@@ -506,7 +751,7 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(545, 12);
+            this.btnSearch.Location = new System.Drawing.Point(683, 12);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(116, 22);
             this.btnSearch.StyleController = this.layoutControl2;
@@ -516,247 +761,45 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(206, 12);
+            this.txtSearch.Location = new System.Drawing.Point(12, 12);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.txtSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtSearch.Size = new System.Drawing.Size(335, 20);
+            this.txtSearch.Size = new System.Drawing.Size(667, 20);
             this.txtSearch.StyleController = this.layoutControl2;
             this.txtSearch.TabIndex = 5;
             this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
-            // 
-            // gridControlLocationTreatment
-            // 
-            this.gridControlLocationTreatment.Location = new System.Drawing.Point(206, 38);
-            this.gridControlLocationTreatment.MainView = this.gridViewLocationTreatment;
-            this.gridControlLocationTreatment.Name = "gridControlLocationTreatment";
-            this.gridControlLocationTreatment.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.btnGLock,
-            this.btnGDelete,
-            this.btnGDisableDelete,
-            this.btnGUnLock});
-            this.gridControlLocationTreatment.Size = new System.Drawing.Size(616, 379);
-            this.gridControlLocationTreatment.TabIndex = 4;
-            this.gridControlLocationTreatment.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewLocationTreatment});
-            // 
-            // gridViewLocationTreatment
-            // 
-            this.gridViewLocationTreatment.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumnSTT,
-            this.gridColumn2,
-            this.gridColumn3,
-            this.gridColumnCode,
-            this.gridColumnName,
-            this.gridColumnDataStore,
-            this.gridColumnStatus,
-            this.gridColumnCreatTime,
-            this.gridColumnCreator,
-            this.gridColumnEditTime,
-            this.gridColumnEditor});
-            this.gridViewLocationTreatment.GridControl = this.gridControlLocationTreatment;
-            this.gridViewLocationTreatment.Name = "gridViewLocationTreatment";
-            this.gridViewLocationTreatment.OptionsView.ColumnAutoWidth = false;
-            this.gridViewLocationTreatment.OptionsView.ShowGroupPanel = false;
-            this.gridViewLocationTreatment.OptionsView.ShowIndicator = false;
-            this.gridViewLocationTreatment.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewLocationTreatment_RowCellStyle);
-            this.gridViewLocationTreatment.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewLocationTreatment_CustomRowCellEdit);
-            this.gridViewLocationTreatment.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewLocationTreatment_CustomUnboundColumnData);
-            this.gridViewLocationTreatment.Click += new System.EventHandler(this.gridViewLocationTreatment_Click);
-            // 
-            // gridColumnSTT
-            // 
-            this.gridColumnSTT.Caption = "STT";
-            this.gridColumnSTT.FieldName = "STT";
-            this.gridColumnSTT.Name = "gridColumnSTT";
-            this.gridColumnSTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnSTT.Visible = true;
-            this.gridColumnSTT.VisibleIndex = 0;
-            this.gridColumnSTT.Width = 40;
-            // 
-            // gridColumn2
-            // 
-            this.gridColumn2.Caption = "LOCK";
-            this.gridColumn2.FieldName = "LOCK";
-            this.gridColumn2.Name = "gridColumn2";
-            this.gridColumn2.OptionsColumn.ShowCaption = false;
-            this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 1;
-            this.gridColumn2.Width = 30;
-            // 
-            // gridColumn3
-            // 
-            this.gridColumn3.Caption = "DELETE";
-            this.gridColumn3.FieldName = "DELETE";
-            this.gridColumn3.Name = "gridColumn3";
-            this.gridColumn3.OptionsColumn.ShowCaption = false;
-            this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 2;
-            this.gridColumn3.Width = 30;
-            // 
-            // gridColumnCode
-            // 
-            this.gridColumnCode.Caption = "Mã";
-            this.gridColumnCode.FieldName = "LOCATION_STORE_CODE";
-            this.gridColumnCode.Name = "gridColumnCode";
-            this.gridColumnCode.OptionsColumn.AllowEdit = false;
-            this.gridColumnCode.Visible = true;
-            this.gridColumnCode.VisibleIndex = 3;
-            this.gridColumnCode.Width = 120;
-            // 
-            // gridColumnName
-            // 
-            this.gridColumnName.Caption = "Tên";
-            this.gridColumnName.FieldName = "LOCATION_STORE_NAME";
-            this.gridColumnName.Name = "gridColumnName";
-            this.gridColumnName.OptionsColumn.AllowEdit = false;
-            this.gridColumnName.Visible = true;
-            this.gridColumnName.VisibleIndex = 4;
-            this.gridColumnName.Width = 170;
-            // 
-            // gridColumnDataStore
-            // 
-            this.gridColumnDataStore.Caption = "Tủ bệnh án";
-            this.gridColumnDataStore.FieldName = "DATA_STORE_STR";
-            this.gridColumnDataStore.Name = "gridColumnDataStore";
-            this.gridColumnDataStore.OptionsColumn.AllowEdit = false;
-            this.gridColumnDataStore.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnDataStore.Visible = true;
-            this.gridColumnDataStore.VisibleIndex = 5;
-            this.gridColumnDataStore.Width = 120;
-            // 
-            // gridColumnStatus
-            // 
-            this.gridColumnStatus.Caption = "Trạng thái";
-            this.gridColumnStatus.FieldName = "STATUS";
-            this.gridColumnStatus.Name = "gridColumnStatus";
-            this.gridColumnStatus.OptionsColumn.AllowEdit = false;
-            this.gridColumnStatus.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
-            this.gridColumnStatus.OptionsFilter.AllowFilter = false;
-            this.gridColumnStatus.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnStatus.Visible = true;
-            this.gridColumnStatus.VisibleIndex = 6;
-            this.gridColumnStatus.Width = 120;
-            // 
-            // gridColumnCreatTime
-            // 
-            this.gridColumnCreatTime.Caption = "Thời gian tạo";
-            this.gridColumnCreatTime.FieldName = "CREATE_TIME_STR";
-            this.gridColumnCreatTime.Name = "gridColumnCreatTime";
-            this.gridColumnCreatTime.OptionsColumn.AllowEdit = false;
-            this.gridColumnCreatTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnCreatTime.Visible = true;
-            this.gridColumnCreatTime.VisibleIndex = 7;
-            this.gridColumnCreatTime.Width = 120;
-            // 
-            // gridColumnCreator
-            // 
-            this.gridColumnCreator.Caption = "Người tạo";
-            this.gridColumnCreator.FieldName = "CREATOR";
-            this.gridColumnCreator.Name = "gridColumnCreator";
-            this.gridColumnCreator.OptionsColumn.AllowEdit = false;
-            this.gridColumnCreator.Visible = true;
-            this.gridColumnCreator.VisibleIndex = 8;
-            this.gridColumnCreator.Width = 120;
-            // 
-            // gridColumnEditTime
-            // 
-            this.gridColumnEditTime.Caption = "Thời gian sửa";
-            this.gridColumnEditTime.FieldName = "MODIFIER_TIME_STR";
-            this.gridColumnEditTime.Name = "gridColumnEditTime";
-            this.gridColumnEditTime.OptionsColumn.AllowEdit = false;
-            this.gridColumnEditTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumnEditTime.Visible = true;
-            this.gridColumnEditTime.VisibleIndex = 9;
-            this.gridColumnEditTime.Width = 120;
-            // 
-            // gridColumnEditor
-            // 
-            this.gridColumnEditor.Caption = "Người sửa";
-            this.gridColumnEditor.FieldName = "MODIFIER";
-            this.gridColumnEditor.Name = "gridColumnEditor";
-            this.gridColumnEditor.OptionsColumn.AllowEdit = false;
-            this.gridColumnEditor.Visible = true;
-            this.gridColumnEditor.VisibleIndex = 10;
-            this.gridColumnEditor.Width = 120;
-            // 
-            // btnGLock
-            // 
-            this.btnGLock.AutoHeight = false;
-            this.btnGLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
-            this.btnGLock.Name = "btnGLock";
-            this.btnGLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.btnGLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnGLock_ButtonClick);
-            // 
-            // btnGDelete
-            // 
-            this.btnGDelete.AutoHeight = false;
-            this.btnGDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
-            this.btnGDelete.Name = "btnGDelete";
-            this.btnGDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.btnGDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnGDelete_ButtonClick);
-            // 
-            // btnGDisableDelete
-            // 
-            this.btnGDisableDelete.AutoHeight = false;
-            this.btnGDisableDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGDisableDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
-            this.btnGDisableDelete.Name = "btnGDisableDelete";
-            this.btnGDisableDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
-            // btnGUnLock
-            // 
-            this.btnGUnLock.AutoHeight = false;
-            this.btnGUnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGUnLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true)});
-            this.btnGUnLock.Name = "btnGUnLock";
-            this.btnGUnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            this.btnGUnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnGUnLock_ButtonClick);
             // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem1,
             this.layoutControlItem2,
             this.layoutControlItem3,
             this.emptySpaceItem1,
             this.layoutControlItem4,
             this.lcEditorInfoItem,
-            this.layoutControlItem13});
+            this.layoutControlItem14});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Size = new System.Drawing.Size(1184, 462);
             this.layoutControlGroup1.TextVisible = false;
             // 
-            // layoutControlItem1
-            // 
-            this.layoutControlItem1.Control = this.gridControlLocationTreatment;
-            this.layoutControlItem1.Location = new System.Drawing.Point(194, 26);
-            this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(620, 383);
-            this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem1.TextVisible = false;
-            // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.txtSearch;
-            this.layoutControlItem2.Location = new System.Drawing.Point(194, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(339, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(671, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSearch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(533, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(671, 0);
             this.layoutControlItem3.MaxSize = new System.Drawing.Size(120, 26);
             this.layoutControlItem3.MinSize = new System.Drawing.Size(120, 26);
             this.layoutControlItem3.Name = "layoutControlItem3";
@@ -768,9 +811,9 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(653, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(791, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(161, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(23, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
@@ -793,6 +836,15 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.lcEditorInfoItem.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.lcEditorInfoItem.TextSize = new System.Drawing.Size(0, 0);
             this.lcEditorInfoItem.TextVisible = false;
+            // 
+            // layoutControlItem14
+            // 
+            this.layoutControlItem14.Control = this.treeList1;
+            this.layoutControlItem14.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem14.Name = "layoutControlItem14";
+            this.layoutControlItem14.Size = new System.Drawing.Size(814, 383);
+            this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem14.TextVisible = false;
             // 
             // barDockControlTop
             // 
@@ -835,217 +887,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             // 
             this.dxErrorProvider.ContainerControl = this;
             // 
-            // cboParent
-            // 
-            this.cboParent.Location = new System.Drawing.Point(117, 74);
-            this.cboParent.MenuManager = this.barManager1;
-            this.cboParent.Name = "cboParent";
-            this.cboParent.Properties.AutoComplete = false;
-            this.cboParent.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboParent.Properties.NullText = "";
-            this.cboParent.Properties.NullValuePromptShowForEmptyValue = true;
-            this.cboParent.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboParent.Properties.View = this.customGridViewWithFilterMultiColumn1;
-            this.cboParent.Size = new System.Drawing.Size(227, 20);
-            this.cboParent.StyleController = this.lcEditorInfo;
-            this.cboParent.TabIndex = 11;
-            // 
-            // layoutControlItem7
-            // 
-            this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem7.Control = this.cboParent;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 72);
-            this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(336, 24);
-            this.layoutControlItem7.Text = "Vị trí cha:";
-            this.layoutControlItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem7.TextSize = new System.Drawing.Size(100, 20);
-            this.layoutControlItem7.TextToControlDistance = 5;
-            // 
-            // customGridViewWithFilterMultiColumn1
-            // 
-            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
-            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
-            // 
-            // txtPrefix
-            // 
-            this.txtPrefix.Location = new System.Drawing.Point(117, 98);
-            this.txtPrefix.MenuManager = this.barManager1;
-            this.txtPrefix.Name = "txtPrefix";
-            this.txtPrefix.Size = new System.Drawing.Size(227, 20);
-            this.txtPrefix.StyleController = this.lcEditorInfo;
-            this.txtPrefix.TabIndex = 12;
-            // 
-            // layoutControlItem11
-            // 
-            this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem11.Control = this.txtPrefix;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 96);
-            this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(336, 24);
-            this.layoutControlItem11.Text = "Tiền tố:";
-            this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem11.TextSize = new System.Drawing.Size(100, 20);
-            this.layoutControlItem11.TextToControlDistance = 5;
-            // 
-            // spinMax
-            // 
-            this.spinMax.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.spinMax.Location = new System.Drawing.Point(117, 122);
-            this.spinMax.MenuManager = this.barManager1;
-            this.spinMax.Name = "spinMax";
-            this.spinMax.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spinMax.Size = new System.Drawing.Size(227, 20);
-            this.spinMax.StyleController = this.lcEditorInfo;
-            this.spinMax.TabIndex = 13;
-            // 
-            // layoutControlItem12
-            // 
-            this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem12.Control = this.spinMax;
-            this.layoutControlItem12.Location = new System.Drawing.Point(0, 120);
-            this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(336, 24);
-            this.layoutControlItem12.Text = "Số ô tối đa:";
-            this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem12.TextSize = new System.Drawing.Size(100, 20);
-            this.layoutControlItem12.TextToControlDistance = 5;
-            // 
-            // treeListLocationTreatment
-            // 
-            this.treeListLocationTreatment.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
-            this.treeListColumn2,
-            this.treeListColumn3,
-            this.treeListColumn4,
-            this.treeListColumn5,
-            this.treeListColumn6,
-            this.treeListColumn1,
-            this.treeListColumn7,
-            this.treeListColumn8,
-            this.treeListColumn9,
-            this.treeListColumn10,
-            this.treeListColumn11,
-            this.treeListColumn12});
-            this.treeListLocationTreatment.Cursor = System.Windows.Forms.Cursors.Default;
-            this.treeListLocationTreatment.Location = new System.Drawing.Point(12, 12);
-            this.treeListLocationTreatment.Name = "treeListLocationTreatment";
-            this.treeListLocationTreatment.Size = new System.Drawing.Size(190, 405);
-            this.treeListLocationTreatment.TabIndex = 9;
-            // 
-            // layoutControlItem13
-            // 
-            this.layoutControlItem13.Control = this.treeListLocationTreatment;
-            this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(194, 409);
-            this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem13.TextVisible = false;
-            // 
-            // treeListColumn2
-            // 
-            this.treeListColumn2.Name = "treeListColumn2";
-            this.treeListColumn2.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
-            this.treeListColumn2.Visible = true;
-            this.treeListColumn2.VisibleIndex = 0;
-            // 
-            // treeListColumn3
-            // 
-            this.treeListColumn3.Name = "treeListColumn3";
-            this.treeListColumn3.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
-            this.treeListColumn3.Visible = true;
-            this.treeListColumn3.VisibleIndex = 1;
-            // 
-            // treeListColumn4
-            // 
-            this.treeListColumn4.Caption = "Mã";
-            this.treeListColumn4.FieldName = "LOCATION_STORE_CODE";
-            this.treeListColumn4.Name = "treeListColumn4";
-            this.treeListColumn4.Visible = true;
-            this.treeListColumn4.VisibleIndex = 2;
-            // 
-            // treeListColumn5
-            // 
-            this.treeListColumn5.Caption = "Tên";
-            this.treeListColumn5.FieldName = "LOCATION_STORE_NAME";
-            this.treeListColumn5.Name = "treeListColumn5";
-            this.treeListColumn5.Visible = true;
-            this.treeListColumn5.VisibleIndex = 3;
-            // 
-            // treeListColumn6
-            // 
-            this.treeListColumn6.Caption = "Tủ bệnh án";
-            this.treeListColumn6.FieldName = "DATA_STORE_STR";
-            this.treeListColumn6.Name = "treeListColumn6";
-            this.treeListColumn6.Visible = true;
-            this.treeListColumn6.VisibleIndex = 4;
-            // 
-            // treeListColumn1
-            // 
-            this.treeListColumn1.Caption = "Trạng thái";
-            this.treeListColumn1.FieldName = "STATUS";
-            this.treeListColumn1.Name = "treeListColumn1";
-            this.treeListColumn1.Visible = true;
-            this.treeListColumn1.VisibleIndex = 5;
-            // 
-            // treeListColumn7
-            // 
-            this.treeListColumn7.Caption = "Thời gian tạo";
-            this.treeListColumn7.FieldName = "CREATE_TIME_STR";
-            this.treeListColumn7.Name = "treeListColumn7";
-            this.treeListColumn7.Visible = true;
-            this.treeListColumn7.VisibleIndex = 6;
-            // 
-            // treeListColumn8
-            // 
-            this.treeListColumn8.Caption = "Người tạo";
-            this.treeListColumn8.FieldName = "CREATOR";
-            this.treeListColumn8.Name = "treeListColumn8";
-            this.treeListColumn8.Visible = true;
-            this.treeListColumn8.VisibleIndex = 7;
-            // 
-            // treeListColumn9
-            // 
-            this.treeListColumn9.Caption = "Thời gian sửa";
-            this.treeListColumn9.FieldName = "MODIFIER_TIME_STR";
-            this.treeListColumn9.Name = "treeListColumn9";
-            this.treeListColumn9.Visible = true;
-            this.treeListColumn9.VisibleIndex = 8;
-            // 
-            // treeListColumn10
-            // 
-            this.treeListColumn10.Caption = "Người sửa";
-            this.treeListColumn10.FieldName = "MODIFIER";
-            this.treeListColumn10.Name = "treeListColumn10";
-            this.treeListColumn10.Visible = true;
-            this.treeListColumn10.VisibleIndex = 9;
-            // 
-            // treeListColumn11
-            // 
-            this.treeListColumn11.Caption = "Tiền tố";
-            this.treeListColumn11.FieldName = "PREFIX";
-            this.treeListColumn11.Name = "treeListColumn11";
-            this.treeListColumn11.Visible = true;
-            this.treeListColumn11.VisibleIndex = 10;
-            // 
-            // treeListColumn12
-            // 
-            this.treeListColumn12.Caption = "Số ô tối đa";
-            this.treeListColumn12.FieldName = "MAX_CHILD";
-            this.treeListColumn12.Name = "treeListColumn12";
-            this.treeListColumn12.Visible = true;
-            this.treeListColumn12.VisibleIndex = 11;
-            // 
             // frmLocationTreatment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1069,10 +910,19 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.Controls.SetChildIndex(this.dnNavigation, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.treeList1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LockT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.unLockT)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DeleteD)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DeleteE)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtDataStoreCode.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinMax.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPrefix.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboParent.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDataStoreCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDataStore.Properties)).EndInit();
@@ -1086,31 +936,19 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlLocationTreatment)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewLocationTreatment)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGLock)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGDelete)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGDisableDelete)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.btnGUnLock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfoItem)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboParent.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.txtPrefix.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spinMax.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.treeListLocationTreatment)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1125,9 +963,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
         private Inventec.UC.Paging.UcPaging ucPaging;
         private DevExpress.XtraEditors.SimpleButton btnSearch;
         private DevExpress.XtraEditors.TextEdit txtSearch;
-        private DevExpress.XtraGrid.GridControl gridControlLocationTreatment;
-        private DevExpress.XtraGrid.Views.Grid.GridView gridViewLocationTreatment;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
@@ -1155,49 +990,38 @@ namespace HIS.Desktop.Plugins.LocationTreatment
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnSTT;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumn3;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnCode;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnName;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnStatus;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnCreatTime;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnCreator;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnEditTime;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnEditor;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnGLock;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnGDelete;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnGDisableDelete;
         private DevExpress.XtraEditors.DataNavigator dnNavigation;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProviderEditorInfo;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider;
-        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnGUnLock;
         private DevExpress.XtraEditors.TextEdit txtDataStoreCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
-        private DevExpress.XtraGrid.Columns.GridColumn gridColumnDataStore;
         private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboDataStore;
         private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridLookUpEditWithFilterMultiColumn1View;
         private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboParent;
         private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
-        private DevExpress.XtraTreeList.TreeList treeListLocationTreatment;
         private DevExpress.XtraEditors.SpinEdit spinMax;
         private DevExpress.XtraEditors.TextEdit txtPrefix;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
+        private DevExpress.XtraTreeList.TreeList treeList1;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn2;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn3;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn4;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn5;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn6;
-        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn7;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn8;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn9;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn10;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn11;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn12;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit LockT;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit unLockT;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit DeleteD;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit DeleteE;
     }
 }
