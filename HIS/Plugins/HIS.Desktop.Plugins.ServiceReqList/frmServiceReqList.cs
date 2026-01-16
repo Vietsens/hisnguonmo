@@ -232,6 +232,38 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private static List<EMR_DOCUMENT> FilterEmrDocumentsByServiceReqCodes(List<EMR_DOCUMENT> emrDocuments, List<string> serviceReqCodes)
+        {
+            try
+            {
+                if (emrDocuments == null || emrDocuments.Count == 0 || serviceReqCodes == null || serviceReqCodes.Count == 0)
+                {
+                    return null;
+                }
+
+                emrDocuments = emrDocuments.Where(o => o.IS_DELETE != 1).ToList();
+
+                var keys = serviceReqCodes
+                    .Where(c => !string.IsNullOrEmpty(c))
+                    .Select(c => "SERVICE_REQ_CODE:" + c)
+                    .ToList();
+
+                if (keys.Count == 0)
+                {
+                    return null;
+                }
+
+                return emrDocuments
+                    .Where(d => !string.IsNullOrEmpty(d.HIS_CODE) && keys.Any(k => d.HIS_CODE.Contains(k)))
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
         private void VisibleColumnPresAmount()
         {
             try
@@ -3018,6 +3050,50 @@ namespace HIS.Desktop.Plugins.ServiceReqList
             {
                 if (listServiceReq != null && listServiceReq.Count > 0)
                 {
+                    // Lấy danh sách văn bản EMR liên quan đến các y lệnh được chọn (theo SERVICE_REQ_CODE)
+                    CommonParam paramEmr = null;
+                    List<EMR_DOCUMENT> emrDocumentsToDelete = null;
+                    try
+                    {
+                        if (HisConfigCFG.AutoDeleteEmrDocumentWhenEditReq == "1")
+                        {
+                            var firstReq = listServiceReq.FirstOrDefault(o => o != null && !string.IsNullOrEmpty(o.TDL_TREATMENT_CODE));
+                            if (firstReq != null)
+                            {
+                                var serviceReqCodes = listServiceReq
+                                    .Where(o => o != null && !string.IsNullOrEmpty(o.SERVICE_REQ_CODE))
+                                    .Select(o => o.SERVICE_REQ_CODE)
+                                    .Distinct()
+                                    .ToList();
+
+                                if (serviceReqCodes != null && serviceReqCodes.Count > 0)
+                                {
+                                    paramEmr = new CommonParam();
+                                    EmrDocumentFilter filter = new EmrDocumentFilter();
+                                    filter.TREATMENT_CODE__EXACT = firstReq.TDL_TREATMENT_CODE;
+
+                                    var resultEmrDocument = new BackendAdapter(paramEmr).Get<List<EMR_DOCUMENT>>(
+                                        "api/EmrDocument/Get", ApiConsumers.EmrConsumer, filter, paramEmr);
+
+                                    emrDocumentsToDelete = FilterEmrDocumentsByServiceReqCodes(resultEmrDocument, serviceReqCodes);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+
+                    // Nếu có văn bản ký liên quan thì phải hỏi xác nhận trước
+                    if (emrDocumentsToDelete != null && emrDocumentsToDelete.Count > 0)
+                    {
+                        if (MessageBox.Show("Y lệnh này đã tồn tại văn bản ký, bạn có muốn hủy dữ liệu?", Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        {
+                            return;
+                        }
+                    }
+
                     if (MessageBox.Show(Resources.ResourceMessage.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong, Resources.ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                     {
                         bool checkParent = false;
@@ -3037,6 +3113,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                         CommonParam param = new CommonParam();
                         bool success = true;
+                        bool emrDeleteSuccess = true;
                         WaitingManager.Show();
 
                         foreach (var item in listServiceReq)
@@ -3047,15 +3124,33 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                             success = success && new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(RequestUriStore.HIS_SERVICE_REQ_DELETE, ApiConsumers.MosConsumer, sdo, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                         }
 
+                        // Xóa các văn bản EMR tương ứng (nếu có)
+                        if (success && paramEmr != null && emrDocumentsToDelete != null && emrDocumentsToDelete.Count > 0)
+                        {
+                            foreach (var doc in emrDocumentsToDelete)
+                            {
+                                emrDeleteSuccess = emrDeleteSuccess && new BackendAdapter(paramEmr)
+                                    .Post<bool>("api/EmrDocument/Delete", ApiConsumers.EmrConsumer, doc.ID, paramEmr);
+                            }
+                        }
+
                         FillDataToGrid();
 
                         WaitingManager.Hide();
                         #region Show message
                         MessageManager.Show(this, param, success);
+                        if (success && paramEmr != null && emrDocumentsToDelete != null && emrDocumentsToDelete.Count > 0)
+                        {
+                            MessageManager.Show(this, paramEmr, emrDeleteSuccess);
+                        }
                         #endregion
 
                         #region Process has exception
                         SessionManager.ProcessTokenLost(param);
+                        if (paramEmr != null)
+                        {
+                            SessionManager.ProcessTokenLost(paramEmr);
+                        }
                         #endregion
                     }
                 }
@@ -3545,7 +3640,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        //zzz
         private async void repositoryItemBtnServiceReqDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
             try
