@@ -1524,7 +1524,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     signFilter.DOCUMENT_IDs = documents.Select(d => d.ID).ToList();
                     allSigns = new BackendAdapter(paramCommon).Get<List<EMR_SIGN>>("api/EmrSign/Get", ApiConsumers.EmrConsumer, signFilter, paramCommon) ?? new List<EMR_SIGN>();
                 }
-
+                List<string> FileJoin = new List<string>();
                 foreach (var doc in orderedDocs)
                 {
                     if (string.IsNullOrEmpty(doc.LAST_VERSION_URL)) continue;
@@ -1601,10 +1601,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             {
                                 try { File.Delete(tempFilePath); } catch { }
                             }
-                            if (!string.IsNullOrEmpty(convertTpPdf) && File.Exists(convertTpPdf))
-                            {
-                                try { File.Delete(convertTpPdf); } catch { }
-                            }
+                            FileJoin.Add(convertTpPdf);
                         }
                         else
                         {
@@ -1655,10 +1652,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             {
                                 try { File.Delete(tempFilePath); } catch { }
                             }
-                            if (!string.IsNullOrEmpty(pdfAddFile) && File.Exists(pdfAddFile))
-                            {
-                                try { File.Delete(pdfAddFile); } catch { }
-                            }
+                            FileJoin.Add(pdfAddFile);
                         }
 
 
@@ -1672,9 +1666,9 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 }
 
                 // Merge chỉ khi IsMerge và không chèn sign
-                if (IsMerge == true && result.Count > 1)
+                if (IsMerge == true && FileJoin.Count > 1)
                 {
-                    result = MergePdfDocumentsNoSign(result);
+                    result = MergePdfDocumentsNoSign(FileJoin);
                 }
                 
             }
@@ -1686,30 +1680,53 @@ namespace HIS.Desktop.Plugins.EmrDocument
             return result;
         }
 
-        private List<EmrDocumentFileSDO> MergePdfDocumentsNoSign(List<EmrDocumentFileSDO> documents)
+        public string ConvertToBase64(Stream stream)
+        {
+            byte[] bytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                bytes = memoryStream.ToArray();
+            }
+
+            string base64 = Convert.ToBase64String(bytes);
+            return base64;
+        }
+
+        private List<EmrDocumentFileSDO> MergePdfDocumentsNoSign(List<string> documents)
         {
             try
             {
                 MemoryStream mergedStream = new MemoryStream();
-                var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(mergedStream);  // Không dùng using
 
-                foreach (var item in documents)
+                string desFileJoined = Utils.GenerateTempFileWithin();
+                Stream currentStream = File.Open(desFileJoined, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+                var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+
+                var pages = new List<int>();
+                foreach (var file in documents)
                 {
-                    if ((item.Extension ?? "").ToLower() == "pdf")
+                    iTextSharp.text.pdf.PdfReader pdfReader = null;
+                    pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                    pages = new List<int>();
+                    for (int i = 0; i <= pdfReader.NumberOfPages; i++)
                     {
-                        byte[] bytes = Convert.FromBase64String(item.Base64Data);
-                        using (PdfReader reader = new PdfReader(bytes))  // Chỉ using cho reader (nó IDisposable)
-                        {
-                            pdfConcat.AddPages(reader);
-                        }
+                        pages.Add(i);
                     }
+                    pdfReader.SelectPages(pages);
+                    pdfConcat.AddPages(pdfReader);
+                    pdfReader.Close();
                 }
+                currentStream.Close();
+                byte[] pdfBytes = File.ReadAllBytes(desFileJoined);
 
-                pdfConcat.Close();  // Close thủ công để flush dữ liệu vào stream
-                mergedStream.Position = 0;  // Reset vị trí để đọc
+                string mergedBase64 = Convert.ToBase64String(pdfBytes);
 
-                string mergedBase64 = Convert.ToBase64String(mergedStream.ToArray());
-
+                try
+                {
+                    pdfConcat.Close();
+                }
+                catch { }
                 return new List<EmrDocumentFileSDO>
                     {
                         new EmrDocumentFileSDO
