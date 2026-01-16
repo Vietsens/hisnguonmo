@@ -2445,6 +2445,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         chkTreatmentFinish.Checked = false;
                         return;
                     }
+                    if (!CheckAssignServiceSimultaneityOption())
+                    {
+                        return;
+                    }
                     SetCheckExecute(true, chkTreatmentFinish, chkExamServiceAdd, chkHospitalize, chkExamFinish);
                     ResetPrintExecuteExt();
 
@@ -3079,14 +3083,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     return;
                 }
-                if (HisConfigCFG.IsEnableEditStartTime == "1" || HisConfigCFG.NotUpdateExecuteLoginNameWhenFinishExam != "1")
+                if (!CheckAssignServiceSimultaneityOption())
                 {
-                    isCheckAssignServiceSimultaneityOption = isCheckAssignSimultaneityOption = true;
-                    CheckAssignServiceSimultaneityOption(true);
-                    if (isCheckAssignServiceSimultaneityOption == false || isCheckAssignSimultaneityOption == false)
-                    {
-                        return;
-                    }
+                    return;
                 }
                 IsPrintExam = false;
                 IsSignExam = false;
@@ -3195,6 +3194,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 if (!valid) return;
                 bool check = CheckIcd(hisServiceReqSDO.TreatmentFinishSDO);
                 if (check == false)
+                {
+                    return;
+                }
+                if (!CheckAssignServiceSimultaneityOption())
                 {
                     return;
                 }
@@ -3660,6 +3663,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 GetUcIcdYHCT();
                 LogSystem.Debug("Valid ICD");
                 if (!ValidIcd(true)) return;
+
+                if (!CheckAssignServiceSimultaneityOption())
+                {
+                    return;
+                }
                 HisServiceReqExamUpdateSDO hisServiceReqSDO = new HisServiceReqExamUpdateSDO();
 
                 ProcessExamServiceReqDTO(ref hisServiceReqSDO);
@@ -4048,6 +4056,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     return;
                 }
+                if (!CheckAssignServiceSimultaneityOption())
+                {
+                    return;
+                }
                 this.onClickSaveFormAsyncForOtherButtonClick();
 
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecute.btnAssignService_Click.2");
@@ -4176,7 +4188,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     return;
                 }
-
+                if (!CheckAssignServiceSimultaneityOption())
+                {
+                    return;
+                }
                 this.onClickSaveFormAsyncForOtherButtonClick();
 
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecute.btnAssignPre_Click.2");
@@ -7956,20 +7971,25 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         }
 
         #endregion
-        bool isCheckAssignServiceSimultaneityOption = false;
-        bool isCheckAssignSimultaneityOption = false;
+        //bool isCheckAssignServiceSimultaneityOption = false;
+        //bool isCheckAssignSimultaneityOption = false;
         bool isCallingApi = false;
-        private void CheckAssignServiceSimultaneityOption(bool saveFinishExam = false)
+        private bool CheckAssignServiceSimultaneityOption(bool save = true)
         {
             try
             {
+                if (!(HisConfigCFG.IsEnableEditStartTime == "1" || HisConfigCFG.NotUpdateExecuteLoginNameWhenFinishExam != "1"))
+                {
+                    return true;
+                }
                 if ((HisConfigCFG.AssignServiceSimultaneityOption != "1" && HisConfigCFG.AssignServiceSimultaneityOption != "2"))
-                    return;
-
+                {
+                    return true;
+                }
                 long treatmentId = this.treatment?.ID ?? this.treatmentId;
                 string loginName = null;
                 long? sereTime = null;
-                if (saveFinishExam)
+                if (save)
                 {
                     if (HisConfigCFG.IsEnableEditStartTime == "1")
                     {
@@ -8025,20 +8045,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 sdo.TreatmentId = treatmentId;
                 sdo.Loginnames = new List<string> { loginName };
                 sdo.SereTimes = new List<long> { sereTime.Value };
-
                 var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
-
                 if (!CheckSereTimes)
                 {
                     if (HisConfigCFG.AssignServiceSimultaneityOption == "1")
                     {
-
-
-                        isCheckAssignServiceSimultaneityOption = false;
-
+                        //isCheckAssignServiceSimultaneityOption = false;
                         MessageManager.Show(param.GetMessage());
                         dtpStartTime.Focus();
-                        return;
+                        return false;
                     }
                     else if (HisConfigCFG.AssignServiceSimultaneityOption == "2")
                     {
@@ -8047,26 +8062,22 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                         if (result == DialogResult.No)
                         {
-
                             if (dtpStartTime != null)
                             {
                                 dtpStartTime.Focus();
                             }
-                            isCheckAssignServiceSimultaneityOption = false;
-                            return;
+                            //isCheckAssignServiceSimultaneityOption = false;
+                            return false;
                         }
-                        isCheckAssignServiceSimultaneityOption = true;
-
+                        //isCheckAssignServiceSimultaneityOption = true;
                     }
-
-
                 }
                 else
                 {
-                    isCheckAssignServiceSimultaneityOption = true;
+                    //isCheckAssignServiceSimultaneityOption = true;
                 }
                 var checkInfos = new List<object>();
-                isCheckAssignSimultaneityOption = false;
+                //isCheckAssignSimultaneityOption = false;
 
 
                 ////   long treatmentId = this.HisServiceReqView?.TREATMENT_ID ?? this.treatmentId;
@@ -8104,53 +8115,41 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                                                 };
 
                 var CheckAssignSimu = new BackendAdapter(param2).Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, sdo2, ProcessLostToken, param2);
-
-
-
                 if (!CheckAssignSimu)
                 {
                     if (HisConfigCFG.AssignSimultaneityOption == "1")
                     {
-
-
-                        isCheckAssignSimultaneityOption = false;
-
+                        //isCheckAssignSimultaneityOption = false;
                         MessageManager.Show(param2.GetMessage());
                         dtpStartTime.Focus();
+                        return false;
                     }
                     else if (HisConfigCFG.AssignSimultaneityOption == "2")
                     {
                         string message = param2.GetMessage() + "Bạn có muốn tiếp tục?";
                         var result = XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
                         if (result == DialogResult.No)
                         {
-                            isCheckAssignSimultaneityOption = false;
-
-
+                            //isCheckAssignSimultaneityOption = false;
                             if (dtpStartTime != null)
                             {
                                 dtpStartTime.Focus();
                             }
-
-                            return;
+                            return false;
                         }
-                        isCheckAssignSimultaneityOption = true;
-
-
+                        //isCheckAssignSimultaneityOption = true;
                     }
-
                 }
                 else
                 {
-                    isCheckAssignSimultaneityOption = true;
+                    //isCheckAssignSimultaneityOption = true;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
+            return true;
         }
 
 
@@ -9421,8 +9420,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
             if (HisConfigCFG.IsEnableEditStartTime == "1")
             {
-                CheckAssignServiceSimultaneityOption();
-
+                CheckAssignServiceSimultaneityOption(false);
             }
         }
         bool AllowManyTreatmentOpeningOption()
