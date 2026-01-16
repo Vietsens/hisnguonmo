@@ -52,10 +52,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dt), dt));
-
-                var oldData = this.ucAddressCombo1.GetValue();
-                string phoneNumber = "";
-                Inventec.Common.Mapper.DataObjectMapper.Map<string>(phoneNumber, oldData.Phone);
                 CommonParam param = new CommonParam();
                 var heinCardData = dt.HeinCardData;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => heinCardData), heinCardData));
@@ -101,7 +97,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         dataAddressPatient.Commune_Code = data.CommuneCode;
                         dataAddressPatient.Commune_Name = data.CommuneName;
                         dataAddressPatient.IsNoDistrict = data.IsNoDistrict;
-                        dataAddressPatient.Phone = oldData.Phone;
                     }
                     dataAddressPatient.Address = heinCardData.Address;
                     this.ucAddressCombo1.SetValue(dataAddressPatient);

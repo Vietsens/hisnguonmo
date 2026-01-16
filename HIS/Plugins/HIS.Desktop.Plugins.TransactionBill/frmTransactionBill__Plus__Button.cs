@@ -86,6 +86,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
         List<string> ErrorElectronicBill = new List<string>();
         string nameFile = "";
+        bool sttCheckGuarantee ;
 
         private bool CheckHastInvoiceCancel()
         {
@@ -794,7 +795,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         }
                     }
                 }
-                else if (success == false)
+                else if (success == false && this.sttCheckGuarantee)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("can not stopSave bill");
                     MessageManager.Show(param, success);
@@ -1018,6 +1019,15 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 #endregion
 
                 Inventec.Common.Logging.LogSystem.Info("ProcessSave 1.4");
+                if (!this.checkGuarantee())
+                {
+                    this.sttCheckGuarantee = false;
+                    return false;
+                }
+                else
+                {
+                    this.sttCheckGuarantee = true;
+                }
                 CalcuCanThu();
 
                 Inventec.Common.Logging.LogSystem.Info("ProcessSave 1.5");
