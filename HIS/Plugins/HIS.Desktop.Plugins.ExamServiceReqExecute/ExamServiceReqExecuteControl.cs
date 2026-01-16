@@ -3666,6 +3666,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (!CheckAssignServiceSimultaneityOption())
                 {
+                    IsValidForSave = false;
                     return;
                 }
                 HisServiceReqExamUpdateSDO hisServiceReqSDO = new HisServiceReqExamUpdateSDO();
@@ -7978,9 +7979,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                if (!(HisConfigCFG.IsEnableEditStartTime == "1" || HisConfigCFG.NotUpdateExecuteLoginNameWhenFinishExam != "1"))
-                {
-                    return true;
+                if (HisConfigCFG.IsEnableEditStartTime != "1" && HisConfigCFG.NotUpdateExecuteLoginNameWhenFinishExam == "1") 
+                { 
+                    return true; 
                 }
                 if ((HisConfigCFG.AssignServiceSimultaneityOption != "1" && HisConfigCFG.AssignServiceSimultaneityOption != "2"))
                 {
