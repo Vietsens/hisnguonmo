@@ -607,7 +607,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
 
                 if (this.currentModule != null)
                     patientProfile.RequestRoomId = this.currentModule.RoomId;
-                this.patientProfile.IsRequestSkinCare = ChamSocDa;
+                //this.patientProfile.IsRequestSkinCare = ChamSocDa;
                 //Process patient data from input data
                 this.ProcessPatientData();
 
