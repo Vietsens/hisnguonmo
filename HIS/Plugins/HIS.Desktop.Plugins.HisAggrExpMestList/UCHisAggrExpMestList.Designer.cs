@@ -177,6 +177,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcExpMestCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcMediStockName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcReqDepartmentName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GcReqAreaName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcUseTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcExpMestTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcReqName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -894,6 +895,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcExpMestCode,
             this.GcMediStockName,
             this.GcReqDepartmentName,
+            this.GcReqAreaName,
             this.GcUseTime,
             this.GcExpMestTypeName,
             this.GcReqName,
@@ -1128,6 +1130,16 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcReqDepartmentName.VisibleIndex = 12;
             this.GcReqDepartmentName.Width = 120;
             // 
+            // GcReqAreaName
+            // 
+            this.GcReqAreaName.Caption = "Khu vực";
+            this.GcReqAreaName.FieldName = "REQ_AREA_NAME";
+            this.GcReqAreaName.Name = "GcReqAreaName";
+            this.GcReqAreaName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.GcReqAreaName.Visible = true;
+            this.GcReqAreaName.VisibleIndex = 13;
+            this.GcReqAreaName.Width = 120;
+            // 
             // GcUseTime
             // 
             this.GcUseTime.AppearanceCell.Options.UseTextOptions = true;
@@ -1140,7 +1152,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcUseTime.OptionsColumn.AllowEdit = false;
             this.GcUseTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcUseTime.Visible = true;
-            this.GcUseTime.VisibleIndex = 13;
+            this.GcUseTime.VisibleIndex = 14;
             this.GcUseTime.Width = 120;
             // 
             // GcExpMestTypeName
@@ -1152,7 +1164,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcExpMestTypeName.Name = "GcExpMestTypeName";
             this.GcExpMestTypeName.OptionsColumn.AllowEdit = false;
             this.GcExpMestTypeName.Visible = true;
-            this.GcExpMestTypeName.VisibleIndex = 14;
+            this.GcExpMestTypeName.VisibleIndex = 15;
             this.GcExpMestTypeName.Width = 150;
             // 
             // GcReqName
@@ -1163,7 +1175,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcReqName.OptionsColumn.AllowEdit = false;
             this.GcReqName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcReqName.Visible = true;
-            this.GcReqName.VisibleIndex = 15;
+            this.GcReqName.VisibleIndex = 16;
             this.GcReqName.Width = 150;
             // 
             // GcApprovalName
@@ -1209,7 +1221,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcExpTime.OptionsColumn.AllowEdit = false;
             this.GcExpTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcExpTime.Visible = true;
-            this.GcExpTime.VisibleIndex = 16;
+            this.GcExpTime.VisibleIndex = 17;
             this.GcExpTime.Width = 120;
             // 
             // GcCreateTime
@@ -1224,7 +1236,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcCreateTime.OptionsColumn.AllowEdit = false;
             this.GcCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcCreateTime.Visible = true;
-            this.GcCreateTime.VisibleIndex = 17;
+            this.GcCreateTime.VisibleIndex = 18;
             this.GcCreateTime.Width = 120;
             // 
             // GcCreator
@@ -1234,7 +1246,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcCreator.Name = "GcCreator";
             this.GcCreator.OptionsColumn.AllowEdit = false;
             this.GcCreator.Visible = true;
-            this.GcCreator.VisibleIndex = 18;
+            this.GcCreator.VisibleIndex = 19;
             this.GcCreator.Width = 90;
             // 
             // GcModifyTime
@@ -1249,7 +1261,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcModifyTime.OptionsColumn.AllowEdit = false;
             this.GcModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GcModifyTime.Visible = true;
-            this.GcModifyTime.VisibleIndex = 19;
+            this.GcModifyTime.VisibleIndex = 20;
             this.GcModifyTime.Width = 120;
             // 
             // GcModifier
@@ -1259,7 +1271,7 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
             this.GcModifier.Name = "GcModifier";
             this.GcModifier.OptionsColumn.AllowEdit = false;
             this.GcModifier.Visible = true;
-            this.GcModifier.VisibleIndex = 20;
+            this.GcModifier.VisibleIndex = 21;
             this.GcModifier.Width = 90;
             // 
             // GcExpMestCode2
@@ -1678,6 +1690,6 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn4;
-
+        private DevExpress.XtraGrid.Columns.GridColumn GcReqAreaName;
     }
 }

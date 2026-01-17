@@ -177,6 +177,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__REQ_DEPARTMENT_NAME" xml:space="preserve">
     <value>Khoa yêu cầu</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__REQ_AREA_NAME" xml:space="preserve">
+    <value>Khu vực</value>
+  </data>	
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__REQ_NAME" xml:space="preserve">
     <value>Người yêu cầu</value>
   </data>
