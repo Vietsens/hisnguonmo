@@ -73,9 +73,29 @@ namespace HIS.Desktop.Plugins.LocationTreatment.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap hmenu_lock1 {
+            get {
+                object obj = ResourceManager.GetObject("hmenu-lock1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Lock_Unlock_icon {
             get {
                 object obj = ResourceManager.GetObject("Lock-Unlock-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Lock_Unlock_icon1 {
+            get {
+                object obj = ResourceManager.GetObject("Lock-Unlock-icon1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

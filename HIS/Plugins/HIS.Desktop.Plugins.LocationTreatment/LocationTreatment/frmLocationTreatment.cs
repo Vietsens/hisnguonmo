@@ -21,6 +21,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraTreeList;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -121,7 +122,7 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                 //Fill data into datasource combo
                 FillDataToControlsForm(null);
 
-                //Load ngon ngu label control
+                //Load ngon ngu label control 
                 SetCaptionByLanguageKey();
 
                 //Set tabindex control
@@ -132,6 +133,8 @@ namespace HIS.Desktop.Plugins.LocationTreatment
 
                 //Focus default
                 SetDefaultFocus();
+
+                treeList1.ExpandAll();
             }
             catch (Exception ex)
             {
@@ -266,6 +269,9 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                     treeList1.ParentFieldName = "PARENT_ID";
                     treeList1.DataSource = data;
 
+                    treeList1.ForceInitialize();
+                    treeList1.FocusedNode = null;
+
                     rowCount = (data == null ? 0 : data.Count);
                     dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                 }
@@ -354,13 +360,19 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                 {
                     txtCode.Text = data.LOCATION_STORE_CODE;
                     txtName.Text = data.LOCATION_STORE_NAME;
-                    var dataStore = listDataStore.FirstOrDefault(o => o.ID == data.DATA_STORE_ID);
-                    if(dataStore != null)
+                    if (data.DATA_STORE_ID != null && listDataStore.Count > 0)
                     {
-                        txtDataStoreCode.Text = dataStore.DATA_STORE_CODE;
-                        cboDataStore.EditValue = dataStore.ID;
+                        var dataStore = listDataStore.FirstOrDefault(o => o.ID == data.DATA_STORE_ID);
+                        if (dataStore != null)
+                        {
+                            txtDataStoreCode.Text = dataStore.DATA_STORE_CODE;
+                        }
                     }
 
+                    txtPrefix.Text = data.PREFIX;
+                    cboDataStore.EditValue = data.PARENT_ID;
+                    cboParent.EditValue = data.PARENT_ID;
+                    spinMax.EditValue = data.MAX_CHILD;
                 }
             }
             catch (Exception ex)
@@ -583,6 +595,19 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             try
             {
                 currentDTO.LOCATION_STORE_CODE = txtCode.Text.Trim();
+                currentDTO.LOCATION_STORE_NAME = txtName.Text.Trim();
+                if (cboParent.EditValue != null)
+                {
+                    currentDTO.PARENT_ID = long.Parse(cboParent.EditValue.ToString() ?? null);
+                }
+                
+                currentDTO.PREFIX = txtPrefix.Text;
+
+                if (spinMax.EditValue != null)
+                {
+                    currentDTO.MAX_CHILD = long.Parse(spinMax.EditValue.ToString() ?? null);
+                }
+                
                 currentDTO.LOCATION_STORE_NAME = txtName.Text.Trim();
                 if(cboDataStore.EditValue != null)
                 {
@@ -912,46 +937,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             }
         }
 
-        private void treeList1_CustomUnboundColumnData(object sender, DevExpress.XtraTreeList.TreeListCustomColumnDataEventArgs e)
-        {
-            try
-            {
-                if (e.IsGetData)
-                {
-                    HIS_LOCATION_STORE pData = (HIS_LOCATION_STORE)e.Row;
-                    short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
-                    if (pData == null || this.treeList1 == null) return;
-
-                    if (e.Column.FieldName == "CREATE_TIME_STR")
-                    {
-                        try
-                        {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(pData.CREATE_TIME.ToString()));
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay tao CREATE_TIME", ex);
-                        }
-                    }
-                    else if (e.Column.FieldName == "MODIFIER_TIME_STR")
-                    {
-                        try
-                        {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(Inventec.Common.TypeConvert.Parse.ToInt64(pData.MODIFY_TIME.ToString()));
-                        }
-                        catch (Exception ex)
-                        {
-                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay tao MODIFY_TIME", ex);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
         private void LockT_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             CommonParam param = new CommonParam();
@@ -1046,6 +1031,122 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void treeList1_FocusedNodeChanged(object sender, DevExpress.XtraTreeList.FocusedNodeChangedEventArgs e)
+        {
+            
+        }
+
+        private void ClearControls()
+        {
+            txtCode.Text = "";
+            txtName.Text = "";
+            txtDataStoreCode.Text = "";
+            txtPrefix.Text = "";
+            cboDataStore.EditValue = null;
+            cboParent.EditValue = null;
+            spinMax.Value = 0;
+        }
+
+        private void treeList1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.ClearControls();
+                TreeList tree = sender as TreeList;
+                if (tree == null) return;
+
+                Point pt = tree.PointToClient(Control.MousePosition);
+                TreeListHitInfo hitInfo = tree.CalcHitInfo(pt);
+
+                if (hitInfo.Node == null) return;
+                if (!hitInfo.HitInfoType.HasFlag(HitInfoType.Cell)) return;
+
+                HIS_LOCATION_STORE data =
+                    tree.GetDataRecordByNode(hitInfo.Node) as HIS_LOCATION_STORE;
+
+                if (data != null)
+                {
+                    FillDataToControlsForm(data);
+                    this.ActionType = GlobalVariables.ActionEdit;
+                    EnableControlChanged(this.ActionType);
+                    btnEdit.Enabled = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                    this.currentData = data;
+                    positionHandle = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void treeList1_CustomUnboundColumnData(object sender, TreeListCustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData)
+                {
+                    HIS_LOCATION_STORE pData = (HIS_LOCATION_STORE)e.Row;
+                    short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
+                    if (pData == null || this.treeList1 == null) return;
+
+                    else if (e.Column.FieldName == "CREATE_TIME_STR")
+                    {
+                        try
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)pData.CREATE_TIME) ?? "";
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "MODIFIER_TIME_STR")
+                    {
+                        try
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)pData.MODIFY_TIME) ?? "";
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+
+                    else if (e.Column.FieldName == "STATUS")
+                    {
+                        try
+                        {
+                            if (status == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                                e.Value = "Hoạt động";
+                            else
+                                e.Value = "Tạm khóa";
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "DATA_STORE_STR")
+                    {
+                        try
+                        {
+                            var datastore = listDataStore.FirstOrDefault(o => o.ID == pData.DATA_STORE_ID);
+                            e.Value = datastore != null ? datastore.DATA_STORE_NAME : "";
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

@@ -252,9 +252,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\hmenu-lock.png" />
-    <Content Include="Resources\hmenu-unlock.png" />
-    <None Include="Resources\khoa.png" />
-    <None Include="Resources\mo-khoa.png" />
+    <None Include="Resources\Lock-Unlock-icon1.png" />
+    <None Include="Resources\hmenu-lock1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
