@@ -216,7 +216,6 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.txtDiscountReasonTrea.Location = new System.Drawing.Point(534, 609);
             this.txtDiscountReasonTrea.MenuManager = this.barManager1;
             this.txtDiscountReasonTrea.Name = "txtDiscountReasonTrea";
-            this.txtDiscountReasonTrea.Properties.MaxLength = 1000;
             this.txtDiscountReasonTrea.Size = new System.Drawing.Size(179, 20);
             this.txtDiscountReasonTrea.StyleController = this.layoutControl1;
             this.txtDiscountReasonTrea.TabIndex = 43;
@@ -296,7 +295,6 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.txtDiscountReasonSS.Location = new System.Drawing.Point(822, 2);
             this.txtDiscountReasonSS.MenuManager = this.barManager1;
             this.txtDiscountReasonSS.Name = "txtDiscountReasonSS";
-            this.txtDiscountReasonSS.Properties.MaxLength = 1000;
             this.txtDiscountReasonSS.Size = new System.Drawing.Size(148, 20);
             this.txtDiscountReasonSS.StyleController = this.layoutControl1;
             this.txtDiscountReasonSS.TabIndex = 42;
@@ -314,6 +312,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.dtDiscountTimeStr.Size = new System.Drawing.Size(144, 20);
             this.dtDiscountTimeStr.StyleController = this.layoutControl1;
             this.dtDiscountTimeStr.TabIndex = 41;
+            this.dtDiscountTimeStr.EditValueChanged += new System.EventHandler(this.dtDiscountTimeStr_EditValueChanged);
             // 
             // spinEditMienGiamTreatmnet
             // 
@@ -555,7 +554,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeListColumn.OptionsColumn.AllowEdit = false;
             this.treeListColumn.Visible = true;
             this.treeListColumn.VisibleIndex = 12;
-            this.treeListColumn.Width = 100;
+            this.treeListColumn.Width = 130;
             // 
             // treeListColumn2
             // 
@@ -565,7 +564,7 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeListColumn2.OptionsColumn.AllowEdit = false;
             this.treeListColumn2.Visible = true;
             this.treeListColumn2.VisibleIndex = 13;
-            this.treeListColumn2.Width = 100;
+            this.treeListColumn2.Width = 130;
             // 
             // repositoryItemchkIsExpend__Enable
             // 
