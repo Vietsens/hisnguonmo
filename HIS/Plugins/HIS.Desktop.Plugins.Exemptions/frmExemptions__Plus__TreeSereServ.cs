@@ -18,6 +18,7 @@
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using MOS.EFMODEL.DataModels;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -103,6 +104,18 @@ namespace HIS.Desktop.Plugins.Exemptions
                     SereServADOs = SereServADOs.OrderBy(o => o.PARENT_ID__IN_SETY).ThenByDescending(o => o.TDL_SERVICE_CODE).ToList();
                 }
                 records = new System.ComponentModel.BindingList<SereServADO>(SereServADOs);
+                if (records.Count > 0)
+                {
+                    foreach (var item in records)
+                    {
+                        if (item.DISCOUNT_TIME.HasValue)
+                        {
+                            var dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item.DISCOUNT_TIME.Value);
+
+                            item.DISCOUNT_TIME_STR = dt.Value.ToString("dd/MM/yyyy HH:mm");
+                        }
+                    }
+                }
                 trvService.DataSource = records;
                 trvService.ExpandAll();
                 //  if (this.sereServTree_CheckAllNode != null)

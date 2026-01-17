@@ -45,10 +45,9 @@ namespace HIS.Desktop.Plugins.Exemptions
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.spinEditMienGiamTreatmnet = new DevExpress.XtraEditors.SpinEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.txtDiscountReasonTrea = new DevExpress.XtraEditors.TextEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem__Save = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem__New = new DevExpress.XtraBars.BarButtonItem();
@@ -56,6 +55,9 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.txtDiscountReasonSS = new DevExpress.XtraEditors.TextEdit();
+            this.dtDiscountTimeStr = new DevExpress.XtraEditors.DateEdit();
+            this.spinEditMienGiamTreatmnet = new DevExpress.XtraEditors.SpinEdit();
             this.chkMienGiamTreatment = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.trvService = new DevExpress.XtraTreeList.TreeList();
@@ -71,6 +73,8 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeColumnServiceCode = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeColumnServiceReqCode = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn2 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemchkIsExpend__Enable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemchkIsExpend__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemSpinEdit__Discount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
@@ -116,7 +120,6 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -124,10 +127,19 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spinEditMienGiamTreatmnet.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDiscountReasonTrea.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDiscountReasonSS.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDiscountTimeStr.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDiscountTimeStr.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditMienGiamTreatmnet.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMienGiamTreatment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
@@ -161,7 +173,6 @@ namespace HIS.Desktop.Plugins.Exemptions
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
@@ -169,10 +180,18 @@ namespace HIS.Desktop.Plugins.Exemptions
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.txtDiscountReasonTrea);
+            this.layoutControl1.Controls.Add(this.txtDiscountReasonSS);
+            this.layoutControl1.Controls.Add(this.dtDiscountTimeStr);
             this.layoutControl1.Controls.Add(this.spinEditMienGiamTreatmnet);
             this.layoutControl1.Controls.Add(this.chkMienGiamTreatment);
             this.layoutControl1.Controls.Add(this.layoutControl4);
@@ -192,30 +211,14 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // spinEditMienGiamTreatmnet
+            // txtDiscountReasonTrea
             // 
-            this.spinEditMienGiamTreatmnet.EditValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.spinEditMienGiamTreatmnet.Location = new System.Drawing.Point(375, 609);
-            this.spinEditMienGiamTreatmnet.MenuManager = this.barManager1;
-            this.spinEditMienGiamTreatmnet.Name = "spinEditMienGiamTreatmnet";
-            this.spinEditMienGiamTreatmnet.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spinEditMienGiamTreatmnet.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.spinEditMienGiamTreatmnet.Properties.EditFormat.FormatString = "#######0;";
-            this.spinEditMienGiamTreatmnet.Properties.MaxValue = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.spinEditMienGiamTreatmnet.Size = new System.Drawing.Size(50, 20);
-            this.spinEditMienGiamTreatmnet.StyleController = this.layoutControl1;
-            this.spinEditMienGiamTreatmnet.TabIndex = 40;
-            this.spinEditMienGiamTreatmnet.ToolTip = "Các chỉ định tiếp theo của bệnh nhân sẽ được tự động tính số tiền miễn giảm theo " +
-    "tỷ lệ đã nhập";
+            this.txtDiscountReasonTrea.Location = new System.Drawing.Point(534, 609);
+            this.txtDiscountReasonTrea.MenuManager = this.barManager1;
+            this.txtDiscountReasonTrea.Name = "txtDiscountReasonTrea";
+            this.txtDiscountReasonTrea.Size = new System.Drawing.Size(179, 20);
+            this.txtDiscountReasonTrea.StyleController = this.layoutControl1;
+            this.txtDiscountReasonTrea.TabIndex = 43;
             // 
             // barManager1
             // 
@@ -287,6 +290,55 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 633);
             // 
+            // txtDiscountReasonSS
+            // 
+            this.txtDiscountReasonSS.Location = new System.Drawing.Point(822, 2);
+            this.txtDiscountReasonSS.MenuManager = this.barManager1;
+            this.txtDiscountReasonSS.Name = "txtDiscountReasonSS";
+            this.txtDiscountReasonSS.Size = new System.Drawing.Size(148, 20);
+            this.txtDiscountReasonSS.StyleController = this.layoutControl1;
+            this.txtDiscountReasonSS.TabIndex = 42;
+            // 
+            // dtDiscountTimeStr
+            // 
+            this.dtDiscountTimeStr.EditValue = null;
+            this.dtDiscountTimeStr.Location = new System.Drawing.Point(569, 2);
+            this.dtDiscountTimeStr.MenuManager = this.barManager1;
+            this.dtDiscountTimeStr.Name = "dtDiscountTimeStr";
+            this.dtDiscountTimeStr.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtDiscountTimeStr.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtDiscountTimeStr.Size = new System.Drawing.Size(144, 20);
+            this.dtDiscountTimeStr.StyleController = this.layoutControl1;
+            this.dtDiscountTimeStr.TabIndex = 41;
+            this.dtDiscountTimeStr.EditValueChanged += new System.EventHandler(this.dtDiscountTimeStr_EditValueChanged);
+            // 
+            // spinEditMienGiamTreatmnet
+            // 
+            this.spinEditMienGiamTreatmnet.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinEditMienGiamTreatmnet.Location = new System.Drawing.Point(375, 609);
+            this.spinEditMienGiamTreatmnet.MenuManager = this.barManager1;
+            this.spinEditMienGiamTreatmnet.Name = "spinEditMienGiamTreatmnet";
+            this.spinEditMienGiamTreatmnet.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinEditMienGiamTreatmnet.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.spinEditMienGiamTreatmnet.Properties.EditFormat.FormatString = "#######0;";
+            this.spinEditMienGiamTreatmnet.Properties.MaxValue = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.spinEditMienGiamTreatmnet.Size = new System.Drawing.Size(50, 20);
+            this.spinEditMienGiamTreatmnet.StyleController = this.layoutControl1;
+            this.spinEditMienGiamTreatmnet.TabIndex = 40;
+            this.spinEditMienGiamTreatmnet.ToolTip = "Các chỉ định tiếp theo của bệnh nhân sẽ được tự động tính số tiền miễn giảm theo " +
+    "tỷ lệ đã nhập";
+            // 
             // chkMienGiamTreatment
             // 
             this.chkMienGiamTreatment.Location = new System.Drawing.Point(197, 609);
@@ -329,7 +381,9 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeColumnDiscount,
             this.treeColumnServiceCode,
             this.treeColumnServiceReqCode,
-            this.treeListColumn1});
+            this.treeListColumn1,
+            this.treeListColumn,
+            this.treeListColumn2});
             this.trvService.Cursor = System.Windows.Forms.Cursors.Default;
             this.trvService.KeyFieldName = "CONCRETE_ID__IN_SETY";
             this.trvService.Location = new System.Drawing.Point(2, 2);
@@ -492,6 +546,26 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.treeListColumn1.VisibleIndex = 11;
             this.treeListColumn1.Width = 200;
             // 
+            // treeListColumn
+            // 
+            this.treeListColumn.Caption = "Lý do miễn giảm";
+            this.treeListColumn.FieldName = "DISCOUNT_REASON";
+            this.treeListColumn.Name = "treeListColumn";
+            this.treeListColumn.OptionsColumn.AllowEdit = false;
+            this.treeListColumn.Visible = true;
+            this.treeListColumn.VisibleIndex = 12;
+            this.treeListColumn.Width = 130;
+            // 
+            // treeListColumn2
+            // 
+            this.treeListColumn2.Caption = "Ngày thực hiện";
+            this.treeListColumn2.FieldName = "DISCOUNT_TIME_STR";
+            this.treeListColumn2.Name = "treeListColumn2";
+            this.treeListColumn2.OptionsColumn.AllowEdit = false;
+            this.treeListColumn2.Visible = true;
+            this.treeListColumn2.VisibleIndex = 13;
+            this.treeListColumn2.Width = 130;
+            // 
             // repositoryItemchkIsExpend__Enable
             // 
             this.repositoryItemchkIsExpend__Enable.AutoHeight = false;
@@ -550,9 +624,9 @@ namespace HIS.Desktop.Plugins.Exemptions
             // 
             // simpleButton1
             // 
-            this.simpleButton1.Location = new System.Drawing.Point(464, 2);
+            this.simpleButton1.Location = new System.Drawing.Point(974, 2);
             this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(115, 22);
+            this.simpleButton1.Size = new System.Drawing.Size(96, 22);
             this.simpleButton1.StyleController = this.layoutControl1;
             this.simpleButton1.TabIndex = 37;
             this.simpleButton1.Text = "Đồng ý";
@@ -928,9 +1002,9 @@ namespace HIS.Desktop.Plugins.Exemptions
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(1007, 609);
+            this.btnNew.Location = new System.Drawing.Point(1035, 609);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(91, 22);
+            this.btnNew.Size = new System.Drawing.Size(63, 22);
             this.btnNew.StyleController = this.layoutControl1;
             this.btnNew.TabIndex = 24;
             this.btnNew.Text = "Mới (Ctrl N)";
@@ -938,9 +1012,9 @@ namespace HIS.Desktop.Plugins.Exemptions
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(918, 609);
+            this.btnSave.Location = new System.Drawing.Point(967, 609);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(85, 22);
+            this.btnSave.Size = new System.Drawing.Size(64, 22);
             this.btnSave.StyleController = this.layoutControl1;
             this.btnSave.TabIndex = 21;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -955,14 +1029,17 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.layoutControlItem19,
             this.layoutControlItem7,
             this.layoutControlItem8,
-            this.emptySpaceItem1,
             this.layoutControlItem9,
             this.layoutControlItem1,
             this.layoutControlItem3,
             this.emptySpaceItem2,
             this.layoutControlItem4,
             this.layoutControlItem2,
-            this.layoutControlItem6});
+            this.layoutControlItem6,
+            this.layoutControlItem11,
+            this.layoutControlItem17,
+            this.emptySpaceItem1,
+            this.layoutControlItem18});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -972,18 +1049,18 @@ namespace HIS.Desktop.Plugins.Exemptions
             // lciBtnSave
             // 
             this.lciBtnSave.Control = this.btnSave;
-            this.lciBtnSave.Location = new System.Drawing.Point(916, 607);
+            this.lciBtnSave.Location = new System.Drawing.Point(965, 607);
             this.lciBtnSave.Name = "lciBtnSave";
-            this.lciBtnSave.Size = new System.Drawing.Size(89, 26);
+            this.lciBtnSave.Size = new System.Drawing.Size(68, 26);
             this.lciBtnSave.TextSize = new System.Drawing.Size(0, 0);
             this.lciBtnSave.TextVisible = false;
             // 
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.btnNew;
-            this.layoutControlItem19.Location = new System.Drawing.Point(1005, 607);
+            this.layoutControlItem19.Location = new System.Drawing.Point(1033, 607);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(95, 26);
+            this.layoutControlItem19.Size = new System.Drawing.Size(67, 26);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
@@ -1004,14 +1081,6 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.layoutControlItem8.Size = new System.Drawing.Size(110, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
-            // 
-            // emptySpaceItem1
-            // 
-            this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(581, 0);
-            this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(519, 26);
-            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem9
             // 
@@ -1038,18 +1107,18 @@ namespace HIS.Desktop.Plugins.Exemptions
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.simpleButton1;
-            this.layoutControlItem3.Location = new System.Drawing.Point(462, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(972, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(119, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(100, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(427, 607);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(715, 607);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(489, 26);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(250, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
@@ -1087,6 +1156,53 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.layoutControlItem6.TextSize = new System.Drawing.Size(150, 20);
             this.layoutControlItem6.TextToControlDistance = 5;
             // 
+            // layoutControlItem11
+            // 
+            this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem11.Control = this.dtDiscountTimeStr;
+            this.layoutControlItem11.Location = new System.Drawing.Point(462, 0);
+            this.layoutControlItem11.Name = "layoutControlItem11";
+            this.layoutControlItem11.Size = new System.Drawing.Size(253, 26);
+            this.layoutControlItem11.Text = "Ngày thực hiện:";
+            this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem11.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem11.TextToControlDistance = 5;
+            // 
+            // layoutControlItem17
+            // 
+            this.layoutControlItem17.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem17.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem17.Control = this.txtDiscountReasonSS;
+            this.layoutControlItem17.Location = new System.Drawing.Point(715, 0);
+            this.layoutControlItem17.Name = "layoutControlItem17";
+            this.layoutControlItem17.Size = new System.Drawing.Size(257, 26);
+            this.layoutControlItem17.Text = "Lý do miễn giảm:";
+            this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem17.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem17.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem1
+            // 
+            this.emptySpaceItem1.AllowHotTrack = false;
+            this.emptySpaceItem1.Location = new System.Drawing.Point(1072, 0);
+            this.emptySpaceItem1.Name = "emptySpaceItem1";
+            this.emptySpaceItem1.Size = new System.Drawing.Size(28, 26);
+            this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem18
+            // 
+            this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem18.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem18.Control = this.txtDiscountReasonTrea;
+            this.layoutControlItem18.Location = new System.Drawing.Point(427, 607);
+            this.layoutControlItem18.Name = "layoutControlItem18";
+            this.layoutControlItem18.Size = new System.Drawing.Size(288, 26);
+            this.layoutControlItem18.Text = "Lý do miễn giảm:";
+            this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem18.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem18.TextToControlDistance = 5;
+            // 
             // frmExemptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1109,8 +1225,12 @@ namespace HIS.Desktop.Plugins.Exemptions
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.spinEditMienGiamTreatmnet.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDiscountReasonTrea.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtDiscountReasonSS.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDiscountTimeStr.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDiscountTimeStr.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinEditMienGiamTreatmnet.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMienGiamTreatment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
@@ -1144,7 +1264,6 @@ namespace HIS.Desktop.Plugins.Exemptions
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
@@ -1152,6 +1271,11 @@ namespace HIS.Desktop.Plugins.Exemptions
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1169,7 +1293,6 @@ namespace HIS.Desktop.Plugins.Exemptions
         private DevExpress.XtraEditors.TextEdit txtFindTreatmentCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraLayout.LayoutControl layoutControl2;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
@@ -1237,5 +1360,15 @@ namespace HIS.Desktop.Plugins.Exemptions
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
+        private DevExpress.XtraEditors.TextEdit txtDiscountReasonTrea;
+        private DevExpress.XtraEditors.TextEdit txtDiscountReasonSS;
+        private DevExpress.XtraEditors.DateEdit dtDiscountTimeStr;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn2;
+        private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
     }
 }
