@@ -4402,7 +4402,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         continue;
                     }
-
+                     
                     string machineName = detail.MachineName;
                     if (string.IsNullOrWhiteSpace(machineName) && detail.MachineId.HasValue)
                     {
@@ -4433,7 +4433,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 if (blockMessages.Length > 0)
                 {
-                    XtraMessageBox.Show(blockMessages.ToString(), ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Question);
+                    XtraMessageBox.Show(blockMessages.ToString(), ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -4445,7 +4445,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         continue;
                     }
-
+                     
                     string machineName = detail.MachineName;
                     if (string.IsNullOrWhiteSpace(machineName) && detail.MachineId.HasValue)
                     {
@@ -4477,7 +4477,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 if (warningMessages.Length > 0)
                 {
                     string msg = warningMessages.ToString() + "\r\nBạn có muốn tiếp tục không?";
-                    if (XtraMessageBox.Show(msg, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                    if (XtraMessageBox.Show(msg, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                     {
                         return false;
                     }
