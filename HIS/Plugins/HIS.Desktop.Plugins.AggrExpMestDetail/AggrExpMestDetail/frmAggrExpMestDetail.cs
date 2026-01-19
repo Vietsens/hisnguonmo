@@ -416,6 +416,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     lblMedistock.Text = AggExpMest.MEDI_STOCK_CODE + " - " + AggExpMest.MEDI_STOCK_NAME;
                     lblReqDepartment.Text = AggExpMest.REQ_DEPARTMENT_CODE + " - " + AggExpMest.REQ_DEPARTMENT_NAME;
                     lblReqName.Text = AggExpMest.REQ_LOGINNAME + " - " + AggExpMest.REQ_USERNAME;
+                    //lblReqAreaName.Text = AggExpMest.REQ_AREA_NAME;
+                    lblReqAreaName.Text = string.Format("Khu vực: {0}", AggExpMest.REQ_AREA_NAME);
                     cboExpMestReason.EditValue = this.AggExpMest.EXP_MEST_REASON_ID;
                     HisMediStockFilter f = new HisMediStockFilter();
                     f.ID = AggExpMest.MEDI_STOCK_ID;
@@ -2169,6 +2171,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void lblReqAreaName_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
