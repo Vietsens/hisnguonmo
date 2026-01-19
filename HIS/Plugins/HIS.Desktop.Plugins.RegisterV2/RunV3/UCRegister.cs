@@ -115,6 +115,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         bool IsActionSavePrint = false;
         internal string GuarateeCode = null;
         internal string GuaranteeRequestCode = null;
+        bool isNew = false;
         #endregion
 
         #region Construct - Load
@@ -1085,6 +1086,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.isResetForm = true;
                 this.IsReadCardTheViet = false;
                 this.isCheckSS = false;
+                this.isNew = true;
                 this.RefreshUserControl();
                 this.ucPatientRaw1.LoadDataCboDoiTuong(roomId);
                 if (this.ucPatientRaw1.cboPatientType.EditValue == null)
@@ -1114,6 +1116,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     //InitControlState();
                 }
                 this.isResetForm = false;
+                this.isNew = false;
             }
             catch (Exception ex)
             {
@@ -2167,33 +2170,36 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         }
 
                         else
-                        {                            
-                            data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
+                        {
+                            if (isNew)
                             {
-                                RequestId = this.GuaranteeRequestCode,
-                                ContractNumber = this.GuarateeCode,
-                                PatientFullName = ucPatientRaw1.GetValue().PATIENT_NAME,
-                                PatientDateOfBirth = ucPatientRaw1.GetValue().DOB.ToString(),
-                                PatientCccd = ucPlusInfo1.GetValue().CCCD_NUMBER,
-                                Amount = guaranteeDefaultLimit,
-                                Remark = "Hủy đăng ký sử dụng bảo lãnh",
-                                Signature = "",
-                                Token = ""
-                            };
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
-                            if(!string.IsNullOrEmpty(this.GuaranteeRequestCode))
-                            {
-                                CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
-                                if (rs != null)
+                                data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
                                 {
-                                    LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
-                                }
-                                else
+                                    RequestId = this.GuaranteeRequestCode,
+                                    ContractNumber = this.GuarateeCode,
+                                    PatientFullName = ucPatientRaw1.GetValue().PATIENT_NAME,
+                                    PatientDateOfBirth = ucPatientRaw1.GetValue().DOB.ToString(),
+                                    PatientCccd = ucPlusInfo1.GetValue().CCCD_NUMBER,
+                                    Amount = guaranteeDefaultLimit,
+                                    Remark = "Hủy đăng ký sử dụng bảo lãnh",
+                                    Signature = "",
+                                    Token = ""
+                                };
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
+                                if (!string.IsNullOrEmpty(this.GuaranteeRequestCode))
                                 {
-                                    LogSystem.Debug("Gọi api thất bại, ..............");
+                                    CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
+                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
+                                    if (rs != null)
+                                    {
+                                        LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
+                                    }
+                                    else
+                                    {
+                                        LogSystem.Debug("Gọi api thất bại, ..............");
+                                    }
                                 }
-                            }
+                            }                            
                             this.GuarateeCode = null;
                             this.GuaranteeRequestCode = null;
                         }
