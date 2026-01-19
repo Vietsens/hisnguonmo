@@ -31,6 +31,7 @@ namespace HIS.Desktop.Plugins.EmrDocument.Config
         private const string IS_DELETE_FILE_OPTION = "EMR.EMR_DOCUMENT.DELETE_FILE_OPTION";
         private const string DO_NOT_ALLOW_DELETING_IF_EXIST_SERVICE_REQ = "EMR.EMR_DOCUMENT.DO_NOT_ALLOW_DELETING_IF_EXIST_SERVICE_REQ"; 
         private const string PRINT_USING_WATERMARK = "EMR.DOCUMENT.PRINT_USING_WARTERMARK.OPTION";
+        private const string DOWNLOAD_FILE_OPTION = "EMR.DOWNLOAD_FILE_OPTION";
 
         internal static bool IsStoredMustReqToView;
         internal static bool IsHasConnectionEmr;
@@ -38,6 +39,7 @@ namespace HIS.Desktop.Plugins.EmrDocument.Config
         internal static string deleteFileOption;
         internal static string DoNotAllowDeletingIfExistServiceReq;
         internal static string PrintUsingWatermark;
+        internal static string DownloadFileOption;
 
         internal static void GetConfigKey()
         {
@@ -49,6 +51,7 @@ namespace HIS.Desktop.Plugins.EmrDocument.Config
                 deleteFileOption = GetValue(IS_DELETE_FILE_OPTION);
                 DoNotAllowDeletingIfExistServiceReq = GetValue(DO_NOT_ALLOW_DELETING_IF_EXIST_SERVICE_REQ);
                 PrintUsingWatermark = GetValue(PRINT_USING_WATERMARK);
+                DownloadFileOption = GetValue(DOWNLOAD_FILE_OPTION);
                 Inventec.Common.Logging.LogSystem.Debug(patientSignOption);
             }
             catch (Exception ex)

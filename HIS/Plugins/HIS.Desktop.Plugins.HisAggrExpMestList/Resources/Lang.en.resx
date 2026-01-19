@@ -171,6 +171,9 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__REQ_DEPARTMENT_NAME" xml:space="preserve">
     <value>Department request</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__REQ_AREA_NAME" xml:space="preserve">
+    <value>Area</value>
+  </data>	
   <data name="IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__REQ_NAME" xml:space="preserve">
     <value>Person request</value>
   </data>

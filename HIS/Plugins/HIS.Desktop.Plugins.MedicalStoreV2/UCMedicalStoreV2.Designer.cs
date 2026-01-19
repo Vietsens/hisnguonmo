@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCMedicalStoreV2));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -142,18 +143,22 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject94 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject95 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject96 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject97 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject98 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject99 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject100 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnExportExcel = new DevExpress.XtraEditors.SimpleButton();
             this.cboExecuteDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.checkJustShowTreatmentLatch = new DevExpress.XtraEditors.CheckEdit();
             this.ucPagingMediRecord = new Inventec.UC.Paging.UcPaging();
@@ -210,6 +215,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn67 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEdit_Edit = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -360,7 +367,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciKeywordMediRecord = new DevExpress.XtraLayout.LayoutControlItem();
             this.gridLookUpEdit1 = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.imageCollectionCheck = new DevExpress.Utils.ImageCollection();
+            this.imageCollectionCheck = new DevExpress.Utils.ImageCollection(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -390,6 +397,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             ((System.ComponentModel.ISupportInitialize)(this.CheckEnable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_ViewEmrTreatment)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_Print_Enable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_Edit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repLocationStore)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_Delete_Enable)).BeginInit();
@@ -1165,7 +1173,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.repositoryItemCheckEdit_Store__Disable,
             this.repositoryItemButtonView_Disable,
             this.repLocationStore,
-            this.repLocationStoreDis});
+            this.repLocationStoreDis,
+            this.repositoryItemButtonEdit_Edit});
             this.gridControlMediRecord.Size = new System.Drawing.Size(742, 511);
             this.gridControlMediRecord.TabIndex = 5;
             this.gridControlMediRecord.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1182,6 +1191,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn16,
             this.gridColumn2,
             this.gridColumn7,
+            this.gridColumn67,
             this.gridColumn3,
             this.gridColumn5,
             this.gridColumn4,
@@ -1327,6 +1337,26 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn7.VisibleIndex = 6;
             this.gridColumn7.Width = 25;
             // 
+            // gridColumn67
+            // 
+            this.gridColumn67.Caption = "Sửa";
+            this.gridColumn67.ColumnEdit = this.repositoryItemButtonEdit_Edit;
+            this.gridColumn67.FieldName = "Edit";
+            this.gridColumn67.Name = "gridColumn67";
+            this.gridColumn67.OptionsColumn.ShowCaption = false;
+            this.gridColumn67.Visible = true;
+            this.gridColumn67.VisibleIndex = 7;
+            this.gridColumn67.Width = 25;
+            // 
+            // repositoryItemButtonEdit_Edit
+            // 
+            this.repositoryItemButtonEdit_Edit.AutoHeight = false;
+            this.repositoryItemButtonEdit_Edit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_Edit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Sửa", null, null, true)});
+            this.repositoryItemButtonEdit_Edit.Name = "repositoryItemButtonEdit_Edit";
+            this.repositoryItemButtonEdit_Edit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonEdit_Edit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEdit_Edit_ButtonClick);
+            // 
             // gridColumn3
             // 
             this.gridColumn3.Caption = "Mã lưu trữ";
@@ -1336,7 +1366,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn3.ToolTip = "Mã lưu trữ";
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 7;
+            this.gridColumn3.VisibleIndex = 8;
             this.gridColumn3.Width = 80;
             // 
             // gridColumn5
@@ -1347,7 +1377,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.ToolTip = "Mã bệnh nhân";
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 8;
+            this.gridColumn5.VisibleIndex = 9;
             this.gridColumn5.Width = 80;
             // 
             // gridColumn4
@@ -1358,7 +1388,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.ToolTip = "Mã điều trị";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 9;
+            this.gridColumn4.VisibleIndex = 10;
             this.gridColumn4.Width = 100;
             // 
             // gridColumn6
@@ -1369,7 +1399,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.ToolTip = "Tên bệnh nhân";
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 10;
+            this.gridColumn6.VisibleIndex = 11;
             this.gridColumn6.Width = 130;
             // 
             // gridColumn28
@@ -1379,7 +1409,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn28.Name = "gridColumn28";
             this.gridColumn28.OptionsColumn.AllowEdit = false;
             this.gridColumn28.Visible = true;
-            this.gridColumn28.VisibleIndex = 11;
+            this.gridColumn28.VisibleIndex = 12;
             this.gridColumn28.Width = 123;
             // 
             // gridColumn66
@@ -1390,7 +1420,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn66.OptionsColumn.AllowEdit = false;
             this.gridColumn66.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn66.Visible = true;
-            this.gridColumn66.VisibleIndex = 12;
+            this.gridColumn66.VisibleIndex = 13;
             this.gridColumn66.Width = 150;
             // 
             // gridColumn26
@@ -1401,7 +1431,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn26.OptionsColumn.AllowEdit = false;
             this.gridColumn26.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn26.Visible = true;
-            this.gridColumn26.VisibleIndex = 13;
+            this.gridColumn26.VisibleIndex = 14;
             this.gridColumn26.Width = 120;
             // 
             // gridColumn8
@@ -1412,7 +1442,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.ToolTip = "Giới tính";
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 14;
+            this.gridColumn8.VisibleIndex = 15;
             this.gridColumn8.Width = 72;
             // 
             // gridColumn20
@@ -1422,7 +1452,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn20.Name = "gridColumn20";
             this.gridColumn20.OptionsColumn.AllowEdit = false;
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 15;
+            this.gridColumn20.VisibleIndex = 16;
             this.gridColumn20.Width = 130;
             // 
             // gridColumn21
@@ -1432,7 +1462,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn21.Name = "gridColumn21";
             this.gridColumn21.OptionsColumn.AllowEdit = false;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 16;
+            this.gridColumn21.VisibleIndex = 17;
             this.gridColumn21.Width = 120;
             // 
             // gridColumn22
@@ -1442,7 +1472,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn22.Name = "gridColumn22";
             this.gridColumn22.OptionsColumn.AllowEdit = false;
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 17;
+            this.gridColumn22.VisibleIndex = 18;
             this.gridColumn22.Width = 130;
             // 
             // gridColumn24
@@ -1452,7 +1482,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn24.Name = "gridColumn24";
             this.gridColumn24.OptionsColumn.AllowEdit = false;
             this.gridColumn24.Visible = true;
-            this.gridColumn24.VisibleIndex = 18;
+            this.gridColumn24.VisibleIndex = 19;
             this.gridColumn24.Width = 188;
             // 
             // gridColumn27
@@ -1463,7 +1493,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn27.OptionsColumn.AllowEdit = false;
             this.gridColumn27.ToolTip = "Mã được cấp cho bệnh nhân trong chương trình";
             this.gridColumn27.Visible = true;
-            this.gridColumn27.VisibleIndex = 19;
+            this.gridColumn27.VisibleIndex = 20;
             this.gridColumn27.Width = 100;
             // 
             // gridColumn9
@@ -1474,7 +1504,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.ToolTip = "Kho dữ liệu";
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 20;
+            this.gridColumn9.VisibleIndex = 21;
             this.gridColumn9.Width = 120;
             // 
             // gridColumn52
@@ -1484,7 +1514,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn52.FieldName = "LOCATION_STORE_ID";
             this.gridColumn52.Name = "gridColumn52";
             this.gridColumn52.Visible = true;
-            this.gridColumn52.VisibleIndex = 21;
+            this.gridColumn52.VisibleIndex = 22;
             this.gridColumn52.Width = 100;
             // 
             // repLocationStore
@@ -1515,7 +1545,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn56.Name = "gridColumn56";
             this.gridColumn56.OptionsColumn.AllowEdit = false;
             this.gridColumn56.Visible = true;
-            this.gridColumn56.VisibleIndex = 22;
+            this.gridColumn56.VisibleIndex = 23;
             this.gridColumn56.Width = 120;
             // 
             // gridColumn10
@@ -1527,7 +1557,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn10.ToolTip = "Thời gian tạo";
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 23;
+            this.gridColumn10.VisibleIndex = 24;
             this.gridColumn10.Width = 123;
             // 
             // gridColumn11
@@ -1538,7 +1568,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.ToolTip = "Người tạo";
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 24;
+            this.gridColumn11.VisibleIndex = 25;
             this.gridColumn11.Width = 91;
             // 
             // gridColumn12
@@ -1550,7 +1580,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn12.ToolTip = "Thời gian sửa";
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 25;
+            this.gridColumn12.VisibleIndex = 26;
             this.gridColumn12.Width = 108;
             // 
             // gridColumn13
@@ -1561,14 +1591,14 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.ToolTip = "Người sửa";
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 26;
+            this.gridColumn13.VisibleIndex = 27;
             this.gridColumn13.Width = 127;
             // 
             // repositoryItemButtonEdit_Delete_Enable
             // 
             this.repositoryItemButtonEdit_Delete_Enable.AutoHeight = false;
             this.repositoryItemButtonEdit_Delete_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_Delete_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_Delete_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Xóa", null, null, true)});
             this.repositoryItemButtonEdit_Delete_Enable.Name = "repositoryItemButtonEdit_Delete_Enable";
             this.repositoryItemButtonEdit_Delete_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEdit_Delete_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEdit_Delete_Enable_ButtonClick);
@@ -1577,7 +1607,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit_Delete_Disable.AutoHeight = false;
             this.repositoryItemButtonEdit_Delete_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_Delete_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_Delete_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Xóa", null, null, true)});
             this.repositoryItemButtonEdit_Delete_Disable.Name = "repositoryItemButtonEdit_Delete_Disable";
             this.repositoryItemButtonEdit_Delete_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1585,7 +1615,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit_Print_Disable.AutoHeight = false;
             this.repositoryItemButtonEdit_Print_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_Print_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "In", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_Print_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "In", null, null, true)});
             this.repositoryItemButtonEdit_Print_Disable.Name = "repositoryItemButtonEdit_Print_Disable";
             this.repositoryItemButtonEdit_Print_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1600,7 +1630,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.Btn_TreatmentBorrow_Enable.AutoHeight = false;
             this.Btn_TreatmentBorrow_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_TreatmentBorrow_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Mượn bệnh án", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_TreatmentBorrow_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Mượn bệnh án", null, null, true)});
             this.Btn_TreatmentBorrow_Enable.Name = "Btn_TreatmentBorrow_Enable";
             this.Btn_TreatmentBorrow_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Btn_TreatmentBorrow_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Btn_TreatmentBorrow_Enable_ButtonClick);
@@ -1609,7 +1639,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.Btn_TreatmentBorrow_Disable.AutoHeight = false;
             this.Btn_TreatmentBorrow_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_TreatmentBorrow_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Mượn bệnh án", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("Btn_TreatmentBorrow_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Mượn bệnh án", null, null, true)});
             this.Btn_TreatmentBorrow_Disable.Name = "Btn_TreatmentBorrow_Disable";
             this.Btn_TreatmentBorrow_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1617,7 +1647,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.ButtonEditReceiveTreatment_Enabed.AutoHeight = false;
             this.ButtonEditReceiveTreatment_Enabed.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditReceiveTreatment_Enabed.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Trả bệnh án", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditReceiveTreatment_Enabed.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Trả bệnh án", null, null, true)});
             this.ButtonEditReceiveTreatment_Enabed.Name = "ButtonEditReceiveTreatment_Enabed";
             this.ButtonEditReceiveTreatment_Enabed.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEditReceiveTreatment_Enabed.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEditReceiveTreatment_Enabed_ButtonClick);
@@ -1626,7 +1656,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.ButtonEditReceiveTreatment_Disabed.AutoHeight = false;
             this.ButtonEditReceiveTreatment_Disabed.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditReceiveTreatment_Disabed.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Trả bệnh án", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditReceiveTreatment_Disabed.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "Trả bệnh án", null, null, true)});
             this.ButtonEditReceiveTreatment_Disabed.Name = "ButtonEditReceiveTreatment_Disabed";
             this.ButtonEditReceiveTreatment_Disabed.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1634,7 +1664,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.ButtonEditImport.AutoHeight = false;
             this.ButtonEditImport.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditImport.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "Nhập kho", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditImport.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Nhập kho", null, null, true)});
             this.ButtonEditImport.Name = "ButtonEditImport";
             this.ButtonEditImport.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEditImport.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEditImport_ButtonClick);
@@ -1643,7 +1673,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.ButtonEditUnImport.AutoHeight = false;
             this.ButtonEditUnImport.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditUnImport.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Hủy nhập kho", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditUnImport.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "Hủy nhập kho", null, null, true)});
             this.ButtonEditUnImport.Name = "ButtonEditUnImport";
             this.ButtonEditUnImport.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEditUnImport.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEditUnImport_ButtonClick);
@@ -1667,7 +1697,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonView_Disable.AutoHeight = false;
             this.repositoryItemButtonView_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Ellipsis, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonView_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "Văn bản ký điện tử trong hồ sơ bệnh án", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Ellipsis, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonView_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "Văn bản ký điện tử trong hồ sơ bệnh án", null, null, true)});
             this.repositoryItemButtonView_Disable.Name = "repositoryItemButtonView_Disable";
             this.repositoryItemButtonView_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1815,7 +1845,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.btnViewTreatment.AutoHeight = false;
             this.btnViewTreatment.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnViewTreatment.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "Xem", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnViewTreatment.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "Xem", null, null, true)});
             this.btnViewTreatment.Name = "btnViewTreatment";
             this.btnViewTreatment.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnViewTreatment.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnViewTreatment_ButtonClick);
@@ -1846,7 +1876,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEditInventory.AutoHeight = false;
             this.repositoryItemButtonEditInventory.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditInventory.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "Bảng kiểm thực hiện quy chế hồ sơ bệnh án", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditInventory.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "Bảng kiểm thực hiện quy chế hồ sơ bệnh án", null, null, true)});
             this.repositoryItemButtonEditInventory.Name = "repositoryItemButtonEditInventory";
             this.repositoryItemButtonEditInventory.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEditInventory.Click += new System.EventHandler(this.repositoryItemButtonEditInventory_Click);
@@ -1878,7 +1908,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit7.AutoHeight = false;
             this.repositoryItemButtonEdit7.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit7.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "In", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit7.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "In", null, null, true)});
             this.repositoryItemButtonEdit7.Name = "repositoryItemButtonEdit7";
             this.repositoryItemButtonEdit7.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1895,7 +1925,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit8.AutoHeight = false;
             this.repositoryItemButtonEdit8.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit8.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit8.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject73, serializableAppearanceObject74, serializableAppearanceObject75, serializableAppearanceObject76, "Xóa", null, null, true)});
             this.repositoryItemButtonEdit8.Name = "repositoryItemButtonEdit8";
             this.repositoryItemButtonEdit8.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2113,7 +2143,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit9.AutoHeight = false;
             this.repositoryItemButtonEdit9.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit9.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject73, serializableAppearanceObject74, serializableAppearanceObject75, serializableAppearanceObject76, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit9.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "Xóa", null, null, true)});
             this.repositoryItemButtonEdit9.Name = "repositoryItemButtonEdit9";
             this.repositoryItemButtonEdit9.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2121,7 +2151,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit10.AutoHeight = false;
             this.repositoryItemButtonEdit10.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit10.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "In", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit10.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "In", null, null, true)});
             this.repositoryItemButtonEdit10.Name = "repositoryItemButtonEdit10";
             this.repositoryItemButtonEdit10.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2136,7 +2166,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit11.AutoHeight = false;
             this.repositoryItemButtonEdit11.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit11.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Mượn hồ sơ bệnh án", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit11.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "Mượn hồ sơ bệnh án", null, null, true)});
             this.repositoryItemButtonEdit11.Name = "repositoryItemButtonEdit11";
             this.repositoryItemButtonEdit11.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2144,7 +2174,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit12.AutoHeight = false;
             this.repositoryItemButtonEdit12.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit12.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "Mượn hồ sơ bệnh án", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit12.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "Mượn hồ sơ bệnh án", null, null, true)});
             this.repositoryItemButtonEdit12.Name = "repositoryItemButtonEdit12";
             this.repositoryItemButtonEdit12.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2152,7 +2182,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit_UnRejectStore.AutoHeight = false;
             this.repositoryItemButtonEdit_UnRejectStore.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_UnRejectStore.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "Hủy từ chối duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_UnRejectStore.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "Hủy từ chối duyệt", null, null, true)});
             this.repositoryItemButtonEdit_UnRejectStore.Name = "repositoryItemButtonEdit_UnRejectStore";
             this.repositoryItemButtonEdit_UnRejectStore.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEdit_UnRejectStore.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEdit_UnRejectStore_ButtonClick);
@@ -2161,7 +2191,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             // 
             this.repositoryItemButtonEdit_RejectStore.AutoHeight = false;
             this.repositoryItemButtonEdit_RejectStore.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_RejectStore.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "Từ chối duyệt", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit_RejectStore.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject97, serializableAppearanceObject98, serializableAppearanceObject99, serializableAppearanceObject100, "Từ chối duyệt", null, null, true)});
             this.repositoryItemButtonEdit_RejectStore.Name = "repositoryItemButtonEdit_RejectStore";
             this.repositoryItemButtonEdit_RejectStore.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEdit_RejectStore.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEdit_RejectStore_ButtonClick);
@@ -3083,6 +3113,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             ((System.ComponentModel.ISupportInitialize)(this.CheckEnable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_ViewEmrTreatment)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_Print_Enable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_Edit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repLocationStore)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit_Delete_Enable)).EndInit();
@@ -3415,5 +3446,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn56;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn62;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn66;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn67;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit_Edit;
     }
 }

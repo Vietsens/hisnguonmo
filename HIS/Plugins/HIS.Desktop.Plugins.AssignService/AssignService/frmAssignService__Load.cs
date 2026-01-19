@@ -388,6 +388,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     // - Trong trường hợp ĐỐI TƯỢNG BỆNH NHÂN được check "Không cho phép chỉ định dịch vụ nếu thiếu tiền" (HIS_PATIENT_TYPE có IS_CHECK_FEE_WHEN_ASSIGN = 1) và hồ sơ là "Khám" (HIS_TREATMENT có TDL_TREATMENT_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM) thì kiểm tra:
                     //+ Nếu hồ sơ đang không thừa tiền "Còn thừa" = 0 hoặc hiển thị "Còn thiếu" thì hiển thị thông báo "Bệnh nhân đang nợ tiền, không cho phép chỉ định dịch vụ", người dùng nhấn "Đồng ý" thì tắt form chỉ định.
                     //+ Nếu hồ sơ đang thừa tiền ("Còn thừa" > 0), thì khi người dùng check chọn dịch vụ, nếu số tiền "Phát sinh" > "Còn thừa" thì hiển thị cảnh báo: "Không cho phép chỉ định dịch vụ vượt quá số tiền còn thừa" và không cho phép người dùng check chọn dịch vụ đó.
+                    //+ Bỏ qua kiểm tra nợ tiền nếu bệnh nhân là bệnh nhân bảo lãnh
                     if (this.patientTypeByPT != null && this.patientTypeByPT.IS_CHECK_FEE_WHEN_ASSIGN == 1
                             && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                             && (
@@ -395,6 +396,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             (this.transferTreatmentFee < 0 && totalPriceServiceSelected > Math.Abs(this.transferTreatmentFee))
                             )
                         && this.currentModule.RoomTypeId != IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__TD
+                        && (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
                         )
                     {
                         //DialogResult myResult = MessageBox.Show(this, String.Format(ResourceMessage.BenhNhanDangNoTienKhogChoPhepChiDinhDV, Inventec.Common.Number.Convert.NumberToString(this.transferTreatmentFee, ConfigApplications.NumberSeperator)), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -4122,8 +4124,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //    //}
                 //}
 
-                decimal totalGuarantee;
-                if (decimal.TryParse(lblTotalGuarantee.Text, out totalGuarantee) && totalGuarantee > this.guaranteeInfo.GUARANTEE_BALANCE)
+                //decimal totalGuarantee;
+                //if (decimal.TryParse(lblTotalGuarantee.Text, out totalGuarantee) && (totalGuarantee - this.totalGuaranteeOriginal) > this.guaranteeInfo.GUARANTEE_BALANCE)
+                //{
+                //    message = "Tổng tiền dịch vụ đã vượt hạn mức bảo lãnh, vui lòng kiểm tra lại.";
+                //    return false;
+                //}
+                
+                if (this.totalGuaranteeArise > this.guaranteeInfo.GUARANTEE_BALANCE)
                 {
                     message = "Tổng tiền dịch vụ đã vượt hạn mức bảo lãnh, vui lòng kiểm tra lại.";
                     return false;
@@ -4299,9 +4307,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.ssGuarantee = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, hisSereServFilter, param);
             }
             //var totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.PRICE) : 0;
-
-            var totalGuaranteeOriginal = this.ssGuarantee != null ? this.ssGuarantee.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
-            totalGuaranteePrice += totalGuaranteeOriginal;
+            if (this.totalGuaranteeOriginal == 0)
+                this.totalGuaranteeOriginal = this.ssGuarantee != null ? this.ssGuarantee.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
+            this.totalGuaranteeArise = totalGuaranteePrice; 
+            totalGuaranteePrice += this.totalGuaranteeOriginal;
             return totalGuaranteePrice;
         }
 

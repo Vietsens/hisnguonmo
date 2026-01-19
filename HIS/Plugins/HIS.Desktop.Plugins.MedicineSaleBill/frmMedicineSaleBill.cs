@@ -1697,7 +1697,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                         txtTreatmentCode.Focus();
                         txtTreatmentCode.SelectAll();
                         WaitingManager.Hide();
-                        if (!isLuuKy && Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
+                        if (success)
                         {
                             MessageManager.Show(this.ParentForm, param, success);
                         }

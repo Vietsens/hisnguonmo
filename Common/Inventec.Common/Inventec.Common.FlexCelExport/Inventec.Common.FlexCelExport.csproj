@@ -52,6 +52,7 @@
     <Compile Include="Common.cs" />
     <Compile Include="ProcessWatermarkTag.cs" />
     <Compile Include="Store.cs" />
+    <Compile Include="TFlexCelUFMergeData.cs" />
     <Compile Include="TFlexCelUFEmployeeInfo.cs" />
     <Compile Include="TFlexCelUFFormatIcd.cs" />
     <Compile Include="TFlexCelUFCreateBarcode.cs" />

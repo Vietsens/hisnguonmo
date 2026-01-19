@@ -250,6 +250,10 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__REQ_DEPARTMENT_NAME",
                     Resources.ResourceLanguageManager.LanguageUCHisAggrExpMestList,
                     cultureLang);
+                this.GcReqAreaName.Caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__REQ_AREA_NAME",
+                    Resources.ResourceLanguageManager.LanguageUCHisAggrExpMestList,
+                    cultureLang);
                 this.GcExpMestCode2.Caption = Inventec.Common.Resource.Get.Value(
                     "IVT_LANGUAGE_KEY__UC_HIS_AGGR_EXP_MEST_LIST__GRID_COLUMN__EXP_MEST_SUB_CODE_2",
                     Resources.ResourceLanguageManager.LanguageUCHisAggrExpMestList,

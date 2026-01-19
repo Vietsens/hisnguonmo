@@ -40,12 +40,18 @@ namespace HIS.UC.ServiceRoom
 {
     public partial class UCRoomExamService : UserControlBase
     {
+        private List<V_HIS_SERVICE_PATY> cachedServicePaty;
         private void SetDataInit(RoomExamServiceInitADO ado)
         {
             try
             {
                 if (ado != null)
                 {
+                    if (this.cachedServicePaty == null)
+                    {
+                        this.cachedServicePaty = BackendDataWorker.Get<V_HIS_SERVICE_PATY>();
+                    }
+
                     this.hisRooms = BackendDataWorker.Get<V_HIS_ROOM>();
                     this.roomExamServiceInitADO = ado;
                     this.currentPatientTypeAlter = ado.CurrentPatientTypeAlter;
@@ -120,10 +126,10 @@ namespace HIS.UC.ServiceRoom
                 if (this.currentServiceRooms != null && this.currentServiceRooms.Count > 0)
                 {
                     long currentTime = Inventec.Common.DateTime.Get.Now() ?? 0;
-                    var allServicePaty = BackendDataWorker.Get<HIS_SERVICE_PATY>();
+
                     foreach (var service in this.currentServiceRooms.OrderBy(o => o.SERVICE_ID))
                     {
-                        var servicePrice = GetServicePrice(service.SERVICE_ID, currentTime, allServicePaty);
+                        var servicePrice = GetServicePrice(service.SERVICE_ID, currentTime, this.cachedServicePaty);
                         dataSourceWithPrice.Add(new ServiceRoomWithPriceADO(service, servicePrice));
                     }
                 }
@@ -168,7 +174,7 @@ namespace HIS.UC.ServiceRoom
         /// - TO_TIME null hoặc >= thời gian hiện tại
         /// - Lấy bản ghi có ID lớn nhất
         /// </summary>
-        private decimal? GetServicePrice(long serviceId, long currentTime, List<HIS_SERVICE_PATY> allServicePaty)
+        private decimal? GetServicePrice(long serviceId, long currentTime, List<V_HIS_SERVICE_PATY> allServicePaty)
         {
             try
             {

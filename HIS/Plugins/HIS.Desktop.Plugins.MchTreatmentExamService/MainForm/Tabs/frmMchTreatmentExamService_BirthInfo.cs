@@ -201,6 +201,8 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 var isDeathValue = GetRadioGroupValue("IsDeath");
                 var abandonedChildValue = GetRadioGroupValue("AbandonedChild");
                 string foundLocation = GetComboValue(cboFoundLocation3);
+                // qtcode
+                string skinToSkin = GetComboValue(cboSkinToSkin3);
                 var liveBirthValue = GetRadioGroupValue("LiveBirth");
                 string childStatus = GetComboValue(cboChildStatus3);
                 string childName = txtChildName3.Text;
@@ -236,6 +238,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                 bool hasChildInfo = isDeathValue.HasValue ||
                                    abandonedChildValue.HasValue ||
                                    !string.IsNullOrEmpty(foundLocation) ||
+                                   !string.IsNullOrEmpty(skinToSkin) ||
                                    liveBirthValue.HasValue ||
                                    !string.IsNullOrEmpty(childStatus) ||
                                    !string.IsNullOrEmpty(childName) ||
@@ -271,6 +274,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                     _child.IS_DEATH = isDeathValue;
                     _child.ABANDONED_CHILD = abandonedChildValue.HasValue ? abandonedChildValue.Value.ToString() : null;
                     _child.FOUND_LOCATION = foundLocation;
+                    _child.SKIN_TO_SKIN = skinToSkin;
                     _child.LIVE_BIRTH = liveBirthValue.HasValue ? liveBirthValue.Value.ToString() : null;
                     _child.CHILD_STATUS = childStatus;
                     _child.CHILD_NAME = childName;
@@ -338,6 +342,7 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
                         SetRadioGroupValue("LiveBirth", short.Parse(_child.LIVE_BIRTH));
                     
                     SetComboValue(cboChildStatus3, _child.CHILD_STATUS);
+                    SetComboValue(cboSkinToSkin3, _child.SKIN_TO_SKIN);
                     txtChildName3.Text = _child.CHILD_NAME;
                     SetComboValue(cboChildGender3, _child.CHILD_GENDER);
                     txtCccdNumber3.Text = _child.CCCD_NUMBER;

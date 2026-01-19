@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.treeListColumn_STORED_ROOM_NAME = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn_STORED_DEPARTMENT_NAME = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumnTreatmentType = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumnLOCATION_STORE_NAME = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.btnLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnUnlock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -93,7 +94,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
-            this.cboTreatmentTypeIDS = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.cboLocationStore = new DevExpress.XtraEditors.GridLookUpEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -101,6 +102,8 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnFocusDefault = new DevExpress.XtraBars.BarButtonItem();
+            this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboTreatmentTypeIDS = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboTreatmentType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -129,6 +132,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.lciCboStoreRoom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTreatmentType = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTreatmentTypeIDS = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -162,8 +166,10 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentTypeIDS.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboLocationStore.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentTypeIDS.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
@@ -189,6 +195,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             ((System.ComponentModel.ISupportInitialize)(this.lciCboStoreRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentTypeIDS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -263,7 +270,8 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.treeListColumn1,
             this.treeListColumn_STORED_ROOM_NAME,
             this.treeListColumn_STORED_DEPARTMENT_NAME,
-            this.treeListColumnTreatmentType});
+            this.treeListColumnTreatmentType,
+            this.treeListColumnLOCATION_STORE_NAME});
             this.treeList1.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeList1.Location = new System.Drawing.Point(0, 0);
             this.treeList1.Name = "treeList1";
@@ -386,6 +394,15 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.treeListColumnTreatmentType.Visible = true;
             this.treeListColumnTreatmentType.VisibleIndex = 7;
             this.treeListColumnTreatmentType.Width = 220;
+            // 
+            // treeListColumnLOCATION_STORE_NAME
+            // 
+            this.treeListColumnLOCATION_STORE_NAME.Caption = "Vị trí";
+            this.treeListColumnLOCATION_STORE_NAME.FieldName = "LOCATION_STORE_NAME";
+            this.treeListColumnLOCATION_STORE_NAME.Name = "treeListColumnLOCATION_STORE_NAME";
+            this.treeListColumnLOCATION_STORE_NAME.OptionsColumn.AllowEdit = false;
+            this.treeListColumnLOCATION_STORE_NAME.Visible = true;
+            this.treeListColumnLOCATION_STORE_NAME.VisibleIndex = 8;
             // 
             // btnLock
             // 
@@ -511,6 +528,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.cboLocationStore);
             this.lcEditorInfo.Controls.Add(this.cboTreatmentTypeIDS);
             this.lcEditorInfo.Controls.Add(this.cboTreatmentType);
             this.lcEditorInfo.Controls.Add(this.cboStoreRoom);
@@ -530,22 +548,23 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.lcEditorInfo.TabIndex = 0;
             this.lcEditorInfo.Text = "layoutControl5";
             // 
-            // cboTreatmentTypeIDS
+            // cboLocationStore
             // 
-            this.cboTreatmentTypeIDS.Location = new System.Drawing.Point(107, 170);
-            this.cboTreatmentTypeIDS.MenuManager = this.barManager1;
-            this.cboTreatmentTypeIDS.Name = "cboTreatmentTypeIDS";
-            this.cboTreatmentTypeIDS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.cboLocationStore.Location = new System.Drawing.Point(107, 194);
+            this.cboLocationStore.MenuManager = this.barManager1;
+            this.cboLocationStore.Name = "cboLocationStore";
+            this.cboLocationStore.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboLocationStore.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboTreatmentTypeIDS.Properties.NullText = "";
-            this.cboTreatmentTypeIDS.Properties.View = this.gridView4;
-            this.cboTreatmentTypeIDS.Size = new System.Drawing.Size(232, 20);
-            this.cboTreatmentTypeIDS.StyleController = this.lcEditorInfo;
-            this.cboTreatmentTypeIDS.TabIndex = 8;
-            this.cboTreatmentTypeIDS.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTreatmentTypeIDS_ButtonClick);
-            this.cboTreatmentTypeIDS.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboTreatmentTypeIDS_CustomDisplayText);
-            this.cboTreatmentTypeIDS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboTreatmentTypeIDS_KeyDown);
+            this.cboLocationStore.Properties.NullText = "";
+            this.cboLocationStore.Properties.View = this.gridView5;
+            this.cboLocationStore.Size = new System.Drawing.Size(232, 20);
+            this.cboLocationStore.StyleController = this.lcEditorInfo;
+            this.cboLocationStore.TabIndex = 9;
+            this.cboLocationStore.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboLocationStore_Closed);
+            this.cboLocationStore.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboLocationStore_ButtonClick);
+            this.cboLocationStore.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboLocationStore_KeyDown);
             // 
             // barManager1
             // 
@@ -614,6 +633,30 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.bbtnFocusDefault.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
             this.bbtnFocusDefault.Name = "bbtnFocusDefault";
             this.bbtnFocusDefault.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFocusDefault_ItemClick);
+            // 
+            // gridView5
+            // 
+            this.gridView5.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView5.Name = "gridView5";
+            this.gridView5.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView5.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboTreatmentTypeIDS
+            // 
+            this.cboTreatmentTypeIDS.Location = new System.Drawing.Point(107, 170);
+            this.cboTreatmentTypeIDS.MenuManager = this.barManager1;
+            this.cboTreatmentTypeIDS.Name = "cboTreatmentTypeIDS";
+            this.cboTreatmentTypeIDS.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboTreatmentTypeIDS.Properties.NullText = "";
+            this.cboTreatmentTypeIDS.Properties.View = this.gridView4;
+            this.cboTreatmentTypeIDS.Size = new System.Drawing.Size(232, 20);
+            this.cboTreatmentTypeIDS.StyleController = this.lcEditorInfo;
+            this.cboTreatmentTypeIDS.TabIndex = 8;
+            this.cboTreatmentTypeIDS.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTreatmentTypeIDS_ButtonClick);
+            this.cboTreatmentTypeIDS.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboTreatmentTypeIDS_CustomDisplayText);
+            this.cboTreatmentTypeIDS.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cboTreatmentTypeIDS_KeyDown);
             // 
             // gridView4
             // 
@@ -766,7 +809,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(229, 194);
+            this.btnCancel.Location = new System.Drawing.Point(229, 218);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(110, 26);
             this.btnCancel.StyleController = this.lcEditorInfo;
@@ -776,7 +819,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(115, 194);
+            this.btnAdd.Location = new System.Drawing.Point(115, 218);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(110, 26);
             this.btnAdd.StyleController = this.lcEditorInfo;
@@ -786,7 +829,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(2, 194);
+            this.btnEdit.Location = new System.Drawing.Point(2, 218);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(109, 26);
             this.btnEdit.StyleController = this.lcEditorInfo;
@@ -809,7 +852,8 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.lciCboStoreDepartment,
             this.lciCboStoreRoom,
             this.lciTreatmentType,
-            this.lciTreatmentTypeIDS});
+            this.lciTreatmentTypeIDS,
+            this.layoutControlItem9});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -819,11 +863,11 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.btnEdit;
-            this.layoutControlItem17.Location = new System.Drawing.Point(0, 192);
+            this.layoutControlItem17.Location = new System.Drawing.Point(0, 216);
             this.layoutControlItem17.MaxSize = new System.Drawing.Size(0, 30);
             this.layoutControlItem17.MinSize = new System.Drawing.Size(69, 30);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(113, 286);
+            this.layoutControlItem17.Size = new System.Drawing.Size(113, 262);
             this.layoutControlItem17.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
@@ -831,11 +875,11 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.btnAdd;
-            this.layoutControlItem18.Location = new System.Drawing.Point(113, 192);
+            this.layoutControlItem18.Location = new System.Drawing.Point(113, 216);
             this.layoutControlItem18.MaxSize = new System.Drawing.Size(0, 30);
             this.layoutControlItem18.MinSize = new System.Drawing.Size(77, 30);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(114, 286);
+            this.layoutControlItem18.Size = new System.Drawing.Size(114, 262);
             this.layoutControlItem18.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
@@ -843,11 +887,11 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             // layoutControlItem20
             // 
             this.layoutControlItem20.Control = this.btnCancel;
-            this.layoutControlItem20.Location = new System.Drawing.Point(227, 192);
+            this.layoutControlItem20.Location = new System.Drawing.Point(227, 216);
             this.layoutControlItem20.MaxSize = new System.Drawing.Size(0, 30);
             this.layoutControlItem20.MinSize = new System.Drawing.Size(83, 30);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(114, 286);
+            this.layoutControlItem20.Size = new System.Drawing.Size(114, 262);
             this.layoutControlItem20.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem20.TextVisible = false;
@@ -967,6 +1011,19 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             this.lciTreatmentTypeIDS.TextSize = new System.Drawing.Size(100, 20);
             this.lciTreatmentTypeIDS.TextToControlDistance = 5;
             // 
+            // layoutControlItem9
+            // 
+            this.layoutControlItem9.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem9.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem9.Control = this.cboLocationStore;
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 192);
+            this.layoutControlItem9.Name = "layoutControlItem9";
+            this.layoutControlItem9.Size = new System.Drawing.Size(341, 24);
+            this.layoutControlItem9.Text = "Vị trí lưu trữ";
+            this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem9.TextToControlDistance = 5;
+            // 
             // layoutControlGroup3
             // 
             this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -1082,8 +1139,10 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentTypeIDS.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboLocationStore.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentTypeIDS.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboTreatmentType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
@@ -1109,6 +1168,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             ((System.ComponentModel.ISupportInitialize)(this.lciCboStoreRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentTypeIDS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -1199,5 +1259,9 @@ private DevExpress.XtraLayout.LayoutControlItem lciMedicineUseFormName;
         private DevExpress.XtraEditors.GridLookUpEdit cboTreatmentTypeIDS;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
         private DevExpress.XtraLayout.LayoutControlItem lciTreatmentTypeIDS;
+        private DevExpress.XtraEditors.GridLookUpEdit cboLocationStore;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumnLOCATION_STORE_NAME;
     }
 }

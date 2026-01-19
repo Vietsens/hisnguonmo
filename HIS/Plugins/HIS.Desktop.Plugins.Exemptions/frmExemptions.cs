@@ -17,6 +17,7 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
@@ -42,6 +43,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -144,12 +146,20 @@ namespace HIS.Desktop.Plugins.Exemptions
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
+                // Set dtDiscountTimeStr to current date and time
+                //if (dtDiscountTimeStr != null)
+                //{
+                //    dtDiscountTimeStr.EditValue = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+                //}
+                this.SetupDateEdit();
                 if (this.treatmentId > 0)
                 {
                     LoadSearch();
                 }
 
                 this.spinEditMienGiamTreatmnet.EditValue = 100;
+
+                this.ValidControl();
 
                 FillInfoPatient(currentTreatment);
 
@@ -314,6 +324,7 @@ namespace HIS.Desktop.Plugins.Exemptions
                     currentTreatment = listTreatment.FirstOrDefault();
                     treatmentId = currentTreatment.ID;
                     txtFindTreatmentCode.Text = currentTreatment.TREATMENT_CODE;
+                    txtDiscountReasonTrea.Text = currentTreatment.DISCOUNT_REASON;
                 }
                 else
                 {
@@ -366,7 +377,7 @@ namespace HIS.Desktop.Plugins.Exemptions
                     //if (ListSereServTranfer != null && ListSereServTranfer.Count > 0)
                     //{
                     //    currentSereServs = ListSereServTranfer;
-                    //    foreach (var item in ListSereServTranfer)
+                    //    foreach (var item in ListSereServTranfer) 
                     //    {
                     //        if (dicSereServBill.ContainsKey(item.ID))
                     //            continue;
@@ -420,11 +431,62 @@ namespace HIS.Desktop.Plugins.Exemptions
             try
             {
                 this.isReloadTree = false;
+                string discountReason = txtDiscountReasonSS.Text;
+                string discountTimeStr = dtDiscountTimeStr.Text;
+                if (!dxValidationProvider1.Validate())
+                {
+                    return;
+                }
                 if (trvService.Nodes != null)
                 {
                     foreach (TreeListNode node in trvService.Nodes)
                     {
-                        ProcessTyLe(node);
+                        //ProcessTyLe(node); 
+                        ProcessCheckedLeafNodes(node, discountReason, discountTimeStr);
+                    }
+                }
+                trvService.RefreshDataSource();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ProcessCheckedLeafNodes(TreeListNode node, string discountReason, string discountTimeStr)
+        {
+            try
+            {
+                if (node != null)
+                {
+                    // Nếu node không có con (là leaf node) VÀ được tích chọn 
+                    if (!node.HasChildren && node.Checked)
+                    {
+                        var row = trvService.GetDataRecordByNode(node) as SereServADO;
+                        if (row != null && row.IsLeaf.HasValue && row.IsLeaf.Value)
+                        {
+                            // Xử lý tỷ lệ miễn giảm
+                            if (isReloadTree && row.DISCOUNT.HasValue)
+                            {
+                                row.VIR_TOTAL_DISCOUNT = row.DISCOUNT;
+                            }
+                            else
+                            {
+                                row.VIR_TOTAL_DISCOUNT = row.VIR_TOTAL_PATIENT_PRICE_NO_DC / 100 * spinEditTyLe.Value;
+                            }
+
+                            // Gán discount reason và time
+                            row.DISCOUNT_REASON = discountReason;
+                            row.DISCOUNT_TIME_STR = discountTimeStr;
+                        }
+                    }
+                    else if (node.HasChildren)
+                    {
+                        // Nếu có con, đệ quy xử lý các node con
+                        foreach (TreeListNode childNode in node.Nodes)
+                        {
+                            ProcessCheckedLeafNodes(childNode, discountReason, discountTimeStr);
+                        }
                     }
                 }
             }
@@ -576,10 +638,14 @@ namespace HIS.Desktop.Plugins.Exemptions
         {
             try
             {
-                CommonParam param = new CommonParam();
+                CommonParam param = new CommonParam(); 
                 bool success = false;
                 trvService.PostEditor();
                 btnSave.Focus();
+                if (!dxValidationProvider1.Validate())
+                {
+                    return;
+                }
                 MOS.SDO.HisSereServDiscountSDO sdo = new HisSereServDiscountSDO();
                 sdo.TreatmentId = this.treatmentId ?? 0;
                 if (chkMienGiamTreatment.Checked)
@@ -587,9 +653,10 @@ namespace HIS.Desktop.Plugins.Exemptions
                     sdo.AutoDiscountRatio = this.spinEditMienGiamTreatmnet.Value > 0 ? this.spinEditMienGiamTreatmnet.Value / 100 : 0;
                 }
                 sdo.IsAutoDiscount = chkMienGiamTreatment.Checked;
+                sdo.DiscountReason = txtDiscountReasonTrea.Text;
 
                 List<HIS_SERE_SERV> listUpdate = new List<HIS_SERE_SERV>();
-                if (this.currentTreatment.IS_LOCK_FEE != 1)
+                if (this.currentTreatment.IS_LOCK_FEE != 1) 
                 {
                     var dataChecks = this.GetListCheck();
                     if (dataChecks != null && dataChecks.Count > 0)
@@ -600,6 +667,20 @@ namespace HIS.Desktop.Plugins.Exemptions
                             HIS_SERE_SERV ado = new HIS_SERE_SERV();
                             Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(ado, item);
                             ado.DISCOUNT = item.VIR_TOTAL_DISCOUNT;
+                            if (item.DISCOUNT_TIME_STR != null && item.DISCOUNT_TIME_STR != "")
+                            {
+                                ado.DISCOUNT_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(
+    DateTime.ParseExact(
+        item.DISCOUNT_TIME_STR,
+        "dd/MM/yyyy HH:mm",
+        CultureInfo.InvariantCulture
+    )
+);
+                            }
+                            else
+                            {
+                                ado.DISCOUNT_TIME = null;
+                            }
                             if (item.VIR_TOTAL_DISCOUNT > item.VIR_TOTAL_PATIENT_PRICE_NO_DC)
                             {
                                 mess += item.TDL_SERVICE_NAME + "; ";
@@ -629,12 +710,12 @@ namespace HIS.Desktop.Plugins.Exemptions
                     if (data != null)
                     {
                         success = true;
-                        LoadDataToTreeSereServ();
+                        LoadDataToTreeSereServ(); 
                     }
                     MessageManager.Show(this, param, success);
                 }
                 else
-                {
+                { 
                     DevExpress.XtraEditors.XtraMessageBox.Show("Hồ sơ đã khóa viện phí", "Thông báo");
                 }
             }
@@ -670,5 +751,59 @@ namespace HIS.Desktop.Plugins.Exemptions
             btnNew_Click(null, null);
         }
 
+        private void ValidControl()
+        {
+            try
+            {
+                ValidationSingleControlWithMaxLength(txtDiscountReasonSS, false, 1000);
+                ValidationSingleControlWithMaxLength(txtDiscountReasonTrea, false, 1000);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public void ValidationSingleControlWithMaxLength(Control control, bool isRequired, int maxLength)
+        {
+            try
+            {
+                var rule = new ControlMaxCharLengthValidationRule()
+                {
+                    Editor = control,
+                    MaxLength = maxLength,
+                    IsRequired = isRequired,
+                    ErrorType = ErrorType.Warning
+                };
+
+                dxValidationProvider1.SetValidationRule(control, rule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SetupDateEdit()
+        {
+            // Thiết lập định dạng
+            dtDiscountTimeStr.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            dtDiscountTimeStr.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+
+            dtDiscountTimeStr.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+            dtDiscountTimeStr.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+
+            dtDiscountTimeStr.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            dtDiscountTimeStr.Properties.Mask.UseMaskAsDisplayFormat = true;
+
+            // Gán giá trị ban đầu
+            dtDiscountTimeStr.EditValue = DateTime.Now;
+            this.dtDiscountTimeStr_EditValueChanged(null, null);
+        }
+
+        private void dtDiscountTimeStr_EditValueChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

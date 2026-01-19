@@ -151,15 +151,17 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
                 this.treeListColumn_STORED_ROOM_NAME.Caption = Inventec.Common.Resource.Get.Value("frmHisDataStore.treeListColumn_STORED_ROOM_NAME.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn_STORED_DEPARTMENT_NAME.Caption = Inventec.Common.Resource.Get.Value("frmHisDataStore.treeListColumn_STORED_DEPARTMENT_NAME.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumnTreatmentType.Caption = Inventec.Common.Resource.Get.Value("frmHisDataStore.treeListColumnTreatmentType.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.treeListColumnLOCATION_STORE_NAME.Caption = Inventec.Common.Resource.Get.Value("frmHisDataStore.treeListColumnLOCATION_STORE_NAME.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtKeyword.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisDataStore.txtKeyword.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("frmHisDataStore.lcEditorInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.cboTreatmentTypeIDS.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisDataStore.cboTreatmentTypeIDS.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboLocationStore.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisDataStore.cboLocationStore.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmHisDataStore.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmHisDataStore.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmHisDataStore.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnAdd.Caption = Inventec.Common.Resource.Get.Value("frmHisDataStore.bbtnAdd.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnReset.Caption = Inventec.Common.Resource.Get.Value("frmHisDataStore.bbtnReset.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnFocusDefault.Caption = Inventec.Common.Resource.Get.Value("frmHisDataStore.bbtnFocusDefault.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboTreatmentTypeIDS.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisDataStore.cboTreatmentTypeIDS.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboTreatmentType.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisDataStore.cboTreatmentType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboStoreRoom.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisDataStore.cboStoreRoom.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboStoreDepartment.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisDataStore.cboStoreDepartment.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -181,6 +183,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
                 this.lciTreatmentType.Text = Inventec.Common.Resource.Get.Value("frmHisDataStore.lciTreatmentType.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTreatmentTypeIDS.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisDataStore.lciTreatmentTypeIDS.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTreatmentTypeIDS.Text = Inventec.Common.Resource.Get.Value("frmHisDataStore.lciTreatmentTypeIDS.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("frmHisDataStore.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmHisDataStore.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
                 if (this.moduleData != null && !string.IsNullOrEmpty(moduleData.text))
@@ -343,6 +346,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
                 LoadComboStoreDepartment();
                 LoadComboStoreRoom();
                 LoadComboParent();
+                LoadComboLocationStore();
             }
             catch (Exception ex)
             {
@@ -398,6 +402,15 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             ControlEditorLoader.Load(this.cboStoreRoom, storeRoomList, controlEditorADO);
         }
 
+        private void LoadComboLocationStore()
+        {
+            var data = BackendDataWorker.Get<HIS_LOCATION_STORE>().Where(o => o.IS_ACTIVE == 1 && o.PARENT_ID == null).ToList();
+            List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+            columnInfos.Add(new ColumnInfo("LOCATION_STORE_CODE", "", 100, 1));
+            columnInfos.Add(new ColumnInfo("LOCATION_STORE_NAME", "", 250, 2));
+            ControlEditorADO controlEditorADO = new ControlEditorADO("LOCATION_STORE_NAME", "ID", columnInfos, false, 350);
+            ControlEditorLoader.Load(this.cboLocationStore, data, controlEditorADO);
+        }
 
         #region Init combo
 
@@ -618,6 +631,7 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
                     cboDepartment.EditValue = data.DEPARTMENT_ID;
                     cboStoreDepartment.EditValue = data.STORED_DEPARTMENT_ID;
                     cboStoreRoom.EditValue = data.STORED_ROOM_ID;
+                    cboLocationStore.EditValue = data.LOCATION_STORE_ID;
                 }
             }
             catch (Exception ex)
@@ -1017,6 +1031,14 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
                 else
                 {
                     currentDTO.STORED_ROOM_ID = null;
+                }
+                if (cboLocationStore.EditValue != null)
+                {
+                    currentDTO.LOCATION_STORE_ID = (long)cboLocationStore.EditValue;
+                }
+                else
+                {
+                    currentDTO.LOCATION_STORE_ID = null;
                 }
                 GridCheckMarksSelection gridCheckMark = cboTreatmentType.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null && gridCheckMark.SelectedCount > 0)
@@ -1887,20 +1909,12 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (btnAdd.Enabled)
-                    {
-                        btnAdd.Focus();
-                    }
-                    else
-                    {
-                        btnEdit.Focus();
-                    }
-                    e.Handled = true;
+                    cboLocationStore.Focus();
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -1948,6 +1962,45 @@ namespace HIS.Desktop.Plugins.HisDataStore.HisDataStore
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void cboLocationStore_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                cboLocationStore.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboLocationStore_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (btnAdd.Enabled)
+                    {
+                        btnAdd.Focus();
+                    }
+                    else
+                    {
+                        btnEdit.Focus();
+                    }
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboLocationStore_Closed(object sender, ClosedEventArgs e)
+        {
         }
     }
 }

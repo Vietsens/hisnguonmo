@@ -17,9 +17,13 @@
  */
 using AutoMapper;
 using DevExpress.Utils.Drawing;
+using DevExpress.XtraBars.Customization;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraTreeList;
+using DevExpress.XtraTreeList.Columns;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
@@ -153,25 +157,88 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
             }
         }
 
+        //private void LoadComboLocationStore()
+        //{
+
+        //    try
+        //    {
+        //        lstLocationStore = BackendDataWorker.Get<HIS_LOCATION_STORE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+        //        List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+        //        columnInfos.Add(new ColumnInfo("LOCATION_STORE_CODE", "Mã", 100, 1));
+        //        columnInfos.Add(new ColumnInfo("LOCATION_STORE_NAME", "Tên", 250, 2));
+        //        ControlEditorADO controlEditorADO = new ControlEditorADO("LOCATION_STORE_NAME", "ID", columnInfos, true, 350);
+        //        ControlEditorLoader.Load(cboLoacationStore, lstLocationStore, controlEditorADO);
+        //        cboLoacationStore.Properties.ImmediatePopup = true;
+        //        cboLoacationStore.Properties.PopupFormSize = new Size(350, cboLoacationStore.Properties.PopupFormSize.Height);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+
+        //}
         private void LoadComboLocationStore()
         {
-
             try
             {
-                lstLocationStore = BackendDataWorker.Get<HIS_LOCATION_STORE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("LOCATION_STORE_CODE", "Mã", 100, 1));
-                columnInfos.Add(new ColumnInfo("LOCATION_STORE_NAME", "Tên", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("LOCATION_STORE_NAME", "ID", columnInfos, true, 350);
-                ControlEditorLoader.Load(cboLoacationStore, lstLocationStore, controlEditorADO);
+                // Lấy dữ liệu vị trí từ Backend và sắp xếp theo NUM_ORDER, Mã, Tên
+                lstLocationStore = BackendDataWorker.Get<HIS_LOCATION_STORE>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => o.LOCATION_STORE_CODE)
+                    .ThenBy(o => o.LOCATION_STORE_NAME)
+                    .ToList();
+
+                // Cấu hình TreeListLookUpEdit
+                cboLoacationStore.Properties.DataSource = lstLocationStore;
+                cboLoacationStore.Properties.DisplayMember = "LOCATION_STORE_NAME";
+                cboLoacationStore.Properties.ValueMember = "ID";
+
+                // Cấu hình TreeList để hiển thị dạng cây phân cấp
+                cboLoacationStore.Properties.TreeList.KeyFieldName = "ID";
+                cboLoacationStore.Properties.TreeList.ParentFieldName = "PARENT_ID";
+
+                // Xóa các cột cũ nếu có
+                cboLoacationStore.Properties.TreeList.Columns.Clear();
+
+                // Thêm cột Mã vị trí
+                TreeListColumn colCode = cboLoacationStore.Properties.TreeList.Columns.Add();
+                colCode.FieldName = "LOCATION_STORE_CODE";
+                colCode.Caption = "Mã";
+                colCode.Visible = true;
+                colCode.VisibleIndex = 0;
+                colCode.Width = 100;
+
+                // Thêm cột Tên vị trí
+                TreeListColumn colName = cboLoacationStore.Properties.TreeList.Columns.Add();
+                colName.FieldName = "LOCATION_STORE_NAME";
+                colName.Caption = "Tên vị trí";
+                colName.Visible = true;
+                colName.VisibleIndex = 1;
+                colName.Width = 250;
+
+                // Cấu hình các thuộc tính
+                cboLoacationStore.Properties.PopupFormSize = new Size(400, 300);
                 cboLoacationStore.Properties.ImmediatePopup = true;
-                cboLoacationStore.Properties.PopupFormSize = new Size(350, cboLoacationStore.Properties.PopupFormSize.Height);
+                cboLoacationStore.Properties.TreeList.OptionsView.ShowCheckBoxes = false;
+                cboLoacationStore.Properties.TreeList.OptionsSelection.EnableAppearanceFocusedCell = false;
+                cboLoacationStore.Properties.TreeList.OptionsView.ShowIndicator = false;
+
+                // Sắp xếp theo Mã và Tên trong TreeList
+                cboLoacationStore.Properties.TreeList.OptionsView.AutoWidth = false;
+                cboLoacationStore.Properties.TreeList.OptionsBehavior.EnableFiltering = true;
+
+                // Expand tất cả các node
+                cboLoacationStore.Properties.TreeList.ExpandAll();
+
+                // Thêm button xóa
+                cboLoacationStore.Properties.Buttons.Clear();
+                cboLoacationStore.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
+                cboLoacationStore.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
 
         private void InitControlState()
