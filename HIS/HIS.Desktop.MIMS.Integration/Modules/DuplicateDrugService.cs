@@ -22,7 +22,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
 		{
             this.MappingMIMS(current);
             this.MappingMIMS(previous);
-            string xmlRequest = MimsRequestBuilder.BuildDrugInteractionRequest(current, true);
+            string xmlRequest = MimsRequestBuilder.BuildDrugDrugInteractionRequest(current, true);
 
             bool isTimeout;
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xmlRequest, out isTimeout);

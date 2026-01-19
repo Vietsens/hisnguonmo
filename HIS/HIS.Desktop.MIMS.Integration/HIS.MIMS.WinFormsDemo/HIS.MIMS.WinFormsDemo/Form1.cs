@@ -41,7 +41,7 @@ namespace HIS.MIMS.WinFormsDemo
         // 1. Use sample "Drug Information (Product)" from Postman collection
         private void btnTestDrugInfoProduct_Click(object sender, EventArgs e)
         {
-            DrugItem drug = new DrugItem(null, "captopril 100mg Oral Tablet", "488F9F61-5D37-4989-925E-1742FFFDAA9E", MimsDrugType.GGPI);
+            DrugItem drug = new DrugItem(null, "allopurinol Oral Tablet", "B3E75967-D489-5A28-E034-080020E1DD8C", MimsType.GenericItem);
 
             var service = new DrugInfomationService();
             service.ShowResultAsync(drug);
@@ -74,14 +74,14 @@ namespace HIS.MIMS.WinFormsDemo
             var current = new List<DrugItem>
             {
                 //new DrugItem(null, "Vercef dispersible tab 125 mg", "D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60", MimsDrugType.Product),
-                new DrugItem(null, "", "23F5183C-80AB-4E84-9F6A-11FEAD7BFA65", MimsDrugType.GGPI),
-                new DrugItem(null, "", "F0FDC06F-E5AD-4A26-8899-D71C800959FB", MimsDrugType.GenericItem)
+                new DrugItem(null, "", "23F5183C-80AB-4E84-9F6A-11FEAD7BFA65", MimsType.GGPI),
+                new DrugItem(null, "", "F0FDC06F-E5AD-4A26-8899-D71C800959FB", MimsType.GenericItem)
             };
 
             var previous = new List<DrugItem>();
 
-            //var service = new DrugDrugInteractionService();
-            var service = new DuplicateDrugService();
+            var service = new DrugDrugInteractionService();
+            //var service = new DuplicateDrugService();
             service.ShowResultAsync(current, previous);
         }
 
@@ -104,15 +104,41 @@ namespace HIS.MIMS.WinFormsDemo
             var current = new List<DrugItem>
             {
                 //new DrugItem(null, "Vercef dispersible tab 125 mg", "D2E2D654-E6A0-4E8D-82B3-CBAE854F6F60", MimsDrugType.Product),
-                new DrugItem(null, "", "775368B5-254F-4CF0-A605-B64846459BF8", MimsDrugType.Product),
-                new DrugItem(null, "hydroCHLOROthiazide 12.5mg - irbesartan 300mg film coated tablet", "49102790-2259-457F-88B5-A968FA397EDA", MimsDrugType.GGPI)
-            };
+                new DrugItem(null, "", "23F5183C-80AB-4E84-9F6A-11FEAD7BFA65", MimsType.GGPI),
+                new DrugItem(null, "", "F0FDC06F-E5AD-4A26-8899-D71C800959FB", MimsType.GenericItem),
 
+                new DrugItem(null, "", "775368B5-254F-4CF0-A605-B64846459BF8", MimsType.Product),
+                new DrugItem(null, "hydroCHLOROthiazide 12.5mg - irbesartan 300mg film coated tablet", "49102790-2259-457F-88B5-A968FA397EDA", MimsType.GGPI),
+
+                new DrugItem(null, "", "1F00E3C8-E878-4081-BC07-EDECA6B7E7F6", MimsType.Product),
+            };
+            var alleries = new List<AllergyItem>
+            {
+                
+                new AllergyItem(null,null,"","3FF1EECF-EDA2-4086-8941-01469BCDA202", MimsType.Product)
+            };
             var icdcodes = new List<string>();
             icdcodes.Add("R00.1");
 
             var service = new DrugHealthService();
-            service.ShowDialog(current, icdcodes);
+            service.CheckAndAlert(current,alleries, icdcodes);
+            //var isContinue = service.ShowDialog(current, icdcodes);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var current = new List<DrugItem>
+            {
+                new DrugItem(null, "", "1F00E3C8-E878-4081-BC07-EDECA6B7E7F6", MimsType.Product),
+            };
+            var alleries = new List<AllergyItem>
+            {
+                
+                new AllergyItem(null,null,"","3FF1EECF-EDA2-4086-8941-01469BCDA202", MimsType.Product)
+            };
+
+            var service = new DrugAllergyService();
+            service.ShowResultAsync(current, alleries);
             //var isContinue = service.ShowDialog(current, icdcodes);
         }
     }

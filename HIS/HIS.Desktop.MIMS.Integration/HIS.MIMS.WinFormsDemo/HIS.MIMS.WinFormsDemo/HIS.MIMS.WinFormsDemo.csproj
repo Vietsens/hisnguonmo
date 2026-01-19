@@ -36,6 +36,10 @@
     <Reference Include="DevExpress.Utils.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraBars.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -78,6 +82,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\MIMSStyleSheet\CSS\.DS_Store" />
+    <None Include="Resources\MIMSStyleSheet\CSS\New Volume %28D%29 - Shortcut.lnk" />
+    <None Include="Resources\MIMSStyleSheet\images\Sorting icons.psd" />
+    <None Include="Resources\MIMSStyleSheet\images\Thumbs.db" />
+    <None Include="Resources\MIMSStyleSheet\Scripts\.DS_Store" />
+    <None Include="Resources\MIMSStyleSheet\Scripts\OldStyle\.DS_Store" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -89,6 +99,176 @@
       <Project>{31d53d83-f9e9-44a8-b98b-fd004fd3dcd0}</Project>
       <Name>HIS.Desktop.MIMS.Integration</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MIMSStyleSheet\CSS\all.min.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\Aristo\Aristo.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\Aristo\images\bg_fallback.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\Aristo\images\icon_sprite.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\Aristo\images\progress_bar.gif" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\Aristo\images\slider_handles.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\Aristo\images\ui-icons_222222_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\Aristo\images\ui-icons_454545_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\codemirror.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_flat_15_cd0a0a_40x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_glass_50_3baae3_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_glass_80_d7ebf9_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_2694e8_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_3d80b3_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_72a7cf_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\VN-level1.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\images\VN-level2.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\jquery-ui-1.8.16.custom.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\cupertino\jquery-ui-1.8.6.custom.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\default.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\demo_page.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\demo_table.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\demo_table_jui.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-bg_diagonals-small_25_c5ddfc_40x40.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-bg_diagonals-thick_20_e69700_40x40.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-bg_diagonals-thick_22_1484e6_40x40.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-bg_diagonals-thick_26_2293f7_40x40.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-bg_flat_0_e69700_40x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-bg_flat_0_e6b900_40x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-bg_highlight-soft_100_f9f9f9_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-bg_inset-hard_100_eeeeee_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-icons_0a82eb_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-icons_0b54d5_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-icons_5fa5e3_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-icons_fcdd4a_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\excite-bike\jquery-ui-1.8.6.custom.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\jquery\jquery-ui.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\jquery\jquery-ui.min.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\jquery\jquery-ui.structure.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\jquery\jquery-ui.structure.min.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\jquery\jquery-ui.theme.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\jquery\jquery-ui.theme.min.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\layout-default-latest.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\logoandstatement.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\mims.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\module.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\VN-level1.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\images\VN-level2.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\jquery-ui-1.8.6.custom.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\redmond\jquery-ui.css" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-icons_222222_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-icons_454545_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-icons_888888_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Resources\MIMSStyleSheet\CSS\smoothness\jquery-ui-1.8.6.custom.css" />
+    <Content Include="Resources\MIMSStyleSheet\images\AJAX.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\back_disabled.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\back_enabled.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\cata.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\catb.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\catc.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\catd.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\catx.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\cims integrated logo_1.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\CIMS Integrated Logo_PNG.PNG" />
+    <Content Include="Resources\MIMSStyleSheet\images\collapse.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\collapse_blue.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\down.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\ECHealthcaredemo1.html" />
+    <Content Include="Resources\MIMSStyleSheet\images\EmptyStar.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\expand.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\expand_blue.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\favicon.ico" />
+    <Content Include="Resources\MIMSStyleSheet\images\FilledStar.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\forward_disabled.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\forward_enabled.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\HandleGrip.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\HandleHand.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\JoeStagUK.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\loading.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\MIMSIntegrated.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\MIMSIntegrated1.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\MIMSIntegratedfinallogo.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\module.caption.backg.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\module.caption.backg.rolledup.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\navigation_back.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\Question.PNG" />
+    <Content Include="Resources\MIMSStyleSheet\images\rollup.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\samples_bg.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\SavedStar.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\sort_asc.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\sort_asc_disabled.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\sort_both.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\sort_desc.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\sort_desc_disabled.png" />
+    <Content Include="Resources\MIMSStyleSheet\images\ui-anim_basic_16x16.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\up.gif" />
+    <Content Include="Resources\MIMSStyleSheet\images\VN-level1.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\images\VN-level2.jpg" />
+    <Content Include="Resources\MIMSStyleSheet\MIMSStylesheet_CDSDefault_byRanking_VN.xsl" />
+    <Content Include="Resources\MIMSStyleSheet\MIMSStylesheet_CDSDefault_byRanking_VN_1.xsl" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\drugalert.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\jquery-1.4.4.min.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\jquery-3.6.0.min.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\jquery-migrate-3.3.2.min.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\jquery-ui-1.8.6.custom.min.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\jquery-ui.min.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\monograph.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\OldStyle\drugalert.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\OldStyle\jquery-1.12.4.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\OldStyle\jquery-1.12.4.min.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\OldStyle\jquery-1.4.4.min.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\OldStyle\jquery-ui.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\OldStyle\jquery-ui.min.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\OldStyle\monograph.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\OldStyle\vtip.js" />
+    <Content Include="Resources\MIMSStyleSheet\Scripts\vtip.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
