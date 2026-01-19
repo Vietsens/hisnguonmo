@@ -392,11 +392,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (this.patientTypeByPT != null && this.patientTypeByPT.IS_CHECK_FEE_WHEN_ASSIGN == 1
                             && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                             && (
-                            this.transferTreatmentFee >= 0 ||
+                            this.transferTreatmentFee > 0 ||
                             (this.transferTreatmentFee < 0 && totalPriceServiceSelected > Math.Abs(this.transferTreatmentFee))
                             )
                         && this.currentModule.RoomTypeId != IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__TD
-                        && (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
                         )
                     {
                         //DialogResult myResult = MessageBox.Show(this, String.Format(ResourceMessage.BenhNhanDangNoTienKhogChoPhepChiDinhDV, Inventec.Common.Number.Convert.NumberToString(this.transferTreatmentFee, ConfigApplications.NumberSeperator)), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo, MessageBoxIcon.Question);

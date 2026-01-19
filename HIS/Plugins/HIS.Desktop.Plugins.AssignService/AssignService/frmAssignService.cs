@@ -140,7 +140,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServsInTreatmentRaw = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> ssGuarantee = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         decimal totalGuaranteeOriginal = 0;
-        decimal totalGuaranteeArise = 0; 
+        decimal totalGuaranteeArise = 0;
         Inventec.Desktop.Common.Modules.Module currentModule;
 
         Dictionary<long, List<V_HIS_SERVICE_PATY>> servicePatyInBranchs;
@@ -1188,7 +1188,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     LogSystem.Debug("frmAssignService_Load => 5");
                     this.LoadDataToGridParticipants();
                 }
-                
+
                 this.gridControlServiceProcess.ToolTipController = this.tooltipService;
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
                 this.AddBarManager(this.barManager1);
@@ -1435,19 +1435,30 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     //+ Nếu hồ sơ đang không thừa tiền "Còn thừa" = 0 hoặc hiển thị "Còn thiếu" thì hiển thị thông báo "Bệnh nhân đang nợ tiền, không cho phép chỉ định dịch vụ", người dùng nhấn "Đồng ý" thì tắt form chỉ định.
                     //+ Nếu hồ sơ đang thừa tiền ("Còn thừa" > 0), thì khi người dùng check chọn dịch vụ, nếu số tiền "Phát sinh" > "Còn thừa" thì hiển thị cảnh báo: "Không cho phép chỉ định dịch vụ vượt quá số tiền còn thừa" và không cho phép người dùng check chọn dịch vụ đó.
                     //+ Bỏ qua kiểm tra nợ tiền nếu bệnh nhân là bệnh nhân bảo lãnh
+                    var SereSerView = new List<HIS_SERE_SERV>();
+                    if (this.transferTreatmentFee > 0)
+                    {
+
+                        HisSereServFilter filterSs = new HisSereServFilter();
+                        filterSs.TREATMENT_ID = treatmentId;
+                        SereSerView = await new BackendAdapter(param).GetAsync<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumer.ApiConsumers.MosConsumer, filterSs, param);
+                        //SereSerView = SereSerView.Where(o => o.IS_GUARANTEED != 1).ToList();
+                        transferTreatmentFee = transferTreatmentFee - SereSerView.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
+                    }
+
                     if (this.patientTypeByPT != null && this.patientTypeByPT.IS_CHECK_FEE_WHEN_ASSIGN == 1
                             && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                             && this.transferTreatmentFee >= 0 && this.currentModule.RoomTypeId != IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__TD
-                            && (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
                         )
                     {
-                        HisSereServView17Filter filterSs = new HisSereServView17Filter();
-                        filterSs.TDL_TREATMENT_ID = treatmentId;
-                        var SereSerView17 = await new BackendAdapter(param).GetAsync<List<V_HIS_SERE_SERV_17>>("api/HisSereServ/GetView17", ApiConsumer.ApiConsumers.MosConsumer, filterSs, param);
+                        SereSerView = SereSerView.Where(o => o.IS_GUARANTEED != 1).ToList();
+                        if (SereSerView.Any())
+                        {
+                            frmDetailsSereServ frm = new frmDetailsSereServ(SereSerView.ToList(), (HIS.Desktop.Common.RefeshReference)this.Close);
+                            frm.ShowDialog();
+                            return;
+                        }
 
-                        frmDetailsSereServ frm = new frmDetailsSereServ(SereSerView17.ToList(), (HIS.Desktop.Common.RefeshReference)this.Close);
-                        frm.ShowDialog();
-                        return;
                     }
 
 
@@ -3221,6 +3232,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 }
 
                             }
+
                             if (e.Column.FieldName == "PRICE_PRPO_DISPLAY")
                             {
                                 if (oneServiceSDO.AssignPackagePriceEdit.HasValue && oneServiceSDO.AssignPackagePriceEdit > 0)
@@ -3361,9 +3373,19 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         if (lstSereServExist != null && lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID) != null && DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Dịch vụ có thời gian chỉ định nằm trong khoảng thời gian thiết lập của phác đồ điều trị. Thời gian chỉ định {0} (mã y lệnh: {1}). Bạn có muốn tiếp tục?", Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID).TDL_INTRUCTION_TIME), lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID).TDL_SERVICE_REQ_CODE), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) != DialogResult.Yes)
                         {
                             sereServADO.IsChecked = false;
+                            if (this.currentHisTreatment != null && !string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
+                            {
+                                sereServADO.IsGuarantee = false;
+                                UpdateTotalGuaranteePrice(); // update label số tiền cần bảo lãnh
+                            }
                             return;
                         }
                         sereServADO.IsChecked = true;
+                        if (this.currentHisTreatment != null && !string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
+                        {
+                            sereServADO.IsGuarantee = true;
+                            UpdateTotalGuaranteePrice(); // update label số tiền cần bảo lãnh
+                        }
 
                         if (sereServADO.IsChecked)
                         {
@@ -3409,6 +3431,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             {
                                 this.ResetOneService(sereServADO);
                                 sereServADO.IsChecked = false;
+
+                                if (this.currentHisTreatment != null && !string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
+                                {
+                                    sereServADO.IsGuarantee = false;
+                                    UpdateTotalGuaranteePrice(); // update label số tiền cần bảo lãnh
+                                }
                                 return;
                             }
                             this.FillDataOtherPaySourceDataRow(sereServADO);
@@ -10676,7 +10704,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
         private void gridViewServiceProcess_DataSourceChanged(object sender, EventArgs e)
         {
-            if(currentHisTreatment != null && string.IsNullOrWhiteSpace(currentHisTreatment.GUARANTEE_CODE))
+            if (currentHisTreatment != null && string.IsNullOrWhiteSpace(currentHisTreatment.GUARANTEE_CODE))
             {
                 gridViewServiceProcess.Columns["IsGuarantee"].Visible = false;
             }

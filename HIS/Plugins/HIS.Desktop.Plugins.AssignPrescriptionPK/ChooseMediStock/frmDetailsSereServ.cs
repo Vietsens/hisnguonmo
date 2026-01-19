@@ -30,15 +30,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MOS.EFMODEL.DataModels;
+using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseMediStock
 {
     public partial class frmDetailsSereServ : Form
     {
-        List<V_HIS_SERE_SERV_17> dataList { get; set; }
+        List<HIS_SERE_SERV> dataList { get; set; }
         RefeshReference refeshReference { get; set; }
         Action<bool> CloseForm { get; set; }
-        public frmDetailsSereServ(List<V_HIS_SERE_SERV_17> data, RefeshReference refeshReference)
+        public frmDetailsSereServ(List<HIS_SERE_SERV> data, RefeshReference refeshReference)
         {
             InitializeComponent();
             try
@@ -95,7 +96,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseMediStock
             {
                 if (e.IsGetData && e.Column.UnboundType != DevExpress.Data.UnboundColumnType.Bound)
                 {
-                    var data = (V_HIS_SERE_SERV_17)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    var data = (HIS_SERE_SERV)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (data != null)
                     {
                         if (e.Column.FieldName == "VIR_TOTAL_PATIENT_PRICE_STR")
@@ -109,6 +110,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseMediStock
                             {
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
+                        }
+                    }
+                    else if (e.Column.FieldName == "EXECUTE_ROOM_NAME_STR")
+                    {
+                        try
+                        {
+                            e.Value = BackendDataWorker.Get<HIS_EXECUTE_ROOM>().Where(o => o.ID == data.TDL_EXECUTE_ROOM_ID).Select(o => o.EXECUTE_ROOM_NAME).FirstOrDefault();
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "REQUEST_ROOM_NAME_STR")
+                    {
+                        try
+                        {
+                            e.Value = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.ID == data.TDL_REQUEST_ROOM_ID).Select(o => o.ROOM_NAME).FirstOrDefault();
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
                 }

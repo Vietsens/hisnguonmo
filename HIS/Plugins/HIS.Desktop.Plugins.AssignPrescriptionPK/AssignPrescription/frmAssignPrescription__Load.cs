@@ -240,7 +240,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 CommonParam param = new CommonParam();
                 //if (_serviceReqPrintAlls == null)
                 {
-                    
+
                     //Load đơn phòng khám
                     HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                     serviceReqFilter.TREATMENT_ID = this.treatmentId;
@@ -1100,6 +1100,17 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 // Trong trường hợp ĐỐI TƯỢNG BỆNH NHÂN được check "Không cho phép chỉ định dịch vụ nếu thiếu tiền" (HIS_PATIENT_TYPE có IS_CHECK_FEE_WHEN_ASSIGN = 1) và hồ sơ là "Khám" (HIS_TREATMENT có TDL_TREATMENT_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM) thì kiểm tra:
                 //+ Nếu hồ sơ đang không thừa tiền ("Còn thừa" = 0 hoặc hiển thị "Còn thiếu") thì hiển thị thông báo "Bệnh nhân đang nợ tiền, không cho phép chỉ định dịch vụ", người dùng nhấn "Đồng ý" thì tắt form kê đơn.
+
+                var SereServ = new List<HIS_SERE_SERV>();
+                if (this.transferTotal > 0)
+                {
+
+                    HisSereServFilter filterSs = new HisSereServFilter();
+                    filterSs.TREATMENT_ID = treatmentId;
+                    SereServ = await new BackendAdapter(param).GetAsync<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumer.ApiConsumers.MosConsumer, filterSs, param);
+                    //SereSerView = SereSerView.Where(o => o.IS_GUARANTEED != 1).ToList();
+                    //transferTotal = transferTotal - SereServ.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.VIR_TOTAL_PATIENT_PRICE ?? 0);
+                }
                 if ((!GlobalStore.IsTreatmentIn
                         && !GlobalStore.IsCabinet
                         && !GlobalStore.IsExecutePTTT)
@@ -1108,12 +1119,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         && transferTotal > 0
                     )
                 {
-                    HisSereServView17Filter filterSs = new HisSereServView17Filter();
-                    filterSs.TDL_TREATMENT_ID = treatmentId;
-                    var SereSerView17 = await new BackendAdapter(param).GetAsync<List<V_HIS_SERE_SERV_17>>("api/HisSereServ/GetView17", ApiConsumer.ApiConsumers.MosConsumer, filterSs, param);
-                    frmDetailsSereServ frm = new frmDetailsSereServ(SereSerView17.ToList(), (RefeshReference)this.Close);
-                    frm.ShowDialog();
-                    return;
+                    SereServ = SereServ.Where(o => o.IS_GUARANTEED != 1).ToList();
+                    if (SereServ.Any())
+                    {
+                        frmDetailsSereServ frm = new frmDetailsSereServ(SereServ.ToList(), (RefeshReference)this.Close);
+                        frm.ShowDialog();
+                        return;
+                    }
+
                 }
 
                 //Kiem tra cau hinh
@@ -1638,10 +1651,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     {
                         SERVICE_ID = sv.SERVICE_ID,
                         SERVICE_TYPE_ID = sv.SERVICE_TYPE_ID,
-                        HEIN_SERVICE_TYPE_ID = sv.HEIN_SERVICE_TYPE_ID,       
-                        HEIN_SERVICE_TYPE_CODE = sv.HEIN_SERVICE_TYPE_CODE,       
+                        HEIN_SERVICE_TYPE_ID = sv.HEIN_SERVICE_TYPE_ID,
+                        HEIN_SERVICE_TYPE_CODE = sv.HEIN_SERVICE_TYPE_CODE,
                         HEIN_SERVICE_BHYT_CODE = sv.HEIN_SERVICE_BHYT_CODE,
-                        HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME,    
+                        HEIN_SERVICE_BHYT_NAME = sv.HEIN_SERVICE_BHYT_NAME,
                     };
                 }
 
@@ -1678,8 +1691,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 return this.ChoosePatientTypeDefaultlService(patientTypeId, mediMatyTypeADO);
             }
-            catch (Exception ex)            
-            {     
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;

@@ -149,8 +149,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseMediStock
             // gridColumn4
             // 
             this.gridColumn4.Caption = "Phòng chỉ định";
-            this.gridColumn4.FieldName = "REQUEST_ROOM_NAME";
+            this.gridColumn4.FieldName = "REQUEST_ROOM_NAME_STR";
             this.gridColumn4.Name = "gridColumn4";
+            this.gridColumn4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 3;
             this.gridColumn4.Width = 130;
@@ -158,8 +159,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseMediStock
             // gridColumn5
             // 
             this.gridColumn5.Caption = "Phòng thực hiện";
-            this.gridColumn5.FieldName = "EXECUTE_ROOM_NAME";
+            this.gridColumn5.FieldName = "EXECUTE_ROOM_NAME_STR";
             this.gridColumn5.Name = "gridColumn5";
+            this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn5.Visible = true;
             this.gridColumn5.VisibleIndex = 4;
             this.gridColumn5.Width = 143;
