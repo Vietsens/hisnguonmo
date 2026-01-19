@@ -451,11 +451,13 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             {
                 if (data != null)
                 {
-                    var Room = BackendDataWorker.Get<HIS_ROOM>().Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
-                    //CommonParam paramCommon = new CommonParam();
-                    //MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
-                    //var resultData = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_ROOM>>("api/HisRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
-                    //var Room = resultData.Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
+                    //var Room = BackendDataWorker.Get<HIS_ROOM>().Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
+                    CommonParam paramCommon = new CommonParam();
+                    MOS.Filter.HisPatientTypeFilter filter = new MOS.Filter.HisPatientTypeFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    filter.ID = data.ROOM_ID;
+                    var resultData = new BackendAdapter(paramCommon).Get<List<MOS.EFMODEL.DataModels.HIS_ROOM>>("api/HisRoom/Get", ApiConsumers.MosConsumer, filter, paramCommon);
+                    var Room = resultData.Where(o => o.ID == data.ROOM_ID).FirstOrDefault();
                     if (Room != null)
                     {
                         cboRooomTN.EditValue = Room.DEFAULT_CASHIER_ROOM_ID;
@@ -463,6 +465,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                         {
                             cboRooomTN.Properties.Buttons[0].Visible = true;
                         }
+                        cboArea.EditValue = Room.AREA_ID;
                     }
                     txtMediStockCode.Text = data.MEDI_STOCK_CODE;
                     txtMediStockName.Text = data.MEDI_STOCK_NAME;
@@ -662,6 +665,7 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 cboParent.EditValue = null;
                 cboNganHangChiTra.EditValue = null;
                 txtTaiKhoanChiTra.Text = "";
+                cboArea.EditValue = null;
                 GridCheckMarksSelection gridCheckMark = cboExpMestTypeApprove.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
@@ -1059,6 +1063,11 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
 
                 Parent.PAYER_ACCOUNT = txtTaiKhoanChiTra.Text;
 
+                if (cboArea.EditValue != null)
+                    Parent.AREA_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboArea.EditValue.ToString());
+                else
+                    Parent.AREA_ID = null;
+
             }
             catch (Exception ex)
             {
@@ -1215,6 +1224,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 InitPhanLoaiBenhNhan();
                 txtTLQR.Properties.Buttons[0].Visible = false;
                 cboRooomTN.Properties.Buttons[1].Visible = false;
+
+                InitDataArea();
             }
             catch (Exception ex)
             {
@@ -3302,6 +3313,67 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void InitDataArea()
+        {
+            try
+            {
+                //var data = BackendDataWorker.Get<HIS_AREA>().Where(x => x.IS_ACTIVE == 1).ToList();
+                //if (data == null)
+                //{
+                //    CommonParam param = new CommonParam();
+                //    HisAreaFilter filer = new HisAreaFilter();
+                //    filer.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                //    data = new BackendAdapter(param).Get<List<HIS_AREA>>("api/HisArea/Get", ApiConsumers.MosConsumer, filer, param);
+                //}
+                //List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                //columnInfos.Add(new ColumnInfo("AREA_CODE", "", 90, 1));
+                //columnInfos.Add(new ColumnInfo("AREA_NAME", "", 350, 2));
+                //ControlEditorADO controlEditorADOs = new ControlEditorADO("AREA_NAME", "ID", columnInfos, false, 440);
+                //ControlEditorLoader.Load(cboArea, data, controlEditorADOs);
+                //cboArea.Properties.ImmediatePopup = true;
+
+
+                var data = BackendDataWorker.Get<HIS_AREA>().Where(x => x.IS_ACTIVE == 1).ToList();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("AREA_CODE", "Mã", 50, 1));
+                columnInfos.Add(new ColumnInfo("AREA_NAME", "Tên", 200, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("AREA_NAME", "ID", columnInfos, false, 250);
+                ControlEditorLoader.Load(cboArea, data, controlEditorADO);
+                cboArea.Properties.ImmediatePopup = true;
+                cboArea.Properties.PopupFormMinSize = new Size(400, cboArea.Properties.PopupFormMinSize.Height);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("LoadDatatoKhuVuc" + ex);
+            }
+
+        }
+
+        private void cboArea_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboArea.EditValue != null)
+                {
+                    cboArea.Properties.Buttons[1].Visible = true;
+                }
+                else
+                {
+                    cboArea.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboArea_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            if (cboArea.EditValue != null && e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                cboArea.EditValue = null;
         }
     }
 }

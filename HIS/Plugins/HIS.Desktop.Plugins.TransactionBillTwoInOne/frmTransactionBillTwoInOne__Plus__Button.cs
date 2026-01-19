@@ -245,6 +245,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                if (!CheckBaoLanh())
+                    return;
+
                 //List<HisTransactionBillSDO> listSdo = new List<HisTransactionBillSDO>();
                 HisTransactionBillTwoBookSDO billTwoBookSDO = new HisTransactionBillTwoBookSDO();
                 V_HIS_ACCOUNT_BOOK recieptAccBook = null;
