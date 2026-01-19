@@ -1116,7 +1116,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         && !GlobalStore.IsExecutePTTT)
                         && patientTypeByPT != null && patientTypeByPT.IS_CHECK_FEE_WHEN_PRES == 1
                         && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
-                        && transferTotal > 0
+                        && transferTotal > 0 && (this.currentTreatment != null && string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
                     )
                 {
                     SereServ = SereServ.Where(o => o.IS_GUARANTEED != 1).ToList();
