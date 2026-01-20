@@ -192,6 +192,9 @@
   <data name="frmHisCustomerSource.layoutControl3.Text" xml:space="preserve">
     <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
   </data>
+  <data name="frmHisCustomerSource.layoutControlItem7.Text" xml:space="preserve">
+    <value>NK မူရင်းအသေးစိတ်အချက်များ-</value>
+  </data>
   <data name="frmHisCustomerSource.lcCustomerSourceCode.Text" xml:space="preserve">
     <value>သုံးစွဲသူ အရင်းအမြစ်ကုဒ်-</value>
   </data>
