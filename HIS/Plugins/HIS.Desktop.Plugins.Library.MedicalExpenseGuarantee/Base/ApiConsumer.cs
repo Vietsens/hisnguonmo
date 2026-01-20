@@ -162,8 +162,10 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
             if (string.IsNullOrWhiteSpace(input))
                 return string.Empty;
 
-            string noAccent = RemoveVietnameseAccent(input);
-            return noAccent.ToLowerInvariant().Trim();
+            return Inventec.Common.String.Convert.UnSignVNese2(input).ToLower().Trim();
+
+            //string noAccent = RemoveVietnameseAccent(input);
+            //return noAccent.ToLowerInvariant().Trim();
         }
 
         
