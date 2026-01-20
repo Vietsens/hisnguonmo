@@ -236,6 +236,7 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDICINES___DATA2 { get; set; }
 
         public string MEDICINES___DATA3 { get; set; }
+        public string MEDICINES_ACIN___DATA { get; set; }
 
         public string MEDICINES_TAY___DATA { get; set; } //thuốc tây y
         public string MEDICINES_DONG___DATA { get; set; } //thuốc đông y
@@ -247,6 +248,7 @@ namespace MPS.Processor.Mps000062.PDO
         public string MEDI_THDT_NO_CONCENTRA { get; set; } //Bỏ hàm lượng khỏi tên thuốc đối với thuốc thực hiện dự trù
 
         public string IMP_MEST_MEDICINE___DATA { get; set; }
+        public string IMP_MEST_MEDICINE_ACIN___DATA { get; set; }
         public string IMP_MEST_MATERIAL___DATA { get; set; }
         public string TT_SERVICE___DATA { get; set; }
         public string SERVICE_CLS___DATA { get; set; }
@@ -261,6 +263,7 @@ namespace MPS.Processor.Mps000062.PDO
         ///- Số lượng đưa sang phải gồm: Số lượng + ĐVT
         /// </summary>
         public string MOBA_IMP_MEST_MEDICINE__DATA { get; set; }
+        public string MOBA_IMP_MEST_MEDICINE_ACIN__DATA { get; set; }
         public string MOBA_IMP_MEST_MATERIAL__DATA { get; set; }
         public string MOBA_IMP_MEST_BLOOD__DATA { get; set; }
         /// <summary>
@@ -268,6 +271,7 @@ namespace MPS.Processor.Mps000062.PDO
         /// </summary>
         public string PRE_MEDICINE { get; set; }
         public string PRE_MEDICINE_OUT_TRACKING { get; set; }
+        public string PRE_MEDICINE_OUT_TRACKING_ACIN { get; set; }
         public string TRACKING_USERNAME { get; set; }
         public string SERVICE_REQ_METY___DATA { get; set; }
         public string SERVICE_REQ_MATY___DATA { get; set; }
