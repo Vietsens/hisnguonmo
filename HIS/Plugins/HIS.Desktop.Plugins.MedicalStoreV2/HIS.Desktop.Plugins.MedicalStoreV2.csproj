@@ -35,6 +35,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\ACS\ACS.EFMODEL.dll</HintPath>
     </Reference>
+    <Reference Include="ACS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\ACS.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\AutoMapper.dll</HintPath>
     </Reference>
@@ -163,6 +167,7 @@
   <ItemGroup>
     <Compile Include="ADO\ComboADO.cs" />
     <Compile Include="ADO\LocalStoreADO.cs" />
+    <Compile Include="ADO\LocationStoreADO.cs" />
     <Compile Include="ADO\MediRecordADO2.cs" />
     <Compile Include="ADO\MediRecordADO.cs" />
     <Compile Include="ADO\DataStoreADO.cs" />
@@ -174,6 +179,12 @@
     </Compile>
     <Compile Include="Popup\frmContentRefused.Designer.cs">
       <DependentUpon>frmContentRefused.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Popup\frmStoreInfomation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmStoreInfomation.Designer.cs">
+      <DependentUpon>frmStoreInfomation.cs</DependentUpon>
     </Compile>
     <Compile Include="Popup\TreatmentBorrow.cs">
       <SubType>Form</SubType>
@@ -229,6 +240,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Popup\frmContentRefused.resx">
       <DependentUpon>frmContentRefused.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmStoreInfomation.resx">
+      <DependentUpon>frmStoreInfomation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Popup\TreatmentBorrow.resx">
       <DependentUpon>TreatmentBorrow.cs</DependentUpon>

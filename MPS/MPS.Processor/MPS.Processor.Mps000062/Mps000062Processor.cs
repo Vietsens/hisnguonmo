@@ -4635,6 +4635,7 @@ namespace MPS.Processor.Mps000062
                         item.MEDICINES___DATA1 = "";
                         item.MEDICINES___DATA2 = "";
                         item.MEDICINES___DATA3 = "";
+                        item.MEDICINES_ACIN___DATA = "";
                         item.MEDICINES_TAY___DATA = "";
                         item.MEDICINES_NO_CONCENTRA__DATA = "";
                         item.MEDICINES_HTU___DATA = "";
@@ -4678,6 +4679,25 @@ namespace MPS.Processor.Mps000062
                             {
                                 ActiveIngrBhytName += String.Format("&lt;{0}&gt;", medi.ACTIVE_INGR_BHYT_NAME);
                             }
+                            string s1Acin = "";
+                            s1Acin += GetUsedDayCounting(medi);
+
+                            string nameAcin = medi.MEDICINE_TYPE_NAME;
+                            if (!string.IsNullOrEmpty(medi.ACTIVE_INGR_BHYT_NAME))
+                            {
+                                nameAcin += " (" + medi.ACTIVE_INGR_BHYT_NAME + ")";
+                            }
+
+                            if ((medi.REMEDY_COUNT ?? 0) == 0)
+                                s1Acin += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle(" " + nameAcin, FontStyle.Bold);
+                            else
+                                s1Acin += " " + nameAcin;
+
+                            s1Acin += " ";
+                            if (medi.MEDICINE_LINE_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__CP_YHCT)
+                            {
+                                s1Acin += medi.CONCENTRA;
+                            }
 
                             decimal? amount = 0;
                             string strAmount = "";
@@ -4706,6 +4726,7 @@ namespace MPS.Processor.Mps000062
                             if (medi.INTRUCTION_TIME_STR > 0)
                             {
                                 item.MEDICINES___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(medi.INTRUCTION_TIME_STR), FontStyle.Bold);
+                                item.MEDICINES_ACIN___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(medi.INTRUCTION_TIME_STR), FontStyle.Bold);
                                 item.MEDICINES_NO_CONCENTRA__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Ngày sử dụng: " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(medi.INTRUCTION_TIME_STR), FontStyle.Bold);
 
                                 if ((medi.REMEDY_COUNT ?? 0) == 0)
@@ -4716,11 +4737,13 @@ namespace MPS.Processor.Mps000062
                             else
                             {
                                 item.MEDICINES___DATA3 += "";
+                                item.MEDICINES_ACIN___DATA += "";
                                 item.MEDICINES_TAY___DATA += "";
                                 item.MEDICINES_NO_CONCENTRA__DATA += "";
                             }
 
                             item.MEDICINES___DATA3 += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0} {1}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{2}</td></tr></table>", s1, ActiveIngrBhytName, s2);
+                            item.MEDICINES_ACIN___DATA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1Acin, s2);
                             item.MEDICINES_NO_CONCENTRA__DATA += String.Format("<table><tr><td style =\"vertical-align: top\" width=\"650\" text-align=\"left\" align=\"left\">{0} {1}</td></span><td style =\"vertical-align: top\" text-align=\"right\" align=\"right\" width=\"150\">{2}</td></tr></table>", S1_NoConcentra, ActiveIngrBhytName, s2);
 
                             if ((medi.REMEDY_COUNT ?? 0) == 0)
@@ -4731,12 +4754,14 @@ namespace MPS.Processor.Mps000062
                             if ((medi.REMEDY_COUNT ?? 0) <= 0)
                             {
                                 item.MEDICINES___DATA3 += medi.TUTORIAL;
+                                item.MEDICINES_ACIN___DATA += medi.TUTORIAL;
                                 item.MEDICINES_TAY___DATA += medi.TUTORIAL;
                                 item.MEDICINES_NO_CONCENTRA__DATA += medi.TUTORIAL;
 
                                 if (dem < medicines.Count - 1)
                                 {
                                     item.MEDICINES___DATA3 += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                                    item.MEDICINES_ACIN___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     item.MEDICINES_TAY___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                     item.MEDICINES_NO_CONCENTRA__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                                 }
@@ -5859,6 +5884,7 @@ namespace MPS.Processor.Mps000062
 
 
                     item.MOBA_IMP_MEST_MEDICINE__DATA = "";
+                    item.MOBA_IMP_MEST_MEDICINE_ACIN__DATA = "";
                     item.MOBA_IMP_MEST_MATERIAL__DATA = "";
                     item.MOBA_IMP_MEST_BLOOD__DATA = "";
                     #region thuoc hoan tra
@@ -5882,6 +5908,7 @@ namespace MPS.Processor.Mps000062
                                     {
                                         UseTime = IMedi.USE_TIME_OLD;
                                         item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0), FontStyle.Bold);
+                                        item.MOBA_IMP_MEST_MEDICINE_ACIN__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc dự trù ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(UseTime ?? 0), FontStyle.Bold);
                                     }
                                 }
                                 else if (IMedi.INTRUCTION_TIME_OLD != null)
@@ -5890,12 +5917,19 @@ namespace MPS.Processor.Mps000062
                                     {
                                         IntructionTime = IMedi.INTRUCTION_TIME_OLD;
                                         item.MOBA_IMP_MEST_MEDICINE__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
+                                        item.MOBA_IMP_MEST_MEDICINE_ACIN__DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertFontStyle("Hoàn trả thuốc sử dụng ngày " + Inventec.Common.DateTime.Convert.TimeNumberToDateString(IntructionTime ?? 0), FontStyle.Bold);
                                     }
                                 }
                                 s1 = IMedi.MEDICINE_TYPE_NAME;
+                                string s = "";
+                                if (!string.IsNullOrEmpty(IMedi.ACTIVE_INGR_BHYT_NAME))
+                                {
+                                    s = " (" + IMedi.ACTIVE_INGR_BHYT_NAME + ")";
+                                }
                                 s1 += " " + IMedi.CONCENTRA;
                                 s2 = Inventec.Common.Number.Convert.NumberToStringRoundMax4(IMedi.AMOUNT) + " " + IMedi.SERVICE_UNIT_NAME;
                                 item.MOBA_IMP_MEST_MEDICINE__DATA += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">{0}</td></span><td text-align=\"right\" align=\"right\" width=\"150\">{1}</td></tr></table>", s1, s2);
+                                item.MOBA_IMP_MEST_MEDICINE_ACIN__DATA += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">{0}{1}</td></span><td text-align=\"right\" align=\"right\" width=\"150\">{2}</td></tr></table>", s1,s, s2);
 
                                 item.MEDICINE_TYPE_ID = IMedi.MEDICINE_TYPE_ID;
                             }
@@ -5985,6 +6019,7 @@ namespace MPS.Processor.Mps000062
 
                     item.PRE_MEDICINE = "";
                     item.PRE_MEDICINE_OUT_TRACKING = "";
+                    item.PRE_MEDICINE_OUT_TRACKING_ACIN = "";
 
                     var dtTrackingDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(item.TRACKING_TIME).Value;
 
@@ -6033,9 +6068,16 @@ namespace MPS.Processor.Mps000062
                                     if (medicineTypeName != null)
                                     {
                                         string s1 = "", s2 = "";
-                                        s1 = medicineTypeName.MEDICINE_TYPE_NAME;
+
+                                        s1 += " " + medicineTypeName.ACTIVE_INGR_BHYT_NAME;
                                         s1 += " " + medicineTypeName.CONCENTRA;
                                         s2 = emmedi.TUTORIAL;
+                                        string s1Acin = medicineTypeName.MEDICINE_TYPE_NAME;
+                                        if (!string.IsNullOrEmpty(medicineTypeName.ACTIVE_INGR_BHYT_NAME))
+                                        {
+                                            s1Acin += " (" + medicineTypeName.ACTIVE_INGR_BHYT_NAME + ")";
+                                        }
+                                        s1Acin += " " + medicineTypeName.CONCENTRA;
                                         item.PRE_MEDICINE += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
                                         
                                         if (itemByServiceReq.TRACKING_ID != _tracking.ID &&
@@ -6044,6 +6086,7 @@ namespace MPS.Processor.Mps000062
                                             itemByServiceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                                         {
                                             item.PRE_MEDICINE_OUT_TRACKING += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1, s2);
+                                            item.PRE_MEDICINE_OUT_TRACKING_ACIN += String.Format("<table><tr><td width=\"650\" text-align=\"left\" align=\"left\">- {0}</td></span></tr><tr><td text-align=\"right\" align=\"left\" width=\"650\">{1}</td></tr></table>", s1Acin, s2);
                                         }
                                     }
 
@@ -6081,6 +6124,7 @@ namespace MPS.Processor.Mps000062
                                         string s1 = "";
 
                                         s1 += "- " + DY.MEDICINE_TYPE_NAME;
+                                        s1 += "" + DY.ACTIVE_INGR_BHYT_NAME;
                                         s1 += " " + DY.CONCENTRA;
                                         decimal? amount = 0;
                                         string strAmount = "";
@@ -6496,6 +6540,27 @@ namespace MPS.Processor.Mps000062
                             if (dem < impMestMedicineADOs.Count - 1)
                             {
                                 item.IMP_MEST_MEDICINE___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
+                            }
+                            dem++;
+                        }
+                    }
+                    item.IMP_MEST_MEDICINE_ACIN___DATA = "";
+
+                    var impMestMedicineAcinADOs = this._ImpMestMedicineADOs != null && this._ImpMestMedicineADOs.Count > 0 ? this._ImpMestMedicineADOs.Where(o => o.TRACKING_ID == item.ID).ToList() : null;
+                    if (impMestMedicineAcinADOs != null && impMestMedicineAcinADOs.Count > 0)
+                    {
+                        int dem = 0;
+                        foreach (var item1 in impMestMedicineAcinADOs)
+                        {
+                            var nameAcin = item1.MEDICINE_TYPE_NAME;
+                            if (!string.IsNullOrEmpty(item1.ACTIVE_INGR_BHYT_NAME))
+                            {
+                                nameAcin += " (" + item1.ACTIVE_INGR_BHYT_NAME + ")";
+                            }
+                            item.IMP_MEST_MEDICINE_ACIN___DATA += nameAcin + " " + Inventec.Common.Number.Convert.NumberToStringRoundMax4(item1.AMOUNT);
+                            if (dem < impMestMedicineAcinADOs.Count - 1)
+                            {
+                                item.IMP_MEST_MEDICINE_ACIN___DATA += Inventec.Desktop.Common.HtmlString.ProcessorString.InsertSpacialTag("", Inventec.Desktop.Common.HtmlString.SpacialTag.Tag.Br);
                             }
                             dem++;
                         }
