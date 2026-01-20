@@ -129,6 +129,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 InitComboMediStock();
                 InitcboBed();
                 InitCboPatientType();
+                InitComboArea(); 
                 SetDataDefault();
                 isNotLoadWhileChangeControlStateInFirst = false;
             }
@@ -352,6 +353,14 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 gridCheckMarkPart.ClearSelection(cboBed.Properties.View);
                 cboBed.Text = "";
 
+                if (chkListArea.Items.Count > 0)
+                {
+                    for (int i = 0; i < chkListArea.Items.Count; i++)
+                    {
+                        chkListArea.SetItemChecked(i, false);
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -454,6 +463,10 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 this.navBarGroupTypePress.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.navBarGroupTypePress.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.navBed.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.navBed.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtKeywordProcess.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.txtKeywordProcess.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.navBarGroupArea.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.navBarGroupArea.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.colReqAreaName1.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.colReqAreaName1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.colReqAreaName2.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.colReqAreaName2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.colReqAreaName3.Caption = Inventec.Common.Resource.Get.Value("UCExpMestAggregate.colReqAreaName3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
