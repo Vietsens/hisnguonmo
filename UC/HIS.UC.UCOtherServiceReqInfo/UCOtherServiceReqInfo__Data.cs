@@ -184,7 +184,11 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 dataServiceReqInfoADO.IS_CAPD = this.chkCAPD.Checked ? (short?)1 : (short?)null;
                 dataServiceReqInfoADO.NguonKhachCode = txtNguonKhach.Text.Trim();
                 dataServiceReqInfoADO.NguonKhachName = cboNguonKhach.Text;
-                dataServiceReqInfoADO.NguonKhachCTName = txtNguonKhachCT.Text.Trim();
+                if (lstOtherDetail != null && lstOtherDetail.Count > 0)
+                {
+                    dataServiceReqInfoADO.NguonKhachCTName =
+                        string.Join(",", lstOtherDetail.Select(e => e.LOGINNAME));
+                }
                 if (chkCapMaMS.Checked)
                     dataServiceReqInfoADO.IsCapMaMS = true;
                 else
@@ -586,7 +590,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.cboOtherPaySource.EditValue = null;
                 this.txtNguonKhach.Text = null;
                 this.cboNguonKhach.EditValue = null;
-                this.txtNguonKhachCT.Text = null;
+                this.cboNguonKhachCT.EditValue = null;
                 this.cboEmergencyTime.Enabled = false;
                 this.chkIsHiv.Checked = false;
                 this.cboHosReason.EditValue = null;
