@@ -349,10 +349,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 if (data != null)
                 {
                     FillDataToPatientInfoDisplayed(data);
-                    FillDataToTabKhamChung(data);
-                    FillDataToTabKetLuan(data);
-                    FillDataToTabBenhNgheNghiep(data);
-                    FillDataToTabKhamSucKhoe(data);
+                    int opt = HisConfig.HiddenTabOption;
+
+                    // Tab1 (xtraTabPage1) đang hiện?
+                    if (opt != 2)
+                    {
+                        FillDataToTabKhamChung(data);
+                        FillDataToTabKetLuan(data);
+                        FillDataToTabBenhNgheNghiep(data);
+                    }
+
+                    // Tab5 (xtraTabPage5) đang hiện?
+                    if (opt != 1)
+                    {
+                        FillDataToTabKhamSucKhoe(data);
+                        FillDataToTabKetLuan(data);
+                        FillDataToTabBenhNgheNghiep(data);
+                    }
                 }
             }
             catch (Exception ex)
@@ -1204,14 +1217,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 //Load ngon ngu label control
                 SetCaptionByLanguageKey();
 
+                //an hien tab theo cau hinh
+                ApplyHiddenTabOption();
+
                 //Fill data into datasource combo
                 FillDataToControlsForm();
 
                 //Gan gia tri mac dinh
                 SetDefaultValue();
 
-                //an hien tab theo cau hinh
-                ApplyHiddenTabOption();
 
                 if (!string.IsNullOrWhiteSpace(_serviceReqCode))
                 {
@@ -1229,9 +1243,6 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     //Load du lieu
                     FillDataToGridControl();
                 }
-
-                //Load du lieu
-                FillDataToGridControl();
 
                 //Set enable control default
                 EnableControlChanged(this.currentServiceReqSTT);
