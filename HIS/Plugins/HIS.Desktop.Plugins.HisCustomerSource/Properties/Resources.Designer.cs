@@ -63,9 +63,9 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Lock_Lock_icon {
+        internal static System.Drawing.Bitmap LockLock {
             get {
-                object obj = ResourceManager.GetObject("Lock-Lock-icon", resourceCulture);
+                object obj = ResourceManager.GetObject("LockLock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Lock_Unlock_icon {
+        internal static System.Drawing.Bitmap LockUnlock {
             get {
-                object obj = ResourceManager.GetObject("Lock-Unlock-icon", resourceCulture);
+                object obj = ResourceManager.GetObject("LockUnlock", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
