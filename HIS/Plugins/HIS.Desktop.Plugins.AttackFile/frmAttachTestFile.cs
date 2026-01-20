@@ -168,19 +168,68 @@ namespace HIS.Desktop.Plugins.AttackFile
 
         private void SimpleButtonFindFile_Click(object sender, EventArgs e)
         {
+            //try
+            //{
+            //    OpenFileDialog openFileDialog = new OpenFileDialog();
+            //    openFileDialog.Multiselect = true;
+            //    openFileDialog.Filter = "Ảnh(*.jpg, *.Png, *.jpeg, *.bmp,*.gif,*.pdf)|*.jpg;*.png;*.jpeg;*.bmp;*.gif;*.pdf";
+            //    openFileDialog.DefaultExt = ".jpg;.png;.jpeg;.bmp;.gif;.pdf";
+
+
+            //    if (openFileDialog.ShowDialog() == DialogResult.OK)
+            //    {
+            //        selectedFileNames = openFileDialog.FileNames;
+
+            //        if (selectedFileNames != null && selectedFileNames.Length > 0)
+            //        {
+            //            foreach (var item in this.selectedFileNames)
+            //            {
+            //                int lIndex = item.LastIndexOf("\\");
+            //                int lIndex1 = item.LastIndexOf(".");
+            //                this.attachmentFiles = new AttachFileADO();
+            //                this.attachmentFiles.FILE_NAME = item.Substring(lIndex > 0 ? lIndex + 1 : lIndex);
+            //                this.attachmentFiles.EXTENSION = item.Substring(lIndex1 > 0 ? lIndex1 + 1 : lIndex1);
+            //                this.attachmentFiles.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
+            //                this.attachmentFiles.FullName = item;
+            //                string extension = System.IO.Path.GetExtension(item);
+            //                if ((extension ?? "").ToLower() != ".pdf")
+            //                {
+            //                    this.attachmentFiles.image = System.Drawing.Image.FromFile(item);
+            //                }
+            //                listAttachmentFiles.Add(attachmentFiles);
+            //            }
+            //        }
+
+            //        // Update grid data source
+            //        gridControl1.BeginUpdate();
+            //        this.gridControl1.DataSource = listAttachmentFiles;
+            //        gridControl1.EndUpdate();
+
+            //        txtDocName.Text = Path.GetFileNameWithoutExtension(listAttachmentFiles[0].FILE_NAME);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
             try
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Multiselect = true;
-                openFileDialog.Filter = "Ảnh(*.jpg, *.Png, *.jpeg, *.bmp,*.gif,*.pdf)|*.jpg;*.png;*.jpeg;*.bmp;*.gif;*.pdf";
-                openFileDialog.DefaultExt = ".jpg;.png;.jpeg;.bmp;.gif;.pdf";
+                OpenFileDialog openFile = new OpenFileDialog();
+                //openFile.Filter = "Ảnh jpg|*.jpg|Ảnh Png|*.png|Ảnh jpeg|*.jpeg|Ảnh bmp|*.bmp|Ảnh gif|*.gif";
+                //openFile.DefaultExt = ".jpg";
 
+                openFile.Multiselect = true;
+                openFile.Filter = "Ảnh(*.jpg, *.Png, *.jpeg, *.bmp,*.gif,*.pdf)|*.jpg;*.png;*.jpeg;*.bmp;*.gif;*.pdf";
+                openFile.DefaultExt = ".jpg;.png;.jpeg;.bmp;.gif;.pdf";
 
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                if (openFile.ShowDialog() == DialogResult.OK)
                 {
-                    selectedFileNames = openFileDialog.FileNames;
+                    // pteAnhChupFileDinhKem.Image = System.Drawing.Image.FromFile(openFile.FileName);
+                    this.selectedFileNames = openFile.FileNames;
+                    // pteAnhChupFileDinhKem.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+                    // Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => pteAnhChupFileDinhKem.Image.Tag), pteAnhChupFileDinhKem.Image.Tag));
 
-                    if (selectedFileNames != null && selectedFileNames.Length > 0)
+                    if (this.selectedFileNames != null)
                     {
                         foreach (var item in this.selectedFileNames)
                         {
@@ -189,24 +238,56 @@ namespace HIS.Desktop.Plugins.AttackFile
                             this.attachmentFiles = new AttachFileADO();
                             this.attachmentFiles.FILE_NAME = item.Substring(lIndex > 0 ? lIndex + 1 : lIndex);
                             this.attachmentFiles.EXTENSION = item.Substring(lIndex1 > 0 ? lIndex1 + 1 : lIndex1);
-                            this.attachmentFiles.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
-                            this.attachmentFiles.FullName = item;
                             string extension = System.IO.Path.GetExtension(item);
+                            if ((extension ?? "").ToLower() == ".pdf")
+                            {
+                                //từ đường dẫn file pdf là item đọc nội dung file và convert sang file ảnh
+                                string joinPdfPathFile = "";
+                                iTextSharp.text.pdf.PdfReader readerWorking = new iTextSharp.text.pdf.PdfReader(item);
+                                float pageHeight = readerWorking.GetPageSize(1).Height;
+                                Inventec.Common.SignLibrary.PdfDocumentProcess.SplitOnePageToImageAndJoinToNewOnePdf(item, pageHeight, ref joinPdfPathFile);
+                                LogSystem.Debug("joinPdfPathFile:" + joinPdfPathFile);
+                                this.attachmentFiles.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(joinPdfPathFile);
+                                this.attachmentFiles.FullName = joinPdfPathFile;
+                            }
+                            else
+                            {
+                                this.attachmentFiles.FullName = item;
+                                this.attachmentFiles.Base64Data = Inventec.Common.SignLibrary.Utils.FileToBase64String(item);
+                            }
+
+
                             if ((extension ?? "").ToLower() != ".pdf")
                             {
+                                //int largestEdgeLength = 10;
+                                // DevExpress.XtraPdfViewer.PdfViewer pdf = new DevExpress.XtraPdfViewer.PdfViewer();
+                                //pdf.LoadDocument(item);
+                                //for (int i = 1; i <= pdf.PageCount; i++)
+                                //{
+                                //FileStream st = new FileStream(item, FileMode.Open);
+
+                                //    // Export all pages to bitmaps
+                                //  Bitmap image = pdf.CreateBitmap(i, largestEdgeLength);
+                                //    // Save the resulting images
+                                //   this.fileNameAttack.image = System.Drawing.Image.FromStream(st);
+                                //}
                                 this.attachmentFiles.image = System.Drawing.Image.FromFile(item);
                             }
-                            listAttachmentFiles.Add(attachmentFiles);
+                            //else
+                            //{
+                            //    
+                            //}
+                            this.listAttachmentFiles.Add(attachmentFiles);
                         }
                     }
-
-                    // Update grid data source
-                    gridControl1.BeginUpdate();
-                    this.gridControl1.DataSource = listAttachmentFiles;
-                    gridControl1.EndUpdate();
-
-                    txtDocName.Text = Path.GetFileNameWithoutExtension(listAttachmentFiles[0].FILE_NAME);
                 }
+                gridControl1.BeginUpdate();
+                this.gridControl1.DataSource = listAttachmentFiles;
+                gridControl1.EndUpdate();
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => selectedFileNames), selectedFileNames));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listAttachmentFiles), listAttachmentFiles));
+
             }
             catch (Exception ex)
             {
