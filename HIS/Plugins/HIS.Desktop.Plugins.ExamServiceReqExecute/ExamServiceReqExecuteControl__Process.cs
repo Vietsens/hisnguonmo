@@ -1800,6 +1800,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 examServiceReqUpdateSDO.TraditionalIcdName = IcdNameYHCT;
                 examServiceReqUpdateSDO.TraditionalIcdSubCode = IcdSubCodeYHCT;
                 examServiceReqUpdateSDO.TraditionalIcdText = IcdTextYHCT;
+                //
+                examServiceReqUpdateSDO.IS_REQUEST_SKIN_CARE = GetBulletItem(TabInfoPage.IS_REQUEST_SKIN_CARE);
 
             }
             catch (Exception ex)
