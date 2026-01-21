@@ -711,7 +711,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                         GetNextStoreBordereauCode();
                     if (txtStoreBordereauCode.Visible)
                         txtStoreBordereauCodeOption2.Text = this.currentTreatment.STORE_BORDEREAU_CODE ?? (nextStoreBordereauCode != null ? nextStoreBordereauCode.StoreBordereauCode : null);
-                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2" || Config.HisConfigCFG.OptionStoreBordereauCode == "3")
                     {
                         txtStoreBordereauCodeOption2.Text = this.currentTreatment.STORE_BORDEREAU_CODE ?? (nextStoreBordereauCode != null ? nextStoreBordereauCode.StoreBordereauCode : null);
                         ChangeEnableButtonOption2();
@@ -722,7 +722,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     txtStoreBordereauCode.Text = null;
                     btnLockHein.Enabled = false;
                     btnUnLockHein.Enabled = false;
-                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2" || Config.HisConfigCFG.OptionStoreBordereauCode == "3")
                     {
                         dteStoreTime.Enabled = true;
                         btnLuuTruOption2.Text = "Lưu trữ (F5)";

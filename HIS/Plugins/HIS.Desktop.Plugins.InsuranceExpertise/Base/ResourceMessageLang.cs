@@ -404,6 +404,20 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise.Base
                 return "";
             }
         }
-
+        internal static string ThoiGianLuuTruBangKe
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_InsuranceExpertise__ThoiGianLuuTruBangKe", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
     }
 }
