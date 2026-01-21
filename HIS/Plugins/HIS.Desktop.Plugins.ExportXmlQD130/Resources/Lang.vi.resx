@@ -459,4 +459,10 @@
   <data name="UCExportXml.vat" xml:space="preserve">
     <value>Vat %</value>
   </data>
+  <data name="UCExportXml.chkXML3176.Properties.Caption" xml:space="preserve">
+    <value>XML 3176</value>
+</data>
+	<data name="UCExportXml.chkXML3176.Properties.ToolTip" xml:space="preserve">
+  <value>Xem và xuất XML 3176</value>
+</data>
 </root>

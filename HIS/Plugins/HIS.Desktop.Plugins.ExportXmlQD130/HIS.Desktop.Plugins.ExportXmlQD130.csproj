@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Aspose.Cells">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\Aspose.Cells.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Aspose.Cells.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -50,65 +50,62 @@
     <Reference Include="EMR.SDO">
       <HintPath>..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
     </Reference>
-    <Reference Include="EMR.WCF.DCO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\svn\EMR.SignProcessor\EMR.WCF.Service.SignProcessor\bin\Debug\EMR.WCF.DCO.dll</HintPath>
+    <Reference Include="EMR.WCF.DCO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\EMR.WCF.DCO.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml\His.Bhyt.ExportXml.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.ExportXml.XML130, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\common\HISUTIL\His.Bhyt\His.Bhyt.ExportXml.XML130\bin\Debug\His.Bhyt.ExportXml.XML130.dll</HintPath>
+    <Reference Include="His.Bhyt.ExportXml.XML130">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.ExportXml.XML130.XML1, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML1.dll</HintPath>
+    <Reference Include="His.Bhyt.ExportXml.XML130.XML1">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML1.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML10">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML10.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML10.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML11">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML11.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML11.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML12">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML12.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML12.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML13">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML13.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML13.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML14">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML14.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML14.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML15">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML15.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML15.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML2">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML2.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML2.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML3">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML3.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML3.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML4">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML4.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML4.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML5">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML5.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML5.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML6">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML6.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML6.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML7">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML7.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML7.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML8">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML8.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML8.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML9">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ADO">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LibraryMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
