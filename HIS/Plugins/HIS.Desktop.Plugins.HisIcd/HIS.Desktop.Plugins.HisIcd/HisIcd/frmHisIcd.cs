@@ -162,7 +162,6 @@ namespace HIS.Desktop.Plugins.HisIcd
                 this.txtKeyword.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisIcd.txtKeyword.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lcEditorInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkValid1Year.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkValid1Year.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkValid1Year.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkValid1Year.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

@@ -247,9 +247,6 @@ hướng dẫn nhằm đẩy dữ liệu XML đối với các hồ sơ bệnh n
   <data name="frmHisIcd.chkValid1Year.Properties.Caption" xml:space="preserve">
     <value>Được chuyển viện giá trị 1 năm</value>
   </data>
-  <data name="frmHisIcd.chkValid1Year.ToolTip" xml:space="preserve">
-    <value>Hiện tại với 1 số bệnh mãn tính được phép chuyển viện trong vòng 1 năm</value>
-  </data>
   <data name="frmHisIcd.chkYhct.Properties.Caption" xml:space="preserve">
     <value>YHCT</value>
   </data>

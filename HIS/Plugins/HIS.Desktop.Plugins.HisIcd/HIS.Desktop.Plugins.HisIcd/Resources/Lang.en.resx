@@ -246,9 +246,6 @@
   <data name="frmHisIcd.chkValid1Year.Properties.Caption" xml:space="preserve">
     <value>Transfer to hospital valid for 1 year</value>
   </data>
-  <data name="frmHisIcd.chkValid1Year.ToolTip" xml:space="preserve">
-    <value>Currently, with some chronic diseases, hospital transfer is allowed within 1 year</value>
-  </data>
   <data name="frmHisIcd.chkYhct.Properties.Caption" xml:space="preserve">
     <value>Traditional medicine</value>
   </data>

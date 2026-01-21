@@ -349,7 +349,6 @@ namespace HIS.Desktop.Plugins.HisIcd
             // 
             // gridControlFormList
             // 
-            this.gridControlFormList.Cursor = System.Windows.Forms.Cursors.Default;
             this.gridControlFormList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridControlFormList.EmbeddedNavigator.Buttons.Append.Visible = false;
             this.gridControlFormList.EmbeddedNavigator.Buttons.CancelEdit.Visible = false;
@@ -845,7 +844,6 @@ namespace HIS.Desktop.Plugins.HisIcd
             this.chkValid1Year.Size = new System.Drawing.Size(256, 19);
             this.chkValid1Year.StyleController = this.lcEditorInfo;
             this.chkValid1Year.TabIndex = 40;
-            this.chkValid1Year.ToolTip = "Hiện tại với 1 số bệnh mãn tính được phép chuyển viện trong vòng 1 năm";
             this.chkValid1Year.KeyUp += new System.Windows.Forms.KeyEventHandler(this.chkValid1Year_KeyUp);
             // 
             // barManager1
