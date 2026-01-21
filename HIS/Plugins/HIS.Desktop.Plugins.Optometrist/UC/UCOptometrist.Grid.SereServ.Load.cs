@@ -20,8 +20,8 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             {
                 CommonParam paramCommon = new CommonParam();
                 MOS.Filter.HisSereServFilter filter = new MOS.Filter.HisSereServFilter();
-                filter.TDL_SERVICE_REQ_TYPE_ID = currentsereServ.TDL_SERVICE_REQ_TYPE_ID;
-                filter.TDL_PATIENT_ID = currentsereServ.TDL_PATIENT_ID;
+                filter.TDL_SERVICE_REQ_TYPE_ID = currentSR.SERVICE_REQ_TYPE_ID;
+                filter.TDL_PATIENT_ID = currentSR.TDL_PATIENT_ID;
                 filter.IS_ACTIVE = 1;
                 var apiResult = new BackendAdapter(paramCommon).Get<List<SereServOptometristADO>>
                     (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramCommon);
@@ -64,18 +64,18 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
 
                     apiResult = joined
                         .Where(w => (w.HIS_SERE_SERV_VIEX != null && w.HIS_SERE_SERV_VIEX.Count > 0)
-                            || w.ID == currentsereServ.ID)
-                        .OrderBy(o => o.ID == currentsereServ.ID && (o.HIS_SERE_SERV_VIEX == null || o.HIS_SERE_SERV_VIEX.Count == 0) ? 1 : 99)
+                            || w.SERVICE_REQ_ID == currentSR.ID)
+                        .OrderBy(o => o.SERVICE_REQ_ID == currentSR.ID && (o.HIS_SERE_SERV_VIEX == null || o.HIS_SERE_SERV_VIEX.Count == 0) ? 1 : 99)
                         .OrderByDescending(o => o.VISION_TEST_TIME)
                         .ToList();
-
+                    gridControlSereServ.DataSource = null;
                     gridControlSereServ.DataSource = apiResult;
                     gridControlSereServ.RefreshDataSource();
 
-                    int defaultIndex = apiResult.FindIndex(o => o.ID == currentsereServ.ID);
+                    int defaultIndex = apiResult.FindIndex(o => o.SERVICE_REQ_ID == currentSR.ID);
                     if (defaultIndex < 0) defaultIndex = 0;
                     int handle = gridViewSereServ.GetRowHandle(defaultIndex);
-                    if (handle >= 0)
+                    if (handle > 0)
                     {
                         gridViewSereServ.FocusedRowHandle = handle;
                         BindSelectedSereServ(apiResult[defaultIndex]);
@@ -142,17 +142,17 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
         {
             try
             {
-                if (e.RowHandle >= 0)
-                {
-                    SereServOptometristADO sereServ = (SereServOptometristADO)gridViewSereServ.GetRow(e.RowHandle);
-                    if (sereServ != null)
-                    {
-                        if (sereServ.IS_NO_EXECUTE == 1)
-                        {
-                            e.Appearance.Font = new System.Drawing.Font(e.Appearance.Font, System.Drawing.FontStyle.Strikeout);
-                        }
-                    }
-                }
+                //if (e.RowHandle >= 0)
+                //{
+                //    SereServOptometristADO sereServ = (SereServOptometristADO)gridViewSereServ.GetRow(e.RowHandle);
+                //    if (sereServ != null)
+                //    {
+                //        if (sereServ.IS_NO_EXECUTE == 1)
+                //        {
+                //            e.Appearance.Font = new System.Drawing.Font(e.Appearance.Font, System.Drawing.FontStyle.Strikeout);
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {

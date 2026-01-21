@@ -56,6 +56,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     }
                     success = true;
 
+                    if (chkEnd.Checked)
+                    {
+                        btnEndReq_Click(null, null);
+                    }
+
                     if (chkOptometristPrintKham.Checked)
                     {
                         btnPrintPhieuKham_Click(null, null);
@@ -86,15 +91,13 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             try
             {
                 if (sdo == null) sdo = new HIS_SERE_SERV_VIEX();
-                sdo.SERE_SERV_ID = currentsereServ.ID;
-                sdo.TDL_TREATMENT_ID = currentsereServ.TDL_TREATMENT_ID;
+                sdo.TDL_TREATMENT_ID = currentSR.TREATMENT_ID;
                 var ss6 = gridViewSereServ.GetFocusedRow() as SereServOptometristADO;
-
+                sdo.SERE_SERV_ID = ss6.ID;
                 if (ss6.HIS_SERE_SERV_VIEX.Count > 0)
                 {
-                    sdo.ID = ss6.HIS_SERE_SERV_VIEX.FirstOrDefault().ID;
+                    sdo.ID = ss6.HIS_SERE_SERV_VIEX.FirstOrDefault().ID; // ID
                 }
-
                 // Thông tin chung
                 if (VISION_TEST_TIME.EditValue != null)
                 {

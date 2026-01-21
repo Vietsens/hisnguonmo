@@ -26,17 +26,18 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
     {
         private const string moduleLink = "HIS.Desktop.Plugins.Optometrist";
         private readonly Inventec.Desktop.Common.Modules.Module currentModule;
-        private readonly HIS_SERE_SERV currentsereServ;
+        //private readonly HIS_SERE_SERV currentsereServ;
+        private readonly MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ currentSR;
         public UCOptometrist()
         {
             InitializeComponent();
         }
-        public UCOptometrist(Inventec.Desktop.Common.Modules.Module currentModule, HIS_SERE_SERV sereServ)
+        public UCOptometrist(Inventec.Desktop.Common.Modules.Module currentModule, MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ sereServ)
             : base(currentModule)
         {
             InitializeComponent();
             this.currentModule = currentModule;
-            this.currentsereServ = sereServ;
+            this.currentSR = sereServ;
         }
         private void UCOptometrist_Load(object sender, EventArgs e)
         {
