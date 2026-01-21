@@ -1088,6 +1088,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             lstSereServObeyCantraindi.AddRange(outPatientPresResultSDO.SereServs);
                         }
                     }
+
+                    try
+                    {
+                        if (this.mimsInteractionLog != null && this.mimsInteractionLog.HAS_ALERT > 0)
+                        {
+                            this.mimsInteractionLog.TREATMENT_ID = VHistreatment.ID;
+                            this.mimsInteractionLog.PATIENT_ID = VHistreatment.PATIENT_ID;
+                            this.mimsInteractionLog.SERVICE_REQ_ID = serviceReqResult.ID;
+                            this.mimsInteractionLog.EXP_MEST_ID = expMestResult.ID;
+
+                            bool logCreated = new BackendAdapter(new CommonParam()).Post<bool>("api/HisMimsInteractionLog/Create", ApiConsumers.MosConsumer, this.mimsInteractionLog, new CommonParam());
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                    finally
+                    {
+                        this.mimsInteractionLog = null; // luôn clear
+                    }
+
                     TaskUpdateObeyCantraindi(lstSereServObeyCantraindi, ListExpMestResult, lstserviceReqResult);
                     List<long> mediTypeIds = new List<long>();
                     List<long> mateTypeIds = new List<long>();

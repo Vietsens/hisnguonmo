@@ -576,8 +576,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
 
         internal void FillDataToGridControl()
         {
-            txtSearchKey.Focus();
-            txtSearchKey.SelectAll();
+            FocusTreatmentCode();
 
             FillDataToGridSample(new CommonParam(0, (int)ConfigApplications.NumPageSize));
 
@@ -2377,8 +2376,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                txtSearchKey.Focus();
-                txtSearchKey.SelectAll();
+                FocusTreatmentCode();
             }
             catch (Exception ex)
             {
@@ -2390,8 +2388,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                txtFindServiceReqCode.Focus();
-                txtFindServiceReqCode.SelectAll();
+                FocusTreatmentCode();
             }
             catch (Exception ex)
             {
@@ -3351,6 +3348,24 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 {
                     btnFind_Click(null, null);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void FocusTreatmentCode()
+        {
+            try
+            {
+                this.BeginInvoke((MethodInvoker)(() =>
+                {
+                    if (txtFindTreamentCode != null && txtFindTreamentCode.Enabled && txtFindTreamentCode.Visible)
+                    {
+                        txtFindTreamentCode.Focus();
+                        txtFindTreamentCode.SelectAll();
+                    }
+                }));
             }
             catch (Exception ex)
             {

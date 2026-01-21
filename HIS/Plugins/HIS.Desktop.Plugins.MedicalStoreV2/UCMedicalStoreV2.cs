@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
 using DevExpress.Data;
 using DevExpress.XtraBars;
 using DevExpress.XtraBars.Customization;
@@ -121,6 +122,8 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 InitControlState();
                 LoadComboStatus();
                 LoadComboMediRecordType();
+                InitializePermissions();
+                InitializeGrid();
                 //InitPatientTypeCheck();
                 //InitComboPatientType();
                 LoaddataToTreeList();
@@ -1158,6 +1161,44 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private List<ACS_CONTROL> controlAcs;
+        private void InitializePermissions()
+        {
+            try
+            {
+                if (GlobalVariables.AcsAuthorizeSDO != null)
+                {
+                    controlAcs = GlobalVariables.AcsAuthorizeSDO.ControlInRoles;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void InitializeGrid()
+        {
+            // Kiểm tra phân quyền và ẩn/hiển thị cột "Edit"
+            bool hasEditPermission = HasEditPermission();
+
+            if (hasEditPermission)
+            {
+                gridViewMediRecord.Columns["Edit"].Visible = true;  // Hiển thị cột "Sửa"
+            }
+            else
+            {
+                gridViewMediRecord.Columns["Edit"].Visible = false;  // Ẩn cột "Sửa"
+            }
+        }
+
+        private bool HasEditPermission()
+        {         
+            if (controlAcs != null)
+            {
+                return controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000049") != null;
+            }
+            return false;  
+        }
 
         private void gridViewMediRecord_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
@@ -1171,6 +1212,19 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                     var row = (MediRecordADO)gridViewMediRecord.GetRow(e.RowHandle);
                     if (row != null)
                     {
+                        if (e.Column.FieldName == "Edit")
+                        {
+                            bool hasEditPermission = HasEditPermission(); // Kiểm tra phân quyền chỉ gọi 1 lần
+
+                            if (hasEditPermission)
+                            {
+                                e.RepositoryItem = repositoryItemButtonEdit_Edit;  // Hiển thị nút "Sửa" nếu có quyền
+                            }
+                            else
+                            {
+                                e.RepositoryItem = null;  // Ẩn nút "Sửa" nếu không có quyền
+                            }
+                        }
                         if (e.Column.FieldName == "Delete")
                         {
                             if (row.GIVE_DATE != null)
@@ -1234,7 +1288,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
                             if (IsNotStored == 1) 
                                 e.RepositoryItem = repLocationStore; 
                             else e.RepositoryItem = repLocationStoreDis;
-                        }
+                        }   
                     }
                 }
             }
@@ -3286,6 +3340,26 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2
             }
         }
 
+        private void repositoryItemButtonEdit_Edit_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var row = (MediRecordADO)gridViewMediRecord.GetFocusedRow();
+                if (row != null)
+                {
+                    // Mở form sửa thông tin - chỉ truyền ID
+                    frmStoreInfomation frm = new frmStoreInfomation(
+                        row.ID,
+                        RefreshDataAfterSaveMediRecord
+                    );
+                    frm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void cboExecuteDepartment_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
         {

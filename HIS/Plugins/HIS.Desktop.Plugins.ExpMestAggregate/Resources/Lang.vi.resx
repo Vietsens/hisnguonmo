@@ -564,4 +564,16 @@
   <data name="UCExpMestAggregate.txtKeywordProcess.Properties.NullValuePrompt" xml:space="preserve">
     <value>Từ khóa tìm kiếm (F2)</value>
   </data>
+	<data name="UCExpMestAggregate.colReqAreaName1.Caption" xml:space="preserve">
+    <value>Khu vực</value>
+  </data>
+	<data name="UCExpMestAggregate.colReqAreaName2.Caption" xml:space="preserve">
+    <value>Khu vực</value>
+  </data>
+	<data name="UCExpMestAggregate.colReqAreaName3.Caption" xml:space="preserve">
+    <value>Khu vực</value>
+  </data>
+	<data name="UCExpMestAggregate.navBarGroupArea.Caption" xml:space="preserve">
+    <value>Khu vực</value>
+  </data>
 </root>

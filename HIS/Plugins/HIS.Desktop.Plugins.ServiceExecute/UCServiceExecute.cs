@@ -4318,9 +4318,15 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                 }
 
+               
+                if (!CheckTimeConflictMachineBeforeSave())
+                {
+                    return;
+                }
+
                 if (CheckAllInOne.Checked)
                 {
-                    InsertRow(this.sereServ);//cập nhật lại dữ liệu
+                    InsertRow(this.sereServ);
                     SaveAllProcess(chkPrint.Checked, chkClose.Checked, chkForPreview.Checked);
                 }
                 else
@@ -4330,6 +4336,308 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool CheckTimeConflictMachineBeforeSave()
+        {
+            try
+            {
+                if (currentServiceReq == null || currentServiceReq.ID <= 0)
+                {
+                    return true;
+                }
+
+                long? beginTime = dtBeginTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime) : null;
+                long? endTime = dtEndTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) : null;
+                if (!beginTime.HasValue || !endTime.HasValue)
+                {
+                    return true;
+                }
+
+                List<HIS_SERE_SERV_EXT> inputs = BuildCheckConflictInputs(beginTime.Value, endTime.Value);
+                if (inputs == null || inputs.Count == 0)
+                {
+                    return true;
+                }
+
+                LogSystem.Debug(LogUtil.TraceData("input SDO:", inputs));
+
+                CommonParam param = new CommonParam();
+                HisSereServExtConflictResultSDO result = new BackendAdapter(param).Post<HisSereServExtConflictResultSDO>(
+                    RequestUriStore.HIS_SERE_SERV_EXT_CHECK_CONFLICT,
+                    ApiConsumers.MosConsumer,
+                    inputs,
+                    HIS.Desktop.Controls.Session.SessionManager.ActionLostToken,
+                    param);
+
+                LogSystem.Debug(LogUtil.TraceData("result API:", result));
+                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+
+                if (result == null)
+                {
+                    string apiMessage = param.GetMessage();
+                    if (!string.IsNullOrWhiteSpace(apiMessage))
+                    {
+                        return XtraMessageBox.Show(
+                                   string.Format("{0} Bạn có muốn tiếp tục?", apiMessage),
+                                   ResourceMessage.ThongBao,
+                                   MessageBoxButtons.YesNo,
+                                   MessageBoxIcon.Question) == DialogResult.Yes;
+                    }
+
+                    return true;
+                }
+
+                if (!result.HasConflict || result.ConflictDetails == null || result.ConflictDetails.Count == 0)
+                {
+                    return true;
+                }
+
+             
+                var blockMessages = new StringBuilder();
+                foreach (var detail in result.ConflictDetails)
+                {
+                    if (detail == null || detail.ConfigTimeConflict != 2)
+                    {
+                        continue;
+                    }
+                     
+                    string machineName = detail.MachineName;
+                    if (string.IsNullOrWhiteSpace(machineName) && detail.MachineId.HasValue)
+                    {
+                        var machine = ListMachine != null ? ListMachine.FirstOrDefault(o => o.ID == detail.MachineId.Value) : null;
+                        machineName = machine != null ? machine.MACHINE_NAME : null;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(machineName))
+                    {
+                        machineName = detail.MachineId.HasValue ? detail.MachineId.Value.ToString() : "";
+                    }
+
+                    foreach (var ext in detail.ConflictSereServExts ?? new List<ConflictSereServExtSDO>())
+                    {
+                        if (blockMessages.Length > 0)
+                        {
+                            blockMessages.AppendLine();
+                        }
+
+                        blockMessages.AppendFormat(
+                            "Máy: {0} Trùng thời gian xử lý dịch vụ: {1} [{2} - {3}]",
+                            machineName,
+                            ext.SERVICE_REQ_CODE,
+                            FormatTimeNumber(ext.BEGIN_TIME),
+                            FormatTimeNumber(ext.END_TIME));
+                    }
+                }
+
+                if (blockMessages.Length > 0)
+                {
+                    XtraMessageBox.Show(blockMessages.ToString(), ResourceMessage.ThongBao, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+              
+                var warningMessages = new StringBuilder();
+                foreach (var detail in result.ConflictDetails)
+                {
+                    if (detail == null || detail.ConfigTimeConflict != 1)
+                    {
+                        continue;
+                    }
+                     
+                    string machineName = detail.MachineName;
+                    if (string.IsNullOrWhiteSpace(machineName) && detail.MachineId.HasValue)
+                    {
+                        var machine = ListMachine != null ? ListMachine.FirstOrDefault(o => o.ID == detail.MachineId.Value) : null;
+                        machineName = machine != null ? machine.MACHINE_NAME : null;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(machineName))
+                    {
+                        machineName = detail.MachineId.HasValue ? detail.MachineId.Value.ToString() : "";
+                    }
+
+                    foreach (var ext in detail.ConflictSereServExts ?? new List<ConflictSereServExtSDO>())
+                    {
+                        if (warningMessages.Length > 0)
+                        {
+                            warningMessages.AppendLine();
+                        }
+
+                        warningMessages.AppendFormat(
+                            "Máy: {0} Trùng thời gian xử lý dịch vụ: {1} [{2} - {3}]",
+                            machineName,
+                            ext.SERVICE_REQ_CODE,
+                            FormatTimeNumber(ext.BEGIN_TIME),
+                            FormatTimeNumber(ext.END_TIME));
+                    }
+                }
+
+                if (warningMessages.Length > 0)
+                {
+                    string msg = warningMessages.ToString() + "\r\nBạn có muốn tiếp tục không?";
+                    if (XtraMessageBox.Show(msg, ResourceMessage.ThongBao, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+
+               
+                string message = BuildConflictMessage(result);
+                return XtraMessageBox.Show(
+                           string.Format("{0}\r\nBạn có muốn tiếp tục không?", message),
+                           ResourceMessage.ThongBao,
+                           MessageBoxButtons.YesNo,
+                           MessageBoxIcon.Question) == DialogResult.Yes;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                return true;
+            }
+        }
+
+        private List<HIS_SERE_SERV_EXT> BuildCheckConflictInputs(long beginTime, long endTime)
+        {
+            List<HIS_SERE_SERV_EXT> inputs = new List<HIS_SERE_SERV_EXT>();
+            try
+            {
+                if (CheckAllInOne.Checked)
+                {
+                    if (listServiceADOForAllInOne == null || listServiceADOForAllInOne.Count == 0)
+                    {
+                        return inputs;
+                    }
+
+                    // đảm bảo có sereServExt.ID để server loại trừ bản ghi hiện tại khi update
+                    CheckSereServExt(listServiceADOForAllInOne.Select(s => s.ID).ToList());
+
+                    foreach (var service in listServiceADOForAllInOne)
+                    {
+                        if (service == null) continue;
+                        if (!service.MACHINE_ID.HasValue) continue;
+
+                        HIS_SERE_SERV_EXT ext = null;
+                        if (dicSereServExt != null && dicSereServExt.ContainsKey(service.ID))
+                        {
+                            ext = dicSereServExt[service.ID];
+                        }
+
+
+                        inputs.Add(new HIS_SERE_SERV_EXT
+                        {
+                            ID = (ext != null && ext.ID > 0) ? (long)ext.ID : 0,
+                            MACHINE_ID = service.MACHINE_ID,
+                            TDL_SERVICE_REQ_ID = currentServiceReq.ID,
+                            BEGIN_TIME = beginTime,
+                            END_TIME = endTime
+                        });
+
+
+                    }
+                }
+                else
+                {
+                    if (sereServ == null || sereServ.ID <= 0)
+                    {
+                        return inputs;
+                    }
+
+                    if (!sereServ.MACHINE_ID.HasValue)
+                    {
+                        return inputs;
+                    }
+
+                    CheckSereServExt(new List<long> { sereServ.ID });
+
+                    HIS_SERE_SERV_EXT ext = null;
+                    if (dicSereServExt != null && dicSereServExt.ContainsKey(sereServ.ID))
+                    {
+                        ext = dicSereServExt[sereServ.ID];
+                    }
+
+
+                    inputs.Add(new HIS_SERE_SERV_EXT
+                    {
+                        ID = (ext != null && ext.ID > 0) ? (long)ext.ID : 0,
+                        MACHINE_ID = sereServ.MACHINE_ID,
+                        TDL_SERVICE_REQ_ID = currentServiceReq.ID,
+                        BEGIN_TIME = beginTime,
+                        END_TIME = endTime
+                    });
+
+
+                  
+                }
+
+                
+                inputs = inputs
+                    .Where(o => o != null && o.MACHINE_ID.HasValue)
+                    .GroupBy(o => o.MACHINE_ID.Value)
+                    .Select(g => g.First())
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return inputs;
+        }
+
+        private string BuildConflictMessage(HisSereServExtConflictResultSDO result)
+        {
+            try
+            {
+                List<string> lines = new List<string>();
+                foreach (var detail in result.ConflictDetails ?? new List<ConflictDetailSDO>())
+                {
+                    string machineName = detail.MachineName;
+                    if (string.IsNullOrWhiteSpace(machineName) && detail.MachineId.HasValue)
+                    {
+                        var machine = ListMachine != null ? ListMachine.FirstOrDefault(o => o.ID == detail.MachineId.Value) : null;
+                        machineName = machine != null ? machine.MACHINE_NAME : null;
+                    }
+                    if (string.IsNullOrWhiteSpace(machineName))
+                    {
+                        machineName = detail.MachineId.HasValue ? detail.MachineId.Value.ToString() : "";
+                    }
+
+                    foreach (var conflict in detail.ConflictSereServExts ?? new List<ConflictSereServExtSDO>())
+                    {
+                        string begin = FormatTimeNumber(conflict.BEGIN_TIME);
+                        string end = FormatTimeNumber(conflict.END_TIME);
+                        //string serviceReqCode = conflict.SERVICE_REQ_CODE;
+                        //lines.Add(string.Format("Máy: {0} Trùng thời gian xử lý dịch vụ:{1} [{2} - {3}]", machineName, serviceReqCode, begin, end));
+                        lines.Add(string.Format("Máy: {0} Trùng thời gian xử lý dịch vụ:{1} [{2}]", machineName, begin, end));
+                    }
+                }
+
+                lines = lines.Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().ToList();
+                return lines.Count > 0 ? string.Join("\r\n", lines) : (result.HasConflict ? "Có trùng thời gian xử lý máy." : "");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return "Có trùng thời gian xử lý máy.";
+            }
+        }
+
+        private string FormatTimeNumber(long? timeNumber)
+        {
+            try
+            {
+                if (!timeNumber.HasValue || timeNumber.Value <= 0)
+                {
+                    return "";
+                }
+                return Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(timeNumber.Value);
+            }
+            catch
+            {
+                return timeNumber.HasValue ? timeNumber.Value.ToString() : "";
             }
         }
 

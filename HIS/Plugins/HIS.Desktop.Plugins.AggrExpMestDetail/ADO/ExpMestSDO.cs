@@ -29,7 +29,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.ADO
     {
         public bool IsHighLight { get; set; }
         public string REASION_ID { get; set; }
-
         public ExpMestSDO()
         { }
 
@@ -41,7 +40,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.ADO
                 {
 
                     System.Reflection.PropertyInfo[] pi = Inventec.Common.Repository.Properties.Get<V_HIS_EXP_MEST>();
-
+                    this.REQ_AREA_NAME = _data.REQ_AREA_NAME;
                     foreach (var item in pi)
                     {
                         item.SetValue(this, (item.GetValue(_data)));

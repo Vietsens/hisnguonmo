@@ -59,6 +59,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.UCAdress
                         this.txtCommuneCode.Text = commune.COMMUNE_CODE;
                         this.cboCommune.EditValue = commune.COMMUNE_CODE;
                     }
+                    
+                    if (!string.IsNullOrEmpty(data.Address))
+                    {
+                        this.txtAddress.Text = data.Address;
+                    }
                 }
             }
             catch (Exception ex)
@@ -99,6 +104,11 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.UCAdress
                 else if (province != null)
                 {
                     this.LoadXaCombo("", province.PROVINCE_CODE, false, true);
+                }
+                
+                if (!string.IsNullOrEmpty(data.Address))
+                {
+                    this.txtAddress.Text = data.Address;
                 }
 
             }

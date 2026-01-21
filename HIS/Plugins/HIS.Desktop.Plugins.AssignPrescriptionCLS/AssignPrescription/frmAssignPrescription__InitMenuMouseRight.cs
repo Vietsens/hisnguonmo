@@ -56,24 +56,27 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 if (selectedItemsForMenu == null || selectedItemsForMenu.Count == 0)
                     return;
 
-                if (CheckEditDayNum())
+                if (GlobalStore.IsTreatmentIn && GlobalStore.IsCabinet && GlobalStore.IsExecutePTTT)
                 {
-                    Inventec.Common.Logging.LogSystem.Info("InitMenu.2");
-                    BarButtonItem itemEditDayNum = new BarButtonItem(barManager1, ResourceMessage.PopupMenu_SuaSoNgay, 1);
-                    itemEditDayNum.Tag = MOUSE_RIGHT_TYPE.EDIT_DAY_NUM;
-                    itemEditDayNum.ItemClick += new ItemClickEventHandler(setProcessMenu);
-                    menu.AddItems(new BarButtonItem[] { itemEditDayNum });
-                }
+                    if (CheckEditDayNum())
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("InitMenu.2");
+                        BarButtonItem itemEditDayNum = new BarButtonItem(barManager1, ResourceMessage.PopupMenu_SuaSoNgay, 1);
+                        itemEditDayNum.Tag = MOUSE_RIGHT_TYPE.EDIT_DAY_NUM;
+                        itemEditDayNum.ItemClick += new ItemClickEventHandler(setProcessMenu);
+                        menu.AddItems(new BarButtonItem[] { itemEditDayNum });
+                    }
 
-                if (CheckEditExpendType())
-                {
-                    Inventec.Common.Logging.LogSystem.Info("InitMenu.3");
-                    BarButtonItem itemEditExpendType = new BarButtonItem(barManager1, ResourceMessage.PopupMenu_LoaiHaoPhi, 1);
-                    itemEditExpendType.Tag = MOUSE_RIGHT_TYPE.EDIT_EXPEND_TYPE;
-                    itemEditExpendType.ItemClick += new ItemClickEventHandler(setProcessMenu);
-                    menu.AddItems(new BarButtonItem[] { itemEditExpendType });
+                    if (CheckEditExpendType())
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("InitMenu.3");
+                        BarButtonItem itemEditExpendType = new BarButtonItem(barManager1, ResourceMessage.PopupMenu_LoaiHaoPhi, 1);
+                        itemEditExpendType.Tag = MOUSE_RIGHT_TYPE.EDIT_EXPEND_TYPE;
+                        itemEditExpendType.ItemClick += new ItemClickEventHandler(setProcessMenu);
+                        menu.AddItems(new BarButtonItem[] { itemEditExpendType });
+                    }
                 }
-
+                
                 if (HisConfigCFG.ConnectDrugInterventionInfo == "2")
                 {
                     if (selectedItemsForMenu.Count == 1)

@@ -618,6 +618,7 @@ namespace HIS.UC.Hospitalize.Run
             // 
             this.txtRELATIVE_PHONE.Location = new System.Drawing.Point(360, 2);
             this.txtRELATIVE_PHONE.Name = "txtRELATIVE_PHONE";
+            this.txtRELATIVE_PHONE.Properties.MaxLength = 12;
             this.txtRELATIVE_PHONE.Size = new System.Drawing.Size(134, 20);
             this.txtRELATIVE_PHONE.StyleController = this.layoutControl2;
             this.txtRELATIVE_PHONE.TabIndex = 29;

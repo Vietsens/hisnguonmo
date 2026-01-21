@@ -181,7 +181,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionKidney.AssignPrescription
                             if (this.ucSecondaryIcd != null)
                             {
                                 var subIcd = this.subIcdProcessor.GetValue(this.ucSecondaryIcd);
-                                if (subIcd != null && subIcd is SecondaryIcdDataADO)
+                                if (subIcd != null && subIcd is SecondaryIcdDataADO && ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE != null && ((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE != "")
                                 {
                                     lstICD.AddRange(((SecondaryIcdDataADO)subIcd).ICD_SUB_CODE.Split(';').Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()));
                                 }

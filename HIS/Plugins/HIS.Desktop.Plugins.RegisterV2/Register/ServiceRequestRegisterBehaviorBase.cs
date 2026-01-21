@@ -267,6 +267,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected string NguonKhachCode { get; set; }
         protected string NguonKhachName { get; set; }
         protected string NguonKhachCTName { get; set; }
+        protected short? ChamSocDa { get; set; }
 
         internal ServiceRequestRegisterBehaviorBase(CommonParam param, UCRegister ucServiceRequestRegiter)
             : base(param)
@@ -340,7 +341,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.phone = this.addressInfoValue.Phone;
                 //this.weight = this.addressInfoValue.Weight;
                 //this.height = this.addressInfoValue.Height;
-
                 // UCOtherServiceReqInfo
                 //qtcode
                 this.IS_CAPD = this.serviceReqInfoValue.IS_CAPD;
@@ -348,6 +348,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.chkExamOnline = this.serviceReqInfoValue.IsExamOnline;
                 this.chkEmergency = this.serviceReqInfoValue.IsEmergency;
                 this.intructionTime = this.serviceReqInfoValue.IntructionTime;
+                this.ChamSocDa = this.serviceReqInfoValue.isChamSocDa ? (short?)1 : (short?)null;
                 if (this.serviceReqInfoValue.TreatmentType_ID > 0)
                     this.treatmentTypeId = this.serviceReqInfoValue.TreatmentType_ID;
                 this.isPriority = this.serviceReqInfoValue.IsPriority;
@@ -606,7 +607,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
 
                 if (this.currentModule != null)
                     patientProfile.RequestRoomId = this.currentModule.RoomId;
-
+                //this.patientProfile.IsRequestSkinCare = ChamSocDa;
                 //Process patient data from input data
                 this.ProcessPatientData();
 
@@ -926,7 +927,9 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_CODE = this.NguonKhachCode;
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_NAME = this.NguonKhachName;
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_DETAIL = this.NguonKhachCTName;
-
+                this.patientProfile.HisTreatment.GUARANTEE_LOGINNAME = this.GUARANTEE_LOGINNAME;
+                this.patientProfile.HisTreatment.GUARANTEE_USERNAME = this.GUARANTEE_USERNAME;
+                this.patientProfile.HisTreatment.GUARANTEE_REASON = this.GUARANTEE_REASON;
             }
             catch (Exception ex)
             {

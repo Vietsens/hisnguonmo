@@ -107,6 +107,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
             serviceReqExamRegister.IsAutoCreateDepositForNonBhyt = chkAutoDeposit || chkAutoCreateBill;
             serviceReqExamRegister.IsUsingEpayment = chkAutoPay;
             serviceReqExamRegister.IsExamOnline = chkExamOnline;
+            serviceReqExamRegister.IsRequestSkinCare = ChamSocDa;
             if (chkAutoCreateBill)
             {
                 if (GlobalVariables.DefaultPayformRequest.HasValue && GlobalVariables.DefaultPayformRequest.Value > 0)

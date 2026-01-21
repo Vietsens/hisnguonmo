@@ -78,6 +78,8 @@ namespace HIS.Desktop.Plugins.HisBloodType
             {
                 InitializeComponent();
 
+                Config.ConfigKey.GetConfigKey();
+
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
                 //gridControlFormList.ToolTipController = toolTipControllerGrid;
@@ -830,6 +832,23 @@ namespace HIS.Desktop.Plugins.HisBloodType
                 positionHandle = -1;
                 if (!dxValidationProviderEditorInfo.Validate())
                     return;
+                var codeText = (txtBloodTypeCode.Text ?? string.Empty).Trim();
+                if (ActionType == GlobalVariables.ActionAdd && Config.ConfigKey.ServiceCodeOption == "1" && !string.IsNullOrEmpty(codeText))
+                {
+                    var existed = BackendDataWorker.Get<V_HIS_BLOOD_TYPE>()?
+                        .Any(o => string.Equals(o.BLOOD_TYPE_CODE, codeText, StringComparison.OrdinalIgnoreCase)) == true;
+
+                    if (existed)
+                    {
+                        WaitingManager.Hide();
+                        MessageBox.Show(
+                            string.Format("Mã {0} đã tồn tại trên hệ thống", codeText),
+                            "Cảnh báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
 
                 WaitingManager.Show();
                 MOS.EFMODEL.DataModels.HIS_BLOOD_TYPE updateDTO = new MOS.EFMODEL.DataModels.HIS_BLOOD_TYPE();
@@ -1013,7 +1032,11 @@ namespace HIS.Desktop.Plugins.HisBloodType
         {
             try
             {
-                this.ValidateTextEdit(this.txtBloodTypeCode, 100);
+                //this.ValidateTextEdit(this.txtBloodTypeCode, 100);
+                if (Config.ConfigKey.ServiceCodeOption != "1")
+                {
+                    this.ValidateTextEdit(this.txtBloodTypeCode, 100);
+                }
                 this.ValidateTextEdit(this.txtBloodTypeName, 3000);
                 //ValidationSingleControl(txtBloodTypeCode);
                 //ValidationSingleControl(txtBloodTypeName);

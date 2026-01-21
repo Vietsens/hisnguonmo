@@ -52,10 +52,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dt), dt));
-
-                var oldData = this.ucAddressCombo1.GetValue();
-                string phoneNumber = "";
-                Inventec.Common.Mapper.DataObjectMapper.Map<string>(phoneNumber, oldData.Phone);
                 CommonParam param = new CommonParam();
                 var heinCardData = dt.HeinCardData;
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => heinCardData), heinCardData));
@@ -101,7 +97,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         dataAddressPatient.Commune_Code = data.CommuneCode;
                         dataAddressPatient.Commune_Name = data.CommuneName;
                         dataAddressPatient.IsNoDistrict = data.IsNoDistrict;
-                        dataAddressPatient.Phone = oldData.Phone;
                     }
                     dataAddressPatient.Address = heinCardData.Address;
                     this.ucAddressCombo1.SetValue(dataAddressPatient);
@@ -133,6 +128,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
                 if (this.ucOtherServiceReqInfo1 != null)
                     this.ucOtherServiceReqInfo1.RefreshUserControl();
+                this.chkBaoLanh.Checked = false;
                 Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.7");
             }
             catch (Exception ex)
@@ -280,6 +276,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.TimDuocMotBenhNhanTheoThongTinNguoiDungNhapNeuKhongPhaiBNCuVuiLongNhanNutBNMoi, ResourceMessage.TieuDeCuaSoThongBaoLaThongBao, DevExpress.Utils.DefaultBoolean.True);
                 }
+                this.chkBaoLanh.Checked = false;
             }
             catch (Exception ex)
             {

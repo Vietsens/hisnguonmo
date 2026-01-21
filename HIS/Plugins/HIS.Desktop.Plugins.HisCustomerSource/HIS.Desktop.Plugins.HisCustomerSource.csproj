@@ -112,6 +112,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HisCustomerSource\frmHisCustomerSource.Selection.Base.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HisCustomerSource\frmHisCustomerSource.Selection.CustomerSourceDetail.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="HisRequestUriStore.cs" />
     <Compile Include="HisCustomerSource\HisCustomerSourceBehavior.cs" />
     <Compile Include="HisCustomerSource\frmHisCustomerSource.cs">
@@ -187,10 +193,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resources\Lock-Lock-icon.png" />
-    <Content Include="Resources\Lock-Unlock-icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

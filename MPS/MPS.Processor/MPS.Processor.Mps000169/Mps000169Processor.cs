@@ -99,6 +99,10 @@ namespace MPS.Processor.Mps000169
                 objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData13", new CalculateMergerData());
 
+                objectTag.SetUserFunction(store, "FuncMergeData14", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData15", new CalculateMergerData());
+                objectTag.SetUserFunction(store, "FuncMergeData16", new CalculateMergerData());
+
                 result = true;
             }
             catch (Exception ex)

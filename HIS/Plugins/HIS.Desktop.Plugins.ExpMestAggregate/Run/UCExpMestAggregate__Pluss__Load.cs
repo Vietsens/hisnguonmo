@@ -173,6 +173,23 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
 
                 _expMestFilter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT;//La Don Thuoc Noi Tru
 
+                List<long> selectedAreaIds = new List<long>();
+                if (chkListArea.CheckedItems.Count > 0)
+                {
+                    foreach (var item in chkListArea.CheckedItems)
+                    {
+                        var area = item as MOS.EFMODEL.DataModels.HIS_AREA;  
+                        if (area != null)
+                        {
+                            selectedAreaIds.Add(area.ID);
+                        }
+                    }
+                }
+                if (selectedAreaIds.Count > 0)
+                {
+                    _expMestFilter.REQ_AREA_IDS = selectedAreaIds;
+                }
+
                 if (chkNotSynthetic.Checked == true && chkSynthesized.Checked == false)
                 {
                     //HAS_AGGR 
@@ -515,6 +532,40 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        /// <summary>
+        /// Khởi tạo dữ liệu combo Khu vực
+        /// </summary>
+        /// <summary>
+        /// Khởi tạo dữ liệu combo Khu vực
+        /// </summary>
+        private void InitComboArea()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                HisAreaFilter filter = new HisAreaFilter();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                filter.ORDER_FIELD = "AREA_CODE";
+                filter.ORDER_DIRECTION = "ASC";
+
+                var areas = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_AREA>>(
+                    "api/HisArea/Get",
+                    ApiConsumers.MosConsumer,
+                    filter,
+                    param);
+
+                if (areas != null && areas.Count > 0)
+                {
+                    chkListArea.DataSource = areas;
+                    chkListArea.DisplayMember = "AREA_NAME";
+                    chkListArea.ValueMember = "ID";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

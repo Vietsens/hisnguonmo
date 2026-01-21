@@ -176,6 +176,8 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         bool isReturn;
         DateTime currentTimer;
         DateTime currentTimerLM;
+        // Cache thời gian KQ để "khóa" DateKQ theo từng mẫu khi trả kết quả từng phần (ButtonEdit_TraKetQua)
+        private readonly Dictionary<long, DateTime> _lockedResultTimeBySampleId = new Dictionary<long, DateTime>();
         TimerSDO timeSync { get; set; }
         bool IsLoadGridSampleAfterSave;
 
@@ -378,6 +380,69 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private bool IsResultTimeLocked(LisSampleADO sample)
+        {
+            try
+            {
+                return (sample != null && sample.ID > 0 && _lockedResultTimeBySampleId.ContainsKey(sample.ID));
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private DateTime? GetLockedResultTime(LisSampleADO sample)
+        {
+            try
+            {
+                if (sample != null && sample.ID > 0 && _lockedResultTimeBySampleId.ContainsKey(sample.ID))
+                {
+                    return _lockedResultTimeBySampleId[sample.ID];
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
+        }
+
+        private void LockResultTimeForSample(LisSampleADO sample, DateTime time)
+        {
+            try
+            {
+                if (sample == null || sample.ID <= 0) return;
+
+                if (_lockedResultTimeBySampleId.ContainsKey(sample.ID))
+                    _lockedResultTimeBySampleId[sample.ID] = time;
+                else
+                    _lockedResultTimeBySampleId.Add(sample.ID, time);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void UnlockResultTimeForSample(long sampleId)
+        {
+            try
+            {
+                if (sampleId <= 0) return;
+                if (_lockedResultTimeBySampleId != null && _lockedResultTimeBySampleId.ContainsKey(sampleId))
+                {
+                    _lockedResultTimeBySampleId.Remove(sampleId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
         private void timer1_Tick()
         {
             try
@@ -389,7 +454,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 else
                 {
                     currentTimer = currentTimer.AddSeconds(1);
-                    if ((rowSample != null && !rowSample.RESULT_TIME.HasValue) || rowSample == null)
+                    if ((rowSample == null) || (rowSample != null && !rowSample.RESULT_TIME.HasValue && !IsResultTimeLocked(rowSample)))
                     {
                         DateKQ.DateTime = currentTimer;
                     }
@@ -2404,7 +2469,30 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                     }
                 }
+                long __sampleId = rowSample != null ? rowSample.ID : 0;
+
                 UpdateStt(IMSys.DbConfig.LIS_RS.LIS_SAMPLE_STT.ID__CO_KQ);
+
+
+                // Sau khi hủy trả kết quả: mở khóa DateKQ cho mẫu này và cho chạy tiếp từ thời điểm hủy
+
+                UnlockResultTimeForSample(__sampleId);
+
+                if (rowSample != null && rowSample.ID == __sampleId)
+
+                {
+
+                    rowSample.RESULT_TIME = null;
+
+                }
+
+                currentTimer = DateTime.Now;
+
+                DateKQ.DateTime = currentTimer;
+
+                DateKQ.SelectionStart = 0;
+
+                StartTimer(currentModule.ModuleLink, "timer1");
             }
             catch (Exception ex)
             {
@@ -4370,7 +4458,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
             return lst;
         }
-        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser, bool hiv)  
+        private void ProcessPrint(ref bool hasConfirmUser, ref bool resultConfirmUser, bool hiv)
         {
             try
             {
@@ -4384,7 +4472,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                     {
                         SetDataToPrint(true);
 
-                        if (lstResultVS != null && lstResultVS.Count > 0)   
+                        if (lstResultVS != null && lstResultVS.Count > 0)
                         {
                             PrintProcess(PrintTypeKXN.IN_VI_SINH);
                         }
@@ -5317,8 +5405,36 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         if (rs != null)
                         {
                             success = true;
-                            FillDataToGridControl();
-                            if (lstSampleAll.Count > 1)
+                            // Khi trả KQ từng phần bằng nút này: khóa thời gian KQ của mẫu đang thao tác để DateKQ không chạy nữa khi click lại bệnh nhân đó
+                            var _sampleFocus = (LisSampleADO)gridViewSample.GetFocusedRow();
+                            if (DateKQ.EditValue == null || DateKQ.DateTime == DateTime.MinValue)
+                            {
+                                DateKQ.DateTime = currentTimer;
+                            }
+                            LockResultTimeForSample(_sampleFocus, DateKQ.DateTime);
+                            // Cập nhật ngay TG trả kết quả trên grid mẫu (cột Tg trả kết quả / RESULT_TIME_STR) cho đúng mẫu vừa trả
+                            long? _resultTimeNum = Inventec.Common.TypeConvert.Parse.ToInt64(DateKQ.DateTime.ToString("yyyyMMddHHmmss"));
+                            if (_sampleFocus != null)
+                            {
+                                _sampleFocus.RESULT_TIME = _resultTimeNum;
+
+                                // Nếu grid đang bind theo lstSampleAll thì update luôn item trong list để RefreshDataSource ăn ngay
+                                var _rawSample = (lstSampleAll != null) ? lstSampleAll.FirstOrDefault(o => o.ID == _sampleFocus.ID) : null;
+                                if (_rawSample != null)
+                                {
+                                    _rawSample.RESULT_TIME = _resultTimeNum;
+                                }
+
+                                // Refresh the specific row in the grid to show the updated result time
+                                int rowHandle = gridViewSample.GetRowHandle(lstSampleAll.IndexOf(_sampleFocus));
+                                if (rowHandle >= 0)
+                                {
+                                    gridViewSample.RefreshRow(rowHandle);
+                                }
+                            }
+                            gridControlSample.RefreshDataSource();
+
+                            FillDataToGridControl(); if (lstSampleAll.Count > 1)
                                 RowClick();
 
                             string testIndexStr = "";
@@ -6593,7 +6709,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
         {
             try
             {
-                if (row != null && !String.IsNullOrWhiteSpace(row.EMR_RESULT_DOCUMENT_CODE)) 
+                if (row != null && !String.IsNullOrWhiteSpace(row.EMR_RESULT_DOCUMENT_CODE))
                 {
                     CommonParam param = new CommonParam();
                     var apiResult = GetEmrDocumentFile(row, false, false, false, ref param);
@@ -7307,7 +7423,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             }
         }
 
-        public void TreeListHeaderMerger(TreeList treeList, TreeListColumn columnToMerge) 
+        public void TreeListHeaderMerger(TreeList treeList, TreeListColumn columnToMerge)
         {
             try
             {
@@ -7321,7 +7437,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-            }    
+            }
         }
 
         public TreeListColumn GetNextColumn()
@@ -8406,7 +8522,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                         }
 
-                        
+
                     }
                     if (lstResultMD != null && lstResultMD.Count > 0)
                     {
@@ -8447,7 +8563,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         foreach (var group in groupListResult)
                         {
                             V_HIS_SERVICE service = lstService != null ? lstService.FirstOrDefault(o => o.SERVICE_CODE == group.Key.SERVICE_CODE) : null;
-                            
+
                             MPS.Processor.Mps000459.PDO.Mps000459PDO mps000459RDO = new MPS.Processor.Mps000459.PDO.Mps000459PDO(
                       null,
                       null,
@@ -9548,7 +9664,16 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                 }
                 else
                 {
-                    DateKQ.EditValue = currentTimer;
+                    // Nếu đã "khóa" thời gian KQ do trả kết quả từng phần thì giữ nguyên, không chạy theo timer
+                    var lockedTime = GetLockedResultTime(sample);
+                    if (lockedTime.HasValue)
+                    {
+                        DateKQ.EditValue = lockedTime.Value;
+                    }
+                    else
+                    {
+                        DateKQ.EditValue = currentTimer;
+                    }
                 }
                 if (sample.SAMPLE_TIME != null)
                 {

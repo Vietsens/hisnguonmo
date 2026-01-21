@@ -192,6 +192,9 @@
   <data name="frmHisCustomerSource.layoutControl3.Text" xml:space="preserve">
     <value>layoutControl3</value>
   </data>
+  <data name="frmHisCustomerSource.layoutControlItem7.Text" xml:space="preserve">
+    <value>NK chi tiết mặc định:</value>
+  </data>
   <data name="frmHisCustomerSource.lcCustomerSourceCode.Text" xml:space="preserve">
     <value>Mã:</value>
   </data>

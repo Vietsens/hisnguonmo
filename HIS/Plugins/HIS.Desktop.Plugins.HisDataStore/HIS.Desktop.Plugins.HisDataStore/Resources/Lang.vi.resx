@@ -177,6 +177,9 @@
   <data name="frmHisDataStore.layoutControlItem8.Text" xml:space="preserve">
     <value>Cha:</value>
   </data>
+  <data name="frmHisDataStore.layoutControlItem9.Text" xml:space="preserve">
+    <value>Vị trí lưu trữ</value>
+  </data>
   <data name="frmHisDataStore.lcEditorInfo.Text" xml:space="preserve">
     <value>layoutControl5</value>
   </data>
@@ -219,9 +222,6 @@
   <data name="frmHisDataStore.Text" xml:space="preserve">
     <value>Danh mục</value>
   </data>
-  <data name="frmHisDataStore.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
-    <value>Từ khóa tìm kiếm</value>
-  </data>
   <data name="frmHisDataStore.treeListColumn_STORED_DEPARTMENT_NAME.Caption" xml:space="preserve">
     <value>Khoa có hồ sơ được lưu</value>
   </data>
@@ -237,8 +237,14 @@
   <data name="frmHisDataStore.treeListColumn7.Caption" xml:space="preserve">
     <value>Khoa phòng quản lý</value>
   </data>
+  <data name="frmHisDataStore.treeListColumnLOCATION_STORE_NAME.Caption" xml:space="preserve">
+    <value>Vị trí</value>
+  </data>
   <data name="frmHisDataStore.treeListColumnTreatmentType.Caption" xml:space="preserve">
     <value>Loại kết thúc điều trị</value>
+  </data>
+  <data name="frmHisDataStore.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
   </data>
   <data name="frmHisMedicineUseForm.bar1.Text" xml:space="preserve">
     <value>Tools</value>

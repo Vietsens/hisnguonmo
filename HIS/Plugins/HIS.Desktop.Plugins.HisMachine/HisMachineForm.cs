@@ -136,6 +136,7 @@ namespace HIS.Desktop.Plugins.HisMachine
         private void MeShow()
         {
             InitComboDepartment();
+            InitComboConfigTimeConflict();
             InitCheck(cboRoom, SelectionGrid__ROOM_NAME);
             InitComboRoom(cboRoom, BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1 && o.BRANCH_ID == BranchDataWorker.GetCurrentBranchId() && o.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__XL).ToList(), "ROOM_NAME", "ID");
             SetDefaultValue();
@@ -168,6 +169,51 @@ namespace HIS.Desktop.Plugins.HisMachine
             catch (Exception ex)
             {
 
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboConfigTimeConflict()
+        {
+            try
+            {
+                var dt = new DataTable();
+                dt.Columns.Add("ID", typeof(short));
+                dt.Columns.Add("NAME", typeof(string));
+
+                //dt.Rows.Add((short)0, "Không kiểm tra");
+                dt.Rows.Add((short)1, "Cảnh báo");
+                dt.Rows.Add((short)2, "Chặn");
+
+                cboConfigTimeConflict.Properties.DataSource = dt;
+                cboConfigTimeConflict.Properties.ValueMember = "ID";      // lưu 0/1/2
+                cboConfigTimeConflict.Properties.DisplayMember = "NAME";  // hiển thị tên
+                cboConfigTimeConflict.Properties.NullText = "";
+                cboConfigTimeConflict.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+
+                cboConfigTimeConflict.ForceInitialize();
+                var view = cboConfigTimeConflict.Properties.View;
+                view.Columns.Clear();
+
+                view.OptionsView.ShowColumnHeaders = false;   // nếu muốn có header
+                view.OptionsView.ShowIndicator = false;
+
+                var colId = view.Columns.AddField("ID");
+                colId.Caption = "ID";
+                colId.Visible = true;
+                colId.VisibleIndex = 0;
+                colId.Width = 40;
+
+                var colName = view.Columns.AddField("NAME");
+                colName.Caption = "Tên";
+                colName.Visible = true;
+                colName.VisibleIndex = 1;
+                colName.Width = 160;
+
+                cboConfigTimeConflict.Properties.PopupFormWidth = 220;
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -801,6 +847,9 @@ namespace HIS.Desktop.Plugins.HisMachine
                 currentDTO.NATIONAL_NAME = txtNationalName.Text.Trim();
                 currentDTO.CIRCULATION_NUMBER = txtCirculationNumber.Text.Trim();
                 currentDTO.SOURCE_NAME = txtSourceName.Text;
+                currentDTO.CONFIG_TIME_CONFLICT = cboConfigTimeConflict.EditValue != null
+                ? (short?)Convert.ToInt16(cboConfigTimeConflict.EditValue)
+                : null;
                 if (cboDepartment.EditValue != null)
                     currentDTO.DEPARTMENT_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboDepartment.EditValue.ToString());
                 else
@@ -1258,6 +1307,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                     txtCirculationNumber.Text = data.CIRCULATION_NUMBER;
                     txtSourceName.Text = data.SOURCE_NAME;
                     cboDepartment.EditValue = data.DEPARTMENT_ID;
+                    cboConfigTimeConflict.EditValue = (short?)(data.CONFIG_TIME_CONFLICT); 
 
                 }
             }
@@ -1948,6 +1998,41 @@ namespace HIS.Desktop.Plugins.HisMachine
         private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             btnExportXml_Click(null, null);
+        }
+
+        private void cboConfigTimeConflict_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboConfigTimeConflict.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboConfigTimeConflict_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboConfigTimeConflict.EditValue != null)
+                {
+                    cboConfigTimeConflict.Properties.Buttons[1].Visible = true;
+
+                }
+                else
+                {
+                    cboConfigTimeConflict.Properties.Buttons[1].Visible = false;
+                }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
     }
 }

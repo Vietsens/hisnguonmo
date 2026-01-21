@@ -48,5 +48,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         internal const string HIS_SERE_SERV_FILE_DELETE = "/api/HisSereServFile/Delete";
         internal const string HIS_SERE_SERV_FILE_CREATE = "/api/HisSereServFile/Create";
         internal const string HIS_SERE_SERV_FILE_UPDATE = "/api/HisSereServFile/Update";
+
+        internal const string HIS_SERE_SERV_EXT_CHECK_CONFLICT = "api/HisSereServExt/CheckConflict";
     }
 }

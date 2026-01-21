@@ -46,7 +46,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExamServiceReqExecuteControl));
             DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
@@ -106,8 +105,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.dxValidationProviderForLeftPanel = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProviderForSpinVat = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderForLeftPanel = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProviderForSpinVat = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnFastTrackingCreate = new DevExpress.XtraEditors.SimpleButton();
@@ -127,12 +126,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btnPrint_ExamService = new DevExpress.XtraEditors.DropDownButton();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.chkIsPartExamAbnormal = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.chkIsFullExamAbnormal = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsHistoryRelated = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsHistoryAllergyRelated = new DevExpress.XtraEditors.CheckEdit();
@@ -151,7 +150,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.btnLyDoKham = new DevExpress.XtraEditors.SimpleButton();
             this.btnKhamBoPhan = new DevExpress.XtraEditors.SimpleButton();
             this.btnKhamToanThan = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl21 = new DevExpress.XtraLayout.LayoutControl();
             this.customGridControlSubIcdName = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.customGridViewSubIcdName = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -161,19 +160,19 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup22 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem103 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.popupControlContainer2 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer2 = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtInfomationExecute = new DevExpress.XtraEditors.SimpleButton();
             this.btnConnectBloodPressure = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl19 = new DevExpress.XtraLayout.LayoutControl();
             this.gridControlIcdCode = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewIcdCode = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup19 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.popupControlContainerTutorial = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerTutorial = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControlTutorial = new DevExpress.XtraGrid.GridControl();
             this.gridViewTutorial = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.lblBMI = new DevExpress.XtraEditors.LabelControl();
@@ -207,7 +206,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.xtraTabControlInfo = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPageDiUng = new DevExpress.XtraTab.XtraTabPage();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl22 = new DevExpress.XtraLayout.LayoutControl();
             this.gcIcdSubCode = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gvIcdSubCode = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -279,6 +278,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlGroup15 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem59 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.xtraTabPageInfoOther = new DevExpress.XtraTab.XtraTabPage();
+            this.flowLayoutPanelInfo = new System.Windows.Forms.FlowLayoutPanel();
             this.spinWeight = new DevExpress.XtraEditors.SpinEdit();
             this.panelNextTreatmentIntruction = new System.Windows.Forms.Panel();
             this.layoutControl12 = new DevExpress.XtraLayout.LayoutControl();
@@ -663,8 +664,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.customGridViewWithFilterMultiColumn3 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
+            this.timerInitForm = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderForLeftPanel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderForSpinVat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -791,6 +792,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
+            this.xtraTabPageInfoOther.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spinWeight.Properties)).BeginInit();
             this.panelNextTreatmentIntruction.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl12)).BeginInit();
@@ -2422,14 +2424,15 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.xtraTabPageExamExecute,
             this.xtraTabPage1,
             this.xtraTabPageDiUng,
-            this.xtraTabPageContraindication});
+            this.xtraTabPageContraindication,
+            this.xtraTabPageInfoOther});
             // 
             // xtraTabPageDiUng
             // 
             this.xtraTabPageDiUng.Controls.Add(this.popupControlContainer1);
             this.xtraTabPageDiUng.Controls.Add(this.gridControlDiUng);
             this.xtraTabPageDiUng.Name = "xtraTabPageDiUng";
-            this.xtraTabPageDiUng.Size = new System.Drawing.Size(546, 603);
+            this.xtraTabPageDiUng.Size = new System.Drawing.Size(546, 600);
             this.xtraTabPageDiUng.Text = "Dị ứng thuốc";
             // 
             // popupControlContainer1
@@ -2530,7 +2533,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridControlDiUng.Name = "gridControlDiUng";
             this.gridControlDiUng.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.Res_CheckEdit});
-            this.gridControlDiUng.Size = new System.Drawing.Size(546, 603);
+            this.gridControlDiUng.Size = new System.Drawing.Size(546, 600);
             this.gridControlDiUng.TabIndex = 0;
             this.gridControlDiUng.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewDiUng});
@@ -2614,7 +2617,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             this.xtraTabPageExamHistory.Controls.Add(this.gridControlTreatmentHistory);
             this.xtraTabPageExamHistory.Name = "xtraTabPageExamHistory";
-            this.xtraTabPageExamHistory.Size = new System.Drawing.Size(546, 603);
+            this.xtraTabPageExamHistory.Size = new System.Drawing.Size(546, 600);
             this.xtraTabPageExamHistory.Text = "Lịch sử khám";
             // 
             // gridControlTreatmentHistory
@@ -2627,7 +2630,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.Btn_History,
             this.Btn_Bordereau,
             this.btnCopy});
-            this.gridControlTreatmentHistory.Size = new System.Drawing.Size(546, 603);
+            this.gridControlTreatmentHistory.Size = new System.Drawing.Size(546, 600);
             this.gridControlTreatmentHistory.TabIndex = 26;
             this.gridControlTreatmentHistory.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewTreatmentHistory});
@@ -2743,7 +2746,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             this.xtraTabPageExamExecute.Controls.Add(this.layoutControlTabExamExecute);
             this.xtraTabPageExamExecute.Name = "xtraTabPageExamExecute";
-            this.xtraTabPageExamExecute.Size = new System.Drawing.Size(546, 603);
+            this.xtraTabPageExamExecute.Size = new System.Drawing.Size(546, 600);
             this.xtraTabPageExamExecute.Text = "Xử trí khám";
             // 
             // layoutControlTabExamExecute
@@ -2753,7 +2756,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlTabExamExecute.Location = new System.Drawing.Point(0, 0);
             this.layoutControlTabExamExecute.Name = "layoutControlTabExamExecute";
             this.layoutControlTabExamExecute.Root = this.layoutControlGroupTabExamExecute;
-            this.layoutControlTabExamExecute.Size = new System.Drawing.Size(546, 603);
+            this.layoutControlTabExamExecute.Size = new System.Drawing.Size(546, 600);
             this.layoutControlTabExamExecute.TabIndex = 0;
             this.layoutControlTabExamExecute.Text = "layoutControl22";
             // 
@@ -2767,7 +2770,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.groupControlTreatmentFinish.Location = new System.Drawing.Point(2, 2);
             this.groupControlTreatmentFinish.Name = "groupControlTreatmentFinish";
             this.groupControlTreatmentFinish.ShowCaption = false;
-            this.groupControlTreatmentFinish.Size = new System.Drawing.Size(542, 599);
+            this.groupControlTreatmentFinish.Size = new System.Drawing.Size(542, 596);
             this.groupControlTreatmentFinish.TabIndex = 27;
             this.groupControlTreatmentFinish.Text = "XỬ TRÍ KHÁM";
             // 
@@ -2783,7 +2786,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl8.Name = "layoutControl8";
             this.layoutControl8.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(814, 221, 250, 350);
             this.layoutControl8.Root = this.layoutControlGroup7;
-            this.layoutControl8.Size = new System.Drawing.Size(538, 595);
+            this.layoutControl8.Size = new System.Drawing.Size(538, 592);
             this.layoutControl8.TabIndex = 1;
             this.layoutControl8.Text = "layoutControl8";
             // 
@@ -2938,7 +2941,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             this.panelExecuteExt.Location = new System.Drawing.Point(12, 59);
             this.panelExecuteExt.Name = "panelExecuteExt";
-            this.panelExecuteExt.Size = new System.Drawing.Size(514, 534);
+            this.panelExecuteExt.Size = new System.Drawing.Size(514, 531);
             this.panelExecuteExt.TabIndex = 5;
             // 
             // labelControl1
@@ -2964,7 +2967,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup7.Name = "Root";
             this.layoutControlGroup7.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 10, 0, 0);
-            this.layoutControlGroup7.Size = new System.Drawing.Size(538, 595);
+            this.layoutControlGroup7.Size = new System.Drawing.Size(538, 592);
             this.layoutControlGroup7.TextVisible = false;
             // 
             // lciNotice
@@ -2984,7 +2987,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem25.Control = this.panelExecuteExt;
             this.layoutControlItem25.Location = new System.Drawing.Point(0, 57);
             this.layoutControlItem25.Name = "layoutControlItem25";
-            this.layoutControlItem25.Size = new System.Drawing.Size(518, 538);
+            this.layoutControlItem25.Size = new System.Drawing.Size(518, 535);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
             // 
@@ -3028,7 +3031,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlGroupTabExamExecute.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupTabExamExecute.Name = "layoutControlGroupTabExamExecute";
             this.layoutControlGroupTabExamExecute.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroupTabExamExecute.Size = new System.Drawing.Size(546, 603);
+            this.layoutControlGroupTabExamExecute.Size = new System.Drawing.Size(546, 600);
             this.layoutControlGroupTabExamExecute.TextVisible = false;
             // 
             // layoutControlItem24
@@ -3036,7 +3039,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem24.Control = this.groupControlTreatmentFinish;
             this.layoutControlItem24.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(546, 603);
+            this.layoutControlItem24.Size = new System.Drawing.Size(546, 600);
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
@@ -3044,7 +3047,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             this.xtraTabPage1.Controls.Add(this.layoutControl14);
             this.xtraTabPage1.Name = "xtraTabPage1";
-            this.xtraTabPage1.Size = new System.Drawing.Size(546, 603);
+            this.xtraTabPage1.Size = new System.Drawing.Size(546, 600);
             this.xtraTabPage1.Text = "Đợt khám hiện tại";
             // 
             // layoutControl14
@@ -3054,7 +3057,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl14.Location = new System.Drawing.Point(0, 0);
             this.layoutControl14.Name = "layoutControl14";
             this.layoutControl14.Root = this.layoutControlGroup16;
-            this.layoutControl14.Size = new System.Drawing.Size(546, 603);
+            this.layoutControl14.Size = new System.Drawing.Size(546, 600);
             this.layoutControl14.TabIndex = 0;
             this.layoutControl14.Text = "layoutControl14";
             // 
@@ -3063,7 +3066,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.gridControlDKPresent.Location = new System.Drawing.Point(0, 0);
             this.gridControlDKPresent.MainView = this.gridViewDKPresent;
             this.gridControlDKPresent.Name = "gridControlDKPresent";
-            this.gridControlDKPresent.Size = new System.Drawing.Size(546, 603);
+            this.gridControlDKPresent.Size = new System.Drawing.Size(546, 600);
             this.gridControlDKPresent.TabIndex = 4;
             this.gridControlDKPresent.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewDKPresent});
@@ -3142,7 +3145,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem7});
             this.layoutControlGroup16.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup16.Name = "layoutControlGroup16";
-            this.layoutControlGroup16.Size = new System.Drawing.Size(546, 603);
+            this.layoutControlGroup16.Size = new System.Drawing.Size(546, 600);
             this.layoutControlGroup16.TextVisible = false;
             // 
             // layoutControlItem7
@@ -3151,7 +3154,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem7.Size = new System.Drawing.Size(546, 603);
+            this.layoutControlItem7.Size = new System.Drawing.Size(546, 600);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -3159,7 +3162,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             // 
             this.xtraTabPageContraindication.Controls.Add(this.layoutControl16);
             this.xtraTabPageContraindication.Name = "xtraTabPageContraindication";
-            this.xtraTabPageContraindication.Size = new System.Drawing.Size(546, 603);
+            this.xtraTabPageContraindication.Size = new System.Drawing.Size(546, 600);
             this.xtraTabPageContraindication.Text = "Chống chỉ định";
             // 
             // layoutControl16
@@ -3169,7 +3172,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControl16.Location = new System.Drawing.Point(0, 0);
             this.layoutControl16.Name = "layoutControl16";
             this.layoutControl16.Root = this.layoutControlGroup15;
-            this.layoutControl16.Size = new System.Drawing.Size(546, 603);
+            this.layoutControl16.Size = new System.Drawing.Size(546, 600);
             this.layoutControl16.TabIndex = 0;
             this.layoutControl16.Text = "layoutControl16";
             // 
@@ -3206,7 +3209,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.layoutControlGroup15.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup15.Name = "layoutControlGroup15";
             this.layoutControlGroup15.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup15.Size = new System.Drawing.Size(546, 603);
+            this.layoutControlGroup15.Size = new System.Drawing.Size(546, 600);
             this.layoutControlGroup15.TextVisible = false;
             // 
             // layoutControlItem59
@@ -3228,8 +3231,30 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             this.emptySpaceItem4.AllowHotTrack = false;
             this.emptySpaceItem4.Location = new System.Drawing.Point(0, 24);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(546, 579);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(546, 576);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // xtraTabPageInfoOther
+            // 
+            this.xtraTabPageInfoOther.Appearance.Header.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.xtraTabPageInfoOther.Appearance.Header.Options.UseForeColor = true;
+            this.xtraTabPageInfoOther.Appearance.PageClient.BackColor = System.Drawing.Color.White;
+            this.xtraTabPageInfoOther.Appearance.PageClient.Options.UseBackColor = true;
+            this.xtraTabPageInfoOther.Controls.Add(this.flowLayoutPanelInfo);
+            this.xtraTabPageInfoOther.Image = ((System.Drawing.Image)(resources.GetObject("xtraTabPageInfoOther.Image")));
+            this.xtraTabPageInfoOther.Name = "xtraTabPageInfoOther";
+            this.xtraTabPageInfoOther.Padding = new System.Windows.Forms.Padding(5);
+            this.xtraTabPageInfoOther.ShowCloseButton = DevExpress.Utils.DefaultBoolean.True;
+            this.xtraTabPageInfoOther.Size = new System.Drawing.Size(546, 600);
+            // 
+            // flowLayoutPanelInfo
+            // 
+            this.flowLayoutPanelInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanelInfo.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanelInfo.Location = new System.Drawing.Point(5, 5);
+            this.flowLayoutPanelInfo.Name = "flowLayoutPanelInfo";
+            this.flowLayoutPanelInfo.Size = new System.Drawing.Size(536, 590);
+            this.flowLayoutPanelInfo.TabIndex = 0;
             // 
             // spinWeight
             // 
@@ -7994,6 +8019,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
+            this.xtraTabPageInfoOther.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.spinWeight.Properties)).EndInit();
             this.panelNextTreatmentIntruction.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl12)).EndInit();
@@ -8929,5 +8955,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem160;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem161;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem8;
+        private DevExpress.XtraTab.XtraTabPage xtraTabPageInfoOther;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelInfo;
     }
 }
