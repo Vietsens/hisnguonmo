@@ -59,10 +59,12 @@ namespace HIS.Desktop.Plugins.XMLViewer130
         string directoryPathTemp = "";
         List<string> directoryPathTempList = new List<string>();
         MemoryStream mmStream;
-        long? dataType; //1 - XML 130; 2 - XML check-in
+        long? dataType; //1 - XML 130; 2 - XML check-in; 3 - XML chứng từ
         bool isFirstLoadForm = true;
+        //qtcode
         List<UCXml130> listUCXml130 = new List<UCXml130>();
         UCXml130 ucXmlCheckIn = new UCXml130();
+        List<UCXml130> listUCXmlChungTu = new List<UCXml130>();
         public frmXMLViewer130()
         {
             InitializeComponent();
@@ -167,8 +169,9 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 {
                     this.Text = this.currentModule.text;
                 }
-                chkViewXml130.Checked = true;
+                chkViewXml130.Checked = dataType == null || dataType == 1;
                 chkViewXmlCheckIn.Checked = dataType == 2;
+                chkViewXmlCT.Checked = dataType == 3;
                 ViewXml();
                 isFirstLoadForm = false;
             }
@@ -198,7 +201,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         DisplayXml(mmStream, null);
                     }
                 }
-                else
+                else if (chkViewXmlCheckIn.Checked)
                 {
                     if (!String.IsNullOrWhiteSpace(FilePath))
                     {
@@ -213,6 +216,24 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                     else if (mmStream != null)
                     {
                         DisplayXmlCheckIn(mmStream, null);
+                    }
+                }
+                //qtcode
+                else if (chkViewXmlCT.Checked)
+                {
+                    if (!String.IsNullOrWhiteSpace(FilePath))
+                    {
+                        string[] filePaths = FilePath.Split(';');
+                        if (filePaths == null || filePaths.Count() == 0)
+                        {
+                            return;
+                        }
+                        string firstFilePath = filePaths.FirstOrDefault(o => !String.IsNullOrWhiteSpace(o));
+                        DisplayXmlChungTu(null, firstFilePath);
+                    }
+                    else if (mmStream != null)
+                    {
+                        DisplayXmlChungTu(mmStream, null);
                     }
                 }
             }
@@ -369,6 +390,106 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 else if (memoryStream != null)
                 {
                     StartExecuteFile(memoryStream, directoryPathTempList.FirstOrDefault());
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        //qtcode
+        private void DisplayXmlChungTu(MemoryStream memoryStream, string filePath)
+        {
+            try
+            {
+                listUCXmlChungTu = new List<UCXml130>();
+                xtraTabControl1.TabPages.Clear();
+                string xmlFile = "";
+
+                if (!string.IsNullOrEmpty(filePath))
+                {
+                    xmlFile = File.ReadAllText(filePath);
+                }
+                else if (memoryStream != null)
+                {
+                    MemoryStream stream = memoryStream;
+                    stream.Seek(0, SeekOrigin.Begin);
+                    StreamReader reader = new StreamReader(stream);
+                    xmlFile = reader.ReadToEnd();
+                }
+                if (string.IsNullOrEmpty(xmlFile))
+                    return;
+
+                // Xác định loại chứng từ dựa vào tag trong XML
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml(xmlFile);
+                
+                List<object> listObj = new List<object>();
+                string loaiChungTu = "";
+                string tenChungTu = "";
+
+                // Kiểm tra các loại chứng từ
+                if (xmlDoc.GetElementsByTagName("CT03").Count > 0)
+                {
+                    loaiChungTu = "CT03";
+                    tenChungTu = "Giấy ra viện";
+                    var ct03Data = His.Bhyt.ExportXml.XML3220.CT03.CT03Data.LoadFromXMLString(xmlFile);
+                    if (ct03Data != null)
+                        listObj.Add(ct03Data);
+                }
+                else if (xmlDoc.GetElementsByTagName("CT04").Count > 0)
+                {
+                    loaiChungTu = "CT04";
+                    tenChungTu = "Hồ sơ bệnh án";
+                    var ct04Data = His.Bhyt.ExportXml.XML3220.CT04.CT04Data.LoadFromXMLString(xmlFile);
+                    if (ct04Data != null)
+                        listObj.Add(ct04Data);
+                }
+                else if (xmlDoc.GetElementsByTagName("CT05").Count > 0)
+                {
+                    loaiChungTu = "CT05";
+                    tenChungTu = "Giấy chứng sinh";
+                    var ct05Data = His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data.LoadFromXMLString(xmlFile);
+                    if (ct05Data != null)
+                        listObj.Add(ct05Data);
+                }
+                else if (xmlDoc.GetElementsByTagName("CT06").Count > 0)
+                {
+                    loaiChungTu = "CT06";
+                    tenChungTu = "Giấy nghỉ dưỡng thai";
+                    var ct06Data = His.Bhyt.ExportXml.XML3220.CT06.CT06Data.LoadFromXMLString(xmlFile);
+                    if (ct06Data != null)
+                        listObj.Add(ct06Data);
+                }
+                else if (xmlDoc.GetElementsByTagName("CT07").Count > 0)
+                {
+                    loaiChungTu = "CT07";
+                    tenChungTu = "Giấy nghỉ hưởng BHXH";
+                    var ct07Data = His.Bhyt.ExportXml.XML3220.XMLCT07.QD130.XML.XMLCT07Data.LoadFromXMLString(xmlFile);
+                    if (ct07Data != null)
+                        listObj.Add(ct07Data);
+                }
+                else if (xmlDoc.GetElementsByTagName("CTGiayDieuTriNoiTru").Count > 0)
+                {
+                    loaiChungTu = "CTGiayDieuTriNoiTru";
+                    tenChungTu = "Giấy điều trị nội trú";
+                    var ctGiayDieuTriNoiTruData = His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData.LoadFromXMLString(xmlFile);
+                    if (ctGiayDieuTriNoiTruData != null)
+                        listObj.Add(ctGiayDieuTriNoiTruData);
+                }
+
+                if (listObj.Count > 0)
+                {
+                    UCXml130 uc = new UCXml130();
+                    uc.Tag = loaiChungTu;
+                    uc.LoadList(listObj);
+                    listUCXmlChungTu.Add(uc);
+
+                    XtraTabPage xtraTabPage = new XtraTabPage();
+                    uc.Dock = DockStyle.Fill;
+                    xtraTabPage.Controls.Add(uc);
+                    xtraTabPage.Text = tenChungTu + " (" + loaiChungTu + ")";
+                    xtraTabControl1.TabPages.Add(xtraTabPage);
                 }
             }
             catch (Exception ex)
@@ -898,6 +1019,18 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                     xtraTabPage.Controls.Add(ucXmlCheckIn);
                     xtraTabPage.Text = ucXmlCheckIn.Tag.ToString();
                     xtraTabControl1.TabPages.Add(xtraTabPage);
+                }
+                //qtcode
+                else if (chkViewXmlCT.Checked && listUCXmlChungTu != null && listUCXmlChungTu.Count > 0)
+                {
+                    foreach (var uc in listUCXmlChungTu)
+                    {
+                        XtraTabPage xtraTabPage = new XtraTabPage();
+                        uc.Dock = DockStyle.Fill;
+                        xtraTabPage.Controls.Add(uc);
+                        xtraTabPage.Text = uc.Tag.ToString();
+                        xtraTabControl1.TabPages.Add(xtraTabPage);
+                    }
                 }
             }
             catch (Exception ex)

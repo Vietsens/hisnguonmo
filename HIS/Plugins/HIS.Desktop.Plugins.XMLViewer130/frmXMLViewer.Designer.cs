@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
         private void InitializeComponent()
         {
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkViewXmlCT = new DevExpress.XtraEditors.CheckEdit();
             this.chkViewXmlCheckIn = new DevExpress.XtraEditors.CheckEdit();
             this.chkViewXml130 = new DevExpress.XtraEditors.CheckEdit();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
@@ -61,8 +62,10 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkViewXmlCT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkViewXmlCheckIn.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkViewXml130.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -78,10 +81,12 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkViewXmlCT);
             this.layoutControl1.Controls.Add(this.chkViewXmlCheckIn);
             this.layoutControl1.Controls.Add(this.chkViewXml130);
             this.layoutControl1.Controls.Add(this.xtraTabControl1);
@@ -94,6 +99,19 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             this.layoutControl1.Size = new System.Drawing.Size(964, 512);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // chkViewXmlCT
+            // 
+            this.chkViewXmlCT.Location = new System.Drawing.Point(261, 4);
+            this.chkViewXmlCT.Name = "chkViewXmlCT";
+            this.chkViewXmlCT.Properties.Caption = "XML chứng từ";
+            this.chkViewXmlCT.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkViewXmlCT.Properties.RadioGroupIndex = 1;
+            this.chkViewXmlCT.Size = new System.Drawing.Size(88, 19);
+            this.chkViewXmlCT.StyleController = this.layoutControl1;
+            this.chkViewXmlCT.TabIndex = 9;
+            this.chkViewXmlCT.TabStop = false;
+            this.chkViewXmlCT.CheckedChanged += new System.EventHandler(this.chkViewXml130_CheckedChanged);
             // 
             // chkViewXmlCheckIn
             // 
@@ -196,7 +214,8 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             this.emptySpaceItem1,
             this.layoutControlItem3,
             this.layoutControlItem4,
-            this.layoutControlItem5});
+            this.layoutControlItem5,
+            this.layoutControlItem6});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
@@ -215,9 +234,9 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(257, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(349, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(703, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(611, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
@@ -247,6 +266,15 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
+            // layoutControlItem6
+            // 
+            this.layoutControlItem6.Control = this.chkViewXmlCT;
+            this.layoutControlItem6.Location = new System.Drawing.Point(257, 0);
+            this.layoutControlItem6.Name = "layoutControlItem6";
+            this.layoutControlItem6.Size = new System.Drawing.Size(92, 26);
+            this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem6.TextVisible = false;
+            // 
             // frmXMLViewer130
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -260,6 +288,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkViewXmlCT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkViewXmlCheckIn.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkViewXml130.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
@@ -275,6 +304,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -298,5 +328,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
         private DevExpress.XtraEditors.CheckEdit chkViewXml130;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
+        private DevExpress.XtraEditors.CheckEdit chkViewXmlCT;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
     }
 }

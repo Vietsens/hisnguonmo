@@ -30,9 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
-    </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -101,6 +98,24 @@
     <Reference Include="His.Bhyt.ExportXml.XML130.XML9, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\His.Bhyt.ExportXml.XML130.XML9\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
+    </Reference>
+    <Reference Include="His.Bhyt.ExportXml.XML3220.CT03">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML3220.CT03.dll</HintPath>
+    </Reference>
+    <Reference Include="His.Bhyt.ExportXml.XML3220.CT04">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML3220.CT04.dll</HintPath>
+    </Reference>
+    <Reference Include="His.Bhyt.ExportXml.XML3220.CT05">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML3220.CT05.dll</HintPath>
+    </Reference>
+    <Reference Include="His.Bhyt.ExportXml.XML3220.CT06">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML3220.CT06.dll</HintPath>
+    </Reference>
+    <Reference Include="His.Bhyt.ExportXml.XML3220.CT07">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML3220.CT07.dll</HintPath>
+    </Reference>
+    <Reference Include="His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
