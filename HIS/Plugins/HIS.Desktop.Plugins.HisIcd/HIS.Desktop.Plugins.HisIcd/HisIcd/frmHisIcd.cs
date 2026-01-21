@@ -119,6 +119,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl7.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControl7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnImport.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.btnImport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.STT.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.STT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -132,10 +133,19 @@ namespace HIS.Desktop.Plugins.HisIcd
                 this.grdColIcdNameEn.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIcdNameEn.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIcdNameCommon.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIcdNameCommon.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIcdNameCommon.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIcdNameCommon.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColIcdGroupId.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIcdGroupId.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColIcdGroupId.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIcdGroupId.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn7.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn7.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn8.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn8.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn3.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn3.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIsCause.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsCause.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIsCause.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsCause.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIsRequireCause.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsRequireCause.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIsRequireCause.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsRequireCause.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsHeinNds.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsHeinNds.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColIsHeinNds.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIsHeinNds.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIcdGroupId.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIcdGroupId.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIcdGroupId.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColIcdGroupId.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn2.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn2.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn2.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColCreateTime.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColCreateTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -146,32 +156,73 @@ namespace HIS.Desktop.Plugins.HisIcd
                 this.grdColModifyTime.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColModifyTime.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColModifier.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColModifier.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColModifier.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.grdColModifier.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn5.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn5.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumn5.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.gridColumn5.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtKeyword.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisIcd.txtKeyword.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lcEditorInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnRefresh.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.btnRefresh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.btnEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lkIcdGroupId.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisIcd.lkIcdGroupId.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                //this.dnNavigation.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.dnNavigation.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsHeinNds.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsHeinNds.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIcdCode.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIcdName.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIcdNameEn.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdNameEn.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIcdNameCommon.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdNameCommon.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciIcdGroupId.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdGroupId.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsHeinNds.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIsHeinNds.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsCause.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsCause.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsRequireCause.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsRequireCause.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkYhct.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.chkYhct.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsLatentTuberculosis.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsLatentTuberculosis.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.chkIsLatentTuberculosis.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsLatentTuberculosis.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkValid1Year.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkValid1Year.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkValid1Year.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkValid1Year.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnAdd.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.bbtnAdd.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnReset.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.bbtnReset.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnFocusDefault.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.bbtnFocusDefault.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboICD_YHCT.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisIcd.cboICD_YHCT.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboICD_YHCT.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.cboICD_YHCT.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsCovid.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsCovid.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsCovid.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsCovid.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsSubcode.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsSubcode.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboGender.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisIcd.cboGender.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsSword.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsSword.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboAgeType.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisIcd.cboAgeType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtAttachIcd.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisIcd.txtAttachIcd.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkNotUseHein.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkNotUseHein.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkNotUseHein.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkNotUseHein.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsLatentTuberculosis.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsLatentTuberculosis.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkChanDieuTri.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkChanDieuTri.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkChanDieuTri.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkChanDieuTri.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkYhct.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkYhct.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkYhct.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkYhct.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsRequireCause.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsRequireCause.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsRequireCause.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsRequireCause.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsCause.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsCause.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsCause.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsCause.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.simpleButton2.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.simpleButton2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.simpleButton1.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.simpleButton1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnRefresh.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.btnRefresh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.btnEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lkIcdGroupId.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisIcd.lkIcdGroupId.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsHeinNds.Properties.Caption = Inventec.Common.Resource.Get.Value("frmHisIcd.chkIsHeinNds.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciIcdCode.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciIcdName.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciIcdNameEn.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdNameEn.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciIcdNameCommon.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdNameCommon.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciIcdGroupId.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIcdGroupId.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciIsHeinNds.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciIsHeinNds.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem12.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem12.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem12.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem13.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem13.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem13.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem15.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem15.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem14.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem14.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem14.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem14.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem16.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem16.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem17.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem17.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciAttachIcd.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.lciAttachIcd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem19.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem19.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem20.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem20.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.emptySpaceItem2.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.emptySpaceItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem22.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem22.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem23.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem23.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem24.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem24.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem25.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem25.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.nameICD_YHCT.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmHisIcd.nameICD_YHCT.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.nameICD_YHCT.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.nameICD_YHCT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem26.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.layoutControlItem26.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmHisIcd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 if (this.moduleData != null && !String.IsNullOrEmpty(this.moduleData.text))
                 {
@@ -805,7 +856,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                     chkIsSword.Checked = (data.IS_SWORD == 1 ? true : false);
                     chkIsSubcode.Checked = (data.IS_SUBCODE == 1 ? true : false);
                     chkIsCovid.Checked = (data.IS_COVID == 1 ? true : false);
-
+                    chkValid1Year.Checked = (data.VALID_1_YEAR == 1 ? true : false);
                 }
             }
             catch (Exception ex)
@@ -868,6 +919,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 chkIsSword.Checked = false;
                 chkIsSubcode.Checked = false;
                 chkIsCovid.Checked = false;
+                chkValid1Year.Checked = false;
             }
             catch (Exception ex)
             {
@@ -1235,6 +1287,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 currentDTO.IS_SWORD = chkIsSword.Checked ? (short?)1 : null;
                 currentDTO.IS_SUBCODE = chkIsSubcode.Checked ? (short?)1 : null;
                 currentDTO.IS_COVID = chkIsCovid.Checked ? (short?)1 : null;
+                currentDTO.VALID_1_YEAR = chkValid1Year.Checked ? (short?)1 : null;
             }
             catch (Exception ex)
             {
@@ -1909,6 +1962,25 @@ namespace HIS.Desktop.Plugins.HisIcd
                 }
                 if (e.KeyCode == Keys.Enter)
                 {
+                    chkValid1Year.Focus();
+                }
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSession.Warn(ex);
+            }
+        }
+        private void chkValid1Year_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Space)
+                {
+                    chkValid1Year.Checked = !chkValid1Year.Checked;
+                }
+                if (e.KeyCode == Keys.Enter)
+                {
                     if (this.ActionType == GlobalVariables.ActionAdd)
                     {
                         btnAdd.Focus();
@@ -2171,5 +2243,7 @@ namespace HIS.Desktop.Plugins.HisIcd
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+
     }
 }
