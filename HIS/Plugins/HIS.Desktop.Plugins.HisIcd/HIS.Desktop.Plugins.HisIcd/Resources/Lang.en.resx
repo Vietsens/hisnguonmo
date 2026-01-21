@@ -120,11 +120,11 @@
   <data name="frmAttachIcd.bar2.Text" xml:space="preserve">
     <value>Main menu</value>
   </data>
-  <data name="frmAttachIcd.bbtnChoose.Caption" xml:space="preserve">
-    <value>Select (Ctrl S)</value>
-  </data>
   <data name="frmAttachIcd.bbtnClose.Caption" xml:space="preserve">
     <value>Close (Esc)</value>
+  </data>
+  <data name="frmAttachIcd.bbtnChoose.Caption" xml:space="preserve">
+    <value>Select (Ctrl S)</value>
   </data>
   <data name="frmAttachIcd.btnChoose.Text" xml:space="preserve">
     <value>Select (Ctrl S)</value>
@@ -186,6 +186,9 @@
   <data name="frmHisIcd.btnSearch.Text" xml:space="preserve">
     <value>Find (Ctrl F)</value>
   </data>
+  <data name="frmHisIcd.cboICD_YHCT.ToolTip" xml:space="preserve">
+    <value>Mapping icd10 with icd Traditional Medicine</value>
+  </data>
   <data name="frmHisIcd.chkChanDieuTri.Properties.Caption" xml:space="preserve">
     <value>Block treatment</value>
   </data>
@@ -239,6 +242,12 @@
   </data>
   <data name="frmHisIcd.chkNotUseHein.ToolTip" xml:space="preserve">
     <value>This disease code is not covered by health insurance for medical expenses.</value>
+  </data>
+  <data name="frmHisIcd.chkValid1Year.Properties.Caption" xml:space="preserve">
+    <value>Transfer to hospital valid for 1 year</value>
+  </data>
+  <data name="frmHisIcd.chkValid1Year.ToolTip" xml:space="preserve">
+    <value>Currently, with some chronic diseases, hospital transfer is allowed within 1 year</value>
   </data>
   <data name="frmHisIcd.chkYhct.Properties.Caption" xml:space="preserve">
     <value>Traditional medicine</value>
@@ -417,6 +426,9 @@
   <data name="frmHisIcd.layoutControlItem25.Text" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="frmHisIcd.layoutControlItem26.Text" xml:space="preserve">
+    <value> </value>
+  </data>
   <data name="frmHisIcd.layoutControlItem6.Text" xml:space="preserve">
     <value>Edit (Ctrl S)</value>
   </data>
@@ -443,6 +455,12 @@
   </data>
   <data name="frmHisIcd.lciIsHeinNds.Text" xml:space="preserve">
     <value> </value>
+  </data>
+  <data name="frmHisIcd.nameICD_YHCT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Mapping icd10 with icd Traditional Medicine</value>
+  </data>
+  <data name="frmHisIcd.nameICD_YHCT.Text" xml:space="preserve">
+    <value>ICD Traditional Medicine-ICD10:</value>
   </data>
   <data name="frmHisIcd.simpleButton1.Text" xml:space="preserve">
     <value>Update the entire workstation cache</value>
