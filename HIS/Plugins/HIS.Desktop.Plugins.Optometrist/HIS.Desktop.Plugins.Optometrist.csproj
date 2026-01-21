@@ -150,6 +150,9 @@
     <Compile Include="Optometrist\OptometristFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
+    <Compile Include="UC\UCOptometrist.Action.Finish.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UC\UCOptometrist.Combo.Events.cs">
       <SubType>UserControl</SubType>
     </Compile>

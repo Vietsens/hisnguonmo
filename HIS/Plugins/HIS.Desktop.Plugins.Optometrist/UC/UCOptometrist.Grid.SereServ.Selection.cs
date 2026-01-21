@@ -27,11 +27,8 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
         {
             try
             {
-                // Chỉ cho phép lưu khi đang chọn đúng sereServ hiện tại (lần hiện tại)
-                bool isCurrent = selected != null && currentsereServ != null && selected.ID == currentsereServ.ID;
-
-                // Nếu form có flow khác để enable/disable thì ưu tiên khóa theo yêu cầu mới
-                btnSave.Enabled = isCurrent;
+                bool isCurrent = selected != null && currentSR != null && selected.SERVICE_REQ_ID == currentSR.ID;
+                btnSave.Enabled = btnEndReq.Enabled = isCurrent;
             }
             catch (Exception ex)
             {
@@ -60,7 +57,6 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
 
                 hisSereServ = hisSereServ ?? GetSelectedSereServ();
                 if (hisSereServ == null) return;
-                bool isNew = (hisSereServ.ID == this.currentsereServ.ID && (hisSereServ.HIS_SERE_SERV_VIEX == null || hisSereServ.HIS_SERE_SERV_VIEX.Count == 0));
                 var hisSereServViex = hisSereServ.HIS_SERE_SERV_VIEX?
                     .OrderByDescending(o => o.ID)
                     .FirstOrDefault();
@@ -75,7 +71,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     }
                     else
                     {
-                        if (isNew)
+                        if (hisSereServ.HIS_SERE_SERV_VIEX.Count == 0)
                         {
                             VISION_TEST_TIME.DateTime = DateTime.Now;
                         }
@@ -190,7 +186,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     }
                     else
                     {
-                        if (isNew)
+                        if (hisSereServ.HIS_SERE_SERV_VIEX.Count == 0)
                         {
                             GLASS_USE_TIME.DateTime = DateTime.Now;
                         }
@@ -208,7 +204,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     }
                     else
                     {
-                        if (isNew)
+                        if (hisSereServ.HIS_SERE_SERV_VIEX.Count == 0)
                         {
                             MEDI_USE_TIME.DateTime = DateTime.Now;
                         }
@@ -218,7 +214,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                         }
                     }
                 }
-                if (VISION_TEST_USERNAME.EditValue == null && isNew)
+                if (VISION_TEST_USERNAME.EditValue == null && hisSereServ.HIS_SERE_SERV_VIEX.Count == 0)
                 {
                     string loginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     var user = BackendDataWorker.Get<ACS_USER>().FirstOrDefault(o => o.LOGINNAME == loginname);

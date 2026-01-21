@@ -2645,15 +2645,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     moduleData.RoomId = roomId;
                     moduleData.RoomTypeId = roomTypeId;
                     List<object> listArgs = new List<object>();
-                    var ss6 = gridViewSereServServiceReq.GetFocusedRow() as SereServ6ADO;
-                    if (ss6 != null)
-                    {
-                        var data = new HIS_SERE_SERV();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV>(data, ss6);
-                        listArgs.Add(data);
-                    }
+                    listArgs.Add(Inventec.Desktop.Common.Modules.Module.MODULE_TYPE_ID__FORM);
+                    listArgs.Add(moduleData);
+                    V_HIS_SERVICE_REQ serviceReqDynamic = GetDynamicData(currentHisServiceReq);
+                    listArgs.Add(serviceReqDynamic);
                     var extenceInstance = PluginInstance.GetPluginInstance(moduleData, listArgs);
-                    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+                    if (extenceInstance == null) throw new ArgumentNullException("moduleClone is null");
                     ((Form)extenceInstance).ShowDialog();
                 }
             }
