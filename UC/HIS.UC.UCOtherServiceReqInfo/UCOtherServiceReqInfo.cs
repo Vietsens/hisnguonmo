@@ -81,7 +81,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
         string treatmentTypeId; 
         public string HospitalizeReasonCode { get; private set; }
         public string HospitalizeReasonName { get; private set; }
-        List<HIS_CUSTOMER_SOURCE_DETAIL> lstOtherDetail { get; set; }
+        List<HIS_CUSTOMER_SOURCE_DT> lstOtherDetail { get; set; }
+        List<HIS_CUSTOMER_SOURCE_DT> lstOtherDetailDefault { get; set; }
         #region Constructor - Load
 
         public UCOtherServiceReqInfo()
@@ -121,13 +122,15 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.ValidateNumOrderPriority();
                 this.ValidateMaxlength(txtGuaranteeReason, 500);
                 this.ValidateMaxlength(txtNote, 1000);
-                if(HisConfig.RequestSkinCare != "1" || HisConfig.RequestSkinCare != "2")
+                if(HisConfig.RequestSkinCare != "1" && HisConfig.RequestSkinCare != "2")
                 {
                     layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 else
                 {
-                    if(HisConfig.RequestSkinCare == "2")
+
+                    layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    if (HisConfig.RequestSkinCare == "2")
                     {
                         chkChamSocDa.Checked = true;
                     }
@@ -180,7 +183,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             try
             {
                 List<otherPaySourceDetailADO> listADO = new List<otherPaySourceDetailADO>();
-                lstOtherDetail = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DETAIL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                lstOtherDetail = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 foreach (var item in lstOtherDetail)
                 {
                     otherPaySourceDetailADO Emp = new otherPaySourceDetailADO();
@@ -227,11 +230,11 @@ namespace HIS.UC.UCOtherServiceReqInfo
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
-                lstOtherDetail = new List<HIS_CUSTOMER_SOURCE_DETAIL>();
+                lstOtherDetail = new List<HIS_CUSTOMER_SOURCE_DT>();
                 if (gridCheckMark != null)
                 {
-                    List<HIS_CUSTOMER_SOURCE_DETAIL> erSelectedNews = new List<HIS_CUSTOMER_SOURCE_DETAIL>();
-                    foreach (HIS_CUSTOMER_SOURCE_DETAIL er in (sender as GridCheckMarksSelection).Selection)
+                    List<HIS_CUSTOMER_SOURCE_DT> erSelectedNews = new List<HIS_CUSTOMER_SOURCE_DT>();
+                    foreach (HIS_CUSTOMER_SOURCE_DT er in (sender as GridCheckMarksSelection).Selection)
                     {
                         if (er != null)
                         {
@@ -240,7 +243,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                             erSelectedNews.Add(er);
                         }
                     }
-                    this.lstOtherDetail = new List<HIS_CUSTOMER_SOURCE_DETAIL>();
+                    this.lstOtherDetail = new List<HIS_CUSTOMER_SOURCE_DT>();
                     this.lstOtherDetail.AddRange(erSelectedNews);
                 }
 
@@ -264,30 +267,45 @@ namespace HIS.UC.UCOtherServiceReqInfo
             cboNguonKhachCT.Properties.View.OptionsView.ShowGroupPanel = false;
             cboNguonKhachCT.Properties.View.OptionsView.ShowIndicator = false;
 
-            DevExpress.XtraGrid.Columns.GridColumn column = cboNguonKhachCT.Properties.View.Columns.AddField("LOGINNAME");
-            column.Caption = "Mã";
-            column.Visible = true;
-            column.VisibleIndex = 1;
-            column.Width = 60;
-            column.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
-            column.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Default;
+            // Chỉ add columns nếu chưa tồn tại
+            if (cboNguonKhachCT.Properties.View.Columns.Count == 0)
+            {
+                DevExpress.XtraGrid.Columns.GridColumn column = cboNguonKhachCT.Properties.View.Columns.AddField("LOGINNAME");
+                column.Caption = "Mã";
+                column.Visible = true;
+                column.VisibleIndex = 1;
+                column.Width = 60;
+                column.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                column.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Default;
 
-            DevExpress.XtraGrid.Columns.GridColumn columnCode = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME");
-            columnCode.Caption = "Tên";
-            columnCode.Visible = true;
-            columnCode.VisibleIndex = 2;
-            columnCode.Width = 200;
+                DevExpress.XtraGrid.Columns.GridColumn columnCode = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME");
+                columnCode.Caption = "Tên";
+                columnCode.Visible = true;
+                columnCode.VisibleIndex = 2;
+                columnCode.Width = 200;
 
-            DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME_UNSIGN");
-            aColumnNameUnsign.Visible = true;
-            aColumnNameUnsign.VisibleIndex = -1;
-            aColumnNameUnsign.Width = 340;
+                DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME_UNSIGN");
+                aColumnNameUnsign.Visible = true;
+                aColumnNameUnsign.VisibleIndex = -1;
+                aColumnNameUnsign.Width = 340;
 
-            cboNguonKhachCT.Properties.View.Columns["USERNAME_UNSIGN"].Width = 0;
+                cboNguonKhachCT.Properties.View.Columns["USERNAME_UNSIGN"].Width = 0;
 
-            //column.Caption = "Tất cả";
-            cboNguonKhachCT.Properties.View.OptionsView.ShowColumnHeaders = true;
-            cboNguonKhachCT.Properties.View.OptionsSelection.MultiSelect = true;
+                cboNguonKhachCT.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cboNguonKhachCT.Properties.View.OptionsSelection.MultiSelect = true;
+            }
+        }
+
+        private void UpdateComboOtherDetailDataSource(List<otherPaySourceDetailADO> listADO)
+        {
+            try
+            {
+                cboNguonKhachCT.Properties.DataSource = listADO;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         List<otherPaySourceDetailADO> listConfigDefault = new List<otherPaySourceDetailADO>();
@@ -308,7 +326,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     foreach (var item in arrays)
                     {
                         string nameTrim = item.Trim();
-                        var row = ds.FirstOrDefault(o => o.LOGINNAME == nameTrim);
+                        // So sánh sau khi Trim cả 2 bên để tránh vấn đề space
+                        var row = ds.FirstOrDefault(o => (o.LOGINNAME != null ? o.LOGINNAME.Trim() : "") == nameTrim);
                         if (row != null)
                         {
                             selects.Add(row);
@@ -2022,6 +2041,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
         {
             try
             {
+                this.txtNguonKhach.Text = "";
+                
                 if (this.cboNguonKhach.EditValue != null)
                 {
                     var user = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE>().FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE == cboNguonKhach.EditValue.ToString());
@@ -2029,19 +2050,74 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     GridCheckMarksSelection gridCheckNCC = cboNguonKhachCT.Properties.Tag as GridCheckMarksSelection;
                     if (user != null)
                     {
-                        if(user.DEFAULT_DETAIL_LOGINNAMES != null)
+                        txtNguonKhach.Text = user.CUSTOMER_SOURCE_CODE;
+                        
+                        // NGUỒN 1: Lấy tất cả HIS_CUSTOMER_SOURCE_DT theo CUSTOMER_SOURCE_ID
+                        List<HIS_CUSTOMER_SOURCE_DT> filteredDetails = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DT>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE 
+                                && o.CUSTOMER_SOURCE_ID == user.ID)
+                            .ToList();
+                        
+                        // NGUỒN 2: Lấy từ DEFAULT_DETAIL_LOGINNAMES (split ra)
+                        if (!string.IsNullOrEmpty(user.DEFAULT_DETAIL_LOGINNAMES))
+                        {
+                            List<string> defaultLoginNames = user.DEFAULT_DETAIL_LOGINNAMES.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x.Trim())
+                                .ToList();
+                            
+                            // Lấy thêm các bản ghi từ DEFAULT_DETAIL_LOGINNAMES
+                            var detailsFromDefault = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DT>()
+                                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE 
+                                    && defaultLoginNames.Contains(o.LOGINNAME != null ? o.LOGINNAME.Trim() : ""))
+                                .ToList();
+                            
+                            // GỘP 2 NGUỒN lại, loại bỏ trùng lặp theo LOGINNAME (sau khi Trim)
+                            filteredDetails = filteredDetails.Union(detailsFromDefault)
+                                .GroupBy(o => o.LOGINNAME != null ? o.LOGINNAME.Trim() : "")
+                                .Select(g => g.First())
+                                .ToList();
+                        }
+                        
+                        // Convert sang ADO
+                        List<otherPaySourceDetailADO> listADO = new List<otherPaySourceDetailADO>();
+                        foreach (var item in filteredDetails)
+                        {
+                            otherPaySourceDetailADO Emp = new otherPaySourceDetailADO();
+                            Emp.ID = item.ID;
+                            Emp.LOGINNAME = item.LOGINNAME;
+                            Emp.USERNAME = item.USERNAME;
+                            Emp.USERNAME_UNSIGN = convertToUnSign3(item.USERNAME);
+                            listADO.Add(Emp);
+                        }
+                        
+                        
+                        
+                        // Cập nhật DataSource
+                        UpdateComboOtherDetailDataSource(listADO);
+                        
+                        // Tự động check các item mặc định (SỬ DỤNG gridCheckNCC đã tồn tại)
+                        if (!string.IsNullOrEmpty(user.DEFAULT_DETAIL_LOGINNAMES) && gridCheckNCC != null)
                         {
                             ProcessSelectOtherPaySourceDetail(user.DEFAULT_DETAIL_LOGINNAMES, gridCheckNCC);
                         }
-                        else
-                        {
-                            var otherDetail = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DETAIL>().FirstOrDefault(o => o.IS_ACTIVE == 1 && o.CUSTOMER_SOURCE_ID == user.ID);
-                            if (otherDetail != null)
-                            {
-                                ProcessSelectOtherPaySourceDetail(otherDetail.LOGINNAME, gridCheckNCC);
-                            }
-                        }
                     }
+                }
+                else
+                {
+                    // Khi xóa nguồn khách, load lại toàn bộ dữ liệu
+                    List<otherPaySourceDetailADO> listADO = new List<otherPaySourceDetailADO>();
+                    var allDetails = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                    foreach (var item in allDetails)
+                    {
+                        otherPaySourceDetailADO Emp = new otherPaySourceDetailADO();
+                        Emp.ID = item.ID;
+                        Emp.LOGINNAME = item.LOGINNAME;
+                        Emp.USERNAME = item.USERNAME;
+                        Emp.USERNAME_UNSIGN = convertToUnSign3(item.USERNAME);
+                        listADO.Add(Emp);
+                    }
+                    
+                    UpdateComboOtherDetailDataSource(listADO);
                 }
             }
             catch (Exception ex)
@@ -2094,6 +2170,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
+                    this.cboNguonKhachCT.EditValue = null;
                     // Xóa tất cả checkmark trong GridCheckMarkSelection
                     GridCheckMarksSelection gridCheckMark = cboNguonKhachCT.Properties.Tag as GridCheckMarksSelection;
                     if (gridCheckMark != null)
