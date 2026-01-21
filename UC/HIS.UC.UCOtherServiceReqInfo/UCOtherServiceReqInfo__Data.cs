@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -32,6 +32,7 @@ using MOS.SDO;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using MOS.Filter;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Utilities.Extensions;
 
 namespace HIS.UC.UCOtherServiceReqInfo
 {
@@ -184,7 +185,11 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 dataServiceReqInfoADO.IS_CAPD = this.chkCAPD.Checked ? (short?)1 : (short?)null;
                 dataServiceReqInfoADO.NguonKhachCode = txtNguonKhach.Text.Trim();
                 dataServiceReqInfoADO.NguonKhachName = cboNguonKhach.Text;
-                dataServiceReqInfoADO.NguonKhachCTName = txtNguonKhachCT.Text.Trim();
+                if (lstOtherDetail != null && lstOtherDetail.Count > 0)
+                {
+                    dataServiceReqInfoADO.NguonKhachCTName =
+                        string.Join(",", lstOtherDetail.Select(e => e.LOGINNAME));
+                }
                 if (chkCapMaMS.Checked)
                     dataServiceReqInfoADO.IsCapMaMS = true;
                 else
@@ -586,7 +591,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.cboOtherPaySource.EditValue = null;
                 this.txtNguonKhach.Text = null;
                 this.cboNguonKhach.EditValue = null;
-                this.txtNguonKhachCT.Text = null;
+                this.cboNguonKhachCT.EditValue = null;
                 this.cboEmergencyTime.Enabled = false;
                 this.chkIsHiv.Checked = false;
                 this.cboHosReason.EditValue = null;
@@ -612,6 +617,13 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 //qtcode
                 this.chkCAPD.Checked = false;
                 this.chkChamSocDa.Checked = false;
+                this.cboNguonKhachCT.EditValue = null;
+                // Xóa tất cả checkmark trong GridCheckMarkSelection
+                GridCheckMarksSelection gridCheckMark = cboNguonKhachCT.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboNguonKhachCT.Properties.View);
+                }
             }
             catch (Exception ex)
             {

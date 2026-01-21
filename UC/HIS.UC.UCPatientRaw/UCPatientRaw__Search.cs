@@ -124,7 +124,7 @@ namespace HIS.UC.UCPatientRaw
             try
             {
                 CommonParam param = new CommonParam();
-                if (patientSDO.TreatmentId > 0 && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
+                if (patientSDO != null && patientSDO.TreatmentId > 0 && HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.CheDoTuDongFillDuLieuDiaChiGhiTrenTheVaoODiaChiBenhNhanHayKhong == 2)
                 {
                     HisTreatmentFilter filter = new HisTreatmentFilter();
                     filter.ID = patientSDO.TreatmentId;
