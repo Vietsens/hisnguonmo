@@ -153,6 +153,12 @@
   <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_HAS_APPROVAL_NOT_XML" xml:space="preserve">
     <value>Đã duyệt chưa xuất xml</value>
   </data>
+	<data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_STORE_BORDEREAU_TRUE" xml:space="preserve">
+    <value>Đã lưu trữ</value>
+  </data>
+	<data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_STORE_BORDEREAU_FALSE" xml:space="preserve">
+    <value>Chưa lưu trữ</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_LOCK_HEIN" xml:space="preserve">
     <value>Đã khóa</value>
   </data>

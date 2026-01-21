@@ -124,7 +124,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                         btnLockHein.Enabled = true;
                         btnUnLockHein.Enabled = false;
                     }
-                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2" || Config.HisConfigCFG.OptionStoreBordereauCode == "3")
                     {
                         ChangeEnableButtonOption2();
                     }
@@ -181,7 +181,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                         btnLockHein.Enabled = true;
                         btnUnLockHein.Enabled = false;
                     }
-                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2" || Config.HisConfigCFG.OptionStoreBordereauCode == "3")
                     {
                         ChangeEnableButtonOption2();
                     }

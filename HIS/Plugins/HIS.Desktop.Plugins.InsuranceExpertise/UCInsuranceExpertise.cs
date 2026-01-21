@@ -237,7 +237,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 GetTimeSystem();
                 RegisterTimer(currentModule.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
                 StartTimer(currentModule.ModuleLink, "timer1");
-                if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                if (Config.HisConfigCFG.OptionStoreBordereauCode == "2" || Config.HisConfigCFG.OptionStoreBordereauCode == "3")
                 {
                     lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -381,7 +381,9 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     cboStatus.Items.Add(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_LOCK_HEIN", Base.ResourceLangManager.LanguageUCInsuranceExpertise, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()));
 
                     cboStatus.Items.Add(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_HAS_APPROVAL_NOT_XML", Base.ResourceLangManager.LanguageUCInsuranceExpertise, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()));
-
+                    //Bộ lọc Trạng thái bổ sung option Chưa lưu trữ, Đã lưu trữ
+                    cboStatus.Items.Add(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_STORE_BORDEREAU_TRUE", Base.ResourceLangManager.LanguageUCInsuranceExpertise, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()));
+                    cboStatus.Items.Add(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_STORE_BORDEREAU_FALSE", Base.ResourceLangManager.LanguageUCInsuranceExpertise, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()));
                 }
                 cboStatus.SelectedIndex = 0;
                 if (cboTimeFrom.Items.Count == 0)
@@ -389,6 +391,8 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     cboTimeFrom.Items.Add(Base.ResourceMessageLang.ThoiGianKhoaVienPhiTu);
                     cboTimeFrom.Items.Add(Base.ResourceMessageLang.ThoiGianKetThucDieuTriTu);
                     cboTimeFrom.Items.Add(Base.ResourceMessageLang.ThoiGianDuyetKhoaBHYTTu);
+                    //Bộ lọc Thời gian bổ sung option Thời gian lưu trữ bảng kê từ, đến
+                    cboTimeFrom.Items.Add(Base.ResourceMessageLang.ThoiGianLuuTruBangKe);
                 }
                 cboTimeFrom.SelectedIndex = 0;
                 checkCurrentBranch.Checked = true;
@@ -500,6 +504,14 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     treatFilter.HAS_NO_XML_URL_HEIN_APPROVAL = true;
                     treatFilter.HAS_HEIN_APPROVAL = true;
                 }
+                else if (cboStatus.SelectedIndex == 6)
+                {
+                    treatFilter.IS_STORE_BORDEREAU = true;
+                }
+                else if (cboStatus.SelectedIndex == 7)
+                {
+                    treatFilter.IS_STORE_BORDEREAU = false;
+                }
                 if (this.treatmentTypeSelecteds != null && this.treatmentTypeSelecteds.Count() > 0)
                 {
                     treatFilter.TDL_TREATMENT_TYPE_IDs = treatmentTypeSelecteds.Select(o => o.ID).ToList();
@@ -539,7 +551,8 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     //    code = string.Format("{0:00000}", Convert.ToInt64(code));
                     //    txtStorebcode.Text = code;
                     //}
-                    treatFilter.STORE_BORDEREAU_CODE__EXACT = txtStorebcode.Text.Trim();
+                    // đổi chuyền vào filter STORE_BORDEREAU_CODE__EXACT thành KEY_WORD__STORE_BORDEREAU_CODE
+                    treatFilter.KEY_WORD__STORE_BORDEREAU_CODE = txtStorebcode.Text.Trim();
                 }
                 else if (!String.IsNullOrEmpty(txtKeyword.Text))
                 {
@@ -584,7 +597,18 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                             treatFilter.HEIN_LOCK_TIME_TO = Convert.ToInt64(dtFeeLockTimeTo.DateTime.ToString("yyyyMMddHHmm") + "59");
                         }
                     }
+                    else if (cboTimeFrom.SelectedIndex == 3)
+                    {
+                        if (dtFeeLockTimeFrom.EditValue != null && dtFeeLockTimeFrom.DateTime != DateTime.MinValue)
+                        {
+                            treatFilter.STORE_BORDEREAU_TIME_FROM = Convert.ToInt64(dtFeeLockTimeFrom.DateTime.ToString("yyyyMMddHHmm") + "00");
+                        }
 
+                        if (dtFeeLockTimeTo.EditValue != null && dtFeeLockTimeTo.DateTime != DateTime.MinValue)
+                        {
+                            treatFilter.STORE_BORDEREAU_TIME_TO = Convert.ToInt64(dtFeeLockTimeTo.DateTime.ToString("yyyyMMddHHmm") + "59");
+                        }
+                    }
                 }
 
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_1>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW_1, ApiConsumers.MosConsumer, treatFilter, paramCommon);
@@ -904,8 +928,9 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     {
                         if (HisConfigCFG.OptionStoreBordereauCode == "1")
                             txtStoreBordereauCode.Text = treatment1.STORE_BORDEREAU_CODE;
-                        else if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                        else if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                             txtStoreBordereauCodeOption2.Text = treatment1.STORE_BORDEREAU_CODE;
+
                     }
                 }
             }
@@ -1136,7 +1161,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     if (!btnLuuTru.Enabled) return;
                     BtnLuuTru_Click(null, null);
                 }
-                else if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                else if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                 {
                     if (!btnLuuTruOption2.Enabled) return;
                     btnLuuTruOption2_Click(null, null);
@@ -1153,7 +1178,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             try
             {
                 GetStoreBordereauCodeSDO sdoGetBordereau = new GetStoreBordereauCodeSDO();
-                if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                 {
                     sdoGetBordereau.StoreBordereauTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteStoreTime.DateTime) ?? 0;
                 }
@@ -1166,7 +1191,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 {
                     if (HisConfigCFG.OptionStoreBordereauCode == "1")
                         txtStoreBordereauCode.Text = nextStoreBordereauCode.StoreBordereauCode;
-                    else if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                    else if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                         txtStoreBordereauCodeOption2.Text = nextStoreBordereauCode.StoreBordereauCode;
                 }
                 else
@@ -1295,7 +1320,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     {
                         if (HisConfigCFG.OptionStoreBordereauCode == "1")
                             txtStoreBordereauCode.Text = currentTreatment.STORE_BORDEREAU_CODE;
-                        else if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                        else if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                             txtStoreBordereauCodeOption2.Text = currentTreatment.STORE_BORDEREAU_CODE;
                     }
                     else
