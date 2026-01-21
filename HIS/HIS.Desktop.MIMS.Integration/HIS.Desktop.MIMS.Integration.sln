@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.MIMS.Integratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.MIMS.WinFormsDemo", "HIS.MIMS.WinFormsDemo\HIS.MIMS.WinFormsDemo\HIS.MIMS.WinFormsDemo.csproj", "{0ED76C13-1D5A-45D5-93DB-63A608FE286B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApplication2", "..\WindowsFormsApplication2\WindowsFormsApplication2.csproj", "{5D0344E7-A488-42BC-A9E1-3B7E718B08AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{0ED76C13-1D5A-45D5-93DB-63A608FE286B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ED76C13-1D5A-45D5-93DB-63A608FE286B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ED76C13-1D5A-45D5-93DB-63A608FE286B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D0344E7-A488-42BC-A9E1-3B7E718B08AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D0344E7-A488-42BC-A9E1-3B7E718B08AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D0344E7-A488-42BC-A9E1-3B7E718B08AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D0344E7-A488-42BC-A9E1-3B7E718B08AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

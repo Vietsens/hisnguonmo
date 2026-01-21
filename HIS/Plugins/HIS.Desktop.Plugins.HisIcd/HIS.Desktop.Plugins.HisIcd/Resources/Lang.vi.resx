@@ -120,11 +120,11 @@
   <data name="frmAttachIcd.bar2.Text" xml:space="preserve">
     <value>Main menu</value>
   </data>
-  <data name="frmAttachIcd.bbtnChoose.Caption" xml:space="preserve">
-    <value>Chọn (Ctrl S)</value>
-  </data>
   <data name="frmAttachIcd.bbtnClose.Caption" xml:space="preserve">
     <value>Đóng (Esc)</value>
+  </data>
+  <data name="frmAttachIcd.bbtnChoose.Caption" xml:space="preserve">
+    <value>Chọn (Ctrl S)</value>
   </data>
   <data name="frmAttachIcd.btnChoose.Text" xml:space="preserve">
     <value>Chọn (Ctrl S)</value>
@@ -186,6 +186,9 @@
   <data name="frmHisIcd.btnSearch.Text" xml:space="preserve">
     <value>Tìm (Ctrl F)</value>
   </data>
+  <data name="frmHisIcd.cboICD_YHCT.ToolTip" xml:space="preserve">
+    <value>Ánh xạ icd10 với icd YHCT</value>
+  </data>
   <data name="frmHisIcd.chkChanDieuTri.Properties.Caption" xml:space="preserve">
     <value>Chặn điều trị</value>
   </data>
@@ -240,6 +243,9 @@ hướng dẫn nhằm đẩy dữ liệu XML đối với các hồ sơ bệnh n
   </data>
   <data name="frmHisIcd.chkNotUseHein.ToolTip" xml:space="preserve">
     <value>Mã bệnh này không được BHYT chi trả chi phí KCB. Nếu bệnh nhân BHYT có mã bệnh chính là bệnh này thì sẽ chặn khi kết thúc điều trị và xuất XML.</value>
+  </data>
+  <data name="frmHisIcd.chkValid1Year.Properties.Caption" xml:space="preserve">
+    <value>Được chuyển viện giá trị 1 năm</value>
   </data>
   <data name="frmHisIcd.chkYhct.Properties.Caption" xml:space="preserve">
     <value>YHCT</value>
@@ -418,6 +424,9 @@ hướng dẫn nhằm đẩy dữ liệu XML đối với các hồ sơ bệnh n
   <data name="frmHisIcd.layoutControlItem25.Text" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="frmHisIcd.layoutControlItem26.Text" xml:space="preserve">
+    <value> </value>
+  </data>
   <data name="frmHisIcd.layoutControlItem6.Text" xml:space="preserve">
     <value>Sửa (Ctrl S)</value>
   </data>
@@ -444,6 +453,12 @@ hướng dẫn nhằm đẩy dữ liệu XML đối với các hồ sơ bệnh n
   </data>
   <data name="frmHisIcd.lciIsHeinNds.Text" xml:space="preserve">
     <value> </value>
+  </data>
+  <data name="frmHisIcd.nameICD_YHCT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ánh xạ icd10 với icd YHCT</value>
+  </data>
+  <data name="frmHisIcd.nameICD_YHCT.Text" xml:space="preserve">
+    <value>ICD YHCT-ICD10:</value>
   </data>
   <data name="frmHisIcd.simpleButton1.Text" xml:space="preserve">
     <value>Cập nhập cache toàn bộ máy trạm</value>

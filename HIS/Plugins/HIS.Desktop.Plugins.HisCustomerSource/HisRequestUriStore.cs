@@ -25,6 +25,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource
 {
     class HisRequestUriStore
     {
+        internal const string CustomerSourceDetail_GET = "api/HisCustomerSourceDetail/Get";
         internal const string CustomerSource_GET = "api/HisCustomerSource/Get";
         internal const string CustomerSource_GETVIEW = "api/HisCustomerSource/GetView";
         internal const string CustomerSource_DELETE = "api/HisCustomerSource/Delete";

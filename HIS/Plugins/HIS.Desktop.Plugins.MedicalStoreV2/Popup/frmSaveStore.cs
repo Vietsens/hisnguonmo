@@ -1043,14 +1043,34 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
             try
             {
                 txtDataStoreCode.Text = "";
+                cboLoacationStore.EditValue = null;
+
                 if (cboDataStore.EditValue != null)
                 {
                     HIS_DATA_STORE data = dataStores.FirstOrDefault(o => o.ID == Convert.ToInt64(cboDataStore.EditValue));
                     if (data != null)
                     {
                         txtDataStoreCode.Text = data.DATA_STORE_CODE;
-                        cboLoacationStore.Properties.DataSource = lstLocationStore.Where(o => o.DATA_STORE_ID == null || o.DATA_STORE_ID == data.ID).ToList();
+                        var filteredLocations = lstLocationStore
+                            .Where(o => o.DATA_STORE_ID == null || o.DATA_STORE_ID == data.ID)
+                            .OrderBy(o => o.LOCATION_STORE_CODE)
+                            .ThenBy(o => o.LOCATION_STORE_NAME)
+                            .ToList();
+
+                        cboLoacationStore.Properties.DataSource = filteredLocations;
+                        cboLoacationStore.Properties.TreeList.ExpandAll();
+
+                        if (data.LOCATION_STORE_ID.HasValue)
+                        {
+                            cboLoacationStore.EditValue = data.LOCATION_STORE_ID.Value;
+                        }
                     }
+                }
+                else
+                {
+                    // Reset lại toàn bộ danh sách vị trí
+                    cboLoacationStore.Properties.DataSource = lstLocationStore;
+                    cboLoacationStore.Properties.TreeList.ExpandAll();
                 }
             }
             catch (Exception ex)

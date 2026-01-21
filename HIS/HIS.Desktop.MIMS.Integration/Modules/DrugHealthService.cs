@@ -20,9 +20,17 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         string xmlRequest;
 
         /// <summary>
-        /// Kiểm tra Drug-Health Alert theo tài liệu MIMS (Prescribing + HealthIssueCodes ICD10).
+        /// Kiểm tra Drug-Health Alert (Prescribing + HealthIssueCodes ICD10).
         /// </summary>
         public MimsResult Check(List<DrugItem> drugs, List<string> icd10Codes)
+        {
+            return this.Check(drugs, null, icd10Codes);
+        }
+
+        /// <summary>
+        /// Kiểm tra Drug-Health Alert (Prescribing + HealthIssueCodes ICD10).
+        /// </summary>
+        public MimsResult Check(List<DrugItem> drugs,List<AllergyItem> allergies, List<string> icd10Codes)
         {
             this.MappingMIMS(drugs);
             var result = new MimsResult();
@@ -33,7 +41,7 @@ namespace HIS.Desktop.MIMS.Integration.Modules
                 result.Html = BuildSimpleHtml(result.Message);
                 return result;
             }
-            xmlRequest = MimsRequestBuilder.BuildDrugHealthAlertRequest(drugs, icd10Codes);
+            xmlRequest = MimsRequestBuilder.BuildDrugHealthAlertRequest(drugs, allergies, icd10Codes, true,true);
 
             bool isTimeout;
             string xmlResponse = MimsClient.PostXml(MimsConfig.CdsApiUrl, xmlRequest, out isTimeout);
@@ -93,9 +101,17 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         /// </summary>
         public bool CheckAndAlert(List<DrugItem> drugs, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog = null, long? treatmentId = null, long? serviceReqId = null, long? patientId = null)
         {
+            return this.CheckAndAlert(drugs, icd10Codes, interactionLog, treatmentId , serviceReqId, patientId);
+        }
+
+        /// <summary>
+        /// Kiểm tra Tương tác thuốc, bệnh lý. Hiển thị cảnh báo (nếu có) và ghi log.
+        /// </summary>
+        public bool CheckAndAlert(List<DrugItem> drugs, List<AllergyItem> allergies, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog = null, long? treatmentId = null, long? serviceReqId = null, long? patientId = null)
+        {
             try
             {
-                MimsResult result = Check(drugs, icd10Codes);
+                MimsResult result = Check(drugs,allergies, icd10Codes);
                 if (!result.Success) return true;
                 if (result.DrugHealthAlertDetails == null) result.DrugHealthAlertDetails = new List<DrugHealthAlertDetail>();
                 if (result.DrugDrugAlertDetails == null) result.DrugDrugAlertDetails = new List<DrugDrugAlertDetail>();

@@ -564,4 +564,7 @@
   <data name="UCExpMestAggregate.txtKeywordProcess.Properties.NullValuePrompt" xml:space="preserve">
     <value>Keyword search (F2)</value>
   </data>
+  <data name="UCExpMestAggregate.colReqAreaName1.Caption" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -588,8 +588,8 @@ namespace HIS.Desktop.Plugins.BaseCompensationCreate
                         count -= 100;
                     }
                 }
-                medicines = medicines.Where(o => o.TDL_MEDICINE_TYPE_ID.HasValue && (o.AMOUNT - (o.BCS_REQ_AMOUNT ?? 0)) > 0).ToList();
-                materials = materials.Where(o => o.TDL_MATERIAL_TYPE_ID.HasValue && (o.AMOUNT - (o.BCS_REQ_AMOUNT ?? 0)) > 0).ToList();
+                medicines = medicines.Where(o => o.TDL_MEDICINE_TYPE_ID.HasValue && (o.AMOUNT - (o.BCS_REQ_AMOUNT ?? 0) - (o.TH_AMOUNT ?? 0)) > 0).ToList();
+                materials = materials.Where(o => o.TDL_MATERIAL_TYPE_ID.HasValue && (o.AMOUNT - (o.BCS_REQ_AMOUNT ?? 0) - (o.TH_AMOUNT ?? 0)) > 0).ToList();
                 metyReqs = metyReqs.Where(o => (o.AMOUNT - ((o.DD_AMOUNT ?? 0) + (o.BCS_REQ_AMOUNT ?? 0))) > 0).ToList();
                 matyReqs = matyReqs.Where(o => (o.AMOUNT - ((o.DD_AMOUNT ?? 0) + (o.BCS_REQ_AMOUNT ?? 0))) > 0).ToList();
                 if (medicines.Count > 0)
@@ -611,7 +611,7 @@ namespace HIS.Desktop.Plugins.BaseCompensationCreate
                             ado.TYPE = TYPE_METY;
                             this.listExpMestDetails.Add(ado);
                         }
-                        ado.AMOUNT += group.Sum(s => (s.AMOUNT - (s.BCS_REQ_AMOUNT ?? 0)));
+                        ado.AMOUNT += group.Sum(s => (s.AMOUNT - (s.BCS_REQ_AMOUNT ?? 0) - (s.TH_AMOUNT ?? 0)));
                         ado.ExpMestMedicines = group.ToList();
                         ado.IsCheck = true;
                         ado.REQ_AMOUNT = ado.AMOUNT;
@@ -673,7 +673,7 @@ namespace HIS.Desktop.Plugins.BaseCompensationCreate
                             ado.TYPE = TYPE_MATY;
                             this.listExpMestDetails.Add(ado);
                         }
-                        ado.AMOUNT += group.Sum(s => (s.AMOUNT - (s.BCS_REQ_AMOUNT ?? 0)));
+                        ado.AMOUNT += group.Sum(s => (s.AMOUNT - (s.BCS_REQ_AMOUNT ?? 0) - (s.TH_AMOUNT ?? 0)));
                         ado.ExpMestMaterials = group.ToList();
                         ado.IsCheck = true;
                         ado.REQ_AMOUNT = ado.AMOUNT;

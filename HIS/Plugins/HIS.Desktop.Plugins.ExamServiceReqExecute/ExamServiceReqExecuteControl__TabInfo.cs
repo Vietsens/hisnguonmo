@@ -34,6 +34,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 {
     public partial class ExamServiceReqExecuteControl : UserControlBase
     {
+        private enum TabInfoPage
+        {
+            IS_REQUEST_SKIN_CARE,
+        }
         private string GetSkinCareInfoText()
         {
             try
@@ -66,13 +70,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 int count = 0;
-                richTextBoxInfoOther.Clear();
-                richTextBoxInfoOther.SelectionBullet = false;
                 var skinCareText = GetSkinCareInfoText();
                 if (!string.IsNullOrEmpty(skinCareText))
                 {
                     count++;
-                    AppendBulletItem(skinCareText);
+                    AppendBulletItem(TabInfoPage.IS_REQUEST_SKIN_CARE, skinCareText);
                 }
                 if (count > 0)
                 {
@@ -83,8 +85,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     xtraTabPageInfoOther.Text = "";
                 }
-                richTextBoxInfoOther.SelectionStart = 0;
-                richTextBoxInfoOther.SelectionLength = 0;
             }
             catch (Exception ex)
             {
@@ -92,22 +92,36 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-        private void AppendBulletItem(string text)
+        private void AppendBulletItem(TabInfoPage tabInfoPage, string text)
         {
-            int start = richTextBoxInfoOther.TextLength;
-            // Bullet part (keep default color)
-            richTextBoxInfoOther.SelectionColor = richTextBoxInfoOther.ForeColor;
-            richTextBoxInfoOther.AppendText("\u2022 ");
-            // Text part (blue)
-            richTextBoxInfoOther.SelectionColor = Color.DodgerBlue;
-            richTextBoxInfoOther.AppendText(text);
-            // New line
-            richTextBoxInfoOther.SelectionColor = richTextBoxInfoOther.ForeColor;
-            richTextBoxInfoOther.AppendText(Environment.NewLine);
-            // Ensure bullet stays black even if user selects all etc.
-            richTextBoxInfoOther.Select(start, 2);
-            richTextBoxInfoOther.SelectionColor = richTextBoxInfoOther.ForeColor;
-            richTextBoxInfoOther.Select(richTextBoxInfoOther.TextLength, 0);
+            DevExpress.XtraEditors.CheckEdit checkEdit;
+            checkEdit = new DevExpress.XtraEditors.CheckEdit();
+            checkEdit.Tag = tabInfoPage.ToString();
+            checkEdit.Location = new System.Drawing.Point(2, 2);
+            checkEdit.MenuManager = barManager1;
+            checkEdit.Properties.Appearance.Font = new System.Drawing.Font(checkEdit.Properties.Appearance.Font, System.Drawing.FontStyle.Bold);
+            checkEdit.Properties.Appearance.ForeColor = System.Drawing.Color.DodgerBlue;
+            checkEdit.Properties.Appearance.Options.UseFont = true;
+            checkEdit.Properties.Appearance.Options.UseForeColor = true;
+            checkEdit.Properties.Caption = text;
+            checkEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            checkEdit.Size = new System.Drawing.Size(532, 22);
+            checkEdit.TabIndex = 5;
+            checkEdit.Checked = true;
+            flowLayoutPanelInfo.Controls.Add(checkEdit);
+        }
+        private bool GetBulletItem(TabInfoPage tabInfoPage)
+        {
+            foreach (var control in flowLayoutPanelInfo.Controls)
+            {
+                DevExpress.XtraEditors.CheckEdit checkEdit = control as DevExpress.XtraEditors.CheckEdit;
+                if (checkEdit != null && checkEdit.Tag != null
+                    && checkEdit.Tag.ToString() == tabInfoPage.ToString())
+                {
+                    return checkEdit.Checked;
+                }
+            }
+            return false;
         }
     }
 }

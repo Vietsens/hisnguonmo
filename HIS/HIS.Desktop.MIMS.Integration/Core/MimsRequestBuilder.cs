@@ -11,9 +11,9 @@ namespace HIS.Desktop.MIMS.Integration.Core
         {
 			switch (drug.DrugType)
 			{
-				case MimsDrugType.Product:
+				case MimsType.Product:
 					return string.Format("<Product reference=\"{{{0}}}\" />", drug.MimsGuid);
-				case MimsDrugType.GGPI:
+				case MimsType.GGPI:
 					return string.Format("<GGPI reference=\"{{{0}}}\" />", drug.MimsGuid);
 				default:
 					return string.Format("<GenericItem reference=\"{{{0}}}\" />", drug.MimsGuid);
@@ -35,7 +35,7 @@ namespace HIS.Desktop.MIMS.Integration.Core
 
         public static string BuildDrugDrugInteractionRequest(
             List<DrugItem> currentDrugs,
-            List<DrugItem> previousDrugs)
+            List<DrugItem> previousDrugs, bool checkDuplicateDrug = false)
         {
             var sb = new StringBuilder();
 
@@ -53,8 +53,12 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     sb.Append(BuildDrugTag(drug));
                 sb.Append("</Prescribed>");
             }
-            sb.Append("<References/></Interaction></Request>");
-
+            sb.Append("<References/>");
+            if (checkDuplicateDrug)
+            {
+                sb.Append("<DuplicateTherapy checkSameDrug=\"true\"/><DuplicateIngredient checkSameDrug=\"true\"/>");
+            }
+            sb.Append("</Interaction></Request>");
             return sb.ToString();
         }
 
@@ -63,9 +67,9 @@ namespace HIS.Desktop.MIMS.Integration.Core
         /// Ở đây tái sử dụng cấu trúc tương tự Drug-Drug Interaction nhưng
         /// chỉ truyền 1 danh sách thuốc hiện tại, không có thuốc lịch sử.
         /// </summary>
-        public static string BuildDrugInteractionRequest(List<DrugItem> drugs)
+        public static string BuildDrugDrugInteractionRequest(List<DrugItem> drugs, bool checkDuplicateDrug = false)
         {
-            return BuildDrugDrugInteractionRequest(drugs, new List<DrugItem>());
+            return BuildDrugDrugInteractionRequest(drugs, new List<DrugItem>(), checkDuplicateDrug);
         }
 
         public static string BuildDrugAllergyRequest(
@@ -78,24 +82,18 @@ namespace HIS.Desktop.MIMS.Integration.Core
 
             drugs.ForEach(d => sb.Append(BuildDrugTag(d)));
 
-            sb.Append("</Prescribing><Allergies>");
+            sb.Append("</Prescribing>");
 
-			foreach (var al in allergies)
-			{
-				if (al.Type == AllergyType.Molecule)
-					sb.Append(string.Format("<Molecule reference=\"{{{0}}}\" />", al.MimsGuid));
-                else if (al.Type == AllergyType.SubstanceClass)
-					sb.Append(string.Format("<SubstanceClass reference=\"{{{0}}}\" />", al.MimsGuid));
-			}
+            AddAllergies(allergies, ref sb);   
 
-            sb.Append("</Allergies><References/></Interaction></Request>");
+            sb.Append("<References/></Interaction></Request>");
 
             return sb.ToString();
         }
 
         public static string BuildDrugHealthAlertRequest(
-            List<DrugItem> drugs,
-            List<string> icd10Codes)
+            List<DrugItem> drugs, List<AllergyItem> allergies,
+            List<string> icd10Codes, bool checkDuplicateDrug = false, bool checkAllergy = false)
         {
             var sb = new StringBuilder();
 
@@ -123,10 +121,45 @@ namespace HIS.Desktop.MIMS.Integration.Core
                 }
                 sb.Append("</HealthIssueCodes>");
             }
+            if (checkAllergy) AddAllergies(allergies, ref sb);     
 
-            sb.Append("<References/></Interaction></Request>");
+            sb.Append("<References/>");
+            if (checkDuplicateDrug)
+            {
+                sb.Append("<DuplicateTherapy checkSameDrug=\"true\"/><DuplicateIngredient checkSameDrug=\"true\"/>");
+            }
+            sb.Append("</Interaction></Request>");
 
             return sb.ToString();
+        }
+
+        private static void AddAllergies(List<AllergyItem> allergies,ref StringBuilder sb)
+        {
+            sb.Append("<Allergies>");
+            foreach (var al in allergies)
+            {
+                switch (al.Type)
+                {
+                    case MimsType.GGPI:
+                        sb.Append(string.Format("<GGPI reference=\"{{{0}}}\" />", al.MimsGuid));
+                        break;
+                    case MimsType.Product:
+                        sb.Append(string.Format("<Product reference=\"{{{0}}}\" />", al.MimsGuid));
+                        break;
+                    case MimsType.GenericItem:
+                        sb.Append(string.Format("<GenericItem reference=\"{{{0}}}\" />", al.MimsGuid));
+                        break;
+                    case MimsType.Molecule:
+                        sb.Append(string.Format("<Molecule reference=\"{{{0}}}\" />", al.MimsGuid));
+                        break;
+                    case MimsType.SubstanceClass:
+                        sb.Append(string.Format("<SubstanceClass reference=\"{{{0}}}\" />", al.MimsGuid));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            sb.Append("</Allergies>");
         }
 
         public static string BuildVnContraindicationRequest(

@@ -59,25 +59,5 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lock_Lock_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lock-Lock-icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Lock_Unlock_icon {
-            get {
-                object obj = ResourceManager.GetObject("Lock-Unlock-icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

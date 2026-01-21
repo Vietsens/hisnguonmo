@@ -89,6 +89,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             try
             {
                 Validate();
+                InitComboDetail();
                 SetDataDefaut();
                 EnableControlChange(this.ActionType);
                 LoadDataToGridControl();
@@ -213,12 +214,16 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                 this.F2.Caption = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.F2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtSearch.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.txtSearch.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcInfor.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.lcInfor.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboSourceDetail.Properties.NullText = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.cboSourceDetail.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnCancel.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.btnCancel.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.btnEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcCustomerSourceCode.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.lcCustomerSourceCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcCustomerSourceName.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.lcCustomerSourceName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem7.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.layoutControlItem7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.STT.Caption = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.STT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.grdColLock.Caption = Inventec.Common.Resource.Get.Value("frmHisCustomerSource.grdColLock.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -261,6 +266,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             {
                 txtCustomerSourceCode.Text = "";
                 txtCustomerSourceName.Text = "";
+                this.ProcessSelectDepartment(null);
                 this.ActionType = GlobalVariables.ActionAdd;
 
             }
@@ -411,6 +417,11 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             {
                 data.CUSTOMER_SOURCE_CODE = txtCustomerSourceCode.Text;
                 data.CUSTOMER_SOURCE_NAME = txtCustomerSourceName.Text;
+                data.DEFAULT_DETAIL_LOGINNAMES = null;
+                if (SelectedOptions != null && SelectedOptions.Count > 0)
+                {
+                    data.DEFAULT_DETAIL_LOGINNAMES = string.Join(",", SelectedOptions.Select(x => x.LOGINNAME).ToArray());
+                }
             }
             catch (Exception ex)
             {
@@ -442,7 +453,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                             txtCustomerSourceCode.SelectAll();
                         }
                     }
-
+                    this.ProcessSelectDepartment(null);
                 }
                 catch (Exception ex)
                 {
@@ -486,6 +497,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                 {
                     txtCustomerSourceCode.Text = data.CUSTOMER_SOURCE_CODE;
                     txtCustomerSourceName.Text = data.CUSTOMER_SOURCE_NAME;
+                    this.ProcessSelectDepartment(data.DEFAULT_DETAIL_LOGINNAMES);
                 }
             }
             catch (Exception ex)

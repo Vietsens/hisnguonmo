@@ -160,7 +160,7 @@
       <xsl:when test="$numTotal &gt; 0">
         <div id="tabs" class="tab-container">
           <ul>
-		  <!-- <div class="container1">
+		  <div class="container1">
   <img src="images/MIMSIntegratedfinallogo.png" alt="Logo" style="width:150px; height:50px; cursor:pointer;" />
   <span>
     <xsl:value-of select="//Result/@copyright"/>
@@ -169,7 +169,7 @@
     <xsl:text> | Expiry date: </xsl:text>
     <xsl:value-of select="//Result/@expiryDate"/>
   </span>
-</div> -->
+</div>
             <xsl:if test="$numInteract &gt; 0">
               <li>
                 <a href="#tab-interaction">
@@ -2103,7 +2103,7 @@
       <xsl:otherwise>
         <div id="tabs">
           <ul>
-		    		  <!-- <div class="container1">
+		    		  <div class="container1">
   <img src="images/MIMSIntegratedfinallogo.png" alt="Logo" style="width:150px; height:50px; cursor:pointer;" />
   <span>
     <xsl:value-of select="//Result/@copyright"/>
@@ -2112,7 +2112,7 @@
     <xsl:text> | Expiry date: </xsl:text>
     <xsl:value-of select="//Result/@expiryDate"/>
   </span>
-</div> -->
+</div>
             <xsl:if test="//BRIEFMONO">
               <li>
                 <a href="#tab-brief">Thông tin tóm tắt</a>
