@@ -51,7 +51,7 @@ namespace HIS.Desktop.Plugins.HisIcdImport.ADO
         public string IS_SUBCODE_STR { get; set; }
         public string IS_SWORD_STR { get; set; }
         public string IS_COVID_STR { get; set; }
+        public string VALID_1_YEAR_STR { get; set; }
 
-        
     }
 }
