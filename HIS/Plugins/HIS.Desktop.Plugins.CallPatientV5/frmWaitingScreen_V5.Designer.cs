@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.CallPatientV5
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lblMessage = new DevExpress.XtraEditors.LabelControl();
@@ -91,13 +92,13 @@ namespace HIS.Desktop.Plugins.CallPatientV5
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerForScrollListPatient = new System.Windows.Forms.Timer();
-            this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer();
-            this.imageList1 = new System.Windows.Forms.ImageList();
-            this.timerSetDataToGridControl = new System.Windows.Forms.Timer();
-            this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.timer2 = new System.Windows.Forms.Timer();
+            this.timerForScrollListPatient = new System.Windows.Forms.Timer(this.components);
+            this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.timerSetDataToGridControl = new System.Windows.Forms.Timer(this.components);
+            this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -512,6 +513,7 @@ namespace HIS.Desktop.Plugins.CallPatientV5
             this.gridViewWaitingCls.RowHeight = 65;
             this.gridViewWaitingCls.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Never;
             this.gridViewWaitingCls.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridViewWaitingCls_CustomDrawColumnHeader);
+            this.gridViewWaitingCls.RowStyle += new DevExpress.XtraGrid.Views.Grid.RowStyleEventHandler(this.gridViewWaitingCls_RowStyle);
             this.gridViewWaitingCls.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewWaitingCls_CustomUnboundColumnData);
             // 
             // gridColumnSTT
@@ -574,12 +576,13 @@ namespace HIS.Desktop.Plugins.CallPatientV5
             this.gridColumnLastName.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumnLastName.Caption = "HỌ TÊN";
             this.gridColumnLastName.ColumnEdit = this.repositoryItemMemoEditName;
-            this.gridColumnLastName.FieldName = "TDL_PATIENT_NAME";
+            this.gridColumnLastName.FieldName = "PATIENT_NAME_DISPLAY";
             this.gridColumnLastName.Name = "gridColumnLastName";
             this.gridColumnLastName.OptionsColumn.AllowEdit = false;
             this.gridColumnLastName.OptionsColumn.AllowFocus = false;
             this.gridColumnLastName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnLastName.OptionsColumn.ReadOnly = true;
+            this.gridColumnLastName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnLastName.Visible = true;
             this.gridColumnLastName.VisibleIndex = 1;
             this.gridColumnLastName.Width = 726;
@@ -888,7 +891,6 @@ namespace HIS.Desktop.Plugins.CallPatientV5
             // 
             // timer2
             // 
-            this.timer2.Enabled = false;
             this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // frmWaitingScreen_V47

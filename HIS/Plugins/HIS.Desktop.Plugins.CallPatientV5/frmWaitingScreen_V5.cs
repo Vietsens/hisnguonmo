@@ -550,6 +550,15 @@ namespace HIS.Desktop.Plugins.CallPatientV5
                         {
                             e.Value = GetYearOld(data.TDL_PATIENT_DOB);
                         }
+                        else if (e.Column.FieldName == "PATIENT_NAME_DISPLAY")
+                        {
+                            string patientName = data.TDL_PATIENT_NAME ?? "";
+                            if (data.PRIORITY == 1)
+                            {
+                                patientName += "(Ưu tiên)";
+                            }
+                            e.Value = patientName;
+                        }
                     }
                 }
             }
@@ -1003,6 +1012,24 @@ namespace HIS.Desktop.Plugins.CallPatientV5
                 }
                 e.Painter.DrawCaption(e.Info, e.Info.Caption, e.Appearance.Font, e.Appearance.GetForeBrush(e.Cache), e.Bounds, e.Appearance.GetStringFormat());
                 e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewWaitingCls_RowStyle(object sender, RowStyleEventArgs e)
+        {
+            try
+            {
+                LocalStorage.BackendData.ADO.ServiceReq1ADO data = (LocalStorage.BackendData.ADO.ServiceReq1ADO)gridViewWaitingCls.GetRow(e.RowHandle);
+                if (data != null && data.PRIORITY == 1)
+                {
+                    e.Appearance.ForeColor = Color.Red;
+                    e.Appearance.Options.UseForeColor = true;
+                    e.HighPriority = true;
+                }
             }
             catch (Exception ex)
             {
