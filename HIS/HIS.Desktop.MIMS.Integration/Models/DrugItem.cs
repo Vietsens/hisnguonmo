@@ -7,7 +7,7 @@ namespace HIS.Desktop.MIMS.Integration.Models
         public string HisDrugCode { get; set; }
         public string Name { get; set; }
         public string MimsGuid { get; set; }     // Product / GGPI / GenericItem GUID
-        public MimsType DrugType { get; set; }
+        public MimsDrugType DrugType { get; set; }
 
         public DrugItem() { }
 
@@ -16,7 +16,7 @@ namespace HIS.Desktop.MIMS.Integration.Models
             HisDrugCode = hisDrugCode;
         }
 
-        public DrugItem(string hisDrugCode, string name, string mimsGuid, MimsType drugType)
+        public DrugItem(string hisDrugCode, string name, string mimsGuid, MimsDrugType drugType)
         {
             HisDrugCode = hisDrugCode;
             Name = name;
@@ -31,7 +31,7 @@ namespace HIS.Desktop.MIMS.Integration.Models
 
     }
 
-    public enum MimsType
+    public enum MimsDrugType
     {
         GGPI = 1,
         Product = 2,

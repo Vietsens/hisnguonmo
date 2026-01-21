@@ -40,22 +40,22 @@ namespace HIS.Desktop.MIMS.Integration.Core
                     switch (med.MIMS_TYPE)
                     {
                         case 1:
-                            drug.DrugType = MimsType.GGPI;
+                            drug.DrugType = MimsDrugType.GGPI;
                             break;
                         case 2:
-                            drug.DrugType = MimsType.Product;
+                            drug.DrugType = MimsDrugType.Product;
                             break;
                         case 3:
-                            drug.DrugType = MimsType.GenericItem;
+                            drug.DrugType = MimsDrugType.GenericItem;
                             break;
                         case 4:
-                            drug.DrugType = MimsType.Molecule;
+                            drug.DrugType = MimsDrugType.Molecule;
                             break;
                         case 5:
-                            drug.DrugType = MimsType.SubstanceClass;
+                            drug.DrugType = MimsDrugType.SubstanceClass;
                             break;
                         default:
-                            drug.DrugType = MimsType.GGPI;
+                            drug.DrugType = MimsDrugType.GGPI;
                             break;
                     }
                 }

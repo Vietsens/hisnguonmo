@@ -6,7 +6,7 @@ namespace HIS.Desktop.MIMS.Integration.Models
         public short? HisType { get; set; }
         public string Name { get; set; }
         public string MimsGuid { get; set; }
-        public MimsType Type { get; set; }
+        public MimsDrugType Type { get; set; }
 
         public AllergyItem() { }
 
@@ -16,7 +16,7 @@ namespace HIS.Desktop.MIMS.Integration.Models
             HisType = hisType;
         }
 
-        public AllergyItem(string hisCode, short? hisType, string name, string mimsGuid, MimsType type)
+        public AllergyItem(string hisCode, short? hisType, string name, string mimsGuid, MimsDrugType type)
         {
             HisCode = hisCode;
             HisType = hisType;

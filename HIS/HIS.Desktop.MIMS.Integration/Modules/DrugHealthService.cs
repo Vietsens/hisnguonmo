@@ -97,11 +97,19 @@ namespace HIS.Desktop.MIMS.Integration.Modules
         }
 
         /// <summary>
+        /// Kiểm tra Tương tác thuốc, bệnh lý. Hiển thị cảnh báo (nếu có)
+        /// </summary>
+        public bool CheckAndAlert(List<DrugItem> drugs, List<string> icd10Codes, long? treatmentId = null, long? serviceReqId = null, long? patientId = null)
+        {
+            return this.CheckAndAlert(drugs, icd10Codes, null, treatmentId , serviceReqId, patientId);
+        }
+
+        /// <summary>
         /// Kiểm tra Tương tác thuốc, bệnh lý. Hiển thị cảnh báo (nếu có) và ghi log.
         /// </summary>
         public bool CheckAndAlert(List<DrugItem> drugs, List<string> icd10Codes, HIS_MIMS_INTERACTION_LOG interactionLog = null, long? treatmentId = null, long? serviceReqId = null, long? patientId = null)
         {
-            return this.CheckAndAlert(drugs, icd10Codes, interactionLog, treatmentId , serviceReqId, patientId);
+            return this.CheckAndAlert(drugs, icd10Codes, interactionLog, treatmentId, serviceReqId, patientId);
         }
 
         /// <summary>

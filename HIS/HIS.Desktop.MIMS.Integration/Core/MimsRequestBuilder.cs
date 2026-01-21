@@ -11,9 +11,9 @@ namespace HIS.Desktop.MIMS.Integration.Core
         {
 			switch (drug.DrugType)
 			{
-				case MimsType.Product:
+				case MimsDrugType.Product:
 					return string.Format("<Product reference=\"{{{0}}}\" />", drug.MimsGuid);
-				case MimsType.GGPI:
+				case MimsDrugType.GGPI:
 					return string.Format("<GGPI reference=\"{{{0}}}\" />", drug.MimsGuid);
 				default:
 					return string.Format("<GenericItem reference=\"{{{0}}}\" />", drug.MimsGuid);
@@ -140,19 +140,19 @@ namespace HIS.Desktop.MIMS.Integration.Core
             {
                 switch (al.Type)
                 {
-                    case MimsType.GGPI:
+                    case MimsDrugType.GGPI:
                         sb.Append(string.Format("<GGPI reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
-                    case MimsType.Product:
+                    case MimsDrugType.Product:
                         sb.Append(string.Format("<Product reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
-                    case MimsType.GenericItem:
+                    case MimsDrugType.GenericItem:
                         sb.Append(string.Format("<GenericItem reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
-                    case MimsType.Molecule:
+                    case MimsDrugType.Molecule:
                         sb.Append(string.Format("<Molecule reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
-                    case MimsType.SubstanceClass:
+                    case MimsDrugType.SubstanceClass:
                         sb.Append(string.Format("<SubstanceClass reference=\"{{{0}}}\" />", al.MimsGuid));
                         break;
                     default:
