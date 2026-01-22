@@ -118,6 +118,7 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                 if (this.hisTreatment != null)
                 {
                     loadDataTranPatiOld(hisTreatment);//Lấy thông tin chuyển viện cũ
+                    LoadDataHisTreatmentRecent();
                 }
                 LoadDataTocboUser();
                 //SetDefaultValueControl();
@@ -129,6 +130,45 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadDataHisTreatmentRecent()
+        {
+            try
+            {
+                /* api/HisTreatment/Getview
+                truyền vào filter:
+                PATIENT_IDs = ID bệnh nhân đang xử lý
+                TREATMENT_END_TYPE_ID = ID của hình thức Chuyển viện(TREATMENT_END_TYPE_CODE = CV)
+                Lấy bản ghi trả về có OUT_TIME lớn nhất, không trùng với hồ sơ hiện tại */
+                List<V_HIS_TREATMENT> listTreatment = null;
+                MOS.Filter.HisTreatmentViewFilter filter = new MOS.Filter.HisTreatmentViewFilter();
+                filter.PATIENT_ID = this.hisTreatment.PATIENT_ID;
+                filter.TREATMENT_END_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN;
+                listTreatment = new BackendAdapter(new CommonParam()).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, null);
+                if (listTreatment != null)
+                {
+                    var recentTreatment = listTreatment.Where(w => w.ID != this.hisTreatment.ID).OrderByDescending(o => o.OUT_TIME).FirstOrDefault();
+                    if (recentTreatment != null)
+                    {
+                        /*Mã hồ sơ: TREATMENT_CODE
+                        Mã bệnh: ICD_CODE - ICD_NAME
+                        Thời gian chuyển: OUT_TIME, định dạng dd / mm / yyyy hh: mm
+                        Phòng chuyển: END_ROOM_NAME
+                        Checkbox Có giá trị trong 1 năm: Được check nếu VALID_1_YEAR = 1*/
+                        lblRecent_MHS.Text = "Mã hồ sơ: " + recentTreatment.TREATMENT_CODE;
+                        lblRecent_MB.Text = "Mã bệnh: " + recentTreatment.ICD_CODE + " - " + recentTreatment.ICD_NAME;
+                        lblRecent_TGC.Text = "Ngày chuyển: " + (recentTreatment.OUT_TIME.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(recentTreatment.OUT_TIME ?? 0)?.ToString("dd/MM/yyyy HH:mm") : "");
+                        lblRecent_PC.Text = "Phòng chuyển: " + recentTreatment.END_ROOM_NAME;
+                        lblRecent_1Nam.Checked = recentTreatment.VALID_1_YEAR == 1;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void LoadDataTreatmentExt(HIS_TREATMENT treatment)
         {
             try
