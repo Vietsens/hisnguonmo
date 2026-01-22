@@ -62,7 +62,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                // Sử dụng GridLookUpEdit với CheckBoxRowSelect
+                // Sử dụng GridLookUpEdit với GridCheckMarksSelection
                 if (allCustomerSourceDetails == null)
                 {
                     allCustomerSourceDetails = new List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT>();
@@ -76,10 +76,13 @@ namespace HIS.Desktop.Plugins.Register.Run
                 cboCustomerSourceDetail.Properties.ImmediatePopup = true;
                 cboCustomerSourceDetail.Properties.AutoComplete = false;
 
-                // Thiết lập View
+                // ✅ Thiết lập View với GridCheckMarksSelection
                 var gridView = cboCustomerSourceDetail.Properties.View;
+
+                // 🔄 THAY ĐỔI: Dùng GridCheckMarksSelection thay vì CheckBoxRowSelect
                 gridView.OptionsSelection.MultiSelect = true;
                 gridView.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+                gridView.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
 
                 // Thêm các cột
                 gridView.Columns.Clear();
@@ -103,10 +106,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                 // Tooltip
                 cboCustomerSourceDetail.ToolTip = "Nguồn khách chi tiết";
 
-                // ✅ THÊM: Event khi tick/untick checkbox trong GridLookUpEdit
+                // ✅ Event khi tick/untick checkbox
                 gridView.SelectionChanged += GridViewCustomerSourceDetail_SelectionChanged;
 
-                // Đăng ký event khi đóng popup để cập nhật display text
+                // Event khi đóng popup
                 cboCustomerSourceDetail.Properties.CloseUp += CboCustomerSourceDetail_CloseUp;
 
                 // Xử lý custom display text
@@ -135,7 +138,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                var gridView = cboCustomerSourceDetail.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                var gridView = cboCustomerSourceDetail.Properties.View as GridView;
                 if (gridView != null)
                 {
                     var selectedRows = gridView.GetSelectedRows();
@@ -145,7 +148,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     {
                         if (rowHandle >= 0)
                         {
-                            var row = gridView.GetRow(rowHandle) as MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT;
+                            var row = gridView.GetRow(rowHandle) as HIS_CUSTOMER_SOURCE_DT;
                             if (row != null)
                             {
                                 userNames.Add(row.USERNAME);
@@ -153,14 +156,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                         }
                     }
 
-                    if (userNames.Count > 0)
-                    {
-                        e.DisplayText = string.Join(", ", userNames);
-                    }
-                    else
-                    {
-                        e.DisplayText = "";
-                    }
+                    e.DisplayText = userNames.Count > 0 ? string.Join(", ", userNames) : "";
                 }
             }
             catch (Exception ex)
@@ -173,7 +169,6 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                // Khi đóng popup, refresh display text
                 cboCustomerSourceDetail.RefreshEditValue();
             }
             catch (Exception ex)
@@ -187,7 +182,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             try
             {
                 // Clear selection trước
-                var gridView = cboCustomerSourceDetail.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                var gridView = cboCustomerSourceDetail.Properties.View as GridView;
                 if (gridView != null)
                 {
                     gridView.ClearSelection();
@@ -199,21 +194,21 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
                     string customerSourceCode = cboCustomerSource.EditValue.ToString();
                     var customerSource = BackendDataWorker
-                        .Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
+                        .Get<HIS_CUSTOMER_SOURCE>()
                         .FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE == customerSourceCode);
 
                     if (customerSource != null)
                     {
-                        // 1. Lọc danh sách theo CUSTOMER_SOURCE_ID
+                        // Lọc danh sách theo CUSTOMER_SOURCE_ID
                         filteredCustomerSourceDetails = allCustomerSourceDetails
                             .Where(o => o.CUSTOMER_SOURCE_ID == customerSource.ID)
                             .ToList();
 
-                        // 2. Set datasource
+                        // Set datasource
                         cboCustomerSourceDetail.Properties.DataSource = filteredCustomerSourceDetails;
                         cboCustomerSourceDetail.Properties.View.RefreshData();
 
-                        // 3. Nếu có default thì tự động tick các item default
+                        // Nếu có default thì tự động tick
                         if (!string.IsNullOrEmpty(customerSource.DEFAULT_DETAIL_LOGINNAMES))
                         {
                             LoadDefaultCustomerSourceDetail(customerSource.DEFAULT_DETAIL_LOGINNAMES);
@@ -222,7 +217,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 }
                 else
                 {
-                    // Reset về tất cả nếu không chọn nguồn khách
                     cboCustomerSourceDetail.Properties.DataSource = allCustomerSourceDetails;
                     cboCustomerSourceDetail.Properties.View.RefreshData();
                 }
@@ -244,19 +238,20 @@ namespace HIS.Desktop.Plugins.Register.Run
                     .Where(x => !string.IsNullOrEmpty(x))
                     .ToList();
 
-                var gridView = cboCustomerSourceDetail.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                var gridView = cboCustomerSourceDetail.Properties.View as GridView;
                 if (gridView != null)
                 {
                     gridView.ClearSelection();
+
                     for (int i = 0; i < gridView.DataRowCount; i++)
                     {
-                        var row = gridView.GetRow(i) as MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT;
+                        var row = gridView.GetRow(i) as HIS_CUSTOMER_SOURCE_DT;
                         if (row != null && loginNameList.Contains(row.LOGINNAME))
                         {
                             gridView.SelectRow(i);
                         }
                     }
-                    // Cập nhật hiển thị text
+
                     cboCustomerSourceDetail.RefreshEditValue();
                 }
             }
@@ -439,6 +434,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                     "CUSTOMER_SOURCE_NAME",
                     "CUSTOMER_SOURCE_CODE"
                 );
+                cboCustomerSource.EditValueChanged -= cboCustomerSource_EditValueChanged;
+                cboCustomerSource.EditValueChanged += cboCustomerSource_EditValueChanged;
             }
             catch (Exception ex)
             {
