@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Utils.Menu;
+using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
@@ -24,6 +25,7 @@ using HIS.Desktop.Utility;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Core;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,248 @@ namespace HIS.Desktop.Plugins.Register.Run
 {
     public partial class UCRegister : UserControlBase
     {
+        private List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT> allCustomerSourceDetails;
+        private List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT> filteredCustomerSourceDetails;
+
+        private async Task InitComboCustomerSourceDetail()
+        {
+            try
+            {
+                // Load tất cả nguồn khách chi tiết
+                allCustomerSourceDetails = BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+
+                // Khởi tạo combo với GridCheckMarksSelection để cho phép chọn nhiều
+                this.InitComboCustomerSourceDetailGridCheck();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboCustomerSourceDetailGridCheck()
+        {
+            try
+            {
+                // Sử dụng GridLookUpEdit với CheckBoxRowSelect
+                if (allCustomerSourceDetails == null)
+                {
+                    allCustomerSourceDetails = new List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT>();
+                }
+
+                cboCustomerSourceDetail.Properties.DataSource = allCustomerSourceDetails;
+                cboCustomerSourceDetail.Properties.DisplayMember = "USERNAME";
+                cboCustomerSourceDetail.Properties.ValueMember = "LOGINNAME";
+                cboCustomerSourceDetail.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+                cboCustomerSourceDetail.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+                cboCustomerSourceDetail.Properties.ImmediatePopup = true;
+                cboCustomerSourceDetail.Properties.AutoComplete = false;
+
+                // Thiết lập View
+                var gridView = cboCustomerSourceDetail.Properties.View;
+                gridView.OptionsSelection.MultiSelect = true;
+                gridView.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+
+                // Thêm các cột
+                gridView.Columns.Clear();
+
+                DevExpress.XtraGrid.Columns.GridColumn colLoginName = new DevExpress.XtraGrid.Columns.GridColumn();
+                colLoginName.FieldName = "LOGINNAME";
+                colLoginName.Caption = "Mã";
+                colLoginName.Width = 100;
+                colLoginName.Visible = true;
+                colLoginName.VisibleIndex = 0;
+                gridView.Columns.Add(colLoginName);
+
+                DevExpress.XtraGrid.Columns.GridColumn colUserName = new DevExpress.XtraGrid.Columns.GridColumn();
+                colUserName.FieldName = "USERNAME";
+                colUserName.Caption = "Tên";
+                colUserName.Width = 250;
+                colUserName.Visible = true;
+                colUserName.VisibleIndex = 1;
+                gridView.Columns.Add(colUserName);
+
+                // Tooltip
+                cboCustomerSourceDetail.ToolTip = "Nguồn khách chi tiết";
+
+                // ✅ THÊM: Event khi tick/untick checkbox trong GridLookUpEdit
+                gridView.SelectionChanged += GridViewCustomerSourceDetail_SelectionChanged;
+
+                // Đăng ký event khi đóng popup để cập nhật display text
+                cboCustomerSourceDetail.Properties.CloseUp += CboCustomerSourceDetail_CloseUp;
+
+                // Xử lý custom display text
+                cboCustomerSourceDetail.Properties.CustomDisplayText += CboCustomerSourceDetail_CustomDisplayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GridViewCustomerSourceDetail_SelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
+        {
+            try
+            {
+                // Refresh ngay lập tức khi tick/untick checkbox
+                cboCustomerSourceDetail.RefreshEditValue();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CboCustomerSourceDetail_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                var gridView = cboCustomerSourceDetail.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (gridView != null)
+                {
+                    var selectedRows = gridView.GetSelectedRows();
+                    var userNames = new List<string>();
+
+                    foreach (int rowHandle in selectedRows)
+                    {
+                        if (rowHandle >= 0)
+                        {
+                            var row = gridView.GetRow(rowHandle) as MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT;
+                            if (row != null)
+                            {
+                                userNames.Add(row.USERNAME);
+                            }
+                        }
+                    }
+
+                    if (userNames.Count > 0)
+                    {
+                        e.DisplayText = string.Join(", ", userNames);
+                    }
+                    else
+                    {
+                        e.DisplayText = "";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CboCustomerSourceDetail_CloseUp(object sender, DevExpress.XtraEditors.Controls.CloseUpEventArgs e)
+        {
+            try
+            {
+                // Khi đóng popup, refresh display text
+                cboCustomerSourceDetail.RefreshEditValue();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboCustomerSource_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Clear selection trước
+                var gridView = cboCustomerSourceDetail.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (gridView != null)
+                {
+                    gridView.ClearSelection();
+                }
+
+                cboCustomerSourceDetail.EditValue = null;
+
+                if (cboCustomerSource.EditValue != null)
+                {
+                    string customerSourceCode = cboCustomerSource.EditValue.ToString();
+                    var customerSource = BackendDataWorker
+                        .Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
+                        .FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE == customerSourceCode);
+
+                    if (customerSource != null)
+                    {
+                        // 1. Lọc danh sách theo CUSTOMER_SOURCE_ID
+                        filteredCustomerSourceDetails = allCustomerSourceDetails
+                            .Where(o => o.CUSTOMER_SOURCE_ID == customerSource.ID)
+                            .ToList();
+
+                        // 2. Set datasource
+                        cboCustomerSourceDetail.Properties.DataSource = filteredCustomerSourceDetails;
+                        cboCustomerSourceDetail.Properties.View.RefreshData();
+
+                        // 3. Nếu có default thì tự động tick các item default
+                        if (!string.IsNullOrEmpty(customerSource.DEFAULT_DETAIL_LOGINNAMES))
+                        {
+                            LoadDefaultCustomerSourceDetail(customerSource.DEFAULT_DETAIL_LOGINNAMES);
+                        }
+                    }
+                }
+                else
+                {
+                    // Reset về tất cả nếu không chọn nguồn khách
+                    cboCustomerSourceDetail.Properties.DataSource = allCustomerSourceDetails;
+                    cboCustomerSourceDetail.Properties.View.RefreshData();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadDefaultCustomerSourceDetail(string defaultLoginNames)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(defaultLoginNames)) return;
+
+                var loginNameList = defaultLoginNames.Split(',')
+                    .Select(x => x.Trim())
+                    .Where(x => !string.IsNullOrEmpty(x))
+                    .ToList();
+
+                var gridView = cboCustomerSourceDetail.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (gridView != null)
+                {
+                    gridView.ClearSelection();
+                    for (int i = 0; i < gridView.DataRowCount; i++)
+                    {
+                        var row = gridView.GetRow(i) as MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT;
+                        if (row != null && loginNameList.Contains(row.LOGINNAME))
+                        {
+                            gridView.SelectRow(i);
+                        }
+                    }
+                    // Cập nhật hiển thị text
+                    cboCustomerSourceDetail.RefreshEditValue();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void UpdateCustomerSourceDetailDisplayText()
+        {
+            try
+            {
+                cboCustomerSourceDetail.RefreshEditValue();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void LoadConfigOweTypeDefault(List<MOS.EFMODEL.DataModels.HIS_OWE_TYPE> oweTypes)
         {
             try
@@ -133,7 +377,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
         }
 
-        private void FillDataToControlsForm()
+        private async Task FillDataToControlsForm()
         {
             try
             {
@@ -143,9 +387,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.InitComboCommon(this.cboPatientType, paties, "ID", "PATIENT_TYPE_NAME", "PATIENT_TYPE_CODE");
                 this.InitComboCommon(this.cboTHX, workingCommuneADO, "ID", "RENDERER_PDC_NAME", "SEARCH_CODE_COMMUNE");
                 this.ChangeDataSourceAddress();
-                this.InitComboCommon(this.cboCareer, BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().Where(o=> o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "ID", "CAREER_NAME", "CAREER_CODE");
+                this.InitComboCommon(this.cboCareer, BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CAREER>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "ID", "CAREER_NAME", "CAREER_CODE");
                 cboCareer.Properties.ImmediatePopup = true;
-                this.InitComboCommon(this.cboEthnic, BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(e=> e.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "ETHNIC_NAME", "ETHNIC_NAME", "ETHNIC_CODE");
+                this.InitComboCommon(this.cboEthnic, BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(e => e.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "ETHNIC_NAME", "ETHNIC_NAME", "ETHNIC_CODE");
                 this.InitComboCommon(this.cboNational, BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_NATIONAL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList(), "NATIONAL_NAME", "NATIONAL_NAME", "NATIONAL_CODE");
                 this.InitComboCommon(this.cboAge, BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.AgeADO>(), "Id", "MoTa", "");
                 this.InitComboCommon(this.cboGender, BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_GENDER>(), "ID", "GENDER_NAME", "GENDER_CODE");
@@ -154,13 +398,14 @@ namespace HIS.Desktop.Plugins.Register.Run
                 var classify = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_CLASSIFY>().Where(p => p.IS_ACTIVE == 1).ToList();
                 this.InitComboCommon(this.cboPatientClassify, classify, "ID", "PATIENT_CLASSIFY_NAME", "PATIENT_CLASSIFY_CODE");
                 this.InitComboCustomerSource();
-                this.InitEmergencyTime();
-                this.InitTreatmentType();
-                this.InitOweType();
-                this.InitCashierRoom();
-                this.InitMilitaryRank();
+                this.InitComboCustomerSourceDetail();
+                await this.InitEmergencyTime();
+                await this.InitTreatmentType();
+                await this.InitOweType();
+                await this.InitCashierRoom();
+                await this.InitMilitaryRank();
                 this.InitWorkPlaceControl();
-                this.InitComboHisHospitalizeReason();
+                await this.InitComboHisHospitalizeReason();
                 Inventec.Common.Logging.LogSystem.Debug("FillDataToControlsForm Finished!");
             }
             catch (Exception ex)
@@ -182,8 +427,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 }
                 else
                 {
-                    // Nếu trong RAM chưa có thì có thể để trống (không load từ API)
-                    // hoặc tuỳ theo pattern của project, bạn có thể viết giống các hàm async khác.
                     datas = BackendDataWorker
                         .Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
                         .Where(o => o.IS_ACTIVE == 1)
@@ -192,9 +435,9 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.InitComboCommon(
                     this.cboCustomerSource,
                     datas,
-                    "CUSTOMER_SOURCE_CODE",      // valueMember: lưu mã
-                    "CUSTOMER_SOURCE_NAME",      // displayMember: cột Tên
-                    "CUSTOMER_SOURCE_CODE"       // displayMemberCode: cột Mã
+                    "CUSTOMER_SOURCE_CODE",
+                    "CUSTOMER_SOURCE_NAME",
+                    "CUSTOMER_SOURCE_CODE"
                 );
             }
             catch (Exception ex)
