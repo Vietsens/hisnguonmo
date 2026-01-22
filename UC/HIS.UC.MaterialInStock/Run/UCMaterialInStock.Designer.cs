@@ -45,14 +45,6 @@ namespace HIS.UC.HisMaterialInStock.Run
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject65 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject66 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject67 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject68 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject69 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject70 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject71 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject72 = new DevExpress.Utils.SerializableAppearanceObject();
             this.trvService = new DevExpress.XtraTreeList.TreeList();
             this.repositoryItemchkIsExpend__Enable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemchkIsExpend__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -63,6 +55,9 @@ namespace HIS.UC.HisMaterialInStock.Run
             this.btnLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnUnLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkCollapseAll = new DevExpress.XtraEditors.CheckEdit();
+            this.chkCollapseByMedicine = new DevExpress.XtraEditors.CheckEdit();
+            this.chkDetails = new DevExpress.XtraEditors.CheckEdit();
             this.btnNew = new DevExpress.XtraEditors.SimpleButton();
             this.txtKeyword = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -70,11 +65,8 @@ namespace HIS.UC.HisMaterialInStock.Run
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciHisMaterialInStockAdd = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.chkDetails = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkCollapseByMedicine = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.chkCollapseAll = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.trvService)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsExpend__Enable)).BeginInit();
@@ -87,17 +79,17 @@ namespace HIS.UC.HisMaterialInStock.Run
             ((System.ComponentModel.ISupportInitialize)(this.btnUnLock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCollapseAll.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCollapseByMedicine.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkDetails.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKeyword)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHisMaterialInStockAdd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkDetails.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkCollapseByMedicine.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkCollapseAll.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             this.SuspendLayout();
             // 
@@ -196,7 +188,7 @@ namespace HIS.UC.HisMaterialInStock.Run
             // 
             this.btnLock.AutoHeight = false;
             this.btnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.UC.MaterialInStock.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton()});
             this.btnLock.Name = "btnLock";
             this.btnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnLock_ButtonClick);
@@ -205,7 +197,7 @@ namespace HIS.UC.HisMaterialInStock.Run
             // 
             this.btnUnLock.AutoHeight = false;
             this.btnUnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.UC.MaterialInStock.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "Mở khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton()});
             this.btnUnLock.Name = "btnUnLock";
             this.btnUnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnUnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnUnLock_ButtonClick);
@@ -226,6 +218,45 @@ namespace HIS.UC.HisMaterialInStock.Run
             this.layoutControl1.Size = new System.Drawing.Size(1316, 516);
             this.layoutControl1.TabIndex = 31;
             this.layoutControl1.Text = "layoutControl1";
+            // 
+            // chkCollapseAll
+            // 
+            this.chkCollapseAll.Location = new System.Drawing.Point(1208, 495);
+            this.chkCollapseAll.Name = "chkCollapseAll";
+            this.chkCollapseAll.Properties.Caption = "Thu gọn tất cả";
+            this.chkCollapseAll.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkCollapseAll.Properties.RadioGroupIndex = 1;
+            this.chkCollapseAll.Size = new System.Drawing.Size(106, 19);
+            this.chkCollapseAll.StyleController = this.layoutControl1;
+            this.chkCollapseAll.TabIndex = 11;
+            this.chkCollapseAll.TabStop = false;
+            this.chkCollapseAll.CheckedChanged += new System.EventHandler(this.chkCollapseAll_CheckedChanged);
+            // 
+            // chkCollapseByMedicine
+            // 
+            this.chkCollapseByMedicine.Location = new System.Drawing.Point(1048, 495);
+            this.chkCollapseByMedicine.Name = "chkCollapseByMedicine";
+            this.chkCollapseByMedicine.Properties.Caption = "Thu gọn theo vật tư";
+            this.chkCollapseByMedicine.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkCollapseByMedicine.Properties.RadioGroupIndex = 1;
+            this.chkCollapseByMedicine.Size = new System.Drawing.Size(156, 19);
+            this.chkCollapseByMedicine.StyleController = this.layoutControl1;
+            this.chkCollapseByMedicine.TabIndex = 10;
+            this.chkCollapseByMedicine.TabStop = false;
+            this.chkCollapseByMedicine.CheckedChanged += new System.EventHandler(this.chkCollapseByMedicine_CheckedChanged);
+            // 
+            // chkDetails
+            // 
+            this.chkDetails.Location = new System.Drawing.Point(927, 495);
+            this.chkDetails.Name = "chkDetails";
+            this.chkDetails.Properties.Caption = "Chi tiết";
+            this.chkDetails.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkDetails.Properties.RadioGroupIndex = 1;
+            this.chkDetails.Size = new System.Drawing.Size(117, 19);
+            this.chkDetails.StyleController = this.layoutControl1;
+            this.chkDetails.TabIndex = 9;
+            this.chkDetails.TabStop = false;
+            this.chkDetails.CheckedChanged += new System.EventHandler(this.chkDetails_CheckedChanged);
             // 
             // btnNew
             // 
@@ -301,18 +332,6 @@ namespace HIS.UC.HisMaterialInStock.Run
             this.emptySpaceItem1.Size = new System.Drawing.Size(925, 23);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // chkDetails
-            // 
-            this.chkDetails.Location = new System.Drawing.Point(927, 495);
-            this.chkDetails.Name = "chkDetails";
-            this.chkDetails.Properties.Caption = "Chi tiết";
-            this.chkDetails.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkDetails.Properties.RadioGroupIndex = 1;
-            this.chkDetails.Size = new System.Drawing.Size(117, 19);
-            this.chkDetails.StyleController = this.layoutControl1;
-            this.chkDetails.TabIndex = 9;
-            this.chkDetails.CheckedChanged += new System.EventHandler(this.chkDetails_CheckedChanged);
-            // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.chkDetails;
@@ -322,18 +341,6 @@ namespace HIS.UC.HisMaterialInStock.Run
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // chkCollapseByMedicine
-            // 
-            this.chkCollapseByMedicine.Location = new System.Drawing.Point(1048, 495);
-            this.chkCollapseByMedicine.Name = "chkCollapseByMedicine";
-            this.chkCollapseByMedicine.Properties.Caption = "Thu gọn theo vật tư";
-            this.chkCollapseByMedicine.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkCollapseByMedicine.Properties.RadioGroupIndex = 1;
-            this.chkCollapseByMedicine.Size = new System.Drawing.Size(156, 19);
-            this.chkCollapseByMedicine.StyleController = this.layoutControl1;
-            this.chkCollapseByMedicine.TabIndex = 10;
-            this.chkCollapseByMedicine.CheckedChanged += new System.EventHandler(this.chkCollapseByMedicine_CheckedChanged);
-            // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.chkCollapseByMedicine;
@@ -342,18 +349,6 @@ namespace HIS.UC.HisMaterialInStock.Run
             this.layoutControlItem2.Size = new System.Drawing.Size(160, 23);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
-            // 
-            // chkCollapseAll
-            // 
-            this.chkCollapseAll.Location = new System.Drawing.Point(1208, 495);
-            this.chkCollapseAll.Name = "chkCollapseAll";
-            this.chkCollapseAll.Properties.Caption = "Thu gọn tất cả";
-            this.chkCollapseAll.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
-            this.chkCollapseAll.Properties.RadioGroupIndex = 1;
-            this.chkCollapseAll.Size = new System.Drawing.Size(106, 19);
-            this.chkCollapseAll.StyleController = this.layoutControl1;
-            this.chkCollapseAll.TabIndex = 11;
-            this.chkCollapseAll.CheckedChanged += new System.EventHandler(this.chkCollapseAll_CheckedChanged);
             // 
             // layoutControlItem3
             // 
@@ -385,17 +380,17 @@ namespace HIS.UC.HisMaterialInStock.Run
             ((System.ComponentModel.ISupportInitialize)(this.btnUnLock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkCollapseAll.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkCollapseByMedicine.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkDetails.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKeyword)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHisMaterialInStockAdd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkDetails.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkCollapseByMedicine.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.chkCollapseAll.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             this.ResumeLayout(false);
 

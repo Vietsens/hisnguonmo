@@ -30,6 +30,9 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         internal const string RequiredMethodOption = "HIS.Desktop.Plugins.SurgServiceReqExecute.RequiredMethodOption";
         internal const string RequiredIcdCmOption = "HIS.Desktop.Plugins.SurgServiceReqExecute.RequiredIcdCmOption";
 
+        internal const string HisMachineShowOptionKey = "HIS.Desktop.Plugins.HisMachine_ShowOption";
+
+
         //internal const string HIS_Desktop_Plugins_SurgServiceReqExecute_IsRequiredPtttPriority = "HIS.Desktop.Plugins.SurgServiceReqExecute.IsRequiredPtttPriority";
         //internal const string MannerMethodPriorityIsRequired = "HIS.Desktop.Plugins.SurgServiceReqExecute.MannerMethodPriorityIsRequired";
     }
