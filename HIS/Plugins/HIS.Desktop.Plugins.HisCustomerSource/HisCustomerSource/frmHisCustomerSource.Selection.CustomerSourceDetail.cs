@@ -17,20 +17,20 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
     public partial class frmHisCustomerSource : HIS.Desktop.Utility.FormBase
     {
         private DevExpress.Utils.ToolTipController toolTipControllerRoomOptionItem;
-        List<HIS_CUSTOMER_SOURCE_DETAIL> SelectedOptions;
-        List<HIS_CUSTOMER_SOURCE_DETAIL> SourceDetailDataSource;
+        List<HIS_CUSTOMER_SOURCE_DT> SelectedOptions;
+        List<HIS_CUSTOMER_SOURCE_DT> SourceDetailDataSource;
         private void InitComboDetail()
         {
             CommonParam commonParam = new CommonParam();
-            HisCustomerSourceDetailFilter filter = new HisCustomerSourceDetailFilter();
+            HisCustomerSourceDtFilter filter = new HisCustomerSourceDtFilter();
             filter.IS_ACTIVE = 1;
             var data = new BackendAdapter(commonParam)
-                .Get<List<HIS_CUSTOMER_SOURCE_DETAIL>>(HisRequestUriStore.CustomerSourceDetail_GET, ApiConsumers.MosConsumer, filter, commonParam);
+                .Get<List<HIS_CUSTOMER_SOURCE_DT>>(HisRequestUriStore.CustomerSourceDetail_GET, ApiConsumers.MosConsumer, filter, commonParam);
             this.SourceDetailDataSource = data;
             this.InitCombo(cboSourceDetail,
                 SourceDetailDataSource,
-                 nameof(HIS_CUSTOMER_SOURCE_DETAIL.USERNAME),
-                 nameof(HIS_CUSTOMER_SOURCE_DETAIL.LOGINNAME),
+                 nameof(HIS_CUSTOMER_SOURCE_DT.USERNAME),
+                 nameof(HIS_CUSTOMER_SOURCE_DT.LOGINNAME),
                 cboDepartment_MarksSelection,
                 cboDepartment_CustomDisplayText,
                 OnViewRowClick,
@@ -46,8 +46,8 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                 GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
-                    List<HIS_CUSTOMER_SOURCE_DETAIL> sgSelectedNews = new List<HIS_CUSTOMER_SOURCE_DETAIL>();
-                    foreach (HIS_CUSTOMER_SOURCE_DETAIL rv in (gridCheckMark).Selection)
+                    List<HIS_CUSTOMER_SOURCE_DT> sgSelectedNews = new List<HIS_CUSTOMER_SOURCE_DT>();
+                    foreach (HIS_CUSTOMER_SOURCE_DT rv in (gridCheckMark).Selection)
                     {
                         if (rv != null)
                         {
@@ -56,7 +56,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                             sgSelectedNews.Add(rv);
                         }
                     }
-                    this.SelectedOptions = new List<HIS_CUSTOMER_SOURCE_DETAIL>();
+                    this.SelectedOptions = new List<HIS_CUSTOMER_SOURCE_DT>();
                     this.SelectedOptions.AddRange(sgSelectedNews);
                     //this.cboDepartment.EditValue = sb.ToString();
                     this.cboSourceDetail.Text = sb.ToString();
@@ -81,7 +81,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                     e.DisplayText = "";
                     return;
                 }
-                foreach (HIS_CUSTOMER_SOURCE_DETAIL rv in gridCheckMark.Selection)
+                foreach (HIS_CUSTOMER_SOURCE_DT rv in gridCheckMark.Selection)
                 {
                     if (sb.ToString().Length > 0) { sb.Append(", "); }
 
@@ -107,7 +107,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             {
                 //var view = s as DevExpress.XtraGrid.Views.Grid.GridView;
                 //if (view == null) return;
-                //HIS_CUSTOMER_SOURCE_DETAIL  row = view.GetRow(e.RowHandle) as HIS_CUSTOMER_SOURCE_DETAIL;
+                //HIS_CUSTOMER_SOURCE_DT  row = view.GetRow(e.RowHandle) as HIS_CUSTOMER_SOURCE_DT;
                 //if (row == null) return;
                 //if (view.FocusedColumn.FieldName == "CheckMarkSelection")
                 //{
@@ -126,7 +126,7 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
             {
                 var view = s as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (view == null) return;
-                HIS_CUSTOMER_SOURCE_DETAIL row = view.GetRow(e.RowHandle) as HIS_CUSTOMER_SOURCE_DETAIL;
+                HIS_CUSTOMER_SOURCE_DT row = view.GetRow(e.RowHandle) as HIS_CUSTOMER_SOURCE_DT;
                 if (row == null) return;
             }
             catch (Exception ex)
@@ -145,8 +145,8 @@ namespace HIS.Desktop.Plugins.HisCustomerSource.HisCustomerSource
                 }
                 if (!string.IsNullOrEmpty(selectedItems) && cboSourceDetail.Properties.Tag != null)
                 {
-                    List<HIS_CUSTOMER_SOURCE_DETAIL> dataSourceItems = cboSourceDetail.Properties.DataSource as List<HIS_CUSTOMER_SOURCE_DETAIL>;
-                    List<HIS_CUSTOMER_SOURCE_DETAIL> validSelectedItems = new List<HIS_CUSTOMER_SOURCE_DETAIL>();
+                    List<HIS_CUSTOMER_SOURCE_DT> dataSourceItems = cboSourceDetail.Properties.DataSource as List<HIS_CUSTOMER_SOURCE_DT>;
+                    List<HIS_CUSTOMER_SOURCE_DT> validSelectedItems = new List<HIS_CUSTOMER_SOURCE_DT>();
                     foreach (var item in selectedItems.Split(','))
                     {
                         var row = dataSourceItems != null ? dataSourceItems.FirstOrDefault(o => o.LOGINNAME == item) : null;
