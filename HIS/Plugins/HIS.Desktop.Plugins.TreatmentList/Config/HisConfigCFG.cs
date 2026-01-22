@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
         private const string CONFIG_KEY__AIViewChatUrlFormat = "HIS.Desktop.AI.ViewChatUrlFormat";
 
         private const string CONFIG_KEY__ALLOW_FINISH_DIFFERENT_DEPARTMENT = "MOS.HIS_TREATMENT.ALLOW_FINISH_DIFFERENT_DEPARTMENT";
+        private const string CONFIG_KEY_GuaranteeConnection = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
 
 
         internal static string AIViewChatUrlFormat;
@@ -67,6 +68,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
         internal static string MPS_PrintPrescription;
 
         internal static bool isAllowFinishDifferentDepartment;
+        public static string GuaranteeConnection;
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -103,6 +105,7 @@ namespace HIS.Desktop.Plugins.TreatmentList.Config
                 AIConnectionInfo = GetValue(CONFIG_KEY__AIConnectionInfo);
                 AIViewChatUrlFormat = GetValue(CONFIG_KEY__AIViewChatUrlFormat);
                 isAllowFinishDifferentDepartment = GetValue(CONFIG_KEY__ALLOW_FINISH_DIFFERENT_DEPARTMENT) == "1";
+                GuaranteeConnection = GetValue(CONFIG_KEY_GuaranteeConnection);
             }
             catch (Exception ex)
             {

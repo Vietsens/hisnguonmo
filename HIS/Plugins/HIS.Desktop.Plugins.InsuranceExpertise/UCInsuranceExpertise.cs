@@ -56,6 +56,7 @@ using HIS.Desktop.LibraryMessage;
 using Inventec.Desktop.Common.LanguageManager;
 using System.Resources;
 using ACS.SDO;
+using ACS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.InsuranceExpertise
 {
@@ -83,6 +84,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
         List<TreatmentImportADO> listTreatmentImport;
         List<HIS_TREATMENT_TYPE> treatmentTypeSelecteds = new List<HIS_TREATMENT_TYPE>();
         HIS_BRANCH _Branch;
+        private List<ACS_CONTROL> controlAcs;
         long patientTypeIdBhyt = 0;
         CommonParam param = new CommonParam();
 
@@ -226,6 +228,8 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
+                this.InitializePermissions();
+                this.InitializeGrid();
                 LoadKeyUCLanguage();
                 ValidControl();
                 LoadCashierRoom();
@@ -237,15 +241,22 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 GetTimeSystem();
                 RegisterTimer(currentModule.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
                 StartTimer(currentModule.ModuleLink, "timer1");
-                if (Config.HisConfigCFG.OptionStoreBordereauCode == "2" || Config.HisConfigCFG.OptionStoreBordereauCode == "3")
+                if (Config.HisConfigCFG.OptionStoreBordereauCode == "3")
                 {
+                    layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     dxValidationProvider1.SetValidationRule(txtStoreBordereauCode, null);
                 }
+                if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                {
+                    lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    dxValidationProvider1.SetValidationRule(txtStoreBordereauCode, null); 
+                }
                 else if (Config.HisConfigCFG.OptionStoreBordereauCode == "1")
                 {
-                    esOption2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    //esOption2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciDteOption2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -1161,10 +1172,15 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     if (!btnLuuTru.Enabled) return;
                     BtnLuuTru_Click(null, null);
                 }
-                else if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
+                else if (HisConfigCFG.OptionStoreBordereauCode == "2")
                 {
                     if (!btnLuuTruOption2.Enabled) return;
                     btnLuuTruOption2_Click(null, null);
+                }
+                else if (HisConfigCFG.OptionStoreBordereauCode == "3")
+                {
+                    if (!btnLuuTruOption3.Enabled) return;
+                    btnLuuTruOption3_Click(null, null);
                 }
             }
             catch (Exception ex)
@@ -1460,6 +1476,113 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void InitializePermissions()
+        {
+            try
+            {
+                if (GlobalVariables.AcsAuthorizeSDO != null)
+                {
+                    controlAcs = GlobalVariables.AcsAuthorizeSDO.ControlInRoles;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitializeGrid()
+        {
+            bool hasEditPermission = HasEditPermission();
+
+            if (hasEditPermission)
+            {
+                btnLuuTruOption3.Enabled = true;
+            }
+            else
+            {
+                btnLuuTruOption3.Enabled = false;
+            }
+        }
+
+        private bool HasEditPermission()
+        {
+            if (controlAcs != null)
+            {
+                return controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000049" && o.MODIFIER == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()) != null;
+            }
+            return false;
+        }
+
+        private void btnLuuTruOption3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CommonParam paramStoreBordereauCode = new CommonParam();
+                positionHandleControl = -1;
+                if (!dxValidationProvider1.Validate())
+                    return;
+                WaitingManager.Show();
+                bool success = false;
+                StoreBordereauCodeSDO sdo = new StoreBordereauCodeSDO();
+                sdo.TreatmentId = this.currentTreatment.ID;
+                if (!btnLuuTruOption3.Text.Equals("Hủy LT (F5)"))
+                {
+                    if (!String.IsNullOrWhiteSpace(txtStoreBordereauCodeOption2.Text))
+                    {
+                        string code = txtStoreBordereauCodeOption2.Text.Trim();
+                        if (code.Length < 5)
+                        {
+                            code = string.Format("{0:00000}", Convert.ToInt64(code));
+                            txtStoreBordereauCodeOption2.Text = code;
+                        }
+                        sdo.StoreBordereauCode = code;
+                    }
+                    sdo.StoreBordereauTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteStoreTime.DateTime) ?? 0;
+                    sdo.StoreBordereauSeedCode = nextStoreBordereauCode != null && !string.IsNullOrEmpty(nextStoreBordereauCode.StoreBordereauSeedCode) ? nextStoreBordereauCode.StoreBordereauSeedCode : null;
+                }
+                var rs = new BackendAdapter(paramStoreBordereauCode).Post<HIS_TREATMENT>("api/HisTreatment/SetStoreBordereauCode", ApiConsumers.MosConsumer, sdo, paramStoreBordereauCode);
+                if (rs != null)
+                {
+                    success = true;
+                    foreach (var item in listTreatment)
+                    {
+                        if (item.ID == this.currentTreatment.ID)
+                        {
+                            item.STORE_BORDEREAU_CODE = rs.STORE_BORDEREAU_CODE;
+                            item.STORE_BORDEREAU_TIME = rs.STORE_BORDEREAU_TIME;
+                            break;
+                        }
+                    }
+                    gridControlTreatment.BeginUpdate();
+                    gridControlTreatment.DataSource = listTreatment;
+                    gridControlTreatment.EndUpdate();
+                    nextStoreBordereauCode = null;
+                    dteStoreTime.DateTime = DateTime.Now;
+                    if (currentTreatment.STORE_BORDEREAU_TIME != null)
+                    {
+                        dteStoreTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatment.STORE_BORDEREAU_TIME ?? 0) ?? DateTime.Now;
+                    }
+                    if (btnLuuTruOption3.Text.Equals("Hủy LT (F5)"))
+                    {
+                        GetNextStoreBordereauCode();
+                    }
+                    ChangeEnableButtonOption2();
+                }
+                else
+                {
+                    GetNextStoreBordereauCode();
+                }
+                WaitingManager.Hide();
+                MessageManager.Show(this.ParentForm, paramStoreBordereauCode, success);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }
