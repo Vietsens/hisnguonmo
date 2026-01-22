@@ -287,6 +287,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             this.chkValid1Year2.MenuManager = this.barManager1;
             this.chkValid1Year2.Name = "chkValid1Year2";
             this.chkValid1Year2.Properties.Caption = "Có giá trị trong 01 năm";
+            this.chkValid1Year2.Properties.ReadOnly = true;
             this.chkValid1Year2.Size = new System.Drawing.Size(578, 19);
             this.chkValid1Year2.StyleController = this.layoutControl1;
             this.chkValid1Year2.TabIndex = 35;
