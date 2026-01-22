@@ -479,19 +479,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 bidNumberCol.VisibleIndex = 22;
                 ado.HisMedicineInStockColumns.Add(bidNumberCol);
 
+                //Column số lô
+                //Column Số hóa đơn
+                HisMedicineInStockColumn documentNumberCol = new HisMedicineInStockColumn("Số hóa đơn", "DocumentNumber", 100, false, false);
+                documentNumberCol.VisibleIndex = 23;
+                ado.HisMedicineInStockColumns.Add(documentNumberCol);
+
+
                 //Column gói thầu
                 HisMedicineInStockColumn packageNumberCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BID_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "BID_NUMBER", 100, false, false);
-                packageNumberCol.VisibleIndex = 23;
+                packageNumberCol.VisibleIndex = 24;
                 ado.HisMedicineInStockColumns.Add(packageNumberCol);
 
                 //Column số đăng ký
                 HisMedicineInStockColumn registerNumberCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_REGISTER_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "REGISTER_NUMBER", 100, false, false);
-                registerNumberCol.VisibleIndex = 24;
+                registerNumberCol.VisibleIndex = 25;
                 ado.HisMedicineInStockColumns.Add(registerNumberCol);
 
                 //Column Lý do khóa
                 HisMedicineInStockColumn reasonLock = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_LOCKING_REASON", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "LOCKING_REASON", 180, false, false);
-                reasonLock.VisibleIndex = 25;
+                reasonLock.VisibleIndex = 26;
                 ado.HisMedicineInStockColumns.Add(reasonLock);
 
                 ////Column nhà cung cấp
@@ -501,7 +508,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
                 //Column số lượng cảnh báo
                 HisMedicineInStockColumn alertMinInStockCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ALERT_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_MIN_IN_STOCK", 100, false, false);
-                alertMinInStockCol.VisibleIndex = 26;
+                alertMinInStockCol.VisibleIndex = 27;
                 alertMinInStockCol.Format = new DevExpress.Utils.FormatInfo();
                 alertMinInStockCol.Format.FormatString = "#,##0.";
                 alertMinInStockCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
@@ -663,6 +670,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 packageNumberCol.VisibleIndex = 16;
                 ado.HisMaterialInStockColumns.Add(packageNumberCol);
 
+                //Column Số hóa đơn
+                HisMaterialInStockColumn documentNumberCol = new HisMaterialInStockColumn("Số hóa đơn", "DocumentNumber", 100, false);
+                documentNumberCol.VisibleIndex = 17;
+                ado.HisMaterialInStockColumns.Add(documentNumberCol);
+
                 //Column Số seri
                 HisMaterialInStockColumn serialNumberCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SERIAL_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SERIAL_NUMBER", 100, false);
                 serialNumberCol.VisibleIndex = 17;
@@ -768,6 +780,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 HisBloodTypeInStockColumn bloodPackageNumber = new HisBloodTypeInStockColumn("Số lô", "PackageNumber", 100, false);
                 bloodPackageNumber.VisibleIndex = 6;
                 ado.HisBloodTypeInStockColumns.Add(bloodPackageNumber);
+
+                // Số hóa đơn
+                HisBloodTypeInStockColumn bloodDocumentNumber = new HisBloodTypeInStockColumn("Số hóa đơn", "DocumentNumber", 100, false);
+                bloodDocumentNumber.VisibleIndex = 7;
+                ado.HisBloodTypeInStockColumns.Add(bloodDocumentNumber);
                 // Hạn sử dụng
                 HisBloodTypeInStockColumn bloodExpiredDate = new HisBloodTypeInStockColumn("Hạn sử dụng", "ExpiredDateStr", 120, false);
                 bloodExpiredDate.VisibleIndex = 7;

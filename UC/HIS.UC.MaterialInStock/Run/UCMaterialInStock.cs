@@ -255,7 +255,7 @@ namespace HIS.UC.HisMaterialInStock.Run
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
+        }  
 
         private void txtKeyword_KeyUp(object sender, KeyEventArgs e)
         {
@@ -293,6 +293,8 @@ namespace HIS.UC.HisMaterialInStock.Run
                                                     || (o.SERIAL_NUMBER ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
                                                     || (o.MANUFACTURER_NAME_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
                                                     || (o.SERIAL_NUMBER_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                                                    || (o.DocumentNumber ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                                                   
                                                     )
                                                     ).Distinct().ToList();
 
