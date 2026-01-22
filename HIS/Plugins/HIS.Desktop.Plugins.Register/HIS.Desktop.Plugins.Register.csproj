@@ -243,10 +243,12 @@
     <Reference Include="Inventec.WCFService.ReadServiceCodeService">
       <HintPath>..\..\..\..\lib\WCF\Inventec.WCF\Service\.Net 4.5\Inventec.WCFService.ReadServiceCodeService\Inventec.WCFService.ReadServiceCodeService.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
@@ -323,6 +325,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\AddressConnectHrmADO.cs" />
+    <Compile Include="ADO\CustomerSourceDetailADO.cs" />
     <Compile Include="ADO\TreeChiTietKCB.cs" />
     <Compile Include="ADO\ExecuteRoomADO.cs" />
     <Compile Include="ADO\PatientInformationADO.cs" />

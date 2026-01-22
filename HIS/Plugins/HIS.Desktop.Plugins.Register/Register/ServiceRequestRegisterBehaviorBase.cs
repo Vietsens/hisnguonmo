@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using AutoMapper;
+using DevExpress.XtraGrid.Views.Grid;
 using HID.EFMODEL.DataModels;
 using HID.Filter;
 using His.UC.UCHein;
@@ -175,7 +176,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.ethnicCode = ucServiceRequestRegiter.txtEthnicCode.Text;
                 this.customerSourceCode = ucServiceRequestRegiter.txtCustomerSource.Text;
                 this.customerSourceName = ucServiceRequestRegiter.cboCustomerSource.Text;
-                this.customerSourceCodeDetail = ucServiceRequestRegiter.txtCustomerSourceDetail.Text;
+                this.customerSourceCodeDetail = (string)(ucServiceRequestRegiter.cboCustomerSourceDetail.EditValue);
                 if (ucServiceRequestRegiter.cboGender.EditValue != null)
                     this.GenderId = (long)(ucServiceRequestRegiter.cboGender.EditValue);
                 this.nationalName = ucServiceRequestRegiter.cboNational.Text;
@@ -271,7 +272,56 @@ namespace HIS.Desktop.Plugins.Register.Register
             }
             return result;
         }
+        public string GetSelectedCustomerSourceDetailUsernames()
+        {
+            var gridView = ucRequestService.cboCustomerSourceDetail.Properties.View as GridView;
+            if (gridView == null) return string.Empty;
 
+            var selectedRows = gridView.GetSelectedRows();
+            var usernames = selectedRows
+                .Select(rowHandle => gridView.GetRow(rowHandle) as HIS_CUSTOMER_SOURCE_DT)
+                .Where(row => row != null)
+                .Select(row => row.USERNAME)
+                .ToArray();
+
+            return string.Join(", ", usernames);
+        }
+
+        // Method để lấy danh sách LOGINNAME đã chọn
+        private string GetSelectedCustomerSourceDetailLoginNames()
+        {
+            try
+            {
+                var gridView = ucRequestService.cboCustomerSourceDetail.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (gridView != null)
+                {
+                    var selectedRows = gridView.GetSelectedRows();
+                    var loginNames = new List<string>();
+
+                    foreach (int rowHandle in selectedRows)
+                    {
+                        if (rowHandle >= 0)
+                        {
+                            var row = gridView.GetRow(rowHandle) as MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT;
+                            if (row != null)
+                            {
+                                loginNames.Add(row.LOGINNAME);
+                            }
+                        }
+                    }
+
+                    return string.Join(",", loginNames);
+                }
+
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return string.Empty;
+            }
+        }       
+        
         protected void InitBase()
         {
             try
@@ -515,6 +565,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                 }
 
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_CODE = this.customerSourceCode;
+                this.patientProfile.HisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES = GetSelectedCustomerSourceDetailLoginNames();
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_NAME = this.customerSourceName;
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_DETAIL = this.customerSourceCodeDetail;
                 this.patientProfile.ProvinceCode = provinceCode;
