@@ -15,35 +15,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Utils;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.HisConfig;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.CompensationByBaseCreate.ADO;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.Utility;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using Inventec.Core;
-using MOS.Filter;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.Plugins.CompensationByBaseCreate.ADO;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Controls.EditorLoader;
-using DevExpress.XtraEditors;
-using MOS.SDO;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using Inventec.Desktop.Common.Message;
-using DevExpress.Utils;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using HIS.Desktop.LocalStorage.HisConfig;
+using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace HIS.Desktop.Plugins.CompensationByBaseCreate
 {
@@ -317,8 +319,8 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                                 ado.AMOUT_EXP_MEDI_STOCK = mediInExpStock.AvailableAmount ?? null;
                             }
                         }
-                        if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK < 1)
-                        //if (ado.AMOUT_EXP_MEDI_STOCK == null || ado.AMOUT_EXP_MEDI_STOCK < 1)
+                        if ((ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0) || ado.AMOUT_EXP_MEDI_STOCK == null)
+                            //if (ado.AMOUT_EXP_MEDI_STOCK == null || ado.AMOUT_EXP_MEDI_STOCK < 1)
 
                             ado.TYPE = TYPE_KHA_DUNG;
                         else
@@ -355,7 +357,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                         {
                             ado.MEDI_STOCK_NAME = item.EXP_MEDI_STOCK_NAME;
                         }
-                        if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK < 1)
+                        if ((ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0) || ado.AMOUT_EXP_MEDI_STOCK == null)
                             ado.TYPE = TYPE_KHA_DUNG;
                         else
                             ado.TYPE = TYPE_METY;
@@ -400,7 +402,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                                 ado.AMOUT_EXP_MEDI_STOCK = mateInExpStock.AvailableAmount ?? null;
                             }
                         }
-                        if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK < 1)
+                        if ((ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0) || ado.AMOUT_EXP_MEDI_STOCK == null)
                             ado.TYPE = TYPE_KHA_DUNG;
                         else
                             ado.TYPE = TYPE_MATY;
@@ -420,7 +422,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                         }
                         MetyMatyADO ado = new MetyMatyADO();
                         ado.CONCENTRA = materialType.CONCENTRA;
-                        ado.IN_STOCK_AMOUNT = 0;
+                        ado.IN_STOCK_AMOUNT = 0; 
                         ado.METY_MATY_CODE = materialType.MATERIAL_TYPE_CODE;
                         ado.METY_MATY_ID = materialType.ID;
                         ado.METY_MATY_NAME = materialType.MATERIAL_TYPE_NAME;
@@ -433,7 +435,7 @@ namespace HIS.Desktop.Plugins.CompensationByBaseCreate
                         {
                             ado.MEDI_STOCK_NAME = item.EXP_MEDI_STOCK_NAME;
                         }
-                        if (ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK < 1)
+                        if ((ado.AMOUT_EXP_MEDI_STOCK != null && ado.AMOUT_EXP_MEDI_STOCK <= 0) || ado.AMOUT_EXP_MEDI_STOCK == null)
                             ado.TYPE = TYPE_KHA_DUNG;
                         else
                             ado.TYPE = TYPE_MATY;
