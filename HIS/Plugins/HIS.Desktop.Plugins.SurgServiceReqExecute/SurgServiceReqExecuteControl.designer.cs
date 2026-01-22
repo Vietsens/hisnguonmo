@@ -1703,7 +1703,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             // 
             this.xtraTabPageGhiChu.Controls.Add(this.txtResultNote);
             this.xtraTabPageGhiChu.Name = "xtraTabPageGhiChu";
-            this.xtraTabPageGhiChu.Size = new System.Drawing.Size(424, 176);
+            this.xtraTabPageGhiChu.Size = new System.Drawing.Size(425, 175);
             this.xtraTabPageGhiChu.Text = "Ghi chú";
             // 
             // txtResultNote
@@ -1711,14 +1711,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.txtResultNote.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtResultNote.Location = new System.Drawing.Point(0, 0);
             this.txtResultNote.Name = "txtResultNote";
-            this.txtResultNote.Size = new System.Drawing.Size(424, 176);
+            this.txtResultNote.Size = new System.Drawing.Size(425, 175);
             this.txtResultNote.TabIndex = 30;
             // 
             // xtraTabPageLuocDo
             // 
             this.xtraTabPageLuocDo.Controls.Add(this.cardControl);
             this.xtraTabPageLuocDo.Name = "xtraTabPageLuocDo";
-            this.xtraTabPageLuocDo.Size = new System.Drawing.Size(424, 176);
+            this.xtraTabPageLuocDo.Size = new System.Drawing.Size(425, 175);
             this.xtraTabPageLuocDo.Text = "Lược đồ";
             // 
             // cardControl
@@ -1733,7 +1733,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             this.repositoryItemPictureEdit1,
             this.repositoryItembtnDelete,
             this.SpinEditSTTImage});
-            this.cardControl.Size = new System.Drawing.Size(424, 176);
+            this.cardControl.Size = new System.Drawing.Size(425, 175);
             this.cardControl.TabIndex = 5;
             this.cardControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.tileView1,

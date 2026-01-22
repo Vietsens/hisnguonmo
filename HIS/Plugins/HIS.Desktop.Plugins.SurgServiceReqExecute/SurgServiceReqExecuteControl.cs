@@ -384,6 +384,8 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     LoadSereServExt();
                     LoadSereServLast();
                     GetSereServPtttBySereServId();
+                    // Load lại máy thực hiện theo dịch vụ mới
+                    this.ComboHisMachine();
                     //chỉ load thông tin cách thức và “Phân loại” khi check in gộp
                     if (chkSaveGroup.Checked)
                     {
