@@ -267,17 +267,17 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             // 
             // txtEndRoomName
             // 
-            this.txtEndRoomName.Location = new System.Drawing.Point(631, 445);
+            this.txtEndRoomName.Location = new System.Drawing.Point(641, 445);
             this.txtEndRoomName.Name = "txtEndRoomName";
-            this.txtEndRoomName.Size = new System.Drawing.Size(217, 21);
+            this.txtEndRoomName.Size = new System.Drawing.Size(207, 21);
             this.txtEndRoomName.StyleController = this.layoutControl1;
             this.txtEndRoomName.TabIndex = 37;
             // 
             // txtOutTime
             // 
-            this.txtOutTime.Location = new System.Drawing.Point(371, 445);
+            this.txtOutTime.Location = new System.Drawing.Point(381, 445);
             this.txtOutTime.Name = "txtOutTime";
-            this.txtOutTime.Size = new System.Drawing.Size(177, 21);
+            this.txtOutTime.Size = new System.Drawing.Size(167, 21);
             this.txtOutTime.StyleController = this.layoutControl1;
             this.txtOutTime.TabIndex = 36;
             // 
@@ -353,17 +353,17 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             // 
             // txtIcdCodeIcdName
             // 
-            this.txtIcdCodeIcdName.Location = new System.Drawing.Point(56, 468);
+            this.txtIcdCodeIcdName.Location = new System.Drawing.Point(66, 468);
             this.txtIcdCodeIcdName.Name = "txtIcdCodeIcdName";
-            this.txtIcdCodeIcdName.Size = new System.Drawing.Size(222, 21);
+            this.txtIcdCodeIcdName.Size = new System.Drawing.Size(212, 21);
             this.txtIcdCodeIcdName.StyleController = this.layoutControl1;
             this.txtIcdCodeIcdName.TabIndex = 34;
             // 
             // txtTreatmentCode
             // 
-            this.txtTreatmentCode.Location = new System.Drawing.Point(58, 445);
+            this.txtTreatmentCode.Location = new System.Drawing.Point(68, 445);
             this.txtTreatmentCode.Name = "txtTreatmentCode";
-            this.txtTreatmentCode.Size = new System.Drawing.Size(220, 21);
+            this.txtTreatmentCode.Size = new System.Drawing.Size(210, 21);
             this.txtTreatmentCode.StyleController = this.layoutControl1;
             this.txtTreatmentCode.TabIndex = 31;
             // 
@@ -1204,7 +1204,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             this.layoutControlItem16.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem16.Text = "Mã hồ sơ:";
             this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem16.TextSize = new System.Drawing.Size(48, 20);
+            this.layoutControlItem16.TextSize = new System.Drawing.Size(58, 20);
             this.layoutControlItem16.TextToControlDistance = 5;
             // 
             // layoutControlItem20
@@ -1219,7 +1219,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             this.layoutControlItem20.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem20.Text = "Mã bệnh:";
             this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem20.TextSize = new System.Drawing.Size(46, 20);
+            this.layoutControlItem20.TextSize = new System.Drawing.Size(56, 20);
             this.layoutControlItem20.TextToControlDistance = 5;
             // 
             // layoutControlItem21
@@ -1244,7 +1244,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             this.layoutControlItem18.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem18.Text = "Ngày chuyển:";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem18.TextSize = new System.Drawing.Size(66, 20);
+            this.layoutControlItem18.TextSize = new System.Drawing.Size(76, 20);
             this.layoutControlItem18.TextToControlDistance = 5;
             // 
             // layoutControlItem19
@@ -1259,7 +1259,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
             this.layoutControlItem19.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem19.Text = "Phòng chuyển:";
             this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem19.TextSize = new System.Drawing.Size(71, 20);
+            this.layoutControlItem19.TextSize = new System.Drawing.Size(81, 20);
             this.layoutControlItem19.TextToControlDistance = 5;
             // 
             // dxValidationProviderControl
