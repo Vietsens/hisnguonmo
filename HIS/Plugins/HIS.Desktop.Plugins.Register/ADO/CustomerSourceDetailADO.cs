@@ -1,18 +1,14 @@
-﻿namespace HIS.Desktop.Plugins.Register.ADO
-{
-    public class CustomerSourceDetailADO
-    {
-        public string LOGINNAME { get; set; }
-        public string USERNAME { get; set; }
-        public long CUSTOMER_SOURCE_ID { get; set; }
-        public long IS_ACTIVE { get; set; }
+﻿using MOS.EFMODEL.DataModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-        public string DISPLAY_NAME
-        {
-            get
-            {
-                return string.Format("{0} - {1}", LOGINNAME, USERNAME);
-            }
-        }
+namespace HIS.Desktop.Plugins.Register.ADO
+{
+    public class CustomerSourceDetailADO : HIS_CUSTOMER_SOURCE_DT
+    {
+        public string USERNAME_UNSIGN { get; set; }
     }
 }
