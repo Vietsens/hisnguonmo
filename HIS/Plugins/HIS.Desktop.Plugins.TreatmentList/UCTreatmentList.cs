@@ -15,58 +15,60 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
+using ACS.Filter;
+using DevExpress.Utils;
+using DevExpress.Utils.Menu;
+using DevExpress.XtraBars;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using His.Bhyt.ExportXml.Base;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.IsAdmin;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.FormMedicalRecord;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
+using HIS.Desktop.Plugins.TreatmentList.ADO;
+using HIS.Desktop.Plugins.TreatmentList.Base;
+using HIS.Desktop.Plugins.TreatmentList.Config;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using HIS.UC.UCCauseOfDeath.ADO;
+using HTC.EFMODEL.DataModels;
+using HTC.Filter;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Common.TypeConvert;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.LocalStorage.Location;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors;
-using HTC.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.BackendData;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraEditors.ViewInfo;
-using Inventec.Desktop.Common.Message;
-using Inventec.Core;
-using HTC.Filter;
-using HIS.Desktop.ApiConsumer;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using HIS.Desktop.LibraryMessage;
-using HIS.Desktop.Controls.Session;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using DevExpress.Utils;
-using Inventec.Common.TypeConvert;
-using Inventec.Common.Logging;
-using HIS.Desktop.LocalStorage.LocalData;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using DevExpress.XtraGrid.Columns;
-using HIS.Desktop.Common;
-using HIS.Desktop.Utility;
-using DevExpress.XtraBars;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using HIS.Desktop.IsAdmin;
-using HIS.Desktop.Utilities.Extensions;
-using HIS.Desktop.Plugins.TreatmentList.ADO;
-using HIS.Desktop.Plugins.TreatmentList.Config;
-using Inventec.Common.Adapter;
-using Inventec.Common.Controls.EditorLoader;
-using MOS.SDO;
-using Inventec.Desktop.Common.LanguageManager;
-using Inventec.Desktop.Common.LocalStorage.Location;
-using System.IO;
-using HIS.Desktop.Plugins.Library.FormMedicalRecord;
-using DevExpress.Utils.Menu;
-using His.Bhyt.ExportXml.Base;
-using ACS.EFMODEL.DataModels;
-using HIS.Desktop.Plugins.TreatmentList.Base;
-using ACS.Filter;
-using DevExpress.XtraGrid.Views.Grid;
-using HIS.UC.UCCauseOfDeath.ADO;
 
 
 namespace HIS.Desktop.Plugins.TreatmentList
@@ -2176,6 +2178,61 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
                     if (rs)
                     {
+                        if (treatment.GUARANTEE_CODE != null && (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection) || HisConfigCFG.GuaranteeConnection != ""))
+                        {
+                            string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');
+                            // Phần 1: Địa chỉ
+                            string[] guaranteeAddress = parts[0].Split(';');
+                            string uriHast = guaranteeAddress.Length > 0 ? guaranteeAddress[0].Trim() : "";
+                            string acsPort = guaranteeAddress.Length > 1 ? guaranteeAddress[1].Trim() : "";
+
+                            // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
+                            string[] credentials = parts[1].Split(':');
+                            string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
+                            string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
+                            string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
+
+                            // Phần 3: Hạn mức đăng ký mặc định
+                            string guaranteeDefaultLimit = parts[2].Trim();
+
+                            string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+                            MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
+                            DataInput dataInput = new DataInput();
+                            dataInput.hasUri = uriHast;
+                            dataInput.acsUri = acsPort;
+                            dataInput.username = guaranteeUsername;
+                            dataInput.password = guaranteePassword;
+                            dataInput.applicationCode = guaranteeAppCode;
+                            dataInput.limet = guaranteeDefaultLimit;
+                            dataInput.cskcbbd = branchHeinMediOrgCode;
+
+                            dataInput.cancelRegisterUseRequest = new CancelRegisterUseRequest()
+                            {
+                                RequestId = treatment.GUARANTEE_REQUEST_CODE,
+                                ContractNumber = treatment.GUARANTEE_CODE,
+                                PatientFullName = treatment.TDL_PATIENT_NAME,
+                                PatientDateOfBirth = treatment.TDL_PATIENT_DOB.ToString(),
+                                PatientCccd = treatment.TDL_PATIENT_CCCD_NUMBER,
+                                Amount = guaranteeDefaultLimit,
+                                Remark = "Hủy đăng ký sử dụng bảo lãnh",
+                                Signature = "",
+                                Token = ""
+                            };
+
+                            if (!string.IsNullOrEmpty(treatment.GUARANTEE_REQUEST_CODE))
+                            {
+                                CancelRegisterUseResponse CRUR = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(dataInput);
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CRUR), CRUR));
+                                if (CRUR != null)
+                                {
+                                    LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
+                                }
+                                else
+                                {
+                                    LogSystem.Debug("Gọi api thất bại, " + CRUR.Message);
+                                }
+                            }
+                        }
                         FillDataToGrid();
                     }
                     WaitingManager.Hide();
