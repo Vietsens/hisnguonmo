@@ -532,8 +532,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                         if (data != null)
                         {
                             txtTranPatiReasonTo.Text = data.TRAN_PATI_REASON_CODE;
-                            txtTranPatiFor
-                                mTo.Focus();
+                            txtTranPatiFormTo.Focus();
                         }
                     }
                 }
