@@ -45,6 +45,7 @@ using HIS.Desktop.Plugins.TreatmentFinish.Validation;
 using DevExpress.XtraEditors.DXErrorProvider;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using HIS.Desktop.Utility;
+using HIS.Desktop.ApiConsumer;
 
 namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
 {
@@ -57,7 +58,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         internal FormTreatmentFinish Form;
         internal delegate void GetString(MOS.SDO.HisTreatmentFinishSDO currentTreatmentFinishSDO);
         internal GetString MyGetData;
-
+        internal V_HIS_TREATMENT lastTransferTreatment = null;
         List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG> listMediOrg { get; set; }
         private List<HIS_TRAN_PATI_TEMP> listDataTranPatiTemp { get; set; }
         public List<AcsUserADO> lstReAcsUserADO { get; private set; }
@@ -96,6 +97,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 SetIcon();
                 InitComboTransporterLoginNameCheck();
                 LoadDataToCombo();
+                LoadLastTransferTreatment();
+                FillLastTransferData();
 
                 if (this.hisTreatment != null)
                 {
@@ -114,6 +117,98 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
         #endregion
 
         #region Private method
+        private void LoadLastTransferTreatment()
+        {
+            try
+            {
+                if (hisTreatment == null || hisTreatment.PATIENT_ID <= 0)
+                    return;
+
+                CommonParam param = new CommonParam();
+                HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                filter.PATIENT_IDs = new List<long> { hisTreatment.PATIENT_ID };
+
+                // Lấy ID của loại kết thúc điều trị là "Chuyển viện"
+                var transferEndType = Base.GlobalStore.HisTreatmentEndTypes?.FirstOrDefault(o => o.TREATMENT_END_TYPE_CODE == "CV");
+                if (transferEndType != null)
+                {
+                    filter.TREATMENT_END_TYPE_ID = transferEndType.ID;
+                }
+
+                var transferTreatments = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", ApiConsumers.MosConsumer, filter, param);
+                if (transferTreatments != null && transferTreatments.Count > 0)
+                {
+                    // Lấy bản ghi có OUT_TIME lớn nhất, không trùng với hồ sơ hiện tại
+                    lastTransferTreatment = transferTreatments
+                        .Where(o => o.ID != hisTreatment.ID && o.OUT_TIME.HasValue)
+                        .OrderByDescending(o => o.OUT_TIME)
+                        .FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void FillLastTransferData()
+        {
+            try
+            {
+                if (lastTransferTreatment != null)
+                {
+                    // Mã hồ sơ
+                    lblTreatmentCode.Text = lastTransferTreatment.TREATMENT_CODE ?? "";
+
+                    // Mã bệnh
+                    if (!string.IsNullOrEmpty(lastTransferTreatment.ICD_CODE))
+                    {
+                        lblIcdCode.Text = lastTransferTreatment.ICD_CODE +
+                            (!string.IsNullOrEmpty(lastTransferTreatment.ICD_NAME) ?
+                            " - " + lastTransferTreatment.ICD_NAME : "");
+                    }
+                    else
+                    {
+                        lblIcdCode.Text = "";
+                    }
+
+                    // Thời gian chuyển
+                    if (lastTransferTreatment.OUT_TIME.HasValue)
+                    {
+                        DateTime? outTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(
+                            lastTransferTreatment.OUT_TIME.Value);
+                        lblTransferDate.Text = outTime.HasValue ?
+                            outTime.Value.ToString("dd/MM/yyyy HH:mm") : "";
+                    }
+                    else
+                    {
+                        lblTransferDate.Text = "";
+                    }
+
+                    // Phòng chuyển
+                    lblExamRoom.Text = lastTransferTreatment.END_ROOM_NAME ?? "";
+
+                    // Checkbox có giá trị trong 1 năm
+                    chkHasValueOneYear.Checked = (lastTransferTreatment.VALID_1_YEAR == 1);
+                }
+                else
+                {
+                    // Nếu không có dữ liệu, để trống tất cả
+                    lblTreatmentCode.Text = "";
+                    lblIcdCode.Text = "";
+                    lblTransferDate.Text = "";
+                    lblExamRoom.Text = "";
+                    chkHasValueOneYear.Checked = false;
+                }
+
+                // Set readonly cho checkbox
+                chkHasValueOneYear.Properties.ReadOnly = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void loadDataTranPatiOld(MOS.EFMODEL.DataModels.HIS_TREATMENT treatment) // load trong db
         {
             try
