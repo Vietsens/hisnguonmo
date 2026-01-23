@@ -4978,29 +4978,29 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
 
         }
-        private bool isDeleteCustomerSource = false;
+        public bool isDelete;
         private void cboCustomerSource_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
-                    this.cboCustomerSource.EditValue = null;
-                    this.cboCustomerSourceDetail.EditValue = null;
+                    isDelete = true;
+                    cboCustomerSource.EditValue = null;
+                    txtCustomerSource.Text = "";
 
-                    GridCheckMarksSelection gridCheckMark = cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
-                    if (gridCheckMark != null)
-                    {
-                        gridCheckMark.ClearSelection(cboCustomerSourceDetail.Properties.View);
-                    }
+                    var gridCheck = cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
+                    gridCheck?.ClearSelection(cboCustomerSourceDetail.Properties.View);
 
-                    // ✅ Gọi method chung thay vì dựa vào EditValueChanged
+                    cboCustomerSourceDetail.EditValue = null;
+                    cboCustomerSourceDetail.Text = "";
+
                     LoadAllCustomerSourceDetail();
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                LogSystem.Error(ex);
             }
         }
 
@@ -5010,18 +5010,15 @@ namespace HIS.Desktop.Plugins.Register.Run
             {
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
-                    this.cboCustomerSourceDetail.EditValue = null;
-                    // Xóa tất cả checkmark trong GridCheckMarkSelection
-                    GridCheckMarksSelection gridCheckMark = cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
-                    if (gridCheckMark != null)
-                    {
-                        gridCheckMark.ClearSelection(cboCustomerSourceDetail.Properties.View);
-                    }
+                    cboCustomerSourceDetail.EditValue = null;
+
+                    var gridCheckMark = cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
+                    gridCheckMark?.ClearSelection(cboCustomerSourceDetail.Properties.View);
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                LogSystem.Error(ex);
             }
         }
     }
