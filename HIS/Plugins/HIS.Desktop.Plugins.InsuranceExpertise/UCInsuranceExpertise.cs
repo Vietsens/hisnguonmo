@@ -15,48 +15,49 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
+using ACS.SDO;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraLayout;
+using His.Bhyt.ExportXml.Base;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.InsuranceExpertise.Base;
+using HIS.Desktop.Plugins.InsuranceExpertise.Config;
+using HIS.Desktop.Plugins.InsuranceExpertise.Validation;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using HIS.UC.SereServTree;
+using Inventec.Common.Adapter;
+using Inventec.Common.LocalStorage.SdaConfig;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.UC.SereServTree;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.LocalStorage.SdaConfig;
-using Inventec.Core;
-using MOS.Filter;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.ApiConsumer;
-using System.Collections;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.ViewInfo;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using HIS.Desktop.Plugins.InsuranceExpertise.Config;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Controls.Session;
-using MOS.SDO;
-using HIS.Desktop.Plugins.InsuranceExpertise.Base;
-using His.Bhyt.ExportXml.Base;
-using System.IO;
-using HIS.Desktop.Utility;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using Inventec.Common.Adapter;
-using HIS.Desktop.Utilities.Extensions;
-using DevExpress.XtraEditors.Repository;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using HIS.Desktop.Plugins.InsuranceExpertise.Validation;
-using DevExpress.XtraEditors.DXErrorProvider;
-using HIS.Desktop.LibraryMessage;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using ACS.SDO;
-using ACS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.InsuranceExpertise
 {
@@ -252,6 +253,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 {
                     lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     dxValidationProvider1.SetValidationRule(txtStoreBordereauCode, null); 
                 }
                 else if (Config.HisConfigCFG.OptionStoreBordereauCode == "1")
@@ -261,6 +263,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciTxtStoreCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 WaitingManager.Hide();
             }
@@ -1510,8 +1513,8 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
         {
             if (controlAcs != null)
             {
-                controlAcs = controlAcs.Where(o => o.CONTROL_CODE == "HIS000049").ToList();
-                return controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000049") != null;
+                controlAcs = controlAcs.Where(o => o.CONTROL_CODE == "HIS000050").ToList();
+                return controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000050") != null;
             }
             return false;
         }
