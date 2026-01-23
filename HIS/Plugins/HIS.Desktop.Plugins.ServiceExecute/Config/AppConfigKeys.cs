@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
         internal const string CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SERVICE_SIMULTANEITY_OPTION";
         internal const string CONFIG_KEY__CHECK_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.CHECK_SIMULTANEITY_OPTION";
         internal const string CONFIG_KEY__ConnectionInfo = "HIS.Desktop.AI.ConnectionInfo";
+        internal const string CONFIG_KEY__MACHINE_SHOW_OPTION = "HIS.Desktop.Plugins.HisMachine_ShowOption";
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -236,6 +237,14 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION) == "2";
+            }
+        }
+        
+        internal static string MachineShowOption
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__MACHINE_SHOW_OPTION);
             }
         }
     }
