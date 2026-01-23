@@ -2169,70 +2169,74 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 if (DevExpress.XtraEditors.XtraMessageBox.Show("Bạn có muốn xóa hồ sơ điều trị?", "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     CommonParam param = new CommonParam();
-                    HIS_TREATMENT treatment = new HIS_TREATMENT();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, data);
 
+                    HisTreatmentFilter filter = new HisTreatmentFilter();
+                    filter.ID = data.ID;
+                    var treat = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+
+                    if (treat != null && treat.GUARANTEE_CODE != null && (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection) || HisConfigCFG.GuaranteeConnection != ""))
+                    {
+                        string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');
+                        // Phần 1: Địa chỉ
+                        string[] guaranteeAddress = parts[0].Split(';');
+                        string uriHast = guaranteeAddress.Length > 0 ? guaranteeAddress[0].Trim() : "";
+                        string acsPort = guaranteeAddress.Length > 1 ? guaranteeAddress[1].Trim() : "";
+
+                        // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
+                        string[] credentials = parts[1].Split(':');
+                        string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
+                        string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
+                        string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
+
+                        // Phần 3: Hạn mức đăng ký mặc định
+                        string guaranteeDefaultLimit = parts[2].Trim();
+
+                        string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+                        MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
+                        DataInput dataInput = new DataInput();
+                        dataInput.hasUri = uriHast;
+                        dataInput.acsUri = acsPort;
+                        dataInput.username = guaranteeUsername;
+                        dataInput.password = guaranteePassword;
+                        dataInput.applicationCode = guaranteeAppCode;
+                        dataInput.limet = guaranteeDefaultLimit;
+                        dataInput.cskcbbd = branchHeinMediOrgCode;
+
+                        dataInput.cancelRegisterUseRequest = new CancelRegisterUseRequest()
+                        {
+                            RequestId = treat.GUARANTEE_REQUEST_CODE,
+                            ContractNumber = treat.GUARANTEE_CODE,
+                            PatientFullName = treat.TDL_PATIENT_NAME,
+                            PatientDateOfBirth = treat.TDL_PATIENT_DOB.ToString(),
+                            PatientCccd = treat.TDL_PATIENT_CCCD_NUMBER,
+                            Amount = guaranteeDefaultLimit,
+                            Remark = "Hủy đăng ký sử dụng bảo lãnh",
+                            Signature = "",
+                            Token = ""
+                        };
+
+                        if (!string.IsNullOrEmpty(treat.GUARANTEE_REQUEST_CODE))
+                        {
+                            CancelRegisterUseResponse CRUR = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(dataInput);
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CRUR), CRUR));
+                            if (CRUR != null && CRUR.Success)
+                            {
+                                LogSystem.Debug(CRUR.Data.ResponseStatus.ErrorDesc);
+                            }
+                            else
+                            {
+                                LogSystem.Debug("Gọi api thất bại, " + CRUR.Data?.ResponseStatus?.ErrorCode + " " + CRUR.Data?.ResponseStatus?.ErrorDesc);
+                            }
+                        }
+                    }
+                    //HIS_TREATMENT treatment = new HIS_TREATMENT();
+                    //Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treatment, data); 
                     WaitingManager.Show();
 
-                    var rs = new BackendAdapter(param).Post<bool>("api/HisTreatment/DeleteTestData", ApiConsumers.MosConsumer, treatment, param);
+                    var rs = new BackendAdapter(param).Post<bool>("api/HisTreatment/DeleteTestData", ApiConsumers.MosConsumer, treat, param);
 
                     if (rs)
                     {
-                        if (treatment.GUARANTEE_CODE != null && (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection) || HisConfigCFG.GuaranteeConnection != ""))
-                        {
-                            string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');
-                            // Phần 1: Địa chỉ
-                            string[] guaranteeAddress = parts[0].Split(';');
-                            string uriHast = guaranteeAddress.Length > 0 ? guaranteeAddress[0].Trim() : "";
-                            string acsPort = guaranteeAddress.Length > 1 ? guaranteeAddress[1].Trim() : "";
-
-                            // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
-                            string[] credentials = parts[1].Split(':');
-                            string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
-                            string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
-                            string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
-
-                            // Phần 3: Hạn mức đăng ký mặc định
-                            string guaranteeDefaultLimit = parts[2].Trim();
-
-                            string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
-                            MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
-                            DataInput dataInput = new DataInput();
-                            dataInput.hasUri = uriHast;
-                            dataInput.acsUri = acsPort;
-                            dataInput.username = guaranteeUsername;
-                            dataInput.password = guaranteePassword;
-                            dataInput.applicationCode = guaranteeAppCode;
-                            dataInput.limet = guaranteeDefaultLimit;
-                            dataInput.cskcbbd = branchHeinMediOrgCode;
-
-                            dataInput.cancelRegisterUseRequest = new CancelRegisterUseRequest()
-                            {
-                                RequestId = treatment.GUARANTEE_REQUEST_CODE,
-                                ContractNumber = treatment.GUARANTEE_CODE,
-                                PatientFullName = treatment.TDL_PATIENT_NAME,
-                                PatientDateOfBirth = treatment.TDL_PATIENT_DOB.ToString(),
-                                PatientCccd = treatment.TDL_PATIENT_CCCD_NUMBER,
-                                Amount = guaranteeDefaultLimit,
-                                Remark = "Hủy đăng ký sử dụng bảo lãnh",
-                                Signature = "",
-                                Token = ""
-                            };
-
-                            if (!string.IsNullOrEmpty(treatment.GUARANTEE_REQUEST_CODE))
-                            {
-                                CancelRegisterUseResponse CRUR = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(dataInput);
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => CRUR), CRUR));
-                                if (CRUR != null)
-                                {
-                                    LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
-                                }
-                                else
-                                {
-                                    LogSystem.Debug("Gọi api thất bại, " + CRUR.Message);
-                                }
-                            }
-                        }
                         FillDataToGrid();
                     }
                     WaitingManager.Hide();
