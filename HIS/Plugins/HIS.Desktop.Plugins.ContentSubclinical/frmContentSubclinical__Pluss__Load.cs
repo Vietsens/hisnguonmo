@@ -584,6 +584,10 @@ namespace HIS.Desktop.Plugins.ContentSubclinical
                         leaf.VALUE_RANGE = dicSereServExt[leaf.ID].CONCLUDE;
                     }
                 }
+                if (dicSereServExt.ContainsKey(leaf.ID) && dicSereServExt[leaf.ID].END_TIME.HasValue)
+                {
+                    leaf.END_TIME = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(dicSereServExt[leaf.ID].END_TIME.Value);
+                }
                 leaf.SERVICE_UNIT_NAME = (serviceUnit != null ? serviceUnit.SERVICE_UNIT_NAME : "");
                 SereServADOs.Add(leaf);
             }

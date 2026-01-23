@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.ContentSubclinical.ADO
         public decimal? VALUE { get; set; }
 
         public string DESCRIPTION { get; set; }
+        public string END_TIME { get; set; }
 
         public string TEST_INDEX_CODE { get; set; }
         public string TEST_INDEX_NAME { get; set; }
