@@ -516,7 +516,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.txtCustomerSource.Size = new System.Drawing.Size(88, 22);
             this.txtCustomerSource.StyleController = this.lciRegisterEditor;
             this.txtCustomerSource.TabIndex = 77;
-            //this.txtCustomerSource.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtCustomerSource_PreviewKeyDown);
             // 
             // chkCAPD
             // 
@@ -1821,6 +1820,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.cboCustomerSource.Location = new System.Drawing.Point(720, 406);
             this.cboCustomerSource.Name = "cboCustomerSource";
+            this.cboCustomerSource.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboCustomerSource.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
@@ -1845,6 +1845,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             // 
             this.cboCustomerSourceDetail.Location = new System.Drawing.Point(923, 406);
             this.cboCustomerSourceDetail.Name = "cboCustomerSourceDetail";
+            this.cboCustomerSourceDetail.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboCustomerSourceDetail.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
@@ -1854,7 +1855,6 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.cboCustomerSourceDetail.Size = new System.Drawing.Size(175, 22);
             this.cboCustomerSourceDetail.StyleController = this.lciRegisterEditor;
             this.cboCustomerSourceDetail.TabIndex = 79;
-            this.cboCustomerSourceDetail.ToolTip = "Nguồn khách chi tiết";
             this.cboCustomerSourceDetail.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboCustomerSourceDetail_ButtonClick);
             // 
             // gridView7
@@ -2867,6 +2867,7 @@ namespace HIS.Desktop.Plugins.Register.Run
             this.layoutControlItem25.Control = this.cboCustomerSourceDetail;
             this.layoutControlItem25.Location = new System.Drawing.Point(851, 59);
             this.layoutControlItem25.Name = "layoutControlItem25";
+            this.layoutControlItem25.OptionsToolTip.ToolTip = "Nguồn khách chi tiết";
             this.layoutControlItem25.Size = new System.Drawing.Size(246, 28);
             this.layoutControlItem25.Text = "NK chi tiết:";
             this.layoutControlItem25.TextSize = new System.Drawing.Size(62, 16);
