@@ -2077,6 +2077,16 @@ namespace HIS.UC.UCOtherServiceReqInfo
                                 .Select(g => g.First())
                                 .ToList();
                         }
+                        else
+                        {
+                            this.cboNguonKhachCT.EditValue = null;
+                            // Xóa tất cả checkmark trong GridCheckMarkSelection
+                            GridCheckMarksSelection gridCheckMark = cboNguonKhachCT.Properties.Tag as GridCheckMarksSelection;
+                            if (gridCheckMark != null)
+                            {
+                                gridCheckMark.ClearSelection(cboNguonKhachCT.Properties.View);
+                            }
+                        }
                         
                         // Convert sang ADO
                         List<otherPaySourceDetailADO> listADO = new List<otherPaySourceDetailADO>();
