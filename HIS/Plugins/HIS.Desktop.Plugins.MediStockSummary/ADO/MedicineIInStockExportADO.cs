@@ -27,6 +27,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary.ADO
     public class MedicineInStockExportADO : MOS.EFMODEL.DataModels.V_HIS_MEDICINE_BEAN
     {
         public decimal? AVAILABLE_AMOUNT { get; set; }
+        public string DOCUMENT_NUMBER { get; set; } // Số hóa đơn
         public string MEDICINE_USE_FORM_NAME { get; set; }//đường dùng
         public string MEDICINE_USE_FORM_CODE { get; set; }
         public string PACKING_TYPE_NAME { get; set; }

@@ -82,7 +82,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 ValidateMaxlengthTextEdit(this.txtPhone, 12);
                 ValidateMaxlengthTextEdit(this.txtRelativeCMNDNumber, 12);
                 ValidateMaxlength(this.txtNote, 1000);
-                ValidateMaxlength(this.txtCustomerSourceDetail, 1000);
+                ValidateMaxlength(this.cboCustomerSourceDetail, 1000);
 
             }
             catch (Exception ex)

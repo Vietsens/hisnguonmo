@@ -154,8 +154,8 @@ namespace HIS.Desktop.Plugins.HisCustomerSourceDetail.HisCustomerSourceDetail
         {
             try
             {
-                ValidateMaxlength(txtDoctorCode, true, 10);
-                ValidateMaxlength(txtDoctorName, true, 500);
+                ValidateMaxlength(txtDoctorCode, true, 50);
+                ValidateMaxlength(txtDoctorName, true, 100);
                 ValidateRequired(txtCustomerCode);
                 ValidateRequired(cboCustomer);
             }
@@ -331,7 +331,10 @@ namespace HIS.Desktop.Plugins.HisCustomerSourceDetail.HisCustomerSourceDetail
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 GridViewCustomerSource.BeginUpdate();
                 GridControlCustomerSource.DataSource = null;
-                apiResuilt = new BackendAdapter(paramCommon).GetRO<List<HIS_CUSTOMER_SOURCE_DT>>(HisRequestUriStore.CustomerSource_GET, ApiConsumers.MosConsumer, filter, paramCommon);
+                Inventec.Common.Logging.LogSystem.Info("filter.Data: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
+
+                apiResuilt = new BackendAdapter(paramCommon).GetRO<List<HIS_CUSTOMER_SOURCE_DT>>
+                    (HisRequestUriStore.CustomerSource_GET, ApiConsumers.MosConsumer, filter, paramCommon);
                 if (apiResuilt != null)
                 {
                     Inventec.Common.Logging.LogSystem.Info("apiResuilt.Data: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => apiResuilt.Data), apiResuilt.Data));
@@ -685,8 +688,12 @@ namespace HIS.Desktop.Plugins.HisCustomerSourceDetail.HisCustomerSourceDetail
                         }
                         else if (e.Column.FieldName == "CUSTOMER_SOURCE_NAME")
                         {
-                            var cus = listCustomer.FirstOrDefault(o => o.ID == datarow.CUSTOMER_SOURCE_ID);
-                            e.Value = cus.CUSTOMER_SOURCE_NAME;
+                            // Kiểm tra listCustomer và kết quả tìm kiếm có null không
+                            if (listCustomer != null)
+                            {
+                                var cus = listCustomer.FirstOrDefault(o => o.ID == datarow.CUSTOMER_SOURCE_ID);
+                                e.Value = (cus != null) ? cus.CUSTOMER_SOURCE_NAME : "Không xác định";
+                            }
                         }
                     }
                 }
@@ -962,6 +969,21 @@ namespace HIS.Desktop.Plugins.HisCustomerSourceDetail.HisCustomerSourceDetail
                 columnInfos.Add(new ColumnInfo("CUSTOMER_SOURCE_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("CUSTOMER_SOURCE_NAME", "CUSTOMER_SOURCE_CODE", columnInfos, false, 350);
                 ControlEditorLoader.Load(cboCustomer, data, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtSearch_PreviewKeyDown_1(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    LoadDataToGridControl();
+                }
             }
             catch (Exception ex)
             {

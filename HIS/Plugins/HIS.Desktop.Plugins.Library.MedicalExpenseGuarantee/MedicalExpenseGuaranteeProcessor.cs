@@ -15,12 +15,13 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
     {
         public RegisterUseResponse GuaranteeRegisterUse(DataInput registerUse)
         {
+            RegisterUseResponse registerUseResponse = new RegisterUseResponse();
             try
             {
                 LogSystem.Info("input GuaranteeRegisterUse " + registerUse); 
                 LogSystem.Info("Start GuaranteeRegisterUse " + LogUtil.TraceData("input: ", registerUse.registerUseRequest));
                 LogSystem.Info("input GuaranteeRegisterUse " + registerUse.registerUseRequest); 
-                RegisterUseResponse registerUseResponse = new RegisterUseResponse();
+                
                 if (!this.ValidateRegisterUse(registerUse.registerUseRequest, ref registerUseResponse))
                 {
                     Inventec.Common.Logging.LogSystem.Error("Validate failed: " + registerUseResponse.Message);
@@ -52,22 +53,23 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 else
                 {
                     Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " + registerUseResponse?.Status + ", ErrorMessage: " + registerUseResponse?.Data.ErrorMessage + " ErrorCode: " + registerUseResponse?.Data.ErrorCode);
-                    return null;
+                    return registerUseResponse;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
+                return registerUseResponse;
             }
         }
         public UseResponse GuaranteeUse(DataInput use)
         {
+            UseResponse responseUser = new UseResponse();
             try
             {
                 LogSystem.Info("Start GuaranteeUse " + LogUtil.TraceData("input: ", use.useRequest));
                 LogSystem.Info("input GuaranteeUse " + use.useRequest);
-                UseResponse responseUser = new UseResponse();
+                
 
                 // Validate dữ liệu đầu vào
                 if (!this.ValidateUse(use.useRequest, ref responseUser))
@@ -112,28 +114,29 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                         var errorCode = responseUser.Data?.ResponseStatus?.ErrorCode;
                         var errorDesc = responseUser.Data?.ResponseStatus?.ErrorDesc;
                         Inventec.Common.Logging.LogSystem.Error("API Error - Code: " + errorCode + " Desc: "+ errorDesc);
-                        return null;
+                        return responseUser;
                     }
                 }
                 else
                 {
-                    Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " +responseUser?.Status+", Message: "+responseUser?.Message);
-                    return null;
+                    Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " +responseUser?.Status+ ", ErrorDesc: " + responseUser.Data?.ResponseStatus?.ErrorDesc);
+                    return responseUser;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
+                return responseUser;
             }
         }
         public CancelRegisterUseResponse GuaranteeCancelRegisterUse(DataInput cancelRegisterUse)
         {
+            CancelRegisterUseResponse cancelRegisterUseResponse = new CancelRegisterUseResponse();
             try
             {
                 LogSystem.Info("Start GuaranteeCancelRegisterUse " + LogUtil.TraceData("input: ", cancelRegisterUse.cancelRegisterUseRequest)); 
                 LogSystem.Info("input GuaranteeCancelRegisterUse " + cancelRegisterUse.cancelRegisterUseRequest);
-                CancelRegisterUseResponse cancelRegisterUseResponse = new CancelRegisterUseResponse();
+                
                 if (!this.ValiCancelRegisterUse(cancelRegisterUse.cancelRegisterUseRequest, ref cancelRegisterUseResponse))
                 {
                     Inventec.Common.Logging.LogSystem.Error("Validate failed: " + cancelRegisterUseResponse.Message);
@@ -154,14 +157,14 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 }
 
                 LogSystem.Info("Start GuaranteeCancelRegisterUse API" + LogUtil.TraceData("input: ", cancelRegisterUse.cancelRegisterUseRequest));
-                LogSystem.Info("input GuaranteeCancelRegisterUse API" + cancelRegisterUse.cancelRegisterUseRequest);
+                LogSystem.Info("input GuaranteeCancelRegisterUse API" + cancelRegisterUse.cancelRegisterUseRequest); 
                 cancelRegisterUseResponse = consumer.CreateRequest<CancelRegisterUseResponse>(Base.API.API_GUARANTEE_CANCEL_REGISTER_USE, cancelRegisterUse.cancelRegisterUseRequest);
 
                 if (cancelRegisterUseResponse != null && cancelRegisterUseResponse.Success)
                 {
                     if (cancelRegisterUseResponse.Data?.ResponseStatus?.Status == "0")
                     {
-                        Inventec.Common.Logging.LogSystem.Info("GuaranteeCancelRegisterUse Success - RequestId: " + cancelRegisterUseResponse.Data.Data.TransId);
+                        Inventec.Common.Logging.LogSystem.Info("GuaranteeCancelRegisterUse Success - RequestId: " + cancelRegisterUseResponse?.Data?.ResponseStatus?.ErrorDesc);
                         return cancelRegisterUseResponse;
                     }
                     else
@@ -169,33 +172,34 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                         var errorCode = cancelRegisterUseResponse.Data?.ResponseStatus?.ErrorCode;
                         var errorDesc = cancelRegisterUseResponse.Data?.ResponseStatus?.ErrorDesc;
                         Inventec.Common.Logging.LogSystem.Error("API Error - Code: " + errorCode + " Desc: " + errorDesc);
-                        return null;
+                        return cancelRegisterUseResponse;
                     }
                 }
                 else
                 {
-                    Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " + cancelRegisterUseResponse?.Status + ", Message: " + cancelRegisterUseResponse?.Message);
-                    return null;
+                    Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " + cancelRegisterUseResponse?.Status + ", errorDesc: " + cancelRegisterUseResponse?.Data?.ResponseStatus?.ErrorDesc);
+                    return cancelRegisterUseResponse;
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
+                return cancelRegisterUseResponse;
             }
         }
         public AvailableBalanceInfoResponse GuaranteeAvailableBalanceInfoResponse(DataInput availableBalanceInfo)
         {
+            AvailableBalanceInfoResponse availableBalanceInfoResponse = new AvailableBalanceInfoResponse();
             try
             {
                 LogSystem.Info("Start GuaranteeAvailableBalanceInfoResponse " + LogUtil.TraceData("input: ", availableBalanceInfo.availableBalanceInfoRequest));
                 LogSystem.Info("input GuaranteeAvailableBalanceInfoResponse " + availableBalanceInfo.availableBalanceInfoRequest);
-                AvailableBalanceInfoResponse availableBalanceInfoResponse = new AvailableBalanceInfoResponse();
+               
                 if (!this.ValiAvailableBalanceInfo(availableBalanceInfo.availableBalanceInfoRequest, ref availableBalanceInfoResponse))
                 {
                     Inventec.Common.Logging.LogSystem.Error("Validate failed: " + availableBalanceInfoResponse.Message);
                     return null;
-                }
+                } 
 
                 Base.ApiConsumer consumer = new Base.ApiConsumer(availableBalanceInfo.hasUri, availableBalanceInfo.acsUri, availableBalanceInfo.applicationCode, availableBalanceInfo.limet, availableBalanceInfo.cskcbbd, availableBalanceInfo.username, availableBalanceInfo.password);
 
@@ -204,7 +208,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
                 if (availableBalanceInfoResponse == null || !availableBalanceInfoResponse.Success)
                 {
                     Inventec.Common.Logging.LogSystem.Error("API call failed - Status: " + availableBalanceInfoResponse?.Status + ", Message: " + availableBalanceInfoResponse?.Message);
-                    return null;
+                    return availableBalanceInfoResponse;
                 }
                 else
                 {
@@ -215,7 +219,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
+                return availableBalanceInfoResponse;
             }
         }
         private bool ValidateUse(UseRequest dataUser, ref UseResponse response) 

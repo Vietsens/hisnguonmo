@@ -2154,24 +2154,24 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                             RegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeRegisterUse(data);
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
-                            if (rs != null)
+                            if (rs != null && rs.Success)
                             {
                                 LogSystem.Debug("Gọi api thành công");
+                                XtraMessageBox.Show(string.Format("Xử lý thành công. Bệnh nhân có thể bảo lãnh {0} đồng", rs.Data.AvailableBalance), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 this.GuarateeCode = rs.Data.ContractNumber;
                                 this.GuaranteeRequestCode = rs.Data.RequestId;
                                 this.chkBaoLanh.Checked = true;
                             }
                             else
                             {
-                                LogSystem.Debug("Gọi api thất bại");
+                                LogSystem.Debug("Gọi api thất bại"); 
+                                XtraMessageBox.Show(string.Format("Đăng ký bảo lãnh thất bại. {0} ", rs?.Data.ErrorMessage), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 this.chkBaoLanh.Checked = false;
-                                XtraMessageBox.Show("Đăng ký bảo lãnh thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
-
-                        else
+                        else 
                         {
-                            if (isNew)
+                            if (!isNew)
                             {
                                 data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
                                 {
@@ -2190,13 +2190,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                 {
                                     CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
-                                    if (rs != null)
+                                    if (rs != null && rs.Success)
                                     {
-                                        LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
+                                        XtraMessageBox.Show("Hủy bảo lãnh thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     }
                                     else
                                     {
-                                        LogSystem.Debug("Gọi api thất bại, ..............");
+                                        XtraMessageBox.Show(string.Format("Hủy bảo lãnh thất bại {0} ", rs?.Message), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     }
                                 }
                             }                            

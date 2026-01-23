@@ -19,6 +19,7 @@ using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Columns;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Utility;
@@ -104,6 +105,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                 LoadDataTocboUser();
                 SetDefaultValueControl();
                 loadDataTranPatiOld(this.treatmentEndInputADO.Treatment);//Lấy thông tin chuyển viện cũ
+                GetTreatmentTransfer(this.treatmentEndInputADO.Treatment);
                 ValidateForm();
             }
             catch (Exception ex)
@@ -1774,6 +1776,52 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+        private V_HIS_TREATMENT GetTreatmentTransfer(MOS.EFMODEL.DataModels.HIS_TREATMENT treatment)
+        {
+            V_HIS_TREATMENT result = null;
+            try
+            {
+                if (treatment != null)
+                {
+                    CommonParam param = new CommonParam();
+                    HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+                    filter.PATIENT_IDs = new List<long> { treatment.PATIENT_ID };
+                    filter.TREATMENT_END_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN;
+
+                    // Gọi API lấy danh sách hồ sơ của bệnh nhân
+                    var apiResult = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>("api/HisTreatment/GetView", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, SessionManager.ActionLostToken, param);
+
+                    if (apiResult != null && apiResult.Count > 0)
+                    {
+                        // Lấy bản ghi có OUT_TIME lớn nhất và khác ID hiện tại
+                        result = apiResult
+                            .Where(o => o.ID != treatment.ID)
+                            .OrderByDescending(o => o.OUT_TIME)
+                            .FirstOrDefault();
+                        // gán data
+                        txtTreatmentCode.Text = result.TREATMENT_CODE ?? string.Empty;
+                        txtIcdCodeIcdName.Text = (result.ICD_CODE ?? string.Empty) + " - " + (result.ICD_NAME ?? string.Empty);
+                        if (result.OUT_TIME.HasValue)
+                        {
+                            DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(result.OUT_TIME.Value);
+                            txtOutTime.Text = dt.HasValue ? dt.Value.ToString("dd/MM/yyyy HH:mm") : string.Empty;
+                        }
+                        else
+                        {
+                            txtOutTime.Text = string.Empty;
+                        }
+                        txtEndRoomName.Text = result.END_ROOM_NAME ?? string.Empty;
+                        chkValid1Year2.Checked = result.VALID_1_YEAR == 1;
+                    }  
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
     }
     public class Compare : IEqualityComparer<V_HIS_EMPLOYEE>

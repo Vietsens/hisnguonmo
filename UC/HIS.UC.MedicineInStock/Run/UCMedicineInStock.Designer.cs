@@ -45,14 +45,6 @@ namespace HIS.UC.HisMedicineInStock.Run
         /// </summary>
         private void InitializeComponent()
         {
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject73 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject74 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject75 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject76 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject77 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject78 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject79 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject80 = new DevExpress.Utils.SerializableAppearanceObject();
             this.trvService = new DevExpress.XtraTreeList.TreeList();
             this.repositoryItemchkIsExpend__Enable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemchkIsExpend__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -195,8 +187,6 @@ namespace HIS.UC.HisMedicineInStock.Run
             // btnLock
             // 
             this.btnLock.AutoHeight = false;
-            this.btnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.UC.MedicineInStock.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject73, serializableAppearanceObject74, serializableAppearanceObject75, serializableAppearanceObject76, "Khóa", null, null, true)});
             this.btnLock.Name = "btnLock";
             this.btnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnLock_ButtonClick);
@@ -204,8 +194,6 @@ namespace HIS.UC.HisMedicineInStock.Run
             // btnUnLock
             // 
             this.btnUnLock.AutoHeight = false;
-            this.btnUnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.UC.MedicineInStock.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "Mở khóa", null, null, true)});
             this.btnUnLock.Name = "btnUnLock";
             this.btnUnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnUnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnUnLock_ButtonClick);

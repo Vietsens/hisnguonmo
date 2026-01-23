@@ -97,6 +97,10 @@
     <Reference Include="HIS.Desktop.Plugins.Library.FormOtherTreatment">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.FormOtherTreatment\HIS.Desktop.Plugins.Library.FormOtherTreatment.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintAggrExpMest">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintAggrExpMest\HIS.Desktop.Plugins.Library.PrintAggrExpMest.dll</HintPath>
     </Reference>
