@@ -102,7 +102,8 @@ namespace MPS.Processor.Mps000235
                         MEDICINE_TYPE_NAME = first.MEDICINE_TYPE_NAME,
                         SERVICE_UNIT_NAME = first.SERVICE_UNIT_NAME,
                         REMEDY_COUNT = first.REMEDY_COUNT,
-                        AMOUNT_REQUEST = totalSoLuongMoiThang
+                        AMOUNT_REQUEST = totalSoLuongMoiThang,
+                        PRICE = first.PRICE,
                     };
                 }).ToList());
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
