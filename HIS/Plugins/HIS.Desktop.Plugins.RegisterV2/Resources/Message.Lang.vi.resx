@@ -250,7 +250,7 @@
     <value>Bệnh nhân có hồ sơ điều trị: {0} ra viện ngày hôm nay. Bạn có muốn tiếp tục?</value>
   </data>
   <data name="Plugin_Register_DotKhamTruocCuaBenhNhanConNoTienVienPhi" xml:space="preserve">
-    <value>Đợt khám/điều trị trước đó của bệnh nhân còn nợ tiền viện phí. Mã hồ sơ điều trị {0}</value>
+    <value>Đợt khám/điều trị trước đó của bệnh nhân còn nợ tiền viện phí hoặc chưa khóa viện phí. Mã hồ sơ điều trị {0}</value>
   </data>
 	<data name="Plugin_Register_DotKhamTruocCuaBenhNhanConNoTienVienPhi3" xml:space="preserve">
     <value>Đợt khám/điều trị trước đó của bệnh nhân có số tiền phải trả > 0 hoặc chưa duyệt khóa viện phí. Mã hồ sơ điều trị {0}</value>
