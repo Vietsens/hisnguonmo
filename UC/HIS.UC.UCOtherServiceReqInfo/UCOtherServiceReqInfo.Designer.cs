@@ -143,10 +143,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.dxValidationUCOtherReqInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.timerInitForm = new System.Windows.Forms.Timer(this.components);
-            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.lcUCOtherServiceReqInfo)).BeginInit();
             this.lcUCOtherServiceReqInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkChamSocDa.Properties)).BeginInit();
@@ -228,9 +228,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             this.SuspendLayout();
             // 
             // lcUCOtherServiceReqInfo
@@ -280,6 +280,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             this.chkChamSocDa.Location = new System.Drawing.Point(76, 117);
             this.chkChamSocDa.Name = "chkChamSocDa";
+            this.chkChamSocDa.Properties.Appearance.BackColor = System.Drawing.Color.Transparent;
+            this.chkChamSocDa.Properties.Appearance.ForeColor = System.Drawing.Color.CornflowerBlue;
+            this.chkChamSocDa.Properties.Appearance.Options.UseBackColor = true;
+            this.chkChamSocDa.Properties.Appearance.Options.UseForeColor = true;
             this.chkChamSocDa.Properties.Caption = "Nhận chỉ dẫn hỗ trợ điều trị bằng các sản phẩm chăm sóc da";
             this.chkChamSocDa.Size = new System.Drawing.Size(404, 19);
             this.chkChamSocDa.StyleController = this.lcUCOtherServiceReqInfo;
@@ -1330,14 +1334,6 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem12.TextToControlDistance = 0;
             this.layoutControlItem12.TextVisible = false;
             // 
-            // dxErrorProviderControl
-            // 
-            this.dxErrorProviderControl.ContainerControl = this;
-            // 
-            // timerInitForm
-            // 
-            this.timerInitForm.Interval = 500;
-            // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
@@ -1345,6 +1341,14 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.emptySpaceItem2.Name = "emptySpaceItem2";
             this.emptySpaceItem2.Size = new System.Drawing.Size(73, 23);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // dxErrorProviderControl
+            // 
+            this.dxErrorProviderControl.ContainerControl = this;
+            // 
+            // timerInitForm
+            // 
+            this.timerInitForm.Interval = 500;
             // 
             // UCOtherServiceReqInfo
             // 
@@ -1435,9 +1439,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             this.ResumeLayout(false);
 
         }
