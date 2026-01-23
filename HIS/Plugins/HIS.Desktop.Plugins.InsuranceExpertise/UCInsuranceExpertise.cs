@@ -439,8 +439,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 cboTreatmentType.Text = "";
 
             }
-
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -938,7 +937,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     if (!string.IsNullOrEmpty(treatment1.STORE_BORDEREAU_CODE))
                     {
                         if (HisConfigCFG.OptionStoreBordereauCode == "1")
-                            txtStoreBordereauCode.Text = treatment1.STORE_BORDEREAU_CODE;
+                            txtStoreBordereauCode.Text = treatment1.STORE_BORDEREAU_CODE; 
                         else if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                             txtStoreBordereauCodeOption2.Text = treatment1.STORE_BORDEREAU_CODE;
 
@@ -1495,7 +1494,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
 
         private void InitializeGrid()
         {
-            bool hasEditPermission = HasEditPermission();
+            bool hasEditPermission = HasEditPermission(); 
 
             if (hasEditPermission)
             {
@@ -1511,7 +1510,8 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
         {
             if (controlAcs != null)
             {
-                return controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000049" && o.MODIFIER == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()) != null;
+                controlAcs = controlAcs.Where(o => o.CONTROL_CODE == "HIS000049").ToList();
+                return controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000049") != null;
             }
             return false;
         }

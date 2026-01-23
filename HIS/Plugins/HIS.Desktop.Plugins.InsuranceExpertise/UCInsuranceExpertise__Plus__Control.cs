@@ -738,7 +738,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                         dteStoreTime.Enabled = true;
                         btnLuuTruOption3.Text = "Lưu trữ (F5)";
                         btnLuuTruOption3.ToolTip = null;
-                        btnLuuTruOption3.Enabled = true;
+                        this.InitializeGrid();
                         btnLockHein.Enabled = true;
                         btnUnLockHein.Enabled = true;
                         txtStoreBordereauCodeOption2.Enabled = true;
@@ -785,7 +785,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     {
                         btnLuuTruOption3.Text = "Hủy LT (F5)";
                         btnLuuTruOption3.ToolTip = "Hủy lưu trữ bảng kê";
-                        btnLuuTruOption3.Enabled = true;
+                        this.InitializeGrid();
                         btnUnLockHein.Enabled = false;
                     }
                 }
