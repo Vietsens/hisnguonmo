@@ -291,7 +291,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             // cboNguonKhachCT
             // 
-            this.cboNguonKhachCT.Location = new System.Drawing.Point(364, 238);
+            this.cboNguonKhachCT.Location = new System.Drawing.Point(356, 238);
             this.cboNguonKhachCT.Name = "cboNguonKhachCT";
             this.cboNguonKhachCT.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboNguonKhachCT.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -299,7 +299,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboNguonKhachCT.Properties.NullText = "";
             this.cboNguonKhachCT.Properties.View = this.gridView5;
-            this.cboNguonKhachCT.Size = new System.Drawing.Size(202, 20);
+            this.cboNguonKhachCT.Size = new System.Drawing.Size(210, 20);
             this.cboNguonKhachCT.StyleController = this.lcUCOtherServiceReqInfo;
             this.cboNguonKhachCT.TabIndex = 56;
             this.cboNguonKhachCT.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboNguonKhachCT_ButtonClick);
@@ -322,7 +322,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboNguonKhach.Properties.NullText = "";
             this.cboNguonKhach.Properties.View = this.gridView4;
-            this.cboNguonKhach.Size = new System.Drawing.Size(125, 20);
+            this.cboNguonKhach.Size = new System.Drawing.Size(117, 20);
             this.cboNguonKhach.StyleController = this.lcUCOtherServiceReqInfo;
             this.cboNguonKhach.TabIndex = 54;
             this.cboNguonKhach.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboNguonKhach_ButtonClick);
@@ -1302,7 +1302,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem11.Location = new System.Drawing.Point(159, 217);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem11.Size = new System.Drawing.Size(127, 24);
+            this.layoutControlItem11.Size = new System.Drawing.Size(119, 24);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -1311,10 +1311,10 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem13.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem13.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem13.Control = this.cboNguonKhachCT;
-            this.layoutControlItem13.Location = new System.Drawing.Point(286, 217);
+            this.layoutControlItem13.Location = new System.Drawing.Point(278, 217);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.OptionsToolTip.ToolTip = "Nguồn khách chi tiết";
-            this.layoutControlItem13.Size = new System.Drawing.Size(281, 24);
+            this.layoutControlItem13.Size = new System.Drawing.Size(289, 24);
             this.layoutControlItem13.Text = "NK chi tiết:";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(70, 20);

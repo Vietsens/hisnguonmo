@@ -32,6 +32,7 @@ using HIS.UC.UCOtherServiceReqInfo.Resources;
 using HIS.UC.UCOtherServiceReqInfo.Valid;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Controls.PopupLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
@@ -2155,23 +2156,23 @@ namespace HIS.UC.UCOtherServiceReqInfo
         {
             try
             {
-                e.DisplayText = "";
-                string roomName = "";
-                if (this.lstOtherDetail != null && this.lstOtherDetail.Count > 0)
+                string displayText = "";
+                if (lstOtherDetail != null && lstOtherDetail.Count > 0)
                 {
-                    foreach (var item in this.lstOtherDetail)
+                    foreach (var item in lstOtherDetail)
                     {
-                        roomName += item.USERNAME + ",";
-
+                        displayText += item.USERNAME + ",";
                     }
+                    if (displayText.EndsWith(",")) displayText = displayText.Substring(0, displayText.Length - 1);
                 }
-                e.DisplayText = roomName;
+
+                e.DisplayText = displayText;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-
+                LogSystem.Warn(ex);
             }
+
         }
 
         private void cboNguonKhachCT_ButtonClick(object sender, ButtonPressedEventArgs e)
