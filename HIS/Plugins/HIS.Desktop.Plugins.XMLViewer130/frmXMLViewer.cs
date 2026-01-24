@@ -172,6 +172,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 chkViewXml130.Checked = dataType == null || dataType == 1;
                 chkViewXmlCheckIn.Checked = dataType == 2;
                 chkViewXmlCT.Checked = dataType == 3;
+                //chkViewXmlCT.Checked = true;
                 ViewXml();
                 isFirstLoadForm = false;
             }
@@ -336,8 +337,8 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                                 break;
                             case "XML13":
                                 His.Bhyt.ExportXml.XML130.XML13.CreateXmlMain xmlMain13 = new His.Bhyt.ExportXml.XML130.XML13.CreateXmlMain();
-                                if(xmlMain13 != null)
-                                listObj.Add(xmlMain13.RunXML13DetailsData(fileHoSo.NOIDUNGFILE));
+                                if (xmlMain13 != null)
+                                    listObj.Add(xmlMain13.RunXML13DetailsData(fileHoSo.NOIDUNGFILE));
                                 break;
                             case "XML14":
                                 His.Bhyt.ExportXml.XML130.XML14.CreateXmlMain xmlMain14 = new His.Bhyt.ExportXml.XML130.XML14.CreateXmlMain();
@@ -404,6 +405,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             {
                 listUCXmlChungTu = new List<UCXml130>();
                 xtraTabControl1.TabPages.Clear();
+                His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(null);
                 string xmlFile = "";
 
                 if (!string.IsNullOrEmpty(filePath))
@@ -413,83 +415,103 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 else if (memoryStream != null)
                 {
                     MemoryStream stream = memoryStream;
-                    stream.Seek(0, SeekOrigin.Begin);
+                    // Đọc dữ liệu từ MemoryStream và chuyển thành chuỗi
+                    stream.Seek(0, SeekOrigin.Begin); // Đặt con trỏ về đầu của MemoryStream
                     StreamReader reader = new StreamReader(stream);
                     xmlFile = reader.ReadToEnd();
                 }
                 if (string.IsNullOrEmpty(xmlFile))
                     return;
+                var hoso = xmlProcessor.GetDataFromString(xmlFile);
 
-                // Xác định loại chứng từ dựa vào tag trong XML
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(xmlFile);
-                
-                List<object> listObj = new List<object>();
-                string loaiChungTu = "";
-                string tenChungTu = "";
+                foreach (var hoSo in hoso.THONGTINHOSO.DANHSACHHOSO.HOSO)
+                {
+                    foreach (var fileHoSo in hoSo.FILEHOSO)
+                    {
+                        List<object> listObj = new List<object>();
+                        switch (fileHoSo.LOAIHOSO)
+                        {
+                            case "CT03":
+                                var ct03Data = His.Bhyt.ExportXml.XML3220.CT03.CT03Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
+                                if (ct03Data != null)
+                                    listObj.Add(ct03Data);
+                                break;
+                            case "CT04":
+                                var ct04Data = His.Bhyt.ExportXml.XML3220.CT04.CT04Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
+                                if (ct04Data != null)
+                                    listObj.Add(ct04Data);
+                                break;
+                            case "CT05":
+                                var ct05Data = His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
+                                if (ct05Data != null)
+                                    listObj.Add(ct05Data);
+                                break;
+                            case "CT06":
+                                var ct06Data = His.Bhyt.ExportXml.XML3220.CT06.CT06Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
+                                if (ct06Data != null)
+                                    listObj.Add(ct06Data);
+                                break;
+                            case "CT07":
+                                var ct07Data = His.Bhyt.ExportXml.XML3220.XMLCT07.QD130.XML.XMLCT07Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
+                                if (ct07Data != null)
+                                    listObj.Add(ct07Data);
+                                break;
+                            case "CTGiayDieuTriNoiTru":
+                                var ctGiayDieuTriNoiTruData = His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
+                                if (ctGiayDieuTriNoiTruData != null)
+                                    listObj.Add(ctGiayDieuTriNoiTruData);
+                                break;
+                        }
 
-                // Kiểm tra các loại chứng từ
-                if (xmlDoc.GetElementsByTagName("CT03").Count > 0)
-                {
-                    loaiChungTu = "CT03";
-                    tenChungTu = "Giấy ra viện";
-                    var ct03Data = His.Bhyt.ExportXml.XML3220.CT03.CT03Data.LoadFromXMLString(xmlFile);
-                    if (ct03Data != null)
-                        listObj.Add(ct03Data);
+                        UCXml130 uc = new UCXml130();
+                        uc.Tag = fileHoSo.LOAIHOSO;
+                        if (listUCXmlChungTu != null && listUCXmlChungTu.Count > 0)
+                        {
+                            var ucExist = listUCXmlChungTu.FirstOrDefault(o => o.Tag.ToString() == uc.Tag.ToString());
+                            if (ucExist != null)
+                            {
+                                ucExist.LoadList(listObj);
+                            }
+                            else
+                            {
+                                uc.LoadList(listObj);
+                                listUCXmlChungTu.Add(uc);
+                            }
+                        }
+                        else
+                        {
+                            uc.LoadList(listObj);
+                            listUCXmlChungTu.Add(uc);
+                        }
+                    }
                 }
-                else if (xmlDoc.GetElementsByTagName("CT04").Count > 0)
+                var orderDict = new Dictionary<string, int>
+                                    {
+                                        { "CT03", 1 },
+                                        { "CT04", 2 },
+                                        { "CT05", 3 },
+                                        { "CT06", 4 },
+                                        { "CT07", 5 },
+                                        { "CTGiayDieuTriNoiTru", 6 }
+                                    };
+                listUCXmlChungTu = listUCXmlChungTu
+                    .OrderBy(o => orderDict.ContainsKey(o.Tag.ToString()) ? orderDict[o.Tag.ToString()] : 99)
+                    .ToList();
+                foreach (var uc in listUCXmlChungTu)
                 {
-                    loaiChungTu = "CT04";
-                    tenChungTu = "Hồ sơ bệnh án";
-                    var ct04Data = His.Bhyt.ExportXml.XML3220.CT04.CT04Data.LoadFromXMLString(xmlFile);
-                    if (ct04Data != null)
-                        listObj.Add(ct04Data);
-                }
-                else if (xmlDoc.GetElementsByTagName("CT05").Count > 0)
-                {
-                    loaiChungTu = "CT05";
-                    tenChungTu = "Giấy chứng sinh";
-                    var ct05Data = His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data.LoadFromXMLString(xmlFile);
-                    if (ct05Data != null)
-                        listObj.Add(ct05Data);
-                }
-                else if (xmlDoc.GetElementsByTagName("CT06").Count > 0)
-                {
-                    loaiChungTu = "CT06";
-                    tenChungTu = "Giấy nghỉ dưỡng thai";
-                    var ct06Data = His.Bhyt.ExportXml.XML3220.CT06.CT06Data.LoadFromXMLString(xmlFile);
-                    if (ct06Data != null)
-                        listObj.Add(ct06Data);
-                }
-                else if (xmlDoc.GetElementsByTagName("CT07").Count > 0)
-                {
-                    loaiChungTu = "CT07";
-                    tenChungTu = "Giấy nghỉ hưởng BHXH";
-                    var ct07Data = His.Bhyt.ExportXml.XML3220.XMLCT07.QD130.XML.XMLCT07Data.LoadFromXMLString(xmlFile);
-                    if (ct07Data != null)
-                        listObj.Add(ct07Data);
-                }
-                else if (xmlDoc.GetElementsByTagName("CTGiayDieuTriNoiTru").Count > 0)
-                {
-                    loaiChungTu = "CTGiayDieuTriNoiTru";
-                    tenChungTu = "Giấy điều trị nội trú";
-                    var ctGiayDieuTriNoiTruData = His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData.LoadFromXMLString(xmlFile);
-                    if (ctGiayDieuTriNoiTruData != null)
-                        listObj.Add(ctGiayDieuTriNoiTruData);
-                }
-
-                if (listObj.Count > 0)
-                {
-                    UCXml130 uc = new UCXml130();
-                    uc.Tag = loaiChungTu;
-                    uc.LoadList(listObj);
-                    listUCXmlChungTu.Add(uc);
-
                     XtraTabPage xtraTabPage = new XtraTabPage();
                     uc.Dock = DockStyle.Fill;
                     xtraTabPage.Controls.Add(uc);
-                    xtraTabPage.Text = tenChungTu + " (" + loaiChungTu + ")";
+                    xtraTabPage.Text = uc.Tag.ToString();
                     xtraTabControl1.TabPages.Add(xtraTabPage);
+                }
+                if (!string.IsNullOrEmpty(filePath))
+                {
+                    StartExecuteFile(filePath, directoryPathTempList.FirstOrDefault());
+                }
+                else if (memoryStream != null)
+                {
+                    StartExecuteFile(memoryStream, directoryPathTempList.FirstOrDefault());
                 }
             }
             catch (Exception ex)
@@ -667,6 +689,11 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 {
                     xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
                 }
+                //qtcode
+                if (chkViewXmlCT.Checked)
+                {
+                    xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
+                }
                 string xmlString = File.ReadAllText(@directoryViewFile);
 
                 // Load the xslt used by IE to render the xml
@@ -796,7 +823,14 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 {
                     return;
                 }
+                
                 var root = doc.GetElementsByTagName("GIAMDINHHS")[0];
+                //qtcode
+                if (chkViewXmlCT.Checked)
+                {
+                    root = doc.GetElementsByTagName("HSCHUNGTU")[0];
+                }
+                
                 if (root == null)
                 {
                     return;
@@ -851,7 +885,8 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 op.Filter = "XML file|*.xml";
                 op.Multiselect = true;
                 op.ShowDialog();
-                listUCXml130 = new List<UCXml130>();
+                // listUCXml130 = new List<UCXml130>();
+                listUCXmlChungTu = new List<UCXml130>();
                 xtraTabControl1.TabPages.Clear();
                 His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(null);
                 foreach (var item in op.FileNames)
@@ -864,6 +899,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         foreach (var fileHoSo in hoSo.FILEHOSO)
                         {
                             List<object> listObj = new List<object>();
+                            //string decodedContent = Base64Decode(fileHoSo.NOIDUNGFILE);
                             switch (fileHoSo.LOAIHOSO)
                             {
                                 case "XML1":
@@ -942,31 +978,161 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                                         listObj.AddRange(xmlMain15.RunXML15DetailsData(fileHoSo.NOIDUNGFILE));
                                     break;
 
+
+
+                                case "CT03":
+                                    //var ct03Data = His.Bhyt.ExportXml.XML3220.CT03.CT03Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
+                                    //if (ct03Data != null)
+                                    //    listObj.Add(ct03Data);
+                                    //break;
+                                    break;
+                                case "CT04":
+                                    if (!string.IsNullOrWhiteSpace(fileHoSo.NOIDUNGFILE))
+                                    {
+                                        try
+                                        {
+                                            var ct04Data = His.Bhyt.ExportXml.XML3220.CT04.CT04Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
+                                            if (ct04Data != null)
+                                            {
+                                                listObj.Add(ct04Data);
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            LogSystem.Error(ex);
+                                        }
+                                    }
+                                    break;
+                                case "CT05":
+                                    if (!string.IsNullOrWhiteSpace(fileHoSo.NOIDUNGFILE))
+                                    {
+                                        using (var reader = new StringReader(fileHoSo.NOIDUNGFILE))
+                                        {
+                                            var serializer = new XmlSerializer(
+                                                typeof(His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data),
+                                                new XmlRootAttribute("CT05")
+                                                {
+                                                    Namespace = ""
+                                                });
+
+                                            try
+                                            {
+                                                var ct05Data = serializer.Deserialize(reader)
+                                                    as His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data;
+
+                                                if (ct05Data != null)
+                                                {
+                                                    listObj.Add(ct05Data);
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                LogSystem.Error(ex);
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "CT06":
+                                    if (!string.IsNullOrWhiteSpace(fileHoSo.NOIDUNGFILE))
+                                    {
+                                        using (var reader = new StringReader(fileHoSo.NOIDUNGFILE))
+                                        {
+                                            var serializer = new XmlSerializer(
+                                                typeof(His.Bhyt.ExportXml.XML3220.CT06.CT06Data),
+                                                new XmlRootAttribute("CT06")
+                                                {
+                                                    Namespace = ""
+                                                });
+
+                                            try
+                                            {
+                                                var ct06Data = serializer.Deserialize(reader)
+                                                    as His.Bhyt.ExportXml.XML3220.CT06.CT06Data;
+
+                                                if (ct06Data != null)
+                                                {
+                                                    listObj.Add(ct06Data);
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                LogSystem.Error(ex);
+                                            }
+                                        }
+                                    }
+                                    break;
+
+                                case "GIAYDIEUTRINOITRU":
+                                    if (!string.IsNullOrWhiteSpace(fileHoSo.NOIDUNGFILE))
+                                    {
+                                        using (var reader = new StringReader(fileHoSo.NOIDUNGFILE))
+                                        {
+                                            var serializer = new XmlSerializer(
+                                                typeof(His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData),
+                                                new XmlRootAttribute("CHI_TIEU_DU_LIEU_GIAY_RA_VIEN")
+                                                {
+                                                    Namespace = ""
+                                                });
+
+                                            try
+                                            {
+                                                var ctGiayDieuTriNoiTru = serializer.Deserialize(reader)
+                                                    as His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData;
+
+                                                if (ctGiayDieuTriNoiTru != null)
+                                                {
+                                                    listObj.Add(ctGiayDieuTriNoiTru);
+                                                }
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                LogSystem.Error(ex);
+                                            }
+                                        }
+                                    }
+                                    break;
+
                             }
-                            UCXml130 uc = new UCXml130();
-                            uc.Tag = fileHoSo.LOAIHOSO;
-                            if (listUCXml130 != null && listUCXml130.Count > 0)
+
+                            if (listObj.Count > 0)
                             {
-                                var ucExist = listUCXml130.FirstOrDefault(o => o.Tag.ToString() == uc.Tag.ToString());
+                                List<UCXml130> targetList = fileHoSo.LOAIHOSO.StartsWith("XML") ? listUCXml130 : listUCXmlChungTu;
+
+
+                                var ucExist = targetList.FirstOrDefault(o => o.Tag?.ToString() == fileHoSo.LOAIHOSO);
+
                                 if (ucExist != null)
                                 {
+                                    // Merge: gọi lại LoadList để thêm/ghi đè dữ liệu mới
                                     ucExist.LoadList(listObj);
                                 }
                                 else
                                 {
+                                    UCXml130 uc = new UCXml130();
+                                    uc.Tag = fileHoSo.LOAIHOSO;
                                     uc.LoadList(listObj);
-                                    listUCXml130.Add(uc);
+                                    targetList.Add(uc);
                                 }
                             }
-                            else
+                            if (fileHoSo.LOAIHOSO.StartsWith("XML"))
                             {
-                                uc.LoadList(listObj);
-                                listUCXml130.Add(uc);
+                                chkViewXml130.Checked = true;
+                            }
+                            else if (fileHoSo.LOAIHOSO.StartsWith("CT"))
+                            {
+                                chkViewXmlCT.Checked = true;
                             }
                         }
                     }
                 }
                 listUCXml130 = listUCXml130.OrderBy(o => Convert.ToInt16(o.Tag.ToString().Substring(3))).ToList();
+                var orderDict = new Dictionary<string, int>
+                        {
+                            { "CT03", 1 }, { "CT04", 2 }, { "CT05", 3 }, { "CT06", 4 }, { "CT07", 5 }, { "CTGiayDieuTriNoiTru", 6 }
+                        };
+                listUCXmlChungTu = listUCXmlChungTu
+                    .OrderBy(o => orderDict.ContainsKey(o.Tag.ToString()) ? orderDict[o.Tag.ToString()] : 99)
+                    .ToList();
                 if (chkViewXml130.Checked)
                 {
                     foreach (var uc in listUCXml130)
@@ -978,9 +1144,19 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         xtraTabControl1.TabPages.Add(xtraTabPage);
                     }
                 }
+                if (chkViewXmlCT.Checked)
+                {
+                    foreach (var uc in listUCXmlChungTu)
+                    {
+                        XtraTabPage page = new XtraTabPage { Text = uc.Tag.ToString() };
+                        uc.Dock = DockStyle.Fill;
+                        page.Controls.Add(uc);
+                        xtraTabControl1.TabPages.Add(page);
+                    }
+                }
                 if (op.FileNames.Count() == 1)
                 {
-                    string fileNameSub = Path.GetDirectoryName(op.FileNames[0]);
+                    string fileNameSub = Path.GetDirectoryName(op.FileNames[0]); // C:\\Users\\Hynd_\\Downloads - C:\\Users\\Hynd_\\Downloads\\XML3220_22.01.2026_10.25.48___000026000378.xml
                     string fileNameSubTemp = fileNameSub + "\\Temp";
                     directoryPathTempList.Add(fileNameSubTemp);
 
@@ -1031,6 +1207,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         xtraTabPage.Text = uc.Tag.ToString();
                         xtraTabControl1.TabPages.Add(xtraTabPage);
                     }
+                    xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
                 }
             }
             catch (Exception ex)

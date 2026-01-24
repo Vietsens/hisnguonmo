@@ -99,6 +99,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\His.Bhyt.ExportXml.XML130.XML9\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
     </Reference>
+    <Reference Include="His.Bhyt.ExportXml.XML3220">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML3220.dll</HintPath>
+    </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML3220.CT03">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML3220.CT03.dll</HintPath>
     </Reference>
