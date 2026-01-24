@@ -21,6 +21,7 @@ using Inventec.Desktop.Core.Tools;
 
 namespace HIS.Desktop.Plugins.Optometrist
 {
+    //[KeyboardAction("OptometristEndReq", "HIS.Desktop.Plugins.Optometrist.UC.UCOptometrist", "OptometristEndReq", KeyStroke = XKeys.Control | XKeys.E)]
     [KeyboardAction("OptometristSave", "HIS.Desktop.Plugins.Optometrist.UC.UCOptometrist", "OptometristSave", KeyStroke = XKeys.Control | XKeys.S)]
     [KeyboardAction("OptometristPrintKham", "HIS.Desktop.Plugins.Optometrist.UC.UCOptometrist", "OptometristPrintKham", KeyStroke = XKeys.Control | XKeys.I)]
     [KeyboardAction("OptometristPrintDon", "HIS.Desktop.Plugins.Optometrist.UC.UCOptometrist", "OptometristPrintDon", KeyStroke = XKeys.Control | XKeys.P)]

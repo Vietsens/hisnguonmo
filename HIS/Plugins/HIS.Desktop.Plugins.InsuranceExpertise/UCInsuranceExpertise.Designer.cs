@@ -111,6 +111,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject63 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject64 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnLuuTruOption3 = new DevExpress.XtraEditors.SimpleButton();
             this.txtStoreBordereauCodeOption2 = new DevExpress.XtraEditors.TextEdit();
             this.btnLuuTruOption2 = new DevExpress.XtraEditors.SimpleButton();
             this.dteStoreTime = new DevExpress.XtraEditors.DateEdit();
@@ -214,9 +215,10 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.lciTxtStoreCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciDteOption2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.esOption1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.esOption2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.timer1 = new System.Windows.Forms.Timer();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
@@ -292,14 +294,16 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             ((System.ComponentModel.ISupportInitialize)(this.lciTxtStoreCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDteOption2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.esOption1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.esOption2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnLuuTruOption3);
             this.layoutControl1.Controls.Add(this.txtStoreBordereauCodeOption2);
             this.layoutControl1.Controls.Add(this.btnLuuTruOption2);
             this.layoutControl1.Controls.Add(this.dteStoreTime);
@@ -338,19 +342,29 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // btnLuuTruOption3
+            // 
+            this.btnLuuTruOption3.Location = new System.Drawing.Point(526, 646);
+            this.btnLuuTruOption3.Name = "btnLuuTruOption3";
+            this.btnLuuTruOption3.Size = new System.Drawing.Size(88, 22);
+            this.btnLuuTruOption3.StyleController = this.layoutControl1;
+            this.btnLuuTruOption3.TabIndex = 34;
+            this.btnLuuTruOption3.Text = "Lưu trữ (F5)";
+            this.btnLuuTruOption3.Click += new System.EventHandler(this.btnLuuTruOption3_Click);
+            // 
             // txtStoreBordereauCodeOption2
             // 
-            this.txtStoreBordereauCodeOption2.Location = new System.Drawing.Point(569, 646);
+            this.txtStoreBordereauCodeOption2.Location = new System.Drawing.Point(446, 646);
             this.txtStoreBordereauCodeOption2.Name = "txtStoreBordereauCodeOption2";
-            this.txtStoreBordereauCodeOption2.Size = new System.Drawing.Size(55, 20);
+            this.txtStoreBordereauCodeOption2.Size = new System.Drawing.Size(76, 20);
             this.txtStoreBordereauCodeOption2.StyleController = this.layoutControl1;
             this.txtStoreBordereauCodeOption2.TabIndex = 33;
             // 
             // btnLuuTruOption2
             // 
-            this.btnLuuTruOption2.Location = new System.Drawing.Point(628, 646);
+            this.btnLuuTruOption2.Location = new System.Drawing.Point(618, 646);
             this.btnLuuTruOption2.Name = "btnLuuTruOption2";
-            this.btnLuuTruOption2.Size = new System.Drawing.Size(78, 22);
+            this.btnLuuTruOption2.Size = new System.Drawing.Size(88, 22);
             this.btnLuuTruOption2.StyleController = this.layoutControl1;
             this.btnLuuTruOption2.TabIndex = 32;
             this.btnLuuTruOption2.Text = "Lưu trữ (F5)";
@@ -359,7 +373,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // dteStoreTime
             // 
             this.dteStoreTime.EditValue = null;
-            this.dteStoreTime.Location = new System.Drawing.Point(261, 644);
+            this.dteStoreTime.Location = new System.Drawing.Point(259, 644);
             this.dteStoreTime.Name = "dteStoreTime";
             this.dteStoreTime.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dteStoreTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -371,7 +385,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.dteStoreTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm:ss";
             this.dteStoreTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dteStoreTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
-            this.dteStoreTime.Size = new System.Drawing.Size(99, 20);
+            this.dteStoreTime.Size = new System.Drawing.Size(91, 20);
             this.dteStoreTime.StyleController = this.layoutControl1;
             this.dteStoreTime.TabIndex = 31;
             this.dteStoreTime.Leave += new System.EventHandler(this.dteStoreTime_Leave);
@@ -402,7 +416,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // btnLuuTru
             // 
             this.btnLuuTru.Enabled = false;
-            this.btnLuuTru.Location = new System.Drawing.Point(628, 620);
+            this.btnLuuTru.Location = new System.Drawing.Point(618, 620);
             this.btnLuuTru.Name = "btnLuuTru";
             this.btnLuuTru.Size = new System.Drawing.Size(68, 22);
             this.btnLuuTru.StyleController = this.layoutControl1;
@@ -413,7 +427,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // 
             // txtStoreBordereauCode
             // 
-            this.txtStoreBordereauCode.Location = new System.Drawing.Point(409, 620);
+            this.txtStoreBordereauCode.Location = new System.Drawing.Point(399, 620);
             this.txtStoreBordereauCode.Name = "txtStoreBordereauCode";
             this.txtStoreBordereauCode.Size = new System.Drawing.Size(50, 20);
             this.txtStoreBordereauCode.StyleController = this.layoutControl1;
@@ -475,7 +489,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // 
             // btnUnLockHein
             // 
-            this.btnUnLockHein.Location = new System.Drawing.Point(536, 620);
+            this.btnUnLockHein.Location = new System.Drawing.Point(526, 620);
             this.btnUnLockHein.Name = "btnUnLockHein";
             this.btnUnLockHein.Size = new System.Drawing.Size(88, 22);
             this.btnUnLockHein.StyleController = this.layoutControl1;
@@ -485,7 +499,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // 
             // btnLockHein
             // 
-            this.btnLockHein.Location = new System.Drawing.Point(463, 620);
+            this.btnLockHein.Location = new System.Drawing.Point(453, 620);
             this.btnLockHein.Name = "btnLockHein";
             this.btnLockHein.Size = new System.Drawing.Size(69, 22);
             this.btnLockHein.StyleController = this.layoutControl1;
@@ -507,7 +521,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.dtExecuteTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtExecuteTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtExecuteTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtExecuteTime.Size = new System.Drawing.Size(75, 20);
+            this.dtExecuteTime.Size = new System.Drawing.Size(73, 20);
             this.dtExecuteTime.StyleController = this.layoutControl1;
             this.dtExecuteTime.TabIndex = 12;
             // 
@@ -1197,7 +1211,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // dtHeinLockTime
             // 
             this.dtHeinLockTime.EditValue = null;
-            this.dtHeinLockTime.Location = new System.Drawing.Point(261, 620);
+            this.dtHeinLockTime.Location = new System.Drawing.Point(259, 620);
             this.dtHeinLockTime.Name = "dtHeinLockTime";
             this.dtHeinLockTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -1208,7 +1222,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.dtHeinLockTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtHeinLockTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtHeinLockTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm:ss";
-            this.dtHeinLockTime.Size = new System.Drawing.Size(99, 20);
+            this.dtHeinLockTime.Size = new System.Drawing.Size(91, 20);
             this.dtHeinLockTime.StyleController = this.layoutControl1;
             this.dtHeinLockTime.TabIndex = 27;
             this.dtHeinLockTime.Click += new System.EventHandler(this.dtHeinLockTime_Click);
@@ -1248,9 +1262,10 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.lciTxtStoreCode,
             this.lciDteOption2,
             this.layoutControlItem17,
-            this.layoutControlItem18,
             this.esOption1,
-            this.esOption2});
+            this.esOption2,
+            this.layoutControlItem19,
+            this.layoutControlItem18});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1396,7 +1411,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.layoutExecuteTime.Control = this.dtExecuteTime;
             this.layoutExecuteTime.Location = new System.Drawing.Point(0, 618);
             this.layoutExecuteTime.Name = "layoutExecuteTime";
-            this.layoutExecuteTime.Size = new System.Drawing.Size(174, 52);
+            this.layoutExecuteTime.Size = new System.Drawing.Size(172, 52);
             this.layoutExecuteTime.Text = "Thời gian duyệt:";
             this.layoutExecuteTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutExecuteTime.TextSize = new System.Drawing.Size(90, 20);
@@ -1405,7 +1420,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnLockHein;
-            this.layoutControlItem7.Location = new System.Drawing.Point(461, 618);
+            this.layoutControlItem7.Location = new System.Drawing.Point(451, 618);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(73, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -1414,7 +1429,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.btnUnLockHein;
-            this.layoutControlItem10.Location = new System.Drawing.Point(534, 618);
+            this.layoutControlItem10.Location = new System.Drawing.Point(524, 618);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(92, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -1515,9 +1530,9 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem15.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem15.Control = this.dtHeinLockTime;
-            this.layoutControlItem15.Location = new System.Drawing.Point(174, 618);
+            this.layoutControlItem15.Location = new System.Drawing.Point(172, 618);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(188, 24);
+            this.layoutControlItem15.Size = new System.Drawing.Size(180, 24);
             this.layoutControlItem15.Text = "Thời gian khóa:";
             this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(80, 20);
@@ -1528,7 +1543,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.lcStoreBordereauCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcStoreBordereauCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcStoreBordereauCode.Control = this.txtStoreBordereauCode;
-            this.lcStoreBordereauCode.Location = new System.Drawing.Point(362, 618);
+            this.lcStoreBordereauCode.Location = new System.Drawing.Point(352, 618);
             this.lcStoreBordereauCode.Name = "lcStoreBordereauCode";
             this.lcStoreBordereauCode.OptionsToolTip.ToolTip = "Mã lưu trữ bảng kê";
             this.lcStoreBordereauCode.Size = new System.Drawing.Size(99, 26);
@@ -1540,7 +1555,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.btnLuuTru;
-            this.layoutControlItem16.Location = new System.Drawing.Point(626, 618);
+            this.layoutControlItem16.Location = new System.Drawing.Point(616, 618);
             this.layoutControlItem16.Name = "layoutControlItem16";
             this.layoutControlItem16.Size = new System.Drawing.Size(72, 26);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
@@ -1569,10 +1584,10 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             this.lciDteOption2.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDteOption2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciDteOption2.Control = this.dteStoreTime;
-            this.lciDteOption2.Location = new System.Drawing.Point(174, 642);
+            this.lciDteOption2.Location = new System.Drawing.Point(172, 642);
             this.lciDteOption2.Name = "lciDteOption2";
             this.lciDteOption2.OptionsToolTip.ToolTip = "Thời gian lưu trữ";
-            this.lciDteOption2.Size = new System.Drawing.Size(188, 28);
+            this.lciDteOption2.Size = new System.Drawing.Size(180, 28);
             this.lciDteOption2.Text = "Thời gian LT:";
             this.lciDteOption2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDteOption2.TextSize = new System.Drawing.Size(80, 20);
@@ -1581,40 +1596,49 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.btnLuuTruOption2;
-            this.layoutControlItem17.Location = new System.Drawing.Point(626, 644);
+            this.layoutControlItem17.Location = new System.Drawing.Point(616, 644);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(82, 26);
+            this.layoutControlItem17.Size = new System.Drawing.Size(92, 26);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
+            // 
+            // esOption1
+            // 
+            this.esOption1.AllowHotTrack = false;
+            this.esOption1.Location = new System.Drawing.Point(688, 618);
+            this.esOption1.Name = "esOption1";
+            this.esOption1.Size = new System.Drawing.Size(20, 26);
+            this.esOption1.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // esOption2
+            // 
+            this.esOption2.AllowHotTrack = false;
+            this.esOption2.Location = new System.Drawing.Point(352, 644);
+            this.esOption2.Name = "esOption2";
+            this.esOption2.Size = new System.Drawing.Size(17, 26);
+            this.esOption2.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem19
+            // 
+            this.layoutControlItem19.Control = this.btnLuuTruOption3;
+            this.layoutControlItem19.Location = new System.Drawing.Point(524, 644);
+            this.layoutControlItem19.Name = "layoutControlItem19";
+            this.layoutControlItem19.Size = new System.Drawing.Size(92, 26);
+            this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem19.TextVisible = false;
             // 
             // layoutControlItem18
             // 
             this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem18.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem18.Control = this.txtStoreBordereauCodeOption2;
-            this.layoutControlItem18.Location = new System.Drawing.Point(492, 644);
+            this.layoutControlItem18.Location = new System.Drawing.Point(369, 644);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(134, 26);
+            this.layoutControlItem18.Size = new System.Drawing.Size(155, 26);
             this.layoutControlItem18.Text = "Số LT:";
             this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem18.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem18.TextToControlDistance = 5;
-            // 
-            // esOption1
-            // 
-            this.esOption1.AllowHotTrack = false;
-            this.esOption1.Location = new System.Drawing.Point(698, 618);
-            this.esOption1.Name = "esOption1";
-            this.esOption1.Size = new System.Drawing.Size(10, 26);
-            this.esOption1.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // esOption2
-            // 
-            this.esOption2.AllowHotTrack = false;
-            this.esOption2.Location = new System.Drawing.Point(362, 644);
-            this.esOption2.Name = "esOption2";
-            this.esOption2.Size = new System.Drawing.Size(130, 26);
-            this.esOption2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // dxValidationProvider1
             // 
@@ -1705,9 +1729,10 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             ((System.ComponentModel.ISupportInitialize)(this.lciTxtStoreCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDteOption2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.esOption1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.esOption2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             this.ResumeLayout(false);
 
@@ -1824,5 +1849,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraLayout.EmptySpaceItem esOption2;
         private DevExpress.XtraLayout.EmptySpaceItem esOption1;
+        private DevExpress.XtraEditors.SimpleButton btnLuuTruOption3;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
     }
 }

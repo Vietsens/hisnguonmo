@@ -165,6 +165,9 @@
   <data name="Plugins_InsuranceExpertise__ThoiGianDuyetKhoaBHYTTu" xml:space="preserve">
     <value>Thời gian duyệt khóa BHYT từ:</value>
   </data>
+	<data name="Plugins_InsuranceExpertise__ThoiGianLuuTruBangKe" xml:space="preserve">
+    <value>Thời gian lưu trữ bảng kê từ:</value>
+  </data>
   <data name="Plugins_InsuranceExpertise__ThoiGianKetThucDieuTriTu" xml:space="preserve">
     <value>Thời gian kết thúc điều trị từ:</value>
   </data>

@@ -255,7 +255,7 @@ namespace HIS.UC.HisMaterialInStock.Run
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
+        }  
 
         private void txtKeyword_KeyUp(object sender, KeyEventArgs e)
         {
@@ -293,14 +293,20 @@ namespace HIS.UC.HisMaterialInStock.Run
                                                     || (o.SERIAL_NUMBER ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
                                                     || (o.MANUFACTURER_NAME_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
                                                     || (o.SERIAL_NUMBER_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                                                    || (o.DocumentNumber ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                                                   
                                                     )
                                                     ).Distinct().ToList();
 
                     listResult = new BindingList<HisMaterialInStockADO>(rearchResult);
+                    if (HisMaterialInStockADO != null)
+                        HisMaterialInStockADO.HisMaterialInStocks = rearchResult.Select(x => (HisMaterialInStockSDO)x).ToList();
                 }
-                else
+                else 
                 {
                     listResult = new BindingList<HisMaterialInStockADO>(HisMaterialInStockADOs);
+                    if (HisMaterialInStockADO != null)
+                        HisMaterialInStockADO.HisMaterialInStocks = HisMaterialInStockADOs.Select(x => (HisMaterialInStockSDO)x).ToList();
                 }
                 trvService.DataSource = listResult;
                 chkDetails.Checked = IsDetails;

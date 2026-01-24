@@ -29,7 +29,7 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
     {
         UCOptometrist uc;
 
-        public frmOptometrist(Inventec.Desktop.Common.Modules.Module currentModule, HIS_SERE_SERV sereServ)
+        public frmOptometrist(Inventec.Desktop.Common.Modules.Module currentModule, MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ currentSR)
             : base(currentModule)
         {
             InitializeComponent();
@@ -38,11 +38,10 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             {
                 this.Text = currentModule.text;
             }
-            uc = new UCOptometrist(currentModule, sereServ);
+            uc = new UCOptometrist(currentModule, currentSR);
             uc.Dock = DockStyle.Fill;
             panelControl1.Controls.Add(uc);
-
-            this.Load += frmOptometrist_Load_SetSize;
+            //this.Load += frmOptometrist_Load_SetSize;
         }
 
         private void frmOptometrist_Load_SetSize(object sender, EventArgs e)
@@ -61,7 +60,7 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
                     Rectangle screenBounds = Screen.FromControl(this).WorkingArea;
                     formWidth = Math.Min(formWidth, screenBounds.Width);
                     formHeight = Math.Min(formHeight, screenBounds.Height);
-                    this.Size = new Size(formWidth + 45, formHeight + 50);
+                    this.Size = new Size(formWidth + 85, formHeight + 50);
                     this.StartPosition = FormStartPosition.CenterScreen;
                 }
             }

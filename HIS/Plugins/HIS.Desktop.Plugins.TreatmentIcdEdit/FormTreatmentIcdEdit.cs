@@ -24,6 +24,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.TreatmentIcdEdit.ADO;
 using HIS.Desktop.Plugins.TreatmentIcdEdit.Validation;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using HIS.UC.Icd;
 using HIS.UC.Icd.ADO;
@@ -36,6 +37,7 @@ using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
+using Inventec.Desktop.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
@@ -76,6 +78,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         private List<HIS_OWE_TYPE> DataOweType;
         private List<HIS_OTHER_PAY_SOURCE> DataOtherSource;
         bool _IsAutoSetOweType;
+        private bool isLoading = false;
 
         short? _IS_NOT_CHECK_LHMP;
 
@@ -97,6 +100,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         //internal List<HIS_HOSPITALIZE_REASON> listReason { get; set; }
         internal List<HIS_HOSPITALIZE_REASON> HisHospitalizeReason;
         internal List<HIS_CUSTOMER_SOURCE> HisCutomerSource;
+        internal List<HIS_CUSTOMER_SOURCE_DT> HisCustomerSourceDetail;
 
         internal IcdProcessor icdYhctProcessor;
         internal UserControl ucIcdYhct;
@@ -586,8 +590,12 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 LoadCboDoctor();
 
                 LoadCboReaSonNT();
+                LoadCboCustomerDetail();
                 LoadCboSourceCustomer();
                 LoadCboGuarantee();
+
+                InitCheck(CboCustomerDetail, SelectionGrid__CustomerDetail);
+                
                 WaitingManager.Show();
 
                 InitUcInIcd();
@@ -595,7 +603,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 InitUcSubInIcd();
 
                 FillDataToControl();
-
                 WaitingManager.Hide();
 
                 validationControl();
@@ -880,11 +887,14 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
-                this.label2.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.label2.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
-                this.chkIsEmergency.Properties.Caption = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.chkIsEmergency.Properties.Caption", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.CboCustomerDetail.Properties.NullText = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.CboCustomerDetail.Properties.NullText", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.CboCustomerDetail.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.CboCustomerDetail.ToolTip", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.bar2.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.bar2.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.barButtonItemSave.Caption = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.barButtonItemSave.Caption", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.barButtonItemSave1.Caption = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.barButtonItemSave1.Caption", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.cboSourceCustomer.Properties.NullText = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.cboSourceCustomer.Properties.NullText", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.label2.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.label2.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.chkIsEmergency.Properties.Caption = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.chkIsEmergency.Properties.Caption", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.groupBox4.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.groupBox4.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControl5.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControl5.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.ChkUpdateSereServ.Properties.Caption = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.ChkUpdateSereServ.Properties.Caption", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
@@ -893,12 +903,21 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.groupBox3.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.groupBox3.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.cboGuarantee.Properties.NullText = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.cboGuarantee.Properties.NullText", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.chkTuberculosis.Properties.Caption = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.chkTuberculosis.Properties.Caption", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.chkNeedSickLeaveCert.Properties.Caption = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.chkNeedSickLeaveCert.Properties.Caption", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.chkBHYT.Properties.Caption = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.chkBHYT.Properties.Caption", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.cboNoVienphi.Properties.NullText = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.cboNoVienphi.Properties.NullText", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControlItem25.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem25.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControlItem26.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem26.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControlItem27.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem27.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem35.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem35.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem36.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem36.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem44.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem44.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem44.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem44.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem45.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem45.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem46.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem46.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem46.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem46.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.groupBox2.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.groupBox2.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.labelControl1.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.labelControl1.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
@@ -914,6 +933,9 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 this.layoutControlItem16.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem16.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.groupBox1.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.groupBox1.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.cboDtKCB.Properties.NullText = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.cboDtKCB.Properties.NullText", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.cboReasonNT.Properties.NullText = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.cboReasonNT.Properties.NullText", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.cboReasonNT.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.cboReasonNT.ToolTip", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.cboDoctorUserName.Properties.NullText = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.cboDoctorUserName.Properties.NullText", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.lciInTime.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lciInTime.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.lciClinicalInTime.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lciClinicalInTime.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
@@ -923,7 +945,20 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 this.layoutControlItem12.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem12.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControlItem29.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem29.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControlItem32.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem32.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.lblReasonVV.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lblReasonVV.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.lblReasonVV.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lblReasonVV.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem39.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem39.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem39.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem39.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem40.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem40.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.lblCaptionDiagnostic.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lblCaptionDiagnostic.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.lblCaptionConclude.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lblCaptionConclude.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.lciProvisionalDianosis.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lciProvisionalDianosis.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.lblPathologicalProcess.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lblPathologicalProcess.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.lciPatientNote.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lciPatientNote.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.lblDtKCB.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lblDtKCB.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.btnSave.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem38.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem38.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                this.layoutControlItem43.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem43.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.label1.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.label1.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
             }
@@ -1137,13 +1172,36 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         cboSourceCustomer.EditValue = "";
                     }
 
-                    if (!String.IsNullOrEmpty(currentVHisTreatment.CUSTOMER_SOURCE_DETAIL))
+                    if (!String.IsNullOrEmpty(currentVHisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES))
                     {
-                        txtCustomerDetail.Text = currentVHisTreatment.CUSTOMER_SOURCE_DETAIL;
+                        CboCustomerDetail.EditValue = currentVHisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES;
+                        
+                        var gridCheckMark = CboCustomerDetail.Properties.Tag as GridCheckMarksSelection;
+                        var view = CboCustomerDetail.Properties.View;
+                        CboCustomerDetail.ShowPopup();
+                        CboCustomerDetail.ClosePopup();
+                        if (gridCheckMark != null && view != null)
+                        {
+                            gridCheckMark.ClearSelection(view);
+                            var loginNames = currentVHisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES
+                                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x.Trim())
+                                .ToList();
+
+                            for (int i = 0; i < view.DataRowCount; i++)
+                            {
+                                var row = view.GetRow(i) as HIS_CUSTOMER_SOURCE_DT;
+                                if (row != null && loginNames.Contains(row.LOGINNAME))
+                                {
+                                    int rowHandle = view.GetRowHandle(i);
+                                    gridCheckMark.SelectRow(view, rowHandle, true);
+                                }
+                            }
+                        }
                     }
                     else
                     {
-                        txtCustomerDetail.Text = null;
+                        CboCustomerDetail.EditValue = null;
                     }
 
                     if (!String.IsNullOrEmpty(currentVHisTreatment.GUARANTEE_LOGINNAME))
@@ -1298,7 +1356,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 //        txtPathologicalProcess.Text = "";
                 //    }
                 //}    
-
+               
             }
             catch (Exception ex)
             {
@@ -1474,7 +1532,6 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 ValidTextControlMaxlength(this.txtReasonVV, 200, false);
                 ValidTextControlMaxlength(this.txtReasonNTCode, 10, false);
                 ValidTextControlMaxlength(this.cboReasonNT, 1000, false);
-                ValidTextControlMaxlength(this.txtCustomerDetail, 1000, false);
                 ValidTextControlMaxlength(this.txtPatientNote, 2000, false);
                 ValidTextControlMaxlength(this.txtGuaranteeReason, 500, false);
 
@@ -2018,9 +2075,19 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                     }
                 }
 
-                if (!string.IsNullOrEmpty(txtCustomerDetail.Text))
+                var gridCheckMark = CboCustomerDetail.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null && gridCheckMark.Selection != null)
                 {
-                    data.CustomerSourceDetail = txtCustomerDetail.Text;
+                    var selectedLoginNames = gridCheckMark.Selection
+                        .OfType<HIS_CUSTOMER_SOURCE_DT>()
+                        .Select(x => x.LOGINNAME)
+                        .ToArray();
+
+                    data.CustomerSourceDetail = string.Join(",", selectedLoginNames);
+                }
+                else
+                {
+                    data.CustomerSourceDetail = null;
                 }
 
                 if (cboGuarantee.EditValue != null)
@@ -2871,6 +2938,68 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadCboCustomerDetail()
+        {
+            try
+            {
+                HisCustomerSourceDetail = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT>().Where(o => o.IS_ACTIVE == 1).ToList();
+
+                
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("LOGINNAME", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("USERNAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "USERNAME", columnInfos, false, 350);
+                ControlEditorLoader.Load(CboCustomerDetail, HisCustomerSourceDetail, controlEditorADO);
+                CboCustomerDetail.Properties.DisplayMember = "USERNAME";
+                CboCustomerDetail.Properties.ValueMember = "LOGINNAME";
+                var gridView = CboCustomerDetail.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (gridView != null)
+                {
+                    var colLogin = gridView.Columns.ColumnByFieldName("LOGINNAME");
+                    if (colLogin != null)
+                    {
+                        colLogin.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
+                        colLogin.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap;
+                        colLogin.ToolTip = ""; 
+                        colLogin.OptionsColumn.AllowEdit = false;
+                    }
+                    
+                    var colUser = gridView.Columns.ColumnByFieldName("USERNAME");
+                    if (colUser != null)
+                    {
+                        colUser.AppearanceCell.TextOptions.Trimming = DevExpress.Utils.Trimming.EllipsisCharacter;
+                        colUser.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.NoWrap;
+                        colUser.ToolTip = "";
+                        colUser.OptionsColumn.AllowEdit = false;
+                    }
+                    gridView.OptionsHint.ShowCellHints = true; 
+                    gridView.OptionsView.RowAutoHeight = false; 
+
+                    var toolTipController = new DevExpress.Utils.ToolTipController();
+                    gridView.GridControl.ToolTipController = toolTipController;
+
+                    toolTipController.GetActiveObjectInfo += (s, e) =>
+                    {
+                        var view = gridView;
+                        if (view == null) return;
+                        var info = view.CalcHitInfo(e.ControlMousePosition);
+                        if (info.InRowCell && (info.Column.FieldName == "LOGINNAME" || info.Column.FieldName == "USERNAME"))
+                        {
+                            var cellValue = view.GetRowCellDisplayText(info.RowHandle, info.Column);
+                            if (!string.IsNullOrEmpty(cellValue))
+                            {
+                                string key = info.RowHandle.ToString() + "_" + info.Column.FieldName; e.Info = new DevExpress.Utils.ToolTipControlInfo(key, cellValue);
+                            }
+                        }
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void LoadCboDtKCB()
         {
             try
@@ -3666,19 +3795,66 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         {
             try
             {
+                cboSourceCustomer.Properties.Buttons[1].Visible = cboSourceCustomer.EditValue != null;
                 if (cboSourceCustomer.EditValue != null)
                 {
-                    cboSourceCustomer.Properties.Buttons[1].Visible = true;
-
-                    var data = this.HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.Equals(cboSourceCustomer.EditValue.ToString(), StringComparison.OrdinalIgnoreCase));
-                    if (data != null)
+                    var rc = this.HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.Equals(cboSourceCustomer.EditValue.ToString(), StringComparison.OrdinalIgnoreCase));
+                    if (rc != null)
                     {
-                        txtSourceCustomer.Text = data.CUSTOMER_SOURCE_CODE;
+                        txtSourceCustomer.Text = rc.CUSTOMER_SOURCE_CODE;
+
+                        var filteredDetails = HisCustomerSourceDetail.Where(d => d.IS_ACTIVE == 1
+                            && (
+                                (d.CUSTOMER_SOURCE_ID == rc.ID)
+                                ||
+                                (!string.IsNullOrEmpty(rc.DEFAULT_DETAIL_LOGINNAMES) && !string.IsNullOrEmpty(d.LOGINNAME)
+                                &&
+                                rc.DEFAULT_DETAIL_LOGINNAMES.Split(',').Contains(d.LOGINNAME))
+                            )
+                        ).ToList();
+                        CboCustomerDetail.Properties.DataSource = filteredDetails;
+
+                        var gridCheckMark = CboCustomerDetail.Properties.Tag as GridCheckMarksSelection;
+                        var view = CboCustomerDetail.Properties.View;
+                        if (gridCheckMark != null && view != null)
+                        {
+                            gridCheckMark.ClearSelection(view);
+                        }
+                        if (!string.IsNullOrWhiteSpace(rc.DEFAULT_DETAIL_LOGINNAMES))
+                        {
+
+                            if (gridCheckMark != null && view != null)
+                            {
+                                gridCheckMark.ClearSelection(view);
+                                List<HIS_CUSTOMER_SOURCE_DT> dataSourceItems = CboCustomerDetail.Properties.DataSource as List<HIS_CUSTOMER_SOURCE_DT>;
+                                List<HIS_CUSTOMER_SOURCE_DT> validSelectedItems = new List<HIS_CUSTOMER_SOURCE_DT>();
+                                foreach (var item in rc.DEFAULT_DETAIL_LOGINNAMES?.Split(','))
+                                {
+                                    var row = dataSourceItems != null ? dataSourceItems.FirstOrDefault(o => o.LOGINNAME == item) : null;
+                                    if (row != null)
+                                    {
+                                        validSelectedItems.Add(row);
+                                    }
+                                }
+                                gridCheckMark.SelectAll(validSelectedItems);
+                            }
+                            if (gridCheckMark == null || gridCheckMark.Selection == null || gridCheckMark.Selection.Count == 0)
+                            {
+                                CboCustomerDetail.Text = "";
+                            }
+                        }
+                        else
+                        {
+                            if (gridCheckMark != null)
+                            {
+                                gridCheckMark.ClearSelection(view);
+                            }
+                            CboCustomerDetail.Text = "";
+                        }
                     }
                 }
                 else
                 {
-                    cboSourceCustomer.Properties.Buttons[1].Visible = false;
                     txtSourceCustomer.Text = null; 
                 }
             }
@@ -3899,6 +4075,86 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 else if (e.KeyCode == Keys.Down)
                 {
                     cboGuarantee.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitCheck(GridLookUpEdit cbo, GridCheckMarksSelection.SelectionChangedEventHandler eventSelect)
+        {
+            try
+            {
+                var gridCheck = new GridCheckMarksSelection(cbo.Properties);
+                gridCheck.SelectionChanged += eventSelect;
+                cbo.Properties.Tag = gridCheck;
+                cbo.Properties.View.OptionsSelection.MultiSelect = true;
+                var gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cbo.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SelectionGrid__CustomerDetail(object sender, EventArgs e)
+        {
+            try
+            {
+                var gridCheckMark = sender as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    var selectedNames = gridCheckMark.Selection
+                        .OfType<HIS_CUSTOMER_SOURCE_DT>()
+                        .Select(x => x.USERNAME)
+                        .ToArray();
+                    CboCustomerDetail.Text = string.Join(",", selectedNames);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void CboCustomerDetail_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                var gridCheckMark = (sender as GridLookUpEdit)?.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark == null || gridCheckMark.Selection == null || gridCheckMark.Selection.Count == 0)
+                {
+                    e.DisplayText = "";
+                    return;
+                }
+                var names = gridCheckMark.Selection
+                    .OfType<HIS_CUSTOMER_SOURCE_DT>()
+                    .Select(x => x.USERNAME)
+                    .ToArray();
+                e.DisplayText = string.Join(", ", names);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void CboCustomerDetail_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    CboCustomerDetail.EditValue = null;
+                    var gridCheckMark = CboCustomerDetail.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(CboCustomerDetail.Properties.View);
+                    }
                 }
             }
             catch (Exception ex)

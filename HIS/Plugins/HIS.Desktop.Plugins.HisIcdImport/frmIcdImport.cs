@@ -492,6 +492,21 @@ namespace HIS.Desktop.Plugins.HisIcdImport
                         }
                     }
 
+                    if (!string.IsNullOrEmpty(item.VALID_1_YEAR_STR))
+                    {
+                        if (item.VALID_1_YEAR_STR.Trim().ToUpper() == "X")
+                        {
+                            serAdo.VALID_1_YEAR = 1;
+                        }
+                        else
+                        {
+                            serAdo.VALID_1_YEAR = null;
+                        }
+                    }
+                    else
+                    {
+                        serAdo.VALID_1_YEAR = null;
+                    }
 
                     //if (!string.IsNullOrEmpty(item.IS_CAUSE.ToString()))
                     //{
@@ -569,6 +584,10 @@ namespace HIS.Desktop.Plugins.HisIcdImport
                     else if (e.Column.FieldName == "IS_COVID_DISPLAY_STR")
                     {
                         e.Value = pData.IS_COVID == 1;
+                    }
+                    else if (e.Column.FieldName == "VALID_1_YEAR_DISPLAY_STR")
+                    {
+                        e.Value = pData.VALID_1_YEAR == 1;
                     }
                 }
             }
@@ -686,6 +705,7 @@ namespace HIS.Desktop.Plugins.HisIcdImport
                         ado.IS_SUBCODE = item.IS_SUBCODE;
                         ado.IS_SWORD = item.IS_SWORD;
                         ado.IS_COVID = item.IS_COVID;
+                        ado.VALID_1_YEAR = item.VALID_1_YEAR;
                         datas.Add(ado);
                     }
                 }

@@ -15,38 +15,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.Plugins.Library.RegisterConfig;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using HIS.UC.UCOtherServiceReqInfo.ADO;
+using HIS.UC.UCOtherServiceReqInfo.Config;
+using HIS.UC.UCOtherServiceReqInfo.Properties;
+using HIS.UC.UCOtherServiceReqInfo.Resources;
+using HIS.UC.UCOtherServiceReqInfo.Valid;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Controls.PopupLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.Utility;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Controls.EditorLoader;
-using DevExpress.XtraEditors;
-using Inventec.Common.Controls.PopupLoader;
-using HIS.UC.UCOtherServiceReqInfo.ADO;
-using HIS.UC.UCOtherServiceReqInfo.Properties;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using MOS.EFMODEL.DataModels;
-using HIS.UC.UCOtherServiceReqInfo.Valid;
-using HIS.UC.UCOtherServiceReqInfo.Resources;
-using Inventec.Core;
-using HIS.Desktop.ApiConsumer;
-using MOS.SDO;
-using HIS.UC.UCOtherServiceReqInfo.Config;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using ACS.EFMODEL.DataModels;
-using DevExpress.XtraEditors.DXErrorProvider;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.Plugins.Library.RegisterConfig;
 
 namespace HIS.UC.UCOtherServiceReqInfo
 {
@@ -79,6 +82,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
         string treatmentTypeId; 
         public string HospitalizeReasonCode { get; private set; }
         public string HospitalizeReasonName { get; private set; }
+        List<HIS_CUSTOMER_SOURCE_DT> lstOtherDetail { get; set; }
+        List<HIS_CUSTOMER_SOURCE_DT> lstOtherDetailDefault { get; set; }
         #region Constructor - Load
 
         public UCOtherServiceReqInfo()
@@ -118,7 +123,20 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.ValidateNumOrderPriority();
                 this.ValidateMaxlength(txtGuaranteeReason, 500);
                 this.ValidateMaxlength(txtNote, 1000);
-                this.ValidateMaxlength(txtNguonKhachCT, 1000);
+                if(HisConfig.RequestSkinCare != "1" && HisConfig.RequestSkinCare != "2")
+                {
+                    layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                else
+                {
+
+                    layoutControlItem12.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    if (HisConfig.RequestSkinCare == "2")
+                    {
+                        chkChamSocDa.Checked = true;
+                    }
+                }
+                //this.ValidateMaxlength(txtNguonKhachCT, 1000);
 
                 Inventec.Common.Logging.LogSystem.Debug("UCOtherServiceReqInfo_Load .2");
             }
@@ -145,11 +163,184 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.LoadOtherPaySource();
                 this.InitComboHisHospitalizeReason();
                 this.SetHeinRighRouteTypeByTime();
+
+                this.LoadNguonKhachCT();
                 Inventec.Common.Logging.LogSystem.Debug("UCOtherServiceReqInfo.InitFieldFromAsync .2");
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private string convertToUnSign3(string s)
+        {
+            Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
+            string temp = s.Normalize(NormalizationForm.FormD);
+            return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
+        }
+
+        private void LoadNguonKhachCT()
+        {
+            try
+            {
+                List<otherPaySourceDetailADO> listADO = new List<otherPaySourceDetailADO>();
+                lstOtherDetail = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                foreach (var item in lstOtherDetail)
+                {
+                    otherPaySourceDetailADO Emp = new otherPaySourceDetailADO();
+                    Emp.ID = item.ID;
+                    Emp.LOGINNAME = item.LOGINNAME;
+                    Emp.USERNAME = item.USERNAME;
+                    Emp.USERNAME_UNSIGN = convertToUnSign3(item.USERNAME);
+                    listADO.Add(Emp);
+                }
+
+                InitComboOtherDetail(listADO);
+                InitComboOtherDetailCheck();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitComboOtherDetailCheck()
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheck = new GridCheckMarksSelection(cboNguonKhachCT.Properties);
+                gridCheck.SelectionChanged += new GridCheckMarksSelection.SelectionChangedEventHandler(Event_Check_OtherDetail);
+                cboNguonKhachCT.Properties.Tag = gridCheck;
+                cboNguonKhachCT.Properties.View.OptionsSelection.MultiSelect = true;
+                GridCheckMarksSelection gridCheckMark = cboNguonKhachCT.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboNguonKhachCT.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void Event_Check_OtherDetail(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                lstOtherDetail = new List<HIS_CUSTOMER_SOURCE_DT>();
+                if (gridCheckMark != null)
+                {
+                    List<HIS_CUSTOMER_SOURCE_DT> erSelectedNews = new List<HIS_CUSTOMER_SOURCE_DT>();
+                    foreach (HIS_CUSTOMER_SOURCE_DT er in (sender as GridCheckMarksSelection).Selection)
+                    {
+                        if (er != null)
+                        {
+                            if (sb.ToString().Length > 0) { sb.Append(", "); }
+                            sb.Append(er.USERNAME);
+                            erSelectedNews.Add(er);
+                        }
+                    }
+                    this.lstOtherDetail = new List<HIS_CUSTOMER_SOURCE_DT>();
+                    this.lstOtherDetail.AddRange(erSelectedNews);
+                }
+
+                this.cboNguonKhachCT.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboOtherDetail(List<otherPaySourceDetailADO> listADO)
+        {
+            cboNguonKhachCT.Properties.DataSource = listADO;
+            cboNguonKhachCT.Properties.DisplayMember = "USERNAME";
+            cboNguonKhachCT.Properties.ValueMember = "LOGINNAME";
+            cboNguonKhachCT.Properties.NullText = "";
+            cboNguonKhachCT.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            cboNguonKhachCT.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            cboNguonKhachCT.Properties.View.OptionsView.ShowDetailButtons = false;
+            cboNguonKhachCT.Properties.View.OptionsView.ShowGroupPanel = false;
+            cboNguonKhachCT.Properties.View.OptionsView.ShowIndicator = false;
+
+            // Chỉ add columns nếu chưa tồn tại
+            if (cboNguonKhachCT.Properties.View.Columns.Count == 0)
+            {
+                DevExpress.XtraGrid.Columns.GridColumn column = cboNguonKhachCT.Properties.View.Columns.AddField("LOGINNAME");
+                column.Caption = "Mã";
+                column.Visible = true;
+                column.VisibleIndex = 1;
+                column.Width = 60;
+                column.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                column.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Default;
+
+                DevExpress.XtraGrid.Columns.GridColumn columnCode = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME");
+                columnCode.Caption = "Tên";
+                columnCode.Visible = true;
+                columnCode.VisibleIndex = 2;
+                columnCode.Width = 200;
+
+                DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME_UNSIGN");
+                aColumnNameUnsign.Visible = true;
+                aColumnNameUnsign.VisibleIndex = -1;
+                aColumnNameUnsign.Width = 340;
+
+                cboNguonKhachCT.Properties.View.Columns["USERNAME_UNSIGN"].Width = 0;
+
+                cboNguonKhachCT.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cboNguonKhachCT.Properties.View.OptionsSelection.MultiSelect = true;
+            }
+        }
+
+        private void UpdateComboOtherDetailDataSource(List<otherPaySourceDetailADO> listADO)
+        {
+            try
+            {
+                cboNguonKhachCT.Properties.DataSource = listADO;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        List<otherPaySourceDetailADO> listConfigDefault = new List<otherPaySourceDetailADO>();
+        private void ProcessSelectOtherPaySourceDetail(string p, GridCheckMarksSelection gridCheckMark)
+        {
+            try
+            {
+                List<otherPaySourceDetailADO> ds = cboNguonKhachCT.Properties.DataSource as List<otherPaySourceDetailADO>;
+                if (ds == null || ds.Count == 0)
+                {
+                    // Gán lại datasource để GridLookup có dữ liệu
+                    cboNguonKhachCT.Properties.DataSource = ds;
+                }
+                string[] arrays = p.Split(',');
+                if (arrays != null && arrays.Length > 0)
+                {
+                    List<otherPaySourceDetailADO> selects = new List<otherPaySourceDetailADO>();
+                    foreach (var item in arrays)
+                    {
+                        string nameTrim = item.Trim();
+                        // So sánh sau khi Trim cả 2 bên để tránh vấn đề space
+                        var row = ds.FirstOrDefault(o => (o.LOGINNAME != null ? o.LOGINNAME.Trim() : "") == nameTrim);
+                        if (row != null)
+                        {
+                            selects.Add(row);
+                            listConfigDefault.Add(row);
+                        }
+                    }
+                    gridCheckMark.SelectAll(selects);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1852,13 +2043,92 @@ namespace HIS.UC.UCOtherServiceReqInfo
             try
             {
                 this.txtNguonKhach.Text = "";
+                
                 if (this.cboNguonKhach.EditValue != null)
                 {
                     var user = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE>().FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE == cboNguonKhach.EditValue.ToString());
+
+                    GridCheckMarksSelection gridCheckNCC = cboNguonKhachCT.Properties.Tag as GridCheckMarksSelection;
                     if (user != null)
                     {
                         txtNguonKhach.Text = user.CUSTOMER_SOURCE_CODE;
+                        
+                        // NGUỒN 1: Lấy tất cả HIS_CUSTOMER_SOURCE_DT theo CUSTOMER_SOURCE_ID
+                        List<HIS_CUSTOMER_SOURCE_DT> filteredDetails = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DT>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE 
+                                && o.CUSTOMER_SOURCE_ID == user.ID)
+                            .ToList();
+                        
+                        // NGUỒN 2: Lấy từ DEFAULT_DETAIL_LOGINNAMES (split ra)
+                        if (!string.IsNullOrEmpty(user.DEFAULT_DETAIL_LOGINNAMES))
+                        {
+                            List<string> defaultLoginNames = user.DEFAULT_DETAIL_LOGINNAMES.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x.Trim())
+                                .ToList();
+                            
+                            // Lấy thêm các bản ghi từ DEFAULT_DETAIL_LOGINNAMES
+                            var detailsFromDefault = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DT>()
+                                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE 
+                                    && defaultLoginNames.Contains(o.LOGINNAME != null ? o.LOGINNAME.Trim() : ""))
+                                .ToList();
+                            
+                            // GỘP 2 NGUỒN lại, loại bỏ trùng lặp theo LOGINNAME (sau khi Trim)
+                            filteredDetails = filteredDetails.Union(detailsFromDefault)
+                                .GroupBy(o => o.LOGINNAME != null ? o.LOGINNAME.Trim() : "")
+                                .Select(g => g.First())
+                                .ToList();
+                        }
+                        else
+                        {
+                            this.cboNguonKhachCT.EditValue = null;
+                            // Xóa tất cả checkmark trong GridCheckMarkSelection
+                            GridCheckMarksSelection gridCheckMark = cboNguonKhachCT.Properties.Tag as GridCheckMarksSelection;
+                            if (gridCheckMark != null)
+                            {
+                                gridCheckMark.ClearSelection(cboNguonKhachCT.Properties.View);
+                            }
+                        }
+                        
+                        // Convert sang ADO
+                        List<otherPaySourceDetailADO> listADO = new List<otherPaySourceDetailADO>();
+                        foreach (var item in filteredDetails)
+                        {
+                            otherPaySourceDetailADO Emp = new otherPaySourceDetailADO();
+                            Emp.ID = item.ID;
+                            Emp.LOGINNAME = item.LOGINNAME;
+                            Emp.USERNAME = item.USERNAME;
+                            Emp.USERNAME_UNSIGN = convertToUnSign3(item.USERNAME);
+                            listADO.Add(Emp);
+                        }
+                        
+                        
+                        
+                        // Cập nhật DataSource
+                        UpdateComboOtherDetailDataSource(listADO);
+                        
+                        // Tự động check các item mặc định (SỬ DỤNG gridCheckNCC đã tồn tại)
+                        if (!string.IsNullOrEmpty(user.DEFAULT_DETAIL_LOGINNAMES) && gridCheckNCC != null)
+                        {
+                            ProcessSelectOtherPaySourceDetail(user.DEFAULT_DETAIL_LOGINNAMES, gridCheckNCC);
+                        }
                     }
+                }
+                else
+                {
+                    // Khi xóa nguồn khách, load lại toàn bộ dữ liệu
+                    List<otherPaySourceDetailADO> listADO = new List<otherPaySourceDetailADO>();
+                    var allDetails = BackendDataWorker.Get<HIS_CUSTOMER_SOURCE_DT>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                    foreach (var item in allDetails)
+                    {
+                        otherPaySourceDetailADO Emp = new otherPaySourceDetailADO();
+                        Emp.ID = item.ID;
+                        Emp.LOGINNAME = item.LOGINNAME;
+                        Emp.USERNAME = item.USERNAME;
+                        Emp.USERNAME_UNSIGN = convertToUnSign3(item.USERNAME);
+                        listADO.Add(Emp);
+                    }
+                    
+                    UpdateComboOtherDetailDataSource(listADO);
                 }
             }
             catch (Exception ex)
@@ -1874,6 +2144,50 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     this.cboNguonKhach.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboNguonKhachCT_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                string displayText = "";
+                if (lstOtherDetail != null && lstOtherDetail.Count > 0)
+                {
+                    foreach (var item in lstOtherDetail)
+                    {
+                        displayText += item.USERNAME + ",";
+                    }
+                    if (displayText.EndsWith(",")) displayText = displayText.Substring(0, displayText.Length - 1);
+                }
+
+                e.DisplayText = displayText;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+
+        }
+
+        private void cboNguonKhachCT_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    this.cboNguonKhachCT.EditValue = null;
+                    // Xóa tất cả checkmark trong GridCheckMarkSelection
+                    GridCheckMarksSelection gridCheckMark = cboNguonKhachCT.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboNguonKhachCT.Properties.View);
+                    }
                 }
             }
             catch (Exception ex)

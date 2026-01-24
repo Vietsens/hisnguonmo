@@ -1730,7 +1730,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                         //Ngược lại gán lại datasource của combo THX bằng kết quả vừa tìm đc
                         else
                         {
-                            this.SetSourceValueTHX(listResult); 
+                            this.SetSourceValueTHX(listResult);
                             this.cboCommune.EditValue = null;
                             this.txtCommuneCode.Text = null;
                             this.cboProvince.EditValue = null;
@@ -2211,11 +2211,11 @@ namespace HIS.Desktop.Plugins.Register.Run
                         SDA.EFMODEL.DataModels.V_SDA_PROVINCE province = SdaProvinces.Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).FirstOrDefault(o => o.PROVINCE_CODE == cboProvince.EditValue.ToString());
                         if (province != null)
                         {
-                            if(IsChangeStrucAddress)
+                            if (IsChangeStrucAddress)
                             {
                                 this.LoadXaCombo("", province.PROVINCE_CODE, false);
                             }
-                            else    
+                            else
                                 this.LoadHuyenCombo("", province.PROVINCE_CODE, false);
                             this.txtProvinceCode.Text = province.SEARCH_CODE;
                         }
@@ -2777,7 +2777,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                     }
                     else
                     {
-                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE ==  1 && o.ETHNIC_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
+                        var data = BackendDataWorker.Get<SDA.EFMODEL.DataModels.SDA_ETHNIC>().Where(o => o.IS_ACTIVE == 1 && o.ETHNIC_CODE.ToLower().Contains(searchCode.ToLower())).ToList();
                         var searchResult = (data != null && data.Count > 0) ? (data.Count == 1 ? data : data.Where(o => o.ETHNIC_CODE.ToUpper() == searchCode.ToUpper()).ToList()) : null;
                         if (searchResult != null && searchResult.Count == 1)
                         {
@@ -4916,7 +4916,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 {
 
                     SdaCommunes = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_COMMUNE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT != 1).ToList();
-                    SdaProvinces = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT != 1).ToList(); 
+                    SdaProvinces = BackendDataWorker.Get<SDA.EFMODEL.DataModels.V_SDA_PROVINCE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE && o.IS_NO_DISTRICT != 1).ToList();
                     workingCommuneADO = BackendDataWorker.Get<HIS.Desktop.LocalStorage.BackendData.ADO.CommuneADO>().Where(o => o.IS_NO_DISTRICT != 1).ToList();
                 }
                 this.InitComboCommon(this.cboProvince, SdaProvinces, "PROVINCE_CODE", "PROVINCE_NAME", "SEARCH_CODE");
@@ -4971,59 +4971,54 @@ namespace HIS.Desktop.Plugins.Register.Run
 
         private void cboCustomerSource_Closed(object sender, ClosedEventArgs e)
         {
-            try
-            {
-                if (e.CloseMode == PopupCloseMode.Normal)
-                {
-                    if (this.cboCustomerSource.EditValue != null)
-                    {
-                        // Thêm điều kiện IS_ACTIVE == 1
-                        //MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE customerSource = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
-                        //    .Where(o => o.IS_ACTIVE == 1)
-                        //    .SingleOrDefault(o => o.CUSTOMER_SOURCE_NAME == (this.cboCustomerSource.EditValue ?? "").ToString());
-                        var list = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>();
 
-                        var customerSource = list
-                            .Where(o => o.IS_ACTIVE == 1)
-                            .SingleOrDefault(o =>
-                                o.CUSTOMER_SOURCE_CODE == (this.cboCustomerSource.EditValue ?? "").ToString()
-                            );
-                        if (customerSource != null)
-                        {
-                            this.txtCustomerSource.Text = customerSource.CUSTOMER_SOURCE_CODE;
-
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
         }
 
         private void cboCustomerSource_KeyUp(object sender, KeyEventArgs e)
         {
+
+        }
+        public bool isDelete;
+        private void cboCustomerSource_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
             try
             {
-                if (e.KeyCode == Keys.Enter)
+                if (e.Button.Kind == ButtonPredefines.Delete)
                 {
-                    if (this.cboCustomerSource.EditValue != null)
-                    {
-                        // Thêm điều kiện IS_ACTIVE == 1
-                        MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE data = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
-                            .Where(o => o.IS_ACTIVE == 1)
-                            .SingleOrDefault(o => o.CUSTOMER_SOURCE_NAME == (this.cboCustomerSource.EditValue ?? "").ToString());
-                        if (data != null)
-                        {
-                            this.txtCustomerSource.Text = data.CUSTOMER_SOURCE_CODE;
-                        }
-                    }
+                    isDelete = true;
+                    cboCustomerSource.EditValue = null;
+                    txtCustomerSource.Text = "";
+
+                    var gridCheck = cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
+                    gridCheck?.ClearSelection(cboCustomerSourceDetail.Properties.View);
+
+                    cboCustomerSourceDetail.EditValue = null;
+                    cboCustomerSourceDetail.Text = "";
+
+                    LoadAllCustomerSourceDetail();
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void cboCustomerSourceDetail_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboCustomerSourceDetail.EditValue = null;
+
+                    var gridCheckMark = cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
+                    gridCheckMark?.ClearSelection(cboCustomerSourceDetail.Properties.View);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
             }
         }
     }

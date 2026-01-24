@@ -15,47 +15,49 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using ACS.EFMODEL.DataModels;
+using ACS.SDO;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraLayout;
+using His.Bhyt.ExportXml.Base;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.InsuranceExpertise.Base;
+using HIS.Desktop.Plugins.InsuranceExpertise.Config;
+using HIS.Desktop.Plugins.InsuranceExpertise.Validation;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using HIS.UC.SereServTree;
+using Inventec.Common.Adapter;
+using Inventec.Common.LocalStorage.SdaConfig;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.UC.SereServTree;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.LocalStorage.SdaConfig;
-using Inventec.Core;
-using MOS.Filter;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.ApiConsumer;
-using System.Collections;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.ViewInfo;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using HIS.Desktop.Plugins.InsuranceExpertise.Config;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Controls.Session;
-using MOS.SDO;
-using HIS.Desktop.Plugins.InsuranceExpertise.Base;
-using His.Bhyt.ExportXml.Base;
-using System.IO;
-using HIS.Desktop.Utility;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using Inventec.Common.Adapter;
-using HIS.Desktop.Utilities.Extensions;
-using DevExpress.XtraEditors.Repository;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using HIS.Desktop.Plugins.InsuranceExpertise.Validation;
-using DevExpress.XtraEditors.DXErrorProvider;
-using HIS.Desktop.LibraryMessage;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using ACS.SDO;
 
 namespace HIS.Desktop.Plugins.InsuranceExpertise
 {
@@ -83,6 +85,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
         List<TreatmentImportADO> listTreatmentImport;
         List<HIS_TREATMENT_TYPE> treatmentTypeSelecteds = new List<HIS_TREATMENT_TYPE>();
         HIS_BRANCH _Branch;
+        private List<ACS_CONTROL> controlAcs;
         long patientTypeIdBhyt = 0;
         CommonParam param = new CommonParam();
 
@@ -226,6 +229,8 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
+                this.InitializePermissions();
+                this.InitializeGrid();
                 LoadKeyUCLanguage();
                 ValidControl();
                 LoadCashierRoom();
@@ -237,19 +242,28 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 GetTimeSystem();
                 RegisterTimer(currentModule.ModuleLink, "timer1", timer1.Interval, timer1_Tick);
                 StartTimer(currentModule.ModuleLink, "timer1");
-                if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                if (Config.HisConfigCFG.OptionStoreBordereauCode == "3")
                 {
+                    layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     dxValidationProvider1.SetValidationRule(txtStoreBordereauCode, null);
                 }
+                if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                {
+                    lcStoreBordereauCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    dxValidationProvider1.SetValidationRule(txtStoreBordereauCode, null); 
+                }
                 else if (Config.HisConfigCFG.OptionStoreBordereauCode == "1")
                 {
-                    esOption2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    //esOption2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciDteOption2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem18.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem17.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciTxtStoreCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem19.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 WaitingManager.Hide();
             }
@@ -381,7 +395,9 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     cboStatus.Items.Add(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_LOCK_HEIN", Base.ResourceLangManager.LanguageUCInsuranceExpertise, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()));
 
                     cboStatus.Items.Add(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_HAS_APPROVAL_NOT_XML", Base.ResourceLangManager.LanguageUCInsuranceExpertise, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()));
-
+                    //Bộ lọc Trạng thái bổ sung option Chưa lưu trữ, Đã lưu trữ
+                    cboStatus.Items.Add(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_STORE_BORDEREAU_TRUE", Base.ResourceLangManager.LanguageUCInsuranceExpertise, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()));
+                    cboStatus.Items.Add(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_INSURANCE_EXPERTISE__COMBO_STATUS__ITEM_IS_STORE_BORDEREAU_FALSE", Base.ResourceLangManager.LanguageUCInsuranceExpertise, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()));
                 }
                 cboStatus.SelectedIndex = 0;
                 if (cboTimeFrom.Items.Count == 0)
@@ -389,6 +405,8 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     cboTimeFrom.Items.Add(Base.ResourceMessageLang.ThoiGianKhoaVienPhiTu);
                     cboTimeFrom.Items.Add(Base.ResourceMessageLang.ThoiGianKetThucDieuTriTu);
                     cboTimeFrom.Items.Add(Base.ResourceMessageLang.ThoiGianDuyetKhoaBHYTTu);
+                    //Bộ lọc Thời gian bổ sung option Thời gian lưu trữ bảng kê từ, đến
+                    cboTimeFrom.Items.Add(Base.ResourceMessageLang.ThoiGianLuuTruBangKe);
                 }
                 cboTimeFrom.SelectedIndex = 0;
                 checkCurrentBranch.Checked = true;
@@ -424,8 +442,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 cboTreatmentType.Text = "";
 
             }
-
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -500,6 +517,14 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     treatFilter.HAS_NO_XML_URL_HEIN_APPROVAL = true;
                     treatFilter.HAS_HEIN_APPROVAL = true;
                 }
+                else if (cboStatus.SelectedIndex == 6)
+                {
+                    treatFilter.IS_STORE_BORDEREAU = true;
+                }
+                else if (cboStatus.SelectedIndex == 7)
+                {
+                    treatFilter.IS_STORE_BORDEREAU = false;
+                }
                 if (this.treatmentTypeSelecteds != null && this.treatmentTypeSelecteds.Count() > 0)
                 {
                     treatFilter.TDL_TREATMENT_TYPE_IDs = treatmentTypeSelecteds.Select(o => o.ID).ToList();
@@ -539,7 +564,8 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     //    code = string.Format("{0:00000}", Convert.ToInt64(code));
                     //    txtStorebcode.Text = code;
                     //}
-                    treatFilter.STORE_BORDEREAU_CODE__EXACT = txtStorebcode.Text.Trim();
+                    // đổi chuyền vào filter STORE_BORDEREAU_CODE__EXACT thành KEY_WORD__STORE_BORDEREAU_CODE
+                    treatFilter.KEY_WORD__STORE_BORDEREAU_CODE = txtStorebcode.Text.Trim();
                 }
                 else if (!String.IsNullOrEmpty(txtKeyword.Text))
                 {
@@ -584,7 +610,18 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                             treatFilter.HEIN_LOCK_TIME_TO = Convert.ToInt64(dtFeeLockTimeTo.DateTime.ToString("yyyyMMddHHmm") + "59");
                         }
                     }
+                    else if (cboTimeFrom.SelectedIndex == 3)
+                    {
+                        if (dtFeeLockTimeFrom.EditValue != null && dtFeeLockTimeFrom.DateTime != DateTime.MinValue)
+                        {
+                            treatFilter.STORE_BORDEREAU_TIME_FROM = Convert.ToInt64(dtFeeLockTimeFrom.DateTime.ToString("yyyyMMddHHmm") + "00");
+                        }
 
+                        if (dtFeeLockTimeTo.EditValue != null && dtFeeLockTimeTo.DateTime != DateTime.MinValue)
+                        {
+                            treatFilter.STORE_BORDEREAU_TIME_TO = Convert.ToInt64(dtFeeLockTimeTo.DateTime.ToString("yyyyMMddHHmm") + "59");
+                        }
+                    }
                 }
 
                 var result = new Inventec.Common.Adapter.BackendAdapter(paramCommon).GetRO<List<V_HIS_TREATMENT_1>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW_1, ApiConsumers.MosConsumer, treatFilter, paramCommon);
@@ -903,9 +940,10 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     if (!string.IsNullOrEmpty(treatment1.STORE_BORDEREAU_CODE))
                     {
                         if (HisConfigCFG.OptionStoreBordereauCode == "1")
-                            txtStoreBordereauCode.Text = treatment1.STORE_BORDEREAU_CODE;
-                        else if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                            txtStoreBordereauCode.Text = treatment1.STORE_BORDEREAU_CODE; 
+                        else if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                             txtStoreBordereauCodeOption2.Text = treatment1.STORE_BORDEREAU_CODE;
+
                     }
                 }
             }
@@ -1141,6 +1179,11 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     if (!btnLuuTruOption2.Enabled) return;
                     btnLuuTruOption2_Click(null, null);
                 }
+                else if (HisConfigCFG.OptionStoreBordereauCode == "3")
+                {
+                    if (!btnLuuTruOption3.Enabled) return;
+                    btnLuuTruOption3_Click(null, null);
+                }
             }
             catch (Exception ex)
             {
@@ -1153,7 +1196,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
             try
             {
                 GetStoreBordereauCodeSDO sdoGetBordereau = new GetStoreBordereauCodeSDO();
-                if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                 {
                     sdoGetBordereau.StoreBordereauTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteStoreTime.DateTime) ?? 0;
                 }
@@ -1166,7 +1209,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 {
                     if (HisConfigCFG.OptionStoreBordereauCode == "1")
                         txtStoreBordereauCode.Text = nextStoreBordereauCode.StoreBordereauCode;
-                    else if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                    else if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                         txtStoreBordereauCodeOption2.Text = nextStoreBordereauCode.StoreBordereauCode;
                 }
                 else
@@ -1295,7 +1338,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                     {
                         if (HisConfigCFG.OptionStoreBordereauCode == "1")
                             txtStoreBordereauCode.Text = currentTreatment.STORE_BORDEREAU_CODE;
-                        else if (HisConfigCFG.OptionStoreBordereauCode == "2")
+                        else if (HisConfigCFG.OptionStoreBordereauCode == "2" || HisConfigCFG.OptionStoreBordereauCode == "3")
                             txtStoreBordereauCodeOption2.Text = currentTreatment.STORE_BORDEREAU_CODE;
                     }
                     else
@@ -1435,6 +1478,114 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void InitializePermissions()
+        {
+            try
+            {
+                if (GlobalVariables.AcsAuthorizeSDO != null)
+                {
+                    controlAcs = GlobalVariables.AcsAuthorizeSDO.ControlInRoles;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitializeGrid()
+        {
+            bool hasEditPermission = HasEditPermission(); 
+
+            if (hasEditPermission)
+            {
+                btnLuuTruOption3.Enabled = true;
+            }
+            else
+            {
+                btnLuuTruOption3.Enabled = false;
+            }
+        }
+
+        private bool HasEditPermission()
+        {
+            if (controlAcs != null)
+            {
+                controlAcs = controlAcs.Where(o => o.CONTROL_CODE == "HIS000050").ToList();
+                return controlAcs.FirstOrDefault(o => o.CONTROL_CODE == "HIS000050") != null;
+            }
+            return false;
+        }
+
+        private void btnLuuTruOption3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CommonParam paramStoreBordereauCode = new CommonParam();
+                positionHandleControl = -1;
+                if (!dxValidationProvider1.Validate())
+                    return;
+                WaitingManager.Show();
+                bool success = false;
+                StoreBordereauCodeSDO sdo = new StoreBordereauCodeSDO();
+                sdo.TreatmentId = this.currentTreatment.ID;
+                if (!btnLuuTruOption3.Text.Equals("Hủy LT (F5)"))
+                {
+                    if (!String.IsNullOrWhiteSpace(txtStoreBordereauCodeOption2.Text))
+                    {
+                        string code = txtStoreBordereauCodeOption2.Text.Trim();
+                        if (code.Length < 5)
+                        {
+                            code = string.Format("{0:00000}", Convert.ToInt64(code));
+                            txtStoreBordereauCodeOption2.Text = code;
+                        }
+                        sdo.StoreBordereauCode = code;
+                    }
+                    sdo.StoreBordereauTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteStoreTime.DateTime) ?? 0;
+                    sdo.StoreBordereauSeedCode = nextStoreBordereauCode != null && !string.IsNullOrEmpty(nextStoreBordereauCode.StoreBordereauSeedCode) ? nextStoreBordereauCode.StoreBordereauSeedCode : null;
+                }
+                var rs = new BackendAdapter(paramStoreBordereauCode).Post<HIS_TREATMENT>("api/HisTreatment/SetStoreBordereauCode", ApiConsumers.MosConsumer, sdo, paramStoreBordereauCode);
+                if (rs != null)
+                {
+                    success = true;
+                    foreach (var item in listTreatment)
+                    {
+                        if (item.ID == this.currentTreatment.ID)
+                        {
+                            item.STORE_BORDEREAU_CODE = rs.STORE_BORDEREAU_CODE;
+                            item.STORE_BORDEREAU_TIME = rs.STORE_BORDEREAU_TIME;
+                            break;
+                        }
+                    }
+                    gridControlTreatment.BeginUpdate();
+                    gridControlTreatment.DataSource = listTreatment;
+                    gridControlTreatment.EndUpdate();
+                    nextStoreBordereauCode = null;
+                    dteStoreTime.DateTime = DateTime.Now;
+                    if (currentTreatment.STORE_BORDEREAU_TIME != null)
+                    {
+                        dteStoreTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentTreatment.STORE_BORDEREAU_TIME ?? 0) ?? DateTime.Now;
+                    }
+                    if (btnLuuTruOption3.Text.Equals("Hủy LT (F5)"))
+                    {
+                        GetNextStoreBordereauCode();
+                    }
+                    ChangeEnableButtonOption2();
+                }
+                else
+                {
+                    GetNextStoreBordereauCode();
+                }
+                WaitingManager.Hide();
+                MessageManager.Show(this.ParentForm, paramStoreBordereauCode, success);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

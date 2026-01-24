@@ -159,6 +159,12 @@
   <data name="FormTreatmentIcdEdit.btnSave.Text" xml:space="preserve">
     <value>Save (Ctrl S)</value>
   </data>
+  <data name="FormTreatmentIcdEdit.CboCustomerDetail.ToolTip" xml:space="preserve">
+    <value>Detailed customer sources</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.cboReasonNT.ToolTip" xml:space="preserve">
+    <value>Reason for boarding</value>
+  </data>
   <data name="FormTreatmentIcdEdit.chkBHYT.Properties.Caption" xml:space="preserve">
     <value>Unlimited health insurance drugs</value>
   </data>
@@ -252,11 +258,65 @@
   <data name="FormTreatmentIcdEdit.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Correction of hospitalization number</value>
   </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem35.Text" xml:space="preserve">
+    <value>Tuberculosis:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem36.Text" xml:space="preserve">
+    <value>Manager number:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem38.Text" xml:space="preserve">
+    <value>Customer source:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem39.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Reason for boarding</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem39.Text" xml:space="preserve">
+    <value>Reasons for entering NT:</value>
+  </data>
   <data name="FormTreatmentIcdEdit.layoutControlItem4.Text" xml:space="preserve">
     <value>Hospital discharge number:</value>
   </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem40.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Reason for boarding</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem43.Text" xml:space="preserve">
+    <value>NK details:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem44.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Guarantor</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem44.Text" xml:space="preserve">
+    <value>Guarantee:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem45.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Guarantor</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem46.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Reason for guarantee</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem46.Text" xml:space="preserve">
+    <value>Reason:</value>
+  </data>
   <data name="FormTreatmentIcdEdit.layoutControlItem5.Text" xml:space="preserve">
     <value>CCT unit:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblCaptionConclude.Text" xml:space="preserve">
+    <value>PP treatment:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblCaptionDiagnostic.Text" xml:space="preserve">
+    <value>CLS results:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblDtKCB.Text" xml:space="preserve">
+    <value>Medical examination subjects:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblPathologicalProcess.Text" xml:space="preserve">
+    <value>QT pathology:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblReasonVV.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Reason for hospitalization</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblReasonVV.Text" xml:space="preserve">
+    <value>Reason VV:</value>
   </data>
   <data name="FormTreatmentIcdEdit.lciClinicalInTime.Text" xml:space="preserve">
     <value>Date of entry to treatment:</value>
@@ -269,6 +329,12 @@
   </data>
   <data name="FormTreatmentIcdEdit.lciOutTime.Text" xml:space="preserve">
     <value>Hospital discharge date:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lciPatientNote.Text" xml:space="preserve">
+    <value>Note:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lciProvisionalDianosis.Text" xml:space="preserve">
+    <value>Preliminary college:</value>
   </data>
   <data name="FormTreatmentIcdEdit.Text" xml:space="preserve">
     <value>Edit treatment record information</value>

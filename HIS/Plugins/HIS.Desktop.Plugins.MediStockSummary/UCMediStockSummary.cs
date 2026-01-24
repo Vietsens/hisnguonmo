@@ -47,8 +47,8 @@ using Inventec.Common.Logging;
 using MOS.Filter;
 using System.Dynamic;
 using System.Reflection;
-
-
+ 
+ 
 namespace HIS.Desktop.Plugins.MediStockSummary
 {
     public partial class UCMediStockSummary : HIS.Desktop.Utility.UserControlBase
@@ -208,7 +208,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
                 this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
                 this.currentControlStateRDO = controlStateWorker.GetData(this.ModuleLink);
-                
+
                 if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
                 {
                     foreach (var item_ in this.currentControlStateRDO)
@@ -216,6 +216,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         if (item_.KEY == chkAlertMinStock.Name)
                         {
                             chkAlertMinStock.Checked = item_.VALUE == "1";
+                        }
+                        else if (item_.KEY == chkMedicine.Name)
+                        {
+                            chkMedicine.Checked = item_.VALUE == "1";
+
+                        }
+                        else if (item_.KEY == chkMaterial.Name)
+                        {
+                            chkMaterial.Checked = item_.VALUE == "1";
+
+                        }
+                        else if (item_.KEY == chkBlood.Name)
+                        {
+                            chkBlood.Checked = item_.VALUE == "1";
+
+                        }
+                        else if (item_.KEY == chkExportExcel.Name)
+                        {
+                            chkExportExcel.Checked = item_.VALUE == "1";
+
                         }
                     }
                 }
@@ -479,19 +499,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 bidNumberCol.VisibleIndex = 22;
                 ado.HisMedicineInStockColumns.Add(bidNumberCol);
 
+                //Column số lô
+                //Column Số hóa đơn
+                HisMedicineInStockColumn documentNumberCol = new HisMedicineInStockColumn("Số hóa đơn", "DocumentNumber", 100, false, false);
+                documentNumberCol.VisibleIndex = 23;
+                ado.HisMedicineInStockColumns.Add(documentNumberCol);
+
+
                 //Column gói thầu
                 HisMedicineInStockColumn packageNumberCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_BID_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "BID_NUMBER", 100, false, false);
-                packageNumberCol.VisibleIndex = 23;
+                packageNumberCol.VisibleIndex = 24;
                 ado.HisMedicineInStockColumns.Add(packageNumberCol);
 
                 //Column số đăng ký
                 HisMedicineInStockColumn registerNumberCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_REGISTER_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "REGISTER_NUMBER", 100, false, false);
-                registerNumberCol.VisibleIndex = 24;
+                registerNumberCol.VisibleIndex = 25;
                 ado.HisMedicineInStockColumns.Add(registerNumberCol);
 
                 //Column Lý do khóa
                 HisMedicineInStockColumn reasonLock = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_LOCKING_REASON", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "LOCKING_REASON", 180, false, false);
-                reasonLock.VisibleIndex = 25;
+                reasonLock.VisibleIndex = 26;
                 ado.HisMedicineInStockColumns.Add(reasonLock);
 
                 ////Column nhà cung cấp
@@ -501,7 +528,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
                 //Column số lượng cảnh báo
                 HisMedicineInStockColumn alertMinInStockCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ALERT_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_MIN_IN_STOCK", 100, false, false);
-                alertMinInStockCol.VisibleIndex = 26;
+                alertMinInStockCol.VisibleIndex = 27;
                 alertMinInStockCol.Format = new DevExpress.Utils.FormatInfo();
                 alertMinInStockCol.Format.FormatString = "#,##0.";
                 alertMinInStockCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
@@ -663,29 +690,34 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 packageNumberCol.VisibleIndex = 16;
                 ado.HisMaterialInStockColumns.Add(packageNumberCol);
 
+                //Column Số hóa đơn
+                HisMaterialInStockColumn documentNumberCol = new HisMaterialInStockColumn("Số hóa đơn", "DocumentNumber", 100, false);
+                documentNumberCol.VisibleIndex = 17;
+                ado.HisMaterialInStockColumns.Add(documentNumberCol);
+
                 //Column Số seri
                 HisMaterialInStockColumn serialNumberCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SERIAL_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SERIAL_NUMBER", 100, false);
-                serialNumberCol.VisibleIndex = 17;
+                serialNumberCol.VisibleIndex = 18;
                 ado.HisMaterialInStockColumns.Add(serialNumberCol);
 
                 //Column số đăng ký
                 HisMaterialInStockColumn registerNumberCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_REGISTER_NUMBER", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "REGISTER_NUMBER", 100, false);
-                registerNumberCol.VisibleIndex = 18;
+                registerNumberCol.VisibleIndex = 19;
                 ado.HisMaterialInStockColumns.Add(registerNumberCol);
 
                 //Column Lý do khóa
                 HisMaterialInStockColumn reasonLock = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_LOCKING_REASON", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "LOCKING_REASON", 180, false);
-                reasonLock.VisibleIndex = 19;
+                reasonLock.VisibleIndex = 20;
                 ado.HisMaterialInStockColumns.Add(reasonLock);
 
                 //Column nhà cung cấp
                 HisMaterialInStockColumn supplierNameCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SUPPLIER_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SUPPLIER_NAME", 100, false);
-                supplierNameCol.VisibleIndex = 20;
+                supplierNameCol.VisibleIndex = 21;
                 ado.HisMaterialInStockColumns.Add(supplierNameCol);
 
                 //Column số lượng cảnh báo
                 HisMaterialInStockColumn alertMinInStockCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ALERT_MIN_IN_STOCK", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ALERT_MIN_IN_STOCK", 100, false);
-                alertMinInStockCol.VisibleIndex = 21;
+                alertMinInStockCol.VisibleIndex = 22;
                 alertMinInStockCol.Format = new DevExpress.Utils.FormatInfo();
                 alertMinInStockCol.Format.FormatString = "#,##0.00";
                 alertMinInStockCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
@@ -768,28 +800,33 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 HisBloodTypeInStockColumn bloodPackageNumber = new HisBloodTypeInStockColumn("Số lô", "PackageNumber", 100, false);
                 bloodPackageNumber.VisibleIndex = 6;
                 ado.HisBloodTypeInStockColumns.Add(bloodPackageNumber);
+
+                // Số hóa đơn
+                HisBloodTypeInStockColumn bloodDocumentNumber = new HisBloodTypeInStockColumn("Số hóa đơn", "DocumentNumber", 100, false);
+                bloodDocumentNumber.VisibleIndex = 7;
+                ado.HisBloodTypeInStockColumns.Add(bloodDocumentNumber);
                 // Hạn sử dụng
                 HisBloodTypeInStockColumn bloodExpiredDate = new HisBloodTypeInStockColumn("Hạn sử dụng", "ExpiredDateStr", 120, false);
-                bloodExpiredDate.VisibleIndex = 7;
+                bloodExpiredDate.VisibleIndex = 8;
                 ado.HisBloodTypeInStockColumns.Add(bloodExpiredDate);
 
                 // Ngày còn lại
                 HisBloodTypeInStockColumn bloodExpiredDaysLeft = new HisBloodTypeInStockColumn("Ngày còn lại", "ExpiredDaysLeft", 120, false);
-                bloodExpiredDaysLeft.VisibleIndex = 8;
+                bloodExpiredDaysLeft.VisibleIndex = 9;
                 ado.HisBloodTypeInStockColumns.Add(bloodExpiredDaysLeft);
 
                 // Nhà cung cấp
                 HisBloodTypeInStockColumn bloodSupplierName = new HisBloodTypeInStockColumn("Nhà cung cấp", "SupplierName", 200, false);
-                bloodSupplierName.VisibleIndex = 9;
+                bloodSupplierName.VisibleIndex = 10;
                 ado.HisBloodTypeInStockColumns.Add(bloodSupplierName);
                 //Column dung tích
                 HisBloodTypeInStockColumn serviceUnitNameCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__BLOOD_IN_STOCK__COLUMN_VOLUME", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "Volume", 100, false);
-                serviceUnitNameCol.VisibleIndex = 10;
+                serviceUnitNameCol.VisibleIndex = 11;
                 ado.HisBloodTypeInStockColumns.Add(serviceUnitNameCol);
 
                 //Column số lượng tồn
                 HisBloodTypeInStockColumn totalAmountCol = new HisBloodTypeInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_TOTAL_AMOUNT", ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "Amount", 80, false);
-                totalAmountCol.VisibleIndex = 11;
+                totalAmountCol.VisibleIndex = 12;
                 ado.HisBloodTypeInStockColumns.Add(totalAmountCol);
 
                 this.ucBloodInfo = (UserControl)hisBloodProcessor.Run(ado);
@@ -1164,6 +1201,29 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         {
             try
             {
+
+                if (!IsInitForm)
+	           {
+	               HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+	                   ? this.currentControlStateRDO.Where(o => o.KEY == chkMedicine.Name && o.MODULE_LINK == this.ModuleLink).FirstOrDefault()
+	                   : null;
+	               if (csAddOrUpdate != null)
+	               {
+	                   csAddOrUpdate.VALUE = (chkMedicine.Checked ? "1" : "");
+	               }
+	               else
+	               {
+	                   csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+	                   csAddOrUpdate.KEY = chkMedicine.Name;
+	                   csAddOrUpdate.VALUE = (chkMedicine.Checked ? "1" : "");
+	                   csAddOrUpdate.MODULE_LINK = this.ModuleLink;
+	                   if (this.currentControlStateRDO == null)
+	                       this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+	                   this.currentControlStateRDO.Add(csAddOrUpdate);
+	               }
+	               this.controlStateWorker.SetData(this.currentControlStateRDO);
+	           }
+
                 if (chkMedicine.Checked)
                 {
                     //if (this.mediStockIds.Count == 0)
@@ -1178,10 +1238,64 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             }
         }
 
+
+        private void chkExportExcel_CheckedChanged(object sender, EventArgs e)
+        {
+
+
+
+            if (!IsInitForm)
+            {
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    ? this.currentControlStateRDO.Where(o => o.KEY == chkExportExcel.Name && o.MODULE_LINK == this.ModuleLink).FirstOrDefault()
+                    : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkExportExcel.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkExportExcel.Name;
+                    csAddOrUpdate.VALUE = (chkExportExcel.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = this.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+        }
+
         private void chkMaterial_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
+
+                if (!IsInitForm)
+	           {
+	               HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+	                   ? this.currentControlStateRDO.Where(o => o.KEY == chkMaterial.Name && o.MODULE_LINK == this.ModuleLink).FirstOrDefault()
+	                   : null;
+	               if (csAddOrUpdate != null)
+	               {
+	                   csAddOrUpdate.VALUE = (chkMaterial.Checked ? "1" : "");
+	               }
+	               else
+	               {
+	                   csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();   
+	                   csAddOrUpdate.KEY = chkMaterial.Name;
+	                   csAddOrUpdate.VALUE = (chkMaterial.Checked ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = this.ModuleLink;
+	                   if (this.currentControlStateRDO == null)
+	                       this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+	                   this.currentControlStateRDO.Add(csAddOrUpdate);
+	               }
+	               this.controlStateWorker.SetData(this.currentControlStateRDO);
+	           }
+
+
+
                 if (chkMaterial.Checked)
                 {
                     //if (this.mediStockIds.Count == 0)
@@ -1199,6 +1313,32 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         {
             try
             {
+
+                if (!IsInitForm)
+	           {
+	               HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+	                   ? this.currentControlStateRDO.Where(o => o.KEY == chkBlood.Name && o.MODULE_LINK == this.ModuleLink).FirstOrDefault()
+                   : null;
+	               if (csAddOrUpdate != null)
+	               {
+	                   csAddOrUpdate.VALUE = (chkBlood.Checked ? "1" : "");
+	               }
+	               else
+	               {
+	                   csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+	                   csAddOrUpdate.KEY = chkBlood.Name;
+	                   csAddOrUpdate.VALUE = (chkBlood.Checked ? "1" : "");
+	                   csAddOrUpdate.MODULE_LINK = this.ModuleLink;
+	                   if (this.currentControlStateRDO == null)
+	                       this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+	                   this.currentControlStateRDO.Add(csAddOrUpdate);
+	               }
+	               this.controlStateWorker.SetData(this.currentControlStateRDO);
+	           }
+
+
+
+
                 if (chkBlood.Checked)
                 {
                     //if (this.mediStockIds.Count == 0)
@@ -1319,10 +1459,27 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                             Dictionary<long, MedicineInStockExportADO> dicData = new Dictionary<long, MedicineInStockExportADO>();
                             Dictionary<long, List<HIS_MEDICINE_PATY>> dicMedicinePaty = new Dictionary<long, List<HIS_MEDICINE_PATY>>();
                             List<MedicineInStockExportADO> lstMedicineExport = new List<MedicineInStockExportADO>();//all
-                            //MOS.Filter.HisMedicineBeanViewFilter beanFilter = new MOS.Filter.HisMedicineBeanViewFilter();
-                            //beanFilter.MEDI_STOCK_IDs = this.mediStockIds;
-                            //var lstMedicineBeans = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_BEAN>>("api/HisMedicineBean/GetView", ApiConsumers.MosConsumer, beanFilter, param);
-                            var lstMedicineBeans = (this.lstMediInStocks != null && this.lstMediInStocks.Count > 0) ? this.lstMediInStocks.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
+                            List<HisMedicineInStockSDO> lstMedicineBeans = null;
+
+                            var uc = ucMedicineInfo as HIS.UC.HisMedicineInStock.Run.UCHisMedicineInStock;
+                            if (uc != null)
+                            {
+                                lstMediInStocks = uc.GetListAll();
+                            }
+                            if (chkExportExcel.Checked)
+                            {
+                               
+                                lstMedicineBeans = (this.lstMediInStocks != null && this.lstMediInStocks.Count > 0) ? this.lstMediInStocks.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
+                            }
+                            else
+                            {
+                               
+                                MOS.Filter.HisMedicineStockViewFilter mediFilterAll = new MOS.Filter.HisMedicineStockViewFilter();
+                                mediFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
+                                lstMedicineBeans = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE, ApiConsumers.MosConsumer, mediFilterAll, param);
+                                if (lstMedicineBeans != null)
+                                    lstMedicineBeans = lstMedicineBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                            }
                             Inventec.Common.Logging.LogSystem.Info("lstMediInStocks" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstMediInStocks), lstMediInStocks.Where(o => o.MEDICINE_TYPE_CODE.Equals("914ACIDAM"))));
                             if (lstMedicineBeans != null && lstMedicineBeans.Count > 0)
                             {
@@ -1354,6 +1511,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                     ado.AVAILABLE_AMOUNT = itemGroup[0].AvailableAmount;
                                     ado.MEDICINE_ID = itemGroup[0].ID;
                                     ado.TDL_BID_NUMBER = itemGroup[0].BID_NUMBER;
+                                    // Gán DocumentNumber
+                                    ado.DOCUMENT_NUMBER = itemGroup[0].DocumentNumber;
                                     //MOS.Filter.HisMedicineTypeViewFilter mediTypeFilter = new MOS.Filter.HisMedicineTypeViewFilter();
                                     //mediTypeFilter.ID = itemGroup[0].MEDICINE_TYPE_ID;
                                     //var lstMedicineType = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUriStore.HIS_MEDICINE_TYPE_GETVIEW, ApiConsumers.MosConsumer, mediTypeFilter, param);
@@ -1468,7 +1627,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                             //MOS.Filter.HisMaterialBeanViewFilter materialBeanViewFilte = new MOS.Filter.HisMaterialBeanViewFilter();
                             //materialBeanViewFilte.MEDI_STOCK_IDs = this.mediStockIds;
                             //var lstMaterialBeans = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_BEAN>>("api/HisMaterialBean/GetView", ApiConsumers.MosConsumer, materialBeanViewFilte, param);
-                            var lstMaterialBeans = (this.lstMateInStocks != null && this.lstMateInStocks.Count > 0) ? this.lstMateInStocks.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
+                            List<HisMaterialInStockSDO> lstMaterialBeans = null;
+                            var uc = ucMedicineInfo as HIS.UC.HisMedicineInStock.Run.UCHisMedicineInStock;
+                            if (uc != null)
+                            {
+                                lstMediInStocks = uc.GetListAll();
+                            }
+                            if (chkExportExcel.Checked)
+                            {
+                                // Chỉ xuất dữ liệu đã lọc trên màn hình
+                                lstMaterialBeans = (this.lstMateInStocks != null && this.lstMateInStocks.Count > 0) ? this.lstMateInStocks.Where(o => !o.isTypeNode && o.ID > 0).ToList() : null;
+                            }
+                            else
+                            { 
+                                // Lấy lại toàn bộ dữ liệu trong kho (bỏ qua điều kiện lọc)
+                                MOS.Filter.HisMaterialStockViewFilter mateFilterAll = new MOS.Filter.HisMaterialStockViewFilter();
+                                mateFilterAll.MEDI_STOCK_IDs = this.mediStockIds;
+                                lstMaterialBeans = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE, ApiConsumers.MosConsumer, mateFilterAll, param);
+                                if (lstMaterialBeans != null)
+                                    lstMaterialBeans = lstMaterialBeans.Where(o => !o.isTypeNode && o.ID > 0).ToList();
+                            }
                             if (lstMaterialBeans != null && lstMaterialBeans.Count > 0)
                             {
                                 var lstMateBeanGroup = lstMaterialBeans.GroupBy(p => p.ID).Select(grc => grc.ToList()).ToList();
@@ -1518,6 +1696,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                     ado.AVAILABLE_AMOUNT = itemGroup[0].AvailableAmount;
                                     ado.MATERIAL_ID = itemGroup[0].ID;
                                     ado.TDL_BID_NUMBER = itemGroup[0].BID_NUMBER;
+                                    // Gán DocumentNumber
+                                    ado.DOCUMENT_NUMBER = itemGroup[0].DocumentNumber;
                                     //MOS.Filter.HisMaterialTypeViewFilter mateTypeFilter = new MOS.Filter.HisMaterialTypeViewFilter();
                                     //mateTypeFilter.ID = itemGroup[0].MATERIAL_TYPE_ID;
                                     //var lstMaterialType = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUriStore.HIS_MATERIAL_TYPE_GETVIEW, ApiConsumers.MosConsumer, mateTypeFilter, param);
@@ -1606,7 +1786,22 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         {
                             if (ucBloodInfo != null)
                             {
-                                hisBloodProcessor.Export(ucBloodInfo, saveFileDialog.FileName);
+                                if (chkExportExcel.Checked)
+                                {
+                                    // Chỉ xuất dữ liệu đã lọc trên màn hình
+                                    hisBloodProcessor.Export(ucBloodInfo, saveFileDialog.FileName);
+                                }
+                                else
+                                {
+                                    // Lấy lại toàn bộ dữ liệu máu trong kho (bỏ qua điều kiện lọc)
+                                    HisBloodStockViewFilter filterBloodAll = new HisBloodStockViewFilter();
+                                    filterBloodAll.MEDI_STOCK_IDs = this.mediStockIds;
+                                    var allBlood = new BackendAdapter(param).Get<List<HisBloodInStockSDO>>("api/HisBlood/GetInStockBloodWithTypeTree", ApiConsumers.MosConsumer, filterBloodAll, param);
+                                    if (allBlood != null)
+                                        allBlood = allBlood.OrderBy(o => o.BloodTypeCode).ToList();
+                                    hisBloodProcessor.Reload(ucBloodInfo, allBlood);
+                                    hisBloodProcessor.Export(ucBloodInfo, saveFileDialog.FileName);
+                                }
                                 WaitingManager.Hide();
                                 if (DevExpress.XtraEditors.XtraMessageBox.Show("Bạn có muốn mở file ngay?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
                                 {
@@ -1916,6 +2111,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                 lstMediInStocksTemp = lstMediInStocksTemp.Where(p => p.EXPIRED_DATE == null || p.isTypeNode).ToList();
                             }
                         }
+                        lstMediInStocks = lstMediInStocksTemp;
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                     }
                     else
@@ -1927,6 +2123,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         else
                         {
                             lstMediInStocksTemp = lstMediInStocks.Where(o => o.ID > 0).ToList();
+                            lstMediInStocks = lstMediInStocksTemp;
                             hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                         }
                     }
@@ -1954,6 +2151,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                                 lstMateInStocksTemp = lstMateInStocksTemp.Where(p => p.EXPIRED_DATE == null || p.isTypeNode).ToList();
                             }
                         }
+                        lstMateInStocks = lstMateInStocksTemp;
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                     }
                     else
@@ -1965,6 +2163,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         else
                         {
                             lstMateInStocksTemp = lstMateInStocks.Where(o => o.ID > 0).ToList();
+                            lstMateInStocks = lstMateInStocksTemp;
                             hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                         }
                     }
@@ -2019,6 +2218,8 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         lstMediInStocksTemp = lstMediInStocks.Where(o => lstMediInStocksNodeIds.Contains(o.NodeId) || lstMediInStocksNodeIds.Contains(o.ParentNodeId)).ToList();
                         if (lstMediInStocksTemp != null && lstMediInStocksTemp.Count > 0)
                             lstMediInStocksTemp = lstMediInStocksTemp.Where(p => p.EXPIRED_DATE <= ExpiredDateTo || p.isTypeNode).ToList();
+
+                        lstMediInStocks = lstMediInStocksTemp;
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                     }
                     else if (ChkExpiredDate.Checked)
@@ -2034,6 +2235,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         lstMediInStocksTemp = lstMediInStocks.Where(o => lstMediInStocksNodeIds.Contains(o.NodeId) || lstMediInStocksNodeIds.Contains(o.ParentNodeId)).ToList();
                         if (lstMediInStocksTemp != null && lstMediInStocksTemp.Count > 0)
                             lstMediInStocksTemp = lstMediInStocksTemp.Where(p => p.EXPIRED_DATE <= ExpiredDateTo || p.isTypeNode).ToList();
+                        lstMediInStocks = lstMediInStocksTemp;
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                     }
                     else
@@ -2045,6 +2247,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         else
                         {
                             lstMediInStocksTemp = lstMediInStocks.Where(o => o.ID > 0).ToList();
+                            lstMediInStocks = lstMediInStocksTemp;
                             hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                         }
                     }
@@ -2063,6 +2266,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         lstMateInStocksTemp = lstMateInStocks.Where(o => lstMadiInStocksNodeIds.Contains(o.NodeId) || lstMadiInStocksNodeIds.Contains(o.ParentNodeId)).ToList();
                         if (lstMateInStocksTemp != null && lstMateInStocksTemp.Count > 0)
                             lstMateInStocksTemp = lstMateInStocksTemp.Where(p => p.EXPIRED_DATE <= ExpiredDateTo || p.isTypeNode).ToList();
+                        lstMateInStocks = lstMateInStocksTemp;
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                     }
                     else if (ChkExpiredDate.Checked)
@@ -2075,6 +2279,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         lstMateInStocksTemp = lstMateInStocks.Where(o => lstMadiInStocksNodeIds.Contains(o.NodeId) || lstMadiInStocksNodeIds.Contains(o.ParentNodeId)).ToList();
                         if (lstMateInStocksTemp != null && lstMateInStocksTemp.Count > 0)
                             lstMateInStocksTemp = lstMateInStocksTemp.Where(p => p.EXPIRED_DATE <= ExpiredDateTo || p.isTypeNode).ToList();
+                        lstMateInStocks = lstMateInStocksTemp;
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                     }
                     else
@@ -2086,6 +2291,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         else
                         {
                             lstMateInStocksTemp = lstMateInStocks.Where(o => o.ID > 0).ToList();
+                            lstMateInStocks = lstMateInStocksTemp;
                             hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                         }
 
@@ -2136,6 +2342,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         lstMediInStocksTemp = lstMediInStocks.Where(o => lstMediInStocksNodeIds.Contains(o.NodeId) || lstMediInStocksNodeIds.Contains(o.ParentNodeId)).ToList();
                         if (lstMediInStocksTemp != null && lstMediInStocksTemp.Count > 0)
                             lstMediInStocksTemp = lstMediInStocksTemp.Where(p => p.EXPIRED_DATE == null || p.isTypeNode).ToList();
+                        lstMediInStocks = lstMediInStocksTemp;
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                     }
                     else if (ChkNoExpiredDate.Checked)
@@ -2151,6 +2358,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         lstMediInStocksTemp = lstMediInStocks.Where(o => lstMediInStocksNodeIds.Contains(o.NodeId) || lstMediInStocksNodeIds.Contains(o.ParentNodeId)).ToList();
                         if (lstMediInStocksTemp != null && lstMediInStocksTemp.Count > 0)
                             lstMediInStocksTemp = lstMediInStocksTemp.Where(p => p.EXPIRED_DATE == null || p.isTypeNode).ToList();
+                        lstMediInStocks = lstMediInStocksTemp;
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                     }
                     else
@@ -2162,6 +2370,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         else
                         {
                             lstMediInStocksTemp = lstMediInStocks.Where(o => o.ID > 0).ToList();
+                            lstMediInStocks = lstMediInStocksTemp;
                             hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                         }
                     }
@@ -2180,6 +2389,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         lstMateInStocksTemp = lstMateInStocks.Where(o => lstMadiInStocksNodeIds.Contains(o.NodeId) || lstMadiInStocksNodeIds.Contains(o.ParentNodeId)).ToList();
                         if (lstMateInStocksTemp != null && lstMateInStocksTemp.Count > 0)
                             lstMateInStocksTemp = lstMateInStocksTemp.Where(p => p.EXPIRED_DATE == null || p.isTypeNode).ToList();
+                        lstMateInStocks = lstMateInStocksTemp;
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                     }
                     else if (ChkNoExpiredDate.Checked)
@@ -2192,6 +2402,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         lstMateInStocksTemp = lstMateInStocks.Where(o => lstMadiInStocksNodeIds.Contains(o.NodeId) || lstMadiInStocksNodeIds.Contains(o.ParentNodeId)).ToList();
                         if (lstMateInStocksTemp != null && lstMateInStocksTemp.Count > 0)
                             lstMateInStocksTemp = lstMateInStocksTemp.Where(p => p.EXPIRED_DATE == null || p.isTypeNode).ToList();
+                        lstMateInStocks = lstMateInStocksTemp;
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                     }
                     else
@@ -2203,6 +2414,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         else
                         {
                             lstMateInStocksTemp = lstMateInStocks.Where(o => o.ID > 0).ToList();
+                            lstMateInStocks = lstMateInStocksTemp;
                             hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                         }
                     }
@@ -2334,7 +2546,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         if (lstMediInStocksTemp != null && lstMediInStocksTemp.Count > 0)
                             lstMediInStocksTemp = lstMediInStocksTemp.Where(p => ListBidName.Select(o => o.BID_NUMBER).Distinct().ToList().Contains(p.BID_NUMBER) || p.isTypeNode).ToList();
 
-
+                        lstMediInStocks = lstMediInStocksTemp;
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                     }
                     else
@@ -2346,6 +2558,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         //else
                         //{
                         lstMediInStocksTemp = lstMediInStocks.Where(o => o.ID > 0).ToList();
+                        lstMediInStocks = lstMediInStocksTemp;
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
                         //}
                     }
@@ -2379,7 +2592,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         lstMateInStocksTemp = lstMateInStocks.Where(o => lstMateInStocksNodeIds.Contains(o.NodeId) || lstMateInStocksNodeIds.Contains(o.ParentNodeId)).ToList();
                         if (lstMateInStocksTemp != null && lstMateInStocksTemp.Count > 0)
                             lstMateInStocksTemp = lstMateInStocksTemp.Where(p => ListBidName.Select(o => o.BID_NUMBER).Distinct().ToList().Contains(p.BID_NUMBER) || p.isTypeNode).ToList();
-
+                        lstMateInStocks = lstMateInStocksTemp;
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                     }
                     else
@@ -2390,7 +2603,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         //}
                         //else
                         //{
+                       
                         lstMateInStocksTemp = lstMateInStocks.Where(o => o.ID > 0).ToList();
+                        lstMateInStocks = lstMateInStocksTemp;
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
                         //}
                     }
@@ -2569,5 +2784,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+       
     }
 }

@@ -231,21 +231,23 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 moduleData.RoomId = this.moduleData.RoomId;
                 moduleData.RoomTypeId = this.moduleData.RoomTypeId;
 
-                HIS_SERE_SERV sereServDetail = null;
-                if (sereServDetail == null && HisServiceReqView != null && HisServiceReqView.TREATMENT_ID != 0)
-                {
-                    CommonParam param = new CommonParam();
-                    var filter = new MOS.Filter.HisSereServFilter
-                    {
-                        SERVICE_REQ_ID = HisServiceReqView.ID,
-                        TREATMENT_ID = HisServiceReqView.TREATMENT_ID,
-                        TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
-                    };
-                    var sereServs = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, filter, param);
-                    sereServDetail = sereServs?.FirstOrDefault();
-                }
-                List<object> listArgs = new List<object> { sereServDetail };
-
+                //HIS_SERE_SERV sereServDetail = null;
+                //if (sereServDetail == null && HisServiceReqView != null && HisServiceReqView.TREATMENT_ID != 0)
+                //{
+                //    CommonParam param = new CommonParam();
+                //    var filter = new MOS.Filter.HisSereServFilter
+                //    {
+                //        SERVICE_REQ_ID = HisServiceReqView.ID,
+                //        TREATMENT_ID = HisServiceReqView.TREATMENT_ID,
+                //        TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH
+                //    };
+                //    var sereServs = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, filter, param);
+                //    sereServDetail = sereServs?.FirstOrDefault();
+                //}
+                List<object> listArgs = new List<object>();
+                listArgs.Add(Inventec.Desktop.Common.Modules.Module.MODULE_TYPE_ID__FORM);
+                listArgs.Add(moduleData);
+                listArgs.Add(this.HisServiceReqView);
                 var moduleWithRoom = PluginInstance.GetModuleWithWorkingRoom(moduleData, moduleData.RoomId, moduleData.RoomTypeId);
                 var extenceInstance = PluginInstance.GetPluginInstance(moduleWithRoom, listArgs);
                 if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");

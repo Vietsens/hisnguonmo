@@ -215,11 +215,13 @@
     <Reference Include="HIS.UC.BloodTypeInStock">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.BloodTypeInStock.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.MaterialInStock">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.MaterialInStock.dll</HintPath>
+    <Reference Include="HIS.UC.MaterialInStock, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UC\HIS.UC.MaterialInStock\bin\Debug\HIS.UC.MaterialInStock.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.MedicineInStock">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.MedicineInStock.dll</HintPath>
+    <Reference Include="HIS.UC.MedicineInStock, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UC\HIS.UC.MedicineInStock\bin\Debug\HIS.UC.MedicineInStock.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -330,8 +332,9 @@
     <Reference Include="MPS.Processor.Mps000131.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000131.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000217.PDO">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000217.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000217.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000217.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000218.PDO">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000218.PDO.dll</HintPath>

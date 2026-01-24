@@ -161,6 +161,12 @@
   <data name="FormTreatmentIcdEdit.btnSave.Text" xml:space="preserve">
     <value>Lưu (Ctrl S)</value>
   </data>
+  <data name="FormTreatmentIcdEdit.CboCustomerDetail.ToolTip" xml:space="preserve">
+    <value>Nguồn khách chi tiết</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.cboReasonNT.ToolTip" xml:space="preserve">
+    <value>Lý do vào nội trú</value>
+  </data>
   <data name="FormTreatmentIcdEdit.chkBHYT.Properties.Caption" xml:space="preserve">
     <value>Không giới hạn tiền thuốc BHYT</value>
   </data>
@@ -254,11 +260,65 @@
   <data name="FormTreatmentIcdEdit.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Sửa số vào viện</value>
   </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem35.Text" xml:space="preserve">
+    <value>Bệnh lao:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem36.Text" xml:space="preserve">
+    <value>Số quản lý:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem38.Text" xml:space="preserve">
+    <value>Nguồn khách:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem39.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lý do vào nội trú</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem39.Text" xml:space="preserve">
+    <value>Lý do vào NT:</value>
+  </data>
   <data name="FormTreatmentIcdEdit.layoutControlItem4.Text" xml:space="preserve">
     <value>Số ra viện:</value>
   </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem40.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lý do vào nội trú</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem43.Text" xml:space="preserve">
+    <value>NK chi tiết:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem44.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Người bảo lãnh</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem44.Text" xml:space="preserve">
+    <value>Bảo lãnh:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem45.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Người bảo lãnh</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem46.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lý do bảo lãnh</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem46.Text" xml:space="preserve">
+    <value>Lý do:</value>
+  </data>
   <data name="FormTreatmentIcdEdit.layoutControlItem5.Text" xml:space="preserve">
     <value>Đơn vị CCT:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblCaptionConclude.Text" xml:space="preserve">
+    <value>PP điều trị:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblCaptionDiagnostic.Text" xml:space="preserve">
+    <value>Kết quả CLS:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblDtKCB.Text" xml:space="preserve">
+    <value>Đối tượng KCB:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblPathologicalProcess.Text" xml:space="preserve">
+    <value>QT bệnh lý:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblReasonVV.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lý do vào viện</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblReasonVV.Text" xml:space="preserve">
+    <value>Lý do VV:</value>
   </data>
   <data name="FormTreatmentIcdEdit.lciClinicalInTime.Text" xml:space="preserve">
     <value>Ngày vào điều trị:</value>
@@ -271,6 +331,12 @@
   </data>
   <data name="FormTreatmentIcdEdit.lciOutTime.Text" xml:space="preserve">
     <value>Ngày ra viện:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lciPatientNote.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lciProvisionalDianosis.Text" xml:space="preserve">
+    <value>CĐ sơ bộ:</value>
   </data>
   <data name="FormTreatmentIcdEdit.Text" xml:space="preserve">
     <value>Sửa thông tin hồ sơ điều trị</value>

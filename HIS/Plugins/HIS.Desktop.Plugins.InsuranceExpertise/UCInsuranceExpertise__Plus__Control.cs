@@ -711,7 +711,7 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                         GetNextStoreBordereauCode();
                     if (txtStoreBordereauCode.Visible)
                         txtStoreBordereauCodeOption2.Text = this.currentTreatment.STORE_BORDEREAU_CODE ?? (nextStoreBordereauCode != null ? nextStoreBordereauCode.StoreBordereauCode : null);
-                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
+                    if (Config.HisConfigCFG.OptionStoreBordereauCode == "2" || Config.HisConfigCFG.OptionStoreBordereauCode == "3")
                     {
                         txtStoreBordereauCodeOption2.Text = this.currentTreatment.STORE_BORDEREAU_CODE ?? (nextStoreBordereauCode != null ? nextStoreBordereauCode.StoreBordereauCode : null);
                         ChangeEnableButtonOption2();
@@ -728,6 +728,17 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                         btnLuuTruOption2.Text = "Lưu trữ (F5)";
                         btnLuuTruOption2.ToolTip = null;
                         btnLuuTruOption2.Enabled = true;
+                        btnLockHein.Enabled = true;
+                        btnUnLockHein.Enabled = true;
+                        txtStoreBordereauCodeOption2.Enabled = true;
+                        txtStoreBordereauCodeOption2.Text = null;
+                    }
+                    else if (Config.HisConfigCFG.OptionStoreBordereauCode == "3")
+                    {
+                        dteStoreTime.Enabled = true;
+                        btnLuuTruOption3.Text = "Lưu trữ (F5)";
+                        btnLuuTruOption3.ToolTip = null;
+                        this.InitializeGrid();
                         btnLockHein.Enabled = true;
                         btnUnLockHein.Enabled = true;
                         txtStoreBordereauCodeOption2.Enabled = true;
@@ -762,19 +773,39 @@ namespace HIS.Desktop.Plugins.InsuranceExpertise
                 btnLockHein.Enabled = this.currentTreatment.IS_LOCK_HEIN != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE);
                 btnUnLockHein.Enabled = this.currentTreatment.IS_LOCK_HEIN == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
 
-                if (string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE))
+                if (Config.HisConfigCFG.OptionStoreBordereauCode == "3")
                 {
-                    btnLuuTruOption2.Text = "Lưu trữ (F5)";
-                    if (btnLockHein.Enabled)
-                        btnLuuTruOption2.Enabled = false;
+                    if (string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE))
+                    {
+                        btnLuuTruOption3.Text = "Lưu trữ (F5)";
+                        if (btnLockHein.Enabled)
+                            btnLuuTruOption3.Enabled = false;
+                    }
+                    else
+                    {
+                        btnLuuTruOption3.Text = "Hủy LT (F5)";
+                        btnLuuTruOption3.ToolTip = "Hủy lưu trữ bảng kê";
+                        this.InitializeGrid();
+                        btnUnLockHein.Enabled = false;
+                    }
                 }
-                else
+                else if (Config.HisConfigCFG.OptionStoreBordereauCode == "2")
                 {
-                    btnLuuTruOption2.Text = "Hủy LT (F5)";
-                    btnLuuTruOption2.ToolTip = "Hủy lưu trữ bảng kê";
-                    btnLuuTruOption2.Enabled = true;
-                    btnUnLockHein.Enabled = false;
+                    if (string.IsNullOrEmpty(this.currentTreatment.STORE_BORDEREAU_CODE))
+                    {
+                        btnLuuTruOption2.Text = "Lưu trữ (F5)";
+                        if (btnLockHein.Enabled)
+                            btnLuuTruOption2.Enabled = false;
+                    }
+                    else
+                    {
+                        btnLuuTruOption2.Text = "Hủy LT (F5)";
+                        btnLuuTruOption2.ToolTip = "Hủy lưu trữ bảng kê";
+                        btnLuuTruOption2.Enabled = true;
+                        btnUnLockHein.Enabled = false;
+                    }
                 }
+                
             }
             catch (Exception ex)
             {

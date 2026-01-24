@@ -303,7 +303,7 @@ namespace HIS.UC.HisMedicineInStock.Run
         }
 
         private void SearchClick(string keyword)
-        {
+       {
             try
             {
                 bool IsDetails = chkDetails.Checked;
@@ -318,22 +318,29 @@ namespace HIS.UC.HisMedicineInStock.Run
                     List<HisMedicineInStockADO> rearchResult = new List<HisMedicineInStockADO>();
 
                     rearchResult = HisMedicineInStockADOs.Where(o =>
-                                                    ((o.MEDICINE_TYPE_NAME ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
-                                                    || (o.MEDICINE_TYPE_CODE ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
-                                                    || (o.MEDICINE_TYPE_HEIN_NAME ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
-                                                    || (o.SERVICE_UNIT_NAME ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
-                                                    || (o.ACTIVE_INGR_BHYT_CODE ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
-                                                    || (o.ACTIVE_INGR_BHYT_NAME ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
-                                                    || (o.MEDICINE_TYPE_HEIN_NAME_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
-                                                    || (o.ACTIVE_INGR_BHYT_CODE_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
-                                                    || (o.ACTIVE_INGR_BHYT_NAME_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
-                                                    )
-                                                    ).Distinct().ToList();
+                        ((o.MEDICINE_TYPE_NAME ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        || (o.MEDICINE_TYPE_CODE ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        || (o.MEDICINE_TYPE_HEIN_NAME ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        || (o.SERVICE_UNIT_NAME ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        || (o.ACTIVE_INGR_BHYT_CODE ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        || (o.ACTIVE_INGR_BHYT_NAME ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        || (o.MEDICINE_TYPE_HEIN_NAME_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        || (o.ACTIVE_INGR_BHYT_CODE_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        || (o.ACTIVE_INGR_BHYT_NAME_PARENT ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        // Bổ sung tìm kiếm theo số hóa đơn
+                        || (o.DocumentNumber ?? "").ToString().ToLower().Contains(keyword.Trim().ToLower())
+                        
+                        )
+                    ).Distinct().ToList();
                     listResult = new BindingList<HisMedicineInStockADO>(rearchResult);
-                }
+                    if (HisMedicineInStockADO != null)
+                        HisMedicineInStockADO.HisMedicineInStocks = rearchResult.Select(x => (HisMedicineInStockSDO)x).ToList();
+                } 
                 else
                 {
                     listResult = new BindingList<HisMedicineInStockADO>(HisMedicineInStockADOs);
+                    if (HisMedicineInStockADO != null)
+                        HisMedicineInStockADO.HisMedicineInStocks = HisMedicineInStockADOs.Select(x => (HisMedicineInStockSDO)x).ToList();
                 }
                 trvService.DataSource = listResult;
                 chkDetails.Checked = IsDetails;

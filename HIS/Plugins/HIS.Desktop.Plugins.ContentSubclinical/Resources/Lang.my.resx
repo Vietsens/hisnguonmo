@@ -144,14 +144,50 @@
   <data name="frmContentSubclinical.chkBelow.Properties.Caption" xml:space="preserve">
     <value>သတ်မှတ်ချက်အောက်</value>
   </data>
+  <data name="frmContentSubclinical.chkGetInfo.Properties.Caption" xml:space="preserve">
+    <value>မှတ်စုများ၊ မှတ်ချက်များ၊ ကောက်ချက်များအား ရယူပါ။</value>
+  </data>
+  <data name="frmContentSubclinical.chkGetInfo.ToolTip" xml:space="preserve">
+    <value>ရွေးချယ်သည့်အခါ၊ စမ်းသပ်ခြင်းနှင့် ရောဂါဗေဒဝန်ဆောင်မှုမှ မှတ်စုများ၊ မှတ်ချက်များနှင့် နိဂုံးချုပ်ချက်များကို ယူပါမည်။</value>
+  </data>
+  <data name="frmContentSubclinical.chkImportant.Properties.Caption" xml:space="preserve">
+    <value>အရေးကြီးသောအညွှန်း</value>
+  </data>
+  <data name="frmContentSubclinical.chkOtherTreatment.Properties.Caption" xml:space="preserve">
+    <value>အခြားပရိုဖိုင်များ</value>
+  </data>
+  <data name="frmContentSubclinical.chkShowMicrobiological.Properties.Caption" xml:space="preserve">
+    <value>ပိုးသတ်ဆေးကို ပြသပါ။</value>
+  </data>
+  <data name="frmContentSubclinical.chkShowParentServiceGroup.Properties.Caption" xml:space="preserve">
+    <value>XN အမျိုးအစား၏ မိခင်ဝန်ဆောင်မှုကို ပြသသည်။</value>
+  </data>
+  <data name="frmContentSubclinical.chkShowParentServiceGroup.ToolTip" xml:space="preserve">
+    <value>စမ်းသပ်အမျိုးအစားဖြင့် မိခင်ဝန်ဆောင်မှုအဖွဲ့ကို ပြသသည်။</value>
+  </data>
+  <data name="frmContentSubclinical.chkThisTreatment.Properties.Caption" xml:space="preserve">
+    <value>လက်ရှိ ပရိုဖိုင်</value>
+  </data>
   <data name="frmContentSubclinical.layoutControl1.Text" xml:space="preserve">
     <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
   </data>
   <data name="frmContentSubclinical.layoutControl2.Text" xml:space="preserve">
     <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
   </data>
+  <data name="frmContentSubclinical.layoutControlItem13.Text" xml:space="preserve">
+    <value>လိုင်းခွဲ-</value>
+  </data>
+  <data name="frmContentSubclinical.layoutControlItem15.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမျိုးအစားကို ပြပါ-</value>
+  </data>
+  <data name="frmContentSubclinical.layoutControlItem16.Text" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောရက်စွဲကိုပြပါ-</value>
+  </data>
   <data name="frmContentSubclinical.layoutControlItem26.Text" xml:space="preserve">
     <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmContentSubclinical.layoutControlItem6.Text" xml:space="preserve">
+    <value>အခြားပရိုဖိုင်များ</value>
   </data>
   <data name="frmContentSubclinical.layoutViewCard1.Text" xml:space="preserve">
     <value>TemplateCard</value>
@@ -180,10 +216,16 @@
   <data name="frmContentSubclinical.treeListColumn1.Caption" xml:space="preserve">
     <value> </value>
   </data>
+  <data name="frmContentSubclinical.treeListColumn2.Caption" xml:space="preserve">
+    <value>ရလဒ်နေ့</value>
+  </data>
   <data name="frmContentSubclinical.treeListColumn4.Caption" xml:space="preserve">
     <value>မှတ်ချက်</value>
   </data>
   <data name="frmContentSubclinical.treeListColumn5.Caption" xml:space="preserve">
     <value>ရလဒ်</value>
+  </data>
+  <data name="frmContentSubclinical.treeListColumnSRI.Caption" xml:space="preserve">
+    <value>SRI</value>
   </data>
 </root>

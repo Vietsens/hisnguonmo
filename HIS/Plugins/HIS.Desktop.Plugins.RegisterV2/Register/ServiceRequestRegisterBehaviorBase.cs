@@ -926,7 +926,8 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisTreatment.HOSPITALIZATION_REASON = this.HospitalizationReason;
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_CODE = this.NguonKhachCode;
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_NAME = this.NguonKhachName;
-                this.patientProfile.HisTreatment.CUSTOMER_SOURCE_DETAIL = this.NguonKhachCTName;
+                //this.patientProfile.HisTreatment.CUSTOMER_SOURCE_DETAIL = this.NguonKhachCTName;
+                this.patientProfile.HisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES = this.NguonKhachCTName;
                 this.patientProfile.HisTreatment.GUARANTEE_LOGINNAME = this.GUARANTEE_LOGINNAME;
                 this.patientProfile.HisTreatment.GUARANTEE_USERNAME = this.GUARANTEE_USERNAME;
                 this.patientProfile.HisTreatment.GUARANTEE_REASON = this.GUARANTEE_REASON;

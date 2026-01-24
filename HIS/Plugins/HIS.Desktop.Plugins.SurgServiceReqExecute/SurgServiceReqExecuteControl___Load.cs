@@ -891,7 +891,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 this.ComboPhuongPhap2();
                 this.ComboKQVoCam();
                 this.ComboMoKTCao();
-                this.ComboHisMachine();
+               this.ComboHisMachine();
                 this.LoadComboPtttTable(cboBanMo);
                 this.ComboPhuongPhapThucTe();
                 this.DisplaySubstituteSignerInfo();

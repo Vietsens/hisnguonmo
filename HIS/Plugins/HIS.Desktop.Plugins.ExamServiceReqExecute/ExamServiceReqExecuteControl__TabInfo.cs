@@ -15,8 +15,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.Plugins.ExamServiceReqExecute.Config;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -29,6 +31,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 {
@@ -38,24 +41,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             IS_REQUEST_SKIN_CARE,
         }
-        private string GetSkinCareInfoText()
+        private bool GetBulletItem(TabInfoPage tabInfoPage)
         {
             try
             {
-                if (this.HisServiceReqView != null)
+                foreach (var control in flowLayoutPanelInfo.Controls)
                 {
-                    CommonParam param = new CommonParam();
-                    HisServiceReqFilter hisServiceReqFilter = new HisServiceReqFilter();
-                    hisServiceReqFilter.ID = HisServiceReqView.ID;
-                    List<HIS_SERVICE_REQ> hisServiceReqKT = new BackendAdapter(param)
-                        .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, hisServiceReqFilter, param);
-                    if (hisServiceReqKT != null && hisServiceReqKT.Count > 0)
+                    DevExpress.XtraEditors.CheckEdit checkEdit = control as DevExpress.XtraEditors.CheckEdit;
+                    if (checkEdit != null && checkEdit.Tag != null
+                        && checkEdit.Tag.ToString() == tabInfoPage.ToString())
                     {
-                        var hss = hisServiceReqKT.First();
-                        if (hss.IS_REQUEST_SKIN_CARE.HasValue && hss.IS_REQUEST_SKIN_CARE.Value == 1)
-                        {
-                            return "Nhận chỉ dẫn hỗ trợ điều trị bằng các sản phẩm chăm sóc da";
-                        }
+                        return checkEdit.Checked;
                     }
                 }
             }
@@ -63,18 +59,64 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            return string.Empty;
+            return false;
         }
         private void BuildBulletedInfoList()
         {
             try
             {
-                int count = 0;
                 var skinCareText = GetSkinCareInfoText();
-                if (!string.IsNullOrEmpty(skinCareText))
+                AppendBulletItem(TabInfoPage.IS_REQUEST_SKIN_CARE, skinCareText);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void AppendBulletItem(TabInfoPage tabInfoPage, Tuple<bool, string> tuple)
+        {
+            if (!string.IsNullOrEmpty(tuple.Item2))
+            {
+                DevExpress.XtraEditors.CheckEdit checkEdit;
+                checkEdit = new DevExpress.XtraEditors.CheckEdit();
+                checkEdit.Tag = tabInfoPage.ToString();
+                checkEdit.Location = new System.Drawing.Point(2, 2);
+                checkEdit.MenuManager = barManager1;
+                checkEdit.Properties.Appearance.Font = new System.Drawing.Font(checkEdit.Properties.Appearance.Font, System.Drawing.FontStyle.Bold);
+                checkEdit.Properties.Appearance.Options.UseFont = true;
+                checkEdit.Properties.Appearance.Options.UseForeColor = true;
+                checkEdit.Properties.Caption = tuple.Item2;
+                checkEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+                checkEdit.Size = new System.Drawing.Size(532, 22);
+                checkEdit.TabIndex = 5;
+                checkEdit.CheckedChanged += new System.EventHandler(this.checkEditBulletItem_CheckedChanged);
+                flowLayoutPanelInfo.Controls.Add(checkEdit);
+                //
+                checkEdit.Checked = tuple.Item1;
+            }
+        }
+
+        private void checkEditBulletItem_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var check = sender as CheckEdit;
+                if (check.Checked)
                 {
-                    count++;
-                    AppendBulletItem(TabInfoPage.IS_REQUEST_SKIN_CARE, skinCareText);
+                    check.Properties.Appearance.ForeColor = System.Drawing.Color.DodgerBlue;
+                }
+                else
+                {
+                    check.Properties.Appearance.ForeColor = System.Drawing.Color.Black;
+                }
+                int count = 0;
+                foreach (var control in flowLayoutPanelInfo.Controls)
+                {
+                    DevExpress.XtraEditors.CheckEdit checkEdit = control as DevExpress.XtraEditors.CheckEdit;
+                    if (checkEdit != null && checkEdit.Checked)
+                    {
+                        count++;
+                    }
                 }
                 if (count > 0)
                 {
@@ -92,36 +134,37 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             }
         }
 
-        private void AppendBulletItem(TabInfoPage tabInfoPage, string text)
+        private Tuple<bool, string> GetSkinCareInfoText()
         {
-            DevExpress.XtraEditors.CheckEdit checkEdit;
-            checkEdit = new DevExpress.XtraEditors.CheckEdit();
-            checkEdit.Tag = tabInfoPage.ToString();
-            checkEdit.Location = new System.Drawing.Point(2, 2);
-            checkEdit.MenuManager = barManager1;
-            checkEdit.Properties.Appearance.Font = new System.Drawing.Font(checkEdit.Properties.Appearance.Font, System.Drawing.FontStyle.Bold);
-            checkEdit.Properties.Appearance.ForeColor = System.Drawing.Color.DodgerBlue;
-            checkEdit.Properties.Appearance.Options.UseFont = true;
-            checkEdit.Properties.Appearance.Options.UseForeColor = true;
-            checkEdit.Properties.Caption = text;
-            checkEdit.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            checkEdit.Size = new System.Drawing.Size(532, 22);
-            checkEdit.TabIndex = 5;
-            checkEdit.Checked = true;
-            flowLayoutPanelInfo.Controls.Add(checkEdit);
-        }
-        private bool GetBulletItem(TabInfoPage tabInfoPage)
-        {
-            foreach (var control in flowLayoutPanelInfo.Controls)
+            string text = null;
+            try
             {
-                DevExpress.XtraEditors.CheckEdit checkEdit = control as DevExpress.XtraEditors.CheckEdit;
-                if (checkEdit != null && checkEdit.Tag != null
-                    && checkEdit.Tag.ToString() == tabInfoPage.ToString())
+                if (HisConfigCFG.HisDesktopPluginsRegisterV2RequestSkinCare == "1" || HisConfigCFG.HisDesktopPluginsRegisterV2RequestSkinCare == "2")
                 {
-                    return checkEdit.Checked;
+                    text = "Nhận chỉ dẫn hỗ trợ điều trị bằng các sản phẩm chăm sóc da";
+                    if (this.HisServiceReqView != null)
+                    {
+                        CommonParam param = new CommonParam();
+                        HisServiceReqFilter hisServiceReqFilter = new HisServiceReqFilter();
+                        hisServiceReqFilter.ID = HisServiceReqView.ID;
+                        List<HIS_SERVICE_REQ> hisServiceReqKT = new BackendAdapter(param)
+                            .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, hisServiceReqFilter, param);
+                        if (hisServiceReqKT != null && hisServiceReqKT.Count > 0)
+                        {
+                            var hss = hisServiceReqKT.First();
+                            if (hss.IS_REQUEST_SKIN_CARE.HasValue && hss.IS_REQUEST_SKIN_CARE.Value == 1)
+                            {
+                                return Tuple.Create(true, text);
+                            }
+                        }
+                    }
                 }
             }
-            return false;
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return Tuple.Create(false, text);
         }
     }
 }

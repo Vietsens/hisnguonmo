@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using AutoMapper;
+using DevExpress.XtraGrid.Views.Grid;
 using HID.EFMODEL.DataModels;
 using HID.Filter;
 using His.UC.UCHein;
@@ -26,6 +27,7 @@ using HIS.Desktop.Plugins.Library.HisSyncToHid;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Plugins.Register.ADO;
 using HIS.Desktop.Plugins.Register.Run;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.UC.KskContract.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -175,7 +177,8 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.ethnicCode = ucServiceRequestRegiter.txtEthnicCode.Text;
                 this.customerSourceCode = ucServiceRequestRegiter.txtCustomerSource.Text;
                 this.customerSourceName = ucServiceRequestRegiter.cboCustomerSource.Text;
-                this.customerSourceCodeDetail = ucServiceRequestRegiter.txtCustomerSourceDetail.Text;
+                //this.customerSourceCodeDetail = (string)(ucServiceRequestRegiter.cboCustomerSourceDetail.EditValue);
+                //this.customerSourceCodeDetail = GetSelectedCustomerSourceDetailLoginNames();
                 if (ucServiceRequestRegiter.cboGender.EditValue != null)
                     this.GenderId = (long)(ucServiceRequestRegiter.cboGender.EditValue);
                 this.nationalName = ucServiceRequestRegiter.cboNational.Text;
@@ -270,6 +273,53 @@ namespace HIS.Desktop.Plugins.Register.Register
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
             return result;
+        }
+        public string GetSelectedCustomerSourceDetailUsernames()
+        {
+            var gridView = ucRequestService.cboCustomerSourceDetail.Properties.View as GridView;
+            if (gridView == null) return string.Empty;
+
+            var selectedRows = gridView.GetSelectedRows();
+            var usernames = selectedRows
+                .Select(rowHandle => gridView.GetRow(rowHandle) as HIS_CUSTOMER_SOURCE_DT)
+                .Where(row => row != null)
+                .Select(row => row.USERNAME)
+                .ToArray();
+
+            return string.Join(", ", usernames);
+        }
+
+        // Method để lấy danh sách LOGINNAME đã chọn
+        // Method để lấy danh sách LOGINNAME đã chọn
+        private string GetSelectedCustomerSourceDetailLoginNames()
+        {
+            try
+            {
+                // ✅ Lấy từ GridCheckMarksSelection
+                GridCheckMarksSelection gridCheckMark = ucRequestService.cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
+
+                if (gridCheckMark != null && gridCheckMark.Selection != null && gridCheckMark.Selection.Count > 0)
+                {
+                    var loginNames = new List<string>();
+
+                    foreach (var item in gridCheckMark.Selection)
+                    {
+                        if (item is HIS_CUSTOMER_SOURCE_DT detail && !string.IsNullOrEmpty(detail.LOGINNAME))
+                        {
+                            loginNames.Add(detail.LOGINNAME.Trim());
+                        }
+                    }
+
+                    return string.Join(",", loginNames);
+                }
+
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return string.Empty;
+            }
         }
 
         protected void InitBase()
@@ -515,6 +565,7 @@ namespace HIS.Desktop.Plugins.Register.Register
                 }
 
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_CODE = this.customerSourceCode;
+                this.patientProfile.HisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES = GetSelectedCustomerSourceDetailLoginNames();
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_NAME = this.customerSourceName;
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_DETAIL = this.customerSourceCodeDetail;
                 this.patientProfile.ProvinceCode = provinceCode;

@@ -22,7 +22,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.SurgServiceReqExecute.Base;
 using HIS.Desktop.Utility;
-using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Controls.EditorLoader;  
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -32,11 +32,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.SurgServiceReqExecute
-{
+{ 
     public partial class SurgServiceReqExecuteControl : UserControlBase
     {
         private List<AcsUserADO> lstReAcsUserADO;
 
+       
         private void ComboChuanDoanTD(DevExpress.XtraEditors.LookUpEdit cbo)
         {
             try
@@ -953,11 +954,25 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
+                // Sử dụng đúng key cấu hình mới
+                int showOption = 2;
+                try
+                {
+                    // Đổi key cấu hình theo yêu cầu mới
+                    string showOptionStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.HisMachine_ShowOption");
+                    showOption = Inventec.Common.TypeConvert.Parse.ToInt32(showOptionStr);
+                    if (showOption != 1 && showOption != 2) showOption = 2;
+                }
+                catch
+                {
+                    showOption = 2;
+                }
+
                 List<HIS_MACHINE> datas = null;
                 if (BackendDataWorker.IsExistsKey<HIS_MACHINE>())
                 {
                     datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MACHINE>();
-                }
+                }  
                 else
                 {
                     CommonParam paramCommon = new CommonParam();
@@ -966,7 +981,32 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     if (datas != null) BackendDataWorker.UpdateToRam(typeof(HIS_MACHINE), datas, long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss")));
                 }
 
-                datas = datas != null ? datas.Where(p => p.IS_ACTIVE == 1 && ("," +p.ROOM_IDS + ",").Contains("," + this.Module.RoomId + ",")).ToList() : null;
+                if (datas != null)
+                { 
+                    datas = datas.Where(p => p.IS_ACTIVE == 1).ToList();
+                    if (showOption == 1)
+                    {
+                        // Hiển thị theo thiết lập Dịch vụ - Máy (HIS_SERVICE_MACHINE) theo SERVICE_ID của dịch vụ đang xử lý
+                        long serviceId = this.sereServ != null ? this.sereServ.SERVICE_ID : 0;
+                        if (serviceId > 0)
+                        {
+                            var serviceMachines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_MACHINE>();
+                            var allowMachineIds = serviceMachines != null
+                                ? serviceMachines.Where(sm => sm.IS_ACTIVE == 1 && sm.SERVICE_ID == serviceId).Select(sm => sm.MACHINE_ID).Distinct().ToList()
+                                : new List<long>();
+                            datas = allowMachineIds.Count > 0 ? datas.Where(m => allowMachineIds.Contains(m.ID)).ToList() : new List<HIS_MACHINE>();
+                        }
+                        else
+                        {
+                            datas = new List<HIS_MACHINE>();
+                        }
+                    }
+                    else if (showOption == 2)
+                    {
+                        // Hiển thị theo thiết lập Máy - Phòng xử lý (HIS_MACHINE.ROOM_IDS)
+                        datas = datas.Where(p => ("," + p.ROOM_IDS + ",").Contains("," + this.Module.RoomId + ",")).ToList();
+                    }
+                }
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("MACHINE_CODE", "", 150, 1));
@@ -974,6 +1014,32 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 ControlEditorADO controlEditorADO = new ControlEditorADO("MACHINE_NAME", "ID", columnInfos, false, 250);
                 controlEditorADO.ImmediatePopup = true;
                 ControlEditorLoader.Load(this.cboMachine, datas, controlEditorADO);
+
+                // Lưu lại trạng thái sử dụng máy theo lần sử dụng trước đó
+                if (datas != null && datas.Count > 0)
+                {
+                    long? lastMachineId = null;
+                    string lastMachineCode = null;
+                    if (this.SereServExt != null)
+                    {
+                        if (this.SereServExt.MACHINE_ID.HasValue && this.SereServExt.MACHINE_ID.Value > 0)
+                            lastMachineId = this.SereServExt.MACHINE_ID;
+                        if (!string.IsNullOrWhiteSpace(this.SereServExt.MACHINE_CODE))
+                            lastMachineCode = this.SereServExt.MACHINE_CODE;
+                    }
+
+                    HIS_MACHINE selected = null;
+                    if (lastMachineId.HasValue)
+                        selected = datas.FirstOrDefault(m => m.ID == lastMachineId.Value);
+                    if (selected == null && !string.IsNullOrWhiteSpace(lastMachineCode))
+                        selected = datas.FirstOrDefault(m => string.Equals(m.MACHINE_CODE, lastMachineCode, StringComparison.OrdinalIgnoreCase));
+
+                    if (selected != null)
+                    {
+                        cboMachine.EditValue = selected.ID;
+                        txtMachineCode.Text = selected.MACHINE_CODE;
+                    }
+                }
             }
             catch (Exception ex)
             {

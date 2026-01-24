@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             this.layoutControl1.Location = new System.Drawing.Point(0, 29);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1219, 580);
+            this.layoutControl1.Size = new System.Drawing.Size(1318, 565);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -84,7 +84,7 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             this.panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControl1.Location = new System.Drawing.Point(2, 2);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(1215, 576);
+            this.panelControl1.Size = new System.Drawing.Size(1314, 561);
             this.panelControl1.TabIndex = 4;
             // 
             // layoutControlGroup1
@@ -96,7 +96,7 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1219, 580);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1318, 565);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -104,7 +104,7 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             this.layoutControlItem1.Control = this.panelControl1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1219, 580);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1318, 565);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -112,6 +112,10 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barOptometristSave,
@@ -166,35 +170,35 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1219, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1318, 29);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 609);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1219, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 594);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1318, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 580);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 565);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1219, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 580);
+            this.barDockControlRight.Location = new System.Drawing.Point(1318, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 565);
             // 
             // frmOptometrist
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1219, 609);
+            this.ClientSize = new System.Drawing.Size(1318, 594);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);

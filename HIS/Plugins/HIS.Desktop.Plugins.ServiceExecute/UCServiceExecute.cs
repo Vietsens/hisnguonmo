@@ -118,6 +118,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         private Dictionary<long, HIS_SERE_SERV_PTTT> dicSereServPttt = new Dictionary<long, HIS_SERE_SERV_PTTT>(); //sereServId,HIS_SERE_SERV_PTTT
         private Dictionary<long, List<V_HIS_SERE_SERV_SUIN>> dicSereServSuin = new Dictionary<long, List<V_HIS_SERE_SERV_SUIN>>(); //sereServId,HIS_SERE_SERV_PTTT
         private Dictionary<long, string> dicOldData = new Dictionary<long, string>();
+        private static readonly Dictionary<long, long> dicLastMachineByRoom = new Dictionary<long, long>(); // roomId -> machineId
 
         private bool isPressButtonSave;
         private ADO.PatientADO patient;
@@ -1311,6 +1312,63 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                                 ado.NUMBER_OF_FILM = (long)(Math.Round(service.NUMBER_OF_FILM.Value * item.AMOUNT, 0, MidpointRounding.AwayFromZero));
                             }
                         }
+                        //check key MachineShowOption
+                        if (AppConfigKeys.MachineShowOption == "2")
+                        {
+                            long roomId = ado.TDL_EXECUTE_ROOM_ID;
+
+                            // Danh sach may hop le theo phong
+                            List<long> allowMachineIds = new List<long>();
+                            if (roomId > 0 && ListMachine != null && ListMachine.Count > 0)
+                            {
+                                allowMachineIds = ListMachine
+                                    .Where(m => m.IS_ACTIVE == 1
+                                                && !string.IsNullOrEmpty(m.ROOM_IDS)
+                                                && ("," + m.ROOM_IDS + ",").Contains("," + roomId + ","))
+                                    .Select(m => m.ID)
+                                    .ToList();
+                            }
+
+                            // 1) Neu EXT co machine -> vua hien thi vua "nho" lai theo phong (neu hop le)
+                            if (ext != null && ext.MACHINE_ID.HasValue && ext.MACHINE_ID.Value > 0)
+                            {
+                                if (roomId > 0 && allowMachineIds.Contains(ext.MACHINE_ID.Value))
+                                {
+                                    dicLastMachineByRoom[roomId] = ext.MACHINE_ID.Value;
+                                }
+                                // ado.MACHINE_ID da duoc set theo ext o tren roi
+                            }
+                            else
+                            {
+                                // 2) EXT chua co -> lay theo "may lan truoc" cua phong
+                                if (roomId > 0
+                                    && dicLastMachineByRoom.TryGetValue(roomId, out long lastMachineId)
+                                    && lastMachineId > 0
+                                    && allowMachineIds.Contains(lastMachineId))
+                                {
+                                    ado.MACHINE_ID = lastMachineId;
+                                }
+                                else
+                                {
+                                    // 3) Neu machine hien tai (do ChoseDataMachine) khong hop le theo phong -> roi ve may dau tien hop le
+                                    if (ado.MACHINE_ID.HasValue && ado.MACHINE_ID.Value > 0 && allowMachineIds.Count > 0)
+                                    {
+                                        if (!allowMachineIds.Contains(ado.MACHINE_ID.Value))
+                                        {
+                                            ado.MACHINE_ID = allowMachineIds[0];
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Neu chua co gi -> neu phong co may thi auto chon may dau
+                                        if (allowMachineIds.Count > 0)
+                                        {
+                                            ado.MACHINE_ID = allowMachineIds[0];
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
                         //có cấu hình bắt buộc chỉ định thuốc vật tư sẽ kiểm tra dịch vụ đó đã có thông tin film hay chưa (số lượng film)
                         //
@@ -2127,17 +2185,33 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 if (editor != null && ListMachine != null && ListServiceMachine != null && ListServiceMachine.Count > 0)
                 {
-                    var currentServiceMachine = ListServiceMachine.Where(o => o.SERVICE_ID == data.SERVICE_ID).Select(o => o.MACHINE_ID).ToList();
+                    List<long> allowMachineIds = new List<long>();
+                    if (AppConfigKeys.MachineShowOption == "1")
+                    {
+                        allowMachineIds = ListServiceMachine.Where(k => k.SERVICE_ID == data.SERVICE_ID).Select(o => o.MACHINE_ID).ToList();
+                    }
+                    else if (AppConfigKeys.MachineShowOption == "2")
+                    {
+                        long roomId = data.TDL_EXECUTE_ROOM_ID;
+                        if(roomId > 0)
+                        {
+                            var machinesByRoom = ListMachine
+                            .Where(m => ("," + (m.ROOM_IDS ?? "") + ",").Contains("," + roomId + ","))
+                            .ToList();
+
+                            allowMachineIds = machinesByRoom.Select(m => m.ID).ToList();
+                        }    
+                    }    
                     List<HisMachineCounterSDO> dataCombo = new List<HisMachineCounterSDO>();
 
                     if (((AppConfigKeys.IsPatientTypeOption == "1" && data.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) || AppConfigKeys.IsPatientTypeOption != "1")
                         && GlobalVariables.MachineCounterSdos != null && GlobalVariables.MachineCounterSdos.Count > 0)
                     {
-                        dataCombo = GlobalVariables.MachineCounterSdos.Where(o => currentServiceMachine.Contains(o.ID) && ListMachine.Select(s => s.ID).Contains(o.ID)).ToList();
+                        dataCombo = GlobalVariables.MachineCounterSdos.Where(o => allowMachineIds.Contains(o.ID) && ListMachine.Select(s => s.ID).Contains(o.ID)).ToList();
                     }
-                    else if (currentServiceMachine != null && currentServiceMachine.Count > 0)
+                    else if (allowMachineIds != null && allowMachineIds.Count > 0)
                     {
-                        var machines = ListMachine.Where(o => currentServiceMachine.Contains(o.ID)).ToList();
+                        var machines = ListMachine.Where(o => allowMachineIds.Contains(o.ID)).ToList();
                         foreach (var item in machines)
                         {
                             var sdo = new HisMachineCounterSDO();
@@ -8367,6 +8441,36 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewSereServ_CellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (AppConfigKeys.MachineShowOption != "2") return;
+                if (e.Column != Gc_MachineId) return;
+
+                var row = gridViewSereServ.GetRow(e.RowHandle) as ADO.ServiceADO;
+                if (row == null) return;
+
+                long roomId = row.TDL_EXECUTE_ROOM_ID;
+                long machineId = Inventec.Common.TypeConvert.Parse.ToInt64((e.Value ?? 0).ToString());
+                if (roomId <= 0 || machineId <= 0) return;
+
+                bool ok = ListMachine != null && ListMachine.Any(m =>
+                    m.ID == machineId
+                    && m.IS_ACTIVE == 1
+                    && !string.IsNullOrEmpty(m.ROOM_IDS)
+                    && ("," + m.ROOM_IDS + ",").Contains("," + roomId + ",")
+                );
+                if (!ok) return;
+
+                dicLastMachineByRoom[roomId] = machineId;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

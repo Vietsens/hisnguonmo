@@ -159,6 +159,12 @@
   <data name="FormTreatmentIcdEdit.btnSave.Text" xml:space="preserve">
     <value>Save (Ctrl S)</value>
   </data>
+  <data name="FormTreatmentIcdEdit.CboCustomerDetail.ToolTip" xml:space="preserve">
+    <value>အသေးစိတ်ဖောက်သည်အရင်းအမြစ်များ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.cboReasonNT.ToolTip" xml:space="preserve">
+    <value>တက်ရတဲ့အကြောင်းရင်း</value>
+  </data>
   <data name="FormTreatmentIcdEdit.chkBHYT.Properties.Caption" xml:space="preserve">
     <value>အကန့်အသတ်မရှိ ကျန်းမာရေးအာမခံဆေးဝါးများ</value>
   </data>
@@ -252,11 +258,65 @@
   <data name="FormTreatmentIcdEdit.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>ဆေးရုံတက်ရမည့်နံပါတ်ကို ပြင်ပေးသည်။</value>
   </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem35.Text" xml:space="preserve">
+    <value>တီဘီရောဂါ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem36.Text" xml:space="preserve">
+    <value>မန်နေဂျာနံပါတ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem38.Text" xml:space="preserve">
+    <value>ဝယ်ယူသူအရင်းအမြစ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem39.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တက်ရတဲ့အကြောင်းရင်း</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem39.Text" xml:space="preserve">
+    <value>NT ဝင်ရောက်ရခြင်းအကြောင်းအရင်း-</value>
+  </data>
   <data name="FormTreatmentIcdEdit.layoutControlItem4.Text" xml:space="preserve">
     <value>ဆေးရုံဆင်းရမည့်နံပါတ်-</value>
   </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem40.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တက်ရတဲ့အကြောင်းရင်း</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem43.Text" xml:space="preserve">
+    <value>NK အသေးစိတ်အချက်များ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem44.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အာမခံ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem44.Text" xml:space="preserve">
+    <value>အာမခံချက်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem45.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အာမခံ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem46.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အာမခံချက်အတွက် အကြောင်းပြချက်</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.layoutControlItem46.Text" xml:space="preserve">
+    <value>အကြောင်းရင်း-</value>
+  </data>
   <data name="FormTreatmentIcdEdit.layoutControlItem5.Text" xml:space="preserve">
     <value>CCT ယူနစ်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblCaptionConclude.Text" xml:space="preserve">
+    <value>PP ကုသမှု</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblCaptionDiagnostic.Text" xml:space="preserve">
+    <value>CLS ရလဒ်များ-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblDtKCB.Text" xml:space="preserve">
+    <value>ဆေးစစ်ခြင်းဘာသာရပ်များ</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblPathologicalProcess.Text" xml:space="preserve">
+    <value>QT ရောဂါဗေဒ-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblReasonVV.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံတက်ရတဲ့အကြောင်းရင်း</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lblReasonVV.Text" xml:space="preserve">
+    <value>အကြောင်းပြချက် VV-</value>
   </data>
   <data name="FormTreatmentIcdEdit.lciClinicalInTime.Text" xml:space="preserve">
     <value>ကုသမှုခံယူမည့်ရက်စွဲ-</value>
@@ -269,6 +329,12 @@
   </data>
   <data name="FormTreatmentIcdEdit.lciOutTime.Text" xml:space="preserve">
     <value>ဆေးရုံဆင်းမည့်ရက်-</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lciPatientNote.Text" xml:space="preserve">
+    <value>မှတ်ချက် -</value>
+  </data>
+  <data name="FormTreatmentIcdEdit.lciProvisionalDianosis.Text" xml:space="preserve">
+    <value>ပဏာမကောလိပ်-</value>
   </data>
   <data name="FormTreatmentIcdEdit.Text" xml:space="preserve">
     <value>ကုသမှုမှတ်တမ်းအချက်အလက်ကို တည်းဖြတ်ပါ။</value>

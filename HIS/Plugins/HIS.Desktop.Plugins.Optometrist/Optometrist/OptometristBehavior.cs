@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using Inventec.Core;
+using Inventec.Desktop.Common.Modules;
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
 using MOS.EFMODEL.DataModels;
@@ -28,6 +29,7 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
     {
         object[] entity;
         Inventec.Desktop.Common.Modules.Module currentModule;
+        long moduleTypeId = Inventec.Desktop.Common.Modules.Module.MODULE_TYPE_ID__UC;
 
         internal OptometristBehavior()
             : base()
@@ -48,22 +50,32 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             {
                 if (entity != null && entity.Count() > 0)
                 {
-                    HIS_SERE_SERV sereServ = null;
+                    MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ currentSR = null;
                     foreach (var item in entity)
                     {
                         if (item is Inventec.Desktop.Common.Modules.Module)
                         {
                             currentModule = (Inventec.Desktop.Common.Modules.Module)item;
                         }
-                        else if (item is HIS_SERE_SERV)
+                        else if (item is MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ)
                         {
-                            sereServ = (HIS_SERE_SERV)item;
+                            currentSR = (MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ)item;
+                        }
+                        else if (item is long)
+                        {
+                            moduleTypeId = (long)item;
                         }
                     }
-
-                    if (currentModule != null && sereServ != null)
+                    if (currentModule != null && currentSR != null)
                     {
-                        result = new frmOptometrist(currentModule, sereServ);
+                        if (moduleTypeId == Module.MODULE_TYPE_ID__FORM)
+                        {
+                            result = new frmOptometrist(currentModule, currentSR);
+                        }
+                        else
+                        {
+                            result = new UC.UCOptometrist(currentModule, currentSR);
+                        }
                     }
                 }
             }
