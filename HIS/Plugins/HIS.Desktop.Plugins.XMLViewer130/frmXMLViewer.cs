@@ -439,34 +439,26 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         switch (fileHoSo.LOAIHOSO)
                         {
                             case "CT03":
-                                var ct03Data = His.Bhyt.ExportXml.XML3220.CT03.CT03Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                                if (ct03Data != null)
-                                    listObj.Add(ct03Data);
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CT03.CT03Data>(fileHoSo.NOIDUNGFILE, listObj);
                                 break;
+
                             case "CT04":
-                                var ct04Data = His.Bhyt.ExportXml.XML3220.CT04.CT04Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                                if (ct04Data != null)
-                                    listObj.Add(ct04Data);
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CT04.CT04Data>(fileHoSo.NOIDUNGFILE, listObj);
                                 break;
+
                             case "CT05":
-                                var ct05Data = His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                                if (ct05Data != null)
-                                    listObj.Add(ct05Data);
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data>(fileHoSo.NOIDUNGFILE, listObj);
                                 break;
+
                             case "CT06":
-                                var ct06Data = His.Bhyt.ExportXml.XML3220.CT06.CT06Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                                if (ct06Data != null)
-                                    listObj.Add(ct06Data);
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CT06.CT06Data>(fileHoSo.NOIDUNGFILE, listObj);
                                 break;
                             case "CT07":
-                                var ct07Data = His.Bhyt.ExportXml.XML3220.XMLCT07.QD130.XML.XMLCT07Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                                if (ct07Data != null)
-                                    listObj.Add(ct07Data);
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.XMLCT07.QD130.XML.XMLCT07Data>(fileHoSo.NOIDUNGFILE, listObj);
                                 break;
-                            case "CTGiayDieuTriNoiTru":
-                                var ctGiayDieuTriNoiTruData = His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                                if (ctGiayDieuTriNoiTruData != null)
-                                    listObj.Add(ctGiayDieuTriNoiTruData);
+                            case "GIAYDIEUTRINOITRU":
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData>(
+                                    fileHoSo.NOIDUNGFILE, listObj);
                                 break;
                         }
 
@@ -883,6 +875,226 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             }
             return result;
         }
+        public void ProcessXml130(OpenFileDialog op)
+        {
+            His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(null);
+            foreach (var item in op.FileNames)
+            {
+                string xmlFile = File.ReadAllText(item);
+                var hoso = xmlProcessor.GetDataFromString(xmlFile);
+                foreach (var hoSo in hoso.THONGTINHOSO.DANHSACHHOSO.HOSO)
+                {
+                    foreach (var fileHoSo in hoSo.FILEHOSO)
+                    {
+                        List<object> listObj = new List<object>();
+                        //string decodedContent = Base64Decode(fileHoSo.NOIDUNGFILE);
+                        switch (fileHoSo.LOAIHOSO)
+                        {
+                            case "XML1":
+                                His.Bhyt.ExportXml.XML130.XML1.CreateXmlMain xmlMain1 = new His.Bhyt.ExportXml.XML130.XML1.CreateXmlMain();
+                                listObj.Add(xmlMain1.RunXml1Data(fileHoSo.NOIDUNGFILE));
+                                break;
+                            case "XML2":
+                                His.Bhyt.ExportXml.XML130.XML2.CreateXmlMain xmlMain2 = new His.Bhyt.ExportXml.XML130.XML2.CreateXmlMain();
+                                var xml2Data = xmlMain2.RunXml2Data(fileHoSo.NOIDUNGFILE);
+                                if (xml2Data != null)
+                                    listObj.AddRange(xml2Data.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC);
+                                break;
+                            case "XML3":
+                                var xml3Data = His.Bhyt.ExportXml.XML130.XML3.XML3Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
+                                if (xml3Data != null)
+                                {
+                                    listObj.AddRange(xml3Data.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT);
+                                }
+                                break;
+                            case "XML4":
+                                His.Bhyt.ExportXml.XML130.XML4.CreateXmlMain xmlMain4 = new His.Bhyt.ExportXml.XML130.XML4.CreateXmlMain();
+                                listObj.AddRange(xmlMain4.RunXml4DetailData(fileHoSo.NOIDUNGFILE));
+                                break;
+                            case "XML5":
+                                His.Bhyt.ExportXml.XML130.XML5.CreateXmlMain xmlMain5 = new His.Bhyt.ExportXml.XML130.XML5.CreateXmlMain();
+                                listObj.AddRange(xmlMain5.RunXml5DetailData(fileHoSo.NOIDUNGFILE));
+                                break;
+                            case "XML6":
+                                His.Bhyt.ExportXml.XML130.XML6.CreateXmlMain xmlMain6 = new His.Bhyt.ExportXml.XML130.XML6.CreateXmlMain();
+                                var xml6Data = xmlMain6.RunXml6Data(fileHoSo.NOIDUNGFILE);
+                                if (xml6Data != null && xml6Data.DSACH_HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS != null)
+                                    listObj.AddRange(xml6Data.DSACH_HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS.HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS);
+                                break;
+                            case "XML7":
+                                listObj.Add(His.Bhyt.ExportXml.XML130.XML7.XML7Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE));
+                                break;
+                            case "XML8":
+                                His.Bhyt.ExportXml.XML130.XML8.CreateXmlMain xmlMain8 = new His.Bhyt.ExportXml.XML130.XML8.CreateXmlMain();
+                                var xml8Data = xmlMain8.RunXml8Data(fileHoSo.NOIDUNGFILE);
+                                if (xml8Data != null)
+                                    listObj.Add(xml8Data);
+                                break;
+                            case "XML9":
+                                His.Bhyt.ExportXml.XML130.XML9.CreateXmlMain xmlMain9 = new His.Bhyt.ExportXml.XML130.XML9.CreateXmlMain();
+                                listObj.AddRange(xmlMain9.RunXml9DetailData(fileHoSo.NOIDUNGFILE));
+                                break;
+                            case "XML10":
+                                His.Bhyt.ExportXml.XML130.XML10.CreateXmlMain xmlMain10 = new His.Bhyt.ExportXml.XML130.XML10.CreateXmlMain();
+                                var xml10Data = xmlMain10.RunXml10DetailData(fileHoSo.NOIDUNGFILE);
+                                if (xml10Data != null)
+                                    listObj.Add(xml10Data);
+                                break;
+                            case "XML11":
+                                His.Bhyt.ExportXml.XML130.XML11.CreateXmlMain xmlMain11 = new His.Bhyt.ExportXml.XML130.XML11.CreateXmlMain();
+                                var xml11Data = xmlMain11.RunXml11Data(fileHoSo.NOIDUNGFILE);
+                                if (xml11Data != null)
+                                    listObj.Add(xml11Data);
+                                break;
+                            case "XML12":
+                                His.Bhyt.ExportXml.XML130.XML12.CreateXmlMain xmlMain12 = new His.Bhyt.ExportXml.XML130.XML12.CreateXmlMain();
+                                listObj.AddRange(xmlMain12.RunXml12DetailsData(fileHoSo.NOIDUNGFILE));
+                                break;
+                            case "XML13":
+                                His.Bhyt.ExportXml.XML130.XML13.CreateXmlMain xmlMain13 = new His.Bhyt.ExportXml.XML130.XML13.CreateXmlMain();
+                                if (xmlMain13 != null)
+                                    listObj.Add(xmlMain13.RunXML13DetailsData(fileHoSo.NOIDUNGFILE));
+                                break;
+                            case "XML14":
+                                His.Bhyt.ExportXml.XML130.XML14.CreateXmlMain xmlMain14 = new His.Bhyt.ExportXml.XML130.XML14.CreateXmlMain();
+                                if (xmlMain14 != null)
+                                    listObj.Add(xmlMain14.RunXML14DetailsData(fileHoSo.NOIDUNGFILE));
+                                break;
+                            case "XML15":
+                                His.Bhyt.ExportXml.XML130.XML15.CreateXmlMain xmlMain15 = new His.Bhyt.ExportXml.XML130.XML15.CreateXmlMain();
+                                if (xmlMain15 != null)
+                                    listObj.AddRange(xmlMain15.RunXML15DetailsData(fileHoSo.NOIDUNGFILE));
+                                break;
+
+                        }
+
+                        if (listObj.Count > 0)
+                        {
+                            List<UCXml130> targetList = fileHoSo.LOAIHOSO.StartsWith("XML") ? listUCXml130 : listUCXmlChungTu;
+
+
+                            var ucExist = targetList.FirstOrDefault(o => o.Tag?.ToString() == fileHoSo.LOAIHOSO);
+
+                            if (ucExist != null)
+                            {
+                                // Merge gọi lại LoadList để thêm/ghi đè dữ liệu mới
+                                ucExist.LoadList(listObj);
+                            }
+                            else
+                            {
+                                UCXml130 uc = new UCXml130();
+                                uc.Tag = fileHoSo.LOAIHOSO;
+                                uc.LoadList(listObj);
+                                targetList.Add(uc);
+                            }
+                        }
+                        if (fileHoSo.LOAIHOSO.StartsWith("XML"))
+                        {
+                            chkViewXml130.Checked = true;
+                        }
+                        else if (fileHoSo.LOAIHOSO.StartsWith("CT"))
+                        {
+                            chkViewXmlCT.Checked = true;
+                        }
+                    }
+                }
+            }
+        }
+        public void ProcessXmlChungTu(OpenFileDialog op)
+        {
+            His.Bhyt.ExportXml.XML3220.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML3220.CreateXmlProcessor(null);
+            foreach (var item in op.FileNames)
+            {
+                string xmlFile = File.ReadAllText(item);
+                var hoso1 = xmlProcessor.GetDataFromString(xmlFile);
+                foreach (var hoSo1 in hoso1.DANHSACHHOSO.HOSO)
+                {
+                    foreach (var fileHoSo in hoSo1.FILEHOSO)
+                    {
+                        List<object> listObj = new List<object>();
+                        switch (fileHoSo.LOAIHOSO)
+                        {
+                            case "CT03":
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CT03.CT03Data>(fileHoSo.NOIDUNGFILE, listObj);
+                                break;
+
+                            case "CT04":
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CT04.CT04Data>(fileHoSo.NOIDUNGFILE, listObj);
+                                break;
+
+                            case "CT05":
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data>(fileHoSo.NOIDUNGFILE, listObj);
+                                break;
+
+                            case "CT06":
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CT06.CT06Data>(fileHoSo.NOIDUNGFILE, listObj);
+                                break;
+                            case "CT07":
+                                DeserializeAndAdd< His.Bhyt.ExportXml.XML3220.XMLCT07.QD130.XML.XMLCT07Data> (fileHoSo.NOIDUNGFILE, listObj);
+                                break;
+                            case "GIAYDIEUTRINOITRU":
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData>(
+                                    fileHoSo.NOIDUNGFILE, listObj);
+                                break;
+                        }
+
+                        if (listObj.Count > 0)
+                        {
+                            List<UCXml130> targetList = fileHoSo.LOAIHOSO.StartsWith("XML") ? listUCXml130 : listUCXmlChungTu;
+
+
+                            var ucExist = targetList.FirstOrDefault(o => o.Tag?.ToString() == fileHoSo.LOAIHOSO);
+
+                            if (ucExist != null)
+                            {
+                                // Merge: gọi lại LoadList để thêm/ghi đè dữ liệu mới
+                                ucExist.LoadList(listObj);
+                            }
+                            else
+                            {
+                                UCXml130 uc = new UCXml130();
+                                uc.Tag = fileHoSo.LOAIHOSO;
+                                uc.LoadList(listObj);
+                                targetList.Add(uc);
+                            }
+                        }
+                        if (fileHoSo.LOAIHOSO.StartsWith("XML"))
+                        {
+                            chkViewXml130.Checked = true;
+                        }
+                        else if (fileHoSo.LOAIHOSO.StartsWith("CT"))
+                        {
+                            chkViewXmlCT.Checked = true;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        private void DeserializeAndAdd<T>(string xmlContent, IList<object> listObj)
+        {
+            if (string.IsNullOrWhiteSpace(xmlContent))
+                return;
+
+            try
+            {
+                using (var stringReader = new StringReader(xmlContent))
+                {
+                    var serializer = new XmlSerializer(typeof(T));
+                    var data = serializer.Deserialize(stringReader);
+
+                    if (data != null)
+                    {
+                        listObj.Add(data);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
 
         private void btnBrowserFile_Click(object sender, EventArgs e)
         {
@@ -892,246 +1104,19 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 op.Filter = "XML file|*.xml";
                 op.Multiselect = true;
                 op.ShowDialog();
-                // listUCXml130 = new List<UCXml130>();
-                listUCXmlChungTu = new List<UCXml130>();
                 xtraTabControl1.TabPages.Clear();
-                His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(null);
-                foreach (var item in op.FileNames)
+                if (chkViewXml130.Checked)
                 {
-                    string xmlFile = File.ReadAllText(item);
-                    var hoso = xmlProcessor.GetDataFromString(xmlFile);
-
-                    foreach (var hoSo in hoso.THONGTINHOSO.DANHSACHHOSO.HOSO)
-                    {
-                        foreach (var fileHoSo in hoSo.FILEHOSO)
-                        {
-                            List<object> listObj = new List<object>();
-                            //string decodedContent = Base64Decode(fileHoSo.NOIDUNGFILE);
-                            switch (fileHoSo.LOAIHOSO)
-                            {
-                                case "XML1":
-                                    His.Bhyt.ExportXml.XML130.XML1.CreateXmlMain xmlMain1 = new His.Bhyt.ExportXml.XML130.XML1.CreateXmlMain();
-                                    listObj.Add(xmlMain1.RunXml1Data(fileHoSo.NOIDUNGFILE));
-                                    break;
-                                case "XML2":
-                                    His.Bhyt.ExportXml.XML130.XML2.CreateXmlMain xmlMain2 = new His.Bhyt.ExportXml.XML130.XML2.CreateXmlMain();
-                                    var xml2Data = xmlMain2.RunXml2Data(fileHoSo.NOIDUNGFILE);
-                                    if (xml2Data != null)
-                                        listObj.AddRange(xml2Data.DSACH_CHI_TIET_THUOC.CHI_TIET_THUOC);
-                                    break;
-                                case "XML3":
-                                    var xml3Data = His.Bhyt.ExportXml.XML130.XML3.XML3Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                                    if (xml3Data != null)
-                                    {
-                                        listObj.AddRange(xml3Data.DSACH_CHI_TIET_DVKT.CHI_TIET_DVKT);
-                                    }
-                                    break;
-                                case "XML4":
-                                    His.Bhyt.ExportXml.XML130.XML4.CreateXmlMain xmlMain4 = new His.Bhyt.ExportXml.XML130.XML4.CreateXmlMain();
-                                    listObj.AddRange(xmlMain4.RunXml4DetailData(fileHoSo.NOIDUNGFILE));
-                                    break;
-                                case "XML5":
-                                    His.Bhyt.ExportXml.XML130.XML5.CreateXmlMain xmlMain5 = new His.Bhyt.ExportXml.XML130.XML5.CreateXmlMain();
-                                    listObj.AddRange(xmlMain5.RunXml5DetailData(fileHoSo.NOIDUNGFILE));
-                                    break;
-                                case "XML6":
-                                    His.Bhyt.ExportXml.XML130.XML6.CreateXmlMain xmlMain6 = new His.Bhyt.ExportXml.XML130.XML6.CreateXmlMain();
-                                    var xml6Data = xmlMain6.RunXml6Data(fileHoSo.NOIDUNGFILE);
-                                    if (xml6Data != null && xml6Data.DSACH_HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS != null)
-                                        listObj.AddRange(xml6Data.DSACH_HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS.HO_SO_BENH_AN_CHAM_SOC_VA_DIEU_TRI_HIV_AIDS);
-                                    break;
-                                case "XML7":
-                                    listObj.Add(His.Bhyt.ExportXml.XML130.XML7.XML7Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE));
-                                    break;
-                                case "XML8":
-                                    His.Bhyt.ExportXml.XML130.XML8.CreateXmlMain xmlMain8 = new His.Bhyt.ExportXml.XML130.XML8.CreateXmlMain();
-                                    var xml8Data = xmlMain8.RunXml8Data(fileHoSo.NOIDUNGFILE);
-                                    if (xml8Data != null)
-                                        listObj.Add(xml8Data);
-                                    break;
-                                case "XML9":
-                                    His.Bhyt.ExportXml.XML130.XML9.CreateXmlMain xmlMain9 = new His.Bhyt.ExportXml.XML130.XML9.CreateXmlMain();
-                                    listObj.AddRange(xmlMain9.RunXml9DetailData(fileHoSo.NOIDUNGFILE));
-                                    break;
-                                case "XML10":
-                                    His.Bhyt.ExportXml.XML130.XML10.CreateXmlMain xmlMain10 = new His.Bhyt.ExportXml.XML130.XML10.CreateXmlMain();
-                                    var xml10Data = xmlMain10.RunXml10DetailData(fileHoSo.NOIDUNGFILE);
-                                    if (xml10Data != null)
-                                        listObj.Add(xml10Data);
-                                    break;
-                                case "XML11":
-                                    His.Bhyt.ExportXml.XML130.XML11.CreateXmlMain xmlMain11 = new His.Bhyt.ExportXml.XML130.XML11.CreateXmlMain();
-                                    var xml11Data = xmlMain11.RunXml11Data(fileHoSo.NOIDUNGFILE);
-                                    if (xml11Data != null)
-                                        listObj.Add(xml11Data);
-                                    break;
-                                case "XML12":
-                                    His.Bhyt.ExportXml.XML130.XML12.CreateXmlMain xmlMain12 = new His.Bhyt.ExportXml.XML130.XML12.CreateXmlMain();
-                                    listObj.AddRange(xmlMain12.RunXml12DetailsData(fileHoSo.NOIDUNGFILE));
-                                    break;
-                                case "XML13":
-                                    His.Bhyt.ExportXml.XML130.XML13.CreateXmlMain xmlMain13 = new His.Bhyt.ExportXml.XML130.XML13.CreateXmlMain();
-                                    if (xmlMain13 != null)
-                                        listObj.Add(xmlMain13.RunXML13DetailsData(fileHoSo.NOIDUNGFILE));
-                                    break;
-                                case "XML14":
-                                    His.Bhyt.ExportXml.XML130.XML14.CreateXmlMain xmlMain14 = new His.Bhyt.ExportXml.XML130.XML14.CreateXmlMain();
-                                    if (xmlMain14 != null)
-                                        listObj.Add(xmlMain14.RunXML14DetailsData(fileHoSo.NOIDUNGFILE));
-                                    break;
-                                case "XML15":
-                                    His.Bhyt.ExportXml.XML130.XML15.CreateXmlMain xmlMain15 = new His.Bhyt.ExportXml.XML130.XML15.CreateXmlMain();
-                                    if (xmlMain15 != null)
-                                        listObj.AddRange(xmlMain15.RunXML15DetailsData(fileHoSo.NOIDUNGFILE));
-                                    break;
-
-
-
-                                case "CT03":
-                                    //var ct03Data = His.Bhyt.ExportXml.XML3220.CT03.CT03Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                                    //if (ct03Data != null)
-                                    //    listObj.Add(ct03Data);
-                                    //break;
-                                    break;
-                                case "CT04":
-                                    if (!string.IsNullOrWhiteSpace(fileHoSo.NOIDUNGFILE))
-                                    {
-                                        try
-                                        {
-                                            var ct04Data = His.Bhyt.ExportXml.XML3220.CT04.CT04Data.LoadFromXMLString(fileHoSo.NOIDUNGFILE);
-                                            if (ct04Data != null)
-                                            {
-                                                listObj.Add(ct04Data);
-                                            }
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            LogSystem.Error(ex);
-                                        }
-                                    }
-                                    break;
-                                case "CT05":
-                                    if (!string.IsNullOrWhiteSpace(fileHoSo.NOIDUNGFILE))
-                                    {
-                                        using (var reader = new StringReader(fileHoSo.NOIDUNGFILE))
-                                        {
-                                            var serializer = new XmlSerializer(
-                                                typeof(His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data),
-                                                new XmlRootAttribute("CT05")
-                                                {
-                                                    Namespace = ""
-                                                });
-
-                                            try
-                                            {
-                                                var ct05Data = serializer.Deserialize(reader)
-                                                    as His.Bhyt.ExportXml.XML3220.CT05.XmlCt05Data;
-
-                                                if (ct05Data != null)
-                                                {
-                                                    listObj.Add(ct05Data);
-                                                }
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                LogSystem.Error(ex);
-                                            }
-                                        }
-                                    }
-                                    break;
-                                case "CT06":
-                                    if (!string.IsNullOrWhiteSpace(fileHoSo.NOIDUNGFILE))
-                                    {
-                                        using (var reader = new StringReader(fileHoSo.NOIDUNGFILE))
-                                        {
-                                            var serializer = new XmlSerializer(
-                                                typeof(His.Bhyt.ExportXml.XML3220.CT06.CT06Data),
-                                                new XmlRootAttribute("CT06")
-                                                {
-                                                    Namespace = ""
-                                                });
-
-                                            try
-                                            {
-                                                var ct06Data = serializer.Deserialize(reader)
-                                                    as His.Bhyt.ExportXml.XML3220.CT06.CT06Data;
-
-                                                if (ct06Data != null)
-                                                {
-                                                    listObj.Add(ct06Data);
-                                                }
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                LogSystem.Error(ex);
-                                            }
-                                        }
-                                    }
-                                    break;
-
-                                case "GIAYDIEUTRINOITRU":
-                                    if (!string.IsNullOrWhiteSpace(fileHoSo.NOIDUNGFILE))
-                                    {
-                                        using (var reader = new StringReader(fileHoSo.NOIDUNGFILE))
-                                        {
-                                            var serializer = new XmlSerializer(
-                                                typeof(His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData),
-                                                new XmlRootAttribute("CHI_TIEU_DU_LIEU_GIAY_RA_VIEN")
-                                                {
-                                                    Namespace = ""
-                                                });
-
-                                            try
-                                            {
-                                                var ctGiayDieuTriNoiTru = serializer.Deserialize(reader)
-                                                    as His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData;
-
-                                                if (ctGiayDieuTriNoiTru != null)
-                                                {
-                                                    listObj.Add(ctGiayDieuTriNoiTru);
-                                                }
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                LogSystem.Error(ex);
-                                            }
-                                        }
-                                    }
-                                    break;
-
-                            }
-
-                            if (listObj.Count > 0)
-                            {
-                                List<UCXml130> targetList = fileHoSo.LOAIHOSO.StartsWith("XML") ? listUCXml130 : listUCXmlChungTu;
-
-
-                                var ucExist = targetList.FirstOrDefault(o => o.Tag?.ToString() == fileHoSo.LOAIHOSO);
-
-                                if (ucExist != null)
-                                {
-                                    // Merge: gọi lại LoadList để thêm/ghi đè dữ liệu mới
-                                    ucExist.LoadList(listObj);
-                                }
-                                else
-                                {
-                                    UCXml130 uc = new UCXml130();
-                                    uc.Tag = fileHoSo.LOAIHOSO;
-                                    uc.LoadList(listObj);
-                                    targetList.Add(uc);
-                                }
-                            }
-                            if (fileHoSo.LOAIHOSO.StartsWith("XML"))
-                            {
-                                chkViewXml130.Checked = true;
-                            }
-                            else if (fileHoSo.LOAIHOSO.StartsWith("CT"))
-                            {
-                                chkViewXmlCT.Checked = true;
-                            }
-                        }
-                    }
+                    listUCXml130 = new List<UCXml130>();
+                    ProcessXml130(op); 
                 }
+                else if (chkViewXmlCT.Checked)
+                {
+                    listUCXmlChungTu = new List<UCXml130>();
+                    ProcessXmlChungTu(op);
+                }
+                His.Bhyt.ExportXml.XML3220.CreateXmlProcessor xmlProcessor1 = new His.Bhyt.ExportXml.XML3220.CreateXmlProcessor(null);
+                
                 listUCXml130 = listUCXml130.OrderBy(o => Convert.ToInt16(o.Tag.ToString().Substring(3))).ToList();
                 var orderDict = new Dictionary<string, int>
                         {
@@ -1193,11 +1178,11 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         xtraTabPage.Text = uc.Tag.ToString();
                         xtraTabControl1.TabPages.Add(xtraTabPage);
                     }
-                    if (!string.IsNullOrEmpty(this.a))
-                        StartExecuteFile(this.a, directoryPathTempList.FirstOrDefault());
-                    else
-                        StartExecuteFile(this.b, directoryPathTempList.FirstOrDefault());
-                    //xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
+                    //if (!string.IsNullOrEmpty(this.a))
+                    //    StartExecuteFile(this.a, directoryPathTempList.FirstOrDefault());
+                    //else
+                    //    StartExecuteFile(this.b, directoryPathTempList.FirstOrDefault());
+                    xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
                 }
                 else if (chkViewXmlCheckIn.Checked && ucXmlCheckIn != null && ucXmlCheckIn.Tag != null)
                 {
@@ -1218,11 +1203,11 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         xtraTabPage.Text = uc.Tag.ToString();
                         xtraTabControl1.TabPages.Add(xtraTabPage);
                     }
-                    if (!string.IsNullOrEmpty(this.a))
-                        StartExecuteFile(this.a, directoryPathTempList.FirstOrDefault());
-                    else
-                        StartExecuteFile(this.b, directoryPathTempList.FirstOrDefault());
-                    //xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
+                    //if (!string.IsNullOrEmpty(this.a))
+                    //    StartExecuteFile(this.a, directoryPathTempList.FirstOrDefault());
+                    //else
+                    //    StartExecuteFile(this.b, directoryPathTempList.FirstOrDefault());
+                    xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
                 }
             }
             catch (Exception ex)
