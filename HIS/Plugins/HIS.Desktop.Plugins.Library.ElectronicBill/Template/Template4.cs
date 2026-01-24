@@ -62,7 +62,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                         product.Type = item.First().TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ? 1 : 0;
                         if ((product.ProdPrice ?? 0) * (product.ProdQuantity ?? 0) != product.Amount)
                         {
-                            product.ProdPrice = Math.Round(product.Amount / (product.ProdQuantity ?? 1), 2);
+                            product.ProdPrice = Math.Round(product.Amount / (product.ProdQuantity ?? 1), 4);
                         }
 
                         result.Add(product);
