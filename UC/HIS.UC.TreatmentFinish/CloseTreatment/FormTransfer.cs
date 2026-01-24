@@ -1811,6 +1811,7 @@ namespace HIS.UC.TreatmentFinish.CloseTreatment
                         {
                             txtOutTime.Text = string.Empty;
                         }
+                        txtIcdCodeIcdName.ToolTip = txtIcdCodeIcdName.Text;
                         txtEndRoomName.Text = result.END_ROOM_NAME ?? string.Empty;
                         chkValid1Year2.Checked = result.VALID_1_YEAR == 1;
                     }  
