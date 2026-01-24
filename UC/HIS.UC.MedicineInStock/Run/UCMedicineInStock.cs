@@ -303,7 +303,7 @@ namespace HIS.UC.HisMedicineInStock.Run
         }
 
         private void SearchClick(string keyword)
-        {
+       {
             try
             {
                 bool IsDetails = chkDetails.Checked;
@@ -333,10 +333,14 @@ namespace HIS.UC.HisMedicineInStock.Run
                         )
                     ).Distinct().ToList();
                     listResult = new BindingList<HisMedicineInStockADO>(rearchResult);
-                }
+                    if (HisMedicineInStockADO != null)
+                        HisMedicineInStockADO.HisMedicineInStocks = rearchResult.Select(x => (HisMedicineInStockSDO)x).ToList();
+                } 
                 else
                 {
                     listResult = new BindingList<HisMedicineInStockADO>(HisMedicineInStockADOs);
+                    if (HisMedicineInStockADO != null)
+                        HisMedicineInStockADO.HisMedicineInStocks = HisMedicineInStockADOs.Select(x => (HisMedicineInStockSDO)x).ToList();
                 }
                 trvService.DataSource = listResult;
                 chkDetails.Checked = IsDetails;

@@ -299,10 +299,14 @@ namespace HIS.UC.HisMaterialInStock.Run
                                                     ).Distinct().ToList();
 
                     listResult = new BindingList<HisMaterialInStockADO>(rearchResult);
+                    if (HisMaterialInStockADO != null)
+                        HisMaterialInStockADO.HisMaterialInStocks = rearchResult.Select(x => (HisMaterialInStockSDO)x).ToList();
                 }
-                else
+                else 
                 {
                     listResult = new BindingList<HisMaterialInStockADO>(HisMaterialInStockADOs);
+                    if (HisMaterialInStockADO != null)
+                        HisMaterialInStockADO.HisMaterialInStocks = HisMaterialInStockADOs.Select(x => (HisMaterialInStockSDO)x).ToList();
                 }
                 trvService.DataSource = listResult;
                 chkDetails.Checked = IsDetails;
