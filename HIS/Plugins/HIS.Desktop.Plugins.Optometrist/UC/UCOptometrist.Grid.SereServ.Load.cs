@@ -20,7 +20,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             {
                 CommonParam paramCommon = new CommonParam();
                 MOS.Filter.HisSereServFilter filter = new MOS.Filter.HisSereServFilter();
-                filter.TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
+                //filter.TDL_SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
                 filter.TDL_PATIENT_ID = currentSR.TDL_PATIENT_ID;
                 filter.IS_ACTIVE = 1;
                 var apiResult = new BackendAdapter(paramCommon).Get<List<SereServOptometristADO>>
@@ -66,7 +66,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                         .Where(w => (w.HIS_SERE_SERV_VIEX != null && w.HIS_SERE_SERV_VIEX.Count > 0)
                             || w.SERVICE_REQ_ID == currentSR.ID)
                         .OrderBy(o => o.SERVICE_REQ_ID == currentSR.ID && (o.HIS_SERE_SERV_VIEX == null || o.HIS_SERE_SERV_VIEX.Count == 0) ? 1 : 99)
-                        .OrderByDescending(o => o.VISION_TEST_TIME)
+                        .ThenByDescending(o => o.VISION_TEST_TIME)
                         .ToList();
                     gridControlSereServ.DataSource = null;
                     gridControlSereServ.DataSource = apiResult;

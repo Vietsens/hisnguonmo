@@ -30,6 +30,7 @@ using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
 using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Plugins.RegisterV2.Choice;
+using HIS.Desktop.Plugins.RegisterV2.Config;
 using HIS.Desktop.Utility;
 using HIS.UC.AddressCombo.ADO;
 using HIS.UC.KskContract;
@@ -1095,7 +1096,75 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 }
                 this.chkBaoLanh.Checked = false;
                 //Goji thư viện
-                layoutControlItem31.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                if (!string.IsNullOrEmpty(HisConfigCFG.GuaranteeConnection) || HisConfigCFG.GuaranteeConnection != "")
+                {
+                    // Parse cấu trúc: <Địa chỉ>|<Mã ứng dụng>:<Tài khoản>:<mật khẩu>|<hạn mức đăng ký mặc định>
+                    string[] parts = HisConfigCFG.GuaranteeConnection.Split('|');
+
+                    if (parts.Length >= 3)
+                    {
+                        // Phần 1: Địa chỉ
+                        string[] guaranteeAddress = parts[0].Split(';');
+                        string uriHast = guaranteeAddress.Length > 0 ? guaranteeAddress[0].Trim() : "";
+                        string acsPort = guaranteeAddress.Length > 1 ? guaranteeAddress[1].Trim() : "";
+
+                        // Phần 2: Mã ứng dụng:Tài khoản:Mật khẩu
+                        string[] credentials = parts[1].Split(':');
+                        string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
+                        string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
+                        string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
+
+                        // Phần 3: Hạn mức đăng ký mặc định
+                        string guaranteeDefaultLimit = parts[2].Trim();
+
+                        // Log để kiểm tra
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            string.Format("Guarantee Connection - Address: {0}, " +
+                            "AppCode: {1}, " +
+                            "Username: {2}, " +
+                            "DefaultLimit: {3}", guaranteeAddress, guaranteeAppCode, guaranteeUsername, guaranteeDefaultLimit)
+                        );
+
+                        string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+                        MedicalExpenseGuaranteeProcessor meicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
+                        DataInput data = new DataInput();
+                        data.hasUri = uriHast;
+                        data.acsUri = acsPort;
+                        data.username = guaranteeUsername;
+                        data.password = guaranteePassword;
+                        data.applicationCode = guaranteeAppCode;
+                        data.limet = guaranteeDefaultLimit;
+                        data.cskcbbd = branchHeinMediOrgCode;
+                        data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
+                        {
+                            RequestId = this.GuaranteeRequestCode,
+                            ContractNumber = this.GuarateeCode,
+                            PatientFullName = ucPatientRaw1.GetValue().PATIENT_NAME,
+                            PatientDateOfBirth = ucPatientRaw1.GetValue().DOB.ToString(),
+                            PatientCccd = ucPlusInfo1.GetValue().CCCD_NUMBER,
+                            Amount = guaranteeDefaultLimit,
+                            Remark = "Hủy đăng ký sử dụng bảo lãnh",
+                            Signature = "",
+                            Token = ""
+                        };
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
+                        if (!string.IsNullOrEmpty(this.GuaranteeRequestCode))
+                        {
+                            CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
+                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
+                            if (rs != null)
+                            {
+                                LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
+                            }
+                            else
+                            {
+                                LogSystem.Debug("Gọi api thất bại, ..............");
+                            }
+                        }
+                        this.GuarateeCode = null;
+                        this.GuaranteeRequestCode = null;
+                    }
+                }
                 //gọi hàm hủy bảo lãnh
                 var patientTypeDefault = HIS.Desktop.Plugins.Library.RegisterConfig.AppConfigs.PatientTypeDefault;
                 if (!(patientTypeDefault != null && patientTypeDefault.ID > 0) && !HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.UsingPatientTypeOfPreviousPatient)
@@ -2154,24 +2223,24 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
                             RegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeRegisterUse(data);
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
-                            if (rs != null)
+                            if (rs != null && rs.Success)
                             {
                                 LogSystem.Debug("Gọi api thành công");
+                                XtraMessageBox.Show(string.Format("Xử lý thành công. Bệnh nhân có thể bảo lãnh {0} đồng", rs.Data.AvailableBalance), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 this.GuarateeCode = rs.Data.ContractNumber;
                                 this.GuaranteeRequestCode = rs.Data.RequestId;
                                 this.chkBaoLanh.Checked = true;
                             }
                             else
                             {
-                                LogSystem.Debug("Gọi api thất bại");
+                                LogSystem.Debug("Gọi api thất bại"); 
+                                XtraMessageBox.Show(string.Format("Đăng ký bảo lãnh thất bại. {0} ", rs?.Data.ErrorMessage), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 this.chkBaoLanh.Checked = false;
-                                XtraMessageBox.Show("Đăng ký bảo lãnh thất bại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
-
-                        else
+                        else 
                         {
-                            if (isNew)
+                            if (!isNew)
                             {
                                 data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
                                 {
@@ -2190,13 +2259,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                 {
                                     CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
-                                    if (rs != null)
+                                    if (rs != null && rs.Success)
                                     {
-                                        LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
+                                        XtraMessageBox.Show("Hủy bảo lãnh thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     }
                                     else
                                     {
-                                        LogSystem.Debug("Gọi api thất bại, ..............");
+                                        XtraMessageBox.Show(string.Format("Hủy bảo lãnh thất bại {0} ", rs?.Message), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     }
                                 }
                             }                            

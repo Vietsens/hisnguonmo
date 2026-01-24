@@ -21,6 +21,8 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
+using HIS.Desktop.Plugins.Register.ADO;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
@@ -29,6 +31,8 @@ using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -36,25 +40,95 @@ namespace HIS.Desktop.Plugins.Register.Run
 {
     public partial class UCRegister : UserControlBase
     {
-        private List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT> allCustomerSourceDetails;
-        private List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT> filteredCustomerSourceDetails;
+        private List<HIS_CUSTOMER_SOURCE_DT> allCustomerSourceDetails;
+        private List<HIS_CUSTOMER_SOURCE_DT> lstCustomerSourceDetail;
 
         private async Task InitComboCustomerSourceDetail()
         {
             try
             {
-                // Load tất cả nguồn khách chi tiết
+                List<CustomerSourceDetailADO> listADO = new List<CustomerSourceDetailADO>();
                 allCustomerSourceDetails = BackendDataWorker
-                    .Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT>()
+                    .Get<HIS_CUSTOMER_SOURCE_DT>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .ToList();
 
-                // Khởi tạo combo với GridCheckMarksSelection để cho phép chọn nhiều
-                this.InitComboCustomerSourceDetailGridCheck();
+                foreach (var item in allCustomerSourceDetails)
+                {
+                    var ado = new CustomerSourceDetailADO
+                    {
+                        ID = item.ID,
+                        LOGINNAME = item.LOGINNAME,
+                        USERNAME = item.USERNAME,
+                        CUSTOMER_SOURCE_ID = item.CUSTOMER_SOURCE_ID,
+                        IS_ACTIVE = item.IS_ACTIVE,
+                        USERNAME_UNSIGN = ConvertToUnSign(item.USERNAME)
+                    };
+                    listADO.Add(ado);
+                }
+
+                InitComboCustomerSourceDetailControl(listADO);
+                InitComboCustomerSourceDetailGridCheck();
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                LogSystem.Warn(ex);
+            }
+        }
+
+        private string ConvertToUnSign(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "";
+            var regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
+            string temp = s.Normalize(System.Text.NormalizationForm.FormD);
+            return regex
+                .Replace(temp, string.Empty)
+                .Replace('\u0111', 'd')
+                .Replace('\u0110', 'D');
+        }
+
+        private void InitComboCustomerSourceDetailControl(List<CustomerSourceDetailADO> listADO)
+        {
+            try
+            {
+                cboCustomerSourceDetail.Properties.DataSource = listADO;
+                cboCustomerSourceDetail.Properties.DisplayMember = "USERNAME";
+                cboCustomerSourceDetail.Properties.ValueMember = "LOGINNAME";
+                cboCustomerSourceDetail.Properties.NullText = "";
+                cboCustomerSourceDetail.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cboCustomerSourceDetail.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+                cboCustomerSourceDetail.Properties.View.OptionsView.ShowDetailButtons = false;
+                cboCustomerSourceDetail.Properties.View.OptionsView.ShowGroupPanel = false;
+                cboCustomerSourceDetail.Properties.View.OptionsView.ShowIndicator = false;
+
+                if (cboCustomerSourceDetail.Properties.View.Columns.Count == 0)
+                {
+                    var colLoginName = cboCustomerSourceDetail.Properties.View.Columns.AddField("LOGINNAME");
+                    colLoginName.Caption = "Mã";
+                    colLoginName.Visible = true;
+                    colLoginName.VisibleIndex = 1;
+                    colLoginName.Width = 60;
+                    colLoginName.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                    colLoginName.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Default;
+
+                    var colUserName = cboCustomerSourceDetail.Properties.View.Columns.AddField("USERNAME");
+                    colUserName.Caption = "Tên";
+                    colUserName.Visible = true;
+                    colUserName.VisibleIndex = 2;
+                    colUserName.Width = 200;
+
+                    var colUserNameUnsign = cboCustomerSourceDetail.Properties.View.Columns.AddField("USERNAME_UNSIGN");
+                    colUserNameUnsign.Visible = true;
+                    colUserNameUnsign.VisibleIndex = -1;
+                    colUserNameUnsign.Width = 0;
+
+                    cboCustomerSourceDetail.Properties.View.OptionsView.ShowColumnHeaders = true;
+                    cboCustomerSourceDetail.Properties.View.OptionsSelection.MultiSelect = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
             }
         }
 
@@ -62,75 +136,50 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                // Sử dụng GridLookUpEdit với GridCheckMarksSelection
-                if (allCustomerSourceDetails == null)
-                {
-                    allCustomerSourceDetails = new List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT>();
-                }
+                var gridCheck = new GridCheckMarksSelection(cboCustomerSourceDetail.Properties);
+                gridCheck.SelectionChanged += Event_Check_CustomerSourceDetail;
+                cboCustomerSourceDetail.Properties.Tag = gridCheck;
+                cboCustomerSourceDetail.Properties.View.OptionsSelection.MultiSelect = true;
 
-                cboCustomerSourceDetail.Properties.DataSource = allCustomerSourceDetails;
-                cboCustomerSourceDetail.Properties.DisplayMember = "USERNAME";
-                cboCustomerSourceDetail.Properties.ValueMember = "LOGINNAME";
-                cboCustomerSourceDetail.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-                cboCustomerSourceDetail.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
-                cboCustomerSourceDetail.Properties.ImmediatePopup = true;
-                cboCustomerSourceDetail.Properties.AutoComplete = false;
+                var gridCheckMark = cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
+                gridCheckMark?.ClearSelection(cboCustomerSourceDetail.Properties.View);
 
-                // ✅ Thiết lập View với GridCheckMarksSelection
-                var gridView = cboCustomerSourceDetail.Properties.View;
-
-                // 🔄 THAY ĐỔI: Dùng GridCheckMarksSelection thay vì CheckBoxRowSelect
-                gridView.OptionsSelection.MultiSelect = true;
-                gridView.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
-                gridView.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DevExpress.Utils.DefaultBoolean.True;
-
-                // Thêm các cột
-                gridView.Columns.Clear();
-
-                DevExpress.XtraGrid.Columns.GridColumn colLoginName = new DevExpress.XtraGrid.Columns.GridColumn();
-                colLoginName.FieldName = "LOGINNAME";
-                colLoginName.Caption = "Mã";
-                colLoginName.Width = 100;
-                colLoginName.Visible = true;
-                colLoginName.VisibleIndex = 0;
-                gridView.Columns.Add(colLoginName);
-
-                DevExpress.XtraGrid.Columns.GridColumn colUserName = new DevExpress.XtraGrid.Columns.GridColumn();
-                colUserName.FieldName = "USERNAME";
-                colUserName.Caption = "Tên";
-                colUserName.Width = 250;
-                colUserName.Visible = true;
-                colUserName.VisibleIndex = 1;
-                gridView.Columns.Add(colUserName);
-
-                // Tooltip
-                cboCustomerSourceDetail.ToolTip = "Nguồn khách chi tiết";
-
-                // ✅ Event khi tick/untick checkbox
-                gridView.SelectionChanged += GridViewCustomerSourceDetail_SelectionChanged;
-
-                // Event khi đóng popup
-                cboCustomerSourceDetail.Properties.CloseUp += CboCustomerSourceDetail_CloseUp;
-
-                // Xử lý custom display text
-                cboCustomerSourceDetail.Properties.CustomDisplayText += CboCustomerSourceDetail_CustomDisplayText;
+                cboCustomerSourceDetail.CustomDisplayText -= CboCustomerSourceDetail_CustomDisplayText;
+                cboCustomerSourceDetail.CustomDisplayText += CboCustomerSourceDetail_CustomDisplayText;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                LogSystem.Warn(ex);
             }
         }
 
-        private void GridViewCustomerSourceDetail_SelectionChanged(object sender, DevExpress.Data.SelectionChangedEventArgs e)
+        private void Event_Check_CustomerSourceDetail(object sender, EventArgs e)
         {
             try
             {
-                // Refresh ngay lập tức khi tick/untick checkbox
-                cboCustomerSourceDetail.RefreshEditValue();
+                var sb = new StringBuilder();
+                var gridCheckMark = sender as GridCheckMarksSelection;
+                lstCustomerSourceDetail = new List<HIS_CUSTOMER_SOURCE_DT>();
+
+                if (gridCheckMark != null)
+                {
+                    var selectedItems = new List<HIS_CUSTOMER_SOURCE_DT>();
+                    foreach (HIS_CUSTOMER_SOURCE_DT item in gridCheckMark.Selection)
+                    {
+                        if (item == null) continue;
+                        if (sb.Length > 0) sb.Append(", ");
+                        sb.Append(item.USERNAME);
+                        selectedItems.Add(item);
+                    }
+
+                    lstCustomerSourceDetail.AddRange(selectedItems);
+                }
+
+                cboCustomerSourceDetail.Text = sb.ToString();
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                LogSystem.Warn(ex);
             }
         }
 
@@ -138,42 +187,98 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                var gridView = cboCustomerSourceDetail.Properties.View as GridView;
-                if (gridView != null)
+                string displayText = "";
+                if (lstCustomerSourceDetail != null && lstCustomerSourceDetail.Count > 0)
                 {
-                    var selectedRows = gridView.GetSelectedRows();
-                    var userNames = new List<string>();
-
-                    foreach (int rowHandle in selectedRows)
+                    foreach (var item in lstCustomerSourceDetail)
                     {
-                        if (rowHandle >= 0)
-                        {
-                            var row = gridView.GetRow(rowHandle) as HIS_CUSTOMER_SOURCE_DT;
-                            if (row != null)
-                            {
-                                userNames.Add(row.USERNAME);
-                            }
-                        }
+                        displayText += item.USERNAME + ",";
                     }
-
-                    e.DisplayText = userNames.Count > 0 ? string.Join(", ", userNames) : "";
+                    if (displayText.EndsWith(",")) displayText = displayText.Substring(0, displayText.Length - 1);
                 }
+
+                e.DisplayText = displayText;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                LogSystem.Warn(ex);
             }
         }
 
-        private void CboCustomerSourceDetail_CloseUp(object sender, DevExpress.XtraEditors.Controls.CloseUpEventArgs e)
+        private void UpdateCustomerSourceDetailDataSource(List<CustomerSourceDetailADO> listADO)
         {
             try
             {
-                cboCustomerSourceDetail.RefreshEditValue();
+                cboCustomerSourceDetail.Properties.DataSource = listADO;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                LogSystem.Error(ex);
+            }
+        }
+
+        private readonly List<CustomerSourceDetailADO> listConfigDefault = new List<CustomerSourceDetailADO>();
+
+        private void ProcessSelectCustomerSourceDetail(string loginNames, GridCheckMarksSelection gridCheckMark)
+        {
+            try
+            {
+                var ds = cboCustomerSourceDetail.Properties.DataSource as List<CustomerSourceDetailADO>;
+                if (ds == null || ds.Count == 0) return;
+
+                var arrays = loginNames.Split(',');
+                if (arrays.Length == 0) return;
+
+                var selects = new List<CustomerSourceDetailADO>();
+                foreach (var item in arrays)
+                {
+                    string nameTrim = item.Trim();
+                    var row = ds.FirstOrDefault(o => (o.LOGINNAME ?? "").Trim() == nameTrim);
+                    if (row != null)
+                    {
+                        selects.Add(row);
+                        listConfigDefault.Add(row);
+                    }
+                }
+
+                if (selects.Count > 0)
+                    gridCheckMark.SelectAll(selects);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadAllCustomerSourceDetail()
+        {
+            try
+            {
+                var allDetails = BackendDataWorker
+                    .Get<HIS_CUSTOMER_SOURCE_DT>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+
+                var listADO = new List<CustomerSourceDetailADO>();
+                foreach (var item in allDetails)
+                {
+                    var ado = new CustomerSourceDetailADO
+                    {
+                        ID = item.ID,
+                        LOGINNAME = item.LOGINNAME,
+                        USERNAME = item.USERNAME,
+                        USERNAME_UNSIGN = ConvertToUnSign(item.USERNAME),
+                        CUSTOMER_SOURCE_ID = item.CUSTOMER_SOURCE_ID,
+                        IS_ACTIVE = item.IS_ACTIVE
+                    };
+                    listADO.Add(ado);
+                }
+
+                UpdateCustomerSourceDetailDataSource(listADO);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
             }
         }
 
@@ -181,95 +286,86 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                // Clear selection trước
-                var gridView = cboCustomerSourceDetail.Properties.View as GridView;
-                if (gridView != null)
-                {
-                    gridView.ClearSelection();
-                }
+                txtCustomerSource.Text = "";
 
+                // clear selection hiện tại của chi tiết
+                var gridCheck = cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
+                gridCheck?.ClearSelection(cboCustomerSourceDetail.Properties.View);
+                lstCustomerSourceDetail = null;
                 cboCustomerSourceDetail.EditValue = null;
+                cboCustomerSourceDetail.Text = "";
 
                 if (cboCustomerSource.EditValue != null)
                 {
-                    string customerSourceCode = cboCustomerSource.EditValue.ToString();
-                    var customerSource = BackendDataWorker
+                    var sourceCode = cboCustomerSource.EditValue.ToString();
+                    var user = BackendDataWorker
                         .Get<HIS_CUSTOMER_SOURCE>()
-                        .FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE == customerSourceCode);
+                        .FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE == sourceCode && o.IS_ACTIVE == 1);
 
-                    if (customerSource != null)
+                    if (user != null)
                     {
-                        // Lọc danh sách theo CUSTOMER_SOURCE_ID
-                        filteredCustomerSourceDetails = allCustomerSourceDetails
-                            .Where(o => o.CUSTOMER_SOURCE_ID == customerSource.ID)
+                        txtCustomerSource.Text = user.CUSTOMER_SOURCE_CODE;
+
+                        // 1. lấy tất cả detail theo CUSTOMER_SOURCE_ID
+                        var filteredDetails = BackendDataWorker
+                            .Get<HIS_CUSTOMER_SOURCE_DT>()
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                     && o.CUSTOMER_SOURCE_ID == user.ID)
                             .ToList();
 
-                        // Set datasource
-                        cboCustomerSourceDetail.Properties.DataSource = filteredCustomerSourceDetails;
-                        cboCustomerSourceDetail.Properties.View.RefreshData();
-
-                        // Nếu có default thì tự động tick
-                        if (!string.IsNullOrEmpty(customerSource.DEFAULT_DETAIL_LOGINNAMES))
+                        // 2. cộng thêm từ DEFAULT_DETAIL_LOGINNAMES nếu có
+                        if (!string.IsNullOrEmpty(user.DEFAULT_DETAIL_LOGINNAMES))
                         {
-                            LoadDefaultCustomerSourceDetail(customerSource.DEFAULT_DETAIL_LOGINNAMES);
+                            var defaultLoginNames = user.DEFAULT_DETAIL_LOGINNAMES
+                                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x.Trim())
+                                .ToList();
+
+                            var detailsFromDefault = BackendDataWorker
+                                .Get<HIS_CUSTOMER_SOURCE_DT>()
+                                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                         && defaultLoginNames.Contains((o.LOGINNAME ?? "").Trim()))
+                                .ToList();
+
+                            filteredDetails = filteredDetails
+                                .Union(detailsFromDefault)
+                                .GroupBy(o => (o.LOGINNAME ?? "").Trim())
+                                .Select(g => g.First())
+                                .ToList();
+                        }
+
+                        var listADO = new List<CustomerSourceDetailADO>();
+                        foreach (var item in filteredDetails)
+                        {
+                            var ado = new CustomerSourceDetailADO
+                            {
+                                ID = item.ID,
+                                LOGINNAME = item.LOGINNAME,
+                                USERNAME = item.USERNAME,
+                                USERNAME_UNSIGN = ConvertToUnSign(item.USERNAME),
+                                CUSTOMER_SOURCE_ID = item.CUSTOMER_SOURCE_ID,
+                                IS_ACTIVE = item.IS_ACTIVE
+                            };
+                            listADO.Add(ado);
+                        }
+
+                        UpdateCustomerSourceDetailDataSource(listADO);
+
+                        // auto check mặc định
+                        if (!string.IsNullOrEmpty(user.DEFAULT_DETAIL_LOGINNAMES) && gridCheck != null)
+                        {
+                            ProcessSelectCustomerSourceDetail(user.DEFAULT_DETAIL_LOGINNAMES, gridCheck);
                         }
                     }
                 }
                 else
                 {
-                    cboCustomerSourceDetail.Properties.DataSource = allCustomerSourceDetails;
-                    cboCustomerSourceDetail.Properties.View.RefreshData();
+                    LoadAllCustomerSourceDetail();
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void LoadDefaultCustomerSourceDetail(string defaultLoginNames)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(defaultLoginNames)) return;
-
-                var loginNameList = defaultLoginNames.Split(',')
-                    .Select(x => x.Trim())
-                    .Where(x => !string.IsNullOrEmpty(x))
-                    .ToList();
-
-                var gridView = cboCustomerSourceDetail.Properties.View as GridView;
-                if (gridView != null)
-                {
-                    gridView.ClearSelection();
-
-                    for (int i = 0; i < gridView.DataRowCount; i++)
-                    {
-                        var row = gridView.GetRow(i) as HIS_CUSTOMER_SOURCE_DT;
-                        if (row != null && loginNameList.Contains(row.LOGINNAME))
-                        {
-                            gridView.SelectRow(i);
-                        }
-                    }
-
-                    cboCustomerSourceDetail.RefreshEditValue();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        private void UpdateCustomerSourceDetailDisplayText()
-        {
-            try
-            {
-                cboCustomerSourceDetail.RefreshEditValue();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                LogSystem.Error(ex);
             }
         }
 
@@ -412,34 +508,15 @@ namespace HIS.Desktop.Plugins.Register.Run
         {
             try
             {
-                List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE> datas = null;
-                if (BackendDataWorker.IsExistsKey<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>())
-                {
-                    datas = BackendDataWorker
-                        .Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
-                        .Where(o => o.IS_ACTIVE == 1)
-                        .ToList();
-                }
-                else
-                {
-                    datas = BackendDataWorker
-                        .Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>()
-                        .Where(o => o.IS_ACTIVE == 1)
-                        .ToList();
-                }
-                this.InitComboCommon(
-                    this.cboCustomerSource,
-                    datas,
-                    "CUSTOMER_SOURCE_CODE",
-                    "CUSTOMER_SOURCE_NAME",
-                    "CUSTOMER_SOURCE_CODE"
-                );
-                cboCustomerSource.EditValueChanged -= cboCustomerSource_EditValueChanged;
-                cboCustomerSource.EditValueChanged += cboCustomerSource_EditValueChanged;
+                List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE> dataOtherPaySources = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>();
+                dataOtherPaySources = dataOtherPaySources != null ? dataOtherPaySources.Where(o => o.IS_ACTIVE == 1).ToList() : null;
+
+                this.InitComboCommon(this.cboCustomerSource, dataOtherPaySources, "CUSTOMER_SOURCE_CODE", "CUSTOMER_SOURCE_NAME", "CUSTOMER_SOURCE_CODE");
+                cboCustomerSource.Properties.ImmediatePopup = true;
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
         private async Task InitComboHisHospitalizeReason()

@@ -27,6 +27,7 @@ using HIS.Desktop.Plugins.Library.HisSyncToHid;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Plugins.Register.ADO;
 using HIS.Desktop.Plugins.Register.Run;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.UC.KskContract.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -176,7 +177,8 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.ethnicCode = ucServiceRequestRegiter.txtEthnicCode.Text;
                 this.customerSourceCode = ucServiceRequestRegiter.txtCustomerSource.Text;
                 this.customerSourceName = ucServiceRequestRegiter.cboCustomerSource.Text;
-                this.customerSourceCodeDetail = (string)(ucServiceRequestRegiter.cboCustomerSourceDetail.EditValue);
+                //this.customerSourceCodeDetail = (string)(ucServiceRequestRegiter.cboCustomerSourceDetail.EditValue);
+                //this.customerSourceCodeDetail = GetSelectedCustomerSourceDetailLoginNames();
                 if (ucServiceRequestRegiter.cboGender.EditValue != null)
                     this.GenderId = (long)(ucServiceRequestRegiter.cboGender.EditValue);
                 this.nationalName = ucServiceRequestRegiter.cboNational.Text;
@@ -288,25 +290,23 @@ namespace HIS.Desktop.Plugins.Register.Register
         }
 
         // Method để lấy danh sách LOGINNAME đã chọn
+        // Method để lấy danh sách LOGINNAME đã chọn
         private string GetSelectedCustomerSourceDetailLoginNames()
         {
             try
             {
-                var gridView = ucRequestService.cboCustomerSourceDetail.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
-                if (gridView != null)
+                // ✅ Lấy từ GridCheckMarksSelection
+                GridCheckMarksSelection gridCheckMark = ucRequestService.cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
+
+                if (gridCheckMark != null && gridCheckMark.Selection != null && gridCheckMark.Selection.Count > 0)
                 {
-                    var selectedRows = gridView.GetSelectedRows();
                     var loginNames = new List<string>();
 
-                    foreach (int rowHandle in selectedRows)
+                    foreach (var item in gridCheckMark.Selection)
                     {
-                        if (rowHandle >= 0)
+                        if (item is HIS_CUSTOMER_SOURCE_DT detail && !string.IsNullOrEmpty(detail.LOGINNAME))
                         {
-                            var row = gridView.GetRow(rowHandle) as MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT;
-                            if (row != null)
-                            {
-                                loginNames.Add(row.LOGINNAME);
-                            }
+                            loginNames.Add(detail.LOGINNAME.Trim());
                         }
                     }
 
@@ -320,8 +320,8 @@ namespace HIS.Desktop.Plugins.Register.Register
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 return string.Empty;
             }
-        }       
-        
+        }
+
         protected void InitBase()
         {
             try

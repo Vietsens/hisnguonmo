@@ -28,6 +28,10 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             try
             {
                 bool isCurrent = selected != null && currentSR != null && selected.SERVICE_REQ_ID == currentSR.ID;
+                if (currentSR != null && currentSR.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
+                {
+                    isCurrent = false;
+                }
                 btnSave.Enabled = btnEndReq.Enabled = isCurrent;
             }
             catch (Exception ex)

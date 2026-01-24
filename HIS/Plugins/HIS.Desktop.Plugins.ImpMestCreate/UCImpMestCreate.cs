@@ -2471,7 +2471,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 {
                                     mediPaty = new HIS_MEDICINE_PATY();
                                     mediPaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                    mediPaty.EXP_PRICE = paty.ExpPrice * (1 + (paty.PercentProfit / (decimal)100));//nambg
+                                    if (paty.ExpPrice <= 0 && paty.ExpPriceVat > 0)
+                                    {
+                                        mediPaty.EXP_PRICE = paty.ExpPriceVat * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    else
+                                    {
+                                        mediPaty.EXP_PRICE = paty.ExpPrice * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
@@ -2737,7 +2744,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
                 #endregion
 
-                listServiceADO.Add(this.currrentServiceAdo);
+                listServiceADO.Add(this.currrentServiceAdo); 
                 Inventec.Common.Logging.LogSystem.Debug("1__________AAA" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listServiceADO), listServiceADO));
                 gridControlImpMestDetail.BeginUpdate();
                 gridControlImpMestDetail.DataSource = listServiceADO;
