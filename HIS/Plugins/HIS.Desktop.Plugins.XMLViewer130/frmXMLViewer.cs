@@ -243,6 +243,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private void DisplayXml(MemoryStream memoryStream, string filePath)
         {
             try
@@ -387,10 +388,13 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 if (!string.IsNullOrEmpty(filePath))
                 {
                     StartExecuteFile(filePath, directoryPathTempList.FirstOrDefault());
+                    this.a = filePath;
+                    this.c = directoryPathTempList.FirstOrDefault();
                 }
                 else if (memoryStream != null)
                 {
                     StartExecuteFile(memoryStream, directoryPathTempList.FirstOrDefault());
+                    this.b = memoryStream;
                 }
             }
             catch (Exception ex)
@@ -398,6 +402,9 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        public string a = "";
+        public string c = "";
+        public MemoryStream b;
         //qtcode
         private void DisplayXmlChungTu(MemoryStream memoryStream, string filePath)
         {
@@ -823,14 +830,14 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 {
                     return;
                 }
-                
+
                 var root = doc.GetElementsByTagName("GIAMDINHHS")[0];
                 //qtcode
                 if (chkViewXmlCT.Checked)
                 {
                     root = doc.GetElementsByTagName("HSCHUNGTU")[0];
                 }
-                
+
                 if (root == null)
                 {
                     return;
@@ -1186,7 +1193,11 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         xtraTabPage.Text = uc.Tag.ToString();
                         xtraTabControl1.TabPages.Add(xtraTabPage);
                     }
-                    xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
+                    if (!string.IsNullOrEmpty(this.a))
+                        StartExecuteFile(this.a, directoryPathTempList.FirstOrDefault());
+                    else
+                        StartExecuteFile(this.b, directoryPathTempList.FirstOrDefault());
+                    //xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
                 }
                 else if (chkViewXmlCheckIn.Checked && ucXmlCheckIn != null && ucXmlCheckIn.Tag != null)
                 {
@@ -1207,7 +1218,11 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         xtraTabPage.Text = uc.Tag.ToString();
                         xtraTabControl1.TabPages.Add(xtraTabPage);
                     }
-                    xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
+                    if (!string.IsNullOrEmpty(this.a))
+                        StartExecuteFile(this.a, directoryPathTempList.FirstOrDefault());
+                    else
+                        StartExecuteFile(this.b, directoryPathTempList.FirstOrDefault());
+                    //xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
                 }
             }
             catch (Exception ex)
