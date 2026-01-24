@@ -1152,13 +1152,13 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         {
                             CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
-                            if (rs != null)
+                            if (rs != null && rs.Success)
                             {
-                                LogSystem.Debug("Gọi api thành công, huỷ lưu bảo lãnh");
+                                XtraMessageBox.Show("Hủy bảo lãnh thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                             else
                             {
-                                LogSystem.Debug("Gọi api thất bại, ..............");
+                                XtraMessageBox.Show(string.Format("Hủy bảo lãnh thất bại {0} ", rs?.Message), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
                         this.GuarateeCode = null;
@@ -2237,40 +2237,6 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                                 XtraMessageBox.Show(string.Format("Đăng ký bảo lãnh thất bại. {0} ", rs?.Data.ErrorMessage), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 this.chkBaoLanh.Checked = false;
                             }
-                        }
-                        else 
-                        {
-                            if (!isNew)
-                            {
-                                data.cancelRegisterUseRequest = new CancelRegisterUseRequest()
-                                {
-                                    RequestId = this.GuaranteeRequestCode,
-                                    ContractNumber = this.GuarateeCode,
-                                    PatientFullName = ucPatientRaw1.GetValue().PATIENT_NAME,
-                                    PatientDateOfBirth = ucPatientRaw1.GetValue().DOB.ToString(),
-                                    PatientCccd = ucPlusInfo1.GetValue().CCCD_NUMBER,
-                                    Amount = guaranteeDefaultLimit,
-                                    Remark = "Hủy đăng ký sử dụng bảo lãnh",
-                                    Signature = "",
-                                    Token = ""
-                                };
-                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data), data));
-                                if (!string.IsNullOrEmpty(this.GuaranteeRequestCode))
-                                {
-                                    CancelRegisterUseResponse rs = meicalExpenseGuarantee.GuaranteeCancelRegisterUse(data);
-                                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rs), rs));
-                                    if (rs != null && rs.Success)
-                                    {
-                                        XtraMessageBox.Show("Hủy bảo lãnh thành công", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    }
-                                    else
-                                    {
-                                        XtraMessageBox.Show(string.Format("Hủy bảo lãnh thất bại {0} ", rs?.Message), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                    }
-                                }
-                            }                            
-                            this.GuarateeCode = null;
-                            this.GuaranteeRequestCode = null;
                         }
                     }
 
