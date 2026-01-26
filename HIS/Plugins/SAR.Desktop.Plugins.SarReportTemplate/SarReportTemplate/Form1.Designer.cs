@@ -78,11 +78,17 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
             this.delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Lock1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Upload = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.down = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.lkREPORT_TYPE_ID = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.btnExportFile = new DevExpress.XtraEditors.SimpleButton();
             this.btnExport = new DevExpress.XtraEditors.SimpleButton();
             this.btnImportFile = new DevExpress.XtraEditors.SimpleButton();
@@ -100,7 +106,6 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.memoEdit1 = new DevExpress.XtraEditors.MemoEdit();
-            this.lkREPORT_TYPE_ID = new DevExpress.XtraEditors.LookUpEdit();
             this.ucpaging1 = new Inventec.UC.Paging.UcPaging();
             this.btnFind = new DevExpress.XtraEditors.SimpleButton();
             this.txtSearch = new DevExpress.XtraEditors.TextEdit();
@@ -147,13 +152,13 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -164,10 +169,11 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             ((System.ComponentModel.ISupportInitialize)(this.down)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lkREPORT_TYPE_ID.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtID.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoEdit1.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lkREPORT_TYPE_ID.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEXTENSION_RECEIVE.Properties)).BeginInit();
@@ -193,13 +199,13 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -230,13 +236,13 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.lkREPORT_TYPE_ID);
             this.layoutControl1.Controls.Add(this.btnExportFile);
             this.layoutControl1.Controls.Add(this.btnExport);
             this.layoutControl1.Controls.Add(this.btnImportFile);
             this.layoutControl1.Controls.Add(this.btnImport);
             this.layoutControl1.Controls.Add(this.txtID);
             this.layoutControl1.Controls.Add(this.memoEdit1);
-            this.layoutControl1.Controls.Add(this.lkREPORT_TYPE_ID);
             this.layoutControl1.Controls.Add(this.ucpaging1);
             this.layoutControl1.Controls.Add(this.btnFind);
             this.layoutControl1.Controls.Add(this.txtSearch);
@@ -256,11 +262,36 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // lkREPORT_TYPE_ID
+            // 
+            this.lkREPORT_TYPE_ID.EditValue = "";
+            this.lkREPORT_TYPE_ID.Location = new System.Drawing.Point(1088, 74);
+            this.lkREPORT_TYPE_ID.Name = "lkREPORT_TYPE_ID";
+            this.lkREPORT_TYPE_ID.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.lkREPORT_TYPE_ID.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            this.lkREPORT_TYPE_ID.Properties.NullText = "";
+            this.lkREPORT_TYPE_ID.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+            this.lkREPORT_TYPE_ID.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.lkREPORT_TYPE_ID.Properties.View = this.customGridViewWithFilterMultiColumn1;
+            this.lkREPORT_TYPE_ID.Size = new System.Drawing.Size(146, 20);
+            this.lkREPORT_TYPE_ID.StyleController = this.layoutControl1;
+            this.lkREPORT_TYPE_ID.TabIndex = 21;
+            this.lkREPORT_TYPE_ID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lkREPORT_TYPE_ID_KeyDown);
+            // 
+            // customGridViewWithFilterMultiColumn1
+            // 
+            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
+            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
+            // 
             // btnExportFile
             // 
-            this.btnExportFile.Location = new System.Drawing.Point(883, 2);
+            this.btnExportFile.Location = new System.Drawing.Point(887, 2);
             this.btnExportFile.Name = "btnExportFile";
-            this.btnExportFile.Size = new System.Drawing.Size(106, 22);
+            this.btnExportFile.Size = new System.Drawing.Size(102, 22);
             this.btnExportFile.StyleController = this.layoutControl1;
             this.btnExportFile.TabIndex = 19;
             this.btnExportFile.Text = "Xuất khẩu file";
@@ -268,9 +299,9 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(776, 2);
+            this.btnExport.Location = new System.Drawing.Point(783, 2);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(103, 22);
+            this.btnExport.Size = new System.Drawing.Size(100, 22);
             this.btnExport.StyleController = this.layoutControl1;
             this.btnExport.TabIndex = 18;
             this.btnExport.Text = "Xuất khẩu";
@@ -278,9 +309,9 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             // btnImportFile
             // 
-            this.btnImportFile.Location = new System.Drawing.Point(682, 2);
+            this.btnImportFile.Location = new System.Drawing.Point(692, 2);
             this.btnImportFile.Name = "btnImportFile";
-            this.btnImportFile.Size = new System.Drawing.Size(90, 22);
+            this.btnImportFile.Size = new System.Drawing.Size(87, 22);
             this.btnImportFile.StyleController = this.layoutControl1;
             this.btnImportFile.TabIndex = 17;
             this.btnImportFile.Text = "Nhập khẩu file";
@@ -288,9 +319,9 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(577, 2);
+            this.btnImport.Location = new System.Drawing.Point(591, 2);
             this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(101, 22);
+            this.btnImport.Size = new System.Drawing.Size(97, 22);
             this.btnImport.StyleController = this.layoutControl1;
             this.btnImport.TabIndex = 16;
             this.btnImport.Text = "Nhập khẩu";
@@ -411,41 +442,22 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.memoEdit1.Location = new System.Drawing.Point(1088, 98);
             this.memoEdit1.MenuManager = this.barManager1;
             this.memoEdit1.Name = "memoEdit1";
-            this.memoEdit1.Size = new System.Drawing.Size(146, 188);
+            this.memoEdit1.Size = new System.Drawing.Size(146, 198);
             this.memoEdit1.StyleController = this.layoutControl1;
             this.memoEdit1.TabIndex = 10;
             // 
-            // lkREPORT_TYPE_ID
-            // 
-            this.lkREPORT_TYPE_ID.AllowDrop = true;
-            this.lkREPORT_TYPE_ID.AllowHtmlTextInToolTip = DevExpress.Utils.DefaultBoolean.True;
-            this.lkREPORT_TYPE_ID.EditValue = "";
-            this.lkREPORT_TYPE_ID.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.lkREPORT_TYPE_ID.Location = new System.Drawing.Point(1088, 74);
-            this.lkREPORT_TYPE_ID.MenuManager = this.barManager1;
-            this.lkREPORT_TYPE_ID.Name = "lkREPORT_TYPE_ID";
-            this.lkREPORT_TYPE_ID.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.lkREPORT_TYPE_ID.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.lkREPORT_TYPE_ID.Properties.NullText = "";
-            this.lkREPORT_TYPE_ID.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.lkREPORT_TYPE_ID.Size = new System.Drawing.Size(146, 20);
-            this.lkREPORT_TYPE_ID.StyleController = this.layoutControl1;
-            this.lkREPORT_TYPE_ID.TabIndex = 11;
-            this.lkREPORT_TYPE_ID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lkREPORT_TYPE_ID_KeyDown);
-            // 
             // ucpaging1
             // 
-            this.ucpaging1.Location = new System.Drawing.Point(2, 457);
+            this.ucpaging1.Location = new System.Drawing.Point(2, 434);
             this.ucpaging1.Name = "ucpaging1";
-            this.ucpaging1.Size = new System.Drawing.Size(987, 22);
+            this.ucpaging1.Size = new System.Drawing.Size(987, 45);
             this.ucpaging1.TabIndex = 13;
             // 
             // btnFind
             // 
-            this.btnFind.Location = new System.Drawing.Point(475, 2);
+            this.btnFind.Location = new System.Drawing.Point(493, 2);
             this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(98, 22);
+            this.btnFind.Size = new System.Drawing.Size(94, 22);
             this.btnFind.StyleController = this.layoutControl1;
             this.btnFind.TabIndex = 1;
             this.btnFind.Text = "Tìm(Ctrl F)";
@@ -484,7 +496,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             // btnEdit1
             // 
-            this.btnEdit1.Location = new System.Drawing.Point(993, 290);
+            this.btnEdit1.Location = new System.Drawing.Point(993, 300);
             this.btnEdit1.Name = "btnEdit1";
             this.btnEdit1.Size = new System.Drawing.Size(87, 22);
             this.btnEdit1.StyleController = this.layoutControl1;
@@ -494,7 +506,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(1084, 290);
+            this.btnAdd.Location = new System.Drawing.Point(1084, 300);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(70, 22);
             this.btnAdd.StyleController = this.layoutControl1;
@@ -504,7 +516,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             // btnRf
             // 
-            this.btnRf.Location = new System.Drawing.Point(1158, 290);
+            this.btnRf.Location = new System.Drawing.Point(1158, 300);
             this.btnRf.Name = "btnRf";
             this.btnRf.Size = new System.Drawing.Size(76, 22);
             this.btnRf.StyleController = this.layoutControl1;
@@ -524,7 +536,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.btnHidedelete,
             this.down1,
             this.upload1});
-            this.gridControl1.Size = new System.Drawing.Size(987, 425);
+            this.gridControl1.Size = new System.Drawing.Size(987, 402);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -591,7 +603,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             this.delete1.AutoHeight = false;
             this.delete1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("delete1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("delete1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa", null, null, true)});
             this.delete1.Name = "delete1";
             this.delete1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.delete1.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.delete1_ButtonClick);
@@ -615,7 +627,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             this.btnlock.AutoHeight = false;
             this.btnlock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::SAR.Desktop.Plugins.SarReportTemplate.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::SAR.Desktop.Plugins.SarReportTemplate.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.btnlock.Name = "btnlock";
             this.btnlock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnlock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnlock_ButtonClick);
@@ -639,7 +651,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             this.upload1.AutoHeight = false;
             this.upload1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("upload1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "tải file lên", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("upload1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "tải file lên", null, null, true)});
             this.upload1.Name = "upload1";
             this.upload1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.upload1.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.upload1_ButtonClick);
@@ -663,7 +675,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             this.down1.AutoHeight = false;
             this.down1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("down1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Tải file về", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("down1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Tải file về", null, null, true)});
             this.down1.Name = "down1";
             this.down1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.down1.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.down1_ButtonClick);
@@ -801,7 +813,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             this.btnUnlock.AutoHeight = false;
             this.btnUnlock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnUnlock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnUnlock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true)});
             this.btnUnlock.Name = "btnUnlock";
             this.btnUnlock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnUnlock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnUnlock_ButtonClick_1);
@@ -810,7 +822,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // 
             this.btnHidedelete.AutoHeight = false;
             this.btnHidedelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnHidedelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Tải file về", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnHidedelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Tải file về", null, null, true)});
             this.btnHidedelete.Name = "btnHidedelete";
             this.btnHidedelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -823,7 +835,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.CboStatus.Properties.NullText = "";
             this.CboStatus.Properties.View = this.gridLookUpEdit1View;
-            this.CboStatus.Size = new System.Drawing.Size(78, 20);
+            this.CboStatus.Size = new System.Drawing.Size(96, 20);
             this.CboStatus.StyleController = this.layoutControl1;
             this.CboStatus.TabIndex = 20;
             this.CboStatus.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.CboStatus_Closed);
@@ -851,13 +863,13 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.layoutControlItem3,
             this.layoutControlItem8,
             this.layoutControlItem4,
-            this.layoutControlItem11,
             this.emptySpaceItem1,
             this.layoutControlItem7,
             this.layoutControlItem13,
             this.layoutControlItem14,
             this.layoutControlItem15,
-            this.layoutControlItem16});
+            this.layoutControlItem16,
+            this.layoutControlItem17});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -882,9 +894,9 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.btnFind;
-            this.layoutControlItem12.Location = new System.Drawing.Point(473, 0);
+            this.layoutControlItem12.Location = new System.Drawing.Point(491, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(102, 26);
+            this.layoutControlItem12.Size = new System.Drawing.Size(98, 26);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
@@ -893,7 +905,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.layoutControlItem1.Control = this.gridControl1;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(991, 429);
+            this.layoutControlItem1.Size = new System.Drawing.Size(991, 406);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -926,7 +938,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.layoutControlItem9.Control = this.memoEdit1;
             this.layoutControlItem9.Location = new System.Drawing.Point(991, 96);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(245, 192);
+            this.layoutControlItem9.Size = new System.Drawing.Size(245, 202);
             this.layoutControlItem9.Text = "Hướng dẫn:";
             this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem9.TextSize = new System.Drawing.Size(90, 13);
@@ -935,7 +947,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // btnEdit
             // 
             this.btnEdit.Control = this.btnEdit1;
-            this.btnEdit.Location = new System.Drawing.Point(991, 288);
+            this.btnEdit.Location = new System.Drawing.Point(991, 298);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(91, 26);
             this.btnEdit.TextSize = new System.Drawing.Size(0, 0);
@@ -944,7 +956,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.btnRf;
-            this.layoutControlItem2.Location = new System.Drawing.Point(1156, 288);
+            this.layoutControlItem2.Location = new System.Drawing.Point(1156, 298);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Size = new System.Drawing.Size(80, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
@@ -953,7 +965,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnAdd;
-            this.layoutControlItem3.Location = new System.Drawing.Point(1082, 288);
+            this.layoutControlItem3.Location = new System.Drawing.Point(1082, 298);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Size = new System.Drawing.Size(74, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -962,9 +974,9 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.ucpaging1;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 455);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 432);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(991, 26);
+            this.layoutControlItem8.Size = new System.Drawing.Size(991, 49);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -983,62 +995,47 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.layoutControlItem4.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem4.TextToControlDistance = 5;
             // 
-            // layoutControlItem11
-            // 
-            this.layoutControlItem11.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-            this.layoutControlItem11.AppearanceItemCaption.Options.UseForeColor = true;
-            this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem11.Control = this.lkREPORT_TYPE_ID;
-            this.layoutControlItem11.Location = new System.Drawing.Point(991, 72);
-            this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(245, 24);
-            this.layoutControlItem11.Text = "Loại:";
-            this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem11.TextSize = new System.Drawing.Size(90, 13);
-            this.layoutControlItem11.TextToControlDistance = 5;
-            // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(991, 314);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(991, 324);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(245, 167);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(245, 157);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnImport;
-            this.layoutControlItem7.Location = new System.Drawing.Point(575, 0);
+            this.layoutControlItem7.Location = new System.Drawing.Point(589, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(105, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(101, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.btnImportFile;
-            this.layoutControlItem13.Location = new System.Drawing.Point(680, 0);
+            this.layoutControlItem13.Location = new System.Drawing.Point(690, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(94, 26);
+            this.layoutControlItem13.Size = new System.Drawing.Size(91, 26);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.btnExport;
-            this.layoutControlItem14.Location = new System.Drawing.Point(774, 0);
+            this.layoutControlItem14.Location = new System.Drawing.Point(781, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(107, 26);
+            this.layoutControlItem14.Size = new System.Drawing.Size(104, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.btnExportFile;
-            this.layoutControlItem15.Location = new System.Drawing.Point(881, 0);
+            this.layoutControlItem15.Location = new System.Drawing.Point(885, 0);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem15.Size = new System.Drawing.Size(106, 26);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
@@ -1047,9 +1044,24 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.layoutControlItem16.Control = this.CboStatus;
             this.layoutControlItem16.Location = new System.Drawing.Point(335, 0);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(138, 26);
+            this.layoutControlItem16.Size = new System.Drawing.Size(156, 26);
             this.layoutControlItem16.Text = "Trạng thái:";
             this.layoutControlItem16.TextSize = new System.Drawing.Size(53, 13);
+            // 
+            // layoutControlItem17
+            // 
+            this.layoutControlItem17.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem17.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem17.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem17.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem17.Control = this.lkREPORT_TYPE_ID;
+            this.layoutControlItem17.Location = new System.Drawing.Point(991, 72);
+            this.layoutControlItem17.Name = "layoutControlItem17";
+            this.layoutControlItem17.Size = new System.Drawing.Size(245, 24);
+            this.layoutControlItem17.Text = "Loại:";
+            this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem17.TextSize = new System.Drawing.Size(90, 13);
+            this.layoutControlItem17.TextToControlDistance = 5;
             // 
             // dxErrorProvider1
             // 
@@ -1078,16 +1090,22 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.Text = "Mẫu báo cáo";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Controls.SetChildIndex(this.barDockControlTop, 0);
+            this.Controls.SetChildIndex(this.barDockControlBottom, 0);
+            this.Controls.SetChildIndex(this.barDockControlRight, 0);
+            this.Controls.SetChildIndex(this.barDockControlLeft, 0);
+            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.delete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Lock1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Upload)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.down)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.lkREPORT_TYPE_ID.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtID.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.memoEdit1.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lkREPORT_TYPE_ID.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEXTENSION_RECEIVE.Properties)).EndInit();
@@ -1113,13 +1131,13 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
@@ -1177,8 +1195,6 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
         private DevExpress.XtraBars.BarButtonItem barButtonItem2;
         private DevExpress.XtraBars.BarButtonItem barButtonItem3;
         private DevExpress.XtraBars.BarButtonItem barButtonItem4;
-        private DevExpress.XtraEditors.LookUpEdit lkREPORT_TYPE_ID;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraEditors.MemoEdit memoEdit1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
 
@@ -1210,6 +1226,9 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
         private DevExpress.XtraEditors.GridLookUpEdit CboStatus;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn lkREPORT_TYPE_ID;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
     }
 }
 

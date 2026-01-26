@@ -2482,7 +2482,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 CommonParam param = new CommonParam();
-                this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
+                this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_HOLIDAY_POLICIES>();
 
                 if (hisPolicies1 == null || hisPolicies1.Count == 0)
                     return true;
@@ -2494,7 +2494,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 // Lấy các dịch vụ được chọn
                 var checkedServices = ssTreeProcessor.GetListCheck(ucSereServTree);
 
-                // Gộp kiểm tra theo DAY_OF_WEEK, DAY_OF_YEAR, HOLIDAY
+                // Gộp kiểm tra theo DAY_OF_WEEK, DAY_OF_YEAR, HOLIDAY 
                 var todayPolicies = new List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
 
                 // 1. Theo DAY_OF_WEEK
@@ -2512,11 +2512,14 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 {
                     int currentDay = transactionDate.Value.Day;
                     int currentMonth = transactionDate.Value.Month;
+                    int currentHourMinute = int.Parse(transactionDate.Value.ToString("HHmmss"));
                     todayPolicies.AddRange(policiesByDayOfYear
                         .Where(p =>
                             p.DAY_OF_YEAR.HasValue &&
                             ((p.DAY_OF_YEAR.Value / 100) == currentMonth) &&
-                            ((p.DAY_OF_YEAR.Value % 100) == currentDay)
+                            ((p.DAY_OF_YEAR.Value % 100) == currentDay) &&
+                            currentHourMinute >= (p.TIME_FROM ?? 0) &&
+                            currentHourMinute <= (p.TIME_TO ?? 235959)
                         ));
                 }
 
@@ -2528,62 +2531,25 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     todayPolicies.AddRange(policiesByHoliday.Where(p => p.HOLIDAY == currentDateInt));
                 }
 
+                // Xử lý cảnh báo cho trường hợp không phải cấp cứu
+                if (this.hisTreatment != null && this.hisTreatment.IS_EMERGENCY != 1)
+                {
+                    var policiesIsWarning = this.hisPolicies1.Where(p => p.IS_WARNING_DEPOSIT_SERVICE != 1).ToList();
+
+                    if (policiesIsWarning.Count > 0 && policiesIsWarning != null)
+                    {
+                        bool canContinue = ValidateAndShowWarning(policiesIsWarning, checkedServices);
+                        if (!canContinue)
+                            return false;
+                    }
+                }
+
+                // Xử lý cảnh báo cho policies hôm nay
                 if (todayPolicies.Count > 0)
                 {
-                    var allowedPatientTypeIds = todayPolicies
-                        .Where(p => p.PATIENT_TYPE_ID != null)
-                        .Select(p => (long)p.PATIENT_TYPE_ID)
-                        .Distinct()
-                        .ToList();
-                        
-                    var notAllowed = checkedServices
-                        .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
-                        .GroupBy(s => s.PATIENT_TYPE_ID)
-                        .ToDictionary(
-                            g => g.Key,
-                            g => g.Select(s => s.TDL_SERVICE_CODE).ToList()
-                        );
-
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed:", notAllowed));
-                    if (!notAllowed.Any())
-                        return true;
-
-                    var msg = new StringBuilder();
-                    foreach (var kv in notAllowed)
-                    {
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed2:", kv));
-                        // Lấy tên đối tượng thanh toán từ ListPatientType
-                        string patientTypeName = "";
-                        if (ListPatientType != null)
-                        {
-                            var pt = ListPatientType.FirstOrDefault(ptype => ptype.ID == kv.Key);
-                            if (pt != null)
-                                patientTypeName = pt.PATIENT_TYPE_NAME;
-                        }
-                        if (string.IsNullOrEmpty(patientTypeName))
-                            patientTypeName = kv.Key.ToString();
-                        msg.AppendLine($"Dịch vụ {string.Join(", ", kv.Value)} có đối tượng thanh toán {patientTypeName} không được thiết lập thanh toán ngoài giờ.");
-                    }
-                    msg.AppendLine("Bạn có muốn tiếp tục không?");
-
-                    var result = MessageBox.Show(msg.ToString(), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (result == DialogResult.Yes)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        List<object> listArgs = new List<object>();
-                        listArgs.Add(treatmentId);
-                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
-                            "HIS.Desktop.Plugins.Bordereau",
-                            this.moduleData.RoomId,
-                            this.moduleData.RoomTypeId,
-                            listArgs
-                        );
-                        LoadSereServByTreatment();
+                    bool canContinue = ValidateAndShowWarning(todayPolicies, checkedServices);
+                    if (!canContinue)
                         return false;
-                    }
                 }
 
                 // Nếu không có policy phù hợp, cho phép lưu
@@ -2595,7 +2561,75 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 return false;
             }
         }
-        
+
+        private bool ValidateAndShowWarning(List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> policies, List<SereServADO> checkedServices)
+        {
+            var allowedPatientTypeIds = policies
+                .Where(p => p.PATIENT_TYPE_ID != null)
+                .Select(p => (long)p.PATIENT_TYPE_ID)
+                .Distinct()
+                .ToList();
+
+            var notAllowed = checkedServices
+                .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
+                .GroupBy(s => s.PATIENT_TYPE_ID)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(s => s.TDL_SERVICE_CODE).ToList()
+                );
+
+            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed:", notAllowed));
+
+            if (!notAllowed.Any())
+                return true;
+
+            var msg = new StringBuilder();
+            foreach (var kv in notAllowed)
+            {
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed2:", kv));
+
+                string patientTypeName = GetPatientTypeName(kv.Key);
+                msg.AppendLine("Dịch vụ "+ string.Join(", ", kv.Value) + " có đối tượng thanh toán " + patientTypeName + " không được thiết lập thanh toán ngoài giờ.");
+            }
+            msg.AppendLine("Bạn có muốn tiếp tục không?");
+
+            var result = MessageBox.Show(msg.ToString(), "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+                return true;
+            }
+            else
+            {
+                ShowBordereauModule();
+                LoadSereServByTreatment();
+                return false;
+            }
+        }
+
+        private string GetPatientTypeName(long patientTypeId)
+        {
+            if (ListPatientType != null)
+            {
+                var pt = ListPatientType.FirstOrDefault(ptype => ptype.ID == patientTypeId);
+                if (pt != null)
+                    return pt.PATIENT_TYPE_NAME;
+            }
+            return patientTypeId.ToString();
+        }
+
+        private void ShowBordereauModule()
+        {
+            List<object> listArgs = new List<object>();
+            listArgs.Add(treatmentId);
+            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                "HIS.Desktop.Plugins.Bordereau",
+                this.moduleData.RoomId,
+                this.moduleData.RoomTypeId,
+                listArgs
+            );
+        }
+
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
         HIS_CONFIG selectedConfig = new HIS_CONFIG();
         private void loadConfig()
