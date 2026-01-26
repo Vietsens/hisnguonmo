@@ -45,15 +45,20 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDepositService));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboBank = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSaveAndPrint = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSavePrintAndTrans = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.btnAddSign = new DevExpress.XtraEditors.SimpleButton();
             this.btnQR = new DevExpress.XtraEditors.SimpleButton();
@@ -82,6 +87,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.txtTransactionCode = new DevExpress.XtraEditors.TextEdit();
             this.txtAccountBookCode = new DevExpress.XtraEditors.TextEdit();
             this.spnAmountGiveByPatient = new DevExpress.XtraEditors.SpinEdit();
+            this.cboPayForm = new DevExpress.XtraEditors.LookUpEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
@@ -114,19 +120,14 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.timerInitForm = new System.Windows.Forms.Timer();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
-            this.cboPayForm = new DevExpress.XtraEditors.LookUpEdit();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboBank.Properties)).BeginInit();
@@ -150,6 +151,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.txtTransactionCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAccountBookCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnAmountGiveByPatient.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
@@ -189,7 +191,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -249,6 +250,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSave,
@@ -302,6 +307,34 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.bbtnSavePrintAndTrans.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T));
             this.bbtnSavePrintAndTrans.Name = "bbtnSavePrintAndTrans";
             this.bbtnSavePrintAndTrans.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnSavePrintAndTrans_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1100, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 612);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 583);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 583);
             // 
             // gridView2
             // 
@@ -656,6 +689,20 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.spnAmountGiveByPatient.TabIndex = 47;
             this.spnAmountGiveByPatient.ToolTip = "Số tiền bệnh nhân đưa";
             this.spnAmountGiveByPatient.EditValueChanged += new System.EventHandler(this.spnAmountGiveByPatient_EditValueChanged);
+            // 
+            // cboPayForm
+            // 
+            this.cboPayForm.Location = new System.Drawing.Point(358, 485);
+            this.cboPayForm.Name = "cboPayForm";
+            this.cboPayForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboPayForm.Properties.NullText = "";
+            this.cboPayForm.Size = new System.Drawing.Size(102, 20);
+            this.cboPayForm.StyleController = this.layoutControl1;
+            this.cboPayForm.TabIndex = 6;
+            this.cboPayForm.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPayForm_Closed);
+            this.cboPayForm.EditValueChanged += new System.EventHandler(this.cboPayForm_EditValueChanged);
+            this.cboPayForm.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboPayForm_KeyUp);
             // 
             // layoutControlGroup1
             // 
@@ -1082,34 +1129,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             this.layoutControlItem21.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem21.TextToControlDistance = 5;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1100, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 612);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1100, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 583);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 583);
-            // 
             // panelControl2
             // 
             this.panelControl2.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
@@ -1150,20 +1169,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             // 
             this.popupMenu1.Manager = this.barManager1;
             this.popupMenu1.Name = "popupMenu1";
-            // 
-            // cboPayForm
-            // 
-            this.cboPayForm.Location = new System.Drawing.Point(358, 485);
-            this.cboPayForm.Name = "cboPayForm";
-            this.cboPayForm.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboPayForm.Properties.NullText = "";
-            this.cboPayForm.Size = new System.Drawing.Size(102, 20);
-            this.cboPayForm.StyleController = this.layoutControl1;
-            this.cboPayForm.TabIndex = 6;
-            this.cboPayForm.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboPayForm_Closed);
-            this.cboPayForm.EditValueChanged += new System.EventHandler(this.cboPayForm_EditValueChanged);
-            this.cboPayForm.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboPayForm_KeyUp);
             // 
             // frmDepositService
             // 
@@ -1208,6 +1213,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.txtTransactionCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtAccountBookCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spnAmountGiveByPatient.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
@@ -1247,7 +1253,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCollection1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboPayForm.Properties)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

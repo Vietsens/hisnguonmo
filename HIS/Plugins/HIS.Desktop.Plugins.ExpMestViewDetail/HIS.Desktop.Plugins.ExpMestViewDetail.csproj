@@ -100,8 +100,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.FormOtherSereServPttt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormOtherSereServPttt\HIS.Desktop.Plugins.Library.FormOtherSereServPttt.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription">
-      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.PrintPrescription\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintPrescription, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintPrescription.dll</HintPath>
     </Reference>
     <Reference Include="His.EventLog, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -245,9 +246,8 @@
     <Reference Include="MPS.Processor.Mps000050.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000050.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000086.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000086.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000086.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000086.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000089.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -264,9 +264,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000099.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000107.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000107.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000107.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000107.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000108.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000108.PDO.dll</HintPath>
@@ -334,9 +333,8 @@
     <Reference Include="MPS.Processor.Mps000346.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000346.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000347.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000347.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000347.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000347.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000349.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000349.PDO.dll</HintPath>
@@ -441,6 +439,7 @@
       <DependentUpon>frmExpMestViewDetail.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
