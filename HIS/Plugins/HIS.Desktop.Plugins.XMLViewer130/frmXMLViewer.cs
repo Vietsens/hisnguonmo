@@ -388,13 +388,10 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 if (!string.IsNullOrEmpty(filePath))
                 {
                     StartExecuteFile(filePath, directoryPathTempList.FirstOrDefault());
-                    this.a = filePath;
-                    this.c = directoryPathTempList.FirstOrDefault();
                 }
                 else if (memoryStream != null)
                 {
                     StartExecuteFile(memoryStream, directoryPathTempList.FirstOrDefault());
-                    this.b = memoryStream;
                 }
             }
             catch (Exception ex)
@@ -402,10 +399,6 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        public string a = "";
-        public string c = "";
-        public MemoryStream b;
-        //qtcode
         private void DisplayXmlChungTu(MemoryStream memoryStream, string filePath)
         {
             try
@@ -679,41 +672,74 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             }
 
         }
-
+        MemoryStream msOriginalxml130 = new MemoryStream();
+        MemoryStream msOriginalxmlCT = new MemoryStream();
+        bool isFirstxml130 = true;
+        bool isFirstxmlCT = true;
         private void DisplayXml(string directoryViewFile)
         {
             try
             {
+                XslCompiledTransform xTrans = new XslCompiledTransform();
                 if (chkViewXml130.Checked)
                 {
                     xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
+                    string xmlString = File.ReadAllText(@directoryViewFile);
+
+                    // Load the xslt used by IE to render the xml
+
+                    sample84(xTrans);
+
+                    // Read the xml string.
+                    StringReader sr = new StringReader(xmlString);
+                    XmlReader xReader = XmlReader.Create(sr);
+
+                    // Transform the XML data
+                    MemoryStream ms = new MemoryStream();
+                    xTrans.Transform(xReader, null, ms);
+
+                    ms.Position = 0;
+
+                    // Set to the document stream
+                    webBrowser1.DocumentStream = ms;
+                    if (isFirstxml130)
+                    {
+                        this.msOriginalxml130 = ms;
+                        isFirstxml130 = false;
+                    }
+
+                    clearFolder(this.directoryPathTemp);
                 }
                 //qtcode
                 if (chkViewXmlCT.Checked)
                 {
                     xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
+                    string xmlString = File.ReadAllText(@directoryViewFile);
+
+                    // Load the xslt used by IE to render the xml
+
+                    sample84(xTrans);
+
+                    // Read the xml string.
+                    StringReader sr = new StringReader(xmlString);
+                    XmlReader xReader = XmlReader.Create(sr);
+
+                    // Transform the XML data
+                    MemoryStream ms = new MemoryStream();
+                    xTrans.Transform(xReader, null, ms);
+
+                    ms.Position = 0;
+
+                    // Set to the document stream
+                    webBrowser1.DocumentStream = ms;
+                    if (isFirstxmlCT)
+                    {
+                        this.msOriginalxmlCT = ms;
+                        isFirstxmlCT = false;
+                    }
+
+                    clearFolder(this.directoryPathTemp);
                 }
-                string xmlString = File.ReadAllText(@directoryViewFile);
-
-                // Load the xslt used by IE to render the xml
-                XslCompiledTransform xTrans = new XslCompiledTransform();
-                sample84(xTrans);
-
-                // Read the xml string.
-                StringReader sr = new StringReader(xmlString);
-                XmlReader xReader = XmlReader.Create(sr);
-
-                // Transform the XML data
-                MemoryStream ms = new MemoryStream();
-                xTrans.Transform(xReader, null, ms);
-
-                ms.Position = 0;
-
-                // Set to the document stream
-                webBrowser1.DocumentStream = ms;
-
-                clearFolder(this.directoryPathTemp);
-
             }
             catch (Exception ex)
             {
@@ -1030,7 +1056,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                                 DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CT06.CT06Data>(fileHoSo.NOIDUNGFILE, listObj);
                                 break;
                             case "CT07":
-                                DeserializeAndAdd< His.Bhyt.ExportXml.XML3220.XMLCT07.QD130.XML.XMLCT07Data> (fileHoSo.NOIDUNGFILE, listObj);
+                                DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.XMLCT07.QD130.XML.XMLCT07Data>(fileHoSo.NOIDUNGFILE, listObj);
                                 break;
                             case "GIAYDIEUTRINOITRU":
                                 DeserializeAndAdd<His.Bhyt.ExportXml.XML3220.CTGiayDieuTriNoiTru.CTGiayDieuTriNoiTruData>(
@@ -1086,6 +1112,7 @@ namespace HIS.Desktop.Plugins.XMLViewer130
 
                     if (data != null)
                     {
+                        ConvertDateProperties(data);
                         listObj.Add(data);
                     }
                 }
@@ -1093,6 +1120,57 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+        private void ConvertDateProperties(object obj)
+        {
+            if (obj == null) return;
+            var props = obj.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                .Where(p => p.CanRead && p.CanWrite && p.PropertyType == typeof(string)
+                    && p.Name.IndexOf("NGAY", StringComparison.OrdinalIgnoreCase) >= 0);
+            foreach (var prop in props)
+            {
+                try
+                {
+                    var value = prop.GetValue(obj) as string;
+                    if (!string.IsNullOrWhiteSpace(value))
+                    {
+                        var newValue = ConvertDateString(value);
+                        if (newValue != value)
+                            prop.SetValue(obj, newValue);
+                    }
+                }
+                catch { }
+            }
+        }
+
+
+        public static string ConvertDateString(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) return value;
+            try
+            {
+                // Nếu là 12 ký tự và 8 ký tự cuối là 0 thì lấy 4 ký tự đầu
+                if (value.Length == 12 && value.Substring(4) == "0000000000")
+                {
+                    return value.Substring(0, 4);
+                }
+                switch (value.Length)
+                {
+                    case 8:
+                        string rs8 = Inventec.Common.DateTime.Convert.TimeNumberToDateString(value);
+                        return rs8;
+                    case 12:
+                        //string sub = value.Substring(0, 10); 
+                        string rs12 = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(Int64.Parse(value + "00"));
+                        return rs12;
+                    default:
+                        return value;
+                }
+            }
+            catch
+            {
+                return value;
             }
         }
 
@@ -1107,16 +1185,18 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                 xtraTabControl1.TabPages.Clear();
                 if (chkViewXml130.Checked)
                 {
+                    this.isFirstxml130 = true;
                     listUCXml130 = new List<UCXml130>();
-                    ProcessXml130(op); 
+                    ProcessXml130(op);
                 }
                 else if (chkViewXmlCT.Checked)
                 {
+                    this.isFirstxmlCT = true;
                     listUCXmlChungTu = new List<UCXml130>();
                     ProcessXmlChungTu(op);
                 }
                 His.Bhyt.ExportXml.XML3220.CreateXmlProcessor xmlProcessor1 = new His.Bhyt.ExportXml.XML3220.CreateXmlProcessor(null);
-                
+
                 listUCXml130 = listUCXml130.OrderBy(o => Convert.ToInt16(o.Tag.ToString().Substring(3))).ToList();
                 var orderDict = new Dictionary<string, int>
                         {
@@ -1178,10 +1258,8 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         xtraTabPage.Text = uc.Tag.ToString();
                         xtraTabControl1.TabPages.Add(xtraTabPage);
                     }
-                    //if (!string.IsNullOrEmpty(this.a))
-                    //    StartExecuteFile(this.a, directoryPathTempList.FirstOrDefault());
-                    //else
-                    //    StartExecuteFile(this.b, directoryPathTempList.FirstOrDefault());
+                    msOriginalxml130.Position = 0;
+                    webBrowser1.DocumentStream = this.msOriginalxml130;
                     xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
                 }
                 else if (chkViewXmlCheckIn.Checked && ucXmlCheckIn != null && ucXmlCheckIn.Tag != null)
@@ -1203,10 +1281,8 @@ namespace HIS.Desktop.Plugins.XMLViewer130
                         xtraTabPage.Text = uc.Tag.ToString();
                         xtraTabControl1.TabPages.Add(xtraTabPage);
                     }
-                    //if (!string.IsNullOrEmpty(this.a))
-                    //    StartExecuteFile(this.a, directoryPathTempList.FirstOrDefault());
-                    //else
-                    //    StartExecuteFile(this.b, directoryPathTempList.FirstOrDefault());
+                    msOriginalxmlCT.Position = 0;
+                    webBrowser1.DocumentStream = msOriginalxmlCT;
                     xtraTabControl1.TabPages.Add(xtraTabPage__XMLfull);
                 }
             }
