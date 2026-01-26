@@ -77,10 +77,13 @@ namespace HIS.Desktop.Plugins.AggregateAndIssuePrescriptionOrderNumber.Run
             {
                 if (ProcessDataForPrint())
                 {
-                    MPS.Processor.Mps000479.PDO.Mps000479PDO mps000479RDO = new MPS.Processor.Mps000479.PDO.Mps000479PDO(
-                        this._expMest_ForPrint);
-
-                    PrintData(MPS.Processor.Mps000479.PDO.Mps000479PDO.printTypeCode, fileName, mps000479RDO, printNow, ref result);
+                    this.printNow = true;
+                    foreach (var item in this._expMest_ForPrint)
+                    {
+                        MPS.Processor.Mps000479.PDO.Mps000479PDO mps000479RDO = new MPS.Processor.Mps000479.PDO.Mps000479PDO(
+                            item);
+                        PrintData(MPS.Processor.Mps000479.PDO.Mps000479PDO.printTypeCode, fileName, mps000479RDO, printNow, ref result);
+                    }
                 }
             }
             catch (Exception ex)

@@ -41,7 +41,7 @@ namespace HIS.Desktop.Plugins.AggregateAndIssuePrescriptionOrderNumber.Run
         long DefaultSeccondReloadScreen = 120;
         long DefaultSeccondResetThongBao = 10;
         bool isResetThongBao = false;
-        HIS_EXP_MEST _expMest_ForPrint;
+        List<V_HIS_EXP_MEST> _expMest_ForPrint;
         MOS.SDO.WorkPlaceSDO WorkPlaceSDO;
 
         const string timerApplicationRuntime = "timerApplicationRuntime";
@@ -150,7 +150,7 @@ namespace HIS.Desktop.Plugins.AggregateAndIssuePrescriptionOrderNumber.Run
                 this.counterReloadScreen += 1;
                 if (this.counterReloadScreen >= this.DefaultSeccondReloadScreen)
                 {
-                    FillDataExpMest(new HIS_EXP_MEST());
+                    FillDataExpMest(new List<V_HIS_EXP_MEST>());
                     lblThongBao.Text = "";
                 }
                 this.counterResetThongBao += 1;

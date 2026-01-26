@@ -51,7 +51,12 @@ namespace MPS.Processor.Mps000479
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
 
 				Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo._ExpMest), rdo._ExpMest));
-                AddObjectKeyIntoListkey<HIS_EXP_MEST>(rdo._ExpMest, false);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo._VExpMest), rdo._VExpMest));
+                if(rdo._ExpMest != null)
+                    AddObjectKeyIntoListkey<HIS_EXP_MEST>(rdo._ExpMest, false);
+                if(rdo._VExpMest != null)
+                    AddObjectKeyIntoListkey<V_HIS_EXP_MEST>(rdo._VExpMest, false);
+
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
                 result = true;
