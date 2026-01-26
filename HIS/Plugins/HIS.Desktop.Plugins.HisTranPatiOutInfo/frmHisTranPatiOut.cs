@@ -55,7 +55,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
 
         internal IcdProcessor icdProcessorTo;
         internal UserControl ucIcdToTranfer;
-
+        internal V_HIS_TREATMENT lastTransferTreatment = null;
         internal V_HIS_TREATMENT currentTreatment { get; set; }
         HIS_BRANCH currentBranch = new HIS_BRANCH();
         List<HIS_MEDI_ORG> VHisHeinMediOrg = new List<HIS_MEDI_ORG>();
@@ -203,6 +203,8 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 filter.ID = this.treatmentId;
                 this.currentTreatment = new V_HIS_TREATMENT();
                 this.currentTreatment = new BackendAdapter(param).Get<List<V_HIS_TREATMENT>>(HisRequestUriStore.HIS_TREATMENT_GETVIEW, ApiConsumers.MosConsumer, filter, param).FirstOrDefault();
+                LoadLastTransferTreatment();
+                FillLastTransferData();
                 if (this.currentTreatment != null && this.currentTreatment.TREATMENT_END_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
                 {
                     //Review
@@ -222,6 +224,93 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void LoadLastTransferTreatment()
+        {
+            try
+            {
+                if (this.currentTreatment == null)
+                    return;
+                long patientId = 0;
+                try
+                {
+                    patientId = Convert.ToInt64(this.currentTreatment.PATIENT_ID);
+                }
+                catch { patientId = 0; }
+
+                if (patientId <= 0)
+                    return;
+
+                CommonParam param = new CommonParam();
+                HisTreatmentViewFilter filter = new HisTreatmentViewFilter();
+
+                filter.PATIENT_IDs = new List<long> { patientId };
+
+                filter.TREATMENT_END_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN;
+
+                var transferTreatments = new BackendAdapter(param)
+                    .Get<List<V_HIS_TREATMENT>>(
+                        "api/HisTreatment/GetView",
+                        ApiConsumers.MosConsumer,
+                        filter,
+                        param
+                    );
+
+                if (transferTreatments != null && transferTreatments.Count > 0)
+                {
+                    lastTransferTreatment = transferTreatments
+                        .Where(t => t != null
+                                    && t.ID != this.currentTreatment.ID
+                                    && t.OUT_TIME.HasValue)
+                        .OrderByDescending(t => t.OUT_TIME)
+                        .FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void FillLastTransferData()
+        {
+            try
+            {
+                if (lastTransferTreatment != null)
+                {
+                    lblTreatmentCode.Text = lastTransferTreatment.TREATMENT_CODE ?? "";
+
+                    lblIcd.Text = !string.IsNullOrEmpty(lastTransferTreatment.ICD_CODE)
+                        ? (lastTransferTreatment.ICD_CODE
+                            + (!string.IsNullOrEmpty(lastTransferTreatment.ICD_NAME) ? " - " + lastTransferTreatment.ICD_NAME : ""))
+                        : "";
+
+                    if (lastTransferTreatment.OUT_TIME.HasValue)
+                    {
+                        DateTime? outTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(lastTransferTreatment.OUT_TIME.Value);
+                        lblOutTime.Text = outTime.HasValue ? outTime.Value.ToString("dd/MM/yyyy HH:mm") : "";
+                    }
+                    else
+                    {
+                        lblOutTime.Text = "";
+                    }
+
+                    lblEndRoomName.Text = lastTransferTreatment.END_ROOM_NAME ?? "";
+                    chkOldValidYear.Checked = (lastTransferTreatment.VALID_1_YEAR == 1);
+                }
+                else
+                {
+                    lblTreatmentCode.Text = "";
+                    lblIcd.Text = "";
+                    lblOutTime.Text = "";
+                    lblEndRoomName.Text = "";
+                    chkOldValidYear.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void SetCaptionByLanguageKey()
@@ -396,7 +485,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                     {
                         txtUsedMedicine.Text = data.USED_MEDICINE;
                     }
-
+                    chkValidYear.Checked = (data.VALID_1_YEAR == 1);
                     SetReadOnlyControlToTranPati(true);
                     btnEdit.Enabled = true;
                 }
@@ -650,6 +739,7 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 txtUsedMedicine.ReadOnly = isReadOnly;
                 dtStart.ReadOnly = isReadOnly;
                 dtFinish.ReadOnly = isReadOnly;
+                chkValidYear.ReadOnly = isReadOnly;
                 if (isReadOnly == true)
                 {
                     buttonEdit1.Enabled = false;
@@ -802,6 +892,14 @@ namespace HIS.Desktop.Plugins.HisTranPatiOutInfo
                 }
                 else
                     _treatmentUpdate.SURGERY_END_TIME = null;
+                if(chkValidYear.Checked)
+                {
+                    _treatmentUpdate.VALID_1_YEAR = 1;
+                }
+                else
+                {
+                    _treatmentUpdate.VALID_1_YEAR = 0;
+                }
                 sdoUpdate.HisTreatment = _treatmentUpdate;
                 sdoUpdate.ClinicalNote = currentTreatment.CLINICAL_NOTE;
                 sdoUpdate.SubclinicalResult = txtXetNghiem.Text;
