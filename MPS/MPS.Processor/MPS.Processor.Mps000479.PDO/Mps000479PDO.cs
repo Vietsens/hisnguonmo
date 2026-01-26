@@ -29,6 +29,8 @@ namespace MPS.Processor.Mps000479.PDO
     {
         public const string printTypeCode = "Mps000479";
         public HIS_EXP_MEST _ExpMest { get; set; }
+        public V_HIS_EXP_MEST _VExpMest { get; set; }
+
 
         public Mps000479PDO() { }
 
@@ -45,6 +47,18 @@ namespace MPS.Processor.Mps000479.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+        public Mps000479PDO(
+   V_HIS_EXP_MEST _VExpMest
+)
+        {
+            try
+            {
+                this._VExpMest = _VExpMest;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

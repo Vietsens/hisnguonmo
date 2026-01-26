@@ -50,8 +50,9 @@ namespace HIS.Desktop.Plugins.AggregateAndIssuePrescriptionOrderNumber.Run
                 MOS.SDO.AggrExamByTreatAndStockSDO sdo = new MOS.SDO.AggrExamByTreatAndStockSDO();
                 sdo.MediStockId = this.WorkPlaceSDO != null ? (WorkPlaceSDO.MediStockId ?? 0) : 0;
                 sdo.TreatmentCode = code;
-                var resultData = new BackendAdapter(param).Post<HIS_EXP_MEST>(HisRequestUriStore.MOS_HIS_EXP_MEST_AggrExamByTreatAndStock, ApiConsumers.MosConsumer, sdo, param);
-                if (resultData != null)
+                var resultData = new BackendAdapter(param).Post<List<V_HIS_EXP_MEST>>(HisRequestUriStore.MOS_HIS_EXP_MEST_AggrExamByTreatAndStock, ApiConsumers.MosConsumer, sdo, param);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => resultData), resultData));
+                if (resultData != null && resultData.Count > 0)
                 {
                     success = true;
                     this._expMest_ForPrint = resultData;
@@ -61,7 +62,7 @@ namespace HIS.Desktop.Plugins.AggregateAndIssuePrescriptionOrderNumber.Run
                 }
                 else
                 {
-                    FillDataExpMest(new HIS_EXP_MEST());
+                    FillDataExpMest(null);
                     ThreadXuLyThatBai(param);
                 }
 
@@ -76,33 +77,73 @@ namespace HIS.Desktop.Plugins.AggregateAndIssuePrescriptionOrderNumber.Run
             }
         }
 
-        private void FillDataExpMest(HIS_EXP_MEST resultData)
+        private void FillDataExpMest(List<V_HIS_EXP_MEST> resultData)
         {
             try
             {
-                if (resultData == null)
-                    return;
-                lblNumOrder.Text = resultData.NUM_ORDER != null ? resultData.NUM_ORDER.ToString() : "";
-
-                lblTDLTreatmentCode.Text = resultData.TDL_TREATMENT_CODE;
-                lblTDLPatientName.Text = resultData.TDL_PATIENT_NAME;
-                if (resultData.TDL_PATIENT_DOB != null)
+                if (resultData == null || resultData.Count == 0)
                 {
-                    if (resultData.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
+                    lblNumOrder.Text = "";
+                    lblTDLTreatmentCode.Text = "";
+                    lblTDLPatientName.Text = "";
+                    lblTDLPatientDOB.Text = "";
+                    lblTDLPatientAddress.Text = "";
+                    return;
+                }
+                
+                var firstExpMest = resultData[0];
+                
+                
+                StringBuilder numOrderDisplay = new StringBuilder();
+                int lineCount = 0;
+                foreach (var expMest in resultData)
+                {
+                    if (expMest.NUM_ORDER != null)
                     {
-                        string time = resultData.TDL_PATIENT_DOB.ToString();
+                        if (numOrderDisplay.Length > 0)
+                            numOrderDisplay.AppendLine();
+                        
+                        numOrderDisplay.Append("STT: ").Append(expMest.NUM_ORDER);
+                        
+                        if (!String.IsNullOrWhiteSpace(expMest.REQ_AREA_NAME))
+                        {
+                            numOrderDisplay.Append(" - ").Append(expMest.REQ_AREA_NAME);
+                        }
+                        lineCount++;
+                    }
+                }
+                lblNumOrder.Text = numOrderDisplay.ToString();
+                
+                float fontSize = 150F;
+                if (lineCount >= 3)
+                {
+                    fontSize = 70F;
+                }
+                else if (lineCount == 2)
+                {
+                    fontSize = 100F;
+                }
+                lblNumOrder.Appearance.Font = new System.Drawing.Font("Arial", fontSize, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+
+                lblTDLTreatmentCode.Text = firstExpMest.TDL_TREATMENT_CODE;
+                lblTDLPatientName.Text = firstExpMest.TDL_PATIENT_NAME;
+                if (firstExpMest.TDL_PATIENT_DOB != null)
+                {
+                    if (firstExpMest.TDL_PATIENT_IS_HAS_NOT_DAY_DOB == 1)
+                    {
+                        string time = firstExpMest.TDL_PATIENT_DOB.ToString();
                         lblTDLPatientDOB.Text = new StringBuilder().Append(time.Substring(0, 4)).ToString();
                     }
                     else
                     {
-                        lblTDLPatientDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(resultData.TDL_PATIENT_DOB ?? 0);
+                        lblTDLPatientDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(firstExpMest.TDL_PATIENT_DOB ?? 0);
                     }
                 }
                 else
                 {
                     lblTDLPatientDOB.Text = "";
                 }
-                lblTDLPatientAddress.Text = resultData.TDL_PATIENT_ADDRESS;
+                lblTDLPatientAddress.Text = firstExpMest.TDL_PATIENT_ADDRESS;
             }
             catch (Exception ex)
             {
