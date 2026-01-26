@@ -724,15 +724,22 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 }
 
                 //lấy đơn thuốc tư phiếu xuất
-                if (_CurrentExpMest != null && _CurrentExpMest.PRESCRIPTION_ID != null)
+                if (_CurrentExpMest != null && (_CurrentExpMest.PRESCRIPTION_ID != null || _CurrentExpMest.SERVICE_REQ_ID != null))
                 {
                     CommonParam parama = new CommonParam();
                     HisServiceReqFilter HisServiceReq = new HisServiceReqFilter();
-                    HisServiceReq.ID = _CurrentExpMest.PRESCRIPTION_ID;
+                    if (_CurrentExpMest.PRESCRIPTION_ID != null)
+                    {
+                        HisServiceReq.ID = _CurrentExpMest.PRESCRIPTION_ID;
+                    }
+                    else if (_CurrentExpMest.SERVICE_REQ_ID != null)
+                    {
+                        HisServiceReq.ID = _CurrentExpMest.SERVICE_REQ_ID;
+                    }
                     serviceReqPrints = new BackendAdapter(parama).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, HisServiceReq, parama);
                 }
 
-                //số lượng đơn thuốc với số lượng phiếu xuất khác nhau sẽ không in được
+                //số lượng đơn thuốc với số lượng phiếu xuất khác nhau sẽ không in được  
                 if (serviceReqPrints.Count < expMestPrints.Count)
                 {
                     int dem = 0;
@@ -1584,7 +1591,7 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                     var _serviceReq = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, reqFilter, null).FirstOrDefault();
                     Library.PrintPrescription.PrintPrescriptionProcessor processPress;
 
-                    if (this._CurrentExpMest.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DPK)
+                    if (this._CurrentExpMest.EXP_MEST_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DPK) 
                     {
                         MOS.SDO.InPatientPresResultSDO sdo = new MOS.SDO.InPatientPresResultSDO();
                         sdo.ExpMests = new List<MOS.EFMODEL.DataModels.HIS_EXP_MEST>() { _expMest };
