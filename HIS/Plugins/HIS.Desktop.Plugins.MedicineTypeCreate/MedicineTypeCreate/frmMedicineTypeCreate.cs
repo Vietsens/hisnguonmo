@@ -1436,6 +1436,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     ChkIsSpecificHeinPrice.CheckState = CheckState.Unchecked;
                 }
                 cboMedicineGroup.EditValue = hIS_MEDICINE_TYPE.MEDICINE_GROUP_ID;
+                txtTTThau.Text = hIS_MEDICINE_TYPE.TT_THAU;
                 spinUseOnDay.EditValue = hIS_MEDICINE_TYPE.ALERT_MAX_IN_PRESCRIPTION;
                 spinUseInDay.EditValue = hIS_MEDICINE_TYPE.ALERT_MAX_IN_DAY;
                 spinAgeFrom.EditValue = HIS_Services.AGE_FROM;
@@ -2636,6 +2637,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.MEDICINE_GROUP_ID = null;
                 }
 
+                medicineType.TT_THAU = txtTTThau.Text.Trim();
                 medicineType.DESCRIPTION = txtDescription.Text;
                 medicineType.ODD_WARNING_CONTENT = txtContentWarning.Text.Trim();
                 medicineType.CONTRAINDICATION = txtContraindication.Text;
