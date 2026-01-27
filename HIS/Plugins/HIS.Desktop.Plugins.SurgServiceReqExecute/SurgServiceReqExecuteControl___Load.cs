@@ -1332,6 +1332,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
             {
                 if (this.sereServ != null)
                 {
+                    var departmentID = HIS.Desktop.LocalStorage.LocalData.WorkPlace.WorkPlaceSDO.FirstOrDefault(o => o.RoomId == this.Module.RoomId).DepartmentId;
                     LogSystem.Debug("SetEnableControl.1");
                     if (this.serviceReq != null && this.serviceReq.SERVICE_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__HT)
                     {
@@ -1762,7 +1763,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         }
 
                         ddbPhatSinh.Enabled = false;
-                        btnKTDT.Enabled = false;
+                        btnKTDT.Enabled = vhisTreatment.IS_PAUSE != 1 && vhisTreatment.LAST_DEPARTMENT_ID == departmentID;
                         btnAssignBlood.Enabled = false;
                         btnTuTruc.Enabled = false;
                         btnAssignPre.Enabled = false;
@@ -1874,7 +1875,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             btnDepartmentTran.Enabled = true;
                             btnOther.Enabled = true;
                             btnPrint.Enabled = true;
-                            btnKTDT.Enabled = true;
+                            btnKTDT.Enabled = vhisTreatment.IS_PAUSE != 1 && vhisTreatment.LAST_DEPARTMENT_ID == departmentID;
                             btnFinish.Enabled = !(HisConfigKeys.allowFinishWhenAccountIsDoctor == "1" && BackendDataWorker.Get<HIS_EMPLOYEE>().Where(o => o.LOGINNAME == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()).FirstOrDefault().IS_DOCTOR != 1);
                         }
                         else
@@ -1981,8 +1982,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             btnDepartmentTran.Enabled = false;
                             btnOther.Enabled = false;
                             btnPrint.Enabled = false;
-                            btnKTDT.Enabled = false;
-
+                            btnKTDT.Enabled = vhisTreatment.IS_PAUSE != 1 && vhisTreatment.LAST_DEPARTMENT_ID == departmentID;
                             spinExcuteTimeAdd.ReadOnly = true;
                             cboDepartment.ReadOnly = true;
                             btnFinish.Enabled = false;
@@ -2083,7 +2083,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             btnDepartmentTran.Enabled = enable;
                             btnOther.Enabled = enable;
                             btnPrint.Enabled = enable;
-                            btnKTDT.Enabled = enable;
+                            btnKTDT.Enabled = vhisTreatment.IS_PAUSE != 1 && vhisTreatment.LAST_DEPARTMENT_ID == departmentID;
                         }
                         else
                         {
@@ -2181,7 +2181,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                             btnDepartmentTran.Enabled = true;
                             btnOther.Enabled = true;
                             btnPrint.Enabled = true;
-                            btnKTDT.Enabled = true;
+                            btnKTDT.Enabled = vhisTreatment.IS_PAUSE != 1 && vhisTreatment.LAST_DEPARTMENT_ID == departmentID;
                         }
                     }
                     else if (HisConfigKeys.CheckPermissonOption != "1" && HisConfigKeys.CheckPermissonOption != "2")
@@ -2274,7 +2274,7 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         btnDepartmentTran.Enabled = true;
                         btnOther.Enabled = true;
                         btnPrint.Enabled = true;
-                        btnKTDT.Enabled = true;
+                        btnKTDT.Enabled = vhisTreatment.IS_PAUSE != 1 && vhisTreatment.LAST_DEPARTMENT_ID == departmentID;
                     }
 
                     //
