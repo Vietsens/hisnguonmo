@@ -2561,7 +2561,15 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
 
                     }
 
-
+                    if (!string.IsNullOrEmpty(item.TT_THAU))
+                    {
+                        if (!CheckMaxLenth(item.TT_THAU, 50))
+                        {
+                            error += string.Format(Message.MessageImport.Maxlength, "Thông tin thầu", 50);
+                            mediAdo.TT_THAU_ERROR = 1;
+                        }
+                        mediAdo.TT_THAU = item.TT_THAU;
+                    }
 
                     mediAdo.ERROR = error;
                     mediAdo.ID = i;
