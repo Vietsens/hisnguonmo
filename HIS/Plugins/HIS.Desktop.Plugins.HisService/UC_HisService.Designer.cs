@@ -46,55 +46,59 @@ namespace HIS.Desktop.Plugins.HisService
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject69 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject70 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject71 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject72 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject77 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject78 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject79 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject80 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UC_HisService));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject81 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject82 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject83 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject85 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject86 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject87 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject88 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject89 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject90 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject91 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject92 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject93 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject94 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject95 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject96 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject97 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject98 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject99 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject100 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject101 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject102 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject103 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject104 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject105 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject106 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject107 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject108 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject109 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject110 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject111 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject112 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject113 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject114 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject115 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject116 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject117 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject118 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject119 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject120 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject73 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject74 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject75 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject76 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -115,10 +119,6 @@ namespace HIS.Desktop.Plugins.HisService
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject66 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject67 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject68 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject69 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject70 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject71 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject72 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
@@ -392,6 +392,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
             this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.treeListColumn44 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
@@ -637,7 +638,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.layoutControl4.Controls.Add(this.treeList1);
             this.layoutControl4.Controls.Add(this.txtKeyword);
             this.layoutControl4.Controls.Add(this.lcEditorInfo);
-            this.layoutControl4.Location = new System.Drawing.Point(2, -39);
+            this.layoutControl4.Location = new System.Drawing.Point(2, 2);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
             this.layoutControl4.Size = new System.Drawing.Size(1345, 772);
@@ -741,6 +742,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn5,
             this.treeListColumn22,
             this.treeListColumn6,
+            this.treeListColumn44,
             this.treeListColumn28,
             this.treeListColumn31,
             this.treeListColumn30,
@@ -925,7 +927,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn28.OptionsColumn.AllowEdit = false;
             this.treeListColumn28.ToolTip = "STT BHYT";
             this.treeListColumn28.Visible = true;
-            this.treeListColumn28.VisibleIndex = 11;
+            this.treeListColumn28.VisibleIndex = 12;
             // 
             // treeListColumn31
             // 
@@ -935,7 +937,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn31.OptionsColumn.AllowEdit = false;
             this.treeListColumn31.ToolTip = "Mã chuyên khoa";
             this.treeListColumn31.Visible = true;
-            this.treeListColumn31.VisibleIndex = 12;
+            this.treeListColumn31.VisibleIndex = 13;
             this.treeListColumn31.Width = 100;
             // 
             // treeListColumn30
@@ -947,7 +949,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn30.ToolTip = "Tên gói";
             this.treeListColumn30.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn30.Visible = true;
-            this.treeListColumn30.VisibleIndex = 13;
+            this.treeListColumn30.VisibleIndex = 14;
             this.treeListColumn30.Width = 122;
             // 
             // treeListColumn29
@@ -958,7 +960,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn29.OptionsColumn.AllowEdit = false;
             this.treeListColumn29.ToolTip = "Giá gói";
             this.treeListColumn29.Visible = true;
-            this.treeListColumn29.VisibleIndex = 14;
+            this.treeListColumn29.VisibleIndex = 15;
             this.treeListColumn29.Width = 93;
             // 
             // treeListColumn15
@@ -969,7 +971,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn15.OptionsColumn.AllowEdit = false;
             this.treeListColumn15.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn15.Visible = true;
-            this.treeListColumn15.VisibleIndex = 15;
+            this.treeListColumn15.VisibleIndex = 16;
             this.treeListColumn15.Width = 129;
             // 
             // treeListColumn18
@@ -981,7 +983,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn18.ToolTip = "Nhóm PTTT";
             this.treeListColumn18.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn18.Visible = true;
-            this.treeListColumn18.VisibleIndex = 16;
+            this.treeListColumn18.VisibleIndex = 17;
             // 
             // treeListColumn19
             // 
@@ -992,7 +994,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn19.ToolTip = "Phương pháp PTTT";
             this.treeListColumn19.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn19.Visible = true;
-            this.treeListColumn19.VisibleIndex = 17;
+            this.treeListColumn19.VisibleIndex = 18;
             this.treeListColumn19.Width = 106;
             // 
             // treeListColumn20
@@ -1004,7 +1006,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn20.ToolTip = "ICD CM";
             this.treeListColumn20.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn20.Visible = true;
-            this.treeListColumn20.VisibleIndex = 18;
+            this.treeListColumn20.VisibleIndex = 19;
             // 
             // treeListColumn21
             // 
@@ -1014,7 +1016,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn21.OptionsColumn.AllowEdit = false;
             this.treeListColumn21.ToolTip = "Giá cũ";
             this.treeListColumn21.Visible = true;
-            this.treeListColumn21.VisibleIndex = 19;
+            this.treeListColumn21.VisibleIndex = 20;
             // 
             // treeListColumn27
             // 
@@ -1024,7 +1026,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn27.OptionsColumn.AllowEdit = false;
             this.treeListColumn27.ToolTip = "Giá mới";
             this.treeListColumn27.Visible = true;
-            this.treeListColumn27.VisibleIndex = 20;
+            this.treeListColumn27.VisibleIndex = 21;
             // 
             // treeListColumn26
             // 
@@ -1035,7 +1037,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn26.ToolTip = "Tỉ lệ trần cũ";
             this.treeListColumn26.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn26.Visible = true;
-            this.treeListColumn26.VisibleIndex = 21;
+            this.treeListColumn26.VisibleIndex = 22;
             // 
             // treeListColumn25
             // 
@@ -1046,7 +1048,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn25.ToolTip = "Tỉ lệ trần mới";
             this.treeListColumn25.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn25.Visible = true;
-            this.treeListColumn25.VisibleIndex = 22;
+            this.treeListColumn25.VisibleIndex = 23;
             // 
             // treeListColumn24
             // 
@@ -1057,7 +1059,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn24.ToolTip = "Thời gian theo ngày vào viện";
             this.treeListColumn24.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn24.Visible = true;
-            this.treeListColumn24.VisibleIndex = 23;
+            this.treeListColumn24.VisibleIndex = 24;
             this.treeListColumn24.Width = 156;
             // 
             // treeListColumn23
@@ -1069,7 +1071,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn23.ToolTip = "Thời gian theo ngày chỉ định";
             this.treeListColumn23.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn23.Visible = true;
-            this.treeListColumn23.VisibleIndex = 24;
+            this.treeListColumn23.VisibleIndex = 25;
             this.treeListColumn23.Width = 144;
             // 
             // treeListColumn16
@@ -1081,7 +1083,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn16.ToolTip = "Đối tượng phụ thu mặc định";
             this.treeListColumn16.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn16.Visible = true;
-            this.treeListColumn16.VisibleIndex = 25;
+            this.treeListColumn16.VisibleIndex = 26;
             this.treeListColumn16.Width = 120;
             // 
             // treeListColumn42
@@ -1098,7 +1100,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn42.ToolTip = "Không cho phép sửa đối tượng phụ thu mặc định lúc chỉ định dịch vụ";
             this.treeListColumn42.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn42.Visible = true;
-            this.treeListColumn42.VisibleIndex = 26;
+            this.treeListColumn42.VisibleIndex = 27;
             // 
             // repositoryItemCheckEdit_IsNotChangePaty
             // 
@@ -1115,7 +1117,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn17.ToolTip = "CP ngoài gói";
             this.treeListColumn17.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn17.Visible = true;
-            this.treeListColumn17.VisibleIndex = 27;
+            this.treeListColumn17.VisibleIndex = 28;
             // 
             // repositoryItemCheckEdit1
             // 
@@ -1130,7 +1132,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn7.Name = "treeListColumn7";
             this.treeListColumn7.OptionsColumn.AllowEdit = false;
             this.treeListColumn7.Visible = true;
-            this.treeListColumn7.VisibleIndex = 28;
+            this.treeListColumn7.VisibleIndex = 29;
             this.treeListColumn7.Width = 94;
             // 
             // treeListColumn8
@@ -1141,7 +1143,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn8.OptionsColumn.AllowEdit = false;
             this.treeListColumn8.ToolTip = "Thời gian dự kiến";
             this.treeListColumn8.Visible = true;
-            this.treeListColumn8.VisibleIndex = 29;
+            this.treeListColumn8.VisibleIndex = 30;
             this.treeListColumn8.Width = 96;
             // 
             // treeListColumn40
@@ -1151,7 +1153,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn40.Name = "treeListColumn40";
             this.treeListColumn40.OptionsColumn.AllowEdit = false;
             this.treeListColumn40.Visible = true;
-            this.treeListColumn40.VisibleIndex = 30;
+            this.treeListColumn40.VisibleIndex = 31;
             this.treeListColumn40.Width = 55;
             // 
             // treeListColumn39
@@ -1161,7 +1163,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn39.Name = "treeListColumn39";
             this.treeListColumn39.OptionsColumn.AllowEdit = false;
             this.treeListColumn39.Visible = true;
-            this.treeListColumn39.VisibleIndex = 31;
+            this.treeListColumn39.VisibleIndex = 32;
             this.treeListColumn39.Width = 61;
             // 
             // treeListColumn9
@@ -1173,7 +1175,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn9.SortOrder = System.Windows.Forms.SortOrder.Ascending;
             this.treeListColumn9.ToolTip = "STT";
             this.treeListColumn9.Visible = true;
-            this.treeListColumn9.VisibleIndex = 32;
+            this.treeListColumn9.VisibleIndex = 33;
             this.treeListColumn9.Width = 77;
             // 
             // treeListColumn41
@@ -1185,7 +1187,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn41.OptionsColumn.AllowSort = false;
             this.treeListColumn41.ToolTip = "Mã quy trình xử lý";
             this.treeListColumn41.Visible = true;
-            this.treeListColumn41.VisibleIndex = 33;
+            this.treeListColumn41.VisibleIndex = 34;
             // 
             // treeListColumn10
             // 
@@ -1206,7 +1208,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn11.ToolTip = "Thời gian tạo";
             this.treeListColumn11.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn11.Visible = true;
-            this.treeListColumn11.VisibleIndex = 38;
+            this.treeListColumn11.VisibleIndex = 39;
             this.treeListColumn11.Width = 120;
             // 
             // treeListColumn12
@@ -1217,7 +1219,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn12.OptionsColumn.AllowEdit = false;
             this.treeListColumn12.ToolTip = "Người tạo";
             this.treeListColumn12.Visible = true;
-            this.treeListColumn12.VisibleIndex = 39;
+            this.treeListColumn12.VisibleIndex = 40;
             this.treeListColumn12.Width = 100;
             // 
             // treeListColumn13
@@ -1229,7 +1231,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn13.ToolTip = "Thời gian sửa";
             this.treeListColumn13.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn13.Visible = true;
-            this.treeListColumn13.VisibleIndex = 40;
+            this.treeListColumn13.VisibleIndex = 41;
             this.treeListColumn13.Width = 120;
             // 
             // treeListColumn14
@@ -1240,7 +1242,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn14.OptionsColumn.AllowEdit = false;
             this.treeListColumn14.ToolTip = "Người sửa";
             this.treeListColumn14.Visible = true;
-            this.treeListColumn14.VisibleIndex = 41;
+            this.treeListColumn14.VisibleIndex = 42;
             this.treeListColumn14.Width = 100;
             // 
             // treeListColumn35
@@ -1251,7 +1253,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn35.OptionsColumn.AllowEdit = false;
             this.treeListColumn35.OptionsColumn.ReadOnly = true;
             this.treeListColumn35.Visible = true;
-            this.treeListColumn35.VisibleIndex = 34;
+            this.treeListColumn35.VisibleIndex = 35;
             // 
             // treeListColumn36
             // 
@@ -1261,7 +1263,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn36.OptionsColumn.AllowEdit = false;
             this.treeListColumn36.OptionsColumn.ReadOnly = true;
             this.treeListColumn36.Visible = true;
-            this.treeListColumn36.VisibleIndex = 35;
+            this.treeListColumn36.VisibleIndex = 36;
             // 
             // treeListColumn37
             // 
@@ -1269,7 +1271,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn37.FieldName = "NUMBER_OF_FILM ";
             this.treeListColumn37.Name = "treeListColumn37";
             this.treeListColumn37.Visible = true;
-            this.treeListColumn37.VisibleIndex = 36;
+            this.treeListColumn37.VisibleIndex = 37;
             // 
             // treeListColumn43
             // 
@@ -1279,13 +1281,13 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn43.OptionsColumn.AllowEdit = false;
             this.treeListColumn43.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn43.Visible = true;
-            this.treeListColumn43.VisibleIndex = 37;
+            this.treeListColumn43.VisibleIndex = 38;
             // 
             // LockT
             // 
             this.LockT.AutoHeight = false;
             this.LockT.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisService.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisService.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "Khóa", null, null, true)});
             this.LockT.Name = "LockT";
             this.LockT.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.LockT.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Lock_ButtonClick);
@@ -1294,7 +1296,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.unLockT.AutoHeight = false;
             this.unLockT.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisService.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Mở khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.HisService.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "Mở khóa", null, null, true)});
             this.unLockT.Name = "unLockT";
             this.unLockT.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.unLockT.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.unLock_ButtonClick);
@@ -1303,7 +1305,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.DeleteD.AutoHeight = false;
             this.DeleteD.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("DeleteD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("DeleteD.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Xóa", null, null, true)});
             this.DeleteD.Name = "DeleteD";
             this.DeleteD.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1311,7 +1313,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.DeleteE.AutoHeight = false;
             this.DeleteE.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("DeleteE.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("DeleteE.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "Xóa", null, null, true)});
             this.DeleteE.Name = "DeleteE";
             this.DeleteE.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.DeleteE.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnGDelete_ButtonClick);
@@ -1320,7 +1322,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.btn_ChinhSachGia_Enable.AutoHeight = false;
             this.btn_ChinhSachGia_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_ChinhSachGia_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Chính sách giá dịch vụ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_ChinhSachGia_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "Chính sách giá dịch vụ", null, null, true)});
             this.btn_ChinhSachGia_Enable.Name = "btn_ChinhSachGia_Enable";
             this.btn_ChinhSachGia_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btn_ChinhSachGia_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btn_ChinhSachGia_Enable_ButtonClick);
@@ -1329,7 +1331,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.btn_ChinhSachGia_Disable.AutoHeight = false;
             this.btn_ChinhSachGia_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_ChinhSachGia_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Chính sách giá dịch vụ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_ChinhSachGia_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "Chính sách giá dịch vụ", null, null, true)});
             this.btn_ChinhSachGia_Disable.Name = "btn_ChinhSachGia_Disable";
             this.btn_ChinhSachGia_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1337,7 +1339,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.btn_BaoCao_Enable.AutoHeight = false;
             this.btn_BaoCao_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_BaoCao_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Thiết lập dịch vụ nhóm loại báo cáo", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_BaoCao_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject97, serializableAppearanceObject98, serializableAppearanceObject99, serializableAppearanceObject100, "Thiết lập dịch vụ nhóm loại báo cáo", null, null, true)});
             this.btn_BaoCao_Enable.Name = "btn_BaoCao_Enable";
             this.btn_BaoCao_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btn_BaoCao_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btn_BaoCao_Enable_ButtonClick);
@@ -1346,7 +1348,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.btn_BaoCao_Disable.AutoHeight = false;
             this.btn_BaoCao_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_BaoCao_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Thiết lập dịch vụ nhóm loại báo cáo", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_BaoCao_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject101, serializableAppearanceObject102, serializableAppearanceObject103, serializableAppearanceObject104, "Thiết lập dịch vụ nhóm loại báo cáo", null, null, true)});
             this.btn_BaoCao_Disable.Name = "btn_BaoCao_Disable";
             this.btn_BaoCao_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1354,7 +1356,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.btn_PhongXuLy_Enable.AutoHeight = false;
             this.btn_PhongXuLy_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_PhongXuLy_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Thiết lập phòng xử lý dịch vụ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_PhongXuLy_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject105, serializableAppearanceObject106, serializableAppearanceObject107, serializableAppearanceObject108, "Thiết lập phòng xử lý dịch vụ", null, null, true)});
             this.btn_PhongXuLy_Enable.Name = "btn_PhongXuLy_Enable";
             this.btn_PhongXuLy_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btn_PhongXuLy_Enable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btn_PhongXuLy_Enable_ButtonClick);
@@ -1363,7 +1365,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.btn_PhongXuLy_Disable.AutoHeight = false;
             this.btn_PhongXuLy_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_PhongXuLy_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Thiết lập phòng xử lý dịch vụ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_PhongXuLy_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject109, serializableAppearanceObject110, serializableAppearanceObject111, serializableAppearanceObject112, "Thiết lập phòng xử lý dịch vụ", null, null, true)});
             this.btn_PhongXuLy_Disable.Name = "btn_PhongXuLy_Disable";
             this.btn_PhongXuLy_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1371,7 +1373,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.btn_ServiceRaty_Enable.AutoHeight = false;
             this.btn_ServiceRaty_Enable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_ServiceRaty_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Thiết lập thời gian ăn", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_ServiceRaty_Enable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject113, serializableAppearanceObject114, serializableAppearanceObject115, serializableAppearanceObject116, "Thiết lập thời gian ăn", null, null, true)});
             this.btn_ServiceRaty_Enable.Name = "btn_ServiceRaty_Enable";
             this.btn_ServiceRaty_Enable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btn_ServiceRaty_Enable.Click += new System.EventHandler(this.btn_ServiceRaty_Enable_Click);
@@ -1380,7 +1382,7 @@ namespace HIS.Desktop.Plugins.HisService
             // 
             this.btn_ServiceRaty_Disable.AutoHeight = false;
             this.btn_ServiceRaty_Disable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_ServiceRaty_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btn_ServiceRaty_Disable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject117, serializableAppearanceObject118, serializableAppearanceObject119, serializableAppearanceObject120, "", null, null, true)});
             this.btn_ServiceRaty_Disable.Name = "btn_ServiceRaty_Disable";
             this.btn_ServiceRaty_Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1754,7 +1756,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.cboChiSo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Ellipsis, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Ellipsis, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject73, serializableAppearanceObject74, serializableAppearanceObject75, serializableAppearanceObject76, "", null, null, true)});
             this.cboChiSo.Properties.NullText = "";
             this.cboChiSo.Properties.View = this.gridView15;
             this.cboChiSo.Size = new System.Drawing.Size(105, 20);
@@ -1849,7 +1851,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.CboTestType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.CboTestType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "", null, null, true)});
             this.CboTestType.Properties.NullText = "";
             this.CboTestType.Properties.View = this.gridView12;
             this.CboTestType.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.CboTestType_Properties_ButtonClick);
@@ -2025,7 +2027,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.cboGender.Properties.AutoComplete = false;
             this.cboGender.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "", null, null, true)});
             this.cboGender.Properties.NullText = "";
             this.cboGender.Properties.View = this.gridView8;
             this.cboGender.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboGender_Properties_ButtonClick);
@@ -2724,7 +2726,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.cboDiimType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboDiimType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "", null, null, true)});
             this.cboDiimType.Properties.NullText = "";
             this.cboDiimType.Properties.View = this.gridView9;
             this.cboDiimType.Size = new System.Drawing.Size(132, 20);
@@ -2748,7 +2750,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.cboFuexType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboFuexType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "", null, null, true)});
             this.cboFuexType.Properties.NullText = "";
             this.cboFuexType.Properties.View = this.gridView10;
             this.cboFuexType.Size = new System.Drawing.Size(278, 20);
@@ -2849,7 +2851,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.cboSampleType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboSampleType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "", null, null, true)});
             this.cboSampleType.Properties.NullText = "";
             this.cboSampleType.Properties.PopupSizeable = false;
             this.cboSampleType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
@@ -4226,7 +4228,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.layoutControlGroup1.GroupBordersVisible = false;
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem34});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -41);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup1.Size = new System.Drawing.Size(1349, 776);
@@ -4248,6 +4250,14 @@ namespace HIS.Desktop.Plugins.HisService
             // toolTipControllerGrid
             // 
             this.toolTipControllerGrid.AllowHtmlText = true;
+            // 
+            // treeListColumn44
+            // 
+            this.treeListColumn44.Caption = "Mã dịch vụ BHYT";
+            this.treeListColumn44.FieldName = "HEIN_SERVICE_BHYT_CODE";
+            this.treeListColumn44.Name = "treeListColumn44";
+            this.treeListColumn44.Visible = true;
+            this.treeListColumn44.VisibleIndex = 11;
             // 
             // UC_HisService
             // 
@@ -4758,5 +4768,6 @@ namespace HIS.Desktop.Plugins.HisService
         private DevExpress.XtraEditors.GridLookUpEdit cboCauHinh;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView26;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem93;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn44;
     }
 }
