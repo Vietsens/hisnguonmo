@@ -297,6 +297,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 spPricingMaxReuseCount.EditValue = null;
                 lciPricingMaxReuseCount.Enabled = false;
                 lciReuseFee.Enabled = false;
+                spinBYTNumOrder.EditValue = null;
+                txtTTThau.EditValue = null;
+                chkIsNotExpend.CheckState = CheckState.Unchecked;
             }
             catch (Exception ex)
             {
@@ -810,6 +813,16 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 else
                 {
                     chkIsIdentityManagement.Checked = false;
+                }
+                spinBYTNumOrder.EditValue = !string.IsNullOrEmpty(hIS_MEDICINE_TYPE.BYT_NUM_ORDER) ? Inventec.Common.TypeConvert.Parse.ToInt64(hIS_MEDICINE_TYPE.BYT_NUM_ORDER) : (long?)null ;
+                txtTTThau.Text = hIS_MEDICINE_TYPE.TT_THAU;
+                if (hIS_MEDICINE_TYPE.IS_NOT_EXPEND == 1)
+                {
+                    chkIsNotExpend.CheckState = CheckState.Checked;
+                }
+                else
+                {
+                    chkIsNotExpend.CheckState = CheckState.Unchecked;
                 }
             }
             catch (Exception ex)
@@ -1430,6 +1443,16 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     materialType.FILM_SIZE_ID = (long)cboFileSize.EditValue;
                 }
                 else materialType.FILM_SIZE_ID = null;
+
+                if (chkIsNotExpend.CheckState == CheckState.Checked)
+                    materialType.IS_NOT_EXPEND = 1;
+                else
+                    materialType.IS_NOT_EXPEND = null;
+
+                materialType.TT_THAU = txtTTThau.Text.Trim();
+
+                materialType.BYT_NUM_ORDER = spinBYTNumOrder.EditValue != null ? spinBYTNumOrder.Value.ToString() : null;
+
             }
             catch (Exception ex)
             {
@@ -2832,6 +2855,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 chkIsExprireDate.Checked = false;
                 chkIsAllowOdd.Checked = false;
                 chkIsAllowExportOdd.Checked = false;
+                chkIsNotExpend.Checked = false;
                 SetNullToSpinControl();
             }
             catch (Exception ex)
@@ -4562,6 +4586,15 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 //    chkIS_DRUG_STORE.Enabled = false;
                 //    chkIS_DRUG_STORE.Checked = false;
                 //}
+                if (chkAutoExpend.Checked)
+                {
+                    chkIsNotExpend.Enabled = false;
+                    chkIsNotExpend.Checked = false;
+                }
+                else
+                {
+                    chkIsNotExpend.Enabled = true;
+                }
             }
             catch (Exception ex)
             {
@@ -5104,6 +5137,26 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
 
                 // 5. Ép control vẽ lại Text ngay lập tức
                 cboSupplier.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkIsNotExpend_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkIsNotExpend.Checked)
+                {
+                    chkAutoExpend.Enabled = false;
+                    chkAutoExpend.Checked = false;
+                }
+                else
+                {
+                    chkAutoExpend.Enabled = true;
+                }
             }
             catch (Exception ex)
             {
