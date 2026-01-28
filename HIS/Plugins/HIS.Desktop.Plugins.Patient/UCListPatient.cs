@@ -334,10 +334,7 @@ namespace HIS.Desktop.Plugins.Patient
                     pageSize = (int)ConfigApplications.NumPageSize;
                 }
                 GridPaging(new CommonParam(0, pageSize));
-                CommonParam param = new CommonParam();
-                param.Limit = rowCount;
-                param.Count = dataTotal;
-                ucPaging1.Init(GridPaging, param, pageSize, gridControlPatientList);
+                // Không khởi tạo lại ucPaging1 để scroll hoạt động trên toàn bộ danh sách
                 WaitingManager.Hide();
             }
             catch (Exception ex)

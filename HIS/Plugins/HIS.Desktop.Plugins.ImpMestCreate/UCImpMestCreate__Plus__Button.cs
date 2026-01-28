@@ -92,7 +92,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
-                if (HIS.Desktop.Plugins.ImpMestCreate.Config.IsRoundAutoExpPriceCFG.IsRoundAutoExpPrice && listServicePatyAdo != null && listServicePatyAdo.Count() > 0)
+                if (HIS.Desktop.Plugins.ImpMestCreate.Config.IsRoundAutoExpPriceCFG.IsRoundAutoExpPrice && listServicePatyAdo != null &&
+                    listServicePatyAdo.Count() > 0)
                 {
                     Parallel.ForEach(listServicePatyAdo.Where(f => f.ID > 0), l => l.PRICE
                         = Math.Round(l.PRICE, MidpointRounding.AwayFromZero));
@@ -1546,15 +1547,31 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         {
                             if (ado.IsMedicine)
                             {
-                                ado.TT_THAU = ado.TDL_BID_NUMBER + ";" + ado.TDL_BID_PACKAGE_CODE + ";" + ado.TDL_BID_GROUP_CODE + ";" + ado.TDL_BID_YEAR;
+                                if (medicine.TT_THAU != null)
+                                {
+                                    ado.TT_THAU = medicine.TT_THAU;
+                                }
+                                else
+                                {
+                                    ado.TT_THAU = ado.TDL_BID_NUMBER + ";" + ado.TDL_BID_PACKAGE_CODE + ";" + ado.TDL_BID_GROUP_CODE + ";" + ado.TDL_BID_YEAR;
+                                }    
+                                
                             }
                             else
                             {
-                                string key = "{0};{1};{2};{3}";
-                                if (ado.INFORMATION_BID == "3") key = "{0};{3}";
-                                else if (ado.INFORMATION_BID == "4") key = "{0};{1};{3}";
-                                string tt_thau = string.Format(key, ado.TDL_BID_EXTRA_CODE, ado.TDL_BID_PACKAGE_CODE, ado.TDL_BID_GROUP_CODE, ado.TDL_BID_YEAR);
-                                ado.TT_THAU = tt_thau;
+                                if (material.TT_THAU != null)
+                                {
+                                    ado.TT_THAU = material.TT_THAU;
+                                }
+                                else
+                                {
+                                    string key = "{0};{1};{2};{3}";
+                                    if (ado.INFORMATION_BID == "3") key = "{0};{3}";
+                                    else if (ado.INFORMATION_BID == "4") key = "{0};{1};{3}";
+                                    string tt_thau = string.Format(key, ado.TDL_BID_EXTRA_CODE, ado.TDL_BID_PACKAGE_CODE, ado.TDL_BID_GROUP_CODE, ado.TDL_BID_YEAR);
+                                    ado.TT_THAU = tt_thau;
+                                }
+                                
                             }
                         }
 

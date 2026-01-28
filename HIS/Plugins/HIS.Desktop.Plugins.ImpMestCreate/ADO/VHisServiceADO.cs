@@ -149,11 +149,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
                 this.IsMedicine = true;
                 if (data != null)
                 {
-                    if (data.TT_THAU != null)
-                    {
-                        this.HisMedicine.TT_THAU = data.TT_THAU;
-                    }
-
                     this.MEDI_MATE_ID = data.ID;
                     this.MEDI_MATE_CODE = data.MEDICINE_TYPE_CODE;
                     this.MEDI_MATE_NAME = data.MEDICINE_TYPE_NAME;
@@ -205,11 +200,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.ADO
                 this.IsVaccin = false;
                 if (data != null)
                 {
-                    if (data.TT_THAU != null)
-                    {
-                        this.HisMaterial.TT_THAU = data.TT_THAU;
-                    }
-
                     this.MEDI_MATE_ID = data.ID;
                     this.MEDI_MATE_CODE = data.MATERIAL_TYPE_CODE;
                     this.MEDI_MATE_NAME = data.MATERIAL_TYPE_NAME;
