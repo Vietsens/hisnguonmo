@@ -117,27 +117,110 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Btn_ErrorLine.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAALdEVYdFRpdGxlAEluZm87bRIthgAAAJxJREFUOE+t
-        k+ENQDAUhDuKafyzlN9MYQkbWEdiAO5rNEEOlZJ8Cb17l77XCk07XqlFLyYx7/DOGtrJf/yoRCcWsd6A
-        hgfvKYCFQbgiB94YkgJIdcYnqIkB9GW3rSeA0wQ1NSLDcYa3AOgRmbATc5gI4JicmLOD+ZeA2xYyAmIL
-        xUMsPkYoukhQfJVTCKm2nR00PLEYjgGJD7/zGDZMp1TRLvGgqwAAAABJRU5ErkJggg==
-</value>
+  <data name="BanChuaChonHoSoDeDongBo" xml:space="preserve">
+    <value>Bạn chưa chọn hồ sơ để gửi.</value>
   </data>
-  <data name="Btn_Delete.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAABl0RVh0U29m
-        dHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAApdEVYdFRpdGxlAFJlbW92ZTtEZWxldGU7QmFycztS
-        aWJib247U3RhbmRhcmQ7Y1ZIMAAAAMJJREFUOE+Nk0sKAjEQRHM4YVZ6CS8gfhBGHK/pSRRXbRWkJOlO
-        q4sHSf0YBlLMrNy3qzWYef4HZC/s8KzyCxi4+rAHmVvNsrOhcKqCSEfgqSz2Ms7OCCPQfPlIvQ2kIzgP
-        y+QzUIN+ZAFpmXQDBAE/0tKVSXcRCI5GQpkEgSDsP5sso2wQEByVRRjpLgj48gGEH9t2vpYbLx35WRbQ
-        hiM0+DBaI5QFPD8yU5zAowppWSCjkSeYJHJk58MZyPIBTmZW3tJAnMwmSptiAAAAAElFTkSuQmCC
-</value>
+  <data name="CacHoSoDaDongBoThanhCongBanCoMuonDongBoLai" xml:space="preserve">
+    <value>Các hồ sơ {0} đã đồng bộ thành công. Bạn có muốn đồng bộ lại?</value>
   </data>
-  <metadata name="barManager1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="ChuaGuiHoSo" xml:space="preserve">
+    <value>Chưa gửi hồ sơ</value>
+  </data>
+  <data name="ChucNangChuaHoTroPhienBanHienTai" xml:space="preserve">
+    <value>Chức năng chưa hỗ trợ phiên bản hiện tại</value>
+  </data>
+  <data name="ChuKyPhaiLonHon0" xml:space="preserve">
+    <value>Chu kỳ phải lớn hơn 0</value>
+  </data>
+  <data name="DaCoSoVaoVien" xml:space="preserve">
+    <value>Đã có số vào viện</value>
+  </data>
+  <data name="DaGuiHoSo" xml:space="preserve">
+    <value>Đã gửi hồ sơ</value>
+  </data>
+  <data name="DaKhoaBHYT" xml:space="preserve">
+    <value>Đã khóa BHYT</value>
+  </data>
+  <data name="DaKTDieuTri" xml:space="preserve">
+    <value>Đã kết thúc điều trị</value>
+  </data>
+  <data name="DangChayTienTrinhDongBoDuLieuXml130LenCongBHYT" xml:space="preserve">
+    <value>Đang chạy tiến trình gửi dữ liệu XML 130 lên cổng dịch vụ</value>
+  </data>
+  <data name="DangDongBo" xml:space="preserve">
+    <value>Đang gửi</value>
+  </data>
+  <data name="DongBoTD" xml:space="preserve">
+    <value>Gửi tự động</value>
+  </data>
+  <data name="DongBoTuDong" xml:space="preserve">
+    <value>Gửi hồ sơ lên cổng dịch vụ</value>
+  </data>
+  <data name="HoSoGuiThanhCong" xml:space="preserve">
+    <value>Hồ sơ gửi thành công</value>
+  </data>
+  <data name="HoSoGuiThatBai" xml:space="preserve">
+    <value>Hồ sơ gửi thất bại</value>
+  </data>
+  <data name="Plugins_ExportXml__BanCoMuonMoFile" xml:space="preserve">
+    <value>Bạn có muốn mở file?</value>
+  </data>
+  <data name="Plugins_ExportXml__CacMaDieuTriKhongXuatDuocXml" xml:space="preserve">
+    <value>Các mã điều trị không xuất được xml: {0}</value>
+  </data>
+  <data name="Plugins_ExportXml__ChuaThietLapChuKyThoiGianTai" xml:space="preserve">
+    <value>Chưa thiết lập chu kỳ thời gian tải</value>
+  </data>
+  <data name="Plugins_ExportXml__ChuaThietLapFolderLuu" xml:space="preserve">
+    <value>Chưa thiết lập thư mục lưu</value>
+  </data>
+  <data name="Plugins_ExportXml__FileDangMo" xml:space="preserve">
+    <value>Biểu mẫu đang mở hoặc không tồn tại file template. Vui lòng kiểm tra lại</value>
+  </data>
+  <data name="Plugins_ExportXml__KhongCoDuongDanTaiFileVeMayTram" xml:space="preserve">
+    <value>Không có đường dẫn tải file về máy trạm</value>
+  </data>
+  <data name="Plugins_ExportXml__KhongTaoDuocFolderLuuXml" xml:space="preserve">
+    <value>Không tạo được folder lưu xml.</value>
+  </data>
+  <data name="Plugins_ExportXml__KhongThieLapDuocCauHinhDuLieuXuatXml" xml:space="preserve">
+    <value>Không thiết lập được cấu hình dữ liệu xuất xml.</value>
+  </data>
+  <data name="Plugins_ExportXml__KhongTimThayFile" xml:space="preserve">
+    <value>Không tìm thấy file import</value>
+  </data>
+  <data name="Plugins_ExportXml__LoiKhiLayDuLieuLoc" xml:space="preserve">
+    <value>Có lỗi khi lấy dữ liệu lọc</value>
+  </data>
+  <data name="Plugins_ExportXml__LuuFileVaoThuMucMayTramThatBai" xml:space="preserve">
+    <value>Lưu file vào thư mục máy trạm thất bại</value>
+  </data>
+  <data name="Plugins_ExportXml__TaiFileVeMayTramThanhCong" xml:space="preserve">
+    <value>Tải file về máy trạm thành công</value>
+  </data>
+  <data name="Plugins_ExportXml__TaiFileVeMayTramThatBai" xml:space="preserve">
+    <value>Tải file về máy trạm thất bại</value>
+  </data>
+  <data name="Plugins_ExportXml__TruongDuLieuBatBuoc" xml:space="preserve">
+    <value>Trường dữ liệu bắt buộc.</value>
+  </data>
+  <data name="Plugins_ExportXml__TuDongXuatFileThanhCong" xml:space="preserve">
+    <value>Tự động xuất file thành công</value>
+  </data>
+  <data name="Plugins_ExportXml__TuDongXuatFileThatBai" xml:space="preserve">
+    <value>Tự động xuất file thất bại</value>
+  </data>
+  <data name="TatCa" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="ThongBao" xml:space="preserve">
+    <value>Thông báo</value>
+  </data>
+  <data name="VuiLongThietLapDieuKienGuiHoSoTruocKhiThucHien" xml:space="preserve">
+    <value>Vui lòng thiết lập điều kiện gửi hồ sơ trước khi thực hiện!</value>
+  </data>
+  <data name="XuLyThatBai" xml:space="preserve">
+    <value>Xử lý thất bại.
+	</value>
+  </data>
 </root>

@@ -1261,7 +1261,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 var medicine = dataMedicines.FirstOrDefault(p => p.ID == item.MEDICINE_ID);
                                 if (medicine != null)
                                 {
-                                    ado.TT_THAU = medicine.TT_THAU;
+                                    if (mediType.TT_THAU != null)
+                                    {
+                                        ado.TT_THAU = mediType.TT_THAU;
+                                    }
+                                    else
+                                    {
+                                        ado.TT_THAU = medicine.TT_THAU;
+                                    }
+                                    
                                     ado.TDL_BID_NUMBER = medicine.TDL_BID_NUMBER;
                                     ado.TDL_BID_EXTRA_CODE = medicine.TDL_BID_EXTRA_CODE;
                                     ado.TDL_BID_GROUP_CODE = medicine.TDL_BID_GROUP_CODE;
@@ -1440,7 +1448,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     ado.TDL_BID_NUM_ORDER = material.TDL_BID_NUM_ORDER;
                                     ado.TDL_BID_PACKAGE_CODE = material.TDL_BID_PACKAGE_CODE;
                                     ado.TDL_BID_YEAR = material.TDL_BID_YEAR;
-                                    ado.TT_THAU = material.TT_THAU;
+                                    if (mateType.TT_THAU != null)
+                                    {
+                                        ado.TT_THAU = mateType.TT_THAU;
+                                    }
+                                    else
+                                    {
+                                        ado.TT_THAU = material.TT_THAU;
+                                    }
+                                    
                                     ado.MEDICAL_CONTRACT_ID = material.MEDICAL_CONTRACT_ID;
                                     ado.CONTRACT_PRICE = material.CONTRACT_PRICE;
                                     ado.packingTypeName = material.BID_MATERIAL_TYPE_CODE;
@@ -1974,7 +1990,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
-                if (this.gridViewServicePaty.IsEditing)
+                if (this.gridViewServicePaty.IsEditing) 
                     this.gridViewServicePaty.CloseEditor();
 
                 if (this.gridViewServicePaty.FocusedRowModified)
@@ -2382,19 +2398,19 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.BidId = this.currentBid.ID;
                     }
 
-                    if (true)
+                    List<string> lstRs = new List<string>();
+                    lstRs.Add(this.currrentServiceAdo.TDL_BID_NUMBER);
+                    lstRs.Add(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE);
+                    lstRs.Add(this.currrentServiceAdo.TDL_BID_GROUP_CODE);
+                    lstRs.Add(this.currrentServiceAdo.TDL_BID_YEAR);
+                    lstRs.Add(this.currrentServiceAdo.BidId.HasValue ? listBids.FirstOrDefault(o => o.ID == this.currrentServiceAdo.BidId).BID_APTHAU_CODE : "");
+                    var medicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(p => p.ID == this.currrentServiceAdo.MEDI_MATE_ID);
+                    if (medicineType != null && medicineType.TT_THAU != null)
                     {
-
+                        this.currrentServiceAdo.TT_THAU = medicineType.TT_THAU;
                     }
                     else
                     {
-                        List<string> lstRs = new List<string>();
-                        lstRs.Add(this.currrentServiceAdo.TDL_BID_NUMBER);
-                        lstRs.Add(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE);
-                        lstRs.Add(this.currrentServiceAdo.TDL_BID_GROUP_CODE);
-                        lstRs.Add(this.currrentServiceAdo.TDL_BID_YEAR);
-                        lstRs.Add(this.currrentServiceAdo.BidId.HasValue ? listBids.FirstOrDefault(o => o.ID == this.currrentServiceAdo.BidId).BID_APTHAU_CODE : "");
-
                         this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Join(";", lstRs.Where(o => !string.IsNullOrEmpty(o)).ToList());
                     }
                     
@@ -2567,13 +2583,16 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMaterial.TDL_BID_NUMBER = this.currrentServiceAdo.TDL_BID_NUMBER;
                     }
 
-                    if (true)
-                    {
+                    var matedialType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(p => p.ID == this.currrentServiceAdo.MEDI_MATE_ID);
 
+                    if (matedialType != null && matedialType.TT_THAU != null)
+                    {
+                        this.currrentServiceAdo.TT_THAU = matedialType.TT_THAU;
                     }
                     else
                     {
                         this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0}{1}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0}{1}{2}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : string.Format("{0}{1}{2}{3}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_GROUP_CODE) ? this.currrentServiceAdo.TDL_BID_GROUP_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null);
+
                     }
 
                     this.currrentServiceAdo.BidId = materialProcessor.GetBid(this.ucMaterialTypeTree);

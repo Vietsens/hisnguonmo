@@ -2482,7 +2482,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 CommonParam param = new CommonParam();
-                this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_HOLIDAY_POLICIES>();
+                this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
+                var vHisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_HOLIDAY_POLICIES>();
 
                 if (hisPolicies1 == null || hisPolicies1.Count == 0)
                     return true;
@@ -2534,11 +2535,11 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 // Xử lý cảnh báo cho trường hợp không phải cấp cứu
                 if (this.hisTreatment != null && this.hisTreatment.IS_EMERGENCY != 1)
                 {
-                    var policiesIsWarning = this.hisPolicies1.Where(p => p.IS_WARNING_DEPOSIT_SERVICE != 1).ToList();
+                    var policiesIsWarning = vHisPolicies1.Where(p => p.IS_WARNING_DEPOSIT_SERVICE != 1 && p.PATIENT_TYPE_CODE == "OT").ToList();
 
                     if (policiesIsWarning.Count > 0 && policiesIsWarning != null)
                     {
-                        bool canContinue = ValidateAndShowWarning(policiesIsWarning, checkedServices);
+                        bool canContinue = ValidateAndShowWarning(null, policiesIsWarning, checkedServices);
                         if (!canContinue)
                             return false;
                     }
@@ -2547,7 +2548,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 // Xử lý cảnh báo cho policies hôm nay
                 if (todayPolicies.Count > 0)
                 {
-                    bool canContinue = ValidateAndShowWarning(todayPolicies, checkedServices);
+                    bool canContinue = ValidateAndShowWarning(todayPolicies, null, checkedServices);
                     if (!canContinue)
                         return false;
                 }
@@ -2562,13 +2563,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             }
         }
 
-        private bool ValidateAndShowWarning(List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> policies, List<SereServADO> checkedServices)
+        private bool ValidateAndShowWarning(List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> policies, List<MOS.EFMODEL.DataModels.V_HIS_HOLIDAY_POLICIES> vPolicies, List<SereServADO> checkedServices)
         {
-            var allowedPatientTypeIds = policies
-                .Where(p => p.PATIENT_TYPE_ID != null)
-                .Select(p => (long)p.PATIENT_TYPE_ID)
-                .Distinct()
-                .ToList();
+            var allowedPatientTypeIds = vPolicies != null ? vPolicies.Where(p => p.PATIENT_TYPE_ID != null).Select(p => (long)p.PATIENT_TYPE_ID).Distinct().ToList()
+                        : policies.Where(p => p.PATIENT_TYPE_ID != null).Select(p => (long)p.PATIENT_TYPE_ID).Distinct().ToList();
 
             var notAllowed = checkedServices
                 .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
