@@ -46,16 +46,25 @@ namespace HIS.UC.UCOtherServiceReqInfo
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            DevExpress.XtraSpellChecker.OptionsSpelling optionsSpelling1 = new DevExpress.XtraSpellChecker.OptionsSpelling();
+            DevExpress.XtraSpellChecker.OptionsSpelling optionsSpelling2 = new DevExpress.XtraSpellChecker.OptionsSpelling();
+            DevExpress.XtraSpellChecker.OptionsSpelling optionsSpelling3 = new DevExpress.XtraSpellChecker.OptionsSpelling();
+            DevExpress.XtraSpellChecker.OptionsSpelling optionsSpelling4 = new DevExpress.XtraSpellChecker.OptionsSpelling();
+            DevExpress.XtraSpellChecker.OptionsSpelling optionsSpelling5 = new DevExpress.XtraSpellChecker.OptionsSpelling();
+            DevExpress.XtraSpellChecker.OptionsSpelling optionsSpelling6 = new DevExpress.XtraSpellChecker.OptionsSpelling();
+            DevExpress.XtraSpellChecker.OptionsSpelling optionsSpelling7 = new DevExpress.XtraSpellChecker.OptionsSpelling();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.XtraSpellChecker.OptionsSpelling optionsSpelling8 = new DevExpress.XtraSpellChecker.OptionsSpelling();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SuperToolTip superToolTip1 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem1 = new DevExpress.Utils.ToolTipItem();
+            DevExpress.XtraSpellChecker.OptionsSpelling optionsSpelling9 = new DevExpress.XtraSpellChecker.OptionsSpelling();
             DevExpress.Utils.SuperToolTip superToolTip2 = new DevExpress.Utils.SuperToolTip();
             DevExpress.Utils.ToolTipItem toolTipItem2 = new DevExpress.Utils.ToolTipItem();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCOtherServiceReqInfo));
@@ -143,6 +152,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.dxValidationUCOtherReqInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.chkChamSocDa = new DevExpress.XtraEditors.CheckEdit();
+            this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.spellChecker1 = new DevExpress.XtraSpellChecker.SpellChecker(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.lcUCOtherServiceReqInfo)).BeginInit();
             this.lcUCOtherServiceReqInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtNguonKhachCT.Properties)).BeginInit();
@@ -223,10 +235,13 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChamSocDa.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             this.SuspendLayout();
             // 
             // lcUCOtherServiceReqInfo
             // 
+            this.lcUCOtherServiceReqInfo.Controls.Add(this.chkChamSocDa);
             this.lcUCOtherServiceReqInfo.Controls.Add(this.txtNguonKhachCT);
             this.lcUCOtherServiceReqInfo.Controls.Add(this.cboNguonKhach);
             this.lcUCOtherServiceReqInfo.Controls.Add(this.txtNguonKhach);
@@ -273,7 +288,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.txtNguonKhachCT.Name = "txtNguonKhachCT";
             this.txtNguonKhachCT.Properties.NullValuePrompt = "Nguồn khách chi tiết";
             this.txtNguonKhachCT.Properties.NullValuePromptShowForEmptyValue = true;
+            this.spellChecker1.SetShowSpellCheckMenu(this.txtNguonKhachCT, true);
             this.txtNguonKhachCT.Size = new System.Drawing.Size(277, 20);
+            this.spellChecker1.SetSpellCheckerOptions(this.txtNguonKhachCT, optionsSpelling1);
             this.txtNguonKhachCT.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtNguonKhachCT.TabIndex = 55;
             // 
@@ -304,7 +321,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             this.txtNguonKhach.Location = new System.Drawing.Point(88, 238);
             this.txtNguonKhach.Name = "txtNguonKhach";
+            this.spellChecker1.SetShowSpellCheckMenu(this.txtNguonKhach, true);
             this.txtNguonKhach.Size = new System.Drawing.Size(72, 20);
+            this.spellChecker1.SetSpellCheckerOptions(this.txtNguonKhach, optionsSpelling2);
             this.txtNguonKhach.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtNguonKhach.TabIndex = 53;
             // 
@@ -370,7 +389,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             this.txtHosReason.Location = new System.Drawing.Point(88, 45);
             this.txtHosReason.Name = "txtHosReason";
+            this.spellChecker1.SetShowSpellCheckMenu(this.txtHosReason, true);
             this.txtHosReason.Size = new System.Drawing.Size(189, 20);
+            this.spellChecker1.SetSpellCheckerOptions(this.txtHosReason, optionsSpelling3);
             this.txtHosReason.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtHosReason.TabIndex = 50;
             // 
@@ -411,7 +432,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             this.txtNote.Location = new System.Drawing.Point(88, 262);
             this.txtNote.Name = "txtNote";
+            this.spellChecker1.SetShowSpellCheckMenu(this.txtNote, true);
             this.txtNote.Size = new System.Drawing.Size(478, 21);
+            this.spellChecker1.SetSpellCheckerOptions(this.txtNote, optionsSpelling4);
             this.txtNote.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtNote.TabIndex = 45;
             // 
@@ -429,7 +452,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             this.txtGuaranteeReason.Location = new System.Drawing.Point(356, 214);
             this.txtGuaranteeReason.Name = "txtGuaranteeReason";
+            this.spellChecker1.SetShowSpellCheckMenu(this.txtGuaranteeReason, true);
             this.txtGuaranteeReason.Size = new System.Drawing.Size(210, 20);
+            this.spellChecker1.SetSpellCheckerOptions(this.txtGuaranteeReason, optionsSpelling5);
             this.txtGuaranteeReason.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtGuaranteeReason.TabIndex = 43;
             this.txtGuaranteeReason.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtGuaranteeReason_PreviewKeyDown);
@@ -464,7 +489,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             this.txtGuaranteeLoginname.Location = new System.Drawing.Point(88, 214);
             this.txtGuaranteeLoginname.Name = "txtGuaranteeLoginname";
+            this.spellChecker1.SetShowSpellCheckMenu(this.txtGuaranteeLoginname, true);
             this.txtGuaranteeLoginname.Size = new System.Drawing.Size(77, 20);
+            this.spellChecker1.SetSpellCheckerOptions(this.txtGuaranteeLoginname, optionsSpelling6);
             this.txtGuaranteeLoginname.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtGuaranteeLoginname.TabIndex = 41;
             this.txtGuaranteeLoginname.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtGuaranteeLoginname_PreviewKeyDown);
@@ -496,7 +523,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             this.txtIncode.Location = new System.Drawing.Point(356, 69);
             this.txtIncode.Name = "txtIncode";
+            this.spellChecker1.SetShowSpellCheckMenu(this.txtIncode, true);
             this.txtIncode.Size = new System.Drawing.Size(210, 20);
+            this.spellChecker1.SetSpellCheckerOptions(this.txtIncode, optionsSpelling7);
             this.txtIncode.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtIncode.TabIndex = 5;
             this.txtIncode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtIncode_PreviewKeyDown);
@@ -530,7 +559,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.txtMaMS.Location = new System.Drawing.Point(512, 287);
             this.txtMaMS.Name = "txtMaMS";
             this.txtMaMS.Properties.ReadOnly = true;
+            this.spellChecker1.SetShowSpellCheckMenu(this.txtMaMS, true);
             this.txtMaMS.Size = new System.Drawing.Size(54, 20);
+            this.spellChecker1.SetSpellCheckerOptions(this.txtMaMS, optionsSpelling8);
             this.txtMaMS.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtMaMS.TabIndex = 17;
             // 
@@ -570,7 +601,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // 
             this.txtTreatmentOrder.Location = new System.Drawing.Point(472, 164);
             this.txtTreatmentOrder.Name = "txtTreatmentOrder";
+            this.spellChecker1.SetShowSpellCheckMenu(this.txtTreatmentOrder, true);
             this.txtTreatmentOrder.Size = new System.Drawing.Size(94, 20);
+            this.spellChecker1.SetSpellCheckerOptions(this.txtTreatmentOrder, optionsSpelling9);
             this.txtTreatmentOrder.StyleController = this.lcUCOtherServiceReqInfo;
             this.txtTreatmentOrder.TabIndex = 14;
             this.txtTreatmentOrder.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTreatmentOrder_KeyPress);
@@ -827,7 +860,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
             this.layoutControlItem9,
             this.layoutControlItem10,
             this.layoutControlItem11,
-            this.layoutControlItem12});
+            this.layoutControlItem12,
+            this.layoutControlItem13});
             this.lcgOtherRequest.Location = new System.Drawing.Point(0, 0);
             this.lcgOtherRequest.Name = "lcgOtherRequest";
             this.lcgOtherRequest.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1231,9 +1265,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 96);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(245, 96);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(492, 23);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(247, 23);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem9
@@ -1285,6 +1319,33 @@ namespace HIS.UC.UCOtherServiceReqInfo
             // timerInitForm
             // 
             this.timerInitForm.Interval = 500;
+            // 
+            // chkChamSocDa
+            // 
+            this.chkChamSocDa.Location = new System.Drawing.Point(165, 117);
+            this.chkChamSocDa.Name = "chkChamSocDa";
+            this.chkChamSocDa.Properties.Caption = "";
+            this.chkChamSocDa.Size = new System.Drawing.Size(79, 19);
+            this.chkChamSocDa.StyleController = this.lcUCOtherServiceReqInfo;
+            this.chkChamSocDa.TabIndex = 56;
+            // 
+            // layoutControlItem13
+            // 
+            this.layoutControlItem13.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem13.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem13.Control = this.chkChamSocDa;
+            this.layoutControlItem13.Location = new System.Drawing.Point(0, 96);
+            this.layoutControlItem13.Name = "layoutControlItem13";
+            this.layoutControlItem13.Size = new System.Drawing.Size(245, 23);
+            this.layoutControlItem13.Text = "Hướng dẫn chăm sóc da:";
+            this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem13.TextSize = new System.Drawing.Size(157, 13);
+            this.layoutControlItem13.TextToControlDistance = 5;
+            // 
+            // spellChecker1
+            // 
+            this.spellChecker1.Culture = new System.Globalization.CultureInfo("en-US");
+            this.spellChecker1.ParentContainer = null;
             // 
             // UCOtherServiceReqInfo
             // 
@@ -1374,6 +1435,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationUCOtherReqInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProviderControl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkChamSocDa.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1462,5 +1525,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
         internal DevExpress.XtraEditors.TextEdit txtNguonKhachCT;
         internal DevExpress.XtraEditors.GridLookUpEdit cboNguonKhach;
         internal DevExpress.XtraEditors.TextEdit txtNguonKhach;
+        private DevExpress.XtraEditors.CheckEdit chkChamSocDa;
+        private DevExpress.XtraSpellChecker.SpellChecker spellChecker1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
     }
 }
