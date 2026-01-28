@@ -6470,6 +6470,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             this.txtTTThau.Size = new System.Drawing.Size(382, 20);
             this.txtTTThau.StyleController = this.layoutControl6;
             this.txtTTThau.TabIndex = 90;
+            this.txtTTThau.ToolTip = "Thông tin thầu phục vụ cho XML";
             // 
             // cboNCC
             // 
