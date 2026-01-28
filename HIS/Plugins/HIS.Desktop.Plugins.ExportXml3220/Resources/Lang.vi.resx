@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmSettingConfigSync.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmSettingConfigSync.bbtnSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmSettingConfigSync.btnSave.Text" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmSettingConfigSync.chkCollinearXML.Properties.Caption" xml:space="preserve">
+    <value>XML thông tuyến</value>
+  </data>
+  <data name="frmSettingConfigSync.chkDontSend.Properties.Caption" xml:space="preserve">
+    <value>Không gửi</value>
+  </data>
+  <data name="frmSettingConfigSync.chkDontSend.ToolTip" xml:space="preserve">
+    <value>Không thực hiện gọi api gửi XML trực tiếp lên cổng BHYT</value>
+  </data>
+  <data name="frmSettingConfigSync.chkFeeLockTime.Properties.Caption" xml:space="preserve">
+    <value>Khóa viện phí</value>
+  </data>
+  <data name="frmSettingConfigSync.chkOutTime.Properties.Caption" xml:space="preserve">
+    <value>Kết thúc điều trị</value>
+  </data>
+  <data name="frmSettingConfigSync.chkXML3176.Properties.Caption" xml:space="preserve">
+    <value>XML 3176</value>
+  </data>
+  <data name="frmSettingConfigSync.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSettingConfigSync.layoutControlItem1.Text" xml:space="preserve">
+    <value>Loại thời gian:</value>
+  </data>
+  <data name="frmSettingConfigSync.layoutControlItem3.Text" xml:space="preserve">
+    <value>Đối tượng TT:</value>
+  </data>
+  <data name="frmSettingConfigSync.layoutControlItem4.Text" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmSettingConfigSync.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đường dẫn đến thư mục lưu file XML gửi cổng BHYT</value>
+  </data>
+  <data name="frmSettingConfigSync.layoutControlItem5.Text" xml:space="preserve">
+    <value>Thư mục:</value>
+  </data>
+  <data name="frmSettingConfigSync.lciBranch.Text" xml:space="preserve">
+    <value>Chi nhánh:</value>
+  </data>
+  <data name="frmSettingConfigSync.lciLoaiHS.Text" xml:space="preserve">
+    <value>Loại hồ sơ:</value>
+  </data>
+  <data name="frmSettingConfigSync.lciPatientType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Đối tượng bệnh nhân</value>
+  </data>
+  <data name="frmSettingConfigSync.lciPatientType.Text" xml:space="preserve">
+    <value>Đối tượng BN:</value>
+  </data>
+  <data name="frmSettingConfigSync.lciPeriod.Text" xml:space="preserve">
+    <value>Chu kỳ (phút):</value>
+  </data>
+  <data name="frmSettingConfigSync.lciTreatmentType.Text" xml:space="preserve">
+    <value>Diện điều trị:</value>
+  </data>
+  <data name="frmSettingConfigSync.Text" xml:space="preserve">
+    <value>Thiết lập gửi hồ sơ tự động</value>
+  </data>
+  <data name="frmSettingSavePath.bbtnSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="frmSettingSavePath.btnPathXml.Text" xml:space="preserve">
+    <value>simpleButton1</value>
+  </data>
+  <data name="frmSettingSavePath.btnPathXmlGDYK.Text" xml:space="preserve">
+    <value>simpleButton2</value>
+  </data>
+  <data name="frmSettingSavePath.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmSettingSavePath.lciPathCollinearXml.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thư mục lưu file từ XML 1 đến XML 11</value>
+  </data>
+  <data name="frmSettingSavePath.lciPathCollinearXml.Text" xml:space="preserve">
+    <value>Thư mục lưu XML thông tuyến (không bao gồm giám định y khoa):</value>
+  </data>
+  <data name="frmSettingSavePath.lciPathSaveXml.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thư mục lưu file từ XML 1 đến XML 11</value>
+  </data>
+  <data name="frmSettingSavePath.lciPathSaveXml.Text" xml:space="preserve">
+    <value>Thư mục lưu XML (không bao gồm giám định y khoa):</value>
+  </data>
+  <data name="frmSettingSavePath.lciPathSaveXml12.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thư mục lưu giám định y khoa (XML 12)</value>
+  </data>
+  <data name="frmSettingSavePath.lciPathSaveXml12.Text" xml:space="preserve">
+    <value>Thư mục lưu gdyk:</value>
+  </data>
+  <data name="frmSettingSavePath.Text" xml:space="preserve">
+    <value>Thiết lập thư mục lưu</value>
+  </data>
+  <data name="UCExportXml3220.btnAutoSync.Text" xml:space="preserve">
+    <value>Gửi tự động</value>
+  </data>
+  <data name="UCExportXml3220.btnExportXml.Text" xml:space="preserve">
+    <value>Xuất xml (Ctrl E)</value>
+  </data>
+  <data name="UCExportXml3220.btnFind.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="UCExportXml3220.chkSignFileCertUtil.Properties.Caption" xml:space="preserve">
+    <value>Ký số</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Address.Caption" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_BabyName.Caption" xml:space="preserve">
+    <value>Họ tên</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_BirthCertBook.Caption" xml:space="preserve">
+    <value>Sổ chứng sinh</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_BirthCertNum.Caption" xml:space="preserve">
+    <value>Số chứng sinh</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_BornResult.Caption" xml:space="preserve">
+    <value>Tình trạng</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_BornTime.Caption" xml:space="preserve">
+    <value>Thời gian sinh</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_BornType.Caption" xml:space="preserve">
+    <value>Cách sinh</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_CreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_Ethnic.Caption" xml:space="preserve">
+    <value>Dân tộc</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_FatherName.Caption" xml:space="preserve">
+    <value>Cha</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_Gender.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_Midwife.Caption" xml:space="preserve">
+    <value>Người đỡ đầu</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Baby_WeekCount.Caption" xml:space="preserve">
+    <value>Số tuần</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Dob.Caption" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_EndDepartment.Caption" xml:space="preserve">
+    <value>Khoa kết thúc</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_ExportXml.Caption" xml:space="preserve">
+    <value>Xuất Xml3220</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_GenderName.Caption" xml:space="preserve">
+    <value>Giới tính</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_HeinCardNumber.Caption" xml:space="preserve">
+    <value>Số thẻ Bhyt</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_InTime.Caption" xml:space="preserve">
+    <value>Thời gian vào</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_OutTime.Caption" xml:space="preserve">
+    <value>Thời gian ra</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_PatientCode.Caption" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_PatientName.Caption" xml:space="preserve">
+    <value>Tên bệnh nhân</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Status.Caption" xml:space="preserve">
+    <value>Trạng thái</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_StatusIcon.Caption" xml:space="preserve">
+    <value>Trạng Thái Gửi</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_Stt.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="UCExportXml3220.gridCol_TreatmentCode.Caption" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+  <data name="UCExportXml3220.groupBoxBabyInfo.Text" xml:space="preserve">
+    <value>Thông tin giấy chứng sinh</value>
+  </data>
+  <data name="UCExportXml3220.groupBoxTreatmentInfo.Text" xml:space="preserve">
+    <value>Thông tin hồ sơ khám chữa bệnh</value>
+  </data>
+  <data name="UCExportXml3220.groupBoxTreatmentTypeExt.Text" xml:space="preserve">
+    <value>Thông tin bổ sung (Nghỉ ốm/Nghỉ dưỡng thai)</value>
+  </data>
+  <data name="UCExportXml3220.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UCExportXml3220.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="UCExportXml3220.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="UCExportXml3220.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="UCExportXml3220.lciAddress.Text" xml:space="preserve">
+    <value>Địa chỉ:</value>
+  </data>
+  <data name="UCExportXml3220.lciAdvise.Text" xml:space="preserve">
+    <value>Ghi chú:</value>
+  </data>
+  <data name="UCExportXml3220.lciBranch.Text" xml:space="preserve">
+    <value>Tổ chức</value>
+  </data>
+  <data name="UCExportXml3220.lciCarrer.Text" xml:space="preserve">
+    <value>Nghề nghiệp:</value>
+  </data>
+  <data name="UCExportXml3220.lciClinicalNote.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Quá trình bệnh lý</value>
+  </data>
+  <data name="UCExportXml3220.lciClinicalNote.Text" xml:space="preserve">
+    <value>QT bệnh lý:</value>
+  </data>
+  <data name="UCExportXml3220.lciDob.Text" xml:space="preserve">
+    <value>Ngày sinh:</value>
+  </data>
+  <data name="UCExportXml3220.lciEndDeprtment.Text" xml:space="preserve">
+    <value>Khoa kết thúc:</value>
+  </data>
+  <data name="UCExportXml3220.lciEthnicName.Text" xml:space="preserve">
+    <value>Dân tộc:</value>
+  </data>
+  <data name="UCExportXml3220.lciExtraCode.Text" xml:space="preserve">
+    <value>Mã:</value>
+  </data>
+  <data name="UCExportXml3220.lciFindOutTime.Text" xml:space="preserve">
+    <value>Thời gian ra:</value>
+  </data>
+  <data name="UCExportXml3220.lciFindTreatmentType.Text" xml:space="preserve">
+    <value>Diện điều trị:</value>
+  </data>
+  <data name="UCExportXml3220.lciGenderName.Text" xml:space="preserve">
+    <value>Giới tính:</value>
+  </data>
+  <data name="UCExportXml3220.lciHeinCardNumber.Text" xml:space="preserve">
+    <value>Số thẻ Bhyt:</value>
+  </data>
+  <data name="UCExportXml3220.lciIcdName.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="UCExportXml3220.lciIcdName.Text" xml:space="preserve">
+    <value>CĐ chính:</value>
+  </data>
+  <data name="UCExportXml3220.lciIcdText.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="UCExportXml3220.lciIcdText.Text" xml:space="preserve">
+    <value>CĐ phụ:</value>
+  </data>
+  <data name="UCExportXml3220.lciInTime.Text" xml:space="preserve">
+    <value>Thời gian vào:</value>
+  </data>
+  <data name="UCExportXml3220.lciOutTime.Text" xml:space="preserve">
+    <value>Thời gian ra:</value>
+  </data>
+  <data name="UCExportXml3220.lciPathSave.Text" xml:space="preserve">
+    <value>Thư mục lưu:</value>
+  </data>
+  <data name="UCExportXml3220.lciPatientCode.Text" xml:space="preserve">
+    <value>Mã bệnh nhân:</value>
+  </data>
+  <data name="UCExportXml3220.lciPatientName.Text" xml:space="preserve">
+    <value>Họ tên:</value>
+  </data>
+  <data name="UCExportXml3220.lciRelativeName.Text" xml:space="preserve">
+    <value>Người thân:</value>
+  </data>
+  <data name="UCExportXml3220.lciSickRelativeName.Text" xml:space="preserve">
+    <value>Người thân:</value>
+  </data>
+  <data name="UCExportXml3220.lciSickTime.Text" xml:space="preserve">
+    <value>Ngày nghỉ:</value>
+  </data>
+  <data name="UCExportXml3220.lciSickUser.Text" xml:space="preserve">
+    <value>Người cấp:</value>
+  </data>
+  <data name="UCExportXml3220.lciSickWorkPlace.Text" xml:space="preserve">
+    <value>Đơn vị:</value>
+  </data>
+  <data name="UCExportXml3220.lciStatus.Text" xml:space="preserve">
+    <value>Trạng thái:</value>
+  </data>
+  <data name="UCExportXml3220.lciSubclinicalResult.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tóm tắt kết quả</value>
+  </data>
+  <data name="UCExportXml3220.lciSubclinicalResult.Text" xml:space="preserve">
+    <value>TT kết quả:</value>
+  </data>
+  <data name="UCExportXml3220.lciTreatmentCode.Text" xml:space="preserve">
+    <value>Mã điều trị:</value>
+  </data>
+  <data name="UCExportXml3220.lciTreatmentEndType.Text" xml:space="preserve">
+    <value>Loại ra viện:</value>
+  </data>
+  <data name="UCExportXml3220.lciTreatmentEndTypeExt.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thông tin bổ sung</value>
+  </data>
+  <data name="UCExportXml3220.lciTreatmentEndTypeExt.Text" xml:space="preserve">
+    <value>TT bổ sung:</value>
+  </data>
+  <data name="UCExportXml3220.lciTreatmentMethod.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Phương pháp điều trị</value>
+  </data>
+  <data name="UCExportXml3220.lciTreatmentMethod.Text" xml:space="preserve">
+    <value>PP điều trị:</value>
+  </data>
+  <data name="UCExportXml3220.lciTreatmentResult.Text" xml:space="preserve">
+    <value>Kết quả:</value>
+  </data>
+  <data name="UCExportXml3220.lciTreatmentType.Text" xml:space="preserve">
+    <value>Diện điều trị:</value>
+  </data>
+  <data name="UCExportXml3220.lciWorkPlace.Text" xml:space="preserve">
+    <value>Nơi làm việc:</value>
+  </data>
+  <data name="UCExportXml3220.lciXmlType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Loại hồ sơ chứng từ</value>
+  </data>
+  <data name="UCExportXml3220.lciXmlType.Text" xml:space="preserve">
+    <value>Loại:</value>
+  </data>
+  <data name="UCExportXml3220.simpleButton2.Text" xml:space="preserve">
+    <value>Gửi</value>
+  </data>
+  <data name="UCExportXml3220.txtKeyword.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Từ khóa tìm kiếm</value>
+  </data>
+  <data name="UCExportXml3220.txtPatientCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã bệnh nhân</value>
+  </data>
+  <data name="UCExportXml3220.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Mã điều trị</value>
+  </data>
+</root>
