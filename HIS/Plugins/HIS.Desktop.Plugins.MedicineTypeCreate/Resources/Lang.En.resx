@@ -2175,6 +2175,9 @@
   <data name="frmMedicineTypeCreate.txtSttTT20.ToolTip" xml:space="preserve">
     <value>Ordinal number according to Circular 20/2022/TT-BHYT</value>
   </data>
+  <data name="frmMedicineTypeCreate.txtTTThau.ToolTip" xml:space="preserve">
+    <value>Bidding information serves XML</value>
+  </data>
   <data name="frmMedicineTypeCreate.txtVolume.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Infusion volume</value>
   </data>
