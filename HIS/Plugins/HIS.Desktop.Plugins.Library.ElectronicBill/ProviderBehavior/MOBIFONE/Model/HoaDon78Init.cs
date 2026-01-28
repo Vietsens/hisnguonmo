@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE.M
         public List<HoaDon78Details> details { get; set; }
         public List<HoaDon78Phi> hoadon68_phi { get; set; }
         public List<HoaDon78Khac> hoadon68_khac { get; set; }
+        public string sbmat { get; set; }
     }
 
     public class HoaDon78Details

@@ -286,6 +286,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                 hd78data.email = inv.BuyerEmail;
                 hd78data.ten = inv.BuyerOrganization;
                 hd78data.dchi = inv.BuyerAddress;
+                hd78data.sbmat = ElectronicBillDataInput != null && ElectronicBillDataInput.Transaction != null ?  ElectronicBillDataInput.Transaction.INVOICE_LOOKUP_CODE : ""; 
                 hd78data.details = new List<HoaDon78Details>();
                 HoaDon78Details dt = new HoaDon78Details();
                 dt.data = new List<HoaDon78DetailsData>();
