@@ -1329,6 +1329,9 @@
   <data name="frmMedicineTypeCreate.layoutControlItem328.Text" xml:space="preserve">
     <value>Business:</value>
   </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bidding information serves XML</value>
+  </data>
   <data name="frmMedicineTypeCreate.layoutControlItem33.Text" xml:space="preserve">
     <value>Chemistry:</value>
   </data>
