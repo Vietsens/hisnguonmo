@@ -181,65 +181,105 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
         {
             try
             {
-                // Lấy dữ liệu vị trí từ Backend và sắp xếp theo NUM_ORDER, Mã, Tên
                 lstLocationStore = BackendDataWorker.Get<HIS_LOCATION_STORE>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .OrderBy(o => o.LOCATION_STORE_CODE)
                     .ThenBy(o => o.LOCATION_STORE_NAME)
                     .ToList();
 
-                // Cấu hình TreeListLookUpEdit
                 cboLoacationStore.Properties.DataSource = lstLocationStore;
                 cboLoacationStore.Properties.DisplayMember = "LOCATION_STORE_NAME";
                 cboLoacationStore.Properties.ValueMember = "ID";
 
-                // Cấu hình TreeList để hiển thị dạng cây phân cấp
-                cboLoacationStore.Properties.TreeList.KeyFieldName = "ID";
-                cboLoacationStore.Properties.TreeList.ParentFieldName = "PARENT_ID";
+                var tree = cboLoacationStore.Properties.TreeList;
+                tree.KeyFieldName = "ID";
+                tree.ParentFieldName = "PARENT_ID";
 
-                // Xóa các cột cũ nếu có
-                cboLoacationStore.Properties.TreeList.Columns.Clear();
+                tree.Columns.Clear();
 
-                // Thêm cột Mã vị trí
-                TreeListColumn colCode = cboLoacationStore.Properties.TreeList.Columns.Add();
+                TreeListColumn colCode = tree.Columns.Add();
                 colCode.FieldName = "LOCATION_STORE_CODE";
                 colCode.Caption = "Mã";
                 colCode.Visible = true;
                 colCode.VisibleIndex = 0;
-                colCode.Width = 100;
 
-                // Thêm cột Tên vị trí
-                TreeListColumn colName = cboLoacationStore.Properties.TreeList.Columns.Add();
+                TreeListColumn colName = tree.Columns.Add();
                 colName.FieldName = "LOCATION_STORE_NAME";
                 colName.Caption = "Tên vị trí";
                 colName.Visible = true;
                 colName.VisibleIndex = 1;
-                colName.Width = 250;
 
-                // Cấu hình các thuộc tính
-                cboLoacationStore.Properties.PopupFormSize = new Size(400, 300);
+                // UI
                 cboLoacationStore.Properties.ImmediatePopup = true;
-                cboLoacationStore.Properties.TreeList.OptionsView.ShowCheckBoxes = false;
-                cboLoacationStore.Properties.TreeList.OptionsSelection.EnableAppearanceFocusedCell = false;
-                cboLoacationStore.Properties.TreeList.OptionsView.ShowIndicator = false;
+                cboLoacationStore.Properties.PopupFormMinSize = new Size(420, 300);
+                cboLoacationStore.Properties.PopupFormSize = new Size(520, 320);
 
-                // Sắp xếp theo Mã và Tên trong TreeList
-                cboLoacationStore.Properties.TreeList.OptionsView.AutoWidth = false;
-                cboLoacationStore.Properties.TreeList.OptionsBehavior.EnableFiltering = true;
+                tree.OptionsView.ShowCheckBoxes = false;
+                tree.OptionsSelection.EnableAppearanceFocusedCell = false;
+                tree.OptionsView.ShowIndicator = false;
 
-                // Expand tất cả các node
-                cboLoacationStore.Properties.TreeList.ExpandAll();
+                // QUAN TRỌNG: tắt AutoWidth để mình control tỉ lệ cột
+                tree.OptionsView.AutoWidth = false;
 
-                // Thêm button xóa
+                tree.OptionsBehavior.EnableFiltering = true;
+                tree.ExpandAll();
+
+                // Button
                 cboLoacationStore.Properties.Buttons.Clear();
-                cboLoacationStore.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
-                cboLoacationStore.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));
+                cboLoacationStore.Properties.Buttons.Add(
+                    new DevExpress.XtraEditors.Controls.EditorButton(
+                        DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
+                cboLoacationStore.Properties.Buttons.Add(
+                    new DevExpress.XtraEditors.Controls.EditorButton(
+                        DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));
+
+                // BestFit khi popup mở
+                cboLoacationStore.Popup -= cboLoacationStore_Popup_BestFit;
+                cboLoacationStore.Popup += cboLoacationStore_Popup_BestFit;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void cboLoacationStore_Popup_BestFit(object sender, EventArgs e)
+        {
+            var edit = sender as DevExpress.XtraEditors.TreeListLookUpEdit;
+            var tree = edit?.Properties?.TreeList;
+            if (tree == null) return;
+
+            // BestFit theo nội dung
+            tree.BestFitColumns();
+
+            // Ép cột Mã nhỏ hơn cột Tên (nhỏ "một tí")
+            var colCode = tree.Columns.ColumnByFieldName("LOCATION_STORE_CODE");
+            var colName = tree.Columns.ColumnByFieldName("LOCATION_STORE_NAME");
+
+            if (colCode != null)
+            {
+                // giới hạn max cho cột Mã để nó luôn gọn
+                colCode.Width = Math.Min(colCode.Width, 150);
+            }
+
+            if (colName != null)
+            {
+                // đảm bảo cột Tên rộng hơn (tăng nhẹ)
+                colName.Width = Math.Max(colName.Width, 300);
+            }
+
+            // Popup tự nở theo tổng độ rộng cột
+            int totalWidth = tree.Columns.Cast<TreeListColumn>()
+                .Where(c => c.Visible)
+                .Sum(c => c.Width);
+
+            totalWidth += 70; // padding + scrollbar + border
+
+            int w = Math.Max(edit.Properties.PopupFormMinSize.Width, Math.Min(900, totalWidth));
+            edit.Properties.PopupFormSize = new Size(w, edit.Properties.PopupFormSize.Height);
+        }
+
+
 
         private void InitControlState()
         {
