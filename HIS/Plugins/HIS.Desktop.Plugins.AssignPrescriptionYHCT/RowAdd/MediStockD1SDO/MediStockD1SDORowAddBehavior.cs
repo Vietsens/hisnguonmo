@@ -78,6 +78,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Add.MediStockD1SDO
             this.IsStent = frmAssignPrescription.currentMedicineTypeADOForEdit.IsStent;
             this.IsAllowOdd = frmAssignPrescription.currentMedicineTypeADOForEdit.IsAllowOdd;
             this.IsOutKtcFee = ((frmAssignPrescription.currentMedicineTypeADOForEdit.IS_OUT_PARENT_FEE ?? -1) == 1);
+            this.IS_NOT_EXPEND = frmAssignPrescription.currentMedicineTypeADOForEdit.IS_NOT_EXPEND;
             //Chi dinh tu man hinh phau thuat, thu thuat
             var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == this.MediStockId);
             if (stock != null && stock.IS_EXPEND == 1)
