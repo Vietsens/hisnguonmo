@@ -3154,6 +3154,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             try
             {
                 var medicineTypeADOForEdit = this.gridViewMediMaty.GetFocusedRow();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeADOForEdit), medicineTypeADOForEdit));
                 if (medicineTypeADOForEdit != null)
                 {
                     popupControlContainerMediMaty.HidePopup();
@@ -3308,11 +3309,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
-                        //#16421 để key cấu hình giá trị 1: Không cho phép check hao phí với thuốc/vật tư không đính kèm
-                        if (data.IsDisableExpend || (data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent))
-                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
-                        else
+                        // Vật tư không cho phép hao phí: luôn dùng repo disabled
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data.IS_NOT_EXPEND), data.IS_NOT_EXPEND));
+                        if ((data.IS_NOT_EXPEND ?? 0) == 1)
+
+                        {
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
+                        else
+                        {
+                            // Cấu hình cũ: không cho phép hao phí nếu không có dịch vụ cha (nếu bật cấu hình)
+                            if ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
+                                 || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
+                                && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent
+                                        && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0))
+                                    || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent))
+                            {
+                                e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                            }
+                        }
                     }
                     else if (e.Column.FieldName == "IsKHBHYT")
                     {
@@ -4168,10 +4187,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 CheckEdit chk = sender as CheckEdit;
                 var currentRowSereServADO = (MediMatyTypeADO)gridViewServiceProcess.GetFocusedRow();
-                if(currentRowSereServADO.IsDisableExpend)
+                if (currentRowSereServADO == null)
+                    return;
+
+                if ((currentRowSereServADO.IS_NOT_EXPEND ?? 0) == 1)
+                {
+                    chk.Checked = false;
+                    currentRowSereServADO.IsExpend = false;
+                    return;
+                }
+
+                // Kho hao phí: khóa checkbox ở trạng thái true nếu cấu hình như cũ
+                if (currentRowSereServADO.IsDisableExpend)
                 {
                     chk.Checked = true;
-                }    
+                }
             }
             catch (Exception ex)
             {
@@ -4179,7 +4209,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
-        
+
 
         private void repositoryItemCustomGridLookUpReasion_ButtonClick(object sender, ButtonPressedEventArgs e)
         {

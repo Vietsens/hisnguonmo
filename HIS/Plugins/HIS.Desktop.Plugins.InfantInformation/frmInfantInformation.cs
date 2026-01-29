@@ -398,12 +398,31 @@ namespace HIS.Desktop.Plugins.InfantInformation
             ValidationSingleControl(txtNgaycap, dxValidationProviderEditorInfo);
             ValidationSingleControl(txtAddress, dxValidationProviderEditorInfo);
 
-            ValidationSingleControl(dteFatherCCCDDate, dxValidationProviderEditorInfo);
-            ValidationSingleControl(dteFatherDob, dxValidationProviderEditorInfo);
-            ValidateCCCDNumber(txtFatherCCCD, dxValidationProviderEditorInfo);
-            ValidationSingleControl(txtFatherCCCDPlace, dxValidationProviderEditorInfo);
-            ValidationSingleControl(cboFatherDanToc, dxValidationProviderEditorInfo);
-            ValidationSingleControl(txtFather, dxValidationProviderEditorInfo);
+            //ValidationSingleControl(dteFatherCCCDDate, dxValidationProviderEditorInfo);
+            //ValidationSingleControl(dteFatherDob, dxValidationProviderEditorInfo);
+            //ValidateCCCDNumber(txtFatherCCCD, dxValidationProviderEditorInfo);
+            //ValidationSingleControl(txtFatherCCCDPlace, dxValidationProviderEditorInfo);
+            //ValidationSingleControl(cboFatherDanToc, dxValidationProviderEditorInfo);
+            //ValidationSingleControl(txtFather, dxValidationProviderEditorInfo);
+            var fatherRule = new Validate.FatherInfoValidationRule
+            {
+                TxtFatherName = txtFather,
+                DteFatherDob = dteFatherDob,
+                CboFatherEthnicity = cboFatherDanToc,
+                TxtFatherCccd = txtFatherCCCD,
+                DteFatherCccdDate = dteFatherCCCDDate,
+                TxtFatherCccdPlace = txtFatherCCCDPlace,
+                ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning
+            }
+            ;
+
+            dxValidationProviderEditorInfo.SetValidationRule(txtFather, fatherRule);
+            dxValidationProviderEditorInfo.SetValidationRule(dteFatherDob, fatherRule);
+            dxValidationProviderEditorInfo.SetValidationRule(cboFatherDanToc, fatherRule);
+            dxValidationProviderEditorInfo.SetValidationRule(txtFatherCCCD, fatherRule);
+            dxValidationProviderEditorInfo.SetValidationRule(dteFatherCCCDDate, fatherRule);
+            dxValidationProviderEditorInfo.SetValidationRule(txtFatherCCCDPlace, fatherRule);
+
 
             ValidateGridLookupWithTextEdit(cboProvinceName, txtProvinceCode, dxValidationProviderEditorInfo);
             //ValidateGridLookupWithTextEdit(cboDistrictName, txtDistrictCode, dxValidationProviderEditorInfo);
@@ -1008,11 +1027,11 @@ namespace HIS.Desktop.Plugins.InfantInformation
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }
-                    else if(e.Column.FieldName == "COL_CHK_CAP_LD")
+                    else if (e.Column.FieldName == "COL_CHK_CAP_LD")
                     {
                         e.Value = pData.IS_REISSUED == 1 ? false : true;
                     }
-                    else if(e.Column.FieldName == "COL_CHK_CAP_LAI")
+                    else if (e.Column.FieldName == "COL_CHK_CAP_LAI")
                     {
                         e.Value = pData.IS_REISSUED == 1 ? true : false;
                     }
@@ -1373,7 +1392,7 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 {
                     updateDTO.BirthCertNum = long.Parse(lblHisBirthCertNum.Text);
                 }
-                
+
                 //if (chkCapLai.Checked) 
                 //if(chkCapLanDau.Checked) updateDTO.IsReissued = IsReissuedChecked;
                 if (dxErrorProvider1.HasErrors) return;
@@ -4944,6 +4963,19 @@ namespace HIS.Desktop.Plugins.InfantInformation
             {
                 if (chkCapLai.Checked)
                     IsReissuedChecked = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboFatherDanToc_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            { 
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                    cboFatherDanToc.EditValue = null;
             }
             catch (Exception ex)
             {
