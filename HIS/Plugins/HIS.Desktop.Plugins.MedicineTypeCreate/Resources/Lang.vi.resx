@@ -1329,6 +1329,9 @@
   <data name="frmMedicineTypeCreate.layoutControlItem328.Text" xml:space="preserve">
     <value>Kinh doanh:</value>
   </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thông tin thầu phục vụ cho XML</value>
+  </data>
   <data name="frmMedicineTypeCreate.layoutControlItem33.Text" xml:space="preserve">
     <value>Thông tin thầu:</value>
   </data>

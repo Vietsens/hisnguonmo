@@ -59,7 +59,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.IS_CHEMICAL_SUBSTANCE = materialType.IS_CHEMICAL_SUBSTANCE;
                 this.IsStent = ((materialType.IS_STENT ?? 0) == GlobalVariables.CommonNumberTrue ? true : false);
                 this.IsAllowOdd = materialType.IS_ALLOW_ODD == 1 ? true : false;
-
+                this.IS_NOT_EXPEND = materialType.IS_NOT_EXPEND;
+                if ((this.IS_NOT_EXPEND ?? 0) == 1)
+                {
+                    this.IsExpend = false;
+                    this.IsDisableExpend = true;
+                }
             }
             catch (Exception ex)
             {
@@ -173,6 +178,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.IsAllowOdd = maty.IS_ALLOW_ODD == 1 ? true : false;
                     this.IsKHBHYT = false;
                     this.NUM_ORDER = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getNumRow();
+                    this.IS_NOT_EXPEND = maty.IS_NOT_EXPEND;
+                    if ((this.IS_NOT_EXPEND ?? 0) == 1)
+                    {
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }
 
 
 
@@ -243,6 +254,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.IsAllowOdd = maty.IS_ALLOW_ODD == 1 ? true : false;
                     this.IsKHBHYT = false;
                     this.NUM_ORDER = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getNumRow();
+                    this.IS_NOT_EXPEND = maty.IS_NOT_EXPEND;
+                    if ((this.IS_NOT_EXPEND ?? 0) == 1)
+                    {
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }
 
                     //Lay doi tuong mac dinh
                     MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -542,6 +559,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 {
                     this.IsStent = ((maty.IS_STENT ?? 0) == GlobalVariables.CommonNumberTrue ? true : false);
                     this.IsAllowOdd = maty.IS_ALLOW_ODD == 1 ? true : false;
+                    this.IS_NOT_EXPEND = maty.IS_NOT_EXPEND;
+                    if ((this.IS_NOT_EXPEND ?? 0) == 1)
+                    {
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }
                 }
                 if (isEdit)
                 {
@@ -690,18 +713,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
 
                     this.AMOUNT = inputData.AMOUNT;
                     this.IsAllowOdd = maty.IS_ALLOW_ODD == 1 ? true : false;
-                    //Trường hợp thuốc đang có trong kho
-                    var checkMatyInStock = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getDataAmountOutOfStock(this, maty.SERVICE_ID, inputData.TDL_MEDI_STOCK_ID);
+
+                    // Trường hợp vật tư đang có trong kho
+                    var checkMatyInStock = AssignPrescriptionWorker.Instance.MediMatyCreateWorker
+                        .getDataAmountOutOfStock(this, maty.SERVICE_ID, inputData.TDL_MEDI_STOCK_ID);
                     MediMatyTypeADO checkMediMatyTypeADO = new MediMatyTypeADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(checkMediMatyTypeADO, checkMatyInStock);
                     if (checkMediMatyTypeADO == null || checkMediMatyTypeADO.SERVICE_ID == 0)
                     {
-                        //Nếu số lượng trong đơn cũ kiểm tra lớn hơn số lượng tồn kho hiện tại thì set cảnh báo
+                        // Nếu số lượng trong đơn cũ kiểm tra lớn hơn số lượng tồn kho hiện tại thì set cảnh báo
                         this.AmountAlert = this.AMOUNT;
                     }
                     else if (checkMediMatyTypeADO.AMOUNT < this.AMOUNT)
                     {
-                        this.AmountAlert = this.AMOUNT;//Nếu số lượng trong đơn cũ kiểm tra lớn hơn số lượng tồn kho hiện tại thì set cảnh báo
+                        this.AmountAlert = this.AMOUNT;
                     }
 
                     var mst = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == inputData.TDL_MEDI_STOCK_ID);
@@ -711,15 +736,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                         this.MEDI_STOCK_CODE = mst.MEDI_STOCK_CODE;
                         this.MEDI_STOCK_NAME = mst.MEDI_STOCK_NAME;
                     }
-                    //Lay doi tuong mac dinh
-                    MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
-                    patientType = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.choosePatientTypeDefaultlService(AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getPatientTypeId(), this.SERVICE_ID, this.SERVICE_TYPE_ID);
+
+                    // Lấy đối tượng mặc định
+                    HIS_PATIENT_TYPE patientType = AssignPrescriptionWorker.Instance.MediMatyCreateWorker
+                        .choosePatientTypeDefaultlService(
+                            AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getPatientTypeId(),
+                            this.SERVICE_ID,
+                            this.SERVICE_TYPE_ID);
                     if (patientType != null)
                     {
                         this.PATIENT_TYPE_ID = patientType.ID;
                         this.PATIENT_TYPE_CODE = patientType.PATIENT_TYPE_CODE;
                         this.PATIENT_TYPE_NAME = patientType.PATIENT_TYPE_NAME;
                     }
+
                     if (isEdit)
                     {
                         this.PRE_AMOUNT = inputData.AMOUNT;
@@ -729,15 +759,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     {
                         this.NUM_ORDER = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getNumRow();
                     }
+
                     this.MEDICINE_TYPE_CODE = maty.MATERIAL_TYPE_CODE;
                     this.MEDICINE_TYPE_NAME = maty.MATERIAL_TYPE_NAME;
-                    //this.IS_OUT_PARENT_FEE = inputData.IS_OUT_PARENT_FEE;
-                    this.IsExpend = false;
+
+                    // Cờ "Không cho phép hao phí" từ loại vật tư
+                    this.IS_NOT_EXPEND = maty.IS_NOT_EXPEND;
+                    if ((this.IS_NOT_EXPEND ?? 0) == 1)
+                    {
+                        // Vật tư không cho phép hao phí: luôn không hao phí và khóa checkbox
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }
+                    else
+                    {
+                        // Vật tư thường: giữ mặc định không hao phí, cho phép chỉnh theo config khác nếu cần
+                        this.IsExpend = false;
+                    }
+
                     this.IsKHBHYT = false;
                     this.ID = inputData.MATERIAL_TYPE_ID;
                     this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU;
 
-                    this.PrimaryKey = (maty.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
+                    this.PrimaryKey = (maty.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid());
                     AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
                 }
             }
@@ -877,6 +921,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.MEDICINE_TYPE_CODE = maty.MATERIAL_TYPE_CODE;
                     this.MEDICINE_TYPE_NAME = maty.MATERIAL_TYPE_NAME;
                     this.IsAllowOdd = maty.IS_ALLOW_ODD == 1 ? true : false;
+                    this.IS_NOT_EXPEND = maty.IS_NOT_EXPEND;
                 }
                 else
                 {
@@ -888,6 +933,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.SERVICE_REQ_ID = inputData.SERVICE_REQ_ID;
                 this.SERVICE_REQ_METY_MATY_ID = inputData.ID;
                 this.DataType = HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_DM;
+                if ((this.IS_NOT_EXPEND ?? 0) == 1)
+                {
+                    this.IsExpend = false;
+                    this.IsDisableExpend = true;
+                }
+                else if ((AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getIsAutoCheckExpend() == true
+                          && this.HEIN_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT)
+                         || (maty != null && maty.IS_AUTO_EXPEND == GlobalVariables.CommonNumberTrue))
+                {
+                    this.IsExpend = true;
+                }
+
                 this.AMOUNT = inputData.AMOUNT;
                 if (isEdit)
                 {
@@ -898,11 +955,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 {
                     this.NUM_ORDER = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getNumRow();
                 }
-                if ((AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getIsAutoCheckExpend() == true && this.HEIN_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT)
-                 || (maty.IS_AUTO_EXPEND == GlobalVariables.CommonNumberTrue))
-                {
-                    this.IsExpend = true;
-                }
+                //if ((AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getIsAutoCheckExpend() == true && this.HEIN_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__VT_TT)
+                // || (maty.IS_AUTO_EXPEND == GlobalVariables.CommonNumberTrue))
+                //{
+                //    this.IsExpend = true;
+                //}
 
                 this.PrimaryKey = ((maty != null ? maty.SERVICE_ID : 0) + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
                 AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
@@ -984,6 +1041,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
         public List<long> IntructionTimeSelecteds { get; set; }
         public bool? IsNotTakeBean { get; set; }
         public bool? IsStent { get; set; }
+        public decimal? IS_NOT_EXPEND { get; set; }
         public List<long> ExpMestDetailIds { get; set; }
         public decimal? PRICE { get; set; }
         public List<long> BeanIds { get; set; }
