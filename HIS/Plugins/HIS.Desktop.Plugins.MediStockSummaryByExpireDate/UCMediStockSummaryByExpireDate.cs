@@ -91,20 +91,29 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-          
+
         private void UCMediStockSummaryByExpireDate_Load(object sender, EventArgs e)
         {
             try
             {
                 dateEdit1.Enabled = false;
                 InitCbo();
-                InitControlState();
                 SetCaptionByLanguageKey();
                 LoadDataGridMediStock();
-              
-                ShowUCControl();
+
+                // Đăng ký event TRƯỚC khi restore state
                 chkMediStock.CheckedChanged += chkMediStock_CheckedChanged;
                 cboExpriedDate.SelectedIndexChanged += cboExpriedDate_SelectedIndexChanged;
+
+                // Restore control state SAU khi đã load xong kho
+                InitControlState();
+
+                // Chỉ gọi ShowUCControl nếu đã chọn Thuốc hoặc Vật tư VÀ đã có kho
+                if ((chkMedicine.Checked || chkMaterial.Checked) && this.mediStockIds != null && this.mediStockIds.Count > 0)
+                {
+                    ShowUCControl();
+                }
+
                 // Ensure control state is saved when the form is closing or this control is disposed
                 try
                 {
@@ -136,25 +145,25 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                     {
                         if (item.KEY == cboExpriedDate.Name)
                         {
-                            switch(item.VALUE)
+                            switch (item.VALUE)
                             {
                                 case "0":
-                                  cboExpriedDate.SelectedIndex = 0;
-                                  break;
+                                    cboExpriedDate.SelectedIndex = 0;
+                                    break;
                                 case "1":
-                                     cboExpriedDate.SelectedIndex = 1;
-                                  break;
+                                    cboExpriedDate.SelectedIndex = 1;
+                                    break;
                                 case "2":
-                                  cboExpriedDate.SelectedIndex =2;
-                                  break;
+                                    cboExpriedDate.SelectedIndex = 2;
+                                    break;
                                 case "3":
-                                  cboExpriedDate.SelectedIndex = 3;
-                                  break;
+                                    cboExpriedDate.SelectedIndex = 3;
+                                    break;
                                 case "4":
-                                  cboExpriedDate.SelectedIndex = 4;
+                                    cboExpriedDate.SelectedIndex = 4;
                                     dateEdit1.Enabled = true;
-                                   dateEdit1.DateTime = DateTime.Now;
-                                  break;
+                                    dateEdit1.DateTime = DateTime.Now;
+                                    break;
 
                             }
                         }
@@ -162,7 +171,19 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                         {
                             chkMediStock.Checked = item.VALUE == "1";
                         }
-                       
+                        if (item.KEY == chkAlertExpired.Name)
+                        {
+                            chkAlertExpired.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == chkMedicine.Name)
+                        {
+                            chkMedicine.Checked = item.VALUE == "1";
+                        }
+                        if (item.KEY == chkMaterial.Name)
+                        {
+                            chkMaterial.Checked = item.VALUE == "1";
+                        }
+
                     }
                 }
 
@@ -203,6 +224,9 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 
                 upsert(cboExpriedDate.Name, cboExpriedDate.SelectedIndex.ToString());
                 upsert(chkMediStock.Name, chkMediStock.Checked ? "1" : "0");
+                upsert(chkAlertExpired.Name, chkAlertExpired.Checked ? "1" : "0");
+                upsert(chkMedicine.Name, chkMedicine.Checked ? "1" : "0");
+                upsert(chkMaterial.Name, chkMaterial.Checked ? "1" : "0");
 
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
             }
@@ -254,6 +278,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("UCMediStockSummaryByExpireDate.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkMaterial.Properties.Caption = Inventec.Common.Resource.Get.Value("UCMediStockSummaryByExpireDate.chkMaterial.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkMedicine.Properties.Caption = Inventec.Common.Resource.Get.Value("UCMediStockSummaryByExpireDate.chkMedicine.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkAlertExpired.Properties.Caption = Inventec.Common.Resource.Get.Value("UCMediStockSummaryByExpireDate.chkAlertExpired.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("UCMediStockSummaryByExpireDate.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("UCMediStockSummaryByExpireDate.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("UCMediStockSummaryByExpireDate.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -561,45 +586,56 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 long startTime = Inventec.Common.TypeConvert.Parse.ToInt64(
                     Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd000000"));
                 int key = 0;
-                int count = 0;              
-                if (cboExpriedDate.SelectedIndex == 0)
+                int count = 0;
+
+                if (chkAlertExpired.Checked)
                 {
-                     key = 0;
+                    key = 4;
                     timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
-                    Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd235959"));
+                       Convert.ToDateTime(DateTime.Now.AddYears(10)).ToString("yyyyMMdd235959"));
                 }
-                else if (cboExpriedDate.SelectedIndex == 1)
+                else
                 {
-                    key = 1;
-                    timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
-                    Convert.ToDateTime(DateTime.Now.AddDays(29)).ToString("yyyyMMdd235959"));
-                    
-                }
-                else if (cboExpriedDate.SelectedIndex == 2)
-                {
-                    key = 2;
-                    timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
-                   Convert.ToDateTime(DateTime.Now.AddDays(89)).ToString("yyyyMMdd235959"));
-                    
-                }
-                else if (cboExpriedDate.SelectedIndex == 3)
-                {
-                    key = 3;
-                    timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
-                   Convert.ToDateTime(DateTime.Now.AddDays(179)).ToString("yyyyMMdd235959"));
-                }
-                else if (cboExpriedDate.SelectedIndex == 4)
-                {
-                     key = 4;
-                    if (dateEdit1.EditValue != null && dateEdit1.DateTime != DateTime.MinValue)
+                    if (cboExpriedDate.SelectedIndex == 0)
                     {
+                        key = 0;
                         timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
-                        Convert.ToDateTime(dateEdit1.EditValue).ToString("yyyyMMdd235959"));
+                        Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd235959"));
+                    }
+                    else if (cboExpriedDate.SelectedIndex == 1)
+                    {
+                        key = 1;
+                        timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(DateTime.Now.AddDays(29)).ToString("yyyyMMdd235959"));
+
+                    }
+                    else if (cboExpriedDate.SelectedIndex == 2)
+                    {
+                        key = 2;
+                        timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
+                       Convert.ToDateTime(DateTime.Now.AddDays(89)).ToString("yyyyMMdd235959"));
+
+                    }
+                    else if (cboExpriedDate.SelectedIndex == 3)
+                    {
+                        key = 3;
+                        timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
+                       Convert.ToDateTime(DateTime.Now.AddDays(179)).ToString("yyyyMMdd235959"));
+                    }
+                    else if (cboExpriedDate.SelectedIndex == 4)
+                    {
+                        key = 4;
+                        if (dateEdit1.EditValue != null && dateEdit1.DateTime != DateTime.MinValue)
+                        {
+                            timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dateEdit1.EditValue).ToString("yyyyMMdd235959"));
+                        }
                     }
                 }
                 WaitingManager.Show();
-                if (this.mediStockIds.Count == 0)
+                if (this.mediStockIds == null || this.mediStockIds.Count == 0)
                 {
+                    WaitingManager.Hide();
                     DevExpress.XtraEditors.XtraMessageBox.Show("Bạn chưa chọn kho", "Thông báo");
                     return;
                 }
@@ -639,40 +675,108 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                         if (lstMediInStocks != null && lstMediInStocks.Count > 0 && timeToTal > 0)
                         {
 
-                            if (key == 0 || key ==4)
+                            if (key == 0 || key == 4)
                             {
                                 lstMediInStocks = lstMediInStocks.Select(o => o.Where(p => p.EXPIRED_DATE != null && p.EXPIRED_DATE < timeToTal).ToList()).ToList();
-                            } else
+                            }
+                            else
                             {
                                 lstMediInStocks = lstMediInStocks.Select(o => o.Where(p => p.EXPIRED_DATE != null && p.EXPIRED_DATE >= startTime && p.EXPIRED_DATE <= timeToTal).ToList()).ToList();
                             }
                         }
-                       
-                        if (lstMediInStocks != null && lstMediInStocks.Count > 0)
+                        // --- BẮT ĐẦU ĐOẠN CODE ĐÃ TỐI ƯU ---
+                        if (chkAlertExpired.Checked && lstMediInStocks != null && lstMediInStocks.Count > 0)
                         {
-                            var dataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS == 1).ToList();
-                            if (dataMediStocks != null && dataMediStocks.Count == this.mediStockIds.Count)
+                            var medicineTypes = BackendDataWorker.Get<HIS_MEDICINE_TYPE>();
+                            DateTime nowDate = DateTime.Today;
+
+                            // List chứa kết quả cuối cùng (giữ nguyên cấu trúc Group của API)
+                            var newGroupedList = new List<List<HisMedicineInStockSDO>>();
+                            var finalVisibleTypeIds = new HashSet<long>(); // Danh sách ID để hiển thị cây
+
+                            // Duyệt qua từng nhóm NGÀY (theo cấu trúc trả về từ API)
+                            foreach (var group in lstMediInStocks)
                             {
-                                var dataMediTypes = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().Where(p => p.IS_BUSINESS == 1).ToList();
-                                if (dataMediTypes != null && dataMediTypes.Count > 0)
+                                if (group == null || group.Count == 0) continue;
+
+                                // BƯỚC 1: Tìm các thuốc con (LÁ) trong nhóm này thỏa mãn điều kiện
+                                var validLeavesInGroup = new List<HisMedicineInStockSDO>();
+                                foreach (var stock in group)
                                 {
-                                    //lstMediInStocks = lstMediInStocks.Where(p => dataMediTypes.Select(o => o.ID).Distinct().ToList().Contains(p.MEDICINE_TYPE_ID)).ToList();
-                                    _MedicineTypeIds = dataMediTypes.Select(o => o.ID).Distinct().ToList();
+                                    if (string.IsNullOrWhiteSpace(stock.MEDICINE_TYPE_NAME) || stock.EXPIRED_DATE == null) continue;
+                                    var type = medicineTypes.FirstOrDefault(mt => mt.ID == stock.MEDICINE_TYPE_ID);
+
+                                    // Chỉ kiểm tra điều kiện ngày tháng với THUỐC (IS_LEAF = 1)
+                                    if (type != null && type.ALERT_EXPIRED_DATE != null && type.IS_LEAF == 1)
+                                    {
+                                        string expDateStr = stock.EXPIRED_DATE.Value.ToString();
+                                        if (expDateStr.Length >= 8)
+                                        {
+                                            DateTime expDate;
+                                            if (DateTime.TryParseExact(expDateStr.Substring(0, 8), "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out expDate))
+                                            {
+                                                int daysRemaining = (expDate - nowDate).Days;
+                                                // Nếu thỏa mãn điều kiện cảnh báo -> Giữ lại
+                                                if (type.ALERT_EXPIRED_DATE.Value >= daysRemaining)
+                                                {
+                                                    validLeavesInGroup.Add(stock);
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                                else
+
+                                if (validLeavesInGroup.Count == 0) continue;
+
+                                var neededTypeIds = new HashSet<long>();
+                                foreach (var leaf in validLeavesInGroup)
                                 {
-                                    lstMediInStocks = new List<List<HisMedicineInStockSDO>>();
+                                    neededTypeIds.Add(leaf.MEDICINE_TYPE_ID);
+                                    var currentType = medicineTypes.FirstOrDefault(mt => mt.ID == leaf.MEDICINE_TYPE_ID);
+                                    while (currentType != null && currentType.PARENT_ID != null)
+                                    {
+                                        neededTypeIds.Add(currentType.PARENT_ID.Value);
+                                        currentType = medicineTypes.FirstOrDefault(x => x.ID == currentType.PARENT_ID);
+                                    }
+                                    if (currentType != null) neededTypeIds.Add(currentType.ID);
+                                }
+
+                                var filteredGroup = new List<HisMedicineInStockSDO>();
+
+                                filteredGroup.AddRange(validLeavesInGroup);
+
+                                foreach (var stock in group)
+                                {
+                                    if (validLeavesInGroup.Contains(stock)) continue;
+
+                                    var type = medicineTypes.FirstOrDefault(mt => mt.ID == stock.MEDICINE_TYPE_ID);
+
+                                    if (type != null && neededTypeIds.Contains(type.ID) && type.IS_LEAF != 1)
+                                    {
+                                        filteredGroup.Add(stock);
+                                    }
+                                }
+
+                                if (filteredGroup.Count > 0)
+                                {
+                                    newGroupedList.Add(filteredGroup);
+                                    foreach (var item in filteredGroup) finalVisibleTypeIds.Add(item.MEDICINE_TYPE_ID);
                                 }
                             }
-                            else
+
+                            lstMediInStocks = newGroupedList;
+                            _MedicineTypeIds = finalVisibleTypeIds.ToList();
+                        }
+                        else
+                        {
+                            if (lstMediInStocks != null && lstMediInStocks.Count > 0)
                             {
-                                var dataMediStocksBUSINESS = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS != 1).ToList();
-                                if (dataMediStocksBUSINESS != null && dataMediStocksBUSINESS.Count == this.mediStockIds.Count)
+                                var dataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS == 1).ToList();
+                                if (dataMediStocks != null && dataMediStocks.Count == this.mediStockIds.Count)
                                 {
-                                    var dataMediTypes = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().Where(p => p.IS_BUSINESS != 1).ToList();
+                                    var dataMediTypes = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().Where(p => p.IS_BUSINESS == 1).ToList();
                                     if (dataMediTypes != null && dataMediTypes.Count > 0)
                                     {
-                                        // lstMediInStocks = lstMediInStocks.Where(p => dataMediTypes.Select(o => o.ID).Distinct().ToList().Contains(p.MEDICINE_TYPE_ID)).ToList();
                                         _MedicineTypeIds = dataMediTypes.Select(o => o.ID).Distinct().ToList();
                                     }
                                     else
@@ -680,27 +784,43 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                                         lstMediInStocks = new List<List<HisMedicineInStockSDO>>();
                                     }
                                 }
+                                else
+                                {
+                                    var dataMediStocksBUSINESS = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS != 1).ToList();
+                                    if (dataMediStocksBUSINESS != null && dataMediStocksBUSINESS.Count == this.mediStockIds.Count)
+                                    {
+                                        var dataMediTypes = BackendDataWorker.Get<HIS_MEDICINE_TYPE>().Where(p => p.IS_BUSINESS != 1).ToList();
+                                        if (dataMediTypes != null && dataMediTypes.Count > 0)
+                                        {
+                                            _MedicineTypeIds = dataMediTypes.Select(o => o.ID).Distinct().ToList();
+                                        }
+                                        else
+                                        {
+                                            lstMediInStocks = new List<List<HisMedicineInStockSDO>>();
+                                        }
+                                    }
+                                }
                             }
                         }
 
-                         List<List<HisMedicineInStockSDO>> lstParent = new List<List<HisMedicineInStockSDO>>();
+                        List<List<HisMedicineInStockSDO>> lstParent = new List<List<HisMedicineInStockSDO>>();
                         for (int i = 0; i < lstMediInStocks.Count; i++)
                         {
                             if (lstMediInStocks[i] != null && lstMediInStocks[i].Count > 0)
                             {
                                 lstParent.Add(lstMediInStocks[i]);
-                                
+
                             }
                         }
-                        
+
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstParent, _MedicineTypeIds, lstMediStock);
                         var list = hisMediInStockProcessor.GetListTreeView(ucMedicineInfo);
-                        count =list !=null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count():0;
-                  
+                        count = list != null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count() : 0;
+
                     }
                 }
                 else if (chkMaterial.Checked)
-                { 
+                {
                     if (this.ucMaterialInfo != null)
                     {
                         this.panelControlMediMate.Controls.Add(this.ucMaterialInfo);
@@ -739,8 +859,63 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             {
                                 lstMateInStocks = lstMateInStocks.Select(o => o.Where(p => p.EXPIRED_DATE != null && p.EXPIRED_DATE >= startTime && p.EXPIRED_DATE <= timeToTal).ToList()).ToList();
                             }
-                         
+
                         }
+                        if (chkAlertExpired.Checked && lstMateInStocks != null && lstMateInStocks.Count > 0)
+                        {
+                            var materialTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
+                            DateTime nowDate = DateTime.Today;
+
+                            lstMateInStocks = lstMateInStocks
+                                // flatten
+                                .SelectMany(stockList => stockList)
+                                .Where(material =>
+                                {
+                                    if (material.EXPIRED_DATE == null)
+                                        return false;
+
+                                    var materialType = materialTypes
+                                        .FirstOrDefault(mt => mt.ID == material.MATERIAL_TYPE_ID);
+
+                                    if (materialType == null || materialType.ALERT_EXPIRED_DATE == null)
+                                        return false;
+
+                                    string expDateStr = material.EXPIRED_DATE.Value.ToString();
+                                    if (expDateStr.Length < 8)
+                                        return false;
+
+                                    expDateStr = expDateStr.Substring(0, 8);
+
+                                    if (!DateTime.TryParseExact(
+                                            expDateStr,
+                                            "yyyyMMdd",
+                                            null,
+                                            System.Globalization.DateTimeStyles.None,
+                                            out DateTime expDate))
+                                        return false;
+
+                                    int daysRemaining = (expDate - nowDate).Days;
+
+                                    return materialType.ALERT_EXPIRED_DATE.Value >= daysRemaining;
+                                })
+
+                                // tránh trùng vật tư
+                                .GroupBy(x => x.ID)
+                                .Select(g => g.First())
+
+                                // group lại theo EXPIRED_DATE để build tree node cha (GIỐNG THUỐC)
+                                .GroupBy(x => x.EXPIRED_DATE)
+                                .Select(g => g.ToList())
+                                .ToList();
+
+                            // MaterialTypeIds cho node cha
+                            _MaterialTypeIds = lstMateInStocks
+                                .SelectMany(x => x)
+                                .Select(x => x.MATERIAL_TYPE_ID)
+                                .Distinct()
+                                .ToList();
+                        }
+
 
                         if (lstMateInStocks != null && lstMateInStocks.Count > 0)
                         {
@@ -775,18 +950,20 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                                 }
                             }
                         }
-                   
-                        
+
+
                         List<List<HisMaterialInStockSDO>> lstParent = new List<List<HisMaterialInStockSDO>>();
-                        for (int i = 0; i < lstMateInStocks.Count; i++)
+                        if (lstMateInStocks != null && lstMateInStocks.Count > 0)
                         {
-                            if (lstMateInStocks[i] != null && lstMateInStocks[i].Count > 0)
+                            for (int i = 0; i < lstMateInStocks.Count; i++)
                             {
-                                lstParent.Add(lstMateInStocks[i]);
-                                
+                                if (lstMateInStocks[i] != null && lstMateInStocks[i].Count > 0)
+                                {
+                                    lstParent.Add(lstMateInStocks[i]);
+                                }
                             }
                         }
-                        
+
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstParent, _MaterialTypeIds, lstMediStock);
                         var list = hisMateInStockProcessor.GetListTreeView(ucMaterialInfo);
                         count = list != null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count() : 0;
@@ -813,7 +990,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 {
 
                     var datas = BackendDataWorker.Get<V_HIS_USER_ROOM>().Where(p => p.LOGINNAME.Trim() == Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName().Trim() && _WorkPlace.BranchId == p.BRANCH_ID).ToList();
-                    
+
                     if (datas != null)
                     {
                         List<long> roomIds = datas.Select(p => p.ROOM_ID).ToList();
@@ -1003,13 +1180,25 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             }
         }
 
+        // === THAY THẾ TOÀN BỘ 3 METHODS CỦA BẠN BẰNG ĐOẠN NÀY ===
+
         private void chkMedicine_CheckedChanged(object sender, EventArgs e)
         {
             try
             {
                 if (chkMedicine.Checked)
                 {
-                    ShowUCControl();
+                    if (!isNotLoadWhileChangeControlStateInFirst)
+                    {
+                        SaveControlState();
+                    }
+
+                    // Kiểm tra đã chọn kho chưa trước khi hiển thị
+                    if (this.mediStockIds != null && this.mediStockIds.Count > 0)
+                    {
+                        ShowUCControl();
+                    }
+
                     isCheck = true;
                 }
             }
@@ -1025,6 +1214,30 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             {
                 if (chkMaterial.Checked)
                 {
+                    if (!isNotLoadWhileChangeControlStateInFirst)
+                    {
+                        SaveControlState();
+                    }
+
+                    // Kiểm tra đã chọn kho chưa trước khi hiển thị
+                    if (this.mediStockIds != null && this.mediStockIds.Count > 0)
+                    {
+                        ShowUCControl();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void chkAlertExpired_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isNotLoadWhileChangeControlStateInFirst)
+                {
+                    SaveControlState();
                     ShowUCControl();
                 }
             }
@@ -1063,6 +1276,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             try
             {
                 this.mediStockIds = new List<long>();
+                chkAlertExpired.Checked = false;
                 LoadDataGridMediStock();
                 hisMediInStockProcessor.Reload(ucMedicineInfo, null, null, null);
                 hisMateInStockProcessor.Reload(ucMaterialInfo, null, null, null);
@@ -1125,7 +1339,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             }
             catch (Exception ex)
             {
-                   Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1190,7 +1404,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             catch (Exception ex)
             {
                 WaitingManager.Hide();
-                    Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1202,7 +1416,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             }
             catch (Exception ex)
             {
-               Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1220,7 +1434,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             }
             catch (Exception ex)
             {
-                    Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1228,14 +1442,14 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
         {
             try
             {
-                
-                    if (e.KeyCode == Keys.Enter)
-                    {
-                        
-                        ShowUCControl();
-                        
-                    }
-                
+
+                if (e.KeyCode == Keys.Enter)
+                {
+
+                    ShowUCControl();
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -1266,8 +1480,8 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 {
                     keyword = keyword.Trim();
 
-                    listResult = this.dataMediStocks.Where(o => (!string.IsNullOrEmpty(o.DEPARTMENT_NAME) &&o.DEPARTMENT_NAME.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
-                                                             || (!string.IsNullOrEmpty(o.MEDI_STOCK_CODE) && o.MEDI_STOCK_CODE.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0) 
+                    listResult = this.dataMediStocks.Where(o => (!string.IsNullOrEmpty(o.DEPARTMENT_NAME) && o.DEPARTMENT_NAME.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
+                                                             || (!string.IsNullOrEmpty(o.MEDI_STOCK_CODE) && o.MEDI_STOCK_CODE.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
                                                              || (!string.IsNullOrEmpty(o.MEDI_STOCK_NAME) && o.MEDI_STOCK_NAME.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)).OrderBy(o => o.MEDI_STOCK_CODE).Distinct().ToList();
                 }
                 else

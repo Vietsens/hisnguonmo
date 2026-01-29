@@ -65,6 +65,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.chkViewLineZero = new DevExpress.XtraEditors.CheckEdit();
             this.chkMaterial = new DevExpress.XtraEditors.CheckEdit();
             this.chkMedicine = new DevExpress.XtraEditors.CheckEdit();
+            this.chkAlertExpired = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -74,6 +75,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.txtSearch = new DevExpress.XtraEditors.TextEdit();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
@@ -115,6 +117,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             ((System.ComponentModel.ISupportInitialize)(this.chkViewLineZero.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMaterial.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAlertExpired.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
@@ -124,6 +127,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
@@ -149,9 +153,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1235, 610);
+            this.layoutControl1.Size = new System.Drawing.Size(1647, 751);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -165,20 +170,23 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControl3.Controls.Add(this.chkViewLineZero);
             this.layoutControl3.Controls.Add(this.chkMaterial);
             this.layoutControl3.Controls.Add(this.chkMedicine);
-            this.layoutControl3.Location = new System.Drawing.Point(319, 0);
+            this.layoutControl3.Controls.Add(this.chkAlertExpired);
+            this.layoutControl3.Location = new System.Drawing.Point(448, 0);
+            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(542, 121, 250, 350);
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(916, 610);
+            this.layoutControl3.Size = new System.Drawing.Size(1199, 751);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // chkMediStock
             // 
-            this.chkMediStock.Location = new System.Drawing.Point(637, 2);
+            this.chkMediStock.Location = new System.Drawing.Point(743, 3);
+            this.chkMediStock.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkMediStock.Name = "chkMediStock";
             this.chkMediStock.Properties.Caption = "Hiển thị theo kho";
-            this.chkMediStock.Size = new System.Drawing.Size(103, 19);
+            this.chkMediStock.Size = new System.Drawing.Size(126, 20);
             this.chkMediStock.StyleController = this.layoutControl3;
             this.chkMediStock.TabIndex = 12;
             this.chkMediStock.CheckedChanged += new System.EventHandler(this.chkMediStock_CheckedChanged);
@@ -186,7 +194,8 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // dateEdit1
             // 
             this.dateEdit1.EditValue = null;
-            this.dateEdit1.Location = new System.Drawing.Point(371, 2);
+            this.dateEdit1.Location = new System.Drawing.Point(458, 3);
+            this.dateEdit1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dateEdit1.Name = "dateEdit1";
             this.dateEdit1.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.dateEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -198,7 +207,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.dateEdit1.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dateEdit1.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dateEdit1.Properties.Mask.EditMask = "dd/MM/yyyy";
-            this.dateEdit1.Size = new System.Drawing.Size(154, 20);
+            this.dateEdit1.Size = new System.Drawing.Size(143, 22);
             this.dateEdit1.StyleController = this.layoutControl3;
             this.dateEdit1.TabIndex = 11;
             this.dateEdit1.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dateEdit1_Closed);
@@ -209,37 +218,40 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControl5.Controls.Add(this.labelControl2);
             this.layoutControl5.Controls.Add(this.labelControl1);
             this.layoutControl5.Controls.Add(this.panelControlMediMate);
-            this.layoutControl5.Location = new System.Drawing.Point(2, 28);
+            this.layoutControl5.Location = new System.Drawing.Point(3, 36);
+            this.layoutControl5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.Root = this.layoutControlGroup4;
-            this.layoutControl5.Size = new System.Drawing.Size(912, 580);
+            this.layoutControl5.Size = new System.Drawing.Size(1193, 712);
             this.layoutControl5.TabIndex = 10;
             this.layoutControl5.Text = "layoutControl5";
             // 
             // labelControl2
             // 
             this.labelControl2.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl2.Location = new System.Drawing.Point(206, 558);
+            this.labelControl2.Location = new System.Drawing.Point(240, 690);
+            this.labelControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(34, 20);
+            this.labelControl2.Size = new System.Drawing.Size(75, 20);
             this.labelControl2.StyleController = this.layoutControl5;
             this.labelControl2.TabIndex = 7;
             // 
             // labelControl1
             // 
             this.labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl1.Location = new System.Drawing.Point(97, 558);
-            this.labelControl1.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.labelControl1.Location = new System.Drawing.Point(97, 690);
+            this.labelControl1.Margin = new System.Windows.Forms.Padding(4, 4, 0, 4);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(14, 20);
+            this.labelControl1.Size = new System.Drawing.Size(48, 20);
             this.labelControl1.StyleController = this.layoutControl5;
             this.labelControl1.TabIndex = 6;
             // 
             // panelControlMediMate
             // 
-            this.panelControlMediMate.Location = new System.Drawing.Point(2, 2);
+            this.panelControlMediMate.Location = new System.Drawing.Point(3, 3);
+            this.panelControlMediMate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panelControlMediMate.Name = "panelControlMediMate";
-            this.panelControlMediMate.Size = new System.Drawing.Size(908, 552);
+            this.panelControlMediMate.Size = new System.Drawing.Size(1187, 682);
             this.panelControlMediMate.TabIndex = 5;
             // 
             // layoutControlGroup4
@@ -253,7 +265,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.emptySpaceItem1});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
-            this.layoutControlGroup4.Size = new System.Drawing.Size(912, 580);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(1193, 712);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem13
@@ -261,7 +273,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControlItem13.Control = this.panelControlMediMate;
             this.layoutControlItem13.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(912, 556);
+            this.layoutControlItem13.Size = new System.Drawing.Size(1193, 688);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -272,10 +284,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControlItem14.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem14.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem14.Control = this.labelControl1;
-            this.layoutControlItem14.Location = new System.Drawing.Point(0, 556);
+            this.layoutControlItem14.Location = new System.Drawing.Point(0, 688);
             this.layoutControlItem14.Name = "layoutControlItem14";
             this.layoutControlItem14.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.layoutControlItem14.Size = new System.Drawing.Size(111, 24);
+            this.layoutControlItem14.Size = new System.Drawing.Size(145, 24);
             this.layoutControlItem14.Text = "Tổng:";
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(90, 20);
@@ -286,10 +298,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.txtCount.AppearanceItemCaption.FontStyleDelta = System.Drawing.FontStyle.Bold;
             this.txtCount.AppearanceItemCaption.Options.UseFont = true;
             this.txtCount.Control = this.labelControl2;
-            this.txtCount.Location = new System.Drawing.Point(111, 556);
+            this.txtCount.Location = new System.Drawing.Point(145, 688);
             this.txtCount.Name = "txtCount";
             this.txtCount.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.txtCount.Size = new System.Drawing.Size(131, 24);
+            this.txtCount.Size = new System.Drawing.Size(172, 24);
             this.txtCount.Text = "0";
             this.txtCount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.txtCount.TextSize = new System.Drawing.Size(90, 20);
@@ -298,20 +310,21 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(242, 556);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(317, 660);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(670, 24);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(876, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // cboExpriedDate
             // 
-            this.cboExpriedDate.Location = new System.Drawing.Point(187, 2);
+            this.cboExpriedDate.Location = new System.Drawing.Point(328, 3);
+            this.cboExpriedDate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cboExpriedDate.Name = "cboExpriedDate";
             this.cboExpriedDate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboExpriedDate.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboExpriedDate.Size = new System.Drawing.Size(180, 20);
+            this.cboExpriedDate.Size = new System.Drawing.Size(124, 22);
             this.cboExpriedDate.StyleController = this.layoutControl3;
             this.cboExpriedDate.TabIndex = 9;
             this.cboExpriedDate.SelectedIndexChanged += new System.EventHandler(this.cboExpriedDate_SelectedIndexChanged);
@@ -321,9 +334,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // 
             // BtnExportExcel
             // 
-            this.BtnExportExcel.Location = new System.Drawing.Point(855, 2);
+            this.BtnExportExcel.Location = new System.Drawing.Point(1126, 3);
+            this.BtnExportExcel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnExportExcel.Name = "BtnExportExcel";
-            this.BtnExportExcel.Size = new System.Drawing.Size(59, 22);
+            this.BtnExportExcel.Size = new System.Drawing.Size(70, 27);
             this.BtnExportExcel.StyleController = this.layoutControl3;
             this.BtnExportExcel.TabIndex = 8;
             this.BtnExportExcel.Text = "Xuất Excel";
@@ -331,21 +345,23 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // 
             // chkViewLineZero
             // 
-            this.chkViewLineZero.Location = new System.Drawing.Point(529, 2);
+            this.chkViewLineZero.Location = new System.Drawing.Point(607, 3);
+            this.chkViewLineZero.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkViewLineZero.Name = "chkViewLineZero";
             this.chkViewLineZero.Properties.Caption = "Hiển thị dòng hết";
-            this.chkViewLineZero.Size = new System.Drawing.Size(104, 19);
+            this.chkViewLineZero.Size = new System.Drawing.Size(130, 20);
             this.chkViewLineZero.StyleController = this.layoutControl3;
             this.chkViewLineZero.TabIndex = 7;
             // 
             // chkMaterial
             // 
-            this.chkMaterial.Location = new System.Drawing.Point(799, 2);
+            this.chkMaterial.Location = new System.Drawing.Point(973, 3);
+            this.chkMaterial.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkMaterial.Name = "chkMaterial";
             this.chkMaterial.Properties.Caption = "Vật tư";
             this.chkMaterial.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.chkMaterial.Properties.RadioGroupIndex = 1;
-            this.chkMaterial.Size = new System.Drawing.Size(52, 19);
+            this.chkMaterial.Size = new System.Drawing.Size(78, 20);
             this.chkMaterial.StyleController = this.layoutControl3;
             this.chkMaterial.TabIndex = 6;
             this.chkMaterial.TabStop = false;
@@ -354,59 +370,72 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // chkMedicine
             // 
             this.chkMedicine.EditValue = true;
-            this.chkMedicine.Location = new System.Drawing.Point(744, 2);
+            this.chkMedicine.Location = new System.Drawing.Point(875, 3);
+            this.chkMedicine.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.chkMedicine.Name = "chkMedicine";
             this.chkMedicine.Properties.Caption = "Thuốc";
             this.chkMedicine.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.chkMedicine.Properties.RadioGroupIndex = 1;
-            this.chkMedicine.Size = new System.Drawing.Size(51, 19);
+            this.chkMedicine.Size = new System.Drawing.Size(92, 20);
             this.chkMedicine.StyleController = this.layoutControl3;
             this.chkMedicine.TabIndex = 5;
             this.chkMedicine.CheckedChanged += new System.EventHandler(this.chkMedicine_CheckedChanged);
+            // 
+            // chkAlertExpired
+            // 
+            this.chkAlertExpired.Location = new System.Drawing.Point(3, 3);
+            this.chkAlertExpired.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkAlertExpired.Name = "chkAlertExpired";
+            this.chkAlertExpired.Properties.Caption = "Cảnh báo HSD";
+            this.chkAlertExpired.Size = new System.Drawing.Size(134, 20);
+            this.chkAlertExpired.StyleController = this.layoutControl3;
+            this.chkAlertExpired.TabIndex = 13;
+            this.chkAlertExpired.CheckedChanged += new System.EventHandler(this.chkAlertExpired_CheckedChanged);
             // 
             // layoutControlGroup2
             // 
             this.layoutControlGroup2.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
             this.layoutControlGroup2.GroupBordersVisible = false;
             this.layoutControlGroup2.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem3,
-            this.layoutControlItem8,
             this.layoutControlItem10,
             this.layoutControlItem11,
-            this.layoutItem,
             this.layoutControlItem5,
             this.layoutControlItem12,
-            this.layoutControlItem15});
+            this.layoutControlItem15,
+            this.layoutControlItem17,
+            this.layoutControlItem3,
+            this.layoutControlItem8,
+            this.layoutItem});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(916, 610);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1199, 751);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.chkMedicine;
-            this.layoutControlItem3.Location = new System.Drawing.Point(742, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(872, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(55, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(98, 33);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.chkMaterial;
-            this.layoutControlItem8.Location = new System.Drawing.Point(797, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(970, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(56, 26);
+            this.layoutControlItem8.Size = new System.Drawing.Size(84, 33);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.chkViewLineZero;
-            this.layoutControlItem10.Location = new System.Drawing.Point(527, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(604, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(108, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(136, 33);
             this.layoutControlItem10.Text = " ";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -416,9 +445,9 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.BtnExportExcel;
-            this.layoutControlItem11.Location = new System.Drawing.Point(853, 0);
+            this.layoutControlItem11.Location = new System.Drawing.Point(1123, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(63, 26);
+            this.layoutControlItem11.Size = new System.Drawing.Size(76, 33);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -427,10 +456,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutItem.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutItem.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutItem.Control = this.cboExpriedDate;
-            this.layoutItem.Location = new System.Drawing.Point(0, 0);
+            this.layoutItem.Location = new System.Drawing.Point(140, 0);
             this.layoutItem.Name = "layoutItem";
             this.layoutItem.OptionsToolTip.ToolTip = "Hạn sử dụng thuốc / vật tư";
-            this.layoutItem.Size = new System.Drawing.Size(369, 26);
+            this.layoutItem.Size = new System.Drawing.Size(315, 33);
             this.layoutItem.Text = "Hạn sử dụng thuốc / vật tư:";
             this.layoutItem.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutItem.TextSize = new System.Drawing.Size(180, 20);
@@ -439,29 +468,38 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.layoutControl5;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 33);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(916, 584);
+            this.layoutControlItem5.Size = new System.Drawing.Size(1199, 718);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.dateEdit1;
-            this.layoutControlItem12.Location = new System.Drawing.Point(369, 0);
+            this.layoutControlItem12.Location = new System.Drawing.Point(455, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(158, 26);
+            this.layoutControlItem12.Size = new System.Drawing.Size(149, 33);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.chkMediStock;
-            this.layoutControlItem15.Location = new System.Drawing.Point(635, 0);
+            this.layoutControlItem15.Location = new System.Drawing.Point(740, 0);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(107, 26);
+            this.layoutControlItem15.Size = new System.Drawing.Size(132, 33);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
+            // 
+            // layoutControlItem17
+            // 
+            this.layoutControlItem17.Control = this.chkAlertExpired;
+            this.layoutControlItem17.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem17.Name = "layoutControlItem17";
+            this.layoutControlItem17.Size = new System.Drawing.Size(140, 33);
+            this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem17.TextVisible = false;
             // 
             // layoutControl2
             // 
@@ -470,31 +508,34 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControl2.Controls.Add(this.btnSearch);
             this.layoutControl2.Controls.Add(this.btnRefesh);
             this.layoutControl2.Controls.Add(this.gridControlMediStock);
-            this.layoutControl2.Location = new System.Drawing.Point(2, 2);
+            this.layoutControl2.Location = new System.Drawing.Point(3, 3);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(374, 123, 250, 350);
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(315, 606);
+            this.layoutControl2.Size = new System.Drawing.Size(442, 745);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(2, 2);
+            this.txtSearch.Location = new System.Drawing.Point(3, 3);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Properties.NullValuePrompt = "Tìm kiếm";
             this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtSearch.Size = new System.Drawing.Size(311, 20);
+            this.txtSearch.Size = new System.Drawing.Size(436, 22);
             this.txtSearch.StyleController = this.layoutControl2;
             this.txtSearch.TabIndex = 9;
             this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
             // 
             // layoutControl4
             // 
-            this.layoutControl4.Location = new System.Drawing.Point(2, 582);
+            this.layoutControl4.Location = new System.Drawing.Point(3, 715);
+            this.layoutControl4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(102, 22);
+            this.layoutControl4.Size = new System.Drawing.Size(143, 27);
             this.layoutControl4.TabIndex = 8;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -504,14 +545,15 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControlGroup3.GroupBordersVisible = false;
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
-            this.layoutControlGroup3.Size = new System.Drawing.Size(102, 22);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(143, 27);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(108, 582);
+            this.btnSearch.Location = new System.Drawing.Point(152, 715);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(102, 22);
+            this.btnSearch.Size = new System.Drawing.Size(143, 27);
             this.btnSearch.StyleController = this.layoutControl2;
             this.btnSearch.TabIndex = 7;
             this.btnSearch.Text = "Tìm (Ctrl F)";
@@ -519,9 +561,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // 
             // btnRefesh
             // 
-            this.btnRefesh.Location = new System.Drawing.Point(214, 582);
+            this.btnRefesh.Location = new System.Drawing.Point(301, 715);
+            this.btnRefesh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRefesh.Name = "btnRefesh";
-            this.btnRefesh.Size = new System.Drawing.Size(99, 22);
+            this.btnRefesh.Size = new System.Drawing.Size(138, 27);
             this.btnRefesh.StyleController = this.layoutControl2;
             this.btnRefesh.TabIndex = 6;
             this.btnRefesh.Text = "Làm lại (Ctrl R)";
@@ -529,10 +572,12 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // 
             // gridControlMediStock
             // 
-            this.gridControlMediStock.Location = new System.Drawing.Point(2, 26);
+            this.gridControlMediStock.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControlMediStock.Location = new System.Drawing.Point(3, 31);
             this.gridControlMediStock.MainView = this.gridViewMediStock;
+            this.gridControlMediStock.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControlMediStock.Name = "gridControlMediStock";
-            this.gridControlMediStock.Size = new System.Drawing.Size(311, 552);
+            this.gridControlMediStock.Size = new System.Drawing.Size(436, 678);
             this.gridControlMediStock.TabIndex = 5;
             this.gridControlMediStock.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewMediStock});
@@ -618,42 +663,42 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(315, 606);
+            this.Root.Size = new System.Drawing.Size(442, 745);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.gridControlMediStock;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 28);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(315, 556);
+            this.layoutControlItem4.Size = new System.Drawing.Size(442, 684);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnRefesh;
-            this.layoutControlItem6.Location = new System.Drawing.Point(212, 580);
+            this.layoutControlItem6.Location = new System.Drawing.Point(298, 712);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(103, 26);
+            this.layoutControlItem6.Size = new System.Drawing.Size(144, 33);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnSearch;
-            this.layoutControlItem7.Location = new System.Drawing.Point(106, 580);
+            this.layoutControlItem7.Location = new System.Drawing.Point(149, 712);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(106, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(149, 33);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.layoutControl4;
-            this.layoutControlItem9.Location = new System.Drawing.Point(0, 580);
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 712);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(106, 26);
+            this.layoutControlItem9.Size = new System.Drawing.Size(149, 33);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -662,7 +707,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControlItem16.Control = this.txtSearch;
             this.layoutControlItem16.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(315, 24);
+            this.layoutControlItem16.Size = new System.Drawing.Size(442, 28);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem16.TextVisible = false;
             // 
@@ -676,7 +721,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1235, 610);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1647, 751);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -684,17 +729,17 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             this.layoutControlItem1.Control = this.layoutControl2;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(319, 610);
+            this.layoutControlItem1.Size = new System.Drawing.Size(448, 751);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.layoutControl3;
-            this.layoutControlItem2.Location = new System.Drawing.Point(319, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(448, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem2.Size = new System.Drawing.Size(916, 610);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1199, 751);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -706,11 +751,12 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             // 
             // UCMediStockSummaryByExpireDate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "UCMediStockSummaryByExpireDate";
-            this.Size = new System.Drawing.Size(1235, 610);
+            this.Size = new System.Drawing.Size(1647, 751);
             this.Load += new System.EventHandler(this.UCMediStockSummaryByExpireDate_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
@@ -731,6 +777,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             ((System.ComponentModel.ISupportInitialize)(this.chkViewLineZero.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMaterial.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkMedicine.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAlertExpired.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
@@ -740,6 +787,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
@@ -812,5 +860,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
         private DevExpress.XtraEditors.TextEdit txtSearch;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem16;
+        private DevExpress.XtraEditors.CheckEdit chkAlertExpired;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
     }
 }
