@@ -141,6 +141,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> ssGuarantee = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         decimal totalGuaranteeOriginal = 0;
         decimal totalGuaranteeArise = 0;
+        decimal totalSSBillPrice = 0;
+        decimal totalGuaranteePrice_1 = 0;
         Inventec.Desktop.Common.Modules.Module currentModule;
 
         Dictionary<long, List<V_HIS_SERVICE_PATY>> servicePatyInBranchs;
@@ -1467,9 +1469,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     {
                         return;
                     }
-
-                    if ((HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "1" || HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "3") && this.currentHisPatientTypeAlter != null && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU && !string.IsNullOrEmpty(HisConfigCFG.WarningOverTotalPatientPrice))
+                    // chặn với bệnh nhân bảo lãnh
+                    Inventec.Common.Logging.LogSystem.Debug("qtcode canhbao");
+                    if ((HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "1" || HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "3") && this.currentHisPatientTypeAlter != null && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU && !string.IsNullOrEmpty(HisConfigCFG.WarningOverTotalPatientPrice) && (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE)))
                     {
+                        Inventec.Common.Logging.LogSystem.Debug("qtcode vao canhbao");
                         decimal warningOverTotalCGF = Convert.ToInt64(HisConfigCFG.WarningOverTotalPatientPrice);
 
                         if (transferTreatmentFee > warningOverTotalCGF && this.transferTreatmentFeeBK != this.transferTreatmentFee)
@@ -6163,7 +6167,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.DisablecheckEmergencyPriorityByConfig();
                 this.treeService.UncheckAll();
                 this.isPrinted = false;
-
                 foreach (var item in this.ServiceIsleafADOs)
                 {
                     item.AssignNumOrder = null;
