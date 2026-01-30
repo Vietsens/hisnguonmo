@@ -179,7 +179,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                 sereServs = sereServs.Where(o => serviceCodes.Contains(o.TDL_SERVICE_CODE)).ToList();
                             }
                         }
-                        int itemStt = 0;
+                        //int itemStt = 0;
                         if (sereServs != null && sereServs.Count > 0)
                         {
                             if (detail.IsSplit == 1)
@@ -206,9 +206,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                     ProductBase product1 = new ProductBase();
                                     product1.ProdName = item.First().TDL_SERVICE_NAME;
                                     product1.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(amount);
-                                    //product1.ProdUnit = service != null ? service.SERVICE_UNIT_NAME : "";
-                                    product1.ProdUnit = DataInput.SereServs != null ? DataInput.SereServs[itemStt].SERVICE_UNIT_NAME : "";
-                                    itemStt += 1; 
+                                    //product1.ProdUnit = service != null ? service.SERVICE_UNIT_NAME : ""; nampp
+                                    HIS_SERVICE_UNIT unit = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => item.First().TDL_SERVICE_UNIT_ID != null && o.ID == item.First().TDL_SERVICE_UNIT_ID);
+                                    product1.ProdUnit = unit != null ? unit.SERVICE_UNIT_NAME : service != null ? service.SERVICE_UNIT_NAME : "";
+                                    //nampp
                                     product1.TaxRateID = (int)(service != null ? (service.TAX_RATE_TYPE ?? Base.ProviderType.tax_KCT) : Base.ProviderType.tax_KCT);
                                     product1.ProdCode = item.First().TDL_SERVICE_CODE;
                                     product1.Type = item.First().TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ? 1 : 0;
