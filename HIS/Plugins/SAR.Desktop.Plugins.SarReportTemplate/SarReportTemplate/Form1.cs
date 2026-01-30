@@ -49,6 +49,7 @@ using DevExpress.Entity.Model.Metadata;
 using SAR.SDO;
 using HIS.Desktop.Common;
 using SAR.Desktop.Plugins.SarReportTemplate.ADO;
+using Inventec.Common.Controls.PopupLoader;
 
 namespace SAR.Desktop.Plugins.SarReportTemplate
 {
@@ -71,7 +72,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
 
         List<Inventec.Fss.Utility.FileUploadInfo> fileUploadInfos;
         List<SAR.EFMODEL.DataModels.V_SAR_REPORT_TEMPLATE> DataChecks { get; set; }
-        List<long> listID = new List<long>();
+        //List<long> listID = new List<long>();
         #endregion
 
         public Form1()
@@ -172,20 +173,21 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             {
                 
                 CommonParam param = new CommonParam();
-                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                SarUserReportTypeFilter uFilter = new SarUserReportTypeFilter();
-                uFilter.LOGINNAME = loginName;
-                var listReport = new BackendAdapter(param).Get<List<SAR_USER_REPORT_TYPE>>("/api/SarUserReportType/Get", ApiConsumers.SarConsumer, uFilter, param);
+               // string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                //SarUserReportTypeFilter uFilter = new SarUserReportTypeFilter();
+                //uFilter.LOGINNAME = loginName;
+                //var listReport = new BackendAdapter(param).Get<List<SAR_USER_REPORT_TYPE>>("/api/SarUserReportType/Get", ApiConsumers.SarConsumer, uFilter, param);
                 
-                if(listReport != null && listReport.Count > 0)
-                    this.listID = listReport.Select(s=>s.REPORT_TYPE_ID).Distinct().ToList();
+                //if(listReport != null && listReport.Count > 0)
+                //    this.listID = listReport.Select(s=>s.REPORT_TYPE_ID).Distinct().ToList();
                 SarReportTemplateFilter filter = new SarReportTemplateFilter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 List<SAR_REPORT_TYPE> rs = new List<SAR_REPORT_TYPE>();
-                if (this.listID != null)
+               // if (this.listID != null)
                 {
-                    var value = BackendDataWorker.Get<SAR_REPORT_TYPE>().ToList();
-                    rs = value.Where(s => this.listID.Contains(s.ID)).ToList();
+                    rs = BackendDataWorker.Get<SAR_REPORT_TYPE>().ToList();
+                    //var value = BackendDataWorker.Get<SAR_REPORT_TYPE>().ToList();
+                    //rs = value.Where(s => this.listID.Contains(s.ID)).ToList();
                 }
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("REPORT_TYPE_CODE", "", 100, 1, true));
@@ -953,17 +955,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
 
         private void lkREPORT_TYPE_ID_KeyDown(object sender, KeyEventArgs e)
         {
-            try
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    memoEdit1.Focus();
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
+
         }
 
         private void down1_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
@@ -1351,6 +1343,72 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             if (e.CloseMode == PopupCloseMode.Normal)
             {
                 FillDataToGridControl();
+            }
+        }
+
+        private void lkREPORT_TYPE_ID_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    this.lkREPORT_TYPE_ID.EditValue = null;
+                    this.lkREPORT_TYPE_ID.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void lkREPORT_TYPE_ID_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (!String.IsNullOrEmpty((this.lkREPORT_TYPE_ID.EditValue ?? "").ToString()))
+                    {
+                        this.lkREPORT_TYPE_ID.Properties.Buttons[1].Visible = true;
+                    }
+                    this.memoEdit1.Focus();
+                    this.memoEdit1.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void lkREPORT_TYPE_ID_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (!String.IsNullOrEmpty((this.lkREPORT_TYPE_ID.EditValue ?? "").ToString()))
+                    {
+                        this.lkREPORT_TYPE_ID.Properties.Buttons[1].Visible = true;
+                        this.memoEdit1.Focus();
+                        this.memoEdit1.SelectAll();
+                    }
+                    else
+                    {
+                        this.lkREPORT_TYPE_ID.ShowPopup();
+                        PopupLoader.SelectFirstRowPopup(this.lkREPORT_TYPE_ID);
+                    }
+                }
+                else
+                {
+                    this.lkREPORT_TYPE_ID.ShowPopup();
+                    PopupLoader.SelectFirstRowPopup(this.lkREPORT_TYPE_ID);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
             }
         }
     }

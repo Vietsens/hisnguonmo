@@ -294,7 +294,7 @@ namespace Inventec.Common.TemplaterExport
 
         private object Commonfuction(object arg1, string arg2)
         {
-            object result = null;
+            object result = arg1;
             try
             {
                 if (arg1 != null && arg2 != null)

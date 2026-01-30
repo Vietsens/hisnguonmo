@@ -1329,6 +1329,9 @@
   <data name="frmMedicineTypeCreate.layoutControlItem328.Text" xml:space="preserve">
     <value>Kinh doanh:</value>
   </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Thông tin thầu phục vụ cho XML</value>
+  </data>
   <data name="frmMedicineTypeCreate.layoutControlItem33.Text" xml:space="preserve">
     <value>Thông tin thầu:</value>
   </data>
@@ -2174,6 +2177,9 @@
   </data>
   <data name="frmMedicineTypeCreate.txtSttTT20.ToolTip" xml:space="preserve">
     <value>Số thứ tự theo thông tư 20/2022/TT-BHYT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtTTThau.ToolTip" xml:space="preserve">
+    <value>Thông tin thầu phục vụ cho XML</value>
   </data>
   <data name="frmMedicineTypeCreate.txtVolume.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Dung tích truyền dịch</value>

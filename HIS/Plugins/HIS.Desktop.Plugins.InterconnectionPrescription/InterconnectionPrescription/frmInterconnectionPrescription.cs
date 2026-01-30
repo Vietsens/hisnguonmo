@@ -1216,6 +1216,34 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                     listServiceReq,
                     listG
                 );
+                try
+                {
+                    LogSystem.Info("=== InterconnectionPrescription.btnUpdateSale - CONFIG CHECK ===");
+                    LogSystem.Info("SysConfigValue: " + SysConfigValue);
+                    LogSystem.Info("ClientAppConfigValue: " + ClientAppConfigValue);
+                    LogSystem.Info("DataInput.Url (SysConfig.Url): " + input.Url);
+                    LogSystem.Info("DataInput.UrlQuantitySold (ClientAppConfig.Url): " + input.UrlQuantitySold);
+                    LogSystem.Info("DataInput.AppName: " + input.AppName + " | AppKey: " + input.AppKey);
+                    LogSystem.Info("DataInput.MaCoSoCungUng: " + input.MaCoSoCungUng);
+
+                    LogSystem.Info(
+                        "SendQuantitySold DataInput: " +
+                        Inventec.Common.Logging.LogUtil.TraceData("DataInput", input)
+                    );
+
+                    LogSystem.Info("SendQuantitySold DataInput.ListExpMest: " +
+                                   Inventec.Common.Logging.LogUtil.TraceData("ListExpMest", input.ListExpMest));
+                    LogSystem.Info("SendQuantitySold DataInput.ListTransaction: " +
+                                   Inventec.Common.Logging.LogUtil.TraceData("ListTransaction", input.ListTransaction));
+                    LogSystem.Info("SendQuantitySold DataInput.ListServiceReq: " +
+                                   Inventec.Common.Logging.LogUtil.TraceData("ListServiceReq", input.ListServiceReq));
+                    LogSystem.Info("SendQuantitySold DataInput.ListReqMety: " +
+                                   Inventec.Common.Logging.LogUtil.TraceData("ListReqMety", input.ListReqMety));
+                }
+                catch (Exception exLogInput)
+                {
+                    LogSystem.Error("Error when logging DataInput before SendQuantitySold: " + exLogInput);
+                }
 
                 DataResult rs = null;
                 try

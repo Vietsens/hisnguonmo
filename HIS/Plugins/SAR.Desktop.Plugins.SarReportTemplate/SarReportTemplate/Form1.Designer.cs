@@ -45,6 +45,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -94,7 +95,7 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.btnImportFile = new DevExpress.XtraEditors.SimpleButton();
             this.btnImport = new DevExpress.XtraEditors.SimpleButton();
             this.txtID = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
@@ -159,8 +160,8 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)(this.delete)).BeginInit();
@@ -278,7 +279,9 @@ namespace SAR.Desktop.Plugins.SarReportTemplate
             this.lkREPORT_TYPE_ID.Size = new System.Drawing.Size(146, 20);
             this.lkREPORT_TYPE_ID.StyleController = this.layoutControl1;
             this.lkREPORT_TYPE_ID.TabIndex = 21;
-            this.lkREPORT_TYPE_ID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lkREPORT_TYPE_ID_KeyDown);
+            this.lkREPORT_TYPE_ID.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.lkREPORT_TYPE_ID_Closed);
+            this.lkREPORT_TYPE_ID.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.lkREPORT_TYPE_ID_ButtonClick);
+            this.lkREPORT_TYPE_ID.KeyUp += new System.Windows.Forms.KeyEventHandler(this.lkREPORT_TYPE_ID_KeyUp);
             // 
             // customGridViewWithFilterMultiColumn1
             // 

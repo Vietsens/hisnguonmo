@@ -271,6 +271,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 TDL_SERVICE_CODE = "",
                                 TDL_SERVICE_NAME = item.GOODS_NAME,
                                 SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME,
+                                TDL_SERVICE_UNIT_ID = item.SERVICE_UNIT_ID ?? 0,
                                 PRICE = unitPrice,
                                 VIR_PRICE = unitPrice,
                                 VIR_TOTAL_PATIENT_PRICE = totalPriceWithVat
@@ -4108,6 +4109,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 ssb.TDL_SERVICE_CODE = "";
                                 ssb.TDL_SERVICE_NAME = item.GOODS_NAME;
                                 ssb.SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME;
+                                ssb.TDL_SERVICE_UNIT_ID = item.SERVICE_UNIT_ID ?? 0;
                                 ssb.PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
                                 ssb.VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
                                 ssb.VIR_TOTAL_PATIENT_PRICE = ssb.VIR_PRICE * (1 + ssb.VAT_RATIO) * ssb.AMOUNT;
@@ -4225,6 +4227,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 ssb.TDL_SERVICE_CODE = "";
                                 ssb.TDL_SERVICE_NAME = item.GOODS_NAME;
                                 ssb.SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME;
+                                ssb.TDL_SERVICE_UNIT_ID = item.SERVICE_UNIT_ID ?? 0;
                                 ssb.PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
                                 ssb.VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
                                 ssb.VIR_TOTAL_PATIENT_PRICE = ssb.VIR_PRICE * (1 + ssb.VAT_RATIO) * ssb.AMOUNT;

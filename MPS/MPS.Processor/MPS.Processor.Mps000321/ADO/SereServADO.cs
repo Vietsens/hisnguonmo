@@ -66,7 +66,9 @@ namespace MPS.Processor.Mps000321.ADO
         //public string MEDICINE_LINE_NAME { get; set; }
 
         public HIS_PATIENT_TYPE_ALTER PatientTypeAlter { get; set; }
+        public HIS_PATIENT_TYPE_ALTER PatientTypeAlterReal { get; set; }
         public string KEY_PATY_ALTER { get; set; }
+        public string KEY_PATY_ALTER_REAL { get; set; }
         public decimal? SERVICE_PAY_RATE { get; set; }
         public decimal? BHYT_PAY_RATE { get; set; }
         public long? HEIN_SERVICE_TYPE_PARENT_1_ID { get; set; } //Cap 1 "Giuong"
@@ -225,8 +227,17 @@ namespace MPS.Processor.Mps000321.ADO
                 #endregion
 
                 string keyPaty = "";
+                string keyPatyReal = "";
                 this.PatientTypeAlter = PatientTypeAlterProcessor.GetPatientTypeAlter(data, patientTypeCFG, treatment.TREATMENT_END_TYPE_ID ?? 0, ref keyPaty);
+                this.PatientTypeAlterReal = PatientTypeAlterProcessor.GetPatientTypeAlter(data, patientTypeCFG, treatment.TREATMENT_END_TYPE_ID ?? 0, ref keyPatyReal);
                 this.KEY_PATY_ALTER = keyPaty;
+                this.KEY_PATY_ALTER_REAL = keyPatyReal;
+
+                if (data.PATIENT_TYPE_ID != patientTypeCFG.PATIENT_TYPE__BHYT && PatientTypeAlterReal != null)
+                {
+                    this.KEY_PATY_ALTER_REAL = null;
+                    this.PatientTypeAlterReal = null;
+                }
 
                 if (String.IsNullOrWhiteSpace(this.KEY_PATY_ALTER) && ListPta.Count > 0)
                 {
