@@ -37,6 +37,7 @@ namespace MPS.Processor.Mps000321.ADO
         public decimal? TOTAL_PATIENT_PRICE_SELF_HEIN_SERVICE_TYPE { get; set; }
         public decimal? NUM_ORDER { get; set; }
         public string KEY_PATY_ALTER { get; set; }
+        public string KEY_PATY_ALTER_REAL { get; set; }
         public long? PARENT_ID { get; set; }
 
         public long GROUP_DEPARTMENT_ID { get; set; }
