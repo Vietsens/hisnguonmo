@@ -42,6 +42,27 @@ namespace MPS.Processor.Mps000321
         private List<GroupPatientTypeADO> GroupPatientType { get; set; }
         private List<OtherSourceADO> ListOtherSource = new List<OtherSourceADO>();
         private List<PayFormTypeADO> ListPayFormType = new List<PayFormTypeADO>();
+        #region Real (Tách theo dịch vụ thanh toán)
+
+        private List<PatyAlterBhytADO> patyAlterBHYTADOsReal { get; set; }
+        private List<SereServADO> sereServADOsReal { get; set; }
+
+        private List<HeinServiceTypeADO> heinServiceTypeADOsReal { get; set; }
+        private List<HeinServiceTypeADO> HeinServiceTypeBedsReal { get; set; }
+
+        #region Không gom theo khoa
+
+        private List<SereServADO> sereServADOsRealNotGroupDepartment { get; set; }
+
+        private List<HeinServiceTypeADO> heinServiceTypeADOsRealNotGroupDepartment { get; set; }
+        private List<HeinServiceTypeADO> HeinServiceTypeBedsRealNotGroupDepartment { get; set; }
+        #endregion
+
+
+
+        private List<GroupDepartmentADO> GroupDepartmentsReal { get; set; }
+        private List<OtherSourceADO> ListOtherSourceReal = new List<OtherSourceADO>();
+        #endregion
 
         Mps000321PDO rdo;
         public Mps000321Processor(CommonParam param, PrintData printData)
@@ -151,6 +172,10 @@ namespace MPS.Processor.Mps000321
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
+
+                ProcessAddKeyList(ref objectTag);
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOsReal.Select(o => new { o.SERVICE_NAME, o.AMOUNT })), sereServADOsReal.Select(o => new { o.SERVICE_NAME, o.AMOUNT })));
                 objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs);
                 objectTag.AddObjectData(store, "Service", sereServADOs);
                 objectTag.AddObjectData(store, "PatyAlterBHYT", patyAlterBHYTADOs);
@@ -181,7 +206,9 @@ namespace MPS.Processor.Mps000321
 
                 objectTag.SetUserFunction(store, "ReplaceValue", new ReplaceValueFunction());
 
+
                 objectTag.AddObjectData(store, "OtherPaySource", this.ListOtherSource);
+                objectTag.AddObjectData(store, "OtherPaySourceReal", this.ListOtherSourceReal);
                 objectTag.AddObjectData(store, "PayFromType", this.ListPayFormType);
 
                 result = true;
@@ -194,6 +221,7 @@ namespace MPS.Processor.Mps000321
 
             return result;
         }
+
         private void SetQrCode()
         {
             try
