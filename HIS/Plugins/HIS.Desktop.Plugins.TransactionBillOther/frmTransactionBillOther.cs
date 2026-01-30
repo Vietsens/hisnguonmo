@@ -2064,6 +2064,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                         AMOUNT = nmse.AMOUNT,
                         GOODS_NAME = nmse.TDL_NONE_MEDI_SERVICE_NAME,
                         GOODS_UNIT_NAME = nmse.TDL_SERVICE_UNIT_NAME,
+                        SERVICE_UNIT_ID = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.SERVICE_UNIT_NAME == nmse.TDL_SERVICE_UNIT_NAME) != null ? BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => o.SERVICE_UNIT_NAME == nmse.TDL_SERVICE_UNIT_NAME).ID : 0,
                         TOTAL_PRICE = (nmse.AMOUNT) * (nmse.PRICE),
                         TOTAL_PRICE_WITH_VAT = ((nmse.AMOUNT) * (nmse.PRICE) * (1 + (nmse.VAT_RATIO))) - (nmse.DISCOUNT ?? 0),
                         DISCOUNT = nmse.DISCOUNT ?? 0,
@@ -2715,6 +2716,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     sereServBill.TDL_SERVICE_CODE = "";
                     sereServBill.TDL_SERVICE_NAME = item.GOODS_NAME;
                     sereServBill.SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME;
+                    sereServBill.TDL_SERVICE_UNIT_ID = item.SERVICE_UNIT_ID ?? 0;
                     //sereServBill.PRICE = item.PRICE;
                     sereServBill.VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
                     //sereServBill.VIR_TOTAL_PATIENT_PRICE = sereServBill.VIR_PRICE * (1 + sereServBill.VAT_RATIO) * sereServBill.AMOUNT;
