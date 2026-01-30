@@ -1230,6 +1230,68 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
+        private void ValidateTrackingAndTreatment()
+        {
+            if (lciPhieuDieuTri.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+            {
+                bool hasCurrentTreatment = trackingADOs != null && trackingADOs.Any(tracking =>
+                {
+                    try
+                    {
+                        if (tracking.TREATMENT_ID == treatmentId)
+                        {
+                            if (DateTime.Now.Date.ToString("yyyyMMdd") == tracking.TRACKING_TIME.ToString().PadRight(8, '0').Substring(0, 8))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                    return false;
+                });
+                if (!hasCurrentTreatment)
+                {
+                    XtraMessageBox.Show(
+                        "Bạn chưa tạo tờ điều trị ngày hôm nay, chỉ có thể kê đơn vật tư mà không thể kê đơn thuốc.",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                }
+            }    
+        }
+        private bool ChekPhieuDieuTriBeforeSave()
+        {
+            if (HisConfigCFG.IsTrackingRequired == "3")
+            {
+                dxValidationProviderControl.SetValidationRule(cboPhieuDieuTri, null);
+                dxValidationProviderControl.RemoveControlError(cboPhieuDieuTri);
+                this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+                if (cboPhieuDieuTri.EditValue == null)
+                {
+                    var mediType = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
+                    if (mediType != null && mediType.Any(a => a.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC))
+                    {
+                        XtraMessageBox.Show(
+                            "Không cho phép kê đơn có thuốc, chỉ cho phép kê đơn chỉ có vật tư khi chưa chọn tờ điều trị. Vui lòng chọn tờ điều trị để tiếp tục!",
+                            "Cảnh báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning
+                        );
+                        ValidationSingleControl(cboPhieuDieuTri, dxValidationProviderControl, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc), ValidTracking);
+                        this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+                        
+                        dxValidationProviderControl.Validate();
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         private void InitFormAssignPrescriptionAsync()
         {
             try
@@ -1617,6 +1679,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.VisibleColumnInGridControlService();
 
                 InitFormAssignPrescriptionAsync();
+
+                if (HisConfigCFG.IsTrackingRequired == "3")
+                {
+                    this.ValidateTrackingAndTreatment();
+                }
 
                 LogSystem.Debug("timerInitFormAssignPrescription_Tick 2...");
             }
@@ -2283,7 +2350,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     DevExpress.XtraEditors.XtraMessageBox.Show("Với đơn phòng khám, chỉ cho phép kê đơn nhiều ngày với thuốc/vật tư mua ngoài", HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
                     return;
                 }
-
+                if (!ChekPhieuDieuTriBeforeSave())
+                {
+                    return;
+                }
                 IsMultilPatient = IsSelectMultiPatient();
                 if ((intructionTimeSelecteds != null && intructionTimeSelected.Count > 1) || (mediMatyTypeADOs != null && mediMatyTypeADOs.Count > 0 && (mediMatyTypeADOs.Select(o => o.IntructionTime).Distinct().ToList().Count > 1 || mediMatyTypeADOs.Select(o => o.IntructionTime).Distinct().First() != InstructionTime)) || IsMultilPatient || (this.oldServiceReq != null && this.oldServiceReq.ID > 0))
                 {
@@ -6650,11 +6720,19 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
-                        //#16421 để key cấu hình giá trị 1: Không cho phép check hao phí với thuốc/vật tư không đính kèm
-                        if (data.IsDisableExpend || ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent)))
-                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
-                        else
+                        if (data.NotExpend)
+                        {
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
+                        //#16421 để key cấu hình giá trị 1: Không cho phép check hao phí với thuốc/vật tư không đính kèm
+                        else if (data.IsDisableExpend || ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent)))
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
+                        }
+                        else
+                        {
+                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
                     }
                     else if (e.Column.FieldName == "IsExpendType")
                     {
@@ -6935,8 +7013,19 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                                 if (hi.Column.FieldName == "IsExpend" && (dataRow.IsDisableExpend || ((dataRow.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || dataRow.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || dataRow.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((dataRow.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent))))
                                 //&& (HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && (dataRow.SereServParentId ?? 0) <= 0 && GetSereServInKip() <= 0))//Không cho phép check hao phí với thuốc/vật tư không đính kèm//Không cho phép check hao phí với thuốc/vật tư không đính kèm
                                 {
+                                    StringBuilder stringBuilder = new StringBuilder();
+                                    stringBuilder.Append("Thuốc/vật tư ");
+                                    stringBuilder.Append(dataRow.MEDICINE_TYPE_NAME);
+                                    if (dataRow.NotExpend)
+                                    {
+                                        stringBuilder.Append(" không cho phép Hao phí khi kê vật tư");
+                                    }
+                                    else
+                                    {
+                                        stringBuilder.Append(" được kê tại kho hao phí");
+                                    }
                                     if (dataRow.IsDisableExpend)
-                                        DevExpress.XtraEditors.XtraMessageBox.Show("Thuốc/vật tư " + dataRow.MEDICINE_TYPE_NAME + " được kê tại kho hao phí", HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
+                                        DevExpress.XtraEditors.XtraMessageBox.Show(stringBuilder.ToString(), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
                                     Inventec.Common.Logging.LogSystem.Debug("gridViewServiceProcess_MouseDown.return__FieldName:IsExpend");
                                     return;
                                 }

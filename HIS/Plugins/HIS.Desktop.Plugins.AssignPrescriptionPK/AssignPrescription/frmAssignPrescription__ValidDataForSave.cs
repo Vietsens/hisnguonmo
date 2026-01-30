@@ -1562,8 +1562,37 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                        .FirstOrDefault(o => o.ID == sereServParent.SERVICE_ID && o.MAX_EXPEND.HasValue);
                             if (service != null && totalPrice > service.MAX_EXPEND)
                             {
-                                MessageBox.Show(String.Format(ResourceMessage.TongTienDichVuHaoPhiVuotQuaMucGiaTriDuocCauHinh, service.MAX_EXPEND), Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                result = false;
+                                int configValue = Inventec.Common.TypeConvert.Parse.ToInt32(HisConfigCFG.AllowOverMaxExpendService);
+
+                                switch (configValue)
+                                {
+                                    case 1:
+                                        DialogResult dialogResult = MessageBox.Show(
+                                            $"Số tiền thuốc vật tư hao phí vượt giới hạn {service.MAX_EXPEND} của dịch vụ {service.SERVICE_NAME}. Bạn có muốn tiếp tục?",
+                                            "Cảnh báo",
+                                            MessageBoxButtons.YesNo,
+                                            MessageBoxIcon.Warning
+                                        );
+                                        if (dialogResult != DialogResult.Yes)
+                                        {
+                                            result = false;
+                                        }
+                                        break;
+
+                                    case 2:
+                                        // Tiếp tục xử lý mà không hiển thị cảnh báo
+                                        break;
+
+                                    default:
+                                        MessageBox.Show(
+                                            $"Số tiền thuốc vật tư hao phí vượt giới hạn {service.MAX_EXPEND} của dịch vụ {service.SERVICE_NAME}.",
+                                            "Cảnh báo",
+                                            MessageBoxButtons.OK,
+                                            MessageBoxIcon.Warning
+                                        );
+                                        result = false;
+                                        break;
+                                }
                             }
                         }
                     }

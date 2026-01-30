@@ -110,6 +110,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
             {
                 this.IsExpend = true;
             }
+            if (this.ServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+            {
+                var mediMatyTypeADO = (HIS.Desktop.Plugins.AssignPrescriptionPK.ADO.MediMatyTypeADO)dataRow;
+                var stock1 = frmAssignPrescription.mediStockD1ADOs.FirstOrDefault(x => x.SERVICE_ID == mediMatyTypeADO.SERVICE_ID);
+                if (stock1 != null && stock1.IS_NOT_EXPEND == 1)
+                {
+                    this.IsExpend = false;
+                    this.IsDisableExpend = true;
+                    this.NotExpend = true;
+                }
+
+                var stock2 = frmAssignPrescription.mediMatyTypeAvailables.FirstOrDefault(x => x.SERVICE_ID == mediMatyTypeADO.SERVICE_ID);
+                if (stock2 != null && stock2.IS_NOT_EXPEND == 1)
+                {
+                    this.IsExpend = false;
+                    this.IsDisableExpend = true;
+                    this.NotExpend = true;
+                }
+            }
             this.expMestId = frmAssignPrescription.oldExpMestId;
             this.Speed = frmAssignPrescription.spinTocDoTruyen.EditValue != null ? (decimal?)frmAssignPrescription.spinTocDoTruyen.Value : null;
             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.currentMedicineTypeADOForEdit.IS_AUTO_EXPEND), frmAssignPrescription.currentMedicineTypeADOForEdit.IS_AUTO_EXPEND) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisConfigCFG.IsAutoTickExpendWithAssignPresPTTT), HisConfigCFG.IsAutoTickExpendWithAssignPresPTTT) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.isAutoCheckExpend), frmAssignPrescription.isAutoCheckExpend) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.currentMedicineTypeADOForEdit.HEIN_SERVICE_TYPE_ID), frmAssignPrescription.currentMedicineTypeADOForEdit.HEIN_SERVICE_TYPE_ID) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.currentMedicineTypeADOForEdit.IntructionTimeSelecteds), frmAssignPrescription.currentMedicineTypeADOForEdit.IntructionTimeSelecteds));

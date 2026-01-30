@@ -1633,7 +1633,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 this.cboMedicineUseForm.EditValue = null;
-                this.DataHtuList.ForEach(o => o.IsChecked = false);
+                this.DataHtuList?.ForEach(o => o.IsChecked = false);
                 this.cboHtu.Text = null;
                 this.cboHtu.Properties.Buttons[1].Visible = false;
                 this.spinSang.EditValue = null;
