@@ -2483,7 +2483,14 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             {
                 CommonParam param = new CommonParam();
                 this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
-                var vHisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_HOLIDAY_POLICIES>();
+                var patienttype  = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>();
+                string patientTypeCode = "";
+                if (patienttype != null && this.hisPolicies1 != null)
+                {
+                    patientTypeCode = patienttype.FirstOrDefault(o => o.ID == this.hisPolicies1.FirstOrDefault().PATIENT_TYPE_ID).PATIENT_TYPE_CODE;
+                }
+
+                this.hisPolicies1 = this.hisPolicies1.Where(p => p.IS_WARNING_DEPOSIT_SERVICE != 1).ToList();
 
                 if (hisPolicies1 == null || hisPolicies1.Count == 0)
                     return true;
@@ -2492,7 +2499,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 if (!transactionDate.HasValue)
                     transactionDate = DateTime.Now;
 
-                // Lấy các dịch vụ được chọn
+                // Lấy các dịch vụ được chọn 
                 var checkedServices = ssTreeProcessor.GetListCheck(ucSereServTree);
 
                 // Gộp kiểm tra theo DAY_OF_WEEK, DAY_OF_YEAR, HOLIDAY 
@@ -2500,11 +2507,15 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
 
                 // 1. Theo DAY_OF_WEEK
                 var policiesByDayOfWeek = hisPolicies1.Where(p => p.DAY_OF_WEEK != null).ToList();
+                int currentHourMinute = int.Parse(transactionDate.Value.ToString("HHmmss"));
                 if (policiesByDayOfWeek.Count > 0)
                 {
                     int currentDayOfWeek = (int)transactionDate.Value.DayOfWeek;
                     int dbDayOfWeek = currentDayOfWeek == 0 ? 1 : currentDayOfWeek + 1;
-                    todayPolicies.AddRange(policiesByDayOfWeek.Where(p => p.DAY_OF_WEEK == dbDayOfWeek));
+                   
+                    todayPolicies.AddRange(policiesByDayOfWeek.Where(p => p.DAY_OF_WEEK == dbDayOfWeek &&
+                            currentHourMinute >= (p.TIME_FROM ?? 0) &&
+                            currentHourMinute <= (p.TIME_TO ?? 235959)));
                 }
 
                 // 2. Theo DAY_OF_YEAR (ngày/tháng)
@@ -2513,7 +2524,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 {
                     int currentDay = transactionDate.Value.Day;
                     int currentMonth = transactionDate.Value.Month;
-                    int currentHourMinute = int.Parse(transactionDate.Value.ToString("HHmmss"));
+                    //int currentHourMinute = int.Parse(transactionDate.Value.ToString("HHmmss"));
                     todayPolicies.AddRange(policiesByDayOfYear
                         .Where(p =>
                             p.DAY_OF_YEAR.HasValue &&
@@ -2524,36 +2535,28 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         ));
                 }
 
-                // 3. Theo HOLIDAY
+                // 3. Theo HOLIDAY 
                 var policiesByHoliday = hisPolicies1.Where(p => p.DAY_OF_WEEK == null && p.DAY_OF_YEAR == null && p.HOLIDAY != null).ToList();
                 if (policiesByHoliday.Count > 0)
                 {
                     int currentDateInt = int.Parse(transactionDate.Value.ToString("yyyyMMdd"));
-                    todayPolicies.AddRange(policiesByHoliday.Where(p => p.HOLIDAY == currentDateInt));
+
+                    todayPolicies.AddRange(policiesByHoliday.Where(p => p.HOLIDAY == currentDateInt &&
+                            currentHourMinute >= (p.TIME_FROM ?? 0) &&
+                            currentHourMinute <= (p.TIME_TO ?? 235959)));
                 }
 
-                // Xử lý cảnh báo cho trường hợp không phải cấp cứu
-                if (this.hisTreatment != null && this.hisTreatment.IS_EMERGENCY != 1)
+                // Xử lý cảnh báo cho trường hợp không phải cấp cứu 
+                if (this.hisTreatment != null && this.hisTreatment.IS_EMERGENCY != 1 && 
+                    this.hisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && todayPolicies.Count > 0)
                 {
-                    var policiesIsWarning = vHisPolicies1.Where(p => p.IS_WARNING_DEPOSIT_SERVICE != 1 && p.PATIENT_TYPE_CODE == "OT").ToList();
-
-                    if (policiesIsWarning.Count > 0 && policiesIsWarning != null)
-                    {
-                        bool canContinue = ValidateAndShowWarning(null, policiesIsWarning, checkedServices);
-                        if (!canContinue)
-                            return false;
-                    }
-                }
-
-                // Xử lý cảnh báo cho policies hôm nay
-                if (todayPolicies.Count > 0)
-                {
-                    bool canContinue = ValidateAndShowWarning(todayPolicies, null, checkedServices);
+                    bool canContinue = ValidateAndShowWarning(todayPolicies, checkedServices);
                     if (!canContinue)
                         return false;
+
                 }
 
-                // Nếu không có policy phù hợp, cho phép lưu
+                // Nếu không có policy phù hợp, cho phép lưu 
                 return true;
             }
             catch (Exception ex)
@@ -2563,18 +2566,16 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             }
         }
 
-        private bool ValidateAndShowWarning(List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> policies, List<MOS.EFMODEL.DataModels.V_HIS_HOLIDAY_POLICIES> vPolicies, List<SereServADO> checkedServices)
+        private bool ValidateAndShowWarning(List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> policies, List<SereServADO> checkedServices)
         {
-            var allowedPatientTypeIds = vPolicies != null ? vPolicies.Where(p => p.PATIENT_TYPE_ID != null).Select(p => (long)p.PATIENT_TYPE_ID).Distinct().ToList()
-                        : policies.Where(p => p.PATIENT_TYPE_ID != null).Select(p => (long)p.PATIENT_TYPE_ID).Distinct().ToList();
 
-            var notAllowed = checkedServices
-                .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
-                .GroupBy(s => s.PATIENT_TYPE_ID)
-                .ToDictionary(
+            var allowedPatientTypeIds = policies.Where(p => p.PATIENT_TYPE_ID != null).Select(p => (long)p.PATIENT_TYPE_ID).Distinct().ToList();
+
+            var notAllowed = checkedServices.Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID) && !allowedPatientTypeIds.Contains(s.PRIMARY_PATIENT_TYPE_ID ?? 0))
+                .GroupBy(s => s.PATIENT_TYPE_ID).ToDictionary(
                     g => g.Key,
-                    g => g.Select(s => s.TDL_SERVICE_CODE).ToList()
-                );
+                    g => g.Select(s => s.TDL_SERVICE_CODE).ToList());
+
 
             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed:", notAllowed));
 

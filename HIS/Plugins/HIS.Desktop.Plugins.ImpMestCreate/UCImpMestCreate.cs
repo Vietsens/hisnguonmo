@@ -2471,11 +2471,19 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
-                                else
+                                else 
                                 {
                                     mediPaty = new HIS_MEDICINE_PATY();
                                     mediPaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                    mediPaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
+                                    if (paty.ExpPrice <= 0 && paty.ExpPriceVat > 0)
+                                    {
+                                        mediPaty.EXP_PRICE = paty.ExpPriceVat * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    else
+                                    {
+                                        mediPaty.EXP_PRICE = paty.ExpPrice * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    //mediPaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
@@ -2592,7 +2600,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     else
                     {
                         this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0}{1}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0}{1}{2}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : string.Format("{0}{1}{2}{3}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_GROUP_CODE) ? this.currrentServiceAdo.TDL_BID_GROUP_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null);
-
                     }
 
                     this.currrentServiceAdo.BidId = materialProcessor.GetBid(this.ucMaterialTypeTree);
@@ -2651,7 +2658,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 {
                                     matePaty = new HIS_MATERIAL_PATY();
                                     matePaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                    matePaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
+                                    if (paty.ExpPrice <= 0 && paty.ExpPriceVat > 0)
+                                    {
+                                        matePaty.EXP_PRICE = paty.ExpPriceVat * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    else
+                                    {
+                                        matePaty.EXP_PRICE = paty.ExpPrice * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    //matePaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
@@ -2673,7 +2688,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 {
                                     matePaty = new HIS_MATERIAL_PATY();
                                     matePaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                    matePaty.EXP_PRICE = (paty.IsReusable ? paty.PRICE : paty.ExpPrice) * (1 + (paty.PercentProfit / (decimal)100));
+                                    if (paty.ExpPrice <= 0 && paty.ExpPriceVat > 0)
+                                    {
+                                        matePaty.EXP_PRICE = paty.ExpPriceVat * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    else
+                                    {
+                                        matePaty.EXP_PRICE = paty.ExpPrice * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    //matePaty.EXP_PRICE = (paty.IsReusable ? paty.PRICE : paty.ExpPrice) * (1 + (paty.PercentProfit / (decimal)100));
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {

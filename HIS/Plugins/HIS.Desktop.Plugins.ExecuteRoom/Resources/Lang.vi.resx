@@ -846,6 +846,9 @@
   <data name="UCExecuteRoom.ToolTipControl.TreatmentType_DtNgoaiTru" xml:space="preserve">
     <value>Điều trị ngoại trú</value>
   </data>
+	<data name="UCExecuteRoom.ToolTipControl.IS_REGISTER_BY_APP" xml:space="preserve">
+    <value>Đăng ký qua app</value>
+  </data>
   <data name="UCExecuteRoom.ToolTipControl.UnFinishCLS" xml:space="preserve">
     <value>Chưa kết thúc CLS</value>
   </data>
