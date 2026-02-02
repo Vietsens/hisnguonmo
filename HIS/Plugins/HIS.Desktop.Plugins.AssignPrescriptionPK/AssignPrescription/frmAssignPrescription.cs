@@ -1175,7 +1175,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                LogSystem.Debug("frmAssignPrescription_Load Starting.... 1");
+                    LogSystem.Debug("frmAssignPrescription_Load Starting.... 1");
                 this.SetCaptionByLanguageKeyNew();
                 LogSystem.Debug("frmAssignPrescription_Load. 1");
                 WaitingManager.Show();
@@ -1232,60 +1232,75 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
         private void ValidateTrackingAndTreatment()
         {
-            if (lciPhieuDieuTri.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+            try
             {
-                bool hasCurrentTreatment = trackingADOs != null && trackingADOs.Any(tracking =>
+                if (HisConfigCFG.IsTrackingRequired == "3")
                 {
-                    try
+                    LogSystem.Debug("ValidateTrackingAndTreatment_1");
+                    if (lciPhieuDieuTri.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                     {
-                        if (tracking.TREATMENT_ID == treatmentId)
+                        LogSystem.Debug("ValidateTrackingAndTreatment_2");
+                        bool hasCurrentTreatment = this.trackingADOs != null && trackingADOs.Count > 0 && this.trackingADOs.Any(tracking =>
                         {
-                            if (DateTime.Now.Date.ToString("yyyyMMdd") == tracking.TRACKING_TIME.ToString().PadRight(8, '0').Substring(0, 8))
+                            try
                             {
-                                return true;
+                                if (tracking.TREATMENT_ID == treatmentId)
+                                {
+                                    if (DateTime.Now.Date.ToString("yyyyMMdd") == tracking.TRACKING_TIME.ToString().PadRight(8, '0').Substring(0, 8))
+                                    {
+                                        return true;
+                                    }
+                                }
                             }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                            return false;
+                        });
+                        if (!hasCurrentTreatment)
+                        {
+                            XtraMessageBox.Show(
+                                "Bạn chưa tạo tờ điều trị ngày hôm nay, chỉ có thể kê đơn vật tư mà không thể kê đơn thuốc.",
+                                "Cảnh báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        Inventec.Common.Logging.LogSystem.Error(ex);
-                    }
-                    return false;
-                });
-                if (!hasCurrentTreatment)
-                {
-                    XtraMessageBox.Show(
-                        "Bạn chưa tạo tờ điều trị ngày hôm nay, chỉ có thể kê đơn vật tư mà không thể kê đơn thuốc.",
-                        "Cảnh báo",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning
-                    );
                 }
-            }    
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
         private bool ChekPhieuDieuTriBeforeSave()
         {
             if (HisConfigCFG.IsTrackingRequired == "3")
             {
-                dxValidationProviderControl.SetValidationRule(cboPhieuDieuTri, null);
-                dxValidationProviderControl.RemoveControlError(cboPhieuDieuTri);
-                this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
-                if (cboPhieuDieuTri.EditValue == null)
+                if (lciPhieuDieuTri.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                 {
-                    var mediType = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
-                    if (mediType != null && mediType.Any(a => a.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC))
+                    dxValidationProviderControl.SetValidationRule(cboPhieuDieuTri, null);
+                    dxValidationProviderControl.RemoveControlError(cboPhieuDieuTri);
+                    this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+                    if (cboPhieuDieuTri.EditValue == null)
                     {
-                        XtraMessageBox.Show(
-                            "Không cho phép kê đơn có thuốc, chỉ cho phép kê đơn chỉ có vật tư khi chưa chọn tờ điều trị. Vui lòng chọn tờ điều trị để tiếp tục!",
-                            "Cảnh báo",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning
-                        );
-                        ValidationSingleControl(cboPhieuDieuTri, dxValidationProviderControl, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc), ValidTracking);
-                        this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
-                        
-                        dxValidationProviderControl.Validate();
-                        return false;
+                        var mediType = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
+                        if (mediType != null && mediType.Any(a => a.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC))
+                        {
+                            XtraMessageBox.Show(
+                                "Không cho phép kê đơn có thuốc, chỉ cho phép kê đơn chỉ có vật tư khi chưa chọn tờ điều trị. Vui lòng chọn tờ điều trị để tiếp tục!",
+                                "Cảnh báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            ValidationSingleControl(cboPhieuDieuTri, dxValidationProviderControl, Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc), ValidTracking);
+                            this.lciPhieuDieuTri.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+
+                            dxValidationProviderControl.Validate();
+                            return false;
+                        }
                     }
                 }
             }
@@ -1679,11 +1694,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.VisibleColumnInGridControlService();
 
                 InitFormAssignPrescriptionAsync();
-
-                if (HisConfigCFG.IsTrackingRequired == "3")
-                {
-                    this.ValidateTrackingAndTreatment();
-                }
 
                 LogSystem.Debug("timerInitFormAssignPrescription_Tick 2...");
             }
