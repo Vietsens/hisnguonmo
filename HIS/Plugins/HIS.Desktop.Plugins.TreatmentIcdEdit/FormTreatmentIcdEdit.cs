@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         private List<HIS_OTHER_PAY_SOURCE> DataOtherSource;
         bool _IsAutoSetOweType;
         private bool isLoading = false;
+        private bool _isInitData = true;
 
         short? _IS_NOT_CHECK_LHMP;
 
@@ -603,6 +604,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 InitUcSubInIcd();
 
                 FillDataToControl();
+                _isInitData = false;
                 WaitingManager.Hide();
 
                 validationControl();
@@ -3839,7 +3841,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         {
                             gridCheckMark.ClearSelection(view);
                         }
-                        if (!string.IsNullOrWhiteSpace(rc.DEFAULT_DETAIL_LOGINNAMES))
+                        if (!_isInitData && !string.IsNullOrWhiteSpace(rc.DEFAULT_DETAIL_LOGINNAMES))
                         {
 
                             if (gridCheckMark != null && view != null)
