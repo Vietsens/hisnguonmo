@@ -2065,25 +2065,39 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         data.HospitalizeReasonName = checkReasonNT.HOSPITALIZE_REASON_NAME;
                     }
                 }
-                if (cboSourceCustomer.EditValue != null)
+
+                if (cboSourceCustomer.EditValue != null && HisCutomerSource != null)
                 {
-                    var cusomter = this.HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.ToUpper() == cboSourceCustomer.EditValue.ToString().ToUpper());
-                    if (cusomter != null)
+                    string editValue = cboSourceCustomer.EditValue.ToString();
+                    var customer = HisCutomerSource
+                        .FirstOrDefault(o =>
+                            !string.IsNullOrEmpty(o.CUSTOMER_SOURCE_CODE) &&
+                            o.CUSTOMER_SOURCE_CODE.Equals(editValue, StringComparison.OrdinalIgnoreCase));
+
+                    if (customer != null)
                     {
-                        data.CustomerSourceCode = cusomter.CUSTOMER_SOURCE_CODE;
-                        data.CustomerSourceName = cusomter.CUSTOMER_SOURCE_NAME;
+                        data.CustomerSourceCode = customer.CUSTOMER_SOURCE_CODE;
+                        data.CustomerSourceName = customer.CUSTOMER_SOURCE_NAME;
                     }
+                }
+                else
+                {
+                    data.CustomerSourceCode = null;
+                    data.CustomerSourceName = null;
                 }
 
                 var gridCheckMark = CboCustomerDetail.Properties.Tag as GridCheckMarksSelection;
-                if (gridCheckMark != null && gridCheckMark.Selection != null)
+                if (gridCheckMark?.Selection != null && gridCheckMark.Selection.Count > 0)
                 {
                     var selectedLoginNames = gridCheckMark.Selection
                         .OfType<HIS_CUSTOMER_SOURCE_DT>()
+                        .Where(x => x != null && !string.IsNullOrEmpty(x.LOGINNAME)) 
                         .Select(x => x.LOGINNAME)
                         .ToArray();
 
-                    data.CustomerSourceDetail = string.Join(",", selectedLoginNames);
+                    data.CustomerSourceDetail = selectedLoginNames.Length > 0
+                        ? string.Join(",", selectedLoginNames)
+                        : null;
                 }
                 else
                 {
@@ -2923,11 +2937,14 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 
                 HisCustomerSourceFilter filter = new HisCustomerSourceFilter();
                 filter.IS_ACTIVE = 1;
-                HisCutomerSource = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>().Where(o => o.IS_ACTIVE == 1).ToList() ;
 
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("CUSTOMER_SOURCE_CODE", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("CUSTOMER_SOURCE_NAME", "", 250, 2));
+                var result = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>(); 
+                HisCutomerSource = result != null ? result.Where(o => o != null && o.IS_ACTIVE == 1).ToList() : new List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo> 
+                { 
+                    new ColumnInfo("CUSTOMER_SOURCE_CODE", "", 100, 1), 
+                    new ColumnInfo("CUSTOMER_SOURCE_NAME", "", 250, 2) 
+                };
                 ControlEditorADO controlEditorADO = new ControlEditorADO("CUSTOMER_SOURCE_CODE", "CUSTOMER_SOURCE_NAME", columnInfos, false, 350);
                 ControlEditorLoader.Load(cboSourceCustomer, HisCutomerSource, controlEditorADO);
                 cboSourceCustomer.Properties.DisplayMember = "CUSTOMER_SOURCE_NAME";
@@ -2942,12 +2959,14 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         {
             try
             {
-                HisCustomerSourceDetail = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT>().Where(o => o.IS_ACTIVE == 1).ToList();
+                var result = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT>();
+                HisCustomerSourceDetail = result != null ? result.Where(o => o.IS_ACTIVE == 1).ToList() : new List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE_DT>();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo> 
+                { 
+                    new ColumnInfo("LOGINNAME", "", 100, 1), 
+                    new ColumnInfo("USERNAME", "", 250, 2) 
+                };
 
-                
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("LOGINNAME", "", 100, 1));
-                columnInfos.Add(new ColumnInfo("USERNAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("LOGINNAME", "USERNAME", columnInfos, false, 350);
                 ControlEditorLoader.Load(CboCustomerDetail, HisCustomerSourceDetail, controlEditorADO);
                 CboCustomerDetail.Properties.DisplayMember = "USERNAME";
@@ -3796,9 +3815,9 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             try
             {
                 cboSourceCustomer.Properties.Buttons[1].Visible = cboSourceCustomer.EditValue != null;
-                if (cboSourceCustomer.EditValue != null)
+                if (cboSourceCustomer.EditValue != null && HisCutomerSource != null)
                 {
-                    var rc = this.HisCutomerSource.FirstOrDefault(o => o.CUSTOMER_SOURCE_CODE.Equals(cboSourceCustomer.EditValue.ToString(), StringComparison.OrdinalIgnoreCase));
+                    var rc = HisCutomerSource.FirstOrDefault(o => !string.IsNullOrEmpty(o.CUSTOMER_SOURCE_CODE) && o.CUSTOMER_SOURCE_CODE.Equals(cboSourceCustomer.EditValue.ToString(), StringComparison.OrdinalIgnoreCase));
                     if (rc != null)
                     {
                         txtSourceCustomer.Text = rc.CUSTOMER_SOURCE_CODE;
