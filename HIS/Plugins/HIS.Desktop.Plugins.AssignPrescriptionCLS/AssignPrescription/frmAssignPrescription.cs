@@ -372,7 +372,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 LogSystem.Debug("frmAssignPrescription_Load Starting.... 1");
                 WaitingManager.Show();
-                this.LoadHisTreatment();
+                this.LoadHisTreatment(); // lay his_treatment dua theo treatmentId truyen sang
                 this.AddBarManager(this.barManager1);
                 this.isNotLoadWhileChangeInstructionTimeInFirst = true;
                 this.gridControlServiceProcess.ToolTipController = this.tooltipService;
@@ -2257,7 +2257,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         }
 
         private void txtMediMatyForPrescription_KeyDown(object sender, KeyEventArgs e)
-        {
+       {
             try
             {
                 if (e.KeyCode == Keys.Enter)
@@ -2670,11 +2670,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
-                        //#16421 để key cấu hình giá trị 1: Không cho phép check hao phí với thuốc/vật tư không đính kèm
-                        if (data.IsDisableExpend || ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent)))
-                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
-                        else
+                        if ((data.IS_NOT_EXPEND ?? 0) == 1)
+                        {
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
+                        else
+                        {
+                            //#16421 để key cấu hình giá trị 1: Không cho phép check hao phí với thuốc/vật tư không đính kèm
+                            if (data.IsDisableExpend || ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent)))
+                                e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
+                            else
+                                e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
                     }
                     else if (e.Column.FieldName == "IsExpendType")
                     {
@@ -3296,6 +3303,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             try
             {
                 var medicineTypeADOForEdit = this.gridViewMediMaty.GetFocusedRow();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeADOForEdit), medicineTypeADOForEdit));
                 if (medicineTypeADOForEdit != null)
                 {
                     popupControlContainerMediMaty.HidePopup();
@@ -4854,6 +4862,32 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
+        private void repositoryItemChkIsExpend__MedicinePage_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CheckEdit chk = sender as CheckEdit;
+                var currentRowSereServADO = (MediMatyTypeADO)gridViewServiceProcess.GetFocusedRow();
+                if (currentRowSereServADO == null)
+                    return;
+
+                if ((currentRowSereServADO.IS_NOT_EXPEND ?? 0) == 1)
+                {
+                    chk.Checked = false;
+                    currentRowSereServADO.IsExpend = false;
+                    return;
+                }
+
+                if (currentRowSereServADO.IsDisableExpend)
+                {
+                    chk.Checked = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
 
         private void InitRadioGroupOption()
         {
