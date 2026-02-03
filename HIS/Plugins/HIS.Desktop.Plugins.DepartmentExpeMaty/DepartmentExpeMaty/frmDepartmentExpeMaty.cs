@@ -289,8 +289,8 @@ namespace HIS.Desktop.Plugins.DepartmentExpeMaty.DepartmentExpeMaty
                 var dataSource = grdHisDepartmentExpeMaty.DataSource as List<V_HIS_DEPARTMENT_EXPE_MATY>;
                 if (dataSource != null)
                 {
-                    if (dataSource.Any(a =>
-                    a.MATERIAL_TYPE_ID == ((long)(cboMaty.EditValue ?? 0))
+                    if (dataSource.Any(a => a.ID != (this.ActionType != GlobalVariables.ActionAdd && this.currentData != null ? this.currentData.ID : 0)
+                    && a.MATERIAL_TYPE_ID == ((long)(cboMaty.EditValue ?? 0))
                     && a.DEPARTMENT_ID == ((long)(cboDepartment.EditValue ?? 0))
                     && (cboStock.EditValue == null ? !a.MEDI_STOCK_ID.HasValue : a.MEDI_STOCK_ID.HasValue && a.MEDI_STOCK_ID.Value == ((long)(cboStock.EditValue ?? 0)))
                     ))
