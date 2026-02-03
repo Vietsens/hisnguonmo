@@ -206,6 +206,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     //{
                     //    this.IsExpend = true;
                     //}
+                    if(maty.IS_NOT_EXPEND ==1)
+                    {
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }    
 
                     this.PrimaryKey = ((inputData.SERVICE_ID ?? 0) + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
                     AssignPrescriptionWorker.MediMatyCreateWorker.setNumRow();
@@ -245,6 +250,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     this.IsKHBHYT = false;
                     this.NUM_ORDER = AssignPrescriptionWorker.MediMatyCreateWorker.getNumRow();
                     this.EQUIPMENT_SET_ID = inputData.EQUIPMENT_SET_ID;
+
+                    if (maty.IS_NOT_EXPEND == 1)
+                    {
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }    
 
                     //Lay doi tuong mac dinh
                     MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE patientType = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
@@ -546,6 +557,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     this.ALERT_MAX_IN_PRESCRIPTION = maty.ALERT_MAX_IN_PRESCRIPTION;
                     this.TDL_GENDER_ID = maty.TDL_GENDER_ID;
                     this.MAX_REUSE_COUNT = maty.MAX_REUSE_COUNT;
+                    if (maty.IS_NOT_EXPEND == 1)
+                    {
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }
                 }
 
                 if (!String.IsNullOrEmpty(inputData.SERIAL_NUMBER))
@@ -667,6 +683,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     this.ALERT_MAX_IN_PRESCRIPTION = maty.ALERT_MAX_IN_PRESCRIPTION;
                     this.TDL_GENDER_ID = maty.TDL_GENDER_ID;
                     this.MAX_REUSE_COUNT = maty.MAX_REUSE_COUNT;
+                    if (maty.IS_NOT_EXPEND == 1)
+                    {
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }
                 }
 
                 if (!String.IsNullOrEmpty(inputData.SERIAL_NUMBER))
@@ -826,6 +847,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                 var maty = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.ID == inputData.MATERIAL_TYPE_ID);
                 if (maty != null)
                 {
+                    if (maty.IS_NOT_EXPEND ==1)
+                    {
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }    
                     Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, maty);
 
                     this.AMOUNT = inputData.AMOUNT;
@@ -1036,6 +1062,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
                     this.MEDICINE_TYPE_CODE = maty.MATERIAL_TYPE_CODE;
                     this.MEDICINE_TYPE_NAME = maty.MATERIAL_TYPE_NAME;
                     this.IsAllowOdd = maty.IS_ALLOW_ODD == 1 ? true : false;
+                    if(maty.IS_NOT_EXPEND == 1)
+                    {
+                        this.IsExpend = false;
+                        this.IsDisableExpend = true;
+                    }    
                 }
                 else
                 {
@@ -1154,6 +1185,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
         public long? USE_COUNT { get; set; }//Số lần sử dụng
         public long? USE_REMAIN_COUNT { get; set; }//Số lần sử dụng còn lại
         public string SERIAL_NUMBER { get; set; }
+        public decimal? IS_NOT_EXPEND { get; set; }
         public bool? IsNotTakeBean { get; set; }
         public bool? IsStent { get; set; }
         public List<long> ExpMestDetailIds { get; set; }
