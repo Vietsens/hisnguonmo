@@ -797,7 +797,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                     x.BED_ROOM_NAME,
                     x.PATIENT_COUNT,
                     x.BED_COUNT,
-                    TT_PATIENT_BED_STR = ((int)(x.PATIENT_COUNT ?? 0)).ToString() + "/" + ((int)(x.BED_COUNT)).ToString()
+                    TT_PATIENT_BED_STR = ((int)(x.PATIENT_COUNT ?? 0)).ToString() + "/" + ((int)(x.BED_COUNT ?? 0)).ToString()
                 }).ToList();
                 cboBedRoom.Properties.DataSource = dataSource;
                 cboBedRoom.Properties.DisplayMember = "BED_ROOM_NAME";
@@ -956,7 +956,7 @@ namespace HIS.Desktop.Plugins.HisBedRoomIn
                     x.BED_ROOM_NAME,
                     x.PATIENT_COUNT,
                     x.BED_COUNT,
-                    TT_PATIENT_BED_STR = ((int)(x.PATIENT_COUNT ?? 0)).ToString() + "/" + ((int)(x.BED_COUNT)).ToString()
+                    TT_PATIENT_BED_STR = ((int)(x.PATIENT_COUNT ?? 0)).ToString() + "/" + ((int)(x.BED_COUNT ?? 0)).ToString()
                 }).ToList();
                 Inventec.Common.Logging.LogSystem.Debug("LoadDataToBedRoomCombo 3");
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("bedRooms", bedRooms));
