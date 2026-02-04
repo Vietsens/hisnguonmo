@@ -590,6 +590,17 @@ namespace HIS.Desktop.Plugins.TransactionBill
         {
             try
             {
+                var screen = Screen.FromControl(this);
+                int screenWidth = screen.Bounds.Width;
+                int screenHeight = screen.Bounds.Height;
+
+                if (screenWidth == 3166 && screenHeight == 768)
+                {
+                    this.WindowState = FormWindowState.Normal;   // đảm bảo không bị override
+                    this.FormBorderStyle = FormBorderStyle.None; // bỏ viền
+                    this.Bounds = screen.Bounds;                 // full màn hình
+                    this.TopMost = true;                         // (optional) nổi trên cùng
+                }
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBill_Load. 1");
                 WaitingManager.Show();
                 //qtcode
