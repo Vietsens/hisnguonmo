@@ -26,7 +26,6 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.TransactionBillTwoInOne.ADO;
 using HIS.Desktop.Plugins.TransactionBillTwoInOne.Config;
 using HIS.Desktop.Plugins.TransactionBillTwoInOne.Validation;
@@ -374,6 +373,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                var screen = Screen.FromControl(this);
+                int screenWidth = screen.Bounds.Width;
+                int screenHeight = screen.Bounds.Height;
+
+                if (screenWidth == 3166 && screenHeight == 768)
+                {
+                    this.WindowState = FormWindowState.Normal;   // đảm bảo không bị override
+                    this.FormBorderStyle = FormBorderStyle.None; // bỏ viền
+                    this.Bounds = screen.Bounds;                 // full màn hình
+                    this.TopMost = true;                         // (optional) nổi trên cùng
+                }
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBillTwoInOne_Load. 1");
                 WaitingManager.Show();
                 this.SetCaptionByLanguageKey();
