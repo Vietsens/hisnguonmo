@@ -204,11 +204,13 @@
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
       <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
