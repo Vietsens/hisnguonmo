@@ -504,7 +504,6 @@ namespace HIS.Desktop.Plugins.DepartmentExpeMaty.DepartmentExpeMaty
             this.txtMaty.Location = new System.Drawing.Point(97, 2);
             this.txtMaty.MenuManager = this.barManager1;
             this.txtMaty.Name = "txtMaty";
-            this.txtMaty.Properties.MaxLength = 10;
             this.txtMaty.Size = new System.Drawing.Size(82, 20);
             this.txtMaty.StyleController = this.lcInfor;
             this.txtMaty.TabIndex = 4;
