@@ -62,6 +62,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
         Action<string> dlgGetTreatmentTypeId;
         Action<string> dlgGetTreatmentTypeIdForUcHeinInfo;
 
+        Action<bool> dlgGetEmergence;
+
+
         internal HIS_TREATMENT _HisTreatment = null;
         HIS_PATIENT_TYPE workingPatientType;
 
@@ -913,9 +916,21 @@ namespace HIS.UC.UCOtherServiceReqInfo
             try
             {
                 if (chkEmergency.Checked)
+                {
                     lciEmergencyTime.Enabled = true;
+                    if (this.dlgGetEmergence != null)
+                    {
+                        this.dlgGetEmergence(chkEmergency.Checked);
+                    }
+                }
                 else
+                {
                     lciEmergencyTime.Enabled = false;
+                    if (this.dlgGetEmergence != null)
+                    {
+                        this.dlgGetEmergence(chkEmergency.Checked);
+                    }
+                }    
             }
             catch (Exception ex)
             {

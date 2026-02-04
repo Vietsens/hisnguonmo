@@ -15,40 +15,41 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.XtraBars;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Base;
+//using HIS.UC.ServiceRoom.CustomControl;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.ADO;
+using HIS.Desktop.DelegateRegister;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.UC.ServiceRoom.ADO;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using MOS.EFMODEL.DataModels;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.UC.ServiceRoom.ADO;
-using MOS.EFMODEL.DataModels;
-using Inventec.Common.Controls.EditorLoader;
-using MOS.SDO;
-using System.Resources;
-using System.Globalization;
-using HIS.Desktop.DelegateRegister;
-using HIS.Desktop.LocalStorage.BackendData;
-using Inventec.Common.Logging;
-using HIS.Desktop.Utilities.Extensions;
-using DevExpress.XtraEditors.Repository;
-//using HIS.UC.ServiceRoom.CustomControl;
-using DevExpress.XtraGrid.Views.Grid;
-using System.Collections;
-using DevExpress.Data;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid;
-using HIS.Desktop.ADO;
-using Inventec.Desktop.Common.LanguageManager;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.XtraBars;
-using System.IO;
-using HIS.Desktop.LocalStorage.LocalData;
 
 namespace HIS.UC.ServiceRoom
 {
@@ -89,6 +90,10 @@ namespace HIS.UC.ServiceRoom
         long? PatientClassifyId { get; set; }
         string ucName;
         long? serviceId = null;
+        long? examId = 0; 
+        private bool _isEmergency;
+        string _treatmentTypeId;
+        bool _isChoosePrimary = false;
         int popupHeight = 400;
         bool statecheckColumn;
         bool isShowContainerMediMaty = false;
@@ -124,7 +129,6 @@ namespace HIS.UC.ServiceRoom
         string tol9 = "";
         string tol10 = "";
         string tol11 = "";
-
         #endregion
 
         #region Constructor - Load
@@ -148,7 +152,6 @@ namespace HIS.UC.ServiceRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
         private void UCRoomExamService_Load(object sender, EventArgs e)
         {
             try
@@ -161,7 +164,6 @@ namespace HIS.UC.ServiceRoom
                 {
                     ItemCboSurcharge();
                 }
-
                 SetDataSourceCboSurcharge();
             }
             catch (Exception ex)
@@ -829,6 +831,7 @@ namespace HIS.UC.ServiceRoom
                         }
                         SetDataSourceCboSurcharge();
                     }
+
                 }
             }
             catch (Exception ex)
@@ -1092,6 +1095,7 @@ namespace HIS.UC.ServiceRoom
                 bool valid = false;
                 if (this.cboSurcharge.EditValue != null)
                 {
+                    _isChoosePrimary = true;
                     valid = true;
                     if (this.dlgFocusNextUserControlSurcharge != null)
                     {
@@ -1106,6 +1110,148 @@ namespace HIS.UC.ServiceRoom
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra thời gian có phải là "Ngoài giờ" hay không
+        /// </summary>
+        /// <param name="checkTime">Thời gian cần kiểm tra (nullable, nếu null thì lấy thời gian hiện tại)</param>
+        /// <returns>True nếu là ngoài giờ và IS_WARNING_DEPOSIT_SERVICE = 1, False nếu không</returns>
+        public bool CheckIsOutOfHoursTime(DateTime? checkTime = null)
+        {
+            bool result = false;
+            try
+            {
+                DateTime timeToCheck = checkTime ?? DateTime.Now;
+                
+                var holidayPolicies = BackendDataWorker.Get<V_HIS_HOLIDAY_POLICIES>()
+                    .Where(o => o.PATIENT_TYPE_CODE == "OT").ToList();
+                
+                if (holidayPolicies == null || holidayPolicies.Count == 0)
+                {
+                    return false;
+                }
+
+                foreach (var policy in holidayPolicies)
+                {
+                    bool isMatchTime = false;
+
+                    if (policy.HOLIDAY_POLICIES_TYPE == 1)
+                    {
+                        int dayOfWeek;
+                        switch (timeToCheck.DayOfWeek)
+                        {
+                            case DayOfWeek.Sunday:
+                                dayOfWeek = 1;
+                                break;
+                            case DayOfWeek.Monday:
+                                dayOfWeek = 2;
+                                break;
+                            case DayOfWeek.Tuesday:
+                                dayOfWeek = 3;
+                                break;
+                            case DayOfWeek.Wednesday:
+                                dayOfWeek = 4;
+                                break;
+                            case DayOfWeek.Thursday:
+                                dayOfWeek = 5;
+                                break;
+                            case DayOfWeek.Friday:
+                                dayOfWeek = 6;
+                                break;
+                            case DayOfWeek.Saturday:
+                                dayOfWeek = 7;
+                                break;
+                            default:
+                                dayOfWeek = 0;
+                                break;
+                        }
+
+                        if (policy.DAY_OF_WEEK == dayOfWeek)
+                        {
+                            isMatchTime = CheckTimeInRange(timeToCheck, policy.TIME_FROM, policy.TIME_TO);
+                        }
+                    }
+                    else if (policy.HOLIDAY_POLICIES_TYPE == 2)
+                    {
+                        if (policy.DAY_OF_YEAR.HasValue && policy.DAY_OF_YEAR.Value > 0)
+                        {
+                            short currentMMDD = short.Parse(timeToCheck.ToString("MMdd"));
+
+                            if (policy.DAY_OF_YEAR.Value == currentMMDD)
+                            {
+                                isMatchTime = CheckTimeInRange(timeToCheck, policy.TIME_FROM, policy.TIME_TO);
+                            }
+                        }
+                    }
+                    else if (policy.HOLIDAY_POLICIES_TYPE == 3)
+                    {
+                        if (policy.HOLIDAY.HasValue && policy.HOLIDAY.Value > 0)
+                        {
+                            long currentYYYYMMDD = long.Parse(timeToCheck.ToString("yyyyMMdd"));
+
+                            if (policy.HOLIDAY.Value == currentYYYYMMDD)
+                            {
+                                isMatchTime = CheckTimeInRange(timeToCheck, policy.TIME_FROM, policy.TIME_TO);
+                            }
+                        }
+                    }
+
+                    if (isMatchTime)
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Kiểm tra thời gian có nằm trong khoảng TIME_FROM và TIME_TO không
+        /// </summary>
+        /// <param name="checkTime">Thời gian cần kiểm tra</param>
+        /// <param name="timeFrom">Giờ bắt đầu (long? - HHMMSS), null = 00:00:00</param>
+        /// <param name="timeTo">Giờ kết thúc (long? - HHMMSS), null = 23:59:59</param>
+        /// <returns>True nếu nằm trong khoảng</returns>
+        private bool CheckTimeInRange(DateTime checkTime, long? timeFrom, long? timeTo)
+        {
+            try
+            {
+                TimeSpan currentTime = checkTime.TimeOfDay;
+                
+                TimeSpan startTime = TimeSpan.Zero;
+                if (timeFrom.HasValue && timeFrom.Value > 0)
+                {
+                    string timeStr = timeFrom.Value.ToString("000000");
+                    int hour = int.Parse(timeStr.Substring(0, 2));
+                    int minute = int.Parse(timeStr.Substring(2, 2));
+                    int second = int.Parse(timeStr.Substring(4, 2));
+                    startTime = new TimeSpan(hour, minute, second);
+                }
+                
+                TimeSpan endTime = new TimeSpan(23, 59, 59);
+                if (timeTo.HasValue && timeTo.Value > 0)
+                {
+                    string timeStr = timeTo.Value.ToString("000000");
+                    int hour = int.Parse(timeStr.Substring(0, 2));
+                    int minute = int.Parse(timeStr.Substring(2, 2));
+                    int second = int.Parse(timeStr.Substring(4, 2));
+                    endTime = new TimeSpan(hour, minute, second);
+                }
+                
+                return currentTime >= startTime && currentTime <= endTime;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
         }
     }

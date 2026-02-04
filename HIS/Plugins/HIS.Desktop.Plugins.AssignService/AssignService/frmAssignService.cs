@@ -119,7 +119,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         bool isAutoEnableEmergency;
         bool isPriority;
         string provisionalDiagnosis;
-
+        List<long> isPackageNull = new List<long>();
         HisTreatmentWithPatientTypeInfoSDO currentHisTreatment { get; set; }
         MOS.EFMODEL.DataModels.HIS_SERVICE_REQ serviceReqMain { get; set; }
         MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER currentHisPatientTypeAlter = null;
@@ -2245,21 +2245,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     SereServADO data = (SereServADO)gridViewServiceProcess.GetRow(e.RowHandle);
                     if (e.Column.FieldName == "PATIENT_TYPE_ID")
                     {
-                        if (data != null && data.PackagePriceId.HasValue && HisConfigCFG.ServicePatyForServicePackage != "1")
+                        if (data != null && data.PackagePriceId.HasValue && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2"))
                             e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
                         else
                             e.RepositoryItem = this.repositoryItemcboPatientType_TabService;
                     }
                     else if (e.Column.FieldName == "PRIMARY_PATIENT_TYPE_ID")
                     {
-                        if (data != null && (data.PackagePriceId.HasValue || data.IsNotChangePrimaryPaty) && HisConfigCFG.ServicePatyForServicePackage != "1")
+                        if (data != null && (data.PackagePriceId.HasValue || data.IsNotChangePrimaryPaty) && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2"))
                             e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
                         else
                             e.RepositoryItem = this.repositoryItemCboPrimaryPatientType;
                     }
                     else if (e.Column.FieldName == "IsChecked")
                     {
-                        if (data != null && data.PackagePriceId.HasValue && HisConfigCFG.ServicePatyForServicePackage != "1")
+                        if (data != null && data.PackagePriceId.HasValue && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2"))
                             e.RepositoryItem = this.repositoryItemchkIsCheckedDisable;
                         else
                             e.RepositoryItem = this.repositoryItemchkIsChecked;
@@ -3039,10 +3039,14 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         GridLookUpEdit editor = view.ActiveEditor as GridLookUpEdit;
                         if (data != null)
                         {
+                            long patyId = 0;
                             var dataSource = editor.Properties.DataSource;
-                            this.FillDataIntoPatientTypeCombo(data, editor);
+                            this.FillDataIntoPatientTypeCombo(data, editor, ref patyId);
                             data.IsNotLoadDefaultPatientType = true;
-                            editor.EditValue = data.PATIENT_TYPE_ID;
+                            if(cboPackage.EditValue == null && HisConfigCFG.ServicePatyForServicePackage != "2")
+                                editor.EditValue = data.PATIENT_TYPE_ID;
+                            //else 
+                            //    editor.EditValue = patyId;
                             Inventec.Common.Logging.LogSystem.Warn("gridViewServiceProcess_ShownEditor PATIENT_TYPE_ID");
                         }
                     }
@@ -8698,7 +8702,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             service.OTHER_PAY_SOURCE_NAME = "";
                             this.SetAssignNumOrder(service);
 
-                            HIS_PATIENT_TYPE paty = this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, service.SERVICE_ID, service);
+                            HIS_PATIENT_TYPE paty = this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, service.SERVICE_ID, service, false, null, false, (long)cboPackage.EditValue);
 
                             if (!VerifyCheckFeeWhileAssign())
                             {
@@ -8720,7 +8724,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                     }
 
-                    if (notHasServicePatys != null && notHasServicePatys.Count > 0 && HisConfigCFG.ServicePatyForServicePackage != "1")
+                    if (notHasServicePatys != null && notHasServicePatys.Count > 0 && (HisConfigCFG.ServicePatyForServicePackage != "1"
+                        && HisConfigCFG.ServicePatyForServicePackage != "2"))
                     {
                         string sJoin = String.Join(", ", notHasServicePatys.Select(s => s.SERVICE_NAME).ToList());
                         strMessage.Append(String.Format(ResourceMessage.CacDichVuTrongGoiChuaDuocThietLapChinhSachGiaHoacPhongThucHien, this.currentHisPatientTypeAlter.PATIENT_TYPE_NAME, sJoin));
@@ -10712,6 +10717,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 gridViewServiceProcess.Columns["IsGuarantee"].Visible = false;
             }
+        }
+
+        private void gridControlServiceProcess_Click(object sender, EventArgs e)
+        {
+
         }
     }
     public class BankInfo

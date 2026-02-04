@@ -61,6 +61,8 @@ namespace HIS.UC.ServiceRoom.ADO
         public MOS.SDO.HisPatientSDO patientSDO { get; set; }
         public long? PatientClassifyId { get; set; }
         public Action<bool> ChangeDisablePrimaryPatientType { get; set; }
+        public bool _isEmergencies { get; set; }
+        public string _treatmentTypeId { get; set; }
         public RoomExamServiceInitADO() { }
 
         public RoomExamServiceInitADO(List<V_HIS_EXECUTE_ROOM_1> executeRooms, List<V_HIS_SERVICE_ROOM> serviceRooms)
