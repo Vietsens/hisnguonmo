@@ -71,6 +71,7 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
 {
     public partial class UCBedRoomPartial : UserControlBase
     {
+        private int assignBedOption;
         internal Inventec.Desktop.Common.Modules.Module currentModule { get; set; }
         internal long treatmentId;
         internal string treatmentCode;
@@ -180,13 +181,40 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 this.LoadInfoPatientTotalInfo();
                 gridControlTreatmentBedRoom.ToolTipController = this.toolTipController1;
                 LoadKey();
+                assignBedOption = HisConfigCFG.AssignBedOption;
+                InitUiByConfig();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void InitUiByConfig()
+        {
+            try
+            {
+                bool useHistory = assignBedOption == 1;
 
+                if (btnBedHistory != null)
+                {
+                    if (useHistory)
+                    {
+                        btnBedHistory.Text = Inventec.Common.Resource.Get.Value(
+                            "UCBedRoomPartial.btnBedHistory.Text",
+                            Resources.ResourceLanguageManager.LanguageResource,
+                            LanguageManager.GetCulture());
+                    }
+                    else
+                    {
+                        btnBedHistory.Text = "Chỉ định giường";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void LoadKey()
         {
             try
@@ -2418,23 +2446,95 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        // Dùng chung cho Chỉ định dịch vụ và Chỉ định giường
+        private List<object> BuildAssignServiceArgsForCurrentTreatment()
+        {
+            if (RowCellClickBedRoom == null)
+                return null;
 
+            List<object> listArgs = new List<object>();
+
+            // 1. TREATMENT_ID (tham số đầu tiên giống hàm cũ)
+            listArgs.Add(RowCellClickBedRoom.TREATMENT_ID);
+
+            // 2. AssignServiceADO với đầy đủ thông tin BN + filter
+            HIS.Desktop.ADO.AssignServiceADO assignServiceADO =
+                new HIS.Desktop.ADO.AssignServiceADO(RowCellClickBedRoom.TREATMENT_ID, 0, 0);
+
+            assignServiceADO.PatientDob = RowCellClickBedRoom.TDL_PATIENT_DOB;
+            assignServiceADO.PatientName = RowCellClickBedRoom.TDL_PATIENT_NAME;
+            assignServiceADO.GenderName = RowCellClickBedRoom.TDL_PATIENT_GENDER_NAME;
+            assignServiceADO.OpenFromBedRoomPartial = true;
+
+            MOS.Filter.HisTreatmentBedRoomLViewFilter treatFilter = new MOS.Filter.HisTreatmentBedRoomLViewFilter();
+            SetTreatmentBedRoomFilter(ref treatFilter, this.isUseAddedTime);
+            assignServiceADO.FilterFromBedRoomPartiral = treatFilter;
+
+            listArgs.Add(assignServiceADO);
+
+            return listArgs;
+        }
         private void btnBedHistory_Click(object sender, EventArgs e)
         {
             try
             {
-                if (RowCellClickBedRoom != null)
+                if (RowCellClickBedRoom == null)
+                    return;
+
+                // Cấu hình = 1: chạy như cũ -> Lịch sử giường
+                if (assignBedOption == 1)
                 {
-                    Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.BedHistory").FirstOrDefault();
-                    if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.BedHistory");
+                    Inventec.Desktop.Common.Modules.Module moduleData =
+                        GlobalVariables.currentModuleRaws
+                            .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.BedHistory");
+                    if (moduleData == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.BedHistory");
+                        return;
+                    }
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
                         List<object> listArgs = new List<object>();
                         listArgs.Add(RowCellClickBedRoom);
                         listArgs.Add(RowCellClickBedRoom.TREATMENT_ID);
-                        //listArgs.Add((RefeshReference)Refesh);
                         listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
-                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId), listArgs);
+                        var extenceInstance = PluginInstance.GetPluginInstance(
+                            PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId),
+                            listArgs);
+                        if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
+
+                        ((Form)extenceInstance).ShowDialog();
+                    }
+                }
+                // Cấu hình = 2: đổi sang Chỉ định giường
+                else if (assignBedOption == 2)
+                {
+                    if (!IsCheckDepartmentTran())
+                        return;
+
+                    // Build args giống btnChiDinhDichVu_Click
+                    var listArgs = BuildAssignServiceArgsForCurrentTreatment();
+                    if (listArgs == null)
+                        return;
+
+                    // Lấy module AssignBed
+                    Inventec.Desktop.Common.Modules.Module moduleData =
+                        GlobalVariables.currentModuleRaws
+                            .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignBed");
+                    if (moduleData == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AssignBed");
+                        return;
+                    }
+
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        // Thêm module working room vào args giống pattern các nút khác
+                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId));
+
+                        var extenceInstance = PluginInstance.GetPluginInstance(
+                            PluginInstance.GetModuleWithWorkingRoom(moduleData, this.wkRoomId, this.wkRoomTypeId),
+                            listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
 
                         ((Form)extenceInstance).ShowDialog();
