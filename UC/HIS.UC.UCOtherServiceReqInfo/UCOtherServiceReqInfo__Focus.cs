@@ -218,6 +218,19 @@ namespace HIS.UC.UCOtherServiceReqInfo
             }
         }
 
+        public void SetDelegateEmergence(Action<bool> isEmer)
+        {
+            try
+            {
+                if (isEmer != null)
+                    this.dlgGetEmergence = isEmer;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         public void SetDelegatePriorityNumberChanged(Action<long?> priorityNumberChanged)
         {
             try

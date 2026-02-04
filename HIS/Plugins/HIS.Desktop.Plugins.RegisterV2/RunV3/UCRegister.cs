@@ -30,7 +30,6 @@ using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
 using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Plugins.RegisterV2.Choice;
-using HIS.Desktop.Plugins.RegisterV2.Config;
 using HIS.Desktop.Utility;
 using HIS.UC.AddressCombo.ADO;
 using HIS.UC.KskContract;
@@ -339,6 +338,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.ucPlusInfo1.SetDelegateInitTHX(result => { if (result) this.ucAddressCombo1.InitControlState(); });
                 this.ucPlusInfo1.InitFieldFromAsync();
                 this.ucPlusInfo1.SetDelegateWorkPlaceUCPlusInfo(this.SetDelegateSetWorkPlace);
+                this.ucOtherServiceReqInfo1.SetDelegateEmergence(this.SetEmergenceForRoom);
                 this.ucOtherServiceReqInfo1.InitFieldFromAsync();
                 this.ucRelativeInfo1.InitFieldFromAsync();
                 this.ucPatientRaw1.FocusUserControl();
