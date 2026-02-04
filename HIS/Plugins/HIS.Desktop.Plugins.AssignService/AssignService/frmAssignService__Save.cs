@@ -1743,6 +1743,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         if (HisConfigCFG.ServicePatyForServicePackage != "1")
                         {
                             sdo.PackageId = item.PackagePriceId;
+                            var serviceNoPackage = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Any(o => o.IS_ACTIVE == 1 && o.SERVICE_ID == sdo.ServiceId && o.PACKAGE_ID != null && o.PACKAGE_ID == item.PackagePriceId);
+                            if (!serviceNoPackage)
+                            {
+                                sdo.PackageId = null;
+                            }
                         }
                         if (item.OTHER_PAY_SOURCE_ID.HasValue)
                             sdo.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
