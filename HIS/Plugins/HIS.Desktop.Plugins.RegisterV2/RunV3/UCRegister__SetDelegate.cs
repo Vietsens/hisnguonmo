@@ -142,7 +142,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				this.ucHeinInfo1.Send3WBhytCode(Send3WCode);
 				//qtcode
 				this.ucOtherServiceReqInfo1.GetTreatmentTypeIdForUcHeinInfo(this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo);
-				this.ucOtherServiceReqInfo1.GetTreatmentTypeId(this.ucPlusInfo1.ReceiveTreatmentTypeIdFromUcOther);
+                this.ucOtherServiceReqInfo1.GetTreatmentTypeIdForUcHeinInfo(this.ucServiceRoomInfo1.getTreatmentTypeId);
+
+
+                this.ucOtherServiceReqInfo1.GetTreatmentTypeId(this.ucPlusInfo1.ReceiveTreatmentTypeIdFromUcOther);
 				this.ucPatientRaw1.TransferPatient(this.ucPlusInfo1.ReceivePatientFromUcPatientRaw); 
 				this.ucHeinInfo1.SendTreatmentTypeId(this.ucOtherServiceReqInfo1.ReceiveTreatmentTypeId); 
 				this.EnableOrDisablechkTheTam();
@@ -615,7 +618,19 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 			}
 		}
 
-		private void SetServuceRoomAddButtonWhenRegisterHasPriorityNumber(long? priorityNumber)
+        private void SetEmergenceForRoom(bool _isEmer)
+        {
+            try
+            {
+                this.ucServiceRoomInfo1.getIsEmergencyChecked(_isEmer);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetServuceRoomAddButtonWhenRegisterHasPriorityNumber(long? priorityNumber)
 		{
 			try
 			{

@@ -69,7 +69,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 this.backgroundWorkerExel.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerExel_ProgressChanged);
                 this.backgroundWorkerExel.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerExel_RunWorkerCompleted);
                 Inventec.Common.Logging.LogSystem.Info("ProcessDataExcel End");
-                this.backgroundWorkerExel.RunWorkerAsync();
+                bool isXML3176_Value = chkXML3176.Checked;
+                this.backgroundWorkerExel.RunWorkerAsync(isXML3176_Value);
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -122,9 +123,15 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
 
+                bool isXML3176_Value = false;
+                if (e.Argument != null && e.Argument is bool)
+                {
+                    isXML3176_Value = (bool)e.Argument;
+                }
+
                 IsProcessingExcel = true;
                 MemoryStream memoryStreamExcel = new MemoryStream();
-                var success = this.GenerateXmlPlus(ref paramExcel, ref memoryStreamExcel, true, listSelection);
+                var success = this.GenerateXmlPlus(ref paramExcel, ref memoryStreamExcel, true, listSelection, isXML3176_Value);
                 if (!success)
                     return;
                 paramExcel = new CommonParam();

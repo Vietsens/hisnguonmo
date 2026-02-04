@@ -724,6 +724,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, sereServADOOld.PackagePriceId, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
                     }
 
+                    if(HisConfigCFG.ServicePatyForServicePackage == "2" && oneServicePatyPrice == null)
+                    {
+                        oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, null, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
+                    }
 
                     if (sereServADOOld.PRIMARY_PATIENT_TYPE_ID.HasValue)
                     {
@@ -1849,7 +1853,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// <param name="patientTypeId"></param>
         /// <param name="serviceId"></param>
         /// <returns></returns>
-        private HIS_PATIENT_TYPE ChoosePatientTypeDefaultlService(long patientTypeId, long serviceId, SereServADO sereServADO, bool notChangePrimary = false, long? patientTypeAppointmentId = null, bool isChangingPatientType = false)
+        private HIS_PATIENT_TYPE ChoosePatientTypeDefaultlService(long patientTypeId, long serviceId, SereServADO sereServADO, bool notChangePrimary = false, long? patientTypeAppointmentId = null, bool isChangingPatientType = false, long? packageId = null)
         {
             MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE result = new MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE();
             try
@@ -1862,7 +1866,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     bool LastOption = false;
                     long intructionTime = this.intructionTimeSelecteds.FirstOrDefault();
                     long treatmentTime = this.currentHisTreatment.IN_TIME;
-                    var patientTypeIdInSePas = BranchDataWorker.ServicePatyWithListPatientType(serviceId, this.patientTypeIdAls).Where(o => ((!o.TREATMENT_TO_TIME.HasValue || o.TREATMENT_TO_TIME.Value >= treatmentTime) || (!o.TO_TIME.HasValue || o.TO_TIME.Value >= intructionTime)) && (HisConfigCFG.ServicePatyForServicePackage == "1" ? true : ((!sereServADO.PackagePriceId.HasValue && !o.PACKAGE_ID.HasValue) || (sereServADO.PackagePriceId.HasValue && sereServADO.PackagePriceId.Value == o.PACKAGE_ID)))).Select(o => o.PATIENT_TYPE_ID).ToList();
+                    var patientTypeIdInSePas = BranchDataWorker.ServicePatyWithListPatientType(serviceId, this.patientTypeIdAls)
+                        .Where(o =>
+                            // Điều kiện 1: Kiểm tra thời gian (giữ nguyên)
+                            ((!o.TREATMENT_TO_TIME.HasValue || o.TREATMENT_TO_TIME.Value >= treatmentTime)
+                             || (!o.TO_TIME.HasValue || o.TO_TIME.Value >= intructionTime))
+                            &&
+                            // Điều kiện 2: Kiểm tra gói
+                            (HisConfigCFG.ServicePatyForServicePackage == "1" || HisConfigCFG.ServicePatyForServicePackage == "2"
+                                ? true  // Nếu config = "1" HOẶC "2" → Bỏ qua kiểm tra gói
+                                : ((!sereServADO.PackagePriceId.HasValue && !o.PACKAGE_ID.HasValue)
+                                   || (sereServADO.PackagePriceId.HasValue && sereServADO.PackagePriceId.Value == o.PACKAGE_ID)))
+                        )
+                        .Select(o => o.PATIENT_TYPE_ID)
+                        .ToList();
+
                     var patientTypeIdInSePasWithServices = BranchDataWorker.ServicePatyWithListPatientType(serviceId, this.patientTypeIdAls);
                     //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientTypeIdInSePasWithServices), patientTypeIdInSePasWithServices));
                     //    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADO.PackagePriceId), sereServADO.PackagePriceId));
@@ -1938,6 +1956,31 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 listResult = listResult.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
                         }
                         result = (listResult != null && listResult.Count > 0) ? listResult.FirstOrDefault() : null;
+                        if(HisConfigCFG.ServicePatyForServicePackage == "2")
+                        {
+                            if (packageId != null || packageId > 0)
+                            {
+                                var serviceDefaultWithPackage = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().OrderBy(o => o.PATIENT_TYPE_ID).FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID && o.PACKAGE_ID == packageId);
+                                if (serviceDefaultWithPackage != null)
+                                {
+                                    var patyTypeDefaultPackage = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == serviceDefaultWithPackage.PATIENT_TYPE_ID);
+                                    result = patyTypeDefaultPackage;
+                                }
+                                else
+                                {
+                                    if (this.currentHisPatientTypeAlter.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT)
+                                    {
+                                        serviceDefaultWithPackage = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().OrderBy(o => o.PATIENT_TYPE_ID).FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID && o.PACKAGE_ID == null && o.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT);
+                                    }
+                                    else
+                                    {
+                                        serviceDefaultWithPackage = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().OrderBy(o => o.PATIENT_TYPE_ID).FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID && o.PACKAGE_ID == null);
+                                    }
+                                    var patyTypeDefaultPackage = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == serviceDefaultWithPackage.PATIENT_TYPE_ID);
+                                    result = patyTypeDefaultPackage;
+                                }
+                            }
+                        }                        
 
                         #region ĐTTT
                         if (HisConfigCFG.DefaultPatientTypeOption && this.serviceReqParentId != null && this.hisSereServForGetPatientType != null && !sereServADO.IsNotLoadDefaultPatientType)
@@ -1977,7 +2020,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                         #endregion
                         #region Phụ thu
-                        if (HisConfigCFG.IsSetPrimaryPatientType == "2")
+                        bool isOutOfHour = CheckIsOutOfHoursTime();
+                        if (HisConfigCFG.IsSetPrimaryPatientType != "2" && currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && isOutOfHour && currentHisTreatment.IS_EMERGENCY != 1)
+                        {
+                            var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == "OT");
+                            sereServADO.PRIMARY_PATIENT_TYPE_ID = patientType.ID;
+                        }
+                        else if (HisConfigCFG.IsSetPrimaryPatientType == "2")
                         {
                             if (this.currentHisTreatment.PRIMARY_PATIENT_TYPE_ID <= 0 || notChangePrimary)
                             {
@@ -4394,7 +4443,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
-        private void FillDataIntoPatientTypeCombo(SereServADO data, GridLookUpEdit patientTypeCombo)
+        private void FillDataIntoPatientTypeCombo(SereServADO data, GridLookUpEdit patientTypeCombo, ref long PatientTpId)
         {
             try
             {
@@ -4419,8 +4468,36 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     patientTypeIdInSePas.Contains(o.ID) && (!this.isNotUseBhyt || (isNotUseBhyt && o.ID != HisConfigCFG.PatientTypeId__BHYT))).ToList() : null);
                     }
                     if (dataCombo != null && dataCombo.Count > 0 && data.DO_NOT_USE_BHYT == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && !CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName()))
-                        dataCombo = dataCombo.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
-                    this.InitComboPatientType(patientTypeCombo, dataCombo);
+                        dataCombo = dataCombo.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).OrderBy(o => o.ID).ToList();
+                    List<long> list = new List<long>();
+                    if (HisConfigCFG.ServicePatyForServicePackage == "2" && cboPackage.EditValue != null)
+                    {
+                        var inPackage = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Where(o => o.SERVICE_ID == data.SERVICE_ID && o.PACKAGE_ID == (long)cboPackage.EditValue).ToList();
+                        if(inPackage != null && inPackage.Count > 0)
+                        {
+                            list.AddRange(inPackage.Select(o => o.PATIENT_TYPE_ID).Distinct().ToList());
+                        }
+                        else
+                        {
+                            var inPackageNull = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Where(o => o.SERVICE_ID == data.SERVICE_ID && o.PACKAGE_ID == null).ToList();
+                            list.AddRange(inPackageNull.Select(o => o.PATIENT_TYPE_ID).Distinct().ToList());
+                        }
+                        dataCombo = dataCombo
+                            .Where(o => list.Contains(o.ID)).OrderBy(o=>o.ID).ToList();
+                        this.InitComboPatientType(patientTypeCombo, dataCombo);
+                    }
+                    else if((HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2") && cboPackage.EditValue != null)
+                    {
+                        var packageKeyDiff12 = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Where(o => o.SERVICE_ID == data.SERVICE_ID && o.PACKAGE_ID == (long)cboPackage.EditValue && o.PATIENT_TYPE_ID == data.PATIENT_TYPE_ID).ToList();
+                        list.AddRange(packageKeyDiff12.Select(o => o.PATIENT_TYPE_ID).Distinct().ToList());
+                        dataCombo = dataCombo
+                        .Where(o => list.Contains(o.ID)).OrderBy(o => o.ID).ToList();
+                        this.InitComboPatientType(patientTypeCombo, dataCombo);
+                    }
+                    else
+                        this.InitComboPatientType(patientTypeCombo, dataCombo);
+
+                    PatientTpId = dataCombo.FirstOrDefault().ID;
                 }
             }
             catch (Exception ex)
@@ -4581,6 +4658,143 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        public bool CheckIsOutOfHoursTime(DateTime? checkTime = null)
+        {
+            bool result = false;
+            try
+            {
+                DateTime timeToCheck = checkTime ?? DateTime.Now;
+
+                var holidayPolicies = BackendDataWorker.Get<V_HIS_HOLIDAY_POLICIES>()
+                    .Where(o => o.PATIENT_TYPE_CODE == "OT").ToList();
+
+                if (holidayPolicies == null || holidayPolicies.Count == 0)
+                {
+                    return false;
+                }
+
+                foreach (var policy in holidayPolicies)
+                {
+                    bool isMatchTime = false;
+
+                    if (policy.HOLIDAY_POLICIES_TYPE == 1)
+                    {
+                        int dayOfWeek;
+                        switch (timeToCheck.DayOfWeek)
+                        {
+                            case DayOfWeek.Sunday:
+                                dayOfWeek = 1;
+                                break;
+                            case DayOfWeek.Monday:
+                                dayOfWeek = 2;
+                                break;
+                            case DayOfWeek.Tuesday:
+                                dayOfWeek = 3;
+                                break;
+                            case DayOfWeek.Wednesday:
+                                dayOfWeek = 4;
+                                break;
+                            case DayOfWeek.Thursday:
+                                dayOfWeek = 5;
+                                break;
+                            case DayOfWeek.Friday:
+                                dayOfWeek = 6;
+                                break;
+                            case DayOfWeek.Saturday:
+                                dayOfWeek = 7;
+                                break;
+                            default:
+                                dayOfWeek = 0;
+                                break;
+                        }
+
+                        if (policy.DAY_OF_WEEK == dayOfWeek)
+                        {
+                            isMatchTime = CheckTimeInRange(timeToCheck, policy.TIME_FROM, policy.TIME_TO);
+                        }
+                    }
+                    else if (policy.HOLIDAY_POLICIES_TYPE == 2)
+                    {
+                        if (policy.DAY_OF_YEAR.HasValue && policy.DAY_OF_YEAR.Value > 0)
+                        {
+                            short currentMMDD = short.Parse(timeToCheck.ToString("MMdd"));
+
+                            if (policy.DAY_OF_YEAR.Value == currentMMDD)
+                            {
+                                isMatchTime = CheckTimeInRange(timeToCheck, policy.TIME_FROM, policy.TIME_TO);
+                            }
+                        }
+                    }
+                    else if (policy.HOLIDAY_POLICIES_TYPE == 3)
+                    {
+                        if (policy.HOLIDAY.HasValue && policy.HOLIDAY.Value > 0)
+                        {
+                            long currentYYYYMMDD = long.Parse(timeToCheck.ToString("yyyyMMdd"));
+
+                            if (policy.HOLIDAY.Value == currentYYYYMMDD)
+                            {
+                                isMatchTime = CheckTimeInRange(timeToCheck, policy.TIME_FROM, policy.TIME_TO);
+                            }
+                        }
+                    }
+
+                    if (isMatchTime)
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Kiểm tra thời gian có nằm trong khoảng TIME_FROM và TIME_TO không
+        /// </summary>
+        /// <param name="checkTime">Thời gian cần kiểm tra</param>
+        /// <param name="timeFrom">Giờ bắt đầu (long? - HHMMSS), null = 00:00:00</param>
+        /// <param name="timeTo">Giờ kết thúc (long? - HHMMSS), null = 23:59:59</param>
+        /// <returns>True nếu nằm trong khoảng</returns>
+        private bool CheckTimeInRange(DateTime checkTime, long? timeFrom, long? timeTo)
+        {
+            try
+            {
+                TimeSpan currentTime = checkTime.TimeOfDay;
+
+                TimeSpan startTime = TimeSpan.Zero;
+                if (timeFrom.HasValue && timeFrom.Value > 0)
+                {
+                    string timeStr = timeFrom.Value.ToString("000000");
+                    int hour = int.Parse(timeStr.Substring(0, 2));
+                    int minute = int.Parse(timeStr.Substring(2, 2));
+                    int second = int.Parse(timeStr.Substring(4, 2));
+                    startTime = new TimeSpan(hour, minute, second);
+                }
+
+                TimeSpan endTime = new TimeSpan(23, 59, 59);
+                if (timeTo.HasValue && timeTo.Value > 0)
+                {
+                    string timeStr = timeTo.Value.ToString("000000");
+                    int hour = int.Parse(timeStr.Substring(0, 2));
+                    int minute = int.Parse(timeStr.Substring(2, 2));
+                    int second = int.Parse(timeStr.Substring(4, 2));
+                    endTime = new TimeSpan(hour, minute, second);
+                }
+
+                return currentTime >= startTime && currentTime <= endTime;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
         }
     }
 }

@@ -42,6 +42,7 @@ using HIS.Desktop.Plugins.TestServiceReqExcute.ADO;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -2785,6 +2786,12 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                     }
                 }
                 #endregion
+                //check vượt trần vật tư
+                if (!CheckMaterialExpendLimit())
+                {
+                    WaitingManager.Hide();
+                    return;
+                }
 
                 if (ShowTestResult)
                 {
@@ -5660,6 +5667,51 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private bool CheckMaterialExpendLimit()
+        {
+            try
+            {
+                var departmentId = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.requestRoomId).DepartmentId;
+                var listLimits = BackendDataWorker.Get<V_HIS_DEPARTMENT_EXPE_MATY>()
+                                .Where(o =>  o.DEPARTMENT_ID == departmentId
+                                         && (o.MEDI_STOCK_ID == ChmsExpMest.MEDI_STOCK_ID || o.MEDI_STOCK_ID == null))
+                                .ToList() ?? new List<V_HIS_DEPARTMENT_EXPE_MATY>();
 
+                List<string> errorMessages = new List<string>();
+
+                if (listExpMestMaterial != null)
+                {
+                    foreach (var req in listExpMestMaterial)
+                    {
+                        var limit = listLimits.FirstOrDefault(o => o.MATERIAL_TYPE_ID == req.MATERIAL_TYPE_ID);
+
+                        if (limit != null && req.AMOUNT > limit.MAX_EXPEND)
+                        {
+                            errorMessages.Add(string.Format("{0} ({1})", limit.MATERIAL_TYPE_NAME, limit.MAX_EXPEND));
+                        }
+                    }
+                }
+
+                if (errorMessages.Count > 0)
+                {
+                    string detail = string.Join(", ", errorMessages);
+                    string message = string.Format("Vật tư vượt trần hao phí: {0}. Bạn có muốn tiếp tục?", detail);
+
+                    DialogResult result = MessageBox.Show(message, "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+
+                return true; 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false; 
+            }
+        }
     }
 }

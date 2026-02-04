@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBrowseExportTicket));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -102,7 +103,7 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             this.repositoryItemBtnAddBlood = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkBloodTransPrint = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem__Save = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnActualExport = new DevExpress.XtraBars.BarButtonItem();
@@ -202,15 +203,15 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             this.chkShowBloodType = new DevExpress.XtraEditors.CheckEdit();
             this.chkExpiryDate = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
-            this.popupControlContainerCanNguyen = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerCanNguyen = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.btnCancelForCanNguyen = new DevExpress.XtraEditors.SimpleButton();
             this.btnOkforCanNguyen = new DevExpress.XtraEditors.SimpleButton();
             this.txtCanNguyenIntoPopup = new DevExpress.XtraEditors.MemoEdit();
-            this.popupControlContainerRangeValue = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerRangeValue = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.btnCancelForValueRange = new DevExpress.XtraEditors.SimpleButton();
             this.btnOKForValueRange = new DevExpress.XtraEditors.SimpleButton();
             this.txtValueRangeIntoPopup = new DevExpress.XtraEditors.MemoEdit();
-            this.popupControlContainerNote = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerNote = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.btnOKForNote = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancelForNote = new DevExpress.XtraEditors.SimpleButton();
             this.txtNoteIntoPopup = new DevExpress.XtraEditors.MemoEdit();
@@ -396,11 +397,11 @@ namespace HIS.Desktop.Plugins.BrowseExportTicket
             this.lciForbtnAssignService = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciForbtnAssignPresDTT = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource();
-            this.bindingSource2 = new System.Windows.Forms.BindingSource();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.bindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnAddBlood)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();

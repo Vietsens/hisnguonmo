@@ -573,6 +573,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 listTreatmentImport = null;
                 gridControlTreatment.DataSource = null;
                 btnExportXml.Enabled = false;
+                UpdateBtnXML3176Visibility();
                 btnXML3176.Enabled = false;
                 btnExportGroupXml.Enabled = false;
                 btnExportCollinearXml.Enabled = false;
@@ -904,6 +905,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
+                UpdateBtnXML3176Visibility();
                 listSelection = new List<V_HIS_TREATMENT_1>();
                 var listIndex = gridViewTreatment.GetSelectedRows();
                 foreach (var index in listIndex)
@@ -922,7 +924,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     btnSend.Enabled = true;
                     btnExportGroupXml.Enabled = true;
                     //btnXML3176.Enabled = true;
-                    btnXML3176.Enabled = !chkXML3176.Checked;
+                    if (!chkXML3176.Checked)
+                    {
+                        btnXML3176.Enabled = true;
+                    }
                 }
                 else
                 {
@@ -1021,7 +1026,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     WaitingManager.Show();
                     Inventec.Common.Logging.LogSystem.Info("btnExportXml_Click Begin");
                     Inventec.Common.Logging.LogSystem.Info("btnExportXml - checkbox XML3176: " + chkXML3176.Checked);
-                    success = this.GenerateXml(ref param, ref memoryStream, false, false, xuatXml12, listSelection);
+                    success = this.GenerateXml(ref param, ref memoryStream, false, false, xuatXml12, listSelection, chkXML3176.Checked);
                     Inventec.Common.Logging.LogSystem.Info("btnExportXml_Click End");
                     WaitingManager.Hide();
                     if (success && param.Messages.Count == 0)
@@ -1047,7 +1052,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        bool GenerateXml(ref CommonParam paramExport, ref MemoryStream memoryStream, bool viewXml, bool xuatXmlTT, bool xuatXml12, List<V_HIS_TREATMENT_1> listSelection)
+        bool GenerateXml(ref CommonParam paramExport, ref MemoryStream memoryStream, bool viewXml, bool xuatXmlTT, bool xuatXml12, List<V_HIS_TREATMENT_1> listSelection, bool isXML3176)
         {
             bool result = false;
             try
@@ -1088,7 +1093,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             isNotFileSign = true;
                             //qtcode
-                            message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+                            message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat, isXML3176);
                         }
                         else
                         {
@@ -1101,13 +1106,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 else
                                 {
                                     isNotFileSign = true;
-                                    message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+                                    message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat, isXML3176);
                                 }
                             }
                             else
                             {
                                 isNotFileSign = false;
-                                message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat);
+                                message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat, isXML3176);
                             }
                         }
                         if (!String.IsNullOrEmpty(message))
@@ -1125,8 +1130,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             return result;
         }
 
-        bool GenerateXmlPlus(ref CommonParam paramExport, ref MemoryStream memoryStream, bool xuatXml12, List<V_HIS_TREATMENT_1> listSelection)
-        {
+        bool GenerateXmlPlus(ref CommonParam paramExport, ref MemoryStream memoryStream, bool xuatXml12, List<V_HIS_TREATMENT_1> listSelection, bool isXML3176)
+        {        
             bool result = false;
             try
             {
@@ -1162,7 +1167,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         isExportXml = false;
 
                     }
-                    message = ProcessExportXmlDetailPlus(ref result, ref memoryStream, xuatXml12);
+                    message = ProcessExportXmlDetailPlus(ref result, ref memoryStream, xuatXml12, isXML3176);
                     if (!String.IsNullOrEmpty(message))
                     {
                         paramExport.Messages.Add(message);
@@ -1182,7 +1187,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         string ProcessExportXmlDetail(ref bool isSuccess, ref MemoryStream memoryStream, ref MemoryStream memoryStreamXml12, bool viewXml, bool XuatXmlTT, bool XuatXml12, List<V_HIS_TREATMENT_12> hisTreatments, List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters,
             List<V_HIS_SERE_SERV_2> ListSereServ, List<HIS_DHST> listDhst, List<V_HIS_SERE_SERV_TEIN> listSereServTein,
             List<HIS_TRACKING> hisTrackings, List<V_HIS_SERE_SERV_PTTT> hisSereServPttts, List<HIS_EKIP_USER> ListEkipUser,
-            List<V_HIS_BED_LOG> ListBedlog, List<HIS_DEBATE> listDebate, List<V_HIS_BABY> listBaby, List<V_HIS_MEDICAL_ASSESSMENT> listMedicalAssessment, List<HIS_HIV_TREATMENT> listHivTreatment, List<V_HIS_SERE_SERV_SUIN> listSereServSuin, List<HIS_TUBERCULOSIS_TREAT> lstTuberculosisTreat)
+            List<V_HIS_BED_LOG> ListBedlog, List<HIS_DEBATE> listDebate, List<V_HIS_BABY> listBaby, List<V_HIS_MEDICAL_ASSESSMENT> listMedicalAssessment, List<HIS_HIV_TREATMENT> listHivTreatment, List<V_HIS_SERE_SERV_SUIN> listSereServSuin, List<HIS_TUBERCULOSIS_TREAT> lstTuberculosisTreat, bool isXML3176)
         {
             string result = "";
             Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
@@ -1482,9 +1487,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         ado.ListBaby = dicBaby[treatment.ID];
                     }
-                    if (XuatXml12 && dicMedicalAssessment.ContainsKey(treatment.ID))
+                    if (XuatXml12)
                     {
-                        ado.ListMedicalAssessment = dicMedicalAssessment[treatment.ID];
+                        if (dicMedicalAssessment.ContainsKey(treatment.ID))
+                        {
+                            ado.ListMedicalAssessment = dicMedicalAssessment[treatment.ID];
+                        }
+                        else
+                        {
+                            // Thêm dòng này để XML12 không bị null list
+                            ado.ListMedicalAssessment = new List<V_HIS_MEDICAL_ASSESSMENT>();
+                        }
                     }
                     if (dicHivTreatment.ContainsKey(treatment.ID))
                     {
@@ -1508,16 +1521,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         ado.TuberculosisTreat = dicTuberculosisTreat[treatment.ID];
                     }
-                    if (chkXML3176.Checked)
-                    {
-                        ado.IS_3176 = true;  // ← SỬA false THÀNH true
-                        Inventec.Common.Logging.LogSystem.Debug("Checkbox tích → IS_3176 = true (xuất XML 3176)");  // ← Sửa message
-                    }
-                    else
-                    {
-                        ado.IS_3176 = false;  // ← SỬA true THÀNH false
-                        Inventec.Common.Logging.LogSystem.Debug("Checkbox không tích → IS_3176 = false (xuất XML 130)");  // ← Sửa message
-                    }               
+                    // Sử dụng tham số isXML3176 thay vì kiểm tra checkbox trực tiếp
+                    ado.IS_3176 = isXML3176;
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "ProcessExportXmlDetail - TreatmentCode: " + treatment.TREATMENT_CODE +
+                        ", isXML3176 param: " + isXML3176 +
+                        " → ado.IS_3176 = " + ado.IS_3176 +
+                        " → Xuất XML " + (isXML3176 ? "3176" : "130"));
                     His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(ado);
 
                     string errorMess = "";
@@ -1806,11 +1816,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             return result;
         }
 
-        string ProcessExportXmlDetailPlus(ref bool isSuccess, ref MemoryStream memoryStream, bool XuatXml12)
+        string ProcessExportXmlDetailPlus(ref bool isSuccess, ref MemoryStream memoryStream, bool XuatXml12, bool isXML3176)
         {
             string result = "";
             try
-            {
+            {             
                 string connect_infor = HisConfigCFG.QD_130_BYT__CONNECTION_INFO;
                 string username = null, password = null, address = null, typeXml = null;
                 string xml130Api = null, xmlGdykApi = null;
@@ -1838,6 +1848,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
 
                 InputADO ado = new InputADO();
+                ado.IS_3176 = isXML3176;             
                 ado.ListTreatment = HisTreatments;
                 ado.ListPatientTypeAlter = ListPatientTypeAlter;
                 ado.ListSereServ = ListSereServ;
@@ -1849,7 +1860,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ado.ListBaby = ListBaby;
                 ado.ListDebate = ListDebates;
                 ado.ListDhst = ListDhst;
-                ado.ListMedicalAssessment = ListMedicalAssessment;
+                ado.ListMedicalAssessment = ListMedicalAssessment ?? new List<V_HIS_MEDICAL_ASSESSMENT>();
                 ado.ListHivTreatment = ListHivTreatment;
                 ado.vSereServSuin = HisSereServSuin;
                 ado.ListTuberculosisTreat = ListTuberculosisTreat;
@@ -1884,6 +1895,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     saveFileExcel = saveFilePath;
                     saveFileExcel12 = saveFilePathXml12;
                 }
+                xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(ado);
                 var rs = xmlProcessor.RunPlus(saveFilePath, ref errorMess);
                 var rsXml12 = XuatXml12 ? xmlProcessor.RunXml12Plus(saveFilePathXml12, ref errorMessXml12) : null;
                 if (!String.IsNullOrWhiteSpace(errorMess))
@@ -2499,7 +2511,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 Inventec.Common.Logging.LogSystem.Info("btnExportXml_Click Begin");
                                 //qtcode
                                 //success = this.GenerateXml(ref param, ref memoryStream,ref memoryStreamXml12, true, false, true, listTreatments);
-                                success = this.GenerateXml(ref param, ref memoryStream, true, false, true, listTreatments);
+                                success = this.GenerateXml(ref param, ref memoryStream, true, false, true, listTreatments, chkXML3176.Checked);
                                 isNotFileSign = false;
                                 Inventec.Common.Logging.LogSystem.Info("btnExportXml_Click End");
                                 WaitingManager.Hide();
@@ -3197,9 +3209,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                         else if (item.KEY == "chkXML3176")
                         {
-                            chkXML3176.Checked = !String.IsNullOrWhiteSpace(item.VALUE)
-                                && Boolean.Parse(item.VALUE);
-                            btnXML3176.Visible = !chkXML3176.Checked;
+                            chkXML3176.Checked = !String.IsNullOrWhiteSpace(item.VALUE) && Boolean.Parse(item.VALUE);
+
+                            // GỌI HÀM MỚI:
+                            UpdateBtnXML3176Visibility();
                         }
                     }
                 }
@@ -3435,9 +3448,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 if (configSync.isXML3176)
                 {
                     isXML130 = false;
-                    // ← THÊM DÒNG NÀY
+
+                    // SỬA: Chặn việc lưu cấu hình khi code tự động check
                     bool oldState = chkXML3176.Checked;
-                    chkXML3176.Checked = true;  // Force checkbox khi đồng bộ XML 3176
+
+                    isNotLoadWhileChangeControlStateInFirst = true; // Khóa lưu
+                    chkXML3176.Checked = true;
+                    isNotLoadWhileChangeControlStateInFirst = false; // Mở lại
                 }
                 else
                 {
@@ -4212,16 +4229,28 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             {
                                 ado.TuberculosisTreat = dicTuberculosisTreat[treatment.ID];
                             }
-                            if (chkXML3176.Checked)
+                            // --- SỬA LẠI ĐỂ TRÁNH LỖI CROSS-THREAD KHI CHẠY TỰ ĐỘNG ---
+                            bool isCheckedSafe = false;
+                            if (chkXML3176.InvokeRequired)
                             {
-                                ado.IS_3176 = true;  // ← SỬA false THÀNH true
-                                Inventec.Common.Logging.LogSystem.Debug("ProcessSyncTreatment - Checkbox tích → IS_3176 = true (XML 3176)");  // ← Sửa message
+                                chkXML3176.Invoke(new MethodInvoker(delegate { isCheckedSafe = chkXML3176.Checked; }));
                             }
                             else
                             {
-                                ado.IS_3176 = false;  // ← SỬA true THÀNH false
-                                Inventec.Common.Logging.LogSystem.Debug("ProcessSyncTreatment - Checkbox không tích → IS_3176 = false (XML 130)");  // ← Sửa message
+                                isCheckedSafe = chkXML3176.Checked;
                             }
+
+                            if (isCheckedSafe)
+                            {
+                                ado.IS_3176 = true;
+                                Inventec.Common.Logging.LogSystem.Debug("ProcessSyncTreatment - Checkbox tích → IS_3176 = true (XML 3176)");
+                            }
+                            else
+                            {
+                                ado.IS_3176 = false;
+                                Inventec.Common.Logging.LogSystem.Debug("ProcessSyncTreatment - Checkbox không tích → IS_3176 = false (XML 130)");
+                            }
+                            // ----------------------------------------------------------
                             #endregion
                             His.Bhyt.ExportXml.XML130.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML130.CreateXmlProcessor(ado);
                             SyncResultADO syncResult = null;
@@ -4896,6 +4925,14 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             int count = 0;
                             InputADO ado = new InputADO();
+                            if (chkXML3176.Checked)
+                            {
+                                ado.IS_3176 = true;
+                            }
+                            else
+                            {
+                                ado.IS_3176 = false;
+                            }
                             ado.Treatment = treatment;
                             if (dicMedicalAssessment.ContainsKey(treatment.ID))
                             {
@@ -4975,40 +5012,40 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 try
                 {
-                    if (listSelection == null || listSelection.Count == 0) return;
-                    CommonParam param = new CommonParam();
-                    MemoryStream memoryStream = new MemoryStream();
-                    bool success = false;
+                if (listSelection == null || listSelection.Count == 0) return;
+                CommonParam param = new CommonParam();
+                MemoryStream memoryStream = new MemoryStream();
+                bool success = false;
 
-                    if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathXml))
-                    {
-                        btnSavePath_Click(null, null);
-                    }
-                    if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
-                    {
-                        WaitingManager.Show();
-                        Inventec.Common.Logging.LogSystem.Info("MenuItemClick_XuatXMLKhongBaoGomGDYK - Checkbox: " + chkXML3176.Checked);
-                        success = this.GenerateXml(ref param, ref memoryStream, false, false, true, listSelection);
-                        WaitingManager.Hide();
-                        if (success && param.Messages.Count == 0)
-                        {
-                            MessageManager.Show(this.ParentForm, param, success);
-                        }
-                        else
-                        {
-                            MessageManager.Show(param, success);
-                        }
-
-                        this.gridControlTreatment.RefreshDataSource();
-                    }
-                    SessionManager.ProcessTokenLost(param);
-                }
-                catch (Exception ex)
+                if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathXml))
                 {
-                    WaitingManager.Hide();
-                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    btnSavePath_Click(null, null);
                 }
+                if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
+                {
+                    WaitingManager.Show();
+                    Inventec.Common.Logging.LogSystem.Info("MenuItemClick_XuatXMLKhongBaoGomGDYK - Checkbox: " + chkXML3176.Checked);
+                        success = this.GenerateXml(ref param, ref memoryStream, false, false, true, listSelection, chkXML3176.Checked);
+                    WaitingManager.Hide();
+                    if (success && param.Messages.Count == 0)
+                    {
+                        MessageManager.Show(this.ParentForm, param, success);
+                    }
+                    else
+                    {
+                        MessageManager.Show(param, success);
+                    }
+
+                    this.gridControlTreatment.RefreshDataSource();
+                }
+                SessionManager.ProcessTokenLost(param);
             }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -5142,7 +5179,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     WaitingManager.Show();
                     Inventec.Common.Logging.LogSystem.Info("btnExportCollinearXml_Click Begin");
                     Inventec.Common.Logging.LogSystem.Info("btnExportCollinearXml - checkbox XML3176: " + chkXML3176.Checked);
-                    success = this.GenerateXml(ref param, ref memoryStream, false, true, true, listSelection);
+                    success = this.GenerateXml(ref param, ref memoryStream, false, true, true, listSelection, chkXML3176.Checked);
                     Inventec.Common.Logging.LogSystem.Info("btnExportCollinearXml_Click End");
                     WaitingManager.Hide();
                     if (success && param.Messages.Count == 0)
@@ -5319,7 +5356,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         WaitingManager.Show();
                         isNotFileSign = true;
                         Inventec.Common.Logging.LogSystem.Info("btnExportGroupXml - Checkbox: " + chkXML3176.Checked);
-                        success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection);
+                        Inventec.Common.Logging.LogSystem.Info("btnExportGroupXml - Calling GenerateXmlPlus with isXML3176: " + chkXML3176.Checked);
+                        success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection, chkXML3176.Checked);
                         WaitingManager.Hide();
                     }
                     else
@@ -5334,7 +5372,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             {
                                 isNotFileSign = true;
                                 WaitingManager.Show();
-                                success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection);
+                                success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection, chkXML3176.Checked);
                                 WaitingManager.Hide();
                             }
                         }
@@ -5342,7 +5380,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             isNotFileSign = false;
                             WaitingManager.Show();
-                            success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection);
+                            success = this.GenerateXmlPlus(ref param, ref memoryStream, xuatXml12, listSelection, chkXML3176.Checked);
                             WaitingManager.Hide();
                         }
                     }
@@ -5449,12 +5487,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
         private void chkXML3176_CheckedChanged(object sender, EventArgs e)
         {
-            if (isNotLoadWhileChangeControlStateInFirst)
-                return;
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                    return;
 
-            //SaveCheckboxXML3176State();
+                SaveCheckboxXML3176State(); // Lưu trạng thái
 
-            btnXML3176.Enabled = !chkXML3176.Checked;
+                UpdateBtnXML3176Visibility();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
 
@@ -5504,7 +5549,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
         private async void btnXML3176_Click(object sender, EventArgs e)
         {
-
             try
             {
                 if (!btnXML3176.Enabled || listSelection == null || listSelection.Count == 0) return;
@@ -5529,14 +5573,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     WaitingManager.Show();
                     Inventec.Common.Logging.LogSystem.Info("btnXML3176_Click Begin - Force xuất XML 3176");
 
-                    // ✅ Button này CHỈ xuất XML 3176 → force checkbox = TRUE
-                    bool oldCheckboxState = chkXML3176.Checked;
-                    chkXML3176.Checked = true;  // ← SỬA false THÀNH true
+                    // --- SỬA CHÍNH: KHÔNG CẦN ÉP CHECKBOX NỮA ---
+                    // Truyền thẳng TRUE vào tham số cuối cùng (isXML3176)
+                    success = this.GenerateXml(ref param, ref memoryStream, false, false, xuatXml12, listSelection, true);
+                    // ---------------------------------------------
 
-                    success = this.GenerateXml(ref param, ref memoryStream, false, false, xuatXml12, listSelection);
-
-                    // Khôi phục lại trạng thái checkbox
-                    chkXML3176.Checked = oldCheckboxState;
                     Inventec.Common.Logging.LogSystem.Info("btnXML3176_Click End");
                     WaitingManager.Hide();
                     if (success && param.Messages.Count == 0)
@@ -5620,6 +5661,34 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             if (input == null) return null;
             return Encoding.UTF8.GetBytes(input);
+        }
+        private void UpdateBtnXML3176Visibility()
+        {
+            try
+            {
+                var targetVisibility = !chkXML3176.Checked ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                // 1. Tìm LayoutItem đang chứa nút btnXML3176
+                var item = layoutControl1.GetItemByControl(btnXML3176);
+
+                if (item != null)
+                {
+                    // Nếu tìm thấy LayoutItem -> Set Visibility của LayoutItem
+                    if (item.Visibility != targetVisibility)
+                    {
+                        item.Visibility = targetVisibility;
+                    }
+                }
+                else
+                {
+                    // Trường hợp dự phòng (nếu không dùng LayoutControl cho nút này)
+                    btnXML3176.Visible = !chkXML3176.Checked;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

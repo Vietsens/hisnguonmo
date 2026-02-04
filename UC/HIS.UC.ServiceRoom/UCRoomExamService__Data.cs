@@ -86,6 +86,8 @@ namespace HIS.UC.ServiceRoom
                     this.dicNumOrderBlock = new Dictionary<long, Desktop.ADO.ResultChooseNumOrderBlockADO>();
                     this.PatientSDO = ado.patientSDO;
                     this.PatientClassifyId = ado.PatientClassifyId;
+                    this._isEmergency = ado._isEmergencies;
+                    this._treatmentTypeId = ado._treatmentTypeId;
                 }
             }
             catch (Exception ex)
@@ -360,26 +362,102 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
+        public void getIsEmergency(bool isEmer)
+        {
+            try
+            {
+                this._isEmergency = isEmer;
+                SetDataSourceCboSurcharge();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public void getTreatmentType(string _tmType)
+        {
+            try
+            {
+                this._treatmentTypeId = _tmType;
+                SetDataSourceCboSurcharge();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public void SetDataSourceCboSurcharge()
         {
             try
             {
+                // ✅ Lưu giá trị cũ
+                long? oldSurchargeValue = null;
+                if (cboSurcharge.EditValue != null)
+                {
+                    oldSurchargeValue = Inventec.Common.TypeConvert.Parse.ToInt64(cboSurcharge.EditValue.ToString());
+                }
 
-                var lstpatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(p => p.IS_ACTIVE == 1 && p.IS_ADDITION == 1).ToList();
+                var lstpatientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>()
+                    .Where(p => p.IS_ACTIVE == 1 && p.IS_ADDITION == 1).ToList();
+                
+                bool shouldClearValue = false; // ✅ Flag để clear giá trị
+                long? valueToSet = oldSurchargeValue; // ✅ Mặc định giữ giá trị cũ
+                
                 if (cboExamService.EditValue != null)
                 {
-                    List<V_HIS_SERVICE_PATY> dataServicePatys = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Where(o => o.SERVICE_ID == (long)(cboExamService.EditValue ?? 0)).ToList();
+                    List<V_HIS_SERVICE_PATY> dataServicePatys = BackendDataWorker.Get<V_HIS_SERVICE_PATY>()
+                        .Where(o => o.SERVICE_ID == (long)(cboExamService.EditValue ?? 0)).ToList();
+
                     var validPatientTypeIds = dataServicePatys.Select(sp => sp.PATIENT_TYPE_ID).Distinct().ToList();
-
                     lstpatientType = lstpatientType.Where(p => validPatientTypeIds.Contains(p.ID)).ToList();
-                }
-                
 
+                    var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>()
+                        .FirstOrDefault(o => o.PATIENT_TYPE_CODE == "OT");
+                    
+                    // ✅ Chỉ xử lý khi dịch vụ có hỗ trợ đối tượng OT
+                    if (patientType != null && lstpatientType.Any(p => p.ID == patientType.ID))
+                    {
+                        if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
+                        {
+                            bool isOutOfHour = CheckIsOutOfHoursTime();
+                            // ✅ Nếu thỏa điều kiện → Set OT
+                            if (isOutOfHour && (!this._isEmergency && _treatmentTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU.ToString()))
+                            {
+                                if(cboSurcharge.EditValue == null || cboSurcharge.EditValue == "")
+                                    valueToSet = patientType.ID;
+                            }
+                            // ✅ Nếu KHÔNG thỏa điều kiện NHƯNG đang là OT → Clear
+                            else if (oldSurchargeValue.HasValue && oldSurchargeValue.Value == patientType.ID)
+                            {
+                                shouldClearValue = true;
+                            }
+                        }
+                    }
+                }
+
+                // ✅ Load DataSource TRƯỚC
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("PATIENT_TYPE_CODE", "", 50, 1));
                 columnInfos.Add(new ColumnInfo("PATIENT_TYPE_NAME", "", 200, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("PATIENT_TYPE_NAME", "ID", columnInfos, false, 250);
                 ControlEditorLoader.Load(cboSurcharge, lstpatientType, controlEditorADO);
+
+                // ✅ Set hoặc Clear giá trị SAU khi Load
+                if (shouldClearValue)
+                {
+                    // ✅ Clear combo đúng cách (chỉ khi có OT và không ngoài giờ)
+                    cboSurcharge.EditValue = null;
+                    cboSurcharge.Properties.NullText = string.Empty;
+                    cboSurcharge.Refresh();
+                }
+                else if (valueToSet.HasValue && lstpatientType.Any(p => p.ID == valueToSet.Value))
+                {
+                    cboSurcharge.EditValue = valueToSet.Value;
+                }
             }
             catch (Exception ex)
             {
