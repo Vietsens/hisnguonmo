@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
         int startPage = 0;
         Inventec.Desktop.Common.Modules.Module currentModule = null;
         List<HIS_EMPLOYEE> ListEmployee;
+        List<HIS_DEPARTMENT> ListDepartment;
         string SysConfigValue;
         string ClientAppConfigValue;
         string LoginName;
@@ -95,7 +96,9 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                 SetCaptionByLanguageKey();
                 ProcessLoadData();
                 LoadCboStatus();
-                SetDataDefault();
+                LoadCboDepartment();        
+                LoadCboLoginAccount();      
+                SetDataDefault();           
                 LoadDataToGridControl();
             }
             catch (Exception ex)
@@ -109,6 +112,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             try
             {
                 ListEmployee = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
                 LoginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 var employee = ListEmployee.FirstOrDefault(p => p.LOGINNAME == LoginName);
                 chkAll.Enabled = employee != null && employee.IS_ADMIN == (short)1;
@@ -206,21 +210,46 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
         {
             try
             {
+                // Filter theo từ khóa
                 if (!string.IsNullOrEmpty(txtSearch.Text))
                 {
                     filter.KEY_WORD = txtSearch.Text.Trim();
                 }
 
+                // Filter theo khoa
+                if (cboRequestDepartment.EditValue != null)
+                {
+                    filter.REQUEST_DEPARTMENT_ID =
+                        Inventec.Common.TypeConvert.Parse.ToInt64(cboRequestDepartment.EditValue.ToString());
+                }
+
+                // Filter theo trạng thái
                 if (cboStatus.EditValue != null)
                 {
-                    filter.SERVICE_REQ_STT_ID = Inventec.Common.TypeConvert.Parse.ToInt64(cboStatus.EditValue.ToString());
+                    long statusId = Inventec.Common.TypeConvert.Parse.ToInt64(cboStatus.EditValue.ToString());
+
+                    if (statusId > 0)
+                    {
+                        filter.SERVICE_REQ_STT_ID = statusId;
+                    }
                 }
 
                 if (!chkAll.Checked)
                 {
-                    filter.REQUEST_LOGINNAME__EXACT = LoginName;
+                    // Nếu chọn tài khoản cụ thể
+                    if (cboLoginAccount.EditValue != null)
+                    {
+                        filter.REQUEST_LOGINNAME__EXACT = cboLoginAccount.EditValue.ToString();
+                    }
+                    else
+                    {
+                        // Nếu không chọn tài khoản cụ thể → dùng user hiện tại
+                        filter.REQUEST_LOGINNAME__EXACT = LoginName;
+                    }
                 }
+                // Nếu chkAll.Checked = true → KHÔNG filter theo loginname (hiển thị tất cả)
 
+                // Filter theo thời gian
                 if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
                 {
                     filter.INTRUCTION_DATE_FROM = Convert.ToInt64(dtTimeFrom.DateTime.ToString("yyyyMMdd") + "000000");
@@ -231,12 +260,13 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                     filter.INTRUCTION_DATE_TO = Convert.ToInt64(dtTimeTo.DateTime.ToString("yyyyMMdd") + "235959");
                 }
 
+                // Filter theo loại y lệnh
                 filter.SERVICE_REQ_TYPE_IDs = new List<long>()
-                {
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK,
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT,
-                    IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
-                };
+        {
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK,
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT,
+            IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT
+        };
             }
             catch (Exception ex)
             {
@@ -249,6 +279,8 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             try
             {
                 this.txtSearch.Text = "";
+                this.cboRequestDepartment.EditValue = null;
+                this.cboLoginAccount.EditValue = null;
                 this.cboStatus.EditValue = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL;
                 this.dtTimeFrom.EditValue = DateTime.Now;
                 this.dtTimeTo.EditValue = DateTime.Now;
@@ -266,10 +298,25 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             {
                 var data = BackendDataWorker.Get<HIS_SERVICE_REQ_STT>();
 
+                List<HIS_SERVICE_REQ_STT> listStatus = new List<HIS_SERVICE_REQ_STT>();
+
+                listStatus.Add(new HIS_SERVICE_REQ_STT()
+                {
+                    ID = 0, 
+                    SERVICE_REQ_STT_NAME = "Tất cả"
+                });
+
+                if (data != null && data.Count > 0)
+                {
+                    listStatus.AddRange(data);
+                }
+
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("SERVICE_REQ_STT_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("SERVICE_REQ_STT_NAME", "ID", columnInfos, false, 250);
-                ControlEditorLoader.Load(cboStatus, data, controlEditorADO);
+
+                ControlEditorLoader.Load(cboStatus, listStatus, controlEditorADO);
+
                 this.cboStatus.EditValue = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL;
             }
             catch (Exception ex)
@@ -277,7 +324,50 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void LoadCboDepartment()
+        {
+            try
+            {
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("DEPARTMENT_CODE", "Mã", 80, 1));
+                columnInfos.Add(new ColumnInfo("DEPARTMENT_NAME", "Tên", 250, 2));
 
+                ControlEditorADO controlEditorADO = new ControlEditorADO(
+                    "DEPARTMENT_NAME", "ID", columnInfos, false, 330);
+
+                ControlEditorLoader.Load(cboRequestDepartment, ListDepartment, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadCboLoginAccount()
+        {
+            try
+            {
+                List<HIS_EMPLOYEE> activeEmployees = ListEmployee
+                    .Where(x => x != null
+                        && (x.IS_ACTIVE == 1 || x.IS_ACTIVE == null)
+                        && (x.IS_DELETE == null || x.IS_DELETE != 1))
+                    .ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("LOGINNAME", "Tài khoản", 100, 1));
+
+                columnInfos.Add(new ColumnInfo("TDL_USERNAME", "Họ tên", 200, 2));
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO(
+                    "TDL_USERNAME", "LOGINNAME", columnInfos, false, 300);
+
+                ControlEditorLoader.Load(cboLoginAccount, activeEmployees, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void SetCaptionByLanguageKey()
         {
             try
@@ -546,6 +636,21 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                                 e.Value = "Chưa đẩy";
                             }
                         }
+                        else if (e.Column.FieldName == "REQUEST_DEPARTMENT_NAME_STR")
+                        {
+                            if (data.REQUEST_DEPARTMENT_ID != null && data.REQUEST_DEPARTMENT_ID > 0)
+                            {
+                                var department = ListDepartment != null
+                                    ? ListDepartment.FirstOrDefault(d => d.ID == data.REQUEST_DEPARTMENT_ID)
+                                    : null;
+
+                                e.Value = department != null ? department.DEPARTMENT_NAME : "";
+                            }
+                            else
+                            {
+                                e.Value = "";
+                            }
+                        }  
                     }
                 }
             }
@@ -1384,7 +1489,6 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                 XtraMessageBox.Show("Có lỗi xảy ra khi cập nhật số lượng bán.", ResourceLanguageManager.ThongBao);
             }
         }
-
 
     }
 }
