@@ -699,6 +699,11 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMediMateADO>(dataUpdate, rowData);
                         dataUpdate.IS_USED = isChecked;
                         dataUpdate.USED_TIME = isChecked ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) : null;
+                        if (dataUpdate.USED_TIME.HasValue && dataUpdate.USED_TIME.Value < rowData.INTRUCTION_TIME)
+                        {
+                            var intructionTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(rowData.INTRUCTION_TIME).Value.AddMinutes(1);
+                            dataUpdate.USED_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(intructionTime);
+                        }
                         success = this.UpdateHisExpMest(ref dataUpdate, isChecked, phaseIsUnUsed);
                         if (success)
                         {
