@@ -2314,6 +2314,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 if (trackings == null || trackings.Count == 0)
                 {
+                    this.ValidateTrackingAndTreatment();
                     this.isInitTracking = false;
                     return;
                 }
@@ -2367,6 +2368,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                 }
                 this.InitComboTracking(cboPhieuDieuTri);
+                this.ValidateTrackingAndTreatment();
                 if (trackIdSet > 0)
                 {
                     cboPhieuDieuTri.EditValue = trackIdSet;

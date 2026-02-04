@@ -361,6 +361,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_MedisoftHistory = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemPictureEdit9 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.repositoryItemButton_CallPatient = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -431,6 +433,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.timerAutoReload = new System.Windows.Forms.Timer();
             this.imageListRefesh = new System.Windows.Forms.ImageList();
             this.timerReloadMachineCounter = new System.Windows.Forms.Timer();
+            this.gridColumn24 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ckKQCLS.Properties)).BeginInit();
@@ -598,6 +601,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_CallPatient)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send__Disable)).BeginInit();
@@ -3265,7 +3269,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryItemBtnDangGoi,
             this.repositoryItemPictureEdit7,
             this.repositoryItemTextEdit,
-            this.repositoryItemPictureEdit8});
+            this.repositoryItemPictureEdit8,
+            this.repositoryItemPictureEdit9});
             this.gridControlServiceReq.Size = new System.Drawing.Size(428, 561);
             this.gridControlServiceReq.TabIndex = 9;
             this.gridControlServiceReq.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -3302,7 +3307,9 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn20,
             this.gridColumn21,
             this.Gc_MedisoftHistory,
-            this.gridColumn16});
+            this.gridColumn16,
+            this.gridColumn23,
+            this.gridColumn24});
             this.gridViewServiceReq.GridControl = this.gridControlServiceReq;
             this.gridViewServiceReq.Name = "gridViewServiceReq";
             this.gridViewServiceReq.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDownFocused;
@@ -3486,7 +3493,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColVirPatientName.Name = "grdColVirPatientName";
             this.grdColVirPatientName.OptionsColumn.ReadOnly = true;
             this.grdColVirPatientName.Visible = true;
-            this.grdColVirPatientName.VisibleIndex = 9;
+            this.grdColVirPatientName.VisibleIndex = 10;
             this.grdColVirPatientName.Width = 140;
             // 
             // repositoryItemTextEdit
@@ -3506,7 +3513,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColDob.OptionsColumn.ReadOnly = true;
             this.grdColDob.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColDob.Visible = true;
-            this.grdColDob.VisibleIndex = 10;
+            this.grdColDob.VisibleIndex = 11;
             this.grdColDob.Width = 66;
             // 
             // grdColPatientCode
@@ -3521,7 +3528,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColPatientCode.Name = "grdColPatientCode";
             this.grdColPatientCode.OptionsColumn.ReadOnly = true;
             this.grdColPatientCode.Visible = true;
-            this.grdColPatientCode.VisibleIndex = 11;
+            this.grdColPatientCode.VisibleIndex = 12;
             this.grdColPatientCode.Width = 96;
             // 
             // gridColumnTreatmentCode
@@ -3534,7 +3541,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnTreatmentCode.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnTreatmentCode.OptionsColumn.ReadOnly = true;
             this.gridColumnTreatmentCode.Visible = true;
-            this.gridColumnTreatmentCode.VisibleIndex = 12;
+            this.gridColumnTreatmentCode.VisibleIndex = 13;
             this.gridColumnTreatmentCode.Width = 100;
             // 
             // grdColServiceReqCode
@@ -3545,7 +3552,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColServiceReqCode.Name = "grdColServiceReqCode";
             this.grdColServiceReqCode.OptionsColumn.ReadOnly = true;
             this.grdColServiceReqCode.Visible = true;
-            this.grdColServiceReqCode.VisibleIndex = 13;
+            this.grdColServiceReqCode.VisibleIndex = 14;
             this.grdColServiceReqCode.Width = 110;
             // 
             // gridColumnGender
@@ -3557,7 +3564,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnGender.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnGender.OptionsColumn.ReadOnly = true;
             this.gridColumnGender.Visible = true;
-            this.gridColumnGender.VisibleIndex = 14;
+            this.gridColumnGender.VisibleIndex = 15;
             this.gridColumnGender.Width = 62;
             // 
             // gridColumn9
@@ -3568,7 +3575,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn9.OptionsColumn.ReadOnly = true;
             this.gridColumn9.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 15;
+            this.gridColumn9.VisibleIndex = 16;
             this.gridColumn9.Width = 156;
             // 
             // gridColumn10
@@ -3579,7 +3586,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn10.OptionsColumn.ReadOnly = true;
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 16;
+            this.gridColumn10.VisibleIndex = 17;
             this.gridColumn10.Width = 149;
             // 
             // gridColumnInstructionTime
@@ -3591,7 +3598,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnInstructionTime.OptionsColumn.ReadOnly = true;
             this.gridColumnInstructionTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnInstructionTime.Visible = true;
-            this.gridColumnInstructionTime.VisibleIndex = 17;
+            this.gridColumnInstructionTime.VisibleIndex = 18;
             this.gridColumnInstructionTime.Width = 146;
             // 
             // gridColumn17
@@ -3603,7 +3610,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn17.OptionsFilter.AllowAutoFilter = false;
             this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 18;
+            this.gridColumn17.VisibleIndex = 19;
             this.gridColumn17.Width = 146;
             // 
             // gridColumnServiceReqBlock
@@ -3613,7 +3620,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnServiceReqBlock.Name = "gridColumnServiceReqBlock";
             this.gridColumnServiceReqBlock.OptionsColumn.AllowEdit = false;
             this.gridColumnServiceReqBlock.Visible = true;
-            this.gridColumnServiceReqBlock.VisibleIndex = 19;
+            this.gridColumnServiceReqBlock.VisibleIndex = 20;
             this.gridColumnServiceReqBlock.Width = 60;
             // 
             // gc_PatientClassify
@@ -3625,7 +3632,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gc_PatientClassify.ToolTip = "Phân loại bệnh nhân";
             this.gc_PatientClassify.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gc_PatientClassify.Visible = true;
-            this.gc_PatientClassify.VisibleIndex = 20;
+            this.gc_PatientClassify.VisibleIndex = 21;
             this.gc_PatientClassify.Width = 80;
             // 
             // grdColFinishTime
@@ -3637,7 +3644,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColFinishTime.OptionsColumn.ReadOnly = true;
             this.grdColFinishTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColFinishTime.Visible = true;
-            this.grdColFinishTime.VisibleIndex = 21;
+            this.grdColFinishTime.VisibleIndex = 22;
             this.grdColFinishTime.Width = 100;
             // 
             // grdColPatientType
@@ -3649,7 +3656,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.grdColPatientType.OptionsColumn.ReadOnly = true;
             this.grdColPatientType.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColPatientType.Visible = true;
-            this.grdColPatientType.VisibleIndex = 22;
+            this.grdColPatientType.VisibleIndex = 23;
             this.grdColPatientType.Width = 100;
             // 
             // gridColumn19
@@ -3658,7 +3665,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn19.FieldName = "MACHINE_NAMES";
             this.gridColumn19.Name = "gridColumn19";
             this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 23;
+            this.gridColumn19.VisibleIndex = 24;
             this.gridColumn19.Width = 120;
             // 
             // grdColPRIORIRY_DISPLAY
@@ -3716,6 +3723,28 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn16.OptionsColumn.ShowCaption = false;
             this.gridColumn16.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn16.Width = 20;
+            // 
+            // gridColumn23
+            // 
+            this.gridColumn23.AppearanceCell.Options.UseTextOptions = true;
+            this.gridColumn23.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn23.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn23.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn23.Caption = "gridColumn23";
+            this.gridColumn23.ColumnEdit = this.repositoryItemPictureEdit9;
+            this.gridColumn23.FieldName = "IS_REGISTER_BY_APP_ICON";
+            this.gridColumn23.Name = "gridColumn23";
+            this.gridColumn23.OptionsColumn.AllowEdit = false;
+            this.gridColumn23.OptionsColumn.ShowCaption = false;
+            this.gridColumn23.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn23.Visible = true;
+            this.gridColumn23.VisibleIndex = 9;
+            this.gridColumn23.Width = 20;
+            // 
+            // repositoryItemPictureEdit9
+            // 
+            this.repositoryItemPictureEdit9.Name = "repositoryItemPictureEdit9";
+            this.repositoryItemPictureEdit9.NullText = " ";
             // 
             // repositoryItemButton_CallPatient
             // 
@@ -4438,6 +4467,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.imageListIcon.Images.SetKeyName(13, "LoaGoiNho.png");
             this.imageListIcon.Images.SetKeyName(14, "demostration.png");
             this.imageListIcon.Images.SetKeyName(15, "tai-chinh.png");
+            this.imageListIcon.Images.SetKeyName(16, "mobile.png");
+            this.imageListIcon.Images.SetKeyName(17, "666.png");
             // 
             // toolTipController1
             // 
@@ -4476,6 +4507,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // timerReloadMachineCounter
             // 
             this.timerReloadMachineCounter.Interval = 180000;
+            // 
+            // gridColumn24
+            // 
+            this.gridColumn24.Caption = "gridColumn24";
+            this.gridColumn24.FieldName = "IS_REGISTER_BY_APP";
+            this.gridColumn24.Name = "gridColumn24";
             // 
             // UCExecuteRoom
             // 
@@ -4656,6 +4693,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton_CallPatient)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send__Disable)).EndInit();
@@ -5065,5 +5103,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit repositoryItemPictureEdit8;
         private DevExpress.XtraEditors.LabelControl lblBloodType;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem70;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn23;
+        private DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit repositoryItemPictureEdit9;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn24;
     }
 }

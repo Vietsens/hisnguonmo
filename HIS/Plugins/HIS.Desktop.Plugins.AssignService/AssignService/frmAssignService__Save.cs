@@ -592,8 +592,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             bool result = true;
             try
             {
-                if ((HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "2" || HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "3") && this.currentHisPatientTypeAlter != null && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM)
+                // chặn tbao với bệnh nhân bảo lãnh
+                Inventec.Common.Logging.LogSystem.Debug("qtcode canhbao");
+                if ((HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "2" || HisConfigCFG.WarningOverTotalPatientPrice__IsCheck == "3") && this.currentHisPatientTypeAlter != null && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE)))
                 {
+                    Inventec.Common.Logging.LogSystem.Debug("qtcode vao canhbao");
                     decimal tmp = 0;
                     decimal tongtienBHYT = GetDefaultSerServTotalPrice(ref tmp, HisConfigCFG.PatientTypeId__BHYT);
                     decimal totalPrice = GetDefaultSerServTotalPrice(ref tmp);
@@ -1945,6 +1948,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 if (rs != null)
                 {//qtcode
+                    this.totalGuaranteeOriginal = this.totalGuaranteePrice_1; 
                     this.serviceReqComboResultSDO = rs;
                     dicSessionCode[serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID] = serviceReqComboResultSDO.SessionCode;
                     dicServiceReqList[serviceReqComboResultSDO.ServiceReqs[0].TREATMENT_ID] = serviceReqComboResultSDO;

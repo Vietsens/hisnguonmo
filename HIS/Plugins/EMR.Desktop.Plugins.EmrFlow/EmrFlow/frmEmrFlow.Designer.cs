@@ -45,6 +45,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -66,7 +67,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
@@ -80,6 +81,9 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
+            this.cboTemp = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.chkIsTemp = new DevExpress.XtraEditors.CheckEdit();
             this.btnRest = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
@@ -105,6 +109,8 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.lcFlowCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcFlowName = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging2 = new Inventec.UC.Paging.UcPaging();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -113,6 +119,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdViewEmrFlow = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.STT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColDelete = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColLock = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColFlowCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColFlowName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColBusinessId = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -120,6 +127,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColRoomCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColRoomName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColRoomTypeID = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grdColIsActive = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreateTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColCreator = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grdColModifyTime = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -142,9 +150,10 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -152,6 +161,9 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTemp.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsTemp.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtRoomCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFlowName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFlowCode.Properties)).BeginInit();
@@ -174,6 +186,8 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             ((System.ComponentModel.ISupportInitialize)(this.lcFlowCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcFlowName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
@@ -197,6 +211,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
@@ -205,10 +220,6 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnEdit,
@@ -277,39 +288,38 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1648, 38);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 33);
+            this.barDockControlTop.Size = new System.Drawing.Size(1236, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 629);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1648, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1236, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 591);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 33);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 478);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1648, 38);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 591);
+            this.barDockControlRight.Location = new System.Drawing.Point(1236, 33);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 478);
             // 
             // layoutControl1
             // 
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 33);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1648, 591);
+            this.layoutControl1.Size = new System.Drawing.Size(1236, 478);
             this.layoutControl1.TabIndex = 4;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -321,16 +331,17 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControl2.Controls.Add(this.layoutControl3);
             this.layoutControl2.Controls.Add(this.btnSearch);
             this.layoutControl2.Controls.Add(this.txtSearch);
-            this.layoutControl2.Location = new System.Drawing.Point(3, 3);
-            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl2.Location = new System.Drawing.Point(2, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(1642, 585);
+            this.layoutControl2.Size = new System.Drawing.Size(1232, 474);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // lcEditorInfo
             // 
+            this.lcEditorInfo.Controls.Add(this.cboTemp);
+            this.lcEditorInfo.Controls.Add(this.chkIsTemp);
             this.lcEditorInfo.Controls.Add(this.btnRest);
             this.lcEditorInfo.Controls.Add(this.btnAdd);
             this.lcEditorInfo.Controls.Add(this.btnEdit);
@@ -340,20 +351,55 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.lcEditorInfo.Controls.Add(this.spNumOder);
             this.lcEditorInfo.Controls.Add(this.cboBusinessID);
             this.lcEditorInfo.Controls.Add(this.cboRoomCode);
-            this.lcEditorInfo.Location = new System.Drawing.Point(1175, 3);
-            this.lcEditorInfo.Margin = new System.Windows.Forms.Padding(4);
+            this.lcEditorInfo.Location = new System.Drawing.Point(881, 2);
             this.lcEditorInfo.Name = "lcEditorInfo";
             this.lcEditorInfo.Root = this.layoutControlGroup4;
-            this.lcEditorInfo.Size = new System.Drawing.Size(464, 579);
+            this.lcEditorInfo.Size = new System.Drawing.Size(349, 470);
             this.lcEditorInfo.TabIndex = 9;
             this.lcEditorInfo.Text = "layoutControl5";
             // 
+            // cboTemp
+            // 
+            this.cboTemp.EditValue = "";
+            this.cboTemp.Location = new System.Drawing.Point(97, 26);
+            this.cboTemp.MenuManager = this.barManager1;
+            this.cboTemp.Name = "cboTemp";
+            this.cboTemp.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboTemp.Properties.AutoComplete = false;
+            this.cboTemp.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboTemp.Properties.NullText = "";
+            this.cboTemp.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboTemp.Properties.View = this.customGridViewWithFilterMultiColumn1;
+            this.cboTemp.Size = new System.Drawing.Size(250, 20);
+            this.cboTemp.StyleController = this.lcEditorInfo;
+            this.cboTemp.TabIndex = 16;
+            this.cboTemp.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboTemp_Closed);
+            this.cboTemp.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboTemp_PreviewKeyDown);
+            // 
+            // customGridViewWithFilterMultiColumn1
+            // 
+            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
+            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
+            // 
+            // chkIsTemp
+            // 
+            this.chkIsTemp.Location = new System.Drawing.Point(77, 170);
+            this.chkIsTemp.MenuManager = this.barManager1;
+            this.chkIsTemp.Name = "chkIsTemp";
+            this.chkIsTemp.Properties.Caption = " Mẫu thứ tự ký";
+            this.chkIsTemp.Size = new System.Drawing.Size(270, 19);
+            this.chkIsTemp.StyleController = this.lcEditorInfo;
+            this.chkIsTemp.TabIndex = 13;
+            this.chkIsTemp.KeyDown += new System.Windows.Forms.KeyEventHandler(this.chkIsTemp_KeyDown);
+            // 
             // btnRest
             // 
-            this.btnRest.Location = new System.Drawing.Point(349, 180);
-            this.btnRest.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRest.Location = new System.Drawing.Point(262, 211);
             this.btnRest.Name = "btnRest";
-            this.btnRest.Size = new System.Drawing.Size(112, 27);
+            this.btnRest.Size = new System.Drawing.Size(85, 22);
             this.btnRest.StyleController = this.lcEditorInfo;
             this.btnRest.TabIndex = 12;
             this.btnRest.Text = "Làm lại (Ctrl R)";
@@ -361,10 +407,9 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(209, 180);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAdd.Location = new System.Drawing.Point(157, 211);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(134, 27);
+            this.btnAdd.Size = new System.Drawing.Size(101, 22);
             this.btnAdd.StyleController = this.lcEditorInfo;
             this.btnAdd.TabIndex = 11;
             this.btnAdd.Text = "Thêm (Ctrl N)";
@@ -372,10 +417,9 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(73, 180);
-            this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEdit.Location = new System.Drawing.Point(55, 211);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(130, 27);
+            this.btnEdit.Size = new System.Drawing.Size(98, 22);
             this.btnEdit.StyleController = this.lcEditorInfo;
             this.btnEdit.TabIndex = 10;
             this.btnEdit.Text = "Sửa (Ctrl S)";
@@ -383,34 +427,31 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             // txtRoomCode
             // 
-            this.txtRoomCode.Location = new System.Drawing.Point(97, 143);
-            this.txtRoomCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtRoomCode.Location = new System.Drawing.Point(97, 146);
             this.txtRoomCode.MenuManager = this.barManager1;
             this.txtRoomCode.Name = "txtRoomCode";
             this.txtRoomCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtRoomCode.Size = new System.Drawing.Size(158, 22);
+            this.txtRoomCode.Size = new System.Drawing.Size(95, 20);
             this.txtRoomCode.StyleController = this.lcEditorInfo;
             this.txtRoomCode.TabIndex = 8;
             this.txtRoomCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtRoomCode_PreviewKeyDown);
             // 
             // txtFlowName
             // 
-            this.txtFlowName.Location = new System.Drawing.Point(98, 60);
-            this.txtFlowName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtFlowName.Location = new System.Drawing.Point(97, 74);
             this.txtFlowName.MenuManager = this.barManager1;
             this.txtFlowName.Name = "txtFlowName";
-            this.txtFlowName.Size = new System.Drawing.Size(363, 22);
+            this.txtFlowName.Size = new System.Drawing.Size(250, 20);
             this.txtFlowName.StyleController = this.lcEditorInfo;
             this.txtFlowName.TabIndex = 5;
             this.txtFlowName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFlowName_KeyDown);
             // 
             // txtFlowCode
             // 
-            this.txtFlowCode.Location = new System.Drawing.Point(98, 32);
-            this.txtFlowCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtFlowCode.Location = new System.Drawing.Point(97, 50);
             this.txtFlowCode.MenuManager = this.barManager1;
             this.txtFlowCode.Name = "txtFlowCode";
-            this.txtFlowCode.Size = new System.Drawing.Size(363, 22);
+            this.txtFlowCode.Size = new System.Drawing.Size(250, 20);
             this.txtFlowCode.StyleController = this.lcEditorInfo;
             this.txtFlowCode.TabIndex = 4;
             this.txtFlowCode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFlowCode_KeyDown);
@@ -422,8 +463,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             0,
             0,
             0});
-            this.spNumOder.Location = new System.Drawing.Point(98, 116);
-            this.spNumOder.Margin = new System.Windows.Forms.Padding(4);
+            this.spNumOder.Location = new System.Drawing.Point(97, 122);
             this.spNumOder.MenuManager = this.barManager1;
             this.spNumOder.Name = "spNumOder";
             this.spNumOder.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -436,7 +476,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             902409669,
             54,
             0});
-            this.spNumOder.Size = new System.Drawing.Size(363, 22);
+            this.spNumOder.Size = new System.Drawing.Size(250, 20);
             this.spNumOder.StyleController = this.lcEditorInfo;
             this.spNumOder.TabIndex = 7;
             this.spNumOder.KeyDown += new System.Windows.Forms.KeyEventHandler(this.spNumOder_KeyDown);
@@ -444,15 +484,14 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // cboBusinessID
             // 
             this.cboBusinessID.Enabled = false;
-            this.cboBusinessID.Location = new System.Drawing.Point(98, 88);
-            this.cboBusinessID.Margin = new System.Windows.Forms.Padding(4);
+            this.cboBusinessID.Location = new System.Drawing.Point(97, 98);
             this.cboBusinessID.MenuManager = this.barManager1;
             this.cboBusinessID.Name = "cboBusinessID";
             this.cboBusinessID.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBusinessID.Properties.NullText = "";
             this.cboBusinessID.Properties.View = this.gridLookUpEdit1View;
-            this.cboBusinessID.Size = new System.Drawing.Size(363, 22);
+            this.cboBusinessID.Size = new System.Drawing.Size(250, 20);
             this.cboBusinessID.StyleController = this.lcEditorInfo;
             this.cboBusinessID.TabIndex = 6;
             this.cboBusinessID.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboBusinessID_Closed);
@@ -467,8 +506,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             // cboRoomCode
             // 
-            this.cboRoomCode.Location = new System.Drawing.Point(255, 143);
-            this.cboRoomCode.Margin = new System.Windows.Forms.Padding(4);
+            this.cboRoomCode.Location = new System.Drawing.Point(192, 146);
             this.cboRoomCode.MenuManager = this.barManager1;
             this.cboRoomCode.Name = "cboRoomCode";
             this.cboRoomCode.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -478,7 +516,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.cboRoomCode.Properties.NullText = "";
             this.cboRoomCode.Properties.View = this.gridView2;
-            this.cboRoomCode.Size = new System.Drawing.Size(207, 22);
+            this.cboRoomCode.Size = new System.Drawing.Size(155, 20);
             this.cboRoomCode.StyleController = this.lcEditorInfo;
             this.cboRoomCode.TabIndex = 9;
             this.cboRoomCode.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboRoomCode_Closed);
@@ -509,10 +547,12 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.emptySpaceItem3,
             this.lcFlowCode,
             this.lcFlowName,
-            this.emptySpaceItem5});
+            this.emptySpaceItem5,
+            this.layoutControlItem9,
+            this.layoutControlItem14});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
-            this.layoutControlGroup4.Size = new System.Drawing.Size(464, 579);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(349, 470);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // layoutControlItem11
@@ -522,9 +562,9 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem11.Control = this.cboBusinessID;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 85);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 96);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(464, 28);
+            this.layoutControlItem11.Size = new System.Drawing.Size(349, 24);
             this.layoutControlItem11.Text = "Mã nghiệp vụ:";
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem11.TextSize = new System.Drawing.Size(90, 20);
@@ -537,9 +577,9 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.lcNumOder.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcNumOder.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcNumOder.Control = this.spNumOder;
-            this.lcNumOder.Location = new System.Drawing.Point(0, 113);
+            this.lcNumOder.Location = new System.Drawing.Point(0, 120);
             this.lcNumOder.Name = "lcNumOder";
-            this.lcNumOder.Size = new System.Drawing.Size(464, 28);
+            this.lcNumOder.Size = new System.Drawing.Size(349, 24);
             this.lcNumOder.Text = "Số thứ tự:";
             this.lcNumOder.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcNumOder.TextSize = new System.Drawing.Size(90, 20);
@@ -548,10 +588,10 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.cboRoomCode;
-            this.layoutControlItem13.Location = new System.Drawing.Point(255, 141);
+            this.layoutControlItem13.Location = new System.Drawing.Point(192, 144);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem13.Size = new System.Drawing.Size(209, 26);
+            this.layoutControlItem13.Size = new System.Drawing.Size(157, 24);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
@@ -560,10 +600,10 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.lcRoom.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcRoom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcRoom.Control = this.txtRoomCode;
-            this.lcRoom.Location = new System.Drawing.Point(0, 141);
+            this.lcRoom.Location = new System.Drawing.Point(0, 144);
             this.lcRoom.Name = "lcRoom";
             this.lcRoom.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lcRoom.Size = new System.Drawing.Size(255, 26);
+            this.lcRoom.Size = new System.Drawing.Size(192, 24);
             this.lcRoom.Text = "Phòng ký:";
             this.lcRoom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcRoom.TextSize = new System.Drawing.Size(90, 20);
@@ -572,52 +612,52 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.btnEdit;
-            this.layoutControlItem17.Location = new System.Drawing.Point(70, 177);
+            this.layoutControlItem17.Location = new System.Drawing.Point(53, 209);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(136, 33);
+            this.layoutControlItem17.Size = new System.Drawing.Size(102, 26);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.btnAdd;
-            this.layoutControlItem18.Location = new System.Drawing.Point(206, 177);
+            this.layoutControlItem18.Location = new System.Drawing.Point(155, 209);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(140, 33);
+            this.layoutControlItem18.Size = new System.Drawing.Size(105, 26);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.btnRest;
-            this.layoutControlItem19.Location = new System.Drawing.Point(346, 177);
+            this.layoutControlItem19.Location = new System.Drawing.Point(260, 209);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(118, 33);
+            this.layoutControlItem19.Size = new System.Drawing.Size(89, 26);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 177);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 209);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(70, 33);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(53, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem4
             // 
             this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 210);
+            this.emptySpaceItem4.Location = new System.Drawing.Point(0, 235);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(464, 369);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(349, 235);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 167);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 192);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(464, 10);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(349, 17);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lcFlowCode
@@ -627,9 +667,9 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.lcFlowCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcFlowCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcFlowCode.Control = this.txtFlowCode;
-            this.lcFlowCode.Location = new System.Drawing.Point(0, 29);
+            this.lcFlowCode.Location = new System.Drawing.Point(0, 48);
             this.lcFlowCode.Name = "lcFlowCode";
-            this.lcFlowCode.Size = new System.Drawing.Size(464, 28);
+            this.lcFlowCode.Size = new System.Drawing.Size(349, 24);
             this.lcFlowCode.Text = "Mã thứ tự:";
             this.lcFlowCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcFlowCode.TextSize = new System.Drawing.Size(90, 20);
@@ -642,9 +682,9 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.lcFlowName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcFlowName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcFlowName.Control = this.txtFlowName;
-            this.lcFlowName.Location = new System.Drawing.Point(0, 57);
+            this.lcFlowName.Location = new System.Drawing.Point(0, 72);
             this.lcFlowName.Name = "lcFlowName";
-            this.lcFlowName.Size = new System.Drawing.Size(464, 28);
+            this.lcFlowName.Size = new System.Drawing.Size(349, 24);
             this.lcFlowName.Text = "Tên thứ tự:";
             this.lcFlowName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcFlowName.TextSize = new System.Drawing.Size(90, 20);
@@ -655,26 +695,48 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.emptySpaceItem5.AllowHotTrack = false;
             this.emptySpaceItem5.Location = new System.Drawing.Point(0, 0);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(464, 29);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(349, 24);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem9
+            // 
+            this.layoutControlItem9.Control = this.chkIsTemp;
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 168);
+            this.layoutControlItem9.Name = "layoutControlItem9";
+            this.layoutControlItem9.Size = new System.Drawing.Size(349, 24);
+            this.layoutControlItem9.Text = " ";
+            this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem9.TextToControlDistance = 5;
+            // 
+            // layoutControlItem14
+            // 
+            this.layoutControlItem14.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem14.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem14.Control = this.cboTemp;
+            this.layoutControlItem14.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem14.Name = "layoutControlItem14";
+            this.layoutControlItem14.Size = new System.Drawing.Size(349, 24);
+            this.layoutControlItem14.Text = "Chọn mẫu:";
+            this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem14.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem14.TextToControlDistance = 5;
             // 
             // layoutControl4
             // 
             this.layoutControl4.Controls.Add(this.ucPaging2);
-            this.layoutControl4.Location = new System.Drawing.Point(3, 549);
-            this.layoutControl4.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl4.Location = new System.Drawing.Point(2, 444);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(1166, 33);
+            this.layoutControl4.Size = new System.Drawing.Size(875, 28);
             this.layoutControl4.TabIndex = 8;
             this.layoutControl4.Text = "layoutControl4";
             // 
             // ucPaging2
             // 
-            this.ucPaging2.Location = new System.Drawing.Point(3, 3);
-            this.ucPaging2.Margin = new System.Windows.Forms.Padding(4);
+            this.ucPaging2.Location = new System.Drawing.Point(2, 2);
             this.ucPaging2.Name = "ucPaging2";
-            this.ucPaging2.Size = new System.Drawing.Size(1160, 27);
+            this.ucPaging2.Size = new System.Drawing.Size(871, 24);
             this.ucPaging2.TabIndex = 7;
             // 
             // layoutControlGroup3
@@ -685,7 +747,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControlItem7});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1166, 33);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(875, 28);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem7
@@ -693,16 +755,14 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControlItem7.Control = this.ucPaging2;
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(1166, 33);
+            this.layoutControlItem7.Size = new System.Drawing.Size(875, 28);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // grdControlEmrFlow
             // 
-            this.grdControlEmrFlow.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
-            this.grdControlEmrFlow.Location = new System.Drawing.Point(3, 47);
+            this.grdControlEmrFlow.Location = new System.Drawing.Point(2, 38);
             this.grdControlEmrFlow.MainView = this.grdViewEmrFlow;
-            this.grdControlEmrFlow.Margin = new System.Windows.Forms.Padding(4);
             this.grdControlEmrFlow.MenuManager = this.barManager1;
             this.grdControlEmrFlow.Name = "grdControlEmrFlow";
             this.grdControlEmrFlow.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -710,7 +770,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.btnUnLock,
             this.btnDelete,
             this.btnEnableDelete});
-            this.grdControlEmrFlow.Size = new System.Drawing.Size(1166, 496);
+            this.grdControlEmrFlow.Size = new System.Drawing.Size(875, 402);
             this.grdControlEmrFlow.TabIndex = 7;
             this.grdControlEmrFlow.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.grdViewEmrFlow});
@@ -720,6 +780,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdViewEmrFlow.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
             this.STT,
             this.grdColDelete,
+            this.grdColLock,
             this.grdColFlowCode,
             this.grdColFlowName,
             this.grdColBusinessId,
@@ -727,6 +788,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColRoomCode,
             this.grdColRoomName,
             this.grdColRoomTypeID,
+            this.grdColIsActive,
             this.grdColCreateTime,
             this.grdColCreator,
             this.grdColModifyTime,
@@ -769,6 +831,18 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColDelete.VisibleIndex = 1;
             this.grdColDelete.Width = 20;
             // 
+            // grdColLock
+            // 
+            this.grdColLock.Caption = "gridColumn1";
+            this.grdColLock.FieldName = "LOCK";
+            this.grdColLock.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.grdColLock.Name = "grdColLock";
+            this.grdColLock.OptionsColumn.ShowCaption = false;
+            this.grdColLock.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColLock.Visible = true;
+            this.grdColLock.VisibleIndex = 2;
+            this.grdColLock.Width = 20;
+            // 
             // grdColFlowCode
             // 
             this.grdColFlowCode.Caption = "Mã thứ tự";
@@ -778,7 +852,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColFlowCode.OptionsColumn.AllowEdit = false;
             this.grdColFlowCode.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColFlowCode.Visible = true;
-            this.grdColFlowCode.VisibleIndex = 2;
+            this.grdColFlowCode.VisibleIndex = 3;
             this.grdColFlowCode.Width = 100;
             // 
             // grdColFlowName
@@ -790,7 +864,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColFlowName.OptionsColumn.AllowEdit = false;
             this.grdColFlowName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColFlowName.Visible = true;
-            this.grdColFlowName.VisibleIndex = 3;
+            this.grdColFlowName.VisibleIndex = 4;
             this.grdColFlowName.Width = 120;
             // 
             // grdColBusinessId
@@ -801,7 +875,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColBusinessId.OptionsColumn.AllowEdit = false;
             this.grdColBusinessId.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColBusinessId.Visible = true;
-            this.grdColBusinessId.VisibleIndex = 4;
+            this.grdColBusinessId.VisibleIndex = 5;
             this.grdColBusinessId.Width = 100;
             // 
             // grdColNumOder
@@ -812,7 +886,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColNumOder.OptionsColumn.AllowEdit = false;
             this.grdColNumOder.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColNumOder.Visible = true;
-            this.grdColNumOder.VisibleIndex = 5;
+            this.grdColNumOder.VisibleIndex = 6;
             this.grdColNumOder.Width = 90;
             // 
             // grdColRoomCode
@@ -823,7 +897,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColRoomCode.OptionsColumn.AllowEdit = false;
             this.grdColRoomCode.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColRoomCode.Visible = true;
-            this.grdColRoomCode.VisibleIndex = 6;
+            this.grdColRoomCode.VisibleIndex = 7;
             this.grdColRoomCode.Width = 100;
             // 
             // grdColRoomName
@@ -834,7 +908,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColRoomName.OptionsColumn.AllowEdit = false;
             this.grdColRoomName.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColRoomName.Visible = true;
-            this.grdColRoomName.VisibleIndex = 7;
+            this.grdColRoomName.VisibleIndex = 8;
             this.grdColRoomName.Width = 100;
             // 
             // grdColRoomTypeID
@@ -845,8 +919,19 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColRoomTypeID.OptionsColumn.AllowEdit = false;
             this.grdColRoomTypeID.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColRoomTypeID.Visible = true;
-            this.grdColRoomTypeID.VisibleIndex = 8;
+            this.grdColRoomTypeID.VisibleIndex = 9;
             this.grdColRoomTypeID.Width = 100;
+            // 
+            // grdColIsActive
+            // 
+            this.grdColIsActive.Caption = "Trạng thái";
+            this.grdColIsActive.FieldName = "IS_ACTIVE_STR";
+            this.grdColIsActive.Name = "grdColIsActive";
+            this.grdColIsActive.OptionsColumn.AllowEdit = false;
+            this.grdColIsActive.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grdColIsActive.Visible = true;
+            this.grdColIsActive.VisibleIndex = 10;
+            this.grdColIsActive.Width = 100;
             // 
             // grdColCreateTime
             // 
@@ -857,7 +942,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColCreateTime.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColCreateTime.Visible = true;
-            this.grdColCreateTime.VisibleIndex = 9;
+            this.grdColCreateTime.VisibleIndex = 11;
             this.grdColCreateTime.Width = 120;
             // 
             // grdColCreator
@@ -868,7 +953,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColCreator.OptionsColumn.AllowEdit = false;
             this.grdColCreator.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColCreator.Visible = true;
-            this.grdColCreator.VisibleIndex = 10;
+            this.grdColCreator.VisibleIndex = 12;
             this.grdColCreator.Width = 110;
             // 
             // grdColModifyTime
@@ -880,7 +965,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColModifyTime.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grdColModifyTime.Visible = true;
-            this.grdColModifyTime.VisibleIndex = 11;
+            this.grdColModifyTime.VisibleIndex = 13;
             this.grdColModifyTime.Width = 120;
             // 
             // grdColModifier
@@ -891,14 +976,14 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.grdColModifier.OptionsColumn.AllowEdit = false;
             this.grdColModifier.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.grdColModifier.Visible = true;
-            this.grdColModifier.VisibleIndex = 12;
+            this.grdColModifier.VisibleIndex = 14;
             this.grdColModifier.Width = 110;
             // 
             // btnLock
             // 
             this.btnLock.AutoHeight = false;
             this.btnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::EMR.Desktop.Plugins.EmrFlow.Properties.Resources.Lock_Lock_16_16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::EMR.Desktop.Plugins.EmrFlow.Properties.Resources.Lock_Unlock_16_16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Khóa", null, null, true)});
             this.btnLock.Name = "btnLock";
             this.btnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLock.Click += new System.EventHandler(this.btnLock_Click);
@@ -907,7 +992,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             this.btnUnLock.AutoHeight = false;
             this.btnUnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::EMR.Desktop.Plugins.EmrFlow.Properties.Resources.Lock_Unlock_16_16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Mở khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::EMR.Desktop.Plugins.EmrFlow.Properties.Resources.Lock_Lock_16_16, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Mở khóa", null, null, true)});
             this.btnUnLock.Name = "btnUnLock";
             this.btnUnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnUnLock.Click += new System.EventHandler(this.btnUnLock_Click);
@@ -931,11 +1016,10 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             // layoutControl3
             // 
-            this.layoutControl3.Location = new System.Drawing.Point(852, 3);
-            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl3.Location = new System.Drawing.Point(639, 2);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(317, 27);
+            this.layoutControl3.Size = new System.Drawing.Size(238, 22);
             this.layoutControl3.TabIndex = 6;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -945,15 +1029,14 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControlGroup2.GroupBordersVisible = false;
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(317, 27);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(238, 22);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(691, 3);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearch.Location = new System.Drawing.Point(518, 2);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(155, 27);
+            this.btnSearch.Size = new System.Drawing.Size(117, 22);
             this.btnSearch.StyleController = this.layoutControl2;
             this.btnSearch.TabIndex = 5;
             this.btnSearch.Text = "Tìm kiếm (Ctrl F)";
@@ -961,14 +1044,13 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(3, 3);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.txtSearch.Location = new System.Drawing.Point(2, 2);
             this.txtSearch.MenuManager = this.barManager1;
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtSearch.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtSearch.Size = new System.Drawing.Size(682, 22);
+            this.txtSearch.Size = new System.Drawing.Size(512, 20);
             this.txtSearch.StyleController = this.layoutControl2;
             this.txtSearch.TabIndex = 4;
             this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
@@ -987,7 +1069,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControlItem8});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(1642, 585);
+            this.Root.Size = new System.Drawing.Size(1232, 474);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem2
@@ -995,60 +1077,60 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControlItem2.Control = this.txtSearch;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(688, 33);
+            this.layoutControlItem2.Size = new System.Drawing.Size(516, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSearch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(688, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(516, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(161, 33);
+            this.layoutControlItem3.Size = new System.Drawing.Size(121, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.layoutControl3;
-            this.layoutControlItem4.Location = new System.Drawing.Point(849, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(637, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(323, 33);
+            this.layoutControlItem4.Size = new System.Drawing.Size(242, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 33);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 26);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(1172, 11);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(879, 10);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.grdControlEmrFlow;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 44);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 36);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(1172, 502);
+            this.layoutControlItem5.Size = new System.Drawing.Size(879, 406);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.layoutControl4;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 546);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 442);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(1172, 39);
+            this.layoutControlItem6.Size = new System.Drawing.Size(879, 32);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.lcEditorInfo;
-            this.layoutControlItem8.Location = new System.Drawing.Point(1172, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(879, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(470, 585);
+            this.layoutControlItem8.Size = new System.Drawing.Size(353, 474);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -1060,7 +1142,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControlItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1648, 591);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1236, 478);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -1068,9 +1150,16 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControlItem1.Control = this.layoutControl2;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1648, 591);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1236, 478);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
+            // 
+            // customGridLookUpEditWithFilterMultiColumn1View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumn1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumn1View.Name = "customGridLookUpEditWithFilterMultiColumn1View";
+            this.customGridLookUpEditWithFilterMultiColumn1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumn1View.OptionsView.ShowGroupPanel = false;
             // 
             // dxErrorProvider1
             // 
@@ -1078,18 +1167,17 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             // 
             // frmEmrFlow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1648, 629);
+            this.ClientSize = new System.Drawing.Size(1236, 511);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmEmrFlow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frmEmrFlow";
+            this.Text = "Thứ tự ký";
             this.Load += new System.EventHandler(this.frmEmrFlow_Load);
             this.Controls.SetChildIndex(this.barDockControlTop, 0);
             this.Controls.SetChildIndex(this.barDockControlBottom, 0);
@@ -1103,6 +1191,9 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cboTemp.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsTemp.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtRoomCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFlowName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtFlowCode.Properties)).EndInit();
@@ -1125,6 +1216,8 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             ((System.ComponentModel.ISupportInitialize)(this.lcFlowCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcFlowName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).EndInit();
             this.layoutControl4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
@@ -1148,6 +1241,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
@@ -1236,5 +1330,13 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
         private DevExpress.Utils.ToolTipController toolTipController1;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
+        private DevExpress.XtraEditors.CheckEdit chkIsTemp;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColLock;
+        private DevExpress.XtraGrid.Columns.GridColumn grdColIsActive;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridLookUpEditWithFilterMultiColumn1View;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboTemp;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
     }
 }

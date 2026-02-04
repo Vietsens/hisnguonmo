@@ -3002,6 +3002,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                 result.Add(ado);
                                 continue;
                             }
+                            if ((item.IS_NOT_EXPEND ?? 0) == 1)
+                            {
+                                item.IsExpend = false;
+                                item.IsDisableExpend = true;
+                            }
+                            else
+                            {
+                                item.IsExpend = true;
+                                item.IsDisableExpend = true;
+                            }
 
                             if (item.AMOUNT > 0)
                             {

@@ -174,6 +174,7 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO
         public string PatientCccd { get; set; }
         public string ApplicationCode { get; set; }
         public string Remark { get; set; }
+        public string HospitalCode { get; set; }
     }
 
     public class AvailableBalanceInfoData

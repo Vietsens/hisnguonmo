@@ -26,6 +26,7 @@ namespace MPS.Processor.Mps000321.ADO
     public class GroupDepartmentADO
     {
         public string KEY_PATY_ALTER { get; set; }
+        public string KEY_PATY_ALTER_REAL { get; set; }
         public long GROUP_DEPARTMENT_ID { get; set; }
         public decimal? TOTAL_PRICE_BHYT_HEIN_SERVICE_TYPE { get; set; }
         public decimal? TOTAL_PRICE_HEIN_SERVICE_TYPE { get; set; }

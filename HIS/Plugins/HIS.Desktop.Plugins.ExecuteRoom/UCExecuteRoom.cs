@@ -1142,6 +1142,15 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         }
                     }
 
+                    if (e.Column.FieldName == "IS_REGISTER_BY_APP_ICON")
+                    {
+                        if (dataRow.IS_REGISTER_BY_APP == 1)
+                        {
+                            e.Value = imageListIcon.Images[17];
+                        }
+                        else
+                            e.Value = null;
+                    }
                 }
                 else
                 {
@@ -1503,6 +1512,14 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                             if (info.Column.FieldName == "EXAM_END_TYPE_STR")
                             {
                                 text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.ToolTipControl.Kham", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
+                            }
+                            if (info.Column.FieldName == "IS_REGISTER_BY_APP_ICON")
+                            {
+                                long isRegisterByApp = Inventec.Common.TypeConvert.Parse.ToInt64((view.GetRowCellValue(lastRowHandle, "IS_REGISTER_BY_APP") ?? "").ToString());
+                                if (isRegisterByApp == 1)
+                                {
+                                    text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.ToolTipControl.IS_REGISTER_BY_APP", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
+                                }
                             }
                             lastInfo = new ToolTipControlInfo(new DevExpress.XtraGrid.GridToolTipInfo(view, new DevExpress.XtraGrid.Views.Base.CellToolTipInfo(info.RowHandle, info.Column, "Text")), text);
                         }

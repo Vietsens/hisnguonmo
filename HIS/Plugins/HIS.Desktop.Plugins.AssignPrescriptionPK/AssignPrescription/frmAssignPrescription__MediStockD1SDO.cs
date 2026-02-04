@@ -894,7 +894,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             }
                             else
                             {
-                                cboPatientType.EditValue = listSourcePatientType.FirstOrDefault().ID;
+                                cboPatientType.EditValue = listSourcePatientType.FirstOrDefault()?.ID;
                             }
                             
                         }

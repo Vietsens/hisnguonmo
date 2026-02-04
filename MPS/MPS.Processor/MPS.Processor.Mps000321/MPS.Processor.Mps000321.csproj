@@ -34,7 +34,7 @@
       <HintPath>..\..\..\..\LIB\FlexCellReport\FlexCel.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Common.BankQrCode">
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Common.BankQrCode.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Common.BankQrCode.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -110,6 +110,7 @@
     <Compile Include="ADO\PayFormTypeADO.cs" />
     <Compile Include="ADO\SereServADO.cs" />
     <Compile Include="AgeUtil.cs" />
+    <Compile Include="Mps000321Processor.BaRia.cs" />
     <Compile Include="DataRawProcess.cs" />
     <Compile Include="Mps000321ProcessorPlus.cs" />
     <Compile Include="Mps000321ExtendSingleKey.cs" />

@@ -632,7 +632,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.barDockControlTop.Size = new System.Drawing.Size(1320, 0);
             // 
             // barDockControlBottom
@@ -640,7 +639,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.barDockControlBottom.Location = new System.Drawing.Point(0, 661);
-            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.barDockControlBottom.Size = new System.Drawing.Size(1320, 0);
             // 
             // barDockControlLeft
@@ -648,7 +646,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.barDockControlLeft.Size = new System.Drawing.Size(0, 632);
             // 
             // barDockControlRight
@@ -656,7 +653,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1320, 29);
-            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 632);
             // 
             // layoutControl6
@@ -2294,6 +2290,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             this.repositoryItemChkIsExpend__MedicinePage.AutoHeight = false;
             this.repositoryItemChkIsExpend__MedicinePage.Name = "repositoryItemChkIsExpend__MedicinePage";
             this.repositoryItemChkIsExpend__MedicinePage.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemChkIsExpend__MedicinePage.CheckedChanged += new System.EventHandler(this.repositoryItemChkIsExpend__MedicinePage_CheckedChanged);
             // 
             // repositoryItemChkIsKH__MedicinePage
             // 

@@ -34,7 +34,7 @@
     <Reference Include="Accessibility" />
     <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\ACS\ACS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\ACS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="ACS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

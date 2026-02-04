@@ -273,12 +273,12 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Popup
                 if (cboLoacationStore.EditValue != null)
                 {
                     var data = lstLocationStore.FirstOrDefault(o => o.ID == Int64.Parse(cboLoacationStore.EditValue.ToString()));
-                    if (data != null)
-                    {
-                        txtStoreCode.Text = data.LOCATION_STORE_CODE;
-                    }
+                    //if (data != null)
+                    //{
+                    //    txtStoreCode.Text = data.LOCATION_STORE_CODE;
+                    //}
                 }
-                else { txtStoreCode.Text = null; }
+                //else { txtStoreCode.Text = null; }
             }
             catch (Exception ex)
             {

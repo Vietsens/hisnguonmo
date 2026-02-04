@@ -161,6 +161,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_HIS_DESKTOP_PLUGINS_ASSIGNPRESCRIPTION_ALLOWKIDNEYPRESOUTPATIENT = "HIS.Desktop.Plugins.AssignPrescription.AllowKidneyPresOutPatient";
         internal const string TUTORIAL_FORMAT_DAY = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormatSoNgay";
         private const string KEY_WARNING_OVER_TRANSFER = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
+        private const string KEY_AllowOverMaxExpendService = "HIS.Desktop.Plugins.AssignPrescription.AllowOverMaxExpendService";
 
         internal static string AllowKidneyPresOutPatient;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
@@ -436,6 +437,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string WarningHeinPatientTypeCode;
         internal static string WarningOverTransfer;
         internal static string CheckPreviousPrescriptionDetail;
+        internal static string AllowOverMaxExpendService;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -471,6 +473,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                AllowOverMaxExpendService = GetValue(KEY_AllowOverMaxExpendService);
                 CheckPreviousPrescriptionDetail = GetValue(CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION_DETAIL);
                 WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE);
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);

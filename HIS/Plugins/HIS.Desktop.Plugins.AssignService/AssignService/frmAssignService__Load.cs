@@ -4085,6 +4085,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_BILL> ssBill = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_BILL>();
         private bool ValidateGuaranteeAmount(ref string message)
         {
             try
@@ -4092,45 +4093,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 // Nếu không có thông tin bảo lãnh hoặc không có GUARANTEE_CODE thì bỏ qua
                 if (this.guaranteeInfo == null || (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE)))
                     return true;
-
-                // Lấy danh sách dịch vụ đã chọn và đánh dấu bảo lãnh
-                //var guaranteedServices = this.ServiceIsleafADOs?
-                //    .Where(o => o.IsChecked && o.IsGuarantee)
-                //    .ToList();
-
-                //if (guaranteedServices == null || guaranteedServices.Count == 0)
-                //    return true;
-
-                //decimal totalGuaranteeAmount = GetTotalGuaranteePrice();
-                //long? bhytPatientTypeId = GetBHYTPatientTypeId();
-
-                //foreach (var svc in guaranteedServices)
+                //CommonParam param = new CommonParam();
+                //HisSereServBillFilter  hisSereServBillFilter = new HisSereServBillFilter();
+                //hisSereServBillFilter.TDL_TREATMENT_ID = this.treatmentId;
+                //this.ssBill = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_BILL>>("/api/HisSereServBill/Get", ApiConsumers.MosConsumer, hisSereServBillFilter, param);
+                //if(ssBill != null)
                 //{
-                //    // Tính tổng tiền bệnh nhân phải trả
-                //    decimal patientPrice = svc.PRICE * svc.AMOUNT;
-                //    totalGuaranteeAmount += patientPrice;
-                //    // Nếu là BHYT thì trừ đi phần BHYT thanh toán
-                //    //if (bhytPatientTypeId.HasValue && svc.PATIENT_TYPE_ID == bhytPatientTypeId.Value)
-                //    //{
-                //    //    decimal heinPrice = (svc.HEIN_LIMIT_PRICE ?? 0) * svc.AMOUNT * (svc.HEIN_LIMIT_RATIO ?? 0);
-                //    //    patientPrice = patientPrice - heinPrice;
-                //    //}
-
-                //    // Nếu là hao phí thì không tính vào bảo lãnh
-                //    //if (svc.IsExpend != true)
-                //    //{
-                //    //    totalGuaranteeAmount += patientPrice;
-                //    //}
+                //    this.totalSSBillPrice = ssBill.Sum(o => o.PRICE); 
                 //}
-
-                //decimal totalGuarantee;
-                //if (decimal.TryParse(lblTotalGuarantee.Text, out totalGuarantee) && (totalGuarantee - this.totalGuaranteeOriginal) > this.guaranteeInfo.GUARANTEE_BALANCE)
-                //{
-                //    message = "Tổng tiền dịch vụ đã vượt hạn mức bảo lãnh, vui lòng kiểm tra lại.";
-                //    return false;
-                //}
-                
-                if (this.totalGuaranteeArise > this.guaranteeInfo.GUARANTEE_BALANCE)
+                Inventec.Common.Logging.LogSystem.Debug("totalSSBillPrice qtcode: " + Inventec.Common.Logging.LogUtil.TraceData("Data", totalSSBillPrice));
+                Inventec.Common.Logging.LogSystem.Debug("totalGuaranteeArise qtcode: " + Inventec.Common.Logging.LogUtil.TraceData("Data", totalGuaranteeArise));
+                if ((this.totalGuaranteePrice_1 - this.treatmentPrint.TOTAL_BILL_AMOUNT) > this.guaranteeInfo.GUARANTEE_BALANCE)
                 {
                     message = "Tổng tiền dịch vụ đã vượt hạn mức bảo lãnh, vui lòng kiểm tra lại.";
                     return false;
@@ -4302,14 +4275,15 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 CommonParam param = new CommonParam();
                 HisSereServFilter hisSereServFilter = new HisSereServFilter();
                 hisSereServFilter.TREATMENT_ID = this.treatmentId;
-                //hisSereServFilter.PATIENT_TYPE_ID = HisConfigCFG.PatientTypeId__BHYT;
                 this.ssGuarantee = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, hisSereServFilter, param);
             }
-            //var totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1).Sum(o => o.PRICE) : 0;
             if (this.totalGuaranteeOriginal == 0)
-                this.totalGuaranteeOriginal = this.ssGuarantee != null ? this.ssGuarantee.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
-            this.totalGuaranteeArise = totalGuaranteePrice; 
+                this.totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
+            //if (this.totalGuaranteeOriginal == 0)
+            //    this.totalGuaranteeOriginal = this.ssGuarantee != null ? this.ssGuarantee.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
+            this.totalGuaranteeArise = totalGuaranteePrice;
             totalGuaranteePrice += this.totalGuaranteeOriginal;
+            this.totalGuaranteePrice_1 = totalGuaranteePrice;
             return totalGuaranteePrice;
         }
 

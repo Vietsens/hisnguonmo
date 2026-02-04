@@ -2648,12 +2648,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
+                if (mediMatyTypeADOs == null || mediMatyTypeADOs.Count == 0)
+                    return;
+
                 foreach (var item in mediMatyTypeADOs)
                 {
                     if (!item.MEDI_STOCK_ID.HasValue)
                         continue;
-                    var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o=>o.ID == item.MEDI_STOCK_ID);
-                    if(stock!=null && stock.IS_EXPEND == 1)
+
+                    var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>()
+                        .FirstOrDefault(o => o.ID == item.MEDI_STOCK_ID);
+                    if (stock == null || stock.IS_EXPEND != 1)
+                        continue;
+
+                    if ((item.IS_NOT_EXPEND ?? 0) == 1)
+                    {
+                        item.IsExpend = false;
+                        item.IsDisableExpend = true;
+                    }
+                    else
                     {
                         item.IsExpend = true;
                         item.IsDisableExpend = true;

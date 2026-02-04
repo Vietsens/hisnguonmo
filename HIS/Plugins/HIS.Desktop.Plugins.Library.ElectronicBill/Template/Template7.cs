@@ -137,7 +137,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                     product1.ProdQuantity = item.Sum(s => s.TDL_AMOUNT ?? 0);
                                     product1.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.Sum(s => (s.PRICE) - (s.TDL_TOTAL_PATIENT_PRICE_BHYT ?? 0)));
                                     product1.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(product1.Amount / (product1.ProdQuantity ?? 1));
-                                    product1.ProdUnit = service != null ? service.SERVICE_UNIT_NAME : "";
+                                    //product1.ProdUnit = service != null ? service.SERVICE_UNIT_NAME : ""; nampp
+                                    HIS_SERVICE_UNIT unit = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => item.First().TDL_SERVICE_UNIT_ID != null && o.ID == item.First().TDL_SERVICE_UNIT_ID);
+                                    product1.ProdUnit = unit != null ? unit.SERVICE_UNIT_NAME : service != null ? service.SERVICE_UNIT_NAME : "";
+                                    //nampp
                                     product1.TaxRateID = (int)(service != null ? (service.TAX_RATE_TYPE ?? Base.ProviderType.tax_KCT) : Base.ProviderType.tax_KCT);
                                     product1.ProdCode = item.First().TDL_SERVICE_CODE;
                                     product1.Type = item.First().TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ? 1 : 0;
@@ -158,7 +161,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                                 product.ProdQuantity = item.Sum(s => s.TDL_AMOUNT ?? 0);
                                 product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.Sum(s => s.PRICE));
                                 product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(product.Amount / (product.ProdQuantity ?? 1));
-                                product.ProdUnit = service != null ? service.SERVICE_UNIT_NAME : "";
+                                //product.ProdUnit = service != null ? service.SERVICE_UNIT_NAME : ""; nampp
+                                HIS_SERVICE_UNIT unit = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => item.First().TDL_SERVICE_UNIT_ID != null && o.ID == item.First().TDL_SERVICE_UNIT_ID);
+                                product.ProdUnit = unit != null ? unit.SERVICE_UNIT_NAME : service != null ? service.SERVICE_UNIT_NAME : "";
+                                //nampp
                                 product.TaxRateID = (int)(service != null ? (service.TAX_RATE_TYPE ?? Base.ProviderType.tax_KCT) : Base.ProviderType.tax_KCT);
                                 product.ProdCode = item.First().TDL_SERVICE_CODE;
                                 product.Type = item.First().TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ? 1 : 0;
@@ -178,7 +184,10 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.Template
                             product.ProdQuantity = item.Sum(s => s.TDL_AMOUNT ?? 0);
                             product.Amount = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(item.Sum(s => s.PRICE));
                             product.ProdPrice = Inventec.Common.Number.Convert.NumberToNumberRoundMax4(product.Amount / (product.ProdQuantity ?? 1));
-                            product.ProdUnit = service != null ? service.SERVICE_UNIT_NAME : "";
+                            //product.ProdUnit = service != null ? service.SERVICE_UNIT_NAME : ""; nampp
+                            HIS_SERVICE_UNIT unit = BackendDataWorker.Get<HIS_SERVICE_UNIT>().FirstOrDefault(o => item.First().TDL_SERVICE_UNIT_ID != null && o.ID == item.First().TDL_SERVICE_UNIT_ID);
+                            product.ProdUnit = unit != null ? unit.SERVICE_UNIT_NAME : service != null ? service.SERVICE_UNIT_NAME : "";
+                            //nampp
                             product.TaxRateID = (int)(service != null ? (service.TAX_RATE_TYPE ?? Base.ProviderType.tax_KCT) : Base.ProviderType.tax_KCT);
                             product.ProdCode = item.First().TDL_SERVICE_CODE;
                             product.Type = item.First().TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ? 1 : 0;

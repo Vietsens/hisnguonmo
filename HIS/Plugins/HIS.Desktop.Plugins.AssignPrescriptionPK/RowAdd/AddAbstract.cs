@@ -108,6 +108,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
         protected string HtuText { get; set; }
         protected bool IsExpend { get; set; }
         protected bool IsDisableExpend { get; set; }
+        protected bool NotExpend { get; set; }
         protected decimal? UseDays { get; set; }
         protected object DataRow { get; set; }
         protected string SeriNumber { get; set; }
@@ -276,6 +277,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
             medicineTypeSDO.HTU_TEXT = this.HtuText;
             medicineTypeSDO.IsExpend = this.IsExpend;
             medicineTypeSDO.IsDisableExpend = this.IsDisableExpend;
+            medicineTypeSDO.NotExpend = this.NotExpend;
             if (this.MedicineUseFormId > 0)
                 medicineTypeSDO.MEDICINE_USE_FORM_ID = this.MedicineUseFormId;
             if (this.HtuIds != null && this.HtuIds.Count > 0)
