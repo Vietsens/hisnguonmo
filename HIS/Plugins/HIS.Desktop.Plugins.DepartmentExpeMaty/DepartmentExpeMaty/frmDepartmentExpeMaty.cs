@@ -142,9 +142,6 @@ namespace HIS.Desktop.Plugins.DepartmentExpeMaty.DepartmentExpeMaty
             try
             {
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.DepartmentExpeMaty.Resources.Lang", typeof(HIS.Desktop.Plugins.DepartmentExpeMaty.DepartmentExpeMaty.frmDepartmentExpeMaty).Assembly);
-                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
-                ///
-                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.bar2.Text = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.bar2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnAdd.Caption = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.bbtnAdd.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -166,6 +163,7 @@ namespace HIS.Desktop.Plugins.DepartmentExpeMaty.DepartmentExpeMaty
                 this.layoutControlItem8.Text = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.layoutControlItem8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcCustomerSourceCode.Text = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.lcCustomerSourceCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem15.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.layoutControlItem15.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem15.Text = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.layoutControlItem15.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.STT.Caption = Inventec.Common.Resource.Get.Value("frmDepartmentExpeMaty.STT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
