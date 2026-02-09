@@ -2479,7 +2479,15 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
             try
             {
                 if (RowCellClickBedRoom == null)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Chưa chọn thông tin giường chỉ định",  
+                        Resources.ResourceMessage.ThongBao,
+                        MessageBoxButtons.OK,   
+                        MessageBoxIcon.Warning);
                     return;
+                }   
+               
 
                 // Cấu hình = 1: chạy như cũ -> Lịch sử giường
                 if (assignBedOption == 1)
@@ -2516,6 +2524,23 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                     var listArgs = BuildAssignServiceArgsForCurrentTreatment();
                     if (listArgs == null)
                         return;
+
+                    // Lấy thông tin HIS_SERVICE_REQ và HIS_TRACKING
+                    CommonParam param = new CommonParam();
+                    
+                    // Lấy danh sách SERVICE_REQ của treatment
+                    HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                    serviceReqFilter.TREATMENT_ID = RowCellClickBedRoom.TREATMENT_ID;
+                    var hisServiceReqs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
+                    
+                    // Lấy danh sách TRACKING của treatment
+                    HisTrackingFilter trackingFilter = new HisTrackingFilter();
+                    trackingFilter.TREATMENT_ID = RowCellClickBedRoom.TREATMENT_ID;
+                    var hisTrackings = new BackendAdapter(param).Get<List<HIS_TRACKING>>("api/HisTracking/Get", ApiConsumers.MosConsumer, trackingFilter, param);
+                    
+                    // Thêm vào listArgs
+                    listArgs.Add(hisServiceReqs);
+                    listArgs.Add(hisTrackings);
 
                     // Lấy module AssignBed
                     Inventec.Desktop.Common.Modules.Module moduleData =

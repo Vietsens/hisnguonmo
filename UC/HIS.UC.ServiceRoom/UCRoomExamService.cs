@@ -93,6 +93,7 @@ namespace HIS.UC.ServiceRoom
         long? examId = 0; 
         private bool _isEmergency;
         string _treatmentTypeId;
+        long? _intructionTimes;
         bool _isChoosePrimary = false;
         int popupHeight = 400;
         bool statecheckColumn;

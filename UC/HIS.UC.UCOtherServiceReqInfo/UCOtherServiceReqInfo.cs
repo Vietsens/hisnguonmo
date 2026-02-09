@@ -58,6 +58,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
         Action<object> dlgFocusNextUserControl;
         Action<bool> dlgHeinRightRouteType;
         Action<long?> dlgPriorityNumberChanged;
+        Action<long?> dlgIntructionTimeSelected;
         //qtcode
         Action<string> dlgGetTreatmentTypeId;
         Action<string> dlgGetTreatmentTypeIdForUcHeinInfo;
@@ -1189,6 +1190,8 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 }
                 else
                     chkEmergency.Checked = false;
+                if (this.dlgIntructionTimeSelected != null)
+                    this.dlgIntructionTimeSelected(Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.ParseExact(this.txtIntructionTime.Text, "dd/MM/yyyy HH:mm", null)));
             }
             catch (Exception ex)
             {
@@ -1544,6 +1547,12 @@ namespace HIS.UC.UCOtherServiceReqInfo
         {
             this.dlgGetTreatmentTypeId = _dlgGetTreatmentTypeId;
         }
+
+        public void GetIntructionTimeSelected(Action<long?> _dlgIntructionTime)
+        {
+            this.dlgIntructionTimeSelected = _dlgIntructionTime;
+        }
+
         public void GetTreatmentTypeIdForUcHeinInfo(Action<string> _dlgGetTreatmentTypeId)
         {
             this.dlgGetTreatmentTypeIdForUcHeinInfo = _dlgGetTreatmentTypeId;

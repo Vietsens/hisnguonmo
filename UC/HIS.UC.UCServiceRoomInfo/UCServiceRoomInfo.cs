@@ -65,6 +65,7 @@ namespace HIS.UC.UCServiceRoomInfo
         DelegateGetIntructionTime dlgGetIntructionTime;
         bool isEmergency = false;
         string preExamId = null;
+        long? intructionTimeSelected;
         #endregion
 
         #region Constructor - Load
@@ -330,6 +331,29 @@ namespace HIS.UC.UCServiceRoomInfo
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public void ReceivedIntructionTime(long? time)
+        {
+            try
+            {
+                this.intructionTimeSelected = time;
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                {
+                    ProcessCheckOT();
+                }
+                //((UC.ServiceRoom.UCRoomExamService)ucRoomExamService).getTreatmentType(tmType);
+                foreach (var item in lstUserRoomExam)
+                {
+                    ((UC.ServiceRoom.UCRoomExamService)item).ReceiveIntructionTime(intructionTimeSelected);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
         List<UserControl> lstUserRoomExam = new List<UserControl>();
         public void InitExamServiceRoom(bool isInit, V_HIS_SERE_SERV sereServExam)
         {
@@ -539,6 +563,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 roomExamServiceData.GetIntructionTime = this.dlgGetIntructionTime;
                 roomExamServiceData._isEmergencies = this.isEmergency;
                 roomExamServiceData._treatmentTypeId = this.preExamId;
+                roomExamServiceData._intructionTimeSelected = this.intructionTimeSelected;
                 List<long> _roomIdByPatientTypeRooms = new List<long>();//#15492
                 long _patientTypeId = 0;
                 if (this.cboPatientType.EditValue != null)
@@ -690,7 +715,7 @@ namespace HIS.UC.UCServiceRoomInfo
         {
             try
             {
-                bool isOutOfHour = CheckIsOutOfHoursTime();
+                bool isOutOfHour = CheckIsOutOfHoursTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)intructionTimeSelected));
                 var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.PATIENT_TYPE_CODE == "OT").FirstOrDefault();
                 // ✅ Nếu thỏa điều kiện → Set OT
                 if (isOutOfHour && (!this.isEmergency && preExamId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU.ToString()))

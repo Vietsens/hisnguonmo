@@ -88,6 +88,7 @@ namespace HIS.UC.ServiceRoom
                     this.PatientClassifyId = ado.PatientClassifyId;
                     this._isEmergency = ado._isEmergencies;
                     this._treatmentTypeId = ado._treatmentTypeId;
+                    this._intructionTimes = ado._intructionTimeSelected;
                 }
             }
             catch (Exception ex)
@@ -390,6 +391,20 @@ namespace HIS.UC.ServiceRoom
             }
         }
 
+        public void ReceiveIntructionTime(long? _time)
+        {
+            try
+            {
+                this._intructionTimes = _time;
+                SetDataSourceCboSurcharge();
+            }
+            catch (Exception ex)
+            {
+
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         public void SetDataSourceCboSurcharge()
         {
             try
@@ -423,7 +438,7 @@ namespace HIS.UC.ServiceRoom
                     {
                         if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService == "1")
                         {
-                            bool isOutOfHour = CheckIsOutOfHoursTime();
+                            bool isOutOfHour = CheckIsOutOfHoursTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)_intructionTimes));
                             // ✅ Nếu thỏa điều kiện → Set OT
                             if (isOutOfHour && (!this._isEmergency && _treatmentTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU.ToString()))
                             {
