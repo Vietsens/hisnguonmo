@@ -2020,7 +2020,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                         #endregion
                         #region Phụ thu
-                        bool isOutOfHour = CheckIsOutOfHoursTime();
+                        bool isOutOfHour = false;   
+                        if (intructionTimeSelected.Count == 1)
+                            isOutOfHour = CheckIsOutOfHoursTime(intructionTimeSelected.FirstOrDefault());
                         if (HisConfigCFG.IsSetPrimaryPatientType != "2" && currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && isOutOfHour && currentHisTreatment.IS_EMERGENCY != 1)
                         {
                             var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == "OT");

@@ -143,7 +143,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
 				//qtcode
 				this.ucOtherServiceReqInfo1.GetTreatmentTypeIdForUcHeinInfo(this.ucHeinInfo1.ReceiveIdFromUcOtherSviceReqInfo);
                 this.ucOtherServiceReqInfo1.GetTreatmentTypeIdForUcHeinInfo(this.ucServiceRoomInfo1.getTreatmentTypeId);
-
+				this.ucOtherServiceReqInfo1.GetIntructionTimeSelected(this.ucServiceRoomInfo1.ReceivedIntructionTime);
 
                 this.ucOtherServiceReqInfo1.GetTreatmentTypeId(this.ucPlusInfo1.ReceiveTreatmentTypeIdFromUcOther);
 				this.ucPatientRaw1.TransferPatient(this.ucPlusInfo1.ReceivePatientFromUcPatientRaw); 

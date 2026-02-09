@@ -63,6 +63,7 @@ namespace HIS.UC.ServiceRoom.ADO
         public Action<bool> ChangeDisablePrimaryPatientType { get; set; }
         public bool _isEmergencies { get; set; }
         public string _treatmentTypeId { get; set; }
+        public long? _intructionTimeSelected { get; set; }
         public RoomExamServiceInitADO() { }
 
         public RoomExamServiceInitADO(List<V_HIS_EXECUTE_ROOM_1> executeRooms, List<V_HIS_SERVICE_ROOM> serviceRooms)
