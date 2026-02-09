@@ -121,7 +121,7 @@ namespace MPS.Processor.Mps000020
                 if (rdo != null && rdo.currentHisDebate != null && rdo._Treatment != null)
                 {
                     string treatmentCode = "TREATMENT_CODE:" + rdo._Treatment.TREATMENT_CODE;
-                    string debateId = "DEBATE_ID:" + rdo.currentHisDebate.ID;
+                    string debateId = "HIS_DEBATE:" + rdo.currentHisDebate.ID;
                     result = String.Format("Mps000020 {0} {1}", treatmentCode, debateId);
                 }
             }
