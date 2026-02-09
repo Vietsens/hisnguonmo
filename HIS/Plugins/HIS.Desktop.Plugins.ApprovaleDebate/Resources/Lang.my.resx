@@ -126,14 +126,41 @@
   <data name="frmApprovaleDebate.btnSave.Text" xml:space="preserve">
     <value>သိမ်းဆည်းခြင်း (Ctrl S)</value>
   </data>
+  <data name="frmApprovaleDebate.cboICD_YHCT.ToolTip" xml:space="preserve">
+    <value>အဓိကရောဂါလက္ခဏာ</value>
+  </data>
   <data name="frmApprovaleDebate.layoutControl1.Text" xml:space="preserve">
     <value>layoutcontrol1</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem10.Text" xml:space="preserve">
+    <value>PP လုပ်ဆောင်ခြင်း-</value>
   </data>
   <data name="frmApprovaleDebate.layoutControlItem2.Text" xml:space="preserve">
     <value>ဆရာဝန်၏ထင်မြင်ချက်</value>
   </data>
   <data name="frmApprovaleDebate.layoutControlItem3.Text" xml:space="preserve">
     <value>အကြံပြုဆရာဝန် -</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အဓိကရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem5.Text" xml:space="preserve">
+    <value>အဓိကဌာန-</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem6.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အဓိကရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဒုတိယရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem7.Text" xml:space="preserve">
+    <value>ဒုတိယ CD-</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဒုတိယရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem9.Text" xml:space="preserve">
+    <value>ဖွံ့ဖြိုးတိုးတက်မှု-</value>
   </data>
   <data name="frmApprovaleDebate.tabCDHA.Text" xml:space="preserve">
     <value>Cdha</value>
@@ -147,17 +174,29 @@
   <data name="frmApprovaleDebate.tabSieuAmNoiSoi.Text" xml:space="preserve">
     <value>ultrasound / endoscopy</value>
   </data>
-  <data name="frmApprovaleDebate.tabThuocVatTuMau.Text" xml:space="preserve">
-    <value>မူးယစ်ဆေးဝါး / ထောက်ပံ့ရေးပစ္စည်းများ / သွေး</value>
-  </data>
   <data name="frmApprovaleDebate.tabToDieuTri.Text" xml:space="preserve">
     <value>တိရစာ္ဆန်အုပ်</value>
+  </data>
+  <data name="frmApprovaleDebate.tabThuocVatTuMau.Text" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါး / ထောက်ပံ့ရေးပစ္စည်းများ / သွေး</value>
   </data>
   <data name="frmApprovaleDebate.tabXetNghiem.Text" xml:space="preserve">
     <value>စမ်းသပ်မှု</value>
   </data>
   <data name="frmApprovaleDebate.Text" xml:space="preserve">
     <value>တိုင်ပင်ဆွေးနွေး၏ခွင့်ပြုချက်</value>
+  </data>
+  <data name="frmApprovaleDebate.txtICD_YHCT.ToolTip" xml:space="preserve">
+    <value>အဓိကရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="frmApprovaleDebate.txtICDsub.ToolTip" xml:space="preserve">
+    <value>ဒုတိယရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="frmApprovaleDebate.txtICDsubName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါခွဲများကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmApprovaleDebate.txtICDsubName.ToolTip" xml:space="preserve">
+    <value>ဒုတိယရောဂါလက္ခဏာ</value>
   </data>
   <data name="UCTreeListService.isRation.Caption" xml:space="preserve">
     <value>đttt</value>
@@ -207,6 +246,18 @@
   <data name="UCTreeListTracking.CONTENT.Caption" xml:space="preserve">
     <value>အဆင့်ဆင့်ဖြစ်ပျက်ခြင်း</value>
   </data>
+  <data name="UCTreeListTracking.ICD_CODE.Caption" xml:space="preserve">
+    <value>မူလရောဂါရှာဖွေရေးကုဒ်</value>
+  </data>
+  <data name="UCTreeListTracking.ICD_NAME.Caption" xml:space="preserve">
+    <value>မူလရောဂါရှာဖွေရေးအမည်</value>
+  </data>
+  <data name="UCTreeListTracking.ICD_SUB_CODE.Caption" xml:space="preserve">
+    <value>ဒုတိယရောဂါရှာဖွေရေးကုဒ်များ</value>
+  </data>
+  <data name="UCTreeListTracking.ICD_TEXT.Caption" xml:space="preserve">
+    <value>ဒုတိယရောဂါအမည်</value>
+  </data>
   <data name="UCTreeListTracking.layoutControl1.Text" xml:space="preserve">
     <value>layoutcontrol1</value>
   </data>
@@ -215,6 +266,18 @@
   </data>
   <data name="UCTreeListTracking.TRACKING_TIME.Caption" xml:space="preserve">
     <value>ရက်စွဲများနှင့်အချိန်</value>
+  </data>
+  <data name="UCTreeListTracking.treeListColumn1.Caption" xml:space="preserve">
+    <value>မူလရောဂါရှာဖွေရေးကုဒ်</value>
+  </data>
+  <data name="UCTreeListTracking.treeListColumn2.Caption" xml:space="preserve">
+    <value>အော်</value>
+  </data>
+  <data name="UCTreeListTracking.treeListColumn3.Caption" xml:space="preserve">
+    <value>မူလရောဂါရှာဖွေရေးကုဒ်</value>
+  </data>
+  <data name="UCTreeListTracking.treeListColumn5.Caption" xml:space="preserve">
+    <value>မူလရောဂါရှာဖွေရေးကုဒ်</value>
   </data>
   <data name="UCTreeListTracking.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
     <value>ရှာဖွေရေး string ကိုရိုက်ထည့်ပါ။</value>
