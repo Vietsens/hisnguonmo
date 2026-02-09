@@ -987,6 +987,18 @@ namespace HIS.UC.SereServTree.Run
                                 rowData.IsExpend = false;
                             }
                         }
+
+                        if (e.Column.FieldName == "IsGuaranteed")
+                        {
+                            if (this.updateSingleRow != null)
+                            {
+                                e.RepositoryItem = repositoryItemchkIsGuaranteed__Enable;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repositoryItemchkIsGuaranteed__Disable;
+                            }
+                        }
                     }
                 }
             }
@@ -1214,6 +1226,60 @@ namespace HIS.UC.SereServTree.Run
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void repositoryItemchkIsGuaranteed__Enable_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemchkIsGuaranteed__Disable_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void trvService_CellValueChanging_1(object sender, CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "IsGuaranteed")
+                {
+                    trvService.PostEditor();
+
+                    var data = this.trvService.GetDataRecordByNode(e.Node) as SereServADO;
+                    var fullList = trvService.DataSource as BindingList<SereServADO>;
+                    if (data != null)
+                    {
+                        try
+                        {
+                            this.SereServTreeADO.treeSereServ_CellValueChanged?.Invoke(data, e);
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            
         }
     }
 }

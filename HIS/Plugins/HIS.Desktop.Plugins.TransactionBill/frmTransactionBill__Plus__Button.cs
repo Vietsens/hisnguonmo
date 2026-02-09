@@ -938,6 +938,15 @@ namespace HIS.Desktop.Plugins.TransactionBill
             bool? success = false;
             try
             {
+                decimal currentVal = 0;
+                decimal.TryParse(this.tienBaoLanh?.Replace(".", "").Replace(",", ""), out currentVal);
+
+                if (currentVal > guaranteeInfo.GUARANTEE_BALANCE )
+                {
+                    MessageBox.Show(this, "Số tiền bảo lãnh lớn hơn hạn mức bảo lãnh", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
                 TransactionBillResultSDO = null;
                 TransactionQr = null;
                 long payFormId = 0;
