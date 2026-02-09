@@ -90,8 +90,9 @@
     <Reference Include="HIS.UC.MenuPrint">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.MenuPrint\HIS.UC.MenuPrint.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.SereServTree">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
+    <Reference Include="HIS.UC.SereServTree, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\UC\HIS.UC.SereServTree\bin\Debug\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -301,6 +302,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\GuaranteeInfoADO.cs" />
     <Compile Include="ADO\InformationBuyerADO.cs" />
     <Compile Include="ADO\InstructionTimeChoiceADO.cs" />
     <Compile Include="ADO\PayFormADO.cs" />

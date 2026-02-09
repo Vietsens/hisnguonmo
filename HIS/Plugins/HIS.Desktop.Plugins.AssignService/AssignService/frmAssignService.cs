@@ -557,6 +557,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 //2.CheckAssignSimultaneity
                 if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
                 {
+                    if (_isOutForm)
+                        return;
                     CommonParam param2 = new CommonParam();
                     var assignSdo = new HisServiceReqCheckAssignSimultaneitySDO();
                     assignSdo.TreatmentId = treatmentId;
@@ -1379,6 +1381,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
+        bool _isOutForm;
+
         private async Task CheckOverTotalPatientPrice()
         {
             try
@@ -1482,6 +1486,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         MessageBoxButtons.YesNo, MessageBoxIcon.Question,
         MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
                             {
+                                _isOutForm = true;
                                 this.Close();
                             }
                         }

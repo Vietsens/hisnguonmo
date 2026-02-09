@@ -1051,12 +1051,104 @@ namespace HIS.Desktop.Plugins.ExpMestViewDetail.ExpMestViewDetail
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private bool CheckExpendMaterialOverLimit()
+        {
+            try
+            {
+                // Kiểm tra nếu không phải phiếu xuất hao phí khoa phòng thì bỏ qua
+                if (this._CurrentExpMest.EXP_MEST_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__HPKP)
+                {
+                    return true;
+                }
 
-        private void btnApproval_Click(object sender, EventArgs e)
+                // Lấy danh sách yêu cầu vật tư
+                CommonParam param = new CommonParam();
+                HisExpMestMatyReqViewFilter matyReqFilter = new HisExpMestMatyReqViewFilter();
+                matyReqFilter.EXP_MEST_ID = this._CurrentExpMest.ID;
+                var expMestMatyReqs = new BackendAdapter(param)
+                    .Get<List<V_HIS_EXP_MEST_MATY_REQ>>("api/HisExpMestMatyReq/GetView", ApiConsumers.MosConsumer, matyReqFilter, param);
+
+                if (expMestMatyReqs == null || expMestMatyReqs.Count == 0)
+                {
+                    return true;
+                }
+
+                // Lấy danh sách Material Type từ BackendData
+                var allMaterialTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
+
+                // Lấy danh sách trần hao phí vật tư theo khoa
+                HisDepartmentExpeMatyViewFilter expeMatyFilter = new HisDepartmentExpeMatyViewFilter();
+                expeMatyFilter.DEPARTMENT_ID = this._CurrentExpMest.REQ_DEPARTMENT_ID;
+                var departmentExpeMatys = new BackendAdapter(param)
+                    .Get<List<V_HIS_DEPARTMENT_EXPE_MATY>>("api/HisDepartmentExpeMaty/GetView", ApiConsumers.MosConsumer, expeMatyFilter, param);
+
+                if (departmentExpeMatys == null || departmentExpeMatys.Count == 0)
+                {
+                    return true;
+                }
+
+                // Kiểm tra vật tư vượt trần
+                List<string> overLimitMessages = new List<string>();
+
+                foreach (var matyReq in expMestMatyReqs)
+                {
+                    // Tìm cấu hình trần hao phí tương ứng
+                    var expeMaty = departmentExpeMatys.FirstOrDefault(o =>
+                        o.MATERIAL_TYPE_ID == matyReq.MATERIAL_TYPE_ID
+                        && (o.MEDI_STOCK_ID == null || o.MEDI_STOCK_ID == this._CurrentExpMest.MEDI_STOCK_ID));
+
+                    if (expeMaty != null && expeMaty.MAX_EXPEND.HasValue)
+                    {
+                        // Kiểm tra vượt trần
+                        if (matyReq.AMOUNT > expeMaty.MAX_EXPEND.Value)
+                        {
+                            // Lấy tên vật tư từ BackendData
+                            var materialType = allMaterialTypes.FirstOrDefault(o => o.ID == matyReq.MATERIAL_TYPE_ID);
+                            string materialTypeName = materialType != null ? materialType.MATERIAL_TYPE_NAME : "";
+
+                            string message = String.Format("{0} ({1})",
+                                materialTypeName,
+                                expeMaty.MAX_EXPEND.Value);
+                            overLimitMessages.Add(message);
+                        }
+                    }
+                }
+
+                // Hiển thị cảnh báo nếu có vật tư vượt trần
+                if (overLimitMessages.Count > 0)
+                {
+                    string warningMessage = String.Format(
+                        "Vật tư vượt trần hao phí:{0}. Bạn có muốn tiếp tục?",
+                        String.Join(", ", overLimitMessages));
+
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        warningMessage,
+                        "Cảnh báo",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning) == DialogResult.No)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return true; // Nếu lỗi thì cho phép tiếp tục
+            }
+        }
+        private void btnApproval_Click(object sender, EventArgs e) 
         {
             try
             {
                 WaitingManager.Show();
+                if (!CheckExpendMaterialOverLimit())
+                {
+                    WaitingManager.Hide();
+                    return;
+                }
                 bool success = false;
                 if (this._CurrentExpMest != null)
                 {

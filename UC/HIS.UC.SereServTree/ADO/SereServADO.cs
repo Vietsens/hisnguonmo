@@ -39,6 +39,8 @@ namespace HIS.UC.SereServTree
         public bool? IsLeaf { get; set; }
         public bool? IsExpend { get; set; }
         public bool? IsFather { get; set; }
+        public bool? IsGuaranteed { get; set; }
+
         public SereServADO()
         {
         }
@@ -47,6 +49,7 @@ namespace HIS.UC.SereServTree
         {
             Inventec.Common.Mapper.DataObjectMapper.Map<SereServADO>(this, service);
             IsExpend = (service.IS_EXPEND == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+            IsGuaranteed = (service.IS_GUARANTEED == 1);
             this.AMOUNT_PLUS = service.AMOUNT;
             this.VAT = service.VAT_RATIO * 100;
             this.AMOUNT_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.AMOUNT, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
@@ -63,6 +66,7 @@ namespace HIS.UC.SereServTree
         {
             Inventec.Common.Mapper.DataObjectMapper.Map<SereServADO>(this, service);
             IsExpend = (service.IS_EXPEND == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+            IsGuaranteed = (service.IS_GUARANTEED == 1);
             this.AMOUNT_PLUS = service.AMOUNT;
             this.VAT = service.VAT_RATIO * 100;
             this.AMOUNT_DISPLAY = Inventec.Common.Number.Convert.NumberToString(service.AMOUNT, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator);
@@ -97,6 +101,7 @@ namespace HIS.UC.SereServTree
         {
             Inventec.Common.Mapper.DataObjectMapper.Map<SereServADO>(this, service);
             IsExpend = (service.IS_EXPEND == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+            IsGuaranteed = (service.IS_GUARANTEED == 1);
             this.PARENT_ID__IN_SETY = patyId + "." + service.TDL_SERVICE_TYPE_ID;
             this.CONCRETE_ID__IN_SETY = patyId + "." + service.TDL_SERVICE_TYPE_ID + "." + service.SERVICE_ID;
         }
