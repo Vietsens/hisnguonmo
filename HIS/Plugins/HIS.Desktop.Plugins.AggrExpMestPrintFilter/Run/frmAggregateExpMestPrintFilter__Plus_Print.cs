@@ -32,6 +32,7 @@ using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
+using MPS.Processor.Mps000049.PDO;
 using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
@@ -1660,6 +1661,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
         {
             try
             {
+                LogSystem.Info("Test 1 check in MPS 49: " + printTypeCode +" "+ fileName +" "+ result);
                 this.configKeyMERGER_DATA = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.MPS.AGGR_EXP_MEST_MEDICINE.MERGER_DATA"));
                 this.configKeyOderOption = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.AggrExpMest.OderOption"));
                 WaitingManager.Show();
@@ -1681,7 +1683,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                 mpsConfig49._ExpMestSttId__Exported = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE;
                 mpsConfig49.PatientTypeId__BHYT = AppConfigKeys.PatientTypeId__BHYT;
                 mpsConfig49._ConfigKeyOderOption = this.configKeyOderOption;
-
+                LogSystem.Info("Test 1 check in MPS 49 Mps000049Config: " + mpsConfig49);
+                LogSystem.Info("Test 1 check in MPS 49 Mps000049Config: " + LogUtil.TraceData("data", mpsConfig49));
                 MPS.Processor.Mps000169.PDO.Mps000169Config mpsConfig169 = new MPS.Processor.Mps000169.PDO.Mps000169Config();
                 mpsConfig169._ConfigKeyMERGER_DATA = configKeyMERGER_DATA;
                 mpsConfig169._ExpMestSttId__Approved = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE;
@@ -1700,13 +1703,26 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
 
                 if (AppConfigKeys.ListParentMedicine != null && AppConfigKeys.ListParentMedicine.Count > 0)
                 {
-                    List<V_HIS_MEDICINE_TYPE> listParentMedicine = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => AppConfigKeys.ListParentMedicine.Contains(o.MEDICINE_TYPE_CODE)).ToList();
-                    List<V_HIS_MATERIAL_TYPE> listParentMaterial = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o => AppConfigKeys.ListParentMedicine.Contains(o.MATERIAL_TYPE_CODE)).ToList();
+                    // FIX: Kiểm tra BackendDataWorker.Get không trả về null
+                    var allMedicineTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+                    var allMaterialTypes = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>();
+
+                    List<V_HIS_MEDICINE_TYPE> listParentMedicine = allMedicineTypes != null
+                        ? allMedicineTypes.Where(o => AppConfigKeys.ListParentMedicine.Contains(o.MEDICINE_TYPE_CODE)).ToList()
+                        : new List<V_HIS_MEDICINE_TYPE>();
+
+                    List<V_HIS_MATERIAL_TYPE> listParentMaterial = allMaterialTypes != null
+                        ? allMaterialTypes.Where(o => AppConfigKeys.ListParentMedicine.Contains(o.MATERIAL_TYPE_CODE)).ToList()
+                        : new List<V_HIS_MATERIAL_TYPE>();
 
                     if (listParentMedicine != null && listParentMedicine.Count > 0 && this._ExpMestMedicines != null && this._ExpMestMedicines.Count > 0)
                     {
+                        LogSystem.Info("Test 1 check in MPS 49 if 1: ");
                         var listExpMetyIds = this._ExpMestMedicines.Select(s => s.MEDICINE_TYPE_ID).Distinct().ToList();
-                        List<V_HIS_MEDICINE_TYPE> listExpMety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => listExpMetyIds.Contains(o.ID)).ToList();
+                        List<V_HIS_MEDICINE_TYPE> listExpMety = allMedicineTypes != null
+                            ? allMedicineTypes.Where(o => listExpMetyIds.Contains(o.ID)).ToList()
+                            : new List<V_HIS_MEDICINE_TYPE>();
+
                         if (listExpMety != null && listExpMety.Count > 0)
                         {
                             var lstExpMetyChild = listExpMety.Where(o => listParentMedicine.Select(s => s.ID).Contains(o.PARENT_ID ?? 0)).ToList();
@@ -1714,7 +1730,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             if (lstExpMetyNotChild != null && lstExpMetyNotChild.Count > 0)
                             {
                                 var expMestMedicineTypeNotChild = this._ExpMestMedicines.Where(o => lstExpMetyNotChild.Select(s => s.ID).Contains(o.MEDICINE_TYPE_ID)).ToList();
-                                var expMestP = this._ExpMests_Print.Where(o => expMestMedicineTypeNotChild.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList();
+                                var expMestP = this._ExpMests_Print != null
+                                    ? this._ExpMests_Print.Where(o => expMestMedicineTypeNotChild.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList()
+                                    : new List<HIS_EXP_MEST>();
 
                                 ADO.MediMatePrintADO ado = new ADO.MediMatePrintADO();
                                 if (DicDataPrint.ContainsKey(" ")) ado = DicDataPrint[" "];
@@ -1736,7 +1754,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                                     if (groupParent != null && groupParent.Count > 0)
                                     {
                                         var expMestMedicineTypeChild = this._ExpMestMedicines.Where(o => groupParent.Select(s => s.ID).Contains(o.MEDICINE_TYPE_ID)).ToList();
-                                        var expMestP = this._ExpMests_Print.Where(o => expMestMedicineTypeChild.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList();
+                                        var expMestP = this._ExpMests_Print != null
+                                            ? this._ExpMests_Print.Where(o => expMestMedicineTypeChild.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList()
+                                            : new List<HIS_EXP_MEST>();
 
                                         ADO.MediMatePrintADO ado = new ADO.MediMatePrintADO();
 
@@ -1750,7 +1770,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     }
                     else if (this._ExpMestMedicines != null && this._ExpMestMedicines.Count > 0)
                     {
-                        var expMestP = this._ExpMests_Print.Where(o => this._ExpMestMedicines.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList();
+                        LogSystem.Info("Test 1 check in MPS 49 if 2: ");
+                        var expMestP = this._ExpMests_Print != null
+                            ? this._ExpMests_Print.Where(o => this._ExpMestMedicines.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList()
+                            : new List<HIS_EXP_MEST>();
 
                         ADO.MediMatePrintADO ado = new ADO.MediMatePrintADO();
                         if (DicDataPrint.ContainsKey(" ")) ado = DicDataPrint[" "];
@@ -1766,8 +1789,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
 
                     if (listParentMaterial != null && listParentMaterial.Count > 0 && this._ExpMestMaterials != null && this._ExpMestMaterials.Count > 0)
                     {
+                        LogSystem.Info("Test 1 check in MPS 49 if 3: ");
                         var listExpMatyIds = this._ExpMestMaterials.Select(s => s.MATERIAL_TYPE_ID).Distinct().ToList();
-                        List<V_HIS_MATERIAL_TYPE> listExpMaty = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().Where(o => listExpMatyIds.Contains(o.ID)).ToList();
+                        List<V_HIS_MATERIAL_TYPE> listExpMaty = allMaterialTypes != null
+                            ? allMaterialTypes.Where(o => listExpMatyIds.Contains(o.ID)).ToList()
+                            : new List<V_HIS_MATERIAL_TYPE>();
+
                         if (listExpMaty != null && listExpMaty.Count > 0)
                         {
                             var lstExpMatyChild = listExpMaty.Where(o => listParentMaterial.Select(s => s.ID).Contains(o.PARENT_ID ?? 0)).ToList();
@@ -1775,7 +1802,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                             if (lstExpMatyNotChild != null && lstExpMatyNotChild.Count > 0)
                             {
                                 var expMestMaterialTypeNotChild = this._ExpMestMaterials.Where(o => lstExpMatyNotChild.Select(s => s.ID).Contains(o.MATERIAL_TYPE_ID)).ToList();
-                                var expMestP = this._ExpMests_Print.Where(o => expMestMaterialTypeNotChild.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList();
+                                var expMestP = this._ExpMests_Print != null
+                                    ? this._ExpMests_Print.Where(o => expMestMaterialTypeNotChild.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList()
+                                    : new List<HIS_EXP_MEST>();
 
                                 ADO.MediMatePrintADO ado = new ADO.MediMatePrintADO();
                                 if (DicDataPrint.ContainsKey(" ")) ado = DicDataPrint[" "];
@@ -1797,7 +1826,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                                     if (groupParent != null && groupParent.Count > 0)
                                     {
                                         var expMestMaterialTypeChild = this._ExpMestMaterials.Where(o => groupParent.Select(s => s.ID).Contains(o.MATERIAL_TYPE_ID)).ToList();
-                                        var expMestP = this._ExpMests_Print.Where(o => expMestMaterialTypeChild.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList();
+                                        var expMestP = this._ExpMests_Print != null
+                                            ? this._ExpMests_Print.Where(o => expMestMaterialTypeChild.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList()
+                                            : new List<HIS_EXP_MEST>();
 
                                         ADO.MediMatePrintADO ado = new ADO.MediMatePrintADO();
 
@@ -1811,7 +1842,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                     }
                     else if (this._ExpMestMaterials != null && this._ExpMestMaterials.Count > 0)
                     {
-                        var expMestP = this._ExpMests_Print.Where(o => this._ExpMestMaterials.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList();
+                        LogSystem.Info("Test 1 check in MPS 49 if 4: ");
+                        var expMestP = this._ExpMests_Print != null
+                            ? this._ExpMests_Print.Where(o => this._ExpMestMaterials.Select(s => s.EXP_MEST_ID ?? 0).Distinct().Contains(o.ID)).ToList()
+                            : new List<HIS_EXP_MEST>();
 
                         ADO.MediMatePrintADO ado = new ADO.MediMatePrintADO();
                         if (DicDataPrint.ContainsKey(" ")) ado = DicDataPrint[" "];
@@ -1851,46 +1885,14 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
 
                 foreach (var item in DicDataPrint)
                 {
-                    this._ExpMests_Print = item.Value._ExpMests_Print.Distinct().ToList();
-                    this._ExpMestMedicines = item.Value._ExpMestMedicines;
-                    this._ExpMestMaterials = item.Value._ExpMestMaterials;
+                    // FIX: Kiểm tra null trước khi gán
+                    this._ExpMests_Print = item.Value._ExpMests_Print != null
+                        ? item.Value._ExpMests_Print.Distinct().ToList()
+                        : new List<HIS_EXP_MEST>();
+                    this._ExpMestMedicines = item.Value._ExpMestMedicines ?? new List<V_HIS_EXP_MEST_MEDICINE>();
+                    this._ExpMestMaterials = item.Value._ExpMestMaterials ?? new List<V_HIS_EXP_MEST_MATERIAL>();
                     mpsConfig49.PARENT_TYPE_CODE = item.Key;
 
-                    //if (keyPrintType == 1)
-                    //{
-                    //    #region In Tong Hop
-                    //    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.aggrExpMest != null ? this.aggrExpMest.TDL_TREATMENT_CODE : ""), printTypeCode, this.currrentModule.RoomId);
-                    //    MPS.Processor.Mps000049.PDO.Mps000049PDO mps000046RDO = new MPS.Processor.Mps000049.PDO.Mps000049PDO(
-                    //        this._ExpMestMedicines,
-                    //        this._ExpMestMaterials,
-                    //        this.aggrExpMest,
-                    //        this._ExpMests_Print,
-                    //        this.department,
-                    //        serviceUnitIds,
-                    //        useFormIds,
-                    //        reqRoomIds,
-                    //        chkMedicine.Checked,
-                    //        chkMaterial.Checked,
-                    //        chkIsChemicalSustance.Checked,
-                    //        BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
-                    //        MPS.Processor.Mps000049.PDO.keyTitles.phieuLinhTongHop,
-                    //        mpsConfig49
-                    //    );
-
-                    //    WaitingManager.Hide();
-                    //    MPS.ProcessorBase.Core.PrintData PrintData = null;
-                    //    if (GlobalVariables.CheDoInChoCacChucNangTrongPhanMem == 2)
-                    //    {
-                    //        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000046RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, "") { EmrInputADO = inputADO };
-                    //    }
-                    //    else
-                    //    {
-                    //        PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000046RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, "") { EmrInputADO = inputADO };
-                    //    }
-                    //    result = MPS.MpsPrinter.Run(PrintData);
-                    //    #endregion
-                    //}
-                    //else
                     {
                         #region Tach Thuoc GN - HT - TT
                         ProcessorMedicneGNHT();
@@ -1915,53 +1917,78 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
 
                             richEditorMain.RunPrintTemplate("Mps000239", DelegateRunPrinter);
 
+                            // FIX: Kiểm tra _ExpMestMedi_Others null
                             if (_ExpMestMedi_Others != null && _ExpMestMedi_Others.Count > 0 && chkMedicine.Checked)
                             {
                                 var groups = _ExpMestMedi_Others.GroupBy(o => o.MEDICINE_GROUP_ID).ToList();
                                 if (IsPrintMps169)
-                                    groups = _ExpMestMedi_Others.Where(o => o.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__TC).GroupBy(o => o.MEDICINE_GROUP_ID).ToList();
-                                foreach (var gr in groups)
+                                    groups = _ExpMestMedi_Others.Where(o => o.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__TC)
+                                                                .GroupBy(o => o.MEDICINE_GROUP_ID).ToList();
+
+                                // FIX: Kiểm tra groups null
+                                if (groups != null && groups.Count > 0)
                                 {
-                                    MPS.Processor.Mps000049.PDO.keyTitles title = new MPS.Processor.Mps000049.PDO.keyTitles();
-                                    if (gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__CO)
+                                    foreach (var gr in groups)
                                     {
-                                        title = MPS.Processor.Mps000049.PDO.keyTitles.Corticoid;
+                                        // FIX: Kiểm tra gr và gr.First() không null
+                                        if (gr == null || !gr.Any()) continue;
+
+                                        MPS.Processor.Mps000049.PDO.keyTitles title = new MPS.Processor.Mps000049.PDO.keyTitles();
+                                        if (gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__CO)
+                                        {
+                                            title = MPS.Processor.Mps000049.PDO.keyTitles.Corticoid;
+                                        }
+                                        else if (gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__DICH_TRUYEN)
+                                        {
+                                            title = MPS.Processor.Mps000049.PDO.keyTitles.DichTruyen;
+                                        }
+                                        else if (gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__KS)
+                                        {
+                                            title = MPS.Processor.Mps000049.PDO.keyTitles.KhangSinh;
+                                        }
+                                        else if (gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__LAO)
+                                        {
+                                            title = MPS.Processor.Mps000049.PDO.keyTitles.Lao;
+                                        }
+                                        if (!IsPrintMps169 && gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__TC)
+                                        {
+                                            title = MPS.Processor.Mps000049.PDO.keyTitles.TienChat;
+                                        }
+
+                                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.aggrExpMest.TDL_TREATMENT_CODE) ? this.aggrExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currrentModule.RoomId);
+
+                                        // FIX: Kiểm tra BackendDataWorker.Get không null
+                                        var medicineTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>() ?? new List<V_HIS_MEDICINE_TYPE>();
+
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 gr.ToList() ", gr.ToList());
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 this.aggrExpMest ", this.aggrExpMest);
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 this._ExpMests_Print ", this._ExpMests_Print);
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 this.department", this.department);
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 serviceUnitIds", serviceUnitIds);
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 useFormIds ", useFormIds);
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 reqRoomIds ", reqRoomIds);
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 medicineTypes ", medicineTypes);
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 title", title);
+                                        LogUtil.TraceData("Test 1 check in MPS 49  in lần 1 mpsConfig49", mpsConfig49);
+                                        MPS.Processor.Mps000049.PDO.Mps000049PDO mps000049RDO = new MPS.Processor.Mps000049.PDO.Mps000049PDO(
+                                         gr.ToList(),
+                                        null,
+                                        this.aggrExpMest,
+                                        this._ExpMests_Print,
+                                        this.department,
+                                        serviceUnitIds,
+                                        useFormIds,
+                                        reqRoomIds,
+                                        chkMedicine.Checked,
+                                        false,
+                                        false,
+                                        medicineTypes,
+                                        title,
+                                        mpsConfig49
+                                    );
+                                        WaitingManager.Hide();
+                                        Run.Print.PrintData(printTypeCode, fileName, mps000049RDO, this.chkPrintNow.Checked, inputADO, ref result, this.currrentModule.RoomId, false, false, gr.ToList().Count, SetDataGroup);
                                     }
-                                    else if (gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__DICH_TRUYEN)
-                                    {
-                                        title = MPS.Processor.Mps000049.PDO.keyTitles.DichTruyen;
-                                    }
-                                    else if (gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__KS)
-                                    {
-                                        title = MPS.Processor.Mps000049.PDO.keyTitles.KhangSinh;
-                                    }
-                                    else if (gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__LAO)
-                                    {
-                                        title = MPS.Processor.Mps000049.PDO.keyTitles.Lao;
-                                    }
-                                    if (!IsPrintMps169 && gr.First().MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__TC)
-                                    {
-                                        title = MPS.Processor.Mps000049.PDO.keyTitles.TienChat;
-                                    }
-                                    Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.aggrExpMest.TDL_TREATMENT_CODE) ? this.aggrExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currrentModule.RoomId);
-                                    MPS.Processor.Mps000049.PDO.Mps000049PDO mps000049RDO = new MPS.Processor.Mps000049.PDO.Mps000049PDO(
-                                     gr.ToList(),
-                                    null,
-                                    this.aggrExpMest,
-                                    this._ExpMests_Print,
-                                    this.department,
-                                    serviceUnitIds,
-                                    useFormIds,
-                                    reqRoomIds,
-                                    chkMedicine.Checked,
-                                    false,
-                                    false,
-                                    BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
-                                    title,
-                                    mpsConfig49
-                                );
-                                    WaitingManager.Hide();
-                                    Run.Print.PrintData(printTypeCode, fileName, mps000049RDO, this.chkPrintNow.Checked, inputADO, ref result, this.currrentModule.RoomId, false, false, gr.ToList().Count, SetDataGroup);
                                 }
                             }
                         }
@@ -1971,34 +1998,52 @@ namespace HIS.Desktop.Plugins.AggrExpMestPrintFilter
                         }
 
                         #region In Thuoc Thuong
-                        List<V_HIS_EXP_MEST_MEDICINE> dtMedicine = _ExpMestMedi_Ts;
+                        // FIX: Kiểm tra _ExpMestMedi_Ts null và khởi tạo dtMedicine an toàn
+                        List<V_HIS_EXP_MEST_MEDICINE> dtMedicine = _ExpMestMedi_Ts ?? new List<V_HIS_EXP_MEST_MEDICINE>();
+
                         if (_ExpMestMedi_Ts != null && _ExpMestMedi_Ts.Count > 0 && chkMedicine.Checked)
                         {
                             if (IsPrintMps169)
                                 dtMedicine = _ExpMestMedi_Ts.Where(o => o.MEDICINE_GROUP_ID != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__TC).ToList();
-                            Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.aggrExpMest.TDL_TREATMENT_CODE) ? this.aggrExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currrentModule.RoomId);
-                            MPS.Processor.Mps000049.PDO.Mps000049PDO mps000049RDO = new MPS.Processor.Mps000049.PDO.Mps000049PDO(
-                             this._ExpMestMedi_Ts,
-                            null,
-                            this.aggrExpMest,
-                            this._ExpMests_Print,
-                            this.department,
-                            serviceUnitIds,
-                            useFormIds,
-                            reqRoomIds,
-                            chkMedicine.Checked,
-                            false,
-                            false,
-                            BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>(),
-                            MPS.Processor.Mps000049.PDO.keyTitles.phieuLinhThuocThuong,
-                            mpsConfig49
-                        );
-                            WaitingManager.Hide();
-                            Run.Print.PrintData(printTypeCode, fileName, mps000049RDO, this.chkPrintNow.Checked, inputADO, ref result, this.currrentModule.RoomId, false, false, dtMedicine.Count, SetDataGroup);
+
+                            // FIX: Kiểm tra dtMedicine không null trước khi sử dụng
+                            if (dtMedicine != null && dtMedicine.Count > 0)
+                            {
+                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((!string.IsNullOrWhiteSpace(this.aggrExpMest.TDL_TREATMENT_CODE) ? this.aggrExpMest.TDL_TREATMENT_CODE : printTypeCode), printTypeCode, this.currrentModule.RoomId);
+
+                                // FIX: Kiểm tra BackendDataWorker.Get không null
+                                var medicineTypes = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>() ?? new List<V_HIS_MEDICINE_TYPE>();
+
+                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2  this._ExpMestMedi_Ts ", this._ExpMestMedi_Ts);
+                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 this.aggrExpMest ", this.aggrExpMest);
+                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 this._ExpMests_Print ", this._ExpMests_Print);
+                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 this.department", this.department);
+                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 serviceUnitIds", serviceUnitIds);
+                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 useFormIds ", useFormIds);
+                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 reqRoomIds ", reqRoomIds);
+                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 medicineTypes ", medicineTypes);
+                                LogUtil.TraceData("Test 1 check in MPS 49  in lần 2 mpsConfig49", mpsConfig49);
+                                MPS.Processor.Mps000049.PDO.Mps000049PDO mps000049RDO = new MPS.Processor.Mps000049.PDO.Mps000049PDO(
+                                 this._ExpMestMedi_Ts,
+                                null,
+                                this.aggrExpMest,
+                                this._ExpMests_Print,
+                                this.department,
+                                serviceUnitIds,
+                                useFormIds,
+                                reqRoomIds,
+                                chkMedicine.Checked,
+                                false,
+                                false,
+                                medicineTypes,
+                                MPS.Processor.Mps000049.PDO.keyTitles.phieuLinhThuocThuong,
+                                mpsConfig49
+                            );
+                                WaitingManager.Hide();
+                                Run.Print.PrintData(printTypeCode, fileName, mps000049RDO, this.chkPrintNow.Checked, inputADO, ref result, this.currrentModule.RoomId, false, false, dtMedicine.Count, SetDataGroup);
+                            }
                         }
                         #endregion
-
-
                     }
                 }
             }
