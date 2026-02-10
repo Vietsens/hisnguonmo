@@ -1080,6 +1080,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         ado.ClientSessionKey = items[0].ClientSessionKey;
                         ado.CONCRETE_ID__IN_SETY = items[0].SERVICE_REQ_CODE;
                         ado.MEDI_MATE_TYPE_NAME = items[0].SERVICE_REQ_CODE == "000000000000" ? "Thêm mới" : strParent;
+                        ado.MEDI_MATE_TYPE_CODE = items[0].SERVICE_REQ_CODE == "000000000000" ? "Thêm mới" : strParent;
                         ado.SERVICE_REQ_CODE = items[0].SERVICE_REQ_CODE;
                         ado.EXP_MEST_ID = items[0].EXP_MEST_ID;
                         ado.TDL_PATIENT_NAME = items[0].TDL_PATIENT_NAME;
