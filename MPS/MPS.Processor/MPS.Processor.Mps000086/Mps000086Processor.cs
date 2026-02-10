@@ -155,6 +155,14 @@ namespace MPS.Processor.Mps000086
                             case 4:
                                 listAdoPrint = listAdoPrint.OrderBy(p => p.SERVICE_UNIT_NAME).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                                 break;
+                            case 5:
+                                listAdoPrint = listAdoPrint
+                                     .OrderBy(p => p.TYPE_ID == 1 ? 0 : 1)
+                                     .ThenBy(p => p.TYPE_ID == 1 ? (p.PARENT_MEDICINE_TYPE_NAME ?? string.Empty) : string.Empty)
+                                     .ThenBy(p => p.TYPE_ID == 1 ? (p.MEDICINE_TYPE_NAME ?? string.Empty) : (p.MEDI_MATE_TYPE_NAME ?? string.Empty))
+                                     .ToList();
+                                break;
+                                
                             case 6:
                                 listAdoPrint = listAdoPrint.OrderBy(p => p.MEDI_MATE_NUM_ORDER.HasValue ? p.MEDI_MATE_NUM_ORDER.Value : listAdoPrint.Max(s =>s.MEDI_MATE_NUM_ORDER ?? 0) + 1).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                                 break;
