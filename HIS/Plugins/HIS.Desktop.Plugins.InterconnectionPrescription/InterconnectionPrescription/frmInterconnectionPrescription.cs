@@ -93,6 +93,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
         {
             try
             {
+                this.StartPosition = FormStartPosition.CenterScreen;
                 SetCaptionByLanguageKey();
                 ProcessLoadData();
                 LoadCboStatus();
@@ -280,7 +281,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             {
                 this.txtSearch.Text = "";
                 this.cboRequestDepartment.EditValue = null;
-                this.cboLoginAccount.EditValue = null;
+                this.cboLoginAccount.EditValue = LoginName;
                 this.cboStatus.EditValue = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_STT.ID__CXL;
                 this.dtTimeFrom.EditValue = DateTime.Now;
                 this.dtTimeTo.EditValue = DateTime.Now;
@@ -336,6 +337,7 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
                     "DEPARTMENT_NAME", "ID", columnInfos, false, 330);
 
                 ControlEditorLoader.Load(cboRequestDepartment, ListDepartment, controlEditorADO);
+                cboRequestDepartment.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             }
             catch (Exception ex)
             {
@@ -1490,5 +1492,38 @@ namespace HIS.Desktop.Plugins.InterconnectionPrescription.InterconnectionPrescri
             }
         }
 
+        private void chkAll_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (chkAll.Checked)
+                {
+                    cboLoginAccount.EditValue = null;
+                    cboLoginAccount.Enabled = false;
+                }
+                else
+                {
+                    cboLoginAccount.Enabled = true;
+                    cboLoginAccount.EditValue = LoginName;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboRequestDepartment_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(cboRequestDepartment.Text))
+                    cboRequestDepartment.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }
