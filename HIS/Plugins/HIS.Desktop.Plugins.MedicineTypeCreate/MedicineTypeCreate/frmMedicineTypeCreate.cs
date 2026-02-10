@@ -623,7 +623,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 List<AMedicineTypeADO> listADO = new List<AMedicineTypeADO>()
                 {
                     new AMedicineTypeADO { ID = 1,  NAME = "Hóa chất" },
-                    new AMedicineTypeADO { ID = 2,  NAME = "Thực phẩm chức năng" },
+                    new AMedicineTypeADO { ID = 2,  NAME = "Sản phẩm không phải là thuốc" },
                     new AMedicineTypeADO { ID = 3,  NAME = "Thuốc dấu sao *" },
                     new AMedicineTypeADO { ID = 4,  NAME = "Generic" },
                     new AMedicineTypeADO { ID = 5,  NAME = "Vaccine" },
@@ -914,8 +914,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 columnCode.Width = 200;
                 cboLoaiThuoc.Properties.View.OptionsView.ColumnAutoWidth = false;
                 cboLoaiThuoc.Properties.View.OptionsView.RowAutoHeight = false;
-                cboLoaiThuoc.Properties.PopupFormMinSize = new System.Drawing.Size(200, 250);
-                cboLoaiThuoc.Properties.PopupFormSize = new System.Drawing.Size(200, 250);
+                cboLoaiThuoc.Properties.PopupFormMinSize = new System.Drawing.Size(250, 350);
+                cboLoaiThuoc.Properties.PopupFormSize = new System.Drawing.Size(250, 350);
 
                 //column.Caption = "Tất cả";
                 cboLoaiThuoc.Properties.View.OptionsView.ShowColumnHeaders = true;
@@ -1535,7 +1535,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     arr.Add("Generic");
 
                 if (hIS_MEDICINE_TYPE.IS_FUNCTIONAL_FOOD == 1)
-                    arr.Add("Thực phẩm chức năng");
+                    arr.Add("Sản phẩm không phải là thuốc");
 
                 if (hIS_MEDICINE_TYPE.IS_VITAMIN_A == 1)
                     arr.Add("Vitamin A");
