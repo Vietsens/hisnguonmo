@@ -45,54 +45,55 @@ namespace HIS.Desktop.Plugins.TransactionBill
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionBill));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject77 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject78 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject79 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject80 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject101 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject102 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject103 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject104 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject81 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject82 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject83 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject85 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject86 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject87 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject88 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject89 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject90 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject91 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject92 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject93 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject94 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject95 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject96 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject97 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject98 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject99 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject100 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtSoGiaoDich = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCSave = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
@@ -339,10 +340,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource();
-            this.timerInitForm = new System.Windows.Forms.Timer();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtSoGiaoDich.Properties)).BeginInit();
@@ -609,10 +610,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // txtSoGiaoDich
             // 
             this.txtSoGiaoDich.Enabled = false;
-            this.txtSoGiaoDich.Location = new System.Drawing.Point(530, 659);
+            this.txtSoGiaoDich.Location = new System.Drawing.Point(564, 659);
             this.txtSoGiaoDich.MenuManager = this.barManager1;
             this.txtSoGiaoDich.Name = "txtSoGiaoDich";
-            this.txtSoGiaoDich.Size = new System.Drawing.Size(145, 20);
+            this.txtSoGiaoDich.Size = new System.Drawing.Size(111, 20);
             this.txtSoGiaoDich.StyleController = this.layoutControl1;
             this.txtSoGiaoDich.TabIndex = 68;
             // 
@@ -688,9 +689,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.lblBaoLanh.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.lblBaoLanh.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblBaoLanh.Location = new System.Drawing.Point(319, 659);
+            this.lblBaoLanh.Location = new System.Drawing.Point(307, 659);
+            this.lblBaoLanh.MaximumSize = new System.Drawing.Size(300, 0);
             this.lblBaoLanh.Name = "lblBaoLanh";
-            this.lblBaoLanh.Size = new System.Drawing.Size(112, 16);
+            this.lblBaoLanh.Size = new System.Drawing.Size(158, 16);
             this.lblBaoLanh.StyleController = this.layoutControl1;
             this.lblBaoLanh.TabIndex = 67;
             // 
@@ -700,7 +702,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.chkBaoLanhVP.MenuManager = this.barManager1;
             this.chkBaoLanhVP.Name = "chkBaoLanhVP";
             this.chkBaoLanhVP.Properties.Caption = "Bảo lãnh viện phí";
-            this.chkBaoLanhVP.Size = new System.Drawing.Size(123, 19);
+            this.chkBaoLanhVP.Size = new System.Drawing.Size(111, 19);
             this.chkBaoLanhVP.StyleController = this.layoutControl1;
             this.chkBaoLanhVP.TabIndex = 66;
             this.chkBaoLanhVP.EditValueChanged += new System.EventHandler(this.chkBaoLanhVP_EditValueChanged);
@@ -763,7 +765,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // cboDepositBook
             // 
-            this.cboDepositBook.Location = new System.Drawing.Point(319, 587);
+            this.cboDepositBook.Location = new System.Drawing.Point(307, 587);
             this.cboDepositBook.MenuManager = this.barManager1;
             this.cboDepositBook.Name = "cboDepositBook";
             this.cboDepositBook.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -772,7 +774,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboDepositBook.Properties.NullText = "";
             this.cboDepositBook.Properties.View = this.gridView1;
-            this.cboDepositBook.Size = new System.Drawing.Size(112, 20);
+            this.cboDepositBook.Size = new System.Drawing.Size(158, 20);
             this.cboDepositBook.StyleController = this.layoutControl1;
             this.cboDepositBook.TabIndex = 60;
             this.cboDepositBook.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboDepositBook_ButtonClick);
@@ -991,8 +993,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.btnStateForInformationUser.Properties.Appearance.BackColor = System.Drawing.Color.Transparent;
             this.btnStateForInformationUser.Properties.Appearance.Options.UseBackColor = true;
             this.btnStateForInformationUser.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.pin, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.unpin, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.pin, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.unpin, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "", null, null, true)});
             this.btnStateForInformationUser.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnStateForInformationUser.Size = new System.Drawing.Size(29, 22);
             this.btnStateForInformationUser.TabIndex = 2;
@@ -1073,7 +1075,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.cboBuyerOrganzation2.Name = "cboBuyerOrganzation2";
             this.cboBuyerOrganzation2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
             this.cboBuyerOrganzation2.Properties.NullText = "";
             this.cboBuyerOrganzation2.Properties.View = this.gridView2;
             this.cboBuyerOrganzation2.Size = new System.Drawing.Size(248, 20);
@@ -1194,7 +1196,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.cboBuyerOrganization.Properties.AutoComplete = false;
             this.cboBuyerOrganization.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject101, serializableAppearanceObject102, serializableAppearanceObject103, serializableAppearanceObject104, "", null, null, true)});
             this.cboBuyerOrganization.Properties.NullText = "";
             this.cboBuyerOrganization.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboBuyerOrganization.Properties.View = this.customGridLookUpEdit1View;
@@ -1764,7 +1766,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.repositoryItemBtnLock.AutoHeight = false;
             this.repositoryItemBtnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Khóa", null, null, true)});
             this.repositoryItemBtnLock.Name = "repositoryItemBtnLock";
             this.repositoryItemBtnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnLock_ButtonClick);
@@ -1773,7 +1775,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.repositoryItemBtnLockDisable.AutoHeight = false;
             this.repositoryItemBtnLockDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "Khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.Lock_Unlock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Khóa", null, null, true)});
             this.repositoryItemBtnLockDisable.Name = "repositoryItemBtnLockDisable";
             this.repositoryItemBtnLockDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1781,7 +1783,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.repositoryItemBtnUnLock.AutoHeight = false;
             this.repositoryItemBtnUnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Mở khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "Mở khóa", null, null, true)});
             this.repositoryItemBtnUnLock.Name = "repositoryItemBtnUnLock";
             this.repositoryItemBtnUnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnUnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnUnLock_ButtonClick);
@@ -1790,7 +1792,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.repositoryItemBtnUnLockDisable.AutoHeight = false;
             this.repositoryItemBtnUnLockDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "Mở khóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.TransactionBill.Properties.Resources.Lock_Lock_icon, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "Mở khóa", null, null, true)});
             this.repositoryItemBtnUnLockDisable.Name = "repositoryItemBtnUnLockDisable";
             this.repositoryItemBtnUnLockDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -1946,7 +1948,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             // cboAccountBookRepay
             // 
-            this.cboAccountBookRepay.Location = new System.Drawing.Point(319, 611);
+            this.cboAccountBookRepay.Location = new System.Drawing.Point(307, 611);
             this.cboAccountBookRepay.MenuManager = this.barManager1;
             this.cboAccountBookRepay.Name = "cboAccountBookRepay";
             this.cboAccountBookRepay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1954,7 +1956,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboAccountBookRepay.Properties.NullText = "";
             this.cboAccountBookRepay.Properties.View = this.gridLookUpEdit1View;
-            this.cboAccountBookRepay.Size = new System.Drawing.Size(112, 20);
+            this.cboAccountBookRepay.Size = new System.Drawing.Size(158, 20);
             this.cboAccountBookRepay.StyleController = this.layoutControl1;
             this.cboAccountBookRepay.TabIndex = 47;
             this.cboAccountBookRepay.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboAccountBookRepay_Closed);
@@ -1975,14 +1977,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
             0,
             0,
             0});
-            this.spinNumOrderRepay.Location = new System.Drawing.Point(530, 611);
+            this.spinNumOrderRepay.Location = new System.Drawing.Point(564, 611);
             this.spinNumOrderRepay.MenuManager = this.barManager1;
             this.spinNumOrderRepay.Name = "spinNumOrderRepay";
             this.spinNumOrderRepay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spinNumOrderRepay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spinNumOrderRepay.Properties.Mask.EditMask = "#######0;";
-            this.spinNumOrderRepay.Size = new System.Drawing.Size(145, 20);
+            this.spinNumOrderRepay.Size = new System.Drawing.Size(111, 20);
             this.spinNumOrderRepay.StyleController = this.layoutControl1;
             this.spinNumOrderRepay.TabIndex = 46;
             this.spinNumOrderRepay.Spin += new DevExpress.XtraEditors.Controls.SpinEventHandler(this.spinNumOrderRepay_Spin);
@@ -1994,7 +1996,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.chkAutoRepay.MenuManager = this.barManager1;
             this.chkAutoRepay.Name = "chkAutoRepay";
             this.chkAutoRepay.Properties.Caption = "Tự động hoàn ứng";
-            this.chkAutoRepay.Size = new System.Drawing.Size(123, 19);
+            this.chkAutoRepay.Size = new System.Drawing.Size(111, 19);
             this.chkAutoRepay.StyleController = this.layoutControl1;
             this.chkAutoRepay.TabIndex = 45;
             this.chkAutoRepay.CheckedChanged += new System.EventHandler(this.chkAutoRepay_CheckedChanged);
@@ -2102,7 +2104,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.chkCoKetChuyen.MenuManager = this.barManager1;
             this.chkCoKetChuyen.Name = "chkCoKetChuyen";
             this.chkCoKetChuyen.Properties.Caption = "Có kết chuyển";
-            this.chkCoKetChuyen.Size = new System.Drawing.Size(123, 19);
+            this.chkCoKetChuyen.Size = new System.Drawing.Size(111, 19);
             this.chkCoKetChuyen.StyleController = this.layoutControl1;
             this.chkCoKetChuyen.TabIndex = 20;
             this.chkCoKetChuyen.EditValueChanged += new System.EventHandler(this.chkCoKetChuyen_EditValueChanged);
@@ -2588,9 +2590,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.lblReceiveAmount.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.lblReceiveAmount.Appearance.ForeColor = System.Drawing.Color.Red;
             this.lblReceiveAmount.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblReceiveAmount.Location = new System.Drawing.Point(530, 635);
+            this.lblReceiveAmount.Location = new System.Drawing.Point(564, 635);
             this.lblReceiveAmount.Name = "lblReceiveAmount";
-            this.lblReceiveAmount.Size = new System.Drawing.Size(145, 20);
+            this.lblReceiveAmount.Size = new System.Drawing.Size(111, 20);
             this.lblReceiveAmount.StyleController = this.layoutControl1;
             this.lblReceiveAmount.TabIndex = 26;
             // 
@@ -2598,9 +2600,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.lblHienDu.Appearance.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Bold);
             this.lblHienDu.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblHienDu.Location = new System.Drawing.Point(319, 635);
+            this.lblHienDu.Location = new System.Drawing.Point(307, 635);
+            this.lblHienDu.MaximumSize = new System.Drawing.Size(300, 0);
             this.lblHienDu.Name = "lblHienDu";
-            this.lblHienDu.Size = new System.Drawing.Size(112, 20);
+            this.lblHienDu.Size = new System.Drawing.Size(158, 20);
             this.lblHienDu.StyleController = this.layoutControl1;
             this.lblHienDu.TabIndex = 25;
             // 
@@ -2781,7 +2784,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.repositoryItemBtnAddFund.AutoHeight = false;
             this.repositoryItemBtnAddFund.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnAddFund.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "Thêm", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnAddFund.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "Thêm", null, null, true)});
             this.repositoryItemBtnAddFund.Name = "repositoryItemBtnAddFund";
             this.repositoryItemBtnAddFund.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2789,7 +2792,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.repositoryItemBtnDeleteFund.AutoHeight = false;
             this.repositoryItemBtnDeleteFund.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDeleteFund.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDeleteFund.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "Xóa", null, null, true)});
             this.repositoryItemBtnDeleteFund.Name = "repositoryItemBtnDeleteFund";
             this.repositoryItemBtnDeleteFund.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnDeleteFund.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnDeleteFund_ButtonClick);
@@ -2824,7 +2827,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             // 
             this.repositoryItemBtnDeleteDisable.AutoHeight = false;
             this.repositoryItemBtnDeleteDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDeleteDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDeleteDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject97, serializableAppearanceObject98, serializableAppearanceObject99, serializableAppearanceObject100, "Xóa", null, null, true)});
             this.repositoryItemBtnDeleteDisable.Name = "repositoryItemBtnDeleteDisable";
             this.repositoryItemBtnDeleteDisable.ReadOnly = true;
             this.repositoryItemBtnDeleteDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
@@ -2965,7 +2968,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             0,
             0,
             0});
-            this.spnNumOrder.Location = new System.Drawing.Point(530, 587);
+            this.spnNumOrder.Location = new System.Drawing.Point(564, 587);
             this.spnNumOrder.MenuManager = this.barManager1;
             this.spnNumOrder.Name = "spnNumOrder";
             this.spnNumOrder.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2979,7 +2982,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             0,
             0});
             this.spnNumOrder.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.spnNumOrder.Size = new System.Drawing.Size(145, 20);
+            this.spnNumOrder.Size = new System.Drawing.Size(111, 20);
             this.spnNumOrder.StyleController = this.layoutControl1;
             this.spnNumOrder.TabIndex = 61;
             this.spnNumOrder.Spin += new DevExpress.XtraEditors.Controls.SpinEventHandler(this.spnNumOrder_Spin);
@@ -3150,9 +3153,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutHienDu.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutHienDu.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutHienDu.Control = this.lblHienDu;
-            this.layoutHienDu.Location = new System.Drawing.Point(222, 633);
+            this.layoutHienDu.Location = new System.Drawing.Point(210, 633);
             this.layoutHienDu.Name = "layoutHienDu";
-            this.layoutHienDu.Size = new System.Drawing.Size(211, 24);
+            this.layoutHienDu.Size = new System.Drawing.Size(257, 24);
             this.layoutHienDu.Text = "Hiện dư:";
             this.layoutHienDu.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutHienDu.TextSize = new System.Drawing.Size(90, 20);
@@ -3167,9 +3170,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutReceiveAmount.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutReceiveAmount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutReceiveAmount.Control = this.lblReceiveAmount;
-            this.layoutReceiveAmount.Location = new System.Drawing.Point(433, 633);
+            this.layoutReceiveAmount.Location = new System.Drawing.Point(467, 633);
             this.layoutReceiveAmount.Name = "layoutReceiveAmount";
-            this.layoutReceiveAmount.Size = new System.Drawing.Size(244, 24);
+            this.layoutReceiveAmount.Size = new System.Drawing.Size(210, 24);
             this.layoutReceiveAmount.Text = "Cần thu:";
             this.layoutReceiveAmount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutReceiveAmount.TextSize = new System.Drawing.Size(90, 20);
@@ -3409,7 +3412,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutControlItem3.Control = this.chkAutoRepay;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 609);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem3.Size = new System.Drawing.Size(210, 24);
             this.layoutControlItem3.Text = " ";
             this.layoutControlItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(90, 20);
@@ -3420,9 +3423,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.lciNumOrderRepay.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciNumOrderRepay.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciNumOrderRepay.Control = this.spinNumOrderRepay;
-            this.lciNumOrderRepay.Location = new System.Drawing.Point(433, 609);
+            this.lciNumOrderRepay.Location = new System.Drawing.Point(467, 609);
             this.lciNumOrderRepay.Name = "lciNumOrderRepay";
-            this.lciNumOrderRepay.Size = new System.Drawing.Size(244, 24);
+            this.lciNumOrderRepay.Size = new System.Drawing.Size(210, 24);
             this.lciNumOrderRepay.Text = "Số chứng từ:";
             this.lciNumOrderRepay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciNumOrderRepay.TextSize = new System.Drawing.Size(90, 20);
@@ -3433,9 +3436,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.lciAccountBookRepay.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAccountBookRepay.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAccountBookRepay.Control = this.cboAccountBookRepay;
-            this.lciAccountBookRepay.Location = new System.Drawing.Point(222, 609);
+            this.lciAccountBookRepay.Location = new System.Drawing.Point(210, 609);
             this.lciAccountBookRepay.Name = "lciAccountBookRepay";
-            this.lciAccountBookRepay.Size = new System.Drawing.Size(211, 24);
+            this.lciAccountBookRepay.Size = new System.Drawing.Size(257, 24);
             this.lciAccountBookRepay.Text = "Sổ hoàn ứng:";
             this.lciAccountBookRepay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciAccountBookRepay.TextSize = new System.Drawing.Size(90, 20);
@@ -3448,7 +3451,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.lciCoKetChuyen.Control = this.chkCoKetChuyen;
             this.lciCoKetChuyen.Location = new System.Drawing.Point(0, 633);
             this.lciCoKetChuyen.Name = "lciCoKetChuyen";
-            this.lciCoKetChuyen.Size = new System.Drawing.Size(222, 24);
+            this.lciCoKetChuyen.Size = new System.Drawing.Size(210, 24);
             this.lciCoKetChuyen.Text = " ";
             this.lciCoKetChuyen.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciCoKetChuyen.TextSize = new System.Drawing.Size(90, 20);
@@ -3610,9 +3613,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutControlItem46.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem46.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem46.Control = this.cboDepositBook;
-            this.layoutControlItem46.Location = new System.Drawing.Point(222, 585);
+            this.layoutControlItem46.Location = new System.Drawing.Point(210, 585);
             this.layoutControlItem46.Name = "layoutControlItem46";
-            this.layoutControlItem46.Size = new System.Drawing.Size(211, 24);
+            this.layoutControlItem46.Size = new System.Drawing.Size(257, 24);
             this.layoutControlItem46.Text = "Sổ tạm ứng:";
             this.layoutControlItem46.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem46.TextSize = new System.Drawing.Size(90, 20);
@@ -3623,9 +3626,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutControlItem47.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem47.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem47.Control = this.spnNumOrder;
-            this.layoutControlItem47.Location = new System.Drawing.Point(433, 585);
+            this.layoutControlItem47.Location = new System.Drawing.Point(467, 585);
             this.layoutControlItem47.Name = "layoutControlItem47";
-            this.layoutControlItem47.Size = new System.Drawing.Size(244, 24);
+            this.layoutControlItem47.Size = new System.Drawing.Size(210, 24);
             this.layoutControlItem47.Text = "Số chứng từ:";
             this.layoutControlItem47.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem47.TextSize = new System.Drawing.Size(90, 20);
@@ -3636,7 +3639,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.emptySpaceItem2.AllowHotTrack = false;
             this.emptySpaceItem2.Location = new System.Drawing.Point(0, 585);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(222, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(210, 24);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciQr
@@ -3705,7 +3708,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutControlItem64.Control = this.chkBaoLanhVP;
             this.layoutControlItem64.Location = new System.Drawing.Point(0, 657);
             this.layoutControlItem64.Name = "layoutControlItem64";
-            this.layoutControlItem64.Size = new System.Drawing.Size(222, 24);
+            this.layoutControlItem64.Size = new System.Drawing.Size(210, 24);
             this.layoutControlItem64.Text = " ";
             this.layoutControlItem64.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem64.TextSize = new System.Drawing.Size(90, 20);
@@ -3718,10 +3721,10 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutControlItem65.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem65.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem65.Control = this.lblBaoLanh;
-            this.layoutControlItem65.Location = new System.Drawing.Point(222, 657);
+            this.layoutControlItem65.Location = new System.Drawing.Point(210, 657);
             this.layoutControlItem65.Name = "layoutControlItem65";
             this.layoutControlItem65.OptionsToolTip.ToolTip = "Tổng số tiền cần phải bảo lãnh";
-            this.layoutControlItem65.Size = new System.Drawing.Size(211, 24);
+            this.layoutControlItem65.Size = new System.Drawing.Size(257, 24);
             this.layoutControlItem65.Text = "Bảo lãnh:";
             this.layoutControlItem65.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem65.TextSize = new System.Drawing.Size(90, 0);
@@ -3732,9 +3735,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
             this.layoutControlItem66.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem66.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem66.Control = this.txtSoGiaoDich;
-            this.layoutControlItem66.Location = new System.Drawing.Point(433, 657);
+            this.layoutControlItem66.Location = new System.Drawing.Point(467, 657);
             this.layoutControlItem66.Name = "layoutControlItem66";
-            this.layoutControlItem66.Size = new System.Drawing.Size(244, 24);
+            this.layoutControlItem66.Size = new System.Drawing.Size(210, 24);
             this.layoutControlItem66.Text = "Số giao dịch:";
             this.layoutControlItem66.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem66.TextSize = new System.Drawing.Size(90, 13);
