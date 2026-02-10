@@ -1118,7 +1118,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     _BenhAnNgoaiTru.MaICD_BenhKemTheo = "";
                     _BenhAnNgoaiTru.MAIDC_ChanDoanKhiRaVien = "";
                     _BenhAnNgoaiTru.TenKhoa = "";
-                    _BenhAnNgoaiTru.TomTatKetQuaCanLamSang = "";
+                    _BenhAnNgoaiTru.TomTatKetQuaCanLamSang = _ExamServiceReq != null ? _ExamServiceReq.SUBCLINICAL : "";
 
                     json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnNgoaiTru);
                     #endregion
