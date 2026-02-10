@@ -291,6 +291,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
                 SetDefaultDataStore();
                 LoadDataTocboMediRecordType(BackendDataWorker.Get<HIS_MEDI_RECORD_TYPE>().Where(o => o.IS_ACTIVE == 1).ToList());
                 SetDefaultMediRecordType();
+
                 lciProgram.Visibility = chkBANgoaiTru.Checked ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                 linkLabel1.Text = "Trước đó, hồ sơ đã bị từ chối duyệt. Bạn có thể click vào đây để xem nội dung từ chối trước khi lưu trữ bệnh án";
@@ -389,6 +390,10 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
                         cboDataStore.EditValue = ado.DataStoreId;
                     }
                 }
+                if (cboDataStore.EditValue == null)
+                {
+                    // ví dụ
+                }
             }
             catch (Exception ex)
             {
@@ -400,21 +405,51 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
         {
             try
             {
-                List<long> mediRecordTypeIds = this.currentTreatment.Where(o => o.MEDI_RECORD_TYPE_ID.HasValue).Select(s => s.MEDI_RECORD_TYPE_ID.Value).Distinct().ToList();
-                List<long> treatmentEndTypeIds = this.currentTreatment.Select(s => (s.TREATMENT_END_TYPE_ID ?? 0)).Distinct().ToList();
-                if (mediRecordTypeIds != null && mediRecordTypeIds.Count == 1)
+                var dataMediRecordType = cboMediRecordType.Properties.DataSource as List<HIS_MEDI_RECORD_TYPE>;
+                if (dataMediRecordType != null && dataMediRecordType.Count == 1)
                 {
-                    cboMediRecordType.EditValue = mediRecordTypeIds[0];
+                    cboMediRecordType.EditValue = dataMediRecordType[0].ID;
                     return;
                 }
-                else if (treatmentEndTypeIds != null && treatmentEndTypeIds.Count == 1 && treatmentEndTypeIds[0] == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
+                if (dataMediRecordType != null && cboMediRecordType.EditValue != null && dataMediRecordType.Any(a => a.ID == Convert.ToInt64(cboMediRecordType.EditValue)))
                 {
-                    cboMediRecordType.EditValue = IMSys.DbConfig.HIS_RS.HIS_MEDI_RECORD_TYPE.ID__TuVong;
                     return;
                 }
-                else
+                cboMediRecordType.EditValue = null;
+                if (GlobalVariables.ListDataStoreUseTime != null && (GlobalVariables.ListDataStoreUseTime is List<LocalStoreADO>) && dataMediRecordType != null)
                 {
-                    cboMediRecordType.EditValue = IMSys.DbConfig.HIS_RS.HIS_MEDI_RECORD_TYPE.ID__Khac;
+                    List<LocalStoreADO> ados = ((List<LocalStoreADO>)GlobalVariables.ListDataStoreUseTime).OrderByDescending(o => o.LastTime).ToList();
+                    LocalStoreADO ado = ados.FirstOrDefault(o => dataMediRecordType.Any(a => a.ID == o.MediRecordTypeId));
+                    if (ado != null)
+                    {
+                        cboMediRecordType.EditValue = ado.MediRecordTypeId;
+                    }
+                }
+                if (cboMediRecordType.EditValue == null)
+                {
+                    try
+                    {
+                        List<long> mediRecordTypeIds = this.currentTreatment.Where(o => o.MEDI_RECORD_TYPE_ID.HasValue).Select(s => s.MEDI_RECORD_TYPE_ID.Value).Distinct().ToList();
+                        List<long> treatmentEndTypeIds = this.currentTreatment.Select(s => (s.TREATMENT_END_TYPE_ID ?? 0)).Distinct().ToList();
+                        if (mediRecordTypeIds != null && mediRecordTypeIds.Count == 1)
+                        {
+                            cboMediRecordType.EditValue = mediRecordTypeIds[0];
+                            return;
+                        }
+                        else if (treatmentEndTypeIds != null && treatmentEndTypeIds.Count == 1 && treatmentEndTypeIds[0] == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHET)
+                        {
+                            cboMediRecordType.EditValue = IMSys.DbConfig.HIS_RS.HIS_MEDI_RECORD_TYPE.ID__TuVong;
+                            return;
+                        }
+                        else
+                        {
+                            cboMediRecordType.EditValue = IMSys.DbConfig.HIS_RS.HIS_MEDI_RECORD_TYPE.ID__Khac;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
                 }
             }
             catch (Exception ex)
@@ -657,7 +692,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
                         }
 
                         this.refeshData();
-                        this.SetLastTimeToLocal(treatmentStoreSDO.DataStoreId);
+                        this.SetLastTimeToLocal(treatmentStoreSDO.DataStoreId, treatmentStoreSDO.MediRecordTypeId);
                     }
                 }
 
@@ -1000,7 +1035,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
             }
         }
 
-        private void SetLastTimeToLocal(long dataStoreId)
+        private void SetLastTimeToLocal(long dataStoreId, long? mediRecordTypeId)
         {
             try
             {
@@ -1018,7 +1053,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
                         GlobalVariables.ListDataStoreUseTime = storeADOs;
                     }
 
-                    LocalStoreADO exist = storeADOs.FirstOrDefault(o => o.DataStoreId == dataStoreId);
+                    LocalStoreADO exist = storeADOs.FirstOrDefault(o => o.DataStoreId == dataStoreId || o.MediRecordTypeId == mediRecordTypeId);
                     if (exist != null)
                     {
                         exist.LastTime = time;
@@ -1027,6 +1062,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
                     {
                         exist = new LocalStoreADO();
                         exist.DataStoreId = dataStoreId;
+                        exist.MediRecordTypeId = mediRecordTypeId;
                         exist.LastTime = time;
                         storeADOs.Add(exist);
                     }
