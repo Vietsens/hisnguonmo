@@ -4485,6 +4485,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     else
                     {
                         WaitingManager.Hide();
+                        MessageBox.Show(this, res.Data?.ResponseStatus?.ErrorDesc, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return false;
                     }
                 }
@@ -4526,7 +4527,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                             string strMaxBalance = Inventec.Common.Number.Convert.NumberToString(maxBalance, ConfigApplications.NumberSeperator);
 
                             this.lblBaoLanh.Text = this.tienBaoLanh + "/" + strMaxBalance;
-
+                            CalcuCanThu();
                             Inventec.Common.Logging.LogSystem.Info("Tổng tiền bảo lãnh sau khi tính lại: " + totalAmount);
                         }
                     }
