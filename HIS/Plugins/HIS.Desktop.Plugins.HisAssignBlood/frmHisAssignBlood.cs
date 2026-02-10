@@ -115,6 +115,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         internal UserControl ucSecondaryIcd;
         internal UCDateProcessor ucDateProcessor;
         internal UserControl ucDate;
+        private bool _isExternalMinhTamMode = false;
 
         bool isInitForm = true;
 
@@ -3456,5 +3457,239 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+
+        private void cboMediStockExport_TabBlood_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                long mediStockId = Inventec.Common.TypeConvert.Parse.ToInt64((cboMediStockExport_TabBlood.EditValue ?? 0).ToString());
+                var ms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == mediStockId);
+
+                _isExternalMinhTamMode = IsExternalMinhTamStock(ms);
+
+                chkShowGroupBlood.Checked = false;
+                chkShowGroupBlood.Visible = !_isExternalMinhTamMode;
+                chkShowGroupBlood.Enabled = !_isExternalMinhTamMode;
+
+                if (_isExternalMinhTamMode)
+                {
+                    gridColumn1.VisibleIndex = -1;
+                    gridColumn2.VisibleIndex = -1;
+
+                    LoadGrid1_BloodType_ElementNotNull();
+                    gridControlExternalBlood.DataSource = null;
+                }
+                else
+                {
+                    LoadDataToGridBloodType(ms);
+                    gridControlExternalBlood.DataSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private bool IsExternalMinhTamStock(MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK ms)
+        {
+            try
+            {
+                if (ms == null) return false;
+                if (ms.IS_EXTERNAL != 1) return false;
+
+                // Key: "MINHTAM01|MINHTAM02"
+                string cfg = HisConfigCFG.HisAssignBloodMediStockExternal__MinhTam;
+                if (string.IsNullOrWhiteSpace(cfg)) return false;
+
+                var allowCodes = new HashSet<string>(
+                    cfg.Split('|')
+                       .Select(x => (x ?? "").Trim())
+                       .Where(x => x.Length > 0),
+                    StringComparer.OrdinalIgnoreCase
+                );
+
+                string code = (ms.MEDI_STOCK_CODE ?? "").Trim();
+                return allowCodes.Contains(code);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+        private void LoadGrid1_BloodType_ElementNotNull()
+        {
+            try
+            {
+                gridControlBloodType__BloodPage.DataSource = null;
+
+                // Lấy danh mục blood type + volume từ BackendDataWorker (nhanh, đúng style)
+                var bloodTypes = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_TYPE>()
+                    .Where(x => x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+
+                var volumeMap = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_VOLUME>()
+                    .ToDictionary(v => v.ID, v => (int?)v.VOLUME);
+
+                var data = bloodTypes
+                    .Where(x => !string.IsNullOrWhiteSpace(x.ELEMENT)) // ELEMENT != null theo thiết kế
+                    .Select(x => new BloodADO
+                    {
+                        BLOOD_TYPE_ID = x.ID,
+                        BLOOD_TYPE_CODE = x.BLOOD_TYPE_CODE,
+                        BLOOD_TYPE_NAME = x.BLOOD_TYPE_NAME,
+
+                        ELEMENT = (x.ELEMENT ?? "").Trim(), // dùng như ElementID
+                        VOLUME = volumeMap.ContainsKey(x.BLOOD_VOLUME_ID) ? volumeMap[x.BLOOD_VOLUME_ID] : null,
+
+                        SERVICE_NAME_HIDDEN = convertToUnSign3(x.BLOOD_TYPE_NAME) + x.BLOOD_TYPE_NAME,
+                        SERVICE_CODE_HIDDEN = convertToUnSign3(x.BLOOD_TYPE_CODE) + x.BLOOD_TYPE_CODE
+                    })
+                    .ToList();
+
+                // Search keyword giống luồng cũ
+                string kw = (txtKeyword.Text ?? "").Trim();
+                if (!string.IsNullOrEmpty(kw))
+                {
+                    string kwUn = convertToUnSign3(kw).ToLower();
+                    string kwLo = kw.ToLower();
+
+                    data = data.Where(d =>
+                            ((d.BLOOD_TYPE_NAME ?? "").ToLower().Contains(kwLo)) ||
+                            ((d.BLOOD_TYPE_CODE ?? "").ToLower().Contains(kwLo)) ||
+                            ((convertToUnSign3(d.BLOOD_TYPE_NAME ?? "")).ToLower().Contains(kwUn)) ||
+                            ((convertToUnSign3(d.BLOOD_TYPE_CODE ?? "")).ToLower().Contains(kwUn))
+                        ).ToList();
+                }
+
+                gridControlBloodType__BloodPage.DataSource = data;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void SetUiForExternalMinhTam(bool isExternal)
+        {
+            _isExternalMinhTamMode = isExternal;
+
+            chkShowGroupBlood.Checked = false;
+            chkShowGroupBlood.Visible = !isExternal;
+            chkShowGroupBlood.Enabled = !isExternal;
+
+            // Kho ngoài: luôn ẩn 2 cột group ABO/RH
+            if (isExternal)
+            {
+                gridColumn1.VisibleIndex = -1;
+                gridColumn2.VisibleIndex = -1;
+            }
+
+            // Clear grid tồn kho ngoài khi đổi kho (tránh hiển thị rác)
+            gridControlExternalBlood.DataSource = null;
+        }
+        private MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK GetSelectedMediStock()
+        {
+            long mediStockId = Inventec.Common.TypeConvert.Parse.ToInt64(
+                (cboMediStockExport_TabBlood.EditValue ?? 0).ToString()
+            );
+
+            return BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>()
+                .FirstOrDefault(o => o.ID == mediStockId);
+        }
+
+        private List<KeyValuePair<string, string>> Build8AboRhCombos()
+        {
+            return new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("AB", "+"),
+        new KeyValuePair<string, string>("AB", "-"),
+        new KeyValuePair<string, string>("O",  "+"),
+        new KeyValuePair<string, string>("O",  "-"),
+        new KeyValuePair<string, string>("B",  "+"),
+        new KeyValuePair<string, string>("B",  "-"),
+        new KeyValuePair<string, string>("A",  "+"),
+        new KeyValuePair<string, string>("A",  "-"),
+    };
+        }
+
+        private void gridViewExternalBlood_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
+        {
+            try
+            {
+                if (!_isExternalMinhTamMode) return;
+
+                var row = gridViewBloodType__BloodPage.GetFocusedRow() as BloodADO;
+                if (row == null) return;
+
+                string elementId = (row.ELEMENT ?? "").Trim();
+                int volume = row.VOLUME ?? 0;
+
+                if (string.IsNullOrWhiteSpace(elementId) || volume <= 0)
+                {
+                    gridControlExternalBlood.DataSource = null;
+                    return;
+                }
+
+                var combos = Build8AboRhCombos();
+                var result = new List<ExternalBloodInventoryADO>();
+
+                Cursor.Current = Cursors.WaitCursor;
+
+                foreach (var c in combos)
+                {
+                    CommonParam param = new CommonParam();
+
+                    var req = new MinhTamInventoryRequest
+                    {
+                        ABO = c.Key,
+                        Rh = c.Value,
+                        ElementID = elementId,
+                        Volume = volume
+                    };
+
+                    // Gọi API trực tiếp như anh yêu cầu
+                    var resp = new BackendAdapter(param).Post<MinhTamInventoryResponse>(
+                        "/LisReceiver/web/GetInventory",
+                        ApiConsumers.MosConsumer,
+                        req,
+                        ProcessLostToken,
+                        param
+                    );
+
+                    int qty = 0;
+                    string elementName = row.BLOOD_TYPE_NAME;
+
+                    if (resp != null && resp.InventoryInfo != null && resp.InventoryInfo.Count > 0)
+                    {
+                        var info = resp.InventoryInfo[0];
+                        qty = info.Quantity;
+                        if (!string.IsNullOrWhiteSpace(info.ElementName)) elementName = info.ElementName;
+                    }
+
+                    result.Add(new ExternalBloodInventoryADO
+                    {
+                        ABO = c.Key,
+                        Rh = c.Value,
+                        ElementID = elementId,
+                        ElementName = elementName,
+                        Volume = volume,
+                        Quantity = qty
+                    });
+                }
+
+                gridControlExternalBlood.DataSource = result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+    
+
     }
 }

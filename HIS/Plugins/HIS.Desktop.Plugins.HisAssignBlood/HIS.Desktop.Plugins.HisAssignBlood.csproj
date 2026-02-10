@@ -235,6 +235,7 @@
   <ItemGroup>
     <Compile Include="ADO\BloodADO.cs" />
     <Compile Include="ADO\BloodTypeADO.cs" />
+    <Compile Include="ADO\ExternalBloodInventoryADO.cs" />
     <Compile Include="ADO\HisSereServADO.cs" />
     <Compile Include="ADO\TrackingAdo.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
