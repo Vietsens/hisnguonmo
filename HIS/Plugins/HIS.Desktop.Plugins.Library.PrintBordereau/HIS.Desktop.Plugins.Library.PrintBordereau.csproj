@@ -248,7 +248,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000463.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000504.PDO">
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000504.PDO\bin\Debug\MPS.Processor.Mps000504.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000504.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
@@ -396,6 +396,7 @@
     <EmbeddedResource Include="ChooseService\frmChonDichVuPhauThuat.resx">
       <DependentUpon>frmChonDichVuPhauThuat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>
