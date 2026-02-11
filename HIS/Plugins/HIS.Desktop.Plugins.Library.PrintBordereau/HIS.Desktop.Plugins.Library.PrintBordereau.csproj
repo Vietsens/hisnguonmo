@@ -396,7 +396,6 @@
     <EmbeddedResource Include="ChooseService\frmChonDichVuPhauThuat.resx">
       <DependentUpon>frmChonDichVuPhauThuat.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx" />
   </ItemGroup>
