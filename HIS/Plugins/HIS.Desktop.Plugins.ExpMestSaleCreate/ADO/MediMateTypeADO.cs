@@ -140,6 +140,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
             {
                 if (mety != null)
                 {
+                    var MedicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == (mety.MEDICINE_TYPE_ID ?? 0));
+                    if (MedicineType != null) 
+                    {
+                        this.MEDI_MATE_TYPE_CODE = MedicineType.MEDICINE_TYPE_CODE;
+                    }
                     this.IsMedicine = true;
                     this.MEDI_MATE_TYPE_ID = mety.MEDICINE_TYPE_ID ?? 0;
                     this.MEDI_MATE_TYPE_NAME = mety.MEDICINE_TYPE_NAME;
@@ -179,6 +184,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
             {
                 if (maty != null)
                 {
+                    var MaterialType = BackendDataWorker.Get<HIS_MATERIAL>().FirstOrDefault(o => o.ID == (maty.MATERIAL_TYPE_ID ?? 0));
+                    if (MaterialType != null)
+                    {
+                        this.MEDI_MATE_TYPE_CODE = MaterialType.BID_MATERIAL_TYPE_CODE;
+                    }
                     this.IsMaterial = true;
                     this.MEDI_MATE_TYPE_ID = maty.MATERIAL_TYPE_ID ?? 0;
                     this.MEDI_MATE_TYPE_NAME = maty.MATERIAL_TYPE_NAME;

@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMaterialType));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -117,6 +116,9 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn46 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn49 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn47 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnKhongHaoPhi = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnTtThau = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnBytNumOrder = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -128,7 +130,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -310,7 +312,10 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn44,
             this.gridColumn46,
             this.gridColumn49,
-            this.gridColumn47});
+            this.gridColumn47,
+            this.gridColumnKhongHaoPhi,
+            this.gridColumnTtThau,
+            this.gridColumnBytNumOrder});
             this.gridViewMaterialType.GridControl = this.gridControlMaterialType;
             this.gridViewMaterialType.Name = "gridViewMaterialType";
             this.gridViewMaterialType.OptionsCustomization.AllowFilter = false;
@@ -330,7 +335,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn1.ToolTip = "STT";
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 43;
+            this.gridColumn1.VisibleIndex = 44;
             this.gridColumn1.Width = 43;
             // 
             // gridColumn2
@@ -533,7 +538,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn36.Name = "gridColumn36";
             this.gridColumn36.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn36.Visible = true;
-            this.gridColumn36.VisibleIndex = 19;
+            this.gridColumn36.VisibleIndex = 20;
             // 
             // gridColumn35
             // 
@@ -559,7 +564,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn33.Name = "gridColumn33";
             this.gridColumn33.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn33.Visible = true;
-            this.gridColumn33.VisibleIndex = 20;
+            this.gridColumn33.VisibleIndex = 21;
             // 
             // gridColumn32
             // 
@@ -569,7 +574,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn32.Name = "gridColumn32";
             this.gridColumn32.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn32.Visible = true;
-            this.gridColumn32.VisibleIndex = 21;
+            this.gridColumn32.VisibleIndex = 22;
             // 
             // gridColumn26
             // 
@@ -579,7 +584,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn26.Name = "gridColumn26";
             this.gridColumn26.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn26.Visible = true;
-            this.gridColumn26.VisibleIndex = 22;
+            this.gridColumn26.VisibleIndex = 23;
             // 
             // gridColumn25
             // 
@@ -589,7 +594,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn25.Name = "gridColumn25";
             this.gridColumn25.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn25.Visible = true;
-            this.gridColumn25.VisibleIndex = 23;
+            this.gridColumn25.VisibleIndex = 24;
             // 
             // gridColumn23
             // 
@@ -599,7 +604,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn23.Name = "gridColumn23";
             this.gridColumn23.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn23.Visible = true;
-            this.gridColumn23.VisibleIndex = 24;
+            this.gridColumn23.VisibleIndex = 25;
             // 
             // gridColumn48
             // 
@@ -609,7 +614,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn48.Name = "gridColumn48";
             this.gridColumn48.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn48.Visible = true;
-            this.gridColumn48.VisibleIndex = 25;
+            this.gridColumn48.VisibleIndex = 26;
             // 
             // gridColumn50
             // 
@@ -619,7 +624,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn50.Name = "gridColumn50";
             this.gridColumn50.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn50.Visible = true;
-            this.gridColumn50.VisibleIndex = 28;
+            this.gridColumn50.VisibleIndex = 29;
             // 
             // gridColumn16
             // 
@@ -627,7 +632,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn16.FieldName = "DESCRIPTION";
             this.gridColumn16.Name = "gridColumn16";
             this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 26;
+            this.gridColumn16.VisibleIndex = 27;
             this.gridColumn16.Width = 150;
             // 
             // gridColumn15
@@ -636,7 +641,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn15.FieldName = "NATIONAL_NAME";
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 27;
+            this.gridColumn15.VisibleIndex = 28;
             // 
             // gridColumn14
             // 
@@ -644,7 +649,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn14.FieldName = "MANUFACTURER_NAME";
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 29;
+            this.gridColumn14.VisibleIndex = 30;
             // 
             // gridColumnSupplier
             // 
@@ -653,7 +658,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumnSupplier.Name = "gridColumnSupplier";
             this.gridColumnSupplier.OptionsColumn.AllowEdit = false;
             this.gridColumnSupplier.Visible = true;
-            this.gridColumnSupplier.VisibleIndex = 30;
+            this.gridColumnSupplier.VisibleIndex = 31;
             this.gridColumnSupplier.Width = 200;
             // 
             // gridColumn12
@@ -662,7 +667,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn12.FieldName = "IMP_PRICE_STR";
             this.gridColumn12.Name = "gridColumn12";
             this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 31;
+            this.gridColumn12.VisibleIndex = 32;
             // 
             // gridColumn7
             // 
@@ -670,7 +675,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn7.FieldName = "IMP_VAT_RATIO_STR";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 32;
+            this.gridColumn7.VisibleIndex = 33;
             // 
             // gridColumn27
             // 
@@ -679,7 +684,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn27.Name = "gridColumn27";
             this.gridColumn27.OptionsColumn.AllowEdit = false;
             this.gridColumn27.Visible = true;
-            this.gridColumn27.VisibleIndex = 33;
+            this.gridColumn27.VisibleIndex = 34;
             this.gridColumn27.Width = 38;
             // 
             // gridColumn45
@@ -689,7 +694,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn45.Name = "gridColumn45";
             this.gridColumn45.OptionsColumn.AllowEdit = false;
             this.gridColumn45.Visible = true;
-            this.gridColumn45.VisibleIndex = 35;
+            this.gridColumn45.VisibleIndex = 36;
             this.gridColumn45.Width = 61;
             // 
             // gridColumn28
@@ -732,7 +737,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 34;
+            this.gridColumn10.VisibleIndex = 35;
             this.gridColumn10.Width = 100;
             // 
             // gridColumn13
@@ -760,7 +765,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn40.Name = "gridColumn40";
             this.gridColumn40.OptionsColumn.AllowEdit = false;
             this.gridColumn40.Visible = true;
-            this.gridColumn40.VisibleIndex = 36;
+            this.gridColumn40.VisibleIndex = 37;
             this.gridColumn40.Width = 100;
             // 
             // gridColumn41
@@ -770,7 +775,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn41.Name = "gridColumn41";
             this.gridColumn41.OptionsColumn.AllowEdit = false;
             this.gridColumn41.Visible = true;
-            this.gridColumn41.VisibleIndex = 37;
+            this.gridColumn41.VisibleIndex = 38;
             this.gridColumn41.Width = 100;
             // 
             // gridColumn42
@@ -780,7 +785,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn42.Name = "gridColumn42";
             this.gridColumn42.OptionsColumn.AllowEdit = false;
             this.gridColumn42.Visible = true;
-            this.gridColumn42.VisibleIndex = 38;
+            this.gridColumn42.VisibleIndex = 39;
             this.gridColumn42.Width = 100;
             // 
             // gridColumn43
@@ -790,7 +795,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn43.Name = "gridColumn43";
             this.gridColumn43.OptionsColumn.AllowEdit = false;
             this.gridColumn43.Visible = true;
-            this.gridColumn43.VisibleIndex = 39;
+            this.gridColumn43.VisibleIndex = 40;
             // 
             // gridColumn44
             // 
@@ -799,7 +804,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn44.Name = "gridColumn44";
             this.gridColumn44.OptionsColumn.AllowEdit = false;
             this.gridColumn44.Visible = true;
-            this.gridColumn44.VisibleIndex = 40;
+            this.gridColumn44.VisibleIndex = 41;
             // 
             // gridColumn46
             // 
@@ -808,7 +813,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn46.Name = "gridColumn46";
             this.gridColumn46.OptionsColumn.AllowEdit = false;
             this.gridColumn46.Visible = true;
-            this.gridColumn46.VisibleIndex = 41;
+            this.gridColumn46.VisibleIndex = 42;
             this.gridColumn46.Width = 110;
             // 
             // gridColumn49
@@ -817,7 +822,7 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn49.FieldName = "ALERT_MAX_IN_DAY_STR";
             this.gridColumn49.Name = "gridColumn49";
             this.gridColumn49.Visible = true;
-            this.gridColumn49.VisibleIndex = 42;
+            this.gridColumn49.VisibleIndex = 43;
             this.gridColumn49.Width = 90;
             // 
             // gridColumn47
@@ -827,7 +832,38 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
             this.gridColumn47.Name = "gridColumn47";
             this.gridColumn47.OptionsColumn.AllowEdit = false;
             this.gridColumn47.Visible = true;
-            this.gridColumn47.VisibleIndex = 44;
+            this.gridColumn47.VisibleIndex = 45;
+            // 
+            // gridColumnKhongHaoPhi
+            // 
+            this.gridColumnKhongHaoPhi.Caption = "Không hao phí";
+            this.gridColumnKhongHaoPhi.ColumnEdit = this.Item_Check;
+            this.gridColumnKhongHaoPhi.FieldName = "KhongHaoPhi";
+            this.gridColumnKhongHaoPhi.Name = "gridColumnKhongHaoPhi";
+            this.gridColumnKhongHaoPhi.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnKhongHaoPhi.Visible = true;
+            this.gridColumnKhongHaoPhi.VisibleIndex = 19;
+            this.gridColumnKhongHaoPhi.Width = 90;
+            // 
+            // gridColumnTtThau
+            // 
+            this.gridColumnTtThau.Caption = "Thông tin thầu";
+            this.gridColumnTtThau.FieldName = "TT_THAU";
+            this.gridColumnTtThau.Name = "gridColumnTtThau";
+            this.gridColumnTtThau.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnTtThau.Visible = true;
+            this.gridColumnTtThau.VisibleIndex = 46;
+            this.gridColumnTtThau.Width = 150;
+            // 
+            // gridColumnBytNumOrder
+            // 
+            this.gridColumnBytNumOrder.Caption = "STT (TT04)";
+            this.gridColumnBytNumOrder.FieldName = "BYT_NUM_ORDER";
+            this.gridColumnBytNumOrder.Name = "gridColumnBytNumOrder";
+            this.gridColumnBytNumOrder.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnBytNumOrder.Visible = true;
+            this.gridColumnBytNumOrder.VisibleIndex = 47;
+            this.gridColumnBytNumOrder.Width = 100;
             // 
             // Btn_ErrorLine
             // 
@@ -1121,5 +1157,8 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn49;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn50;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnSupplier;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnKhongHaoPhi;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnTtThau;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnBytNumOrder;
     }
 }

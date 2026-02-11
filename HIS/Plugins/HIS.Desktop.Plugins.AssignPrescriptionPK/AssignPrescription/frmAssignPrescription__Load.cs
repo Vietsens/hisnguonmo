@@ -1120,6 +1120,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     )
                 {
                     SereServ = SereServ.Where(o => o.IS_GUARANTEED != 1).ToList();
+
+                    HisSereServView17Filter ssbFilter = new HisSereServView17Filter();
+                    ssbFilter.TDL_TREATMENT_ID = treatmentId;
+                    var sereServDaThanhToan = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_17>>("api/HisSereServ/GetView17", ApiConsumer.ApiConsumers.MosConsumer, ssbFilter, param);
+                    if (sereServDaThanhToan != null)
+                        SereServ = SereServ.Where(o => sereServDaThanhToan.Exists(e => e.ID == o.ID)).ToList();
+
                     if (SereServ.Any())
                     {
                         frmDetailsSereServ frm = new frmDetailsSereServ(SereServ.ToList(), (RefeshReference)this.Close);

@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data.WcfLinq;
 using DevExpress.Utils.OAuth;
 using DevExpress.Utils.OAuth.Provider;
 using DevExpress.XtraBars;
@@ -30,9 +31,11 @@ using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
 using HIS.Desktop.Plugins.TransactionBill.ADO;
 using HIS.Desktop.Plugins.TransactionBill.Base;
 using HIS.Desktop.Plugins.TransactionBill.Config;
@@ -40,6 +43,7 @@ using HIS.Desktop.Plugins.TransactionBill.Validtion;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
 using HIS.UC.SereServTree;
+using HIS.UC.SereServTree.Run;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
@@ -167,6 +171,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
         private List<HIS_SESE_DEPO_REPAY> lstSeseRepayPrint { get; set; }
         private List<HIS_SERE_SERV_DEPOSIT> listSereDepoPrint { get; set; }
         private V_HIS_PATIENT_BANK_ACCOUNT repayPatientBankAccount { get; set; }
+        string tienBaoLanh = "";
         public frmTransactionBill(Inventec.Desktop.Common.Modules.Module module, V_HIS_TREATMENT_FEE data, List<V_HIS_SERE_SERV_5> _ListSereServ, V_HIS_PATIENT_TYPE_ALTER patientTypeAlter, bool? isDirectlyBilling, V_HIS_TRANSACTION tran)
             : base(module)
         {
@@ -400,6 +405,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 ado.SereServTree_CustomDrawNodeCell = treeSereServ_CustomDrawNodeCell;
                 ado.SereServTree_CustomDrawNodeCheckBox = treeSereServ_CustomDrawNodeCheckBox;
                 ado.SereServTree_CustomUnboundColumnData = treeSereServ_CustomUnboundColumnData;
+                ado.treeSereServ_CellValueChanged += Uc_CellValueChanged;
                 ado.SereServTreeColumns = new List<SereServTreeColumn>();
                 ado.LayoutSereServExpend = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__LAYOUT_SERE_SERV_EXPEND", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 //Column tên dịch vụ
@@ -478,15 +484,18 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 //virVatRatioCol.Format.FormatString = "#,##0.00";
                 //virVatRatioCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.SereServTreeColumns.Add(virVatRatioCol);
-
+                //Column bảo lãnh
+                SereServTreeColumn virIsGuaranteedCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_IS_GUARANTEED", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IsGuaranteed", 70, false);
+                virIsGuaranteedCol.VisibleIndex = 9;
+                ado.SereServTreeColumns.Add(virIsGuaranteedCol);
                 //Column mã dịch vụ
                 SereServTreeColumn serviceCodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_CODE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_CODE", 100, false);
-                serviceCodeCol.VisibleIndex = 9;
+                serviceCodeCol.VisibleIndex = 10;
                 ado.SereServTreeColumns.Add(serviceCodeCol);
 
                 //Column Mã yêu cầu
                 SereServTreeColumn serviceReqCodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_REQ_CODE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_REQ_CODE", 100, false);
-                serviceReqCodeCol.VisibleIndex = 10;
+                serviceReqCodeCol.VisibleIndex = 11;
                 ado.SereServTreeColumns.Add(serviceReqCodeCol);
 
                 //Column mã giao dịch
@@ -578,6 +587,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 6");
                 this.FillDataToButtonPrint();
                 this.InitMenuToButtonPrint();
+                this.LoadGuaranteeInfo();
                 RunGuaranteeCheck();
             }
             catch (Exception ex)
@@ -1548,17 +1558,25 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     this.ListSereServ = ListSereServ.Where(o => o.VIR_TOTAL_PATIENT_PRICE > 0).ToList();
                 }
 
+                decimal balanceValue = (guaranteeInfo != null) ? guaranteeInfo.GUARANTEE_BALANCE : 0;
+                string strBalance = Inventec.Common.Number.Convert.NumberToString(balanceValue, ConfigApplications.NumberSeperator);
 
-                if (ListSereServ != null && ListSereServ.Count > 0 && currentTreatment.GUARANTEE_CODE != null)
+                if (ListSereServ != null && ListSereServ.Count > 0
+                    && currentTreatment != null && currentTreatment.GUARANTEE_CODE != null)
                 {
+                    decimal totalGuaranteed = ListSereServ
+                        .Where(x => x != null && x.IS_GUARANTEED == 1)
+                        .Sum(x => x.VIR_TOTAL_PATIENT_PRICE ?? 0);
 
-                    decimal totalGuaranteed = ListSereServ.Where(x => x.IS_GUARANTEED == 1).Sum(x => x.VIR_TOTAL_PATIENT_PRICE ?? 0);
+                    string strTotalGuaranteed = Inventec.Common.Number.Convert.NumberToString(totalGuaranteed, ConfigApplications.NumberSeperator);
 
-                    this.lblBaoLanh.Text = Inventec.Common.Number.Convert.NumberToString(totalGuaranteed, ConfigApplications.NumberSeperator);
+                    this.lblBaoLanh.Text = string.Format("{0}/{1}", strTotalGuaranteed, strBalance);
+                    this.tienBaoLanh = strTotalGuaranteed;
                 }
                 else
                 {
-                    this.lblBaoLanh.Text = "0";
+                    this.lblBaoLanh.Text = string.Format("0/{0}", strBalance);
+                    this.tienBaoLanh = "0";
                 }
                 ssTreeProcessor.Reload(ucSereServTree, ListSereServ);
             }
@@ -1986,7 +2004,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     canthuAmount = (totalPatientPrice - totalFund - this.totalDiscount) - SoTienChuyenKhoan;
                     if (chkBaoLanhVP.Checked)
                     {
-                        canthuAmount = canthuAmount - Inventec.Common.TypeConvert.Parse.ToDecimal(lblBaoLanh.Text);
+                        canthuAmount = canthuAmount - Inventec.Common.TypeConvert.Parse.ToDecimal(this.tienBaoLanh);
                     }
                     lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(canthuAmount, ConfigApplications.NumberSeperator);
                     RepayAmount = totalHienDu;
@@ -2003,7 +2021,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         canthuAmount = (totalPatientPrice - totalFund - this.totalDiscount) - totalHienDu - SoTienChuyenKhoan;
                         if (chkBaoLanhVP.Checked)
                         {
-                            canthuAmount = canthuAmount - Inventec.Common.TypeConvert.Parse.ToDecimal(lblBaoLanh.Text);
+                            canthuAmount = canthuAmount - Inventec.Common.TypeConvert.Parse.ToDecimal(this.tienBaoLanh);
                         }
                         lblReceiveAmount.Text = Inventec.Common.Number.Convert.NumberToString(canthuAmount, ConfigApplications.NumberSeperator);
                     }
@@ -4387,17 +4405,25 @@ namespace HIS.Desktop.Plugins.TransactionBill
         }
         private void RunGuaranteeCheck()
         {
-            if (currentTreatment != null && !string.IsNullOrEmpty(currentTreatment.GUARANTEE_CODE))
+            try
             {
-                chkBaoLanhVP.Checked = true;
-                CalcuCanThu();
+                if (currentTreatment != null && !string.IsNullOrEmpty(currentTreatment.GUARANTEE_CODE))
+                {
+                    chkBaoLanhVP.Checked = true;
+                    CalcuCanThu();
+                }
+                else
+                {
+                    layoutControlItem64.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem65.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem66.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                layoutControlItem64.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                layoutControlItem65.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                layoutControlItem66.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+           
         }
 
         private bool checkGuarantee()
@@ -4442,7 +4468,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
 
                     use.useRequest = new Library.MedicalExpenseGuarantee.ADO.UseRequest();
                     use.useRequest.RequestId = currentTreatment?.GUARANTEE_REQUEST_CODE;
-                    use.useRequest.Amount = this.lblBaoLanh.Text;
+                    use.useRequest.Amount = this.tienBaoLanh;
                     use.useRequest.Remark = remark;
                     use.useRequest.ContractNumber = currentTreatment?.GUARANTEE_CODE;
                     use.useRequest.PatientFullName = currentTreatment?.TDL_PATIENT_NAME;
@@ -4452,13 +4478,14 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     var res = form.GuaranteeUse(use);
                     if (res?.Success == true && res.Data?.Data != null)
                     {
-                        this.guaranteeAmountRes = lblBaoLanh.Text ?? "0";
+                        this.guaranteeAmountRes = this.tienBaoLanh ?? "0";
                         this.txtSoGiaoDich.Text = res.Data.Data.RefNo ?? string.Empty;
                         return true;
                     }
                     else
                     {
                         WaitingManager.Hide();
+                        MessageBox.Show(this, res.Data?.ResponseStatus?.ErrorDesc, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return false;
                     }
                 }
@@ -4468,6 +4495,161 @@ namespace HIS.Desktop.Plugins.TransactionBill
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
                 return false;
+            }
+        }
+        decimal currentTotalGuaranteed = 0;
+
+        private void Uc_CellValueChanged(SereServADO data, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (data != null && e.Column.FieldName == "IsGuaranteed")
+                {
+                    var ucTree = this.ucSereServTree as UCSereServTree;
+
+                    if (ucTree != null)
+                    {
+                        var fullList = ucTree.GetDataSource();
+
+                        if (fullList != null)
+                        {
+                            decimal totalAmount = 0;
+                            foreach (var item in fullList)
+                            {
+                                if (item.IsGuaranteed == true)
+                                {
+                                    totalAmount += (item.VIR_TOTAL_PATIENT_PRICE ?? 0);
+                                }
+                            }
+                            this.tienBaoLanh = Inventec.Common.Number.Convert.NumberToString(totalAmount, ConfigApplications.NumberSeperator);
+
+                            decimal maxBalance = (guaranteeInfo != null) ? guaranteeInfo.GUARANTEE_BALANCE : 0;
+                            string strMaxBalance = Inventec.Common.Number.Convert.NumberToString(maxBalance, ConfigApplications.NumberSeperator);
+
+                            this.lblBaoLanh.Text = this.tienBaoLanh + "/" + strMaxBalance;
+                            CalcuCanThu();
+                            Inventec.Common.Logging.LogSystem.Info("Tổng tiền bảo lãnh sau khi tính lại: " + totalAmount);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        GuaranteeInfoADO guaranteeInfo = null;
+
+        private async Task LoadGuaranteeInfo()
+        {
+            try
+            {
+                if (this.currentTreatment == null || string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE) || string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_REQUEST_CODE))
+                {
+                    return;
+                }
+
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        //ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
+                        var guaranteeConnection = HisConfigs.Get<string>("MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO");
+
+                        if (string.IsNullOrEmpty(guaranteeConnection))
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Chưa cấu hình thông tin kết nối hệ thống bảo lãnh");
+                            this.guaranteeInfo = null;
+                            //return;
+                        }
+                        string[] parts = guaranteeConnection.Split('|');
+                        if (parts.Length < 3)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Cấu hình kết nối bảo lãnh không đúng định dạng");
+                            this.guaranteeInfo = null;
+                            return;
+                        }
+
+                        //  Địa chỉ
+                        string[] fullGuaranteeAddress = parts[0].Trim().Split(';');
+                        string guaranteeAddressHasUri = fullGuaranteeAddress.Length > 0 ? fullGuaranteeAddress[0] : "";
+                        string guaranteeAddressAcsUri = fullGuaranteeAddress.Length > 1 ? fullGuaranteeAddress[1] : "";
+
+                        // Mã ứng dụng:Tài khoản:Mật khẩu
+                        string[] credentials = parts[1].Split(':');
+                        string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
+                        string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
+                        string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
+
+                        // Hạn mức đăng ký mặc định
+                        string guaranteeDefaultLimit = parts[2].Trim();
+
+                        string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+
+                        MedicalExpenseGuaranteeProcessor medicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
+                        DataInput dataInput = new DataInput();
+                        dataInput.hasUri = guaranteeAddressHasUri;
+                        dataInput.acsUri = guaranteeAddressAcsUri;
+                        dataInput.applicationCode = guaranteeAppCode;
+                        dataInput.limet = guaranteeDefaultLimit;
+                        dataInput.cskcbbd = branchHeinMediOrgCode;
+                        dataInput.username = guaranteeUsername;
+                        dataInput.password = guaranteePassword;
+                        dataInput.registerUseRequest = new RegisterUseRequest
+                        {
+                            PatientFullName = this.currentTreatment.TDL_PATIENT_NAME.Trim(),
+                            PatientDateOfBirth = this.currentTreatment.TDL_PATIENT_DOB != 0 ? this.currentTreatment.TDL_PATIENT_DOB.ToString() : "",
+                            PatientCccd = this.currentTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentTreatment.TDL_PATIENT_CMND_NUMBER,
+                            RequestAmount = guaranteeDefaultLimit,
+                            ApplicationCode = guaranteeAppCode,
+                            Remark = "Tra cứu hạn mức bảo lãnh",
+                            Signature = ""
+                        };
+
+                        dataInput.availableBalanceInfoRequest = new AvailableBalanceInfoRequest
+                        {
+                            RequestId = this.currentTreatment.GUARANTEE_REQUEST_CODE,
+                            PatientFullName = this.currentTreatment.TDL_PATIENT_NAME.Trim(),
+                            PatientDateOfBirth = this.currentTreatment.TDL_PATIENT_DOB.ToString(),
+                            PatientCccd = this.currentTreatment.TDL_PATIENT_CCCD_NUMBER ?? this.currentTreatment.TDL_PATIENT_CMND_NUMBER,
+                            ApplicationCode = guaranteeAppCode,
+                            Remark = "Tra cứu hạn mức bảo lãnh"
+                        };
+                        AvailableBalanceInfoResponse balanceInfoResponse = new AvailableBalanceInfoResponse();
+                        balanceInfoResponse = medicalExpenseGuarantee.GuaranteeAvailableBalanceInfoResponse(dataInput);
+                        if (balanceInfoResponse != null && balanceInfoResponse.Success == true)
+                        {
+                            this.guaranteeInfo = new GuaranteeInfoADO
+                            {
+                                GUARANTEE_CODE = this.currentTreatment.GUARANTEE_CODE,
+                                GUARANTEE_REGISTER = decimal.TryParse(balanceInfoResponse.Data.RegisteredAmount, out decimal limit) ? limit : 0,
+                                GUARANTEE_USED = decimal.TryParse(balanceInfoResponse.Data.UsedAmount, out decimal used) ? used : 0,
+                                GUARANTEE_BALANCE = decimal.TryParse(balanceInfoResponse.Data.AvailableBalance, out decimal remain) ? remain : 0
+                            };
+
+                            decimal balanceValue = (this.guaranteeInfo != null) ? this.guaranteeInfo.GUARANTEE_BALANCE : 0;
+                            string strBalance = Inventec.Common.Number.Convert.NumberToString(balanceValue, ConfigApplications.NumberSeperator);
+                            this.Invoke((MethodInvoker)delegate {
+                                this.lblBaoLanh.Text = string.Format("{0}/{1}", this.tienBaoLanh, strBalance);
+                            });
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Tra cứu bảo lãnh thất bại");
+                            this.guaranteeInfo = null;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                        this.guaranteeInfo = null;
+                    }
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }
