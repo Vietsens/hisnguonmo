@@ -781,6 +781,22 @@ namespace HIS.UC.SereServTree.Run
                 var row = trvService.GetDataRecordByNode(e.Node);
                 if (row != null && row is SereServADO)
                 {
+                    SereServADO data = (SereServADO)row;
+
+                    if (e.Node.Checked == false)
+                    {
+                        data.IsGuaranteed = false;
+                        data.IS_GUARANTEED = 0; 
+
+                        this.updateSingleRow?.Invoke(data);
+
+                        var colGuaranteed = trvService.Columns["IsGuaranteed"];
+                        if (colGuaranteed != null)
+                        {
+                            var args = new DevExpress.XtraTreeList.CellValueChangedEventArgs(colGuaranteed, e.Node, false);
+                            this.SereServTreeADO.treeSereServ_CellValueChanged?.Invoke(data, args);
+                        }
+                    }
                     //e.Node.Checked = !e.Node.Checked;
                     //sereServTreeClick((SereServADO)row);
                     sereServTree_AfterCheck(e.Node, (SereServADO)row);
@@ -1171,6 +1187,16 @@ namespace HIS.UC.SereServTree.Run
 
         private void trvService_ShowingEditor(object sender, CancelEventArgs e)
         {
+            var tree = sender as DevExpress.XtraTreeList.TreeList;
+            if (tree == null) return;
+
+            if (tree.FocusedColumn.FieldName == "IsGuaranteed")
+            {
+                if (!tree.FocusedNode.Checked)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         private void trvService_ShownEditor(object sender, EventArgs e)
