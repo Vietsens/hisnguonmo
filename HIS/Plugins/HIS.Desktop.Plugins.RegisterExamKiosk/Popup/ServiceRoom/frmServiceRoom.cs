@@ -34,6 +34,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using HIS.Desktop.Common;
@@ -376,6 +377,37 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ServiceRoom
                     }
                 }
 
+                // Check tuổi từ - đến (DVKT) giống RegisterV2 (đơn vị: tháng tuổi)
+                try
+                {
+                    int? ageMonth = CalculateAgeMonthFromDob(sdo.CardSDO != null ? sdo.CardSDO.Dob : 0);
+                    if (ageMonth.HasValue)
+                    {
+                        StringBuilder ageMessageBuilder = new StringBuilder();
+                        ageMessageBuilder.Append(BuildServiceAgeLimitMessage(vhisService, ageMonth.Value));
+
+                        if (sdo.AdditionalServices != null && sdo.AdditionalServices.Count > 0)
+                        {
+                            foreach (var addService in sdo.AdditionalServices)
+                            {
+                                var addVService = BackendDataWorker.Get<V_HIS_SERVICE>().FirstOrDefault(o => o.ID == addService.ServiceId);
+                                ageMessageBuilder.Append(BuildServiceAgeLimitMessage(addVService, ageMonth.Value));
+                            }
+                        }
+
+                        if (ageMessageBuilder.Length > 0)
+                        {
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show(ageMessageBuilder.ToString(), "Thông báo", MessageBoxButtons.OK);
+                            return;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+
                 WaitingManager.Show();
 
                 sdo.RoomId = vhisExecuteRoom.ROOM_ID;
@@ -453,6 +485,71 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ServiceRoom
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private static int? CalculateAgeMonthFromDob(long dob)
+        {
+            try
+            {
+                var ageDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dob);
+                if (!ageDate.HasValue) return null;
+
+                TimeSpan timeSpan2 = System.DateTime.Now.Date - ageDate.Value.Date;
+                long ticks = timeSpan2.Ticks;
+                System.DateTime dateTime = new System.DateTime(ticks);
+                int ageMonth = (dateTime.Year - 1) * 12 + dateTime.Month - 1;
+                return ageMonth;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private static string BuildServiceAgeLimitMessage(V_HIS_SERVICE service, int ageMonth)
+        {
+            try
+            {
+                if (service == null) return null;
+
+                if ((service.AGE_FROM != null && service.AGE_FROM > ageMonth) || (service.AGE_TO != null && service.AGE_TO < ageMonth))
+                {
+                    string ageType = null;
+                    long? age = 0;
+                    if (service.AGE_FROM != null && service.AGE_TO == null)
+                    {
+                        if (service.AGE_FROM < 72) { age = service.AGE_FROM; ageType = "tháng tuổi"; }
+                        else if (service.AGE_FROM >= 72) { age = service.AGE_FROM / 12; ageType = "tuổi"; }
+
+                        return "Dịch vụ " + service.SERVICE_NAME + " chỉ cho phép chỉ định với bệnh nhân từ " + age + " " + ageType + "\r\n";
+                    }
+                    else if (service.AGE_TO != null && service.AGE_FROM == null)
+                    {
+                        if (service.AGE_TO < 72) { age = service.AGE_TO; ageType = "tháng tuổi"; }
+                        else if (service.AGE_TO >= 72) { age = service.AGE_TO / 12; ageType = "tuổi"; }
+
+                        return "Dịch vụ " + service.SERVICE_NAME + " chỉ cho phép chỉ định với bệnh nhân dưới " + age + " " + ageType + "\r\n";
+                    }
+                    else if (service.AGE_TO != null && service.AGE_FROM != null)
+                    {
+                        string ageType2 = null;
+                        long? age2 = 0;
+                        if (service.AGE_FROM < 72) { age = service.AGE_FROM; ageType = "tháng tuổi"; }
+                        else if (service.AGE_FROM >= 72) { age = service.AGE_FROM / 12; ageType = "tuổi"; }
+
+                        if (service.AGE_TO < 72) { age2 = service.AGE_TO; ageType2 = "tháng tuổi"; }
+                        else if (service.AGE_TO >= 72) { age2 = service.AGE_TO / 12; ageType2 = "tuổi"; }
+
+                        return "Dịch vụ " + service.SERVICE_NAME + " chỉ cho phép chỉ định với bệnh nhân từ " + age + " " + ageType + " đến " + age2 + " " + ageType2 + "\r\n";
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 

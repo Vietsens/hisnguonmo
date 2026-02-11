@@ -225,9 +225,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
-    <Reference Include="LibUsbDotNetF">
-      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\LibUsbDotNetF.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
     </Reference>
@@ -254,7 +251,7 @@
     </Reference>
     <Reference Include="MPS.Processor.Mps000025.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000025.PDO\bin\Debug\MPS.Processor.Mps000025.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000025.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000026.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000026.PDO.dll</HintPath>
@@ -268,24 +265,6 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Library packages\Newtonsoft.Json.6.0.8\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="RAR.IdCard.Crypt">
-      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Crypt.dll</HintPath>
-    </Reference>
-    <Reference Include="RAR.IdCard.Models">
-      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="RAR.IdCard.Sdk.Entities">
-      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Sdk.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="RAR.IdCard.Sdk.Models">
-      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Sdk.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="RAR.IdCard.Sdk.Reader">
-      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Sdk.Reader.dll</HintPath>
-    </Reference>
-    <Reference Include="RAR.IdCard.Sdk.Utils.TKCrypto">
-      <HintPath>C:\Users\minhp\Desktop\Xác thực CCCD\hn212_sdk_v1.2.4_20250909\RAR.IdCard.Sdk.Utils.TKCrypto.dll</HintPath>
     </Reference>
     <Reference Include="SDA.EFMODEL">
       <HintPath>..\..\..\..\lib\SDA\SDA.EFMODEL.dll</HintPath>
@@ -305,9 +284,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="THE.Desktop.Utility">
-      <HintPath>..\..\..\..\svn\IMSys\FE\THE\DESKTOP\THE\THE.Desktop.Utility\bin\Debug\THE.Desktop.Utility.dll</HintPath>
-    </Reference>
     <Reference Include="WcfCCCD">
       <HintPath>..\..\..\..\LIB\WCF\WcfCCCD\WcfCCCD.dll</HintPath>
     </Reference>
