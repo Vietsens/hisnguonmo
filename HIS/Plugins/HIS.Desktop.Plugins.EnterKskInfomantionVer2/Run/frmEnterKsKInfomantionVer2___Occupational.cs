@@ -1,4 +1,13 @@
-﻿using System;
+﻿using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using Inventec.Common.Adapter;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,14 +16,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using MOS.SDO;
-using Inventec.Common.Adapter;
-using Inventec.Core;
-using HIS.Desktop.ApiConsumer;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.LocalStorage.BackendData;
 
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
@@ -240,8 +241,17 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboExamEntLoginName7.EditValue = currentKsKOccupational.EXAM_ENT_LOGINNAME;
                         cboExamSubclinicalLoginName7.EditValue = currentKsKOccupational.EXAM_SUBCLINICAL_LOGINNAME;
                         cboConcluderLoginName7.EditValue = currentKsKOccupational.CONCLUDER_LOGINNAME;
-                        
-                       
+                        if (currentKsKOccupational.CONCLUSION_TIME != null && currentKsKOccupational.CONCLUSION_TIME > 0)
+                        {
+                            dteConclusionTimeOccupational.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(
+                                currentKsKOccupational.CONCLUSION_TIME.Value) ?? DateTime.Now;
+                        }
+                        else
+                        {
+                            dteConclusionTimeOccupational.DateTime = DateTime.Now;
+                        }
+
+
 
 
                     }
@@ -444,6 +454,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.DIAGNOSIS = txtDefiniteDiagnosis.Text;
                 obj.CONCLUSION = txtResultConsultation.Text;
                 obj.TREATMENT_INSTRUCTION = txtSolution.Text;
+                obj.CONCLUSION_TIME = (dteConclusionTimeOccupational.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteConclusionTimeOccupational.DateTime) : null;
+
+                try
+                {
+                    long branchId = WorkPlace.GetBranchId();
+                    var branch = BackendDataWorker.Get<HIS_BRANCH>()
+                        .FirstOrDefault(o => o.ID == branchId);
+
+                    if (branch != null && !string.IsNullOrEmpty(branch.HEIN_MEDI_ORG_CODE))
+                    {
+                        obj.HEIN_MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Lỗi lấy HEIN_MEDI_ORG_CODE từ Branch: " + ex2);
+                }
 
             }
             catch (Exception ex)
@@ -1527,6 +1554,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
             }
             catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void dteConclusionTimeOccupational_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                   // btnSave.Focus();
+
+                }
+            }
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
