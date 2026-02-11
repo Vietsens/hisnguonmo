@@ -50,6 +50,7 @@ namespace MPS.Processor.Mps000281.PDO
         public List<HIS_OTHER_PAY_SOURCE> ListOtherPaySource { get; set; }
         public HIS_TRANS_REQ TransReq { get; set; }
         public List<HIS_CONFIG> ListHisConfigPaymentQrCode { get; set; }
+        public HisConfigValue HisConfigValue { get; set; }
 
         public Mps000281PDO(
             V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,
@@ -285,6 +286,71 @@ namespace MPS.Processor.Mps000281.PDO
                 this.ListOtherPaySource = _listOtherPaySource;
                 this.TransReq = transReq;
                 this.ListHisConfigPaymentQrCode = listHisConfigPaymentQrCode;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public Mps000281PDO(
+           V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,
+           List<HIS_PATIENT_TYPE_ALTER> _patientTypeAlterAll,
+           List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,
+           List<V_HIS_TREATMENT_FEE> _treatmentFees,
+           HeinServiceTypeCFG _heinServiceTypeCfg,
+           PatientTypeCFG _patientTypeCfg,
+           List<HIS_SERE_SERV> _sereServ,
+           List<HIS_SERE_SERV_EXT> _sereServExts,
+           V_HIS_TREATMENT _treatment,
+           V_HIS_PATIENT _patient,
+           List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes,
+           List<V_HIS_ROOM> _rooms,
+           List<V_HIS_SERVICE> _services,
+           List<HIS_TREATMENT_TYPE> _treatmentType,
+           HIS_BRANCH _branch,
+           List<HIS_MEDICINE_TYPE> _medicineTypes,
+           List<HIS_MATERIAL_TYPE> _materialTypes,
+           List<HIS_MEDICINE_LINE> _medicineLine,
+           List<HIS_SERVICE_REQ> _serviceReqs,
+           List<HIS_DEPARTMENT> _departments,
+           SingleKeyValue _singleKeyValue,
+           List<HIS_SERVICE_UNIT> _hisServiceUnit,
+           List<HIS_MEDI_ORG> _listMediOrg,
+           List<HIS_OTHER_PAY_SOURCE> _listOtherPaySource,
+           HIS_TRANS_REQ transReq,
+           List<HIS_CONFIG> listHisConfigPaymentQrCode,
+             HisConfigValue hisConfigValue
+           )
+        {
+            try
+            {
+                this.CurrentPatyAlter = _currentPatyAlter;
+                this.PatientTypeAlterAlls = _patientTypeAlterAll;
+                this.DepartmentTrans = _departmentTrans;
+                this.TreatmentFees = _treatmentFees;
+                this.HeinServiceTypeCFG = _heinServiceTypeCfg;
+                this.PatientTypeCFG = _patientTypeCfg;
+                this.SereServs = _sereServ;
+                this.SereServExts = _sereServExts;
+                this.Treatment = _treatment;
+                this.Patient = _patient;
+                this.HeinServiceTypes = _heinServiceTypes;
+                this.Rooms = _rooms;
+                this.Services = _services;
+                this.TreatmentTypes = _treatmentType;
+                this.Branch = _branch;
+                this.medicineTypes = _medicineTypes;
+                this.materialTypes = _materialTypes;
+                this.MedicineLines = _medicineLine;
+                this.ServiceReqs = _serviceReqs;
+                this.Departments = _departments;
+                this.SingleKeyValue = _singleKeyValue;
+                this.HisServiceUnit = _hisServiceUnit;
+                this.ListMediOrg = _listMediOrg;
+                this.ListOtherPaySource = _listOtherPaySource;
+                this.TransReq = transReq;
+                this.ListHisConfigPaymentQrCode = listHisConfigPaymentQrCode;
+                this.HisConfigValue = hisConfigValue;
             }
             catch (Exception ex)
             {

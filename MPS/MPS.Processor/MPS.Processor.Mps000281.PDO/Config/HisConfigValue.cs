@@ -15,21 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MPS.Processor.Mps000302.PDO
+namespace MPS.Processor.Mps000281.PDO.Config
 {
     public class HisConfigValue
     {
-        public bool IsPriceWithDifference { get; set; }
-
-        public bool IsNotSameDepartment { get; set; }
-        public bool IsMergeServiceNotHein { get; set; }
-        public bool IsNotIncludeIsExpend { get; set; }
         public bool IsGroupHeinServiceByUseTime { get; set; }
     }
 }

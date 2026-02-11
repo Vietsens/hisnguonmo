@@ -27,7 +27,13 @@ namespace MPS.Processor.Mps000348
 {
     class PatientTypeAlterProcessor
     {
-        public static HIS_PATIENT_TYPE_ALTER GetPatientTypeAlter(HIS_SERE_SERV s, PatientTypeCFG cfg, long treatmentTypeId, ref string key)
+        public static HIS_PATIENT_TYPE_ALTER GetPatientTypeAlter(HIS_SERE_SERV s,
+         List<HIS_SERVICE_REQ> serviceReqs,
+         HisConfigValue hisConfigValue,
+         PatientTypeCFG cfg,
+         List<HIS_PATIENT_TYPE_ALTER> ListPta,
+         long treatmentTypeId,
+         ref string key)
         {
             HIS_PATIENT_TYPE_ALTER result = null;
             try
@@ -40,6 +46,29 @@ namespace MPS.Processor.Mps000348
                         if (result != null)
                         {
                             key = ToString(result, s, treatmentTypeId);
+                        }
+                    }
+                    if (hisConfigValue != null && hisConfigValue.IsGroupHeinServiceByUseTime)
+                    {
+                        if (s.SERVICE_REQ_ID.HasValue && serviceReqs != null && serviceReqs.Count > 0 && ListPta != null && ListPta.Count > 0)
+                        {
+                            HIS_SERVICE_REQ sr = serviceReqs.FirstOrDefault(x => x.ID == s.SERVICE_REQ_ID.Value);
+                            long useTime = (sr != null && sr.USE_TIME.HasValue) ? sr.USE_TIME.Value : 0;
+                            if (useTime > 0)
+                            {
+                                HIS_PATIENT_TYPE_ALTER ptaApplied = ListPta
+                                    .Where(x =>
+                                        (!x.HEIN_CARD_FROM_TIME.HasValue || x.HEIN_CARD_FROM_TIME.Value <= useTime)
+                                        && (!x.HEIN_CARD_TO_TIME.HasValue || x.HEIN_CARD_TO_TIME.Value >= useTime))
+                                    .OrderByDescending(x => x.HEIN_CARD_FROM_TIME ?? 0)
+                                    .ThenByDescending(x => x.LOG_TIME)
+                                    .FirstOrDefault();
+                                if (ptaApplied != null)
+                                {
+                                    result = ptaApplied;
+                                    key = PatientTypeAlterProcessor.ToString(ptaApplied, s, treatmentTypeId);
+                                }
+                            }
                         }
                     }
                 }
