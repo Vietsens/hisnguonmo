@@ -79,7 +79,12 @@ namespace MPS.Processor.Mps000321.ADO
         public decimal? TOTAL_PRICE_PATIENT_SELF_TP { get; set; }
         public long? HEIN_SERVICE_TYPE_CHILD_NUM_ORDER { get; set; }
 
-        public SereServADO(HIS_SERE_SERV data, List<HIS_SERE_SERV> SereServs, List<HIS_SERE_SERV_EXT> sereServExts, List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes, List<V_HIS_SERVICE> services, List<V_HIS_ROOM> rooms, List<HIS_MATERIAL_TYPE> materialTypes, PatientTypeCFG patientTypeCFG, HisConfigValue hisConfigValue, List<HIS_SERVICE_UNIT> hisServiceUnit, List<HIS_PATIENT_TYPE_ALTER> ListPta, V_HIS_TREATMENT treatment)
+        public SereServADO(HIS_SERE_SERV data, List<HIS_SERE_SERV> SereServs, List<HIS_SERE_SERV_EXT> sereServExts, 
+            List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes, List<V_HIS_SERVICE> services, 
+            List<V_HIS_ROOM> rooms, List<HIS_MATERIAL_TYPE> materialTypes, PatientTypeCFG patientTypeCFG,
+            HisConfigValue hisConfigValue, List<HIS_SERVICE_UNIT> hisServiceUnit, List<HIS_PATIENT_TYPE_ALTER> ListPta, 
+            V_HIS_TREATMENT treatment, List<HIS_SERVICE_REQ> serviceReqs
+            )
         {
             try
             {
@@ -246,6 +251,29 @@ namespace MPS.Processor.Mps000321.ADO
 
                     this.KEY_PATY_ALTER = PatientTypeAlterProcessor.ToString(pta);
                     this.PatientTypeAlter = pta;
+                }
+                if (hisConfigValue != null && hisConfigValue.IsGroupHeinServiceByUseTime)
+                {
+                    if (this.SERVICE_REQ_ID.HasValue && serviceReqs != null && serviceReqs.Count > 0 && ListPta != null && ListPta.Count > 0)
+                    {
+                        HIS_SERVICE_REQ sr = serviceReqs.FirstOrDefault(x => x.ID == this.SERVICE_REQ_ID.Value);
+                        long useTime = (sr != null && sr.USE_TIME.HasValue) ? sr.USE_TIME.Value : 0;
+                        if (useTime > 0)
+                        {
+                            HIS_PATIENT_TYPE_ALTER ptaApplied = ListPta
+                                .Where(x =>
+                                    (!x.HEIN_CARD_FROM_TIME.HasValue || x.HEIN_CARD_FROM_TIME.Value <= useTime)
+                                    && (!x.HEIN_CARD_TO_TIME.HasValue || x.HEIN_CARD_TO_TIME.Value >= useTime))
+                                .OrderByDescending(x => x.HEIN_CARD_FROM_TIME ?? 0)
+                                .ThenByDescending(x => x.LOG_TIME)
+                                .FirstOrDefault();
+                            if (ptaApplied != null)
+                            {
+                                this.PatientTypeAlter = ptaApplied;
+                                this.KEY_PATY_ALTER = PatientTypeAlterProcessor.ToString(ptaApplied, this, treatment.TDL_TREATMENT_TYPE_ID ?? 0);
+                            }
+                        }
+                    }
                 }
 
                 if (this.VIR_TOTAL_HEIN_PRICE.HasValue)
