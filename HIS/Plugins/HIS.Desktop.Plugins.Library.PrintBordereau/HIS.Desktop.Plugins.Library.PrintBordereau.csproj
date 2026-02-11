@@ -248,11 +248,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000463.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000504.PDO">
-<<<<<<< HEAD
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000504.PDO.dll</HintPath>
-=======
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000504.PDO.dll</HintPath>
->>>>>>> Hungnq
     </Reference>
     <Reference Include="MPS.ProcessorBase">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
