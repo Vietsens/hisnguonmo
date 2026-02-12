@@ -201,7 +201,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 LoadDataReasonNt();
                 Validation();
                 loadDoctor();
-                
+
 
                 WaitingManager.Hide();
             }
@@ -216,7 +216,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         {
             try
             {
-                
+
                 if (listTreatmentType.Contains(Convert.ToInt64(cboTreatmentType.EditValue)))
                 {
                     this.lciReasonNt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -250,7 +250,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 ValidationSingleControl(dtLogTime, dxValidationProvider2);
                 lciTime.AppearanceItemCaption.ForeColor = Color.Maroon;
                 ValidateGridLookupWithTextEdit(cboTreatmentType, txtTreatmentTypeCode, dxValidationProvider2);
-                if(this.lciReasonNt.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                if (this.lciReasonNt.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                     ValidationSingleControl(txtReasonNt, dxValidationProvider2);
                 layoutControlItem2.AppearanceItemCaption.ForeColor = Color.Maroon;
                 if (Config.IsRequiredChooseRoom == "1")
@@ -280,12 +280,12 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 ado.Height = 24;
                 ado.TextLblIcd = "Chẩn đoán phụ";
                 ado.TextNullValue = "Nhấn F1 để chọn chẩn đoán phụ";
-                ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;               
+                ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
                 ucSecondaryIcd = (UserControl)subIcdProcessor.Run(ado);
 
                 if (ucSecondaryIcd != null)
                 {
-                    
+
                     this.panelControlSubIcd.Controls.Add(ucSecondaryIcd);
                     ucSecondaryIcd.Dock = DockStyle.Fill;
                 }
@@ -295,7 +295,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-       
+
 
         private void InitUcSecondaryIcdYhct()
         {
@@ -312,12 +312,12 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 ado.TootiplciIcdSubCode = "Chẩn đoán y học cổ truyền kèm theo";
                 ado.TextNullValue = "Nhấn F1 để chọn chẩn đoán phụ y học cổ truyền";
                 ado.limitDataSource = (int)HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumPageSize;
-                
+
                 ucSecondaryIcdYhct = (UserControl)subIcdYhctProcessor.Run(ado);
 
                 if (ucSecondaryIcdYhct != null)
                 {
-                   
+
                     this.panelSubIcdYhct.Controls.Add(ucSecondaryIcdYhct);
                     ucSecondaryIcdYhct.Dock = DockStyle.Fill;
                 }
@@ -720,7 +720,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 ado.DataIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_TRADITIONAL == 1).ToList();
                 ado.LblIcdMain = "CĐ YHCT:";
                 ado.ToolTipsIcdMain = "Chẩn đoán y học cổ truyền";
-                
+
                 ado.DepamentId = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId).DEPARTMENT_ID;
                 this.ucIcdYhct = (UserControl)icdYhctProcessor.Run(ado);
                 if (this.ucIcdYhct != null)
@@ -757,7 +757,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            
+
         }
         private void DelegateNextFocusIcd()
         {
@@ -835,7 +835,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                     {
                         var ex = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(s => s.ID == _Treatment.TDL_PATIENT_TYPE_ID);
                         cboPatientReceive.EditValue = _Treatment.TDL_PATIENT_TYPE_ID;
-                        txtPatientReceive.Text = ex == null ? "": ex.PATIENT_TYPE_CODE;
+                        txtPatientReceive.Text = ex == null ? "" : ex.PATIENT_TYPE_CODE;
                     }
 
                     lblSoVaoVien.Text = _Treatment.IN_CODE;
@@ -905,9 +905,9 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 //load thong tin vao nt
                 if (!string.IsNullOrEmpty(this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_CODE) && !string.IsNullOrEmpty(this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_NAME))
                 {
-                    
+
                     var isExitsReason = this.listReason.FirstOrDefault(s => s.HOSPITALIZE_REASON_CODE == this.TreatmentWithPaTyInfo.HOSPITALIZE_REASON_CODE);
-                    if(isExitsReason != null)
+                    if (isExitsReason != null)
                     {
                         cboReasonNt.EditValue = isExitsReason.ID;
                         this.REASON_CODE = isExitsReason.HOSPITALIZE_REASON_CODE;
@@ -925,7 +925,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        
+
         private void dtLogTime_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -1119,6 +1119,12 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             {
                 if (btnSave.Enabled)
                 {
+                    if (this.lciReasonNt.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always && string.IsNullOrWhiteSpace(txtReasonNt.Text))
+                    {
+                        dxErrorProvider1.SetError(txtReasonNt, "Bắt buộc nhập lý do", ErrorType.Warning);
+                        txtReasonNt.Focus();
+                        return; 
+                    }
                     if (HisConfigs.Get<string>("MOS.TREATMENT.ALLOW_MANY_TREATMENT_OPENING_OPTION") == "6")
                     {
                         CommonParam param = new CommonParam();
@@ -1144,7 +1150,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                         }
                     }
                     ProcessDepartmentTranSaveClick(sender, e);
-                    
+
                 }
             }
             catch (Exception ex)
@@ -1217,8 +1223,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                                 {
                                     if (itemADO.PATIENT_COUNT > itemADO.BED_COUNT)
                                         itemADO.IsKey_ = 2;
-                                    else
+                                    else if (itemADO.PATIENT_COUNT < itemADO.BED_COUNT)
                                         itemADO.IsKey_ = 1;
+                                    else
+                                        itemADO.IsKey_ = 3;
                                 }
                                 else
                                 { itemADO.IsKey_ = 1; }
@@ -1333,6 +1341,10 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                     {
                         e.Appearance.ForeColor = Color.Red;
                     }
+                    //else if (IsKey == 3)
+                    //{
+                    //    e.Appearance.ForeColor = Color.Green;
+                    //}
                 }
             }
             catch (Exception ex)
@@ -2073,13 +2085,17 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 if (e.RowHandle >= 0)
                 {
                     long IsKey = Inventec.Common.TypeConvert.Parse.ToInt64((View.GetRowCellValue(e.RowHandle, "IsKey_") ?? "0").ToString());
-                    if (IsKey == 1)
+                    if (IsKey == 1) // ít hơn 
                     {
-                        e.Appearance.ForeColor = Color.Blue;
+                        e.Appearance.ForeColor = Color.Green;
                     }
-                    else if (IsKey == 2)
+                    else if (IsKey == 2) // nhiều hơn
                     {
                         e.Appearance.ForeColor = Color.Red;
+                    }
+                    else if (IsKey == 3) // = 
+                    {
+                        e.Appearance.ForeColor = Color.Blue;
                     }
                 }
             }
@@ -2205,7 +2221,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                     {
 
                         this.lciReasonNt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                        if(this.listReason.Count == 0)
+                        if (this.listReason.Count == 0)
                             LoadDataToCboReasonNt();
                     }
                     else
@@ -2436,7 +2452,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 if (CboBedService.EditValue != null)
                 {
                     string sereServConditionStr = "";
-                    var service = (VHisBedServiceTypes ?? new List<V_HIS_SERVICE>()).FirstOrDefault(o=> o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((CboBedService.EditValue ?? "").ToString()));
+                    var service = (VHisBedServiceTypes ?? new List<V_HIS_SERVICE>()).FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((CboBedService.EditValue ?? "").ToString()));
                     var dataCondition = BranchDataWorker.ServicePatyWithListPatientType(service.ID, new List<long> { (long)cboPatientReceive.EditValue });
                     if (dataCondition != null && dataCondition.Count > 0 && lstConditionService != null && lstConditionService.Count > 0)
                     {
@@ -2501,11 +2517,11 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
         }
-        
+
 
         private void cbbDoctor_Closed(object sender, ClosedEventArgs e)
         {
@@ -2528,12 +2544,12 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-       
+
         private void cbbDoctor_KeyDown(object sender, KeyEventArgs e)
         {
-            
+
         }
-        
+
 
         private void cbboDoctor_EditValueChanged(object sender, EventArgs e)
         {
@@ -2562,7 +2578,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-       
+
 
         private void cbbDoctor_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -2623,11 +2639,11 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         {
             try
             {
-                if(e.Button.Kind == ButtonPredefines.Combo)
+                if (e.Button.Kind == ButtonPredefines.Combo)
                 {
                     cboReasonNt.ShowPopup();
                 }
-                else if(e.Button.Kind == ButtonPredefines.Delete)
+                else if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboReasonNt.EditValue = null;
                     txtReasonNt.Text = null;
@@ -2644,7 +2660,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             try
             {
                 var data = BackendDataWorker.Get<HIS_HOSPITALIZE_REASON>();
-                if(data != null)
+                if (data != null)
                 {
                     data = data.Where(s => s.IS_ACTIVE == 1).ToList();
                     listReason = data.ToList();
@@ -2655,7 +2671,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
                     ControlEditorLoader.Load(cboReasonNt, data, controlEditorADO);
                 }
             }
-            
+
             catch (Exception ex)
             {
 
@@ -2670,12 +2686,12 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
 
         private void cboReasonNt_Closed(object sender, ClosedEventArgs e)
         {
-            
+
         }
 
         private void txtReasonNt_Validated(object sender, EventArgs e)
         {
-            
+
         }
         private void SetReasonHos()
         {
