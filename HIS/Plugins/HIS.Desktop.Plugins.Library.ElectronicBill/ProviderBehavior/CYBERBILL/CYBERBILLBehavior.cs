@@ -176,7 +176,8 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.CYBERBILL
             hd.dnmua_diachi = inv.BuyerAddress;
             hd.dnmua_sdt = inv.BuyerPhone;
             hd.dnmua_email = inv.BuyerEmail;
-            hd.dnmua_cccd = !String.IsNullOrWhiteSpace(inv.BuyerIdentityNumber) ? inv.BuyerIdentityNumber : inv.BuyerCCCD;
+            hd.dnmua_cccd = ((inv.BuyerIdentityType == "1" || inv.BuyerIdentityType == "2") && !String.IsNullOrWhiteSpace(inv.BuyerIdentityNumber)) ? inv.BuyerIdentityNumber : (!string.IsNullOrWhiteSpace(inv.BuyerCCCD) ? inv.BuyerCCCD : ""); 
+            hd.dnmua_hochieu = (inv.BuyerIdentityType == "3" && !String.IsNullOrWhiteSpace(inv.BuyerIdentityNumber)) ? inv.BuyerIdentityNumber : "";
             hd.dnmua_mqhns = ElectronicBillDataInput.Transaction.BUYER_TYPE == 2 ? inv.BuyerTaxCode : "";
             hd.dnmua_mqhns = (!string.IsNullOrWhiteSpace(ElectronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE))? ElectronicBillDataInput.Transaction.BUYER_SOCIAL_RELATIONS_CODE: "";
             hd.thanhtoan_phuongthuc = 3;
