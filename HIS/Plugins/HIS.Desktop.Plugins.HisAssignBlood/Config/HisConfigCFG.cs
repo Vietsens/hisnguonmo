@@ -40,6 +40,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.Config
         private const string CONFIG_KEY__ALLOW_TO_ASSIGN = "HIS.Desktop.Plugins.HisAssignBlood.AllowToAssignDifferenceBloodOption";
         private const string CONFIG_KEY__SERVICE_REQ_ICD_OPTION = "HIS.HIS_TRACKING.SERVICE_REQ_ICD_OPTION";
         private const string CONFIG_KEY__HIS_ASSIGN_BLOOD_MediStockExternal__MinhTam = "HIS.Desktop.Plugins.HisAssignBlood.MediStockExternal_MinhTam";
+        private const string CONFIG_KEY_HIS_ASSIGN_BLOOD_MediStockExternal__MinhTam_ApiUrl = "HIS.Desktop.Plugins.HisAssignBlood.MediStockExternal_MinhTam.BaseUrl";
         internal static bool IsServiceReqIcdOption;
         internal static string ObligateIcd;
         internal static string PatientTypeCode__BHYT;
@@ -54,6 +55,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.Config
         internal static string WarningOverTotalPatientPrice__IsCheck;
         internal static string IsUsingServerTime;
         internal static bool IsAllowToAssignDifferenceBloodOption;
+        internal static string HisAssignBloodMediStock_External__BaseUrl;
         /// <summary>
         /// Cấu hình để ẩn/hiện trường người chỉ định tai form chỉ định, kê đơn
         //- Giá trị mặc định (hoặc ko có cấu hình này) sẽ ẩn
@@ -94,6 +96,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.Config
                 IsUsingServerTime = GetValue(CONFIG_KEY__USING_SERVER_TIME);
                 IsAllowToAssignDifferenceBloodOption = GetValue(CONFIG_KEY__ALLOW_TO_ASSIGN) == "1";
                 HisAssignBloodMediStockExternal__MinhTam = GetValue(CONFIG_KEY__HIS_ASSIGN_BLOOD_MediStockExternal__MinhTam);
+                HisAssignBloodMediStock_External__BaseUrl = GetValue(CONFIG_KEY_HIS_ASSIGN_BLOOD_MediStockExternal__MinhTam_ApiUrl);
             }
             catch (Exception ex)
             {

@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -183,7 +183,14 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK paty = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboMediStockExport_TabBlood.EditValue ?? "0").ToString()));
                         if (paty != null)
                         {
-                            this.LoadDataToGridBloodType(paty);
+                            if (_isExternalMinhTamMode)
+                            {
+                                LoadGrid1_BloodType_ElementNotNull();
+                            }
+                            else
+                            {
+                                this.LoadDataToGridBloodType(paty);
+                            }    
                             this.gridControlServiceProcess__TabBlood.DataSource = null;
                             this.EnableAndDisableControlWithGirdcontrol();
                         }
@@ -192,6 +199,13 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.txtKeyword.Focus();
                     this.txtKeyword.SelectAll();
                 }
+                //if (e.CloseMode != PopupCloseMode.Normal) return;
+
+                //// chốt chọn → load 1 lần duy nhất
+                //HandleMediStockChanged(doLoad: true);
+
+                //txtKeyword.Focus();
+                //txtKeyword.SelectAll();
             }
             catch (Exception ex)
             {
@@ -210,7 +224,13 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK paty = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboMediStockExport_TabBlood.EditValue ?? "0").ToString()));
                         if (paty != null)
                         {
-                            this.LoadDataToGridBloodType(paty);
+                            if (_isExternalMinhTamMode)
+                            {
+                                LoadGrid1_BloodType_ElementNotNull();
+                            }
+                            else
+                                this.LoadDataToGridBloodType(paty);
+
                             this.gridControlServiceProcess__TabBlood.DataSource = null;
                             this.EnableAndDisableControlWithGirdcontrol();
                         }

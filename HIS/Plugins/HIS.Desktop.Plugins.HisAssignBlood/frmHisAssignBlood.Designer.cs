@@ -70,12 +70,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
             this.gridControlExternalBlood = new DevExpress.XtraGrid.GridControl();
             this.gridViewExternalBlood = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.grvCode = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grvName = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grvABO = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grvRH = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grvMl = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.grvMediStockExternal = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colName = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colAbo = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colRh = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colMl = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colStockValue = new DevExpress.XtraGrid.Columns.GridColumn();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnCtrlK = new DevExpress.XtraBars.BarButtonItem();
@@ -218,7 +218,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItemExtrnalBlood = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidProviderBoXung__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxValidationProviderControl__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
@@ -312,7 +312,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemExtrnalBlood)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidProviderBoXung__MedicinePage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl__MedicinePage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
@@ -368,59 +368,71 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // gridViewExternalBlood
             // 
             this.gridViewExternalBlood.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.grvCode,
-            this.grvName,
-            this.grvABO,
-            this.grvRH,
-            this.grvMl,
-            this.grvMediStockExternal});
+            this.colCode,
+            this.colName,
+            this.colAbo,
+            this.colRh,
+            this.colMl,
+            this.colStockValue});
             this.gridViewExternalBlood.GridControl = this.gridControlExternalBlood;
             this.gridViewExternalBlood.Name = "gridViewExternalBlood";
             this.gridViewExternalBlood.OptionsView.ShowGroupPanel = false;
             this.gridViewExternalBlood.OptionsView.ShowIndicator = false;
             this.gridViewExternalBlood.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewExternalBlood_FocusedRowChanged);
             // 
-            // grvCode
+            // colCode
             // 
-            this.grvCode.Caption = "Mã";
-            this.grvCode.Name = "grvCode";
-            this.grvCode.Visible = true;
-            this.grvCode.VisibleIndex = 0;
+            this.colCode.Caption = "Mã";
+            this.colCode.FieldName = "elementID";
+            this.colCode.Name = "colCode";
+            this.colCode.OptionsColumn.AllowEdit = false;
+            this.colCode.Visible = true;
+            this.colCode.VisibleIndex = 0;
             // 
-            // grvName
+            // colName
             // 
-            this.grvName.Caption = "Tên";
-            this.grvName.Name = "grvName";
-            this.grvName.Visible = true;
-            this.grvName.VisibleIndex = 1;
+            this.colName.Caption = "Tên";
+            this.colName.FieldName = "elementName";
+            this.colName.Name = "colName";
+            this.colName.OptionsColumn.AllowEdit = false;
+            this.colName.Visible = true;
+            this.colName.VisibleIndex = 1;
             // 
-            // grvABO
+            // colAbo
             // 
-            this.grvABO.Caption = "ABO";
-            this.grvABO.Name = "grvABO";
-            this.grvABO.Visible = true;
-            this.grvABO.VisibleIndex = 2;
+            this.colAbo.Caption = "ABO";
+            this.colAbo.FieldName = "abo";
+            this.colAbo.Name = "colAbo";
+            this.colAbo.OptionsColumn.AllowEdit = false;
+            this.colAbo.Visible = true;
+            this.colAbo.VisibleIndex = 2;
             // 
-            // grvRH
+            // colRh
             // 
-            this.grvRH.Caption = "RH";
-            this.grvRH.Name = "grvRH";
-            this.grvRH.Visible = true;
-            this.grvRH.VisibleIndex = 3;
+            this.colRh.Caption = "RH";
+            this.colRh.FieldName = "rh";
+            this.colRh.Name = "colRh";
+            this.colRh.OptionsColumn.AllowEdit = false;
+            this.colRh.Visible = true;
+            this.colRh.VisibleIndex = 3;
             // 
-            // grvMl
+            // colMl
             // 
-            this.grvMl.Caption = "Dung tích (ml)";
-            this.grvMl.Name = "grvMl";
-            this.grvMl.Visible = true;
-            this.grvMl.VisibleIndex = 4;
+            this.colMl.Caption = "Dung tích (ml)";
+            this.colMl.FieldName = "volume";
+            this.colMl.Name = "colMl";
+            this.colMl.OptionsColumn.AllowEdit = false;
+            this.colMl.Visible = true;
+            this.colMl.VisibleIndex = 4;
             // 
-            // grvMediStockExternal
+            // colStockValue
             // 
-            this.grvMediStockExternal.Caption = "Tồn kho";
-            this.grvMediStockExternal.Name = "grvMediStockExternal";
-            this.grvMediStockExternal.Visible = true;
-            this.grvMediStockExternal.VisibleIndex = 5;
+            this.colStockValue.Caption = "Tồn kho";
+            this.colStockValue.FieldName = "quantity";
+            this.colStockValue.Name = "colStockValue";
+            this.colStockValue.OptionsColumn.AllowEdit = false;
+            this.colStockValue.Visible = true;
+            this.colStockValue.VisibleIndex = 5;
             // 
             // barManager1
             // 
@@ -902,6 +914,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.gridViewBloodType__BloodPage.OptionsFind.ShowFindButton = false;
             this.gridViewBloodType__BloodPage.OptionsView.ShowGroupPanel = false;
             this.gridViewBloodType__BloodPage.OptionsView.ShowIndicator = false;
+            this.gridViewBloodType__BloodPage.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewBloodType__BloodPage_FocusedRowChanged);
             this.gridViewBloodType__BloodPage.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewBloodType__BloodPage_CustomUnboundColumnData);
             // 
             // grcAvailableAmount_TabBlood
@@ -1738,7 +1751,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem17,
             this.emptySpaceItem3,
             this.layoutControlItem18,
-            this.layoutControlItem20});
+            this.layoutControlItemExtrnalBlood});
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "Root";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2042,14 +2055,14 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItem18.TextSize = new System.Drawing.Size(60, 20);
             this.layoutControlItem18.TextToControlDistance = 5;
             // 
-            // layoutControlItem20
+            // layoutControlItemExtrnalBlood
             // 
-            this.layoutControlItem20.Control = this.gridControlExternalBlood;
-            this.layoutControlItem20.Location = new System.Drawing.Point(0, 344);
-            this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(651, 261);
-            this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem20.TextVisible = false;
+            this.layoutControlItemExtrnalBlood.Control = this.gridControlExternalBlood;
+            this.layoutControlItemExtrnalBlood.Location = new System.Drawing.Point(0, 344);
+            this.layoutControlItemExtrnalBlood.Name = "layoutControlItemExtrnalBlood";
+            this.layoutControlItemExtrnalBlood.Size = new System.Drawing.Size(651, 261);
+            this.layoutControlItemExtrnalBlood.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemExtrnalBlood.TextVisible = false;
             // 
             // dxValidProviderBoXung__MedicinePage
             // 
@@ -2175,7 +2188,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemExtrnalBlood)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidProviderBoXung__MedicinePage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl__MedicinePage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
@@ -2334,12 +2347,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraGrid.GridControl gridControlExternalBlood;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewExternalBlood;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
-        private DevExpress.XtraGrid.Columns.GridColumn grvCode;
-        private DevExpress.XtraGrid.Columns.GridColumn grvName;
-        private DevExpress.XtraGrid.Columns.GridColumn grvABO;
-        private DevExpress.XtraGrid.Columns.GridColumn grvRH;
-        private DevExpress.XtraGrid.Columns.GridColumn grvMl;
-        private DevExpress.XtraGrid.Columns.GridColumn grvMediStockExternal;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItemExtrnalBlood;
+        private DevExpress.XtraGrid.Columns.GridColumn colCode;
+        private DevExpress.XtraGrid.Columns.GridColumn colName;
+        private DevExpress.XtraGrid.Columns.GridColumn colAbo;
+        private DevExpress.XtraGrid.Columns.GridColumn colRh;
+        private DevExpress.XtraGrid.Columns.GridColumn colMl;
+        private DevExpress.XtraGrid.Columns.GridColumn colStockValue;
     }
 }
