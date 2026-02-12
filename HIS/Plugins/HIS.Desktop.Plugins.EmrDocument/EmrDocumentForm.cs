@@ -1668,7 +1668,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     string desFileJoined = Utils.GenerateTempFileWithin();
                     var elementFirst = FileJoin.FirstOrDefault();
                     FileJoin.Remove(elementFirst.Key);
-                    InsertPage1(null, elementFirst.Value, FileJoin, desFileJoined, null, 0);
+                    InsertPage1Optimized(null, elementFirst.Value, FileJoin, desFileJoined, null, 0);
                     byte[] pdfBytes = File.ReadAllBytes(desFileJoined);
 
                     string mergedBase64 = Convert.ToBase64String(pdfBytes);
@@ -2869,12 +2869,121 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
         }
 
+        internal static void InsertPage1Optimized(Stream sourceStream, string sourceFile, Dictionary<long, string> fileListJoin, string desFileJoined, List<EMR_SIGN> signAlls, long documentId)
+        {
+            var outputStream = new FileStream(desFileJoined, FileMode.Create, FileAccess.Write);
+            var pdfConcat = new PdfConcatenate(outputStream);
+            try
+            {
+                // =========================
+                // 1️⃣ ADD FILE GỐC
+                // =========================
+                if (!string.IsNullOrEmpty(sourceFile) && File.Exists(sourceFile))
+                {
+                    using (var reader = new PdfReader(sourceFile))
+                    {
+                        pdfConcat.AddPages(reader);
+                    }
+                }
+                else if (sourceStream != null)
+                {
+                    sourceStream.Position = 0;
+                    using (var reader = new PdfReader(sourceStream))
+                    {
+                        pdfConcat.AddPages(reader);
+                    }
+                }
+
+                // =========================
+                // 2️⃣ ADD FILE JOIN
+                // =========================
+                if (fileListJoin == null || fileListJoin.Count == 0)
+                    return;
+
+                foreach (var item in fileListJoin)
+                {
+                    string path = item.Value;
+                    string ext = Path.GetExtension(path)?.ToLower();
+
+                    // ================= IMAGE
+                    if (ext != ".pdf")
+                    {
+                        string tempPdf = Path.Combine(
+                            Path.GetTempPath(),
+                            Guid.NewGuid().ToString("N") + ".pdf");
+
+                        using (var imgStream = File.Exists(path)
+                                ? (Stream)new FileStream(path, FileMode.Open, FileAccess.Read)
+                                : Inventec.Fss.Client.FileDownload.GetFile(path))
+                        using (var fs = new FileStream(tempPdf, FileMode.Create))
+                        using (var doc = new iTextSharp.text.Document())
+                        {
+                            var writer = PdfWriter.GetInstance(doc, fs);
+                            doc.Open();
+
+                            var img = iTextSharp.text.Image.GetInstance(imgStream);
+                            img.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
+                            doc.Add(img);
+
+                            doc.Close();
+                        }
+
+                        using (var reader = new PdfReader(tempPdf))
+                        {
+                            pdfConcat.AddPages(reader);
+                        }
+
+                        File.Delete(tempPdf);
+                    }
+                    // ================= PDF
+                    else
+                    {
+                        string pdfPath = path;
+
+                        if (!File.Exists(path))
+                        {
+                            // download về file tạm (KHÔNG dùng byte[])
+                            pdfPath = Path.Combine(
+                                Path.GetTempPath(),
+                                Guid.NewGuid().ToString("N") + ".pdf");
+
+                            using (var stream = Inventec.Fss.Client.FileDownload.GetFile(path))
+                            using (var fs = new FileStream(pdfPath, FileMode.Create))
+                            {
+                                stream.CopyTo(fs);
+                            }
+                        }
+
+                        using (var reader = new PdfReader(pdfPath))
+                        {
+                            pdfConcat.AddPages(reader);
+                        }
+
+                        if (!File.Exists(path))
+                            File.Delete(pdfPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                pdfConcat.Close();
+                outputStream.Close();
+            }
+        }
+
         private void btnPrint_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!Config.ConfigKey.IsHasConnectionEmr)
                     return;
+
+                Inventec.Common.Logging.LogSystem.Info("btnPrint_Click Begin");
+                WaitingManager.Show();
                 IsMergeDocument = chkMergeDoc.Checked || chkMerge.Checked;
                 if (IsMergeDocument)
                 {
@@ -2985,7 +3094,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         listDataTrueStatic = listDataTrue;
                         if (lst != null && lst.Count > 0)
                         {
-                            InsertPage1(streamSource, streamSourceStr, lst, output, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
+                            InsertPage1Optimized(streamSource, streamSourceStr, lst, output, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
                         }
                         else
                         {
@@ -2999,11 +3108,14 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         Inventec.Common.DocumentViewer.Template.frmPdfViewer DocumentView = new Inventec.Common.DocumentViewer.Template.frmPdfViewer(output);
 
                         DocumentView.Text = "In";
-
+                        Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
+                        WaitingManager.Hide();
                         DocumentView.ShowDialog();
                     }
                     else
                     {
+                        Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
+                        WaitingManager.Hide();
                         MessageManager.Show(ResourceMessage.KhongLayDuocFile);
                     }
 
@@ -3080,11 +3192,14 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         Inventec.Common.DocumentViewer.Template.frmPdfViewer DocumentView = new Inventec.Common.DocumentViewer.Template.frmPdfViewer(output);
 
                         DocumentView.Text = "In";
-
+                        Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
+                        WaitingManager.Hide();
                         DocumentView.ShowDialog();
                     }
                     else
                     {
+                        Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
+                        WaitingManager.Hide();
                         MessageManager.Show(ResourceMessage.KhongLayDuocFile);
                     }
 
@@ -3508,7 +3623,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                                 if (lst != null && lst.Count > 0)
                                 {
-                                    InsertPage1(streamSource, streamSourceStr, lst, filePath, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
+                                    InsertPage1Optimized(streamSource, streamSourceStr, lst, filePath, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
                                 }
                                 else
                                 {
