@@ -125,7 +125,21 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000441
                 List<HIS_SERVICE_UNIT> servuceUnit = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_UNIT>();
                 List<HIS_OTHER_PAY_SOURCE> otherPaySource = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_OTHER_PAY_SOURCE>();
 
-                MPS.Processor.Mps000441.PDO.Mps000441PDO rdo = new MPS.Processor.Mps000441.PDO.Mps000441PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, departments, singleValue, hisConfigValue, servuceUnit, patientType, mediOrg, this.SereServBills, otherPaySource);
+                List<HIS_SERVICE_REQ> serviceReqs = null;
+                hisConfigValue.IsGroupHeinServiceByUseTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKey.ConfigKey_IsGroupHeinServiceByUseTime) == 1;
+                if (hisConfigValue.IsGroupHeinServiceByUseTime)
+                {
+                    HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                    serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
+                    serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
+                    serviceReqs = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
+
+                }
+
+                MPS.Processor.Mps000441.PDO.Mps000441PDO rdo = new MPS.Processor.Mps000441.PDO.Mps000441PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, 
+                    TreatmentFees, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, 
+                    departments, singleValue, hisConfigValue, servuceUnit, patientType, mediOrg, this.SereServBills, otherPaySource, serviceReqs);
 
                 #region Run Print
                 PrintCustomShow<Mps000441PDO> printShow = new PrintCustomShow<Mps000441PDO>(printTypeCode, fileName, rdo, returnEventPrint, this.isPreview);

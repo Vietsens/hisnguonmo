@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -15,7 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Views.Base;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,17 +37,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using MOS.SDO;
-using Inventec.Common.Adapter;
-using Inventec.Core;
-using HIS.Desktop.ApiConsumer;
-using DevExpress.XtraGrid.Views.Base;
-using System.Collections;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
-using Inventec.Common.Controls.EditorLoader;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
@@ -182,6 +184,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboExamEntLoginName4.EditValue = currentKskPeriodDriver.EXAM_ENT_LOGINNAME;
                         cboExamCardiovascularLoginName4.EditValue = currentKskPeriodDriver.EXAM_CARDIOVASCULAR_LOGINNAME;
                         cboExamSubclinicalLoginName4.EditValue = currentKskPeriodDriver.EXAM_SUBCLINICAL_LOGINNAME;
+                        if (currentKskPeriodDriver.CONCLUSION_TIME != null && currentKskPeriodDriver.CONCLUSION_TIME > 0)
+                        {
+                            dteConclusionTimePeriodDriver.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(
+                                currentKskPeriodDriver.CONCLUSION_TIME.Value) ?? DateTime.Now;
+                        }
+                        else
+                        {
+                            dteConclusionTimePeriodDriver.DateTime = DateTime.Now;
+                        }
 
 
 
@@ -485,6 +496,24 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 
                 obj.TEST_MORPHIN = txtMorphine.Text;
                 obj.TEST_HEROIN = txtHeroin.Text;
+
+                obj.CONCLUSION_TIME = (dteConclusionTimePeriodDriver.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteConclusionTimePeriodDriver.DateTime) : null;
+
+                try
+                {
+                    long branchId = WorkPlace.GetBranchId();
+                    var branch = BackendDataWorker.Get<HIS_BRANCH>()
+                        .FirstOrDefault(o => o.ID == branchId);
+
+                    if (branch != null && !string.IsNullOrEmpty(branch.HEIN_MEDI_ORG_CODE))
+                    {
+                        obj.HEIN_MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("Lỗi lấy HEIN_MEDI_ORG_CODE từ Branch: " + ex2);
+                }
             }
             catch (Exception ex)
             {
@@ -1548,7 +1577,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             }
         }
 
-
+        private void dteConclusionTimePeriodDriver_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                   // btnSave.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
 
 
 

@@ -53,8 +53,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Resources;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -115,6 +117,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         internal UserControl ucSecondaryIcd;
         internal UCDateProcessor ucDateProcessor;
         internal UserControl ucDate;
+        private bool _isExternalMinhTamMode = false;
 
         bool isInitForm = true;
 
@@ -147,6 +150,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         private bool IsMultilData = false;
         Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
         PatientBloodPresResultSDO HisPrescriptionSDOResultPrint { get; set; }
+        private bool _isHandlingMediStock;
         #endregion
 
         #region Construct
@@ -156,7 +160,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             try
             {
                 InitializeComponent();
-
+                this.layoutControlItemExtrnalBlood.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 try
                 {
                     string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -208,7 +212,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             try
             {
                 InitializeComponent();
-
+                this.layoutControlItemExtrnalBlood.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 try
                 {
                     string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -1360,6 +1364,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 if (actionType == GlobalVariables.ActionView)// || actionType == GlobalVariables.ActionViewForEdit)
                     return;
 
+                if (_isExternalMinhTamMode && !CheckExternalQuantityBeforeAdd())
+                    return;
+
                 if (actionBosung == GlobalVariables.ActionEdit)
                 {
                     if (this.currentBloodTypeADOForEdit != null)
@@ -1694,8 +1701,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             try
             {
                 this.cboMediStockExport_TabBlood.EditValue = dataOne.ID;
-
-                this.LoadDataToGridBloodType(dataOne);
+                if (_isExternalMinhTamMode)
+                {
+                    LoadGrid1_BloodType_ElementNotNull();
+                }
+                else
+                    this.LoadDataToGridBloodType(dataOne);
 
                 this.gridControlServiceProcess__TabBlood.DataSource = null;
                 this.EnableAndDisableControlWithGirdcontrol();
@@ -2285,7 +2296,13 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.ListBloodTypeADOProcess = new List<BloodTypeADO>();
                 this.gridControlServiceProcess__TabBlood.DataSource = null;
                 MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK ms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMediStockExport_TabBlood.EditValue ?? "0").ToString()));
-                this.LoadDataToGridBloodType(ms);
+                if (_isExternalMinhTamMode)
+                {
+                    LoadGrid1_BloodType_ElementNotNull();
+                }
+                else
+                    this.LoadDataToGridBloodType(ms);
+
                 this.EnableAndDisableControlWithGirdcontrol();
                 this.SetEnableButtonControlBlood();
                 this.ReSetDataInputAfterAdd(true);
@@ -2417,6 +2434,11 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             CommonParam param = new CommonParam();
             bool success = false;
             bool valid = true;
+            if (_isExternalMinhTamMode)
+            {
+                SaveExternalBlood(isPrintNow);
+                return;
+            }
             try
             {
                 if (this.gridViewServiceProcess__TabBlood.IsEditing)
@@ -2610,6 +2632,65 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 MessageManager.Show(Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.HeThongTBXuatHienExceptionChuaKiemDuocSoat));
             }
         }
+        private void SaveExternalBlood(bool isPrintNow)
+        {
+            CommonParam param = new CommonParam();
+            bool success = false;
+
+            try
+            {
+                if (this.gridViewServiceProcess__TabBlood.IsEditing)
+                    this.gridViewServiceProcess__TabBlood.CloseEditor();
+                if (this.gridViewServiceProcess__TabBlood.FocusedRowModified)
+                    this.gridViewServiceProcess__TabBlood.UpdateCurrentRow();
+
+                if (!this.dxValidationProviderControl__MedicinePage.Validate()) return;
+                if (!this.CheckValidGridBLoodType()) { this.gridControlServiceProcess__TabBlood.Focus(); return; }
+                if (!(bool)icdProcessor.ValidationIcd(ucIcd)) return;
+
+                this.ChangeLockButtonWhileProcess(false);
+                WaitingManager.Show();
+
+                var sdo = BuildExternalBloodSDO();
+                if (sdo == null || sdo.BloodReqs == null || sdo.BloodReqs.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    MessageManager.Show(ResourceMessage.DuLieuKhongHopHeVuiLongKiemTraLai);
+                    return;
+                }
+                Inventec.Common.Logging.LogSystem.Info("HisServiceExternalBloodSDO: "
+                        + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
+
+                var result = new BackendAdapter(param).Post<HIS_SERVICE_REQ>(
+                    "/api/HisServiceReq/AssignServiceExternalBlood",
+                    ApiConsumers.MosConsumer,
+                    sdo,
+                    ProcessLostToken,
+                    param
+                );
+
+                success = result != null ? true : false;
+                WaitingManager.Hide();
+                MessageManager.Show(this, param, success);
+                if (success)
+                {
+                    this.actionType = GlobalVariables.ActionView;
+                    this.actionBosung = GlobalVariables.ActionView;
+                    this.ResetDataForm();
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                MessageManager.Show(Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(
+                    Inventec.Desktop.Common.LibraryMessage.Message.Enum.HeThongTBXuatHienExceptionChuaKiemDuocSoat));
+            }
+            finally
+            {
+                this.ChangeLockButtonWhileProcess(true);
+            }
+        }
         private void SetUpToPrint108(bool IsPrintNow)
 		{
 			try
@@ -2722,7 +2803,13 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 //this.gridControlServiceProcess__TabBlood.DataSource = null;
                 //this.lblTotalBloodBloodPrices.Text = "";
                 MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK ms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMediStockExport_TabBlood.EditValue ?? "0").ToString()));
-                this.LoadDataToGridBloodType(ms);
+                if (_isExternalMinhTamMode)
+                {
+                    LoadGrid1_BloodType_ElementNotNull();
+                }
+                else
+                    this.LoadDataToGridBloodType(ms);
+
                 this.spinAmount__BloodPage.Value = 0;
                 this.cboBloodABO.EditValue = null;
                 this.cboBloodRH.EditValue = null;
@@ -3450,6 +3537,556 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         }
                         CheckTimeSereServ();
                     }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void cboMediStockExport_TabBlood_EditValueChanged(object sender, EventArgs e)
+        {
+            //try
+            //{
+            //    long mediStockId = Inventec.Common.TypeConvert.Parse.ToInt64((cboMediStockExport_TabBlood.EditValue ?? 0).ToString());
+            //    var ms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().FirstOrDefault(o => o.ID == mediStockId);
+
+            //    _isExternalMinhTamMode = IsExternalMinhTamStock(ms);
+
+            //    chkShowGroupBlood.Checked = false;
+            //    chkShowGroupBlood.Visible = !_isExternalMinhTamMode;
+            //    chkShowGroupBlood.Enabled = !_isExternalMinhTamMode;
+
+            //    if (_isExternalMinhTamMode)
+            //    {
+            //        gridColumn1.VisibleIndex = -1;
+            //        gridColumn2.VisibleIndex = -1;
+
+            //        LoadGrid1_BloodType_ElementNotNull();
+            //        gridControlExternalBlood.DataSource = null;
+            //    }
+            //    else
+            //    {
+            //        LoadDataToGridBloodType(ms);
+            //        gridControlExternalBlood.DataSource = null;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
+            HandleMediStockChanged(doLoad: true);
+        }
+        private void HandleMediStockChanged(bool doLoad)
+        {
+            if (_isHandlingMediStock) return;
+
+            try
+            {
+                _isHandlingMediStock = true;
+
+                long mediStockId = Inventec.Common.TypeConvert.Parse.ToInt64(
+                    (cboMediStockExport_TabBlood.EditValue ?? 0).ToString()
+                );
+                if (mediStockId <= 0) return;
+
+                var ms = BackendDataWorker
+                    .Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>()
+                    .FirstOrDefault(o => o.ID == mediStockId);
+
+                _isExternalMinhTamMode = IsExternalMinhTamStock(ms);
+
+                chkShowGroupBlood.Checked = false;
+                chkShowGroupBlood.Visible = !_isExternalMinhTamMode;
+                chkShowGroupBlood.Enabled = !_isExternalMinhTamMode;
+                ApplyAboRhReadOnly();
+
+                // Nếu chỉ đổi UI mà không load thì dừng ở đây
+                if (!doLoad) return;
+
+                // Clear các datasource dễ “đè”
+                gridControlExternalBlood.DataSource = null;
+                gridControlServiceProcess__TabBlood.DataSource = null;
+
+                // Reset cột group
+                //gridColumn1.VisibleIndex = -1;
+                //gridColumn2.VisibleIndex = -1;
+
+                // Load đúng theo mode
+                if (_isExternalMinhTamMode)
+                {
+                    LoadGrid1_BloodType_ElementNotNull();
+                }
+                else
+                {
+                    LoadDataToGridBloodType(ms);
+                }
+
+                EnableAndDisableControlWithGirdcontrol();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                _isHandlingMediStock = false;
+            }
+        }
+        private bool IsExternalMinhTamStock(MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK ms)
+        {
+            try
+            {
+                if (ms == null) return false;
+                if (ms.IS_EXTERNAL != 1) return false;
+
+                // Key: "MINHTAM01|MINHTAM02"
+                string cfg = HisConfigCFG.HisAssignBloodMediStockExternal__MinhTam;
+                if (string.IsNullOrWhiteSpace(cfg)) return false;
+
+                var allowCodes = new HashSet<string>(
+                    cfg.Split('|')
+                       .Select(x => (x ?? "").Trim())
+                       .Where(x => x.Length > 0),
+                    StringComparer.OrdinalIgnoreCase
+                );
+
+                string code = (ms.MEDI_STOCK_CODE ?? "").Trim();
+                return allowCodes.Contains(code);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+        private void LoadGrid1_BloodType_ElementNotNull()
+        {
+            try
+            {
+                layoutControlItemExtrnalBlood.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                gridControlBloodType__BloodPage.DataSource = null;
+
+                // Lấy danh mục blood type + volume từ BackendDataWorker (nhanh, đúng style)
+                var bloodTypes = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_TYPE>()
+                    .Where(x => x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+
+                var volumeMap = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_VOLUME>()
+                    .ToDictionary(v => v.ID, v => (int?)v.VOLUME);
+
+                var data = bloodTypes
+                    .Where(x => !string.IsNullOrWhiteSpace(x.ELEMENT)) // ELEMENT != null theo thiết kế
+                    .Select(x => new BloodADO
+                    {
+                        BLOOD_TYPE_ID = x.ID,
+                        BLOOD_TYPE_CODE = x.BLOOD_TYPE_CODE,
+                        BLOOD_TYPE_NAME = x.BLOOD_TYPE_NAME,
+                        SERVICE_ID = x.SERVICE_ID,
+                        ELEMENT = (x.ELEMENT ?? "").Trim(), 
+                        VOLUME = volumeMap.ContainsKey(x.BLOOD_VOLUME_ID) ? volumeMap[x.BLOOD_VOLUME_ID] : null,
+
+                        SERVICE_NAME_HIDDEN = convertToUnSign3(x.BLOOD_TYPE_NAME) + x.BLOOD_TYPE_NAME,
+                        SERVICE_CODE_HIDDEN = convertToUnSign3(x.BLOOD_TYPE_CODE) + x.BLOOD_TYPE_CODE
+                    })
+                    .ToList();
+
+                // Search keyword giống luồng cũ
+                string kw = (txtKeyword.Text ?? "").Trim();
+                if (!string.IsNullOrEmpty(kw))
+                {
+                    string kwUn = convertToUnSign3(kw).ToLower();
+                    string kwLo = kw.ToLower();
+
+                    data = data.Where(d =>
+                            ((d.BLOOD_TYPE_NAME ?? "").ToLower().Contains(kwLo)) ||
+                            ((d.BLOOD_TYPE_CODE ?? "").ToLower().Contains(kwLo)) ||
+                            ((convertToUnSign3(d.BLOOD_TYPE_NAME ?? "")).ToLower().Contains(kwUn)) ||
+                            ((convertToUnSign3(d.BLOOD_TYPE_CODE ?? "")).ToLower().Contains(kwUn))
+                        ).ToList();
+                }
+
+                gridControlBloodType__BloodPage.DataSource = data;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void gridViewExternalBlood_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
+        {
+            
+        }
+
+        private async void gridViewBloodType__BloodPage_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
+        {
+            try
+            {
+                if (!_isExternalMinhTamMode) return;
+                var baseUrl = HisConfigCFG.HisAssignBloodMediStock_External__BaseUrl;
+
+                var row = gridViewBloodType__BloodPage.GetFocusedRow() as BloodADO;
+                if (row == null) return;
+
+                string elementId = (row.ELEMENT ?? "").Trim();
+                int volume = Convert.ToInt32(row.VOLUME);
+
+                if (string.IsNullOrWhiteSpace(elementId) || volume <= 0)
+                {
+                    gridControlExternalBlood.DataSource = null;
+                    return;
+                }
+
+                Cursor.Current = Cursors.WaitCursor;
+
+                var requestObj = new
+                {   
+                    ElementID = elementId,
+                    Volume = volume
+                };
+
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(requestObj);
+
+                using (var client = new System.Net.Http.HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(30);
+
+                    var content = new System.Net.Http.StringContent(
+                        json,
+                        Encoding.UTF8,
+                        "application/json"
+                    );
+
+                    var response = await client.PostAsync(baseUrl+"LisReceiver/web/GetInventory",content);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        MessageBox.Show("Không gọi được API Minh Tâm");
+                        gridControlExternalBlood.DataSource = null;
+                        return;
+                    }
+
+                    string responseJson = await response.Content.ReadAsStringAsync();
+
+                    // Deserialize đơn giản
+                    dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseJson);
+
+                    bool isSuccess = result.IsSuccess ?? result.isSuccess;
+
+                    if (isSuccess == true)
+                    {
+                        var data = result.InventoryInfo ?? result.inventoryInfo;
+                        gridControlExternalBlood.DataSource = data;
+                    }
+                    else
+                    {
+                        gridControlExternalBlood.DataSource = null;
+                        MessageBox.Show("API trả về lỗi");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+        private HisServiceExternalBloodSDO BuildExternalBloodSDO()
+        {
+            var sdo = new HisServiceExternalBloodSDO();
+            sdo.BloodReqs = new List<BloodReqSDO>();
+
+            sdo.TreatmentId = CurrentHisTreatment.ID;
+
+            if (cboMediStockExport_TabBlood.EditValue != null)
+                sdo.MediStockId = Inventec.Common.TypeConvert.Parse.ToInt64((cboMediStockExport_TabBlood.EditValue ?? "0").ToString());
+
+            sdo.InstructionTime = intructionTimeSelecteds.First();
+            sdo.RequestRoomId = this.currentModule.RoomId;
+
+            if (this.cboTracking.EditValue != null)
+                sdo.TrackingId = Inventec.Common.TypeConvert.Parse.ToInt64(cboTracking.EditValue.ToString());
+
+            if (this.cboUser.EditValue != null)
+            {
+                sdo.RequestLoginName = this.cboUser.EditValue.ToString();
+                sdo.RequestUserName = this.cboUser.Text;
+            }
+
+            if (this.currentSereServ != null)
+                sdo.ParentServiceReqId = this.currentSereServ.SERVICE_REQ_ID;
+
+            // ICD
+            if (ucIcd != null)
+            {
+                var icdValue = icdProcessor.GetValue(ucIcd) as HIS.UC.Icd.ADO.IcdInputADO;
+                if (icdValue != null)
+                {
+                    sdo.IcdCode = icdValue.ICD_CODE;
+                    sdo.IcdName = icdValue.ICD_NAME;
+                }
+            }
+            if (ucSecondaryIcd != null)
+            {
+                var sub = subIcdProcessor.GetValue(ucSecondaryIcd) as HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO;
+                if (sub != null)
+                {
+                    sdo.IcdSubCode = sub.ICD_SUB_CODE;
+                    sdo.IcdText = sub.ICD_TEXT;
+                }
+            }
+
+            sdo.BloodLevel = cboBloodLevel.SelectedIndex != -1 ? (short?)(cboBloodLevel.SelectedIndex + 1) : null;
+
+            var rows = this.gridControlServiceProcess__TabBlood.DataSource as List<BloodTypeADO>;
+            if (rows != null && rows.Count > 0)
+            {
+                var groups = rows.GroupBy(x => new
+                {
+                    BloodTypeId = x.ID,
+                    AboId = x.BLOOD_ABO_ID,
+                    RhId = x.BLOOD_RH_ID,
+                    PatientTypeId = x.PATIENT_TYPE_ID
+                });
+
+                foreach (var g in groups)
+                {
+                    var first = g.First();
+                    sdo.BloodReqs.Add(new BloodReqSDO
+                    {
+                        BLOOD_TYPE_ID = first.ID,
+                        BLOOD_ABO_ID = first.BLOOD_ABO_ID ?? 0,
+                        BLOOD_RH_ID = first.BLOOD_RH_ID ?? 0,
+                        PATIENT_TYPE_ID = first.PATIENT_TYPE_ID ?? 0,
+                        AMOUNT = (long)g.Sum(t => (t.AMOUNT ?? 0))
+                    });
+                }
+            }
+
+            return sdo;
+        }
+        private bool CheckExternalQuantityBeforeAdd()
+        {
+            try
+            {
+                if (!_isExternalMinhTamMode) return true;
+
+                decimal reqAmount = spinAmount__BloodPage.Value;
+                if (reqAmount <= 0) return true; // dxValidation sẽ bắt lỗi số lượng <=0
+
+                var externalRow = gridViewExternalBlood.GetFocusedRow();
+                if (externalRow == null)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Chưa chọn dòng tồn kho Minh Tâm. Vui lòng chọn 1 dòng tồn kho trước khi bổ sung.",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    gridControlExternalBlood.Focus();
+                    return false;
+                }
+
+                decimal? available = TryGetExternalQuantity(externalRow);
+                if (!available.HasValue)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Không lấy được số lượng tồn kho (quantity/quality) từ dữ liệu Minh Tâm. Vui lòng kiểm tra dữ liệu trả về.",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    return false;
+                }
+
+                if (reqAmount > available.Value)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        $"Số lượng nhập ({reqAmount}) vượt quá tồn kho Minh Tâm ({available.Value}). Không thể bổ sung.",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning
+                    );
+                    spinAmount__BloodPage.Focus();
+                    spinAmount__BloodPage.SelectAll();
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                // an toàn: nếu có lỗi đọc field thì không cho add (đúng tinh thần “cảnh báo”)
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Có lỗi khi kiểm tra tồn kho Minh Tâm. Vui lòng thử lại hoặc kiểm tra dữ liệu.",
+                    "Cảnh báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return false;
+            }
+        }
+
+        private decimal? TryGetExternalQuantity(object externalRow)
+        {
+            try
+            {
+                if (externalRow == null) return null;
+
+                // Case dữ liệu là JToken/JObject (Newtonsoft) - giống style anh đang dùng dynamic
+                var jt = externalRow as Newtonsoft.Json.Linq.JToken;
+                if (jt != null)
+                {
+                    var token =
+                        jt["quantity"] ?? jt["Quantity"] ??
+                        jt["quality"] ?? jt["Quality"] ??
+                        jt["AMOUNT"] ?? jt["amount"];
+                    return ParseDecimal(token);
+                }
+
+                // Dynamic (nếu datasource là JObject / Expando / object có property)
+                dynamic d = externalRow;
+
+                object qty =
+                    d.quantity ?? d.Quantity ??
+                    d.quality ?? d.Quality ??
+                    d.AMOUNT ?? d.amount;
+
+                return ParseDecimal(qty);
+            }
+            catch
+            {
+                // fallback reflection (trường hợp object typed)
+                try
+                {
+                    var t = externalRow.GetType();
+                    var p =
+                        t.GetProperty("quantity") ?? t.GetProperty("Quantity") ??
+                        t.GetProperty("quality") ?? t.GetProperty("Quality") ??
+                        t.GetProperty("AMOUNT") ?? t.GetProperty("amount");
+                    if (p == null) return null;
+
+                    return ParseDecimal(p.GetValue(externalRow, null));
+                }
+                catch
+                {
+                    return null;
+                }
+            }
+        }
+
+        private decimal? ParseDecimal(object val)
+        {
+            if (val == null) return null;
+
+            // JToken -> string
+            var jt = val as Newtonsoft.Json.Linq.JToken;
+            if (jt != null)
+            {
+                if (jt.Type == Newtonsoft.Json.Linq.JTokenType.Null) return null;
+                val = jt.ToString();
+                if (val == null) return null;
+            }
+
+            if (val is decimal dec) return dec;
+            if (val is int i) return i;
+            if (val is long l) return l;
+            if (val is double db) return (decimal)db;
+            if (val is float fl) return (decimal)fl;
+
+            string s = Convert.ToString(val);
+            if (string.IsNullOrWhiteSpace(s)) return null;
+
+            decimal outDec;
+            if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out outDec)) return outDec;
+            if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out outDec)) return outDec;
+
+            // cleanup nhẹ
+            s = s.Replace(" ", "");
+            if (decimal.TryParse(s, NumberStyles.Any, CultureInfo.InvariantCulture, out outDec)) return outDec;
+
+            return null;
+        }
+        private void ApplyAboRhReadOnly()
+        {
+            bool isReadOnly = _isExternalMinhTamMode;
+
+            grcBloodABO__TabBlood.OptionsColumn.AllowEdit = !isReadOnly;
+            grcBloodRH__TabBlood.OptionsColumn.AllowEdit = !isReadOnly;
+
+            grcBloodABO__TabBlood.OptionsColumn.ReadOnly = isReadOnly;
+            grcBloodRH__TabBlood.OptionsColumn.ReadOnly = isReadOnly;
+
+            grcBloodABO__TabBlood.OptionsColumn.AllowFocus = !isReadOnly;
+            grcBloodRH__TabBlood.OptionsColumn.AllowFocus = !isReadOnly;
+        }
+
+        private void gridViewExternalBlood_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            try
+            {
+                if (!_isExternalMinhTamMode) return;
+
+                // Lấy row từ gridViewBloodType__BloodPage (đã chọn trước đó)
+                var selectedBloodType = gridViewBloodType__BloodPage.GetFocusedRow() as BloodADO;
+                if (selectedBloodType == null) return;
+
+                var externalBloodRow = gridViewExternalBlood.GetFocusedRow();
+                if (externalBloodRow == null) return;
+
+                dynamic externalData = externalBloodRow;
+
+                this.currentBloodType = new BloodADO();
+                this.currentBloodType.BLOOD_TYPE_ID = selectedBloodType.BLOOD_TYPE_ID;
+                this.currentBloodType.BLOOD_TYPE_CODE = selectedBloodType.BLOOD_TYPE_CODE;
+                this.currentBloodType.BLOOD_TYPE_NAME = selectedBloodType.BLOOD_TYPE_NAME;
+                this.currentBloodType.SERVICE_ID = selectedBloodType.SERVICE_ID;
+                this.currentBloodType.ELEMENT = selectedBloodType.ELEMENT;
+                this.currentBloodType.VOLUME = selectedBloodType.VOLUME;
+
+                string aboCode = externalData.ABO?.ToString() ?? externalData.abo?.ToString();
+                string rhCode = externalData.Rh?.ToString() ?? externalData.rh?.ToString();
+
+                if (!string.IsNullOrEmpty(aboCode))
+                {
+                    var abo = (aboCode ?? "").Trim().ToUpper();   // "O " -> "O"
+
+                    var bloodAbo = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_ABO>()
+                        .FirstOrDefault(o => (o.BLOOD_ABO_CODE ?? "").Trim().ToUpper() == abo);
+                    if (bloodAbo != null)
+                    {
+                        this.currentBloodType.BLOOD_ABO_ID = bloodAbo.ID;
+                        this.cboBloodABO.EditValue = bloodAbo.ID;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(rhCode))
+                {
+                    var bloodRh = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_RH>()
+                        .FirstOrDefault(o => o.BLOOD_RH_CODE == rhCode);
+                    if (bloodRh != null)
+                    {
+                        this.currentBloodType.BLOOD_RH_ID = bloodRh.ID;
+                        this.cboBloodRH.EditValue = bloodRh.ID;
+                    }
+                }
+
+                this.focusedRowHandle = this.gridViewBloodType__BloodPage.FocusedRowHandle;
+                this.actionBosung = GlobalVariables.ActionAdd;
+                this.spinAmount__BloodPage.Value = 0;
+
+                this.cboBloodABO.Enabled = false;
+                this.cboBloodRH.Enabled = false;
+
+                this.spinAmount__BloodPage.SelectAll();
+                this.spinAmount__BloodPage.Focus();
             }
             catch (Exception ex)
             {

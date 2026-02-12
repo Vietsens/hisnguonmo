@@ -56,6 +56,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         #region ---Decalre
         List<HisMedicineInStockSDO> lstMediInStocks { get; set; }
         List<HisMaterialInStockSDO> lstMateInStocks { get; set; }
+
+        List<HisMedicineInStockSDO> lstMediInStocksOriginal;
+        List<HisMaterialInStockSDO> lstMateInStocksOriginal;
         List<HisBloodInStockSDO> lstBloodInStocks { get; set; }
         List<HisBloodTypeInStockSDO> lstBlood { get; set; }
 
@@ -2082,9 +2085,15 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 var ExpiredDateTo = Inventec.Common.TypeConvert.Parse.ToInt64(
                           Convert.ToDateTime(dat2).ToString("yyyyMMdd") + "000000");
                 WaitingManager.Show();
-
+               
                 List<HisMedicineInStockSDO> lstMediInStocksTemp;
                 List<HisMaterialInStockSDO> lstMateInStocksTemp;
+               
+
+                if (lstMediInStocksOriginal == null && lstMediInStocks != null)
+                    lstMediInStocksOriginal = lstMediInStocks.ToList();
+                if (lstMateInStocksOriginal == null && lstMateInStocks != null)
+                    lstMateInStocksOriginal = lstMateInStocks.ToList();
 
                 if (chkMedicine.Checked)
                 {
@@ -2116,18 +2125,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     }
                     else
                     {
-                        if (ChkExpiredDate.Checked)
-                            ChkExpiredDate_CheckedChanged(null, null);
-                        else if (ChkNoExpiredDate.Checked)
-                            ChkNoExpiredDate_CheckedChanged(null, null);
+                        // trả lại danh sách gốc
+                        if (lstMediInStocksOriginal != null)
+                        {
+                            lstMediInStocks = lstMediInStocksOriginal.ToList();
+                        }
+
+                        
+                        if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
+                        {
+                            chkAlertMinStock_CheckedChanged(null, null);
+                        }
                         else
                         {
-                            lstMediInStocksTemp = lstMediInStocks.Where(o => o.ID > 0).ToList();
-                            lstMediInStocks = lstMediInStocksTemp;
-                            hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
+                            hisMediInStockProcessor.Reload(
+                                ucMedicineInfo,
+                                lstMediInStocks,
+                                this.mediStockIds
+                            );
                         }
                     }
-
                 }
                 else if (chkMaterial.Checked)
                 {
@@ -2156,18 +2173,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     }
                     else
                     {
-                        if (ChkExpiredDate.Checked)
+                        // trả lại danh sách gốc
+                        if (lstMateInStocksOriginal != null)
+                        {
+                            lstMateInStocks = lstMateInStocksOriginal.ToList();
+                        }
+
+                        // nếu còn tick cảnh báo tồn tối thiểu thì lọc lại từ danh sách gốc
+                        if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
+                        {
                             chkAlertMinStock_CheckedChanged(null, null);
-                        else if (ChkNoExpiredDate.Checked)
-                            ChkNoExpiredDate_CheckedChanged(null, null);
+                        }
                         else
                         {
-                            lstMateInStocksTemp = lstMateInStocks.Where(o => o.ID > 0).ToList();
-                            lstMateInStocks = lstMateInStocksTemp;
-                            hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
+                            hisMateInStockProcessor.Reload(
+                                ucMaterialInfo,
+                                lstMateInStocks,
+                                this.mediStockIds
+                            );
                         }
                     }
-
                 }
                 WaitingManager.Hide();
 
@@ -2202,6 +2227,12 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 List<HisMedicineInStockSDO> lstMediInStocksTemp;
                 List<HisMaterialInStockSDO> lstMateInStocksTemp;
 
+
+                if (lstMediInStocksOriginal == null && lstMediInStocks != null)
+                    lstMediInStocksOriginal = lstMediInStocks.ToList();
+                if (lstMateInStocksOriginal == null && lstMateInStocks != null)
+                    lstMateInStocksOriginal = lstMateInStocks.ToList();
+
                 if (chkMedicine.Checked)
                 {
                     if (ChkExpiredDate.Checked && chkAlertMinStock.Checked)
@@ -2240,18 +2271,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     }
                     else
                     {
+                        // trả lại danh sách gốc
+                        if (lstMediInStocksOriginal != null)
+                        {
+                            lstMediInStocks = lstMediInStocksOriginal.ToList();
+                        }
+
+                        // nếu còn tick cảnh báo tồn tối thiểu thì lọc lại từ danh sách gốc
                         if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
                         {
                             chkAlertMinStock_CheckedChanged(null, null);
                         }
                         else
                         {
-                            lstMediInStocksTemp = lstMediInStocks.Where(o => o.ID > 0).ToList();
-                            lstMediInStocks = lstMediInStocksTemp;
-                            hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
+                            hisMediInStockProcessor.Reload(
+                                ucMedicineInfo,
+                                lstMediInStocks,
+                                this.mediStockIds
+                            );
                         }
                     }
-
                 }
                 else if (chkMaterial.Checked)
                 {
@@ -2284,20 +2323,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     }
                     else
                     {
+                        // trả lại danh sách gốc
+                        if (lstMateInStocksOriginal != null)
+                        {
+                            lstMateInStocks = lstMateInStocksOriginal.ToList();
+                        }
+
+                        // nếu còn tick cảnh báo tồn tối thiểu thì lọc lại từ danh sách gốc
                         if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
                         {
                             chkAlertMinStock_CheckedChanged(null, null);
                         }
                         else
                         {
-                            lstMateInStocksTemp = lstMateInStocks.Where(o => o.ID > 0).ToList();
-                            lstMateInStocks = lstMateInStocksTemp;
-                            hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
+                            hisMateInStockProcessor.Reload(
+                                ucMaterialInfo,
+                                lstMateInStocks,
+                                this.mediStockIds
+                            );
                         }
-
                     }
-
-
                 }
                 WaitingManager.Hide();
 
@@ -2325,6 +2370,11 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
                 List<HisMedicineInStockSDO> lstMediInStocksTemp;
                 List<HisMaterialInStockSDO> lstMateInStocksTemp;
+
+                if (lstMediInStocksOriginal == null && lstMediInStocks != null)
+                    lstMediInStocksOriginal = lstMediInStocks.ToList();
+                if (lstMateInStocksOriginal == null && lstMateInStocks != null)
+                    lstMateInStocksOriginal = lstMateInStocks.ToList();
 
                 if (chkMedicine.Checked)
                 {
@@ -2363,15 +2413,24 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     }
                     else
                     {
+                        // trả lại danh sách gốc
+                        if (lstMediInStocksOriginal != null)
+                        {
+                            lstMediInStocks = lstMediInStocksOriginal.ToList();
+                        }
+
+                        // nếu còn tick cảnh báo tồn tối thiểu thì lọc lại từ danh sách gốc
                         if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
                         {
                             chkAlertMinStock_CheckedChanged(null, null);
                         }
                         else
                         {
-                            lstMediInStocksTemp = lstMediInStocks.Where(o => o.ID > 0).ToList();
-                            lstMediInStocks = lstMediInStocksTemp;
-                            hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
+                            hisMediInStockProcessor.Reload(
+                                ucMedicineInfo,
+                                lstMediInStocks,
+                                this.mediStockIds
+                            );
                         }
                     }
 
@@ -2407,15 +2466,24 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     }
                     else
                     {
+                        // trả lại danh sách gốc
+                        if (lstMateInStocksOriginal != null)
+                        {
+                            lstMateInStocks = lstMateInStocksOriginal.ToList();
+                        }
+
+                        // nếu còn tick cảnh báo tồn tối thiểu thì lọc lại từ danh sách gốc
                         if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
                         {
                             chkAlertMinStock_CheckedChanged(null, null);
                         }
                         else
                         {
-                            lstMateInStocksTemp = lstMateInStocks.Where(o => o.ID > 0).ToList();
-                            lstMateInStocks = lstMateInStocksTemp;
-                            hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
+                            hisMateInStockProcessor.Reload(
+                                ucMaterialInfo,
+                                lstMateInStocks,
+                                this.mediStockIds
+                            );
                         }
                     }
 
@@ -2499,6 +2567,12 @@ namespace HIS.Desktop.Plugins.MediStockSummary
 
                 List<HisMedicineInStockSDO> lstMediInStocksTemp;
                 List<HisMaterialInStockSDO> lstMateInStocksTemp;
+
+                  if (lstMediInStocksOriginal == null && lstMediInStocks != null)
+      lstMediInStocksOriginal = lstMediInStocks.ToList();
+  if (lstMateInStocksOriginal == null && lstMateInStocks != null)
+      lstMateInStocksOriginal = lstMateInStocks.ToList();
+
                 List<HIS_BID> ListBidName;
 
                 if (ChkValidToTime.Checked)
@@ -2551,18 +2625,26 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     }
                     else
                     {
-                        //if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
-                        //{
-                        //    chkAlertMinStock_CheckedChanged(null, null);
-                        //}
-                        //else
-                        //{
-                        lstMediInStocksTemp = lstMediInStocks.Where(o => o.ID > 0).ToList();
-                        lstMediInStocks = lstMediInStocksTemp;
-                        hisMediInStockProcessor.Reload(ucMedicineInfo, lstMediInStocksTemp, this.mediStockIds);
-                        //}
+                        // trả lại danh sách gốc
+                        if (lstMediInStocksOriginal != null)
+                        {
+                            lstMediInStocks = lstMediInStocksOriginal.ToList();
+                        }
+
+                        // nếu còn tick cảnh báo tồn tối thiểu thì lọc lại từ danh sách gốc
+                        if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
+                        {
+                            chkAlertMinStock_CheckedChanged(null, null);
+                        }
+                        else
+                        {
+                            hisMediInStockProcessor.Reload(
+                                ucMedicineInfo,
+                                lstMediInStocks,
+                                this.mediStockIds
+                            );
+                        }
                     }
-                    // }
                 }
                 else if (chkMaterial.Checked)
                 {
@@ -2597,17 +2679,25 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                     }
                     else
                     {
-                        //if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
-                        //{
-                        //    chkAlertMinStock_CheckedChanged(null, null);
-                        //}
-                        //else
-                        //{
-                       
-                        lstMateInStocksTemp = lstMateInStocks.Where(o => o.ID > 0).ToList();
-                        lstMateInStocks = lstMateInStocksTemp;
-                        hisMateInStockProcessor.Reload(ucMaterialInfo, lstMateInStocksTemp, this.mediStockIds);
-                        //}
+                        // trả lại danh sách gốc
+                        if (lstMateInStocksOriginal != null)
+                        {
+                            lstMateInStocks = lstMateInStocksOriginal.ToList();
+                        }
+
+                        // nếu còn tick cảnh báo tồn tối thiểu thì lọc lại từ danh sách gốc
+                        if (chkAlertMinStock.Checked && chkAlertMinStock.Enabled)
+                        {
+                            chkAlertMinStock_CheckedChanged(null, null);
+                        }
+                        else
+                        {
+                            hisMateInStockProcessor.Reload(
+                                ucMaterialInfo,
+                                lstMateInStocks,
+                                this.mediStockIds
+                            );
+                        }
                     }
                 }
                 WaitingManager.Hide();

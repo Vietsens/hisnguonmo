@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="_BanCoMuonChiDinhGiuong" xml:space="preserve">
+    <value>. Bạn có muốn chỉ định giường?</value>
+  </data>
+  <data name="_VuiLongChonDVKhac" xml:space="preserve">
+    <value>]. Vui lòng chọn dịch vụ khác</value>
+  </data>
+  <data name="BenhNhanDangNoTienKhogChoPhepChiDinhDV" xml:space="preserve">
+    <value>Bệnh nhân đang nợ tiền, không cho phép chỉ định dịch vụ</value>
+  </data>
+  <data name="CacDichVuTrongGoiChuaDuocThietLapChinhSachGiaHoacPhongThucHien" xml:space="preserve">
+    <value>Các dịch vụ trong gói chưa được thiết lập chính sách giá ({0}) hoặc phòng xử lý: {1}</value>
+  </data>
+  <data name="DichVuCLSCoGioiHanChiDinhThanhToanBHYT_DeNghiBSXemXetTruocKhiChiDinh" xml:space="preserve">
+    <value>Dịch vụ cận lâm sàng có giới hạn chỉ định thanh toán BHYT. Đề nghị BS xem xét trước khi chỉ định</value>
+  </data>
+  <data name="DienDieuTriCuaBNLa" xml:space="preserve">
+    <value>Diện điều trị hiện tại của bệnh nhân là: </value>
+  </data>
+  <data name="DoTuoiCuaBNKhongPhuHopVoiDieuKienCuaDV_" xml:space="preserve">
+    <value>Độ tuổi của BN không phù hợp với điều kiện của dịch vụ: [</value>
+  </data>
+  <data name="GiuongDaCoBenhNhanNam" xml:space="preserve">
+    <value>Giường đã có bệnh nhân nằm. Bạn có muốn cho bệnh nhân nằm ghép không?</value>
+  </data>
+	<data name="KhongDuocNamGhepGiuong" xml:space="preserve">
+    <value>Bệnh nhân {0} không được phép nằm ghép giường</value>
+  </data>
+  <data name="GiuongDaVuotQuaSucChua" xml:space="preserve">
+    <value>Không thể cho bệnh nhân nằm thêm, vượt quá sức chứa tối đa của giường.</value>
+  </data>
+  <data name="GoiDichVuChuaDuocThietLapDichVu" xml:space="preserve">
+    <value>Gói dịch vụ chưa được thiết lập dịch vụ</value>
+  </data>
+  <data name="IcdKhongDung" xml:space="preserve">
+    <value>Bạn nhập mã chẩn đoán không đúng. Vui lòng kiểm tra lại</value>
+  </data>
+  <data name="KhoaChiDinhChuaTaoBienBanHoiChuan" xml:space="preserve">
+    <value>Khoa chỉ định chưa tạo Biên bản hội chẩn đối với (các) dịch vụ: {0}.</value>
+  </data>
+  <data name="KhongChoPhepChiDInhDVVuotQuaSoTienCOnThua" xml:space="preserve">
+    <value>Không cho phép chỉ định dịch vụ vượt quá số tiền còn thừa</value>
+  </data>
+  <data name="KhongTimThayDVChuaDuocCauHinh" xml:space="preserve">
+    <value>Không tìm thấy dịch vụ chưa được cấu hình</value>
+  </data>
+  <data name="KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>Mã bệnh {0} không có trong danh mục, đề nghị kiểm tra lại.</value>
+  </data>
+  <data name="KhongTimThayThongTinICD" xml:space="preserve">
+    <value>Không tìm thấy thông tin ICD</value>
+  </data>
+  <data name="KhongTimThayThuocVatTuDuocCauHinhChanDoanICD" xml:space="preserve">
+    <value>Không tìm thấy thuốc vật tư chưa được cấu hình chẩn đoán ICD</value>
+  </data>
+  <data name="MabenhPhuDaDuocSuDungChoMaBenhChinh" xml:space="preserve">
+    <value>Mã bệnh phụ {0} đã được sử dụng cho mã bệnh chính, đề nghị kiểm tra lại.</value>
+  </data>
+  <data name="NhapQuaKyTuBenhPhu" xml:space="preserve">
+    <value>Mã bệnh phụ hoặc tên bệnh phụ quá dài ( &gt;500 ký tự)</value>
+  </data>
+  <data name="Plugin_AssignService__BanCoMuonTiepTuc" xml:space="preserve">
+    <value> bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="Plugin_AssignService__BenhNhanDangThieuVienPhi" xml:space="preserve">
+    <value>Bệnh nhân đang thiếu viện phí ({0} đồng). Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="Plugin_AssignService__BenhNhanDangThieuVienPhi_0D" xml:space="preserve">
+    <value>Bệnh nhân đang thiếu viện phí ({0} đồng).</value>
+  </data>
+  <data name="Plugin_AssignService__CacDichVuKhongCoChinhSachGiaHoacKhongCoCauHinhSeKhongDuocChon" xml:space="preserve">
+    <value>Lưu ý: các dịch vụ không có chính sách giá hoặc cấu hình được sử dụng tại phòng sẽ không được chọn.</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBao" xml:space="preserve">
+    <value>Cảnh báo</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVu" xml:space="preserve">
+    <value>Dịch vụ {0}</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVuCungCoChe" xml:space="preserve">
+    <value>Dịch vụ cùng cơ chế: {0}</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVuCungCoCheDaChiDinhTrongNgay" xml:space="preserve">
+    <value>Dịch vụ cùng cơ chế đã được chỉ định trong ngày: {0}</value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVuDaChiDinhTrongNgay" xml:space="preserve">
+    <value>Dịch vụ đã chỉ định trong ngày </value>
+  </data>
+  <data name="Plugin_AssignService__CanhBaoDichVuVaDichVuCungCoCheDaChiDinhTrongNgay" xml:space="preserve">
+    <value>Dịch vụ và dịch vụ cùng chơ chế ({0}) đã được chỉ định trong ngày!</value>
+  </data>
+  <data name="Plugin_AssignService__ChuaChonNgayChiDinh" xml:space="preserve">
+    <value>Chưa chọn ngày chỉ định</value>
+  </data>
+  <data name="Plugin_AssignService__ChuaChonPhongThuNgan" xml:space="preserve">
+    <value>Chưa chọn phòng thu ngân</value>
+  </data>
+  <data name="Plugin_AssignService__ChuaNhapChanDoanChinhVaChanDoanSoBo" xml:space="preserve">
+    <value>Bạn chưa nhập chẩn đoán chính và chẩn đoán sơ bộ. Bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuADaDuocTietLapDinhKemDichVuB" xml:space="preserve">
+    <value>Dịch vụ {0} đã được thiết lập đính kèm dịch vụ {1}</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuChuaDuocCauHinhICDDichVu" xml:space="preserve">
+    <value>Dịch vụ chưa được cấu hình ICD - Dịch vụ: {0}</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuCoDTPTBatBuocNhungKhongCoChinhSachGia" xml:space="preserve">
+    <value>Dịch vụ có đối tượng phụ thu bắt buộc {0} nhưng không có chính sách giá tương ứng.</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuCoDTTTBatBuocNhungKhongCoChinhSachGia" xml:space="preserve">
+    <value>Dịch vụ có đối tượng thanh toán bắt buộc {0} nhưng không có chính sách giá tương ứng</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuCoThoiGianChiDinhNamTrongKhoangThoiGianKhongChoPhep" xml:space="preserve">
+    <value>Các dịch vụ sau có thời gian chỉ định nằm trong khoảng thời gian không cho phép: {0} .Bạn có muốn tiếp tục?</value>
+  </data>
+  <data name="Plugin_AssignService__DichVuKhongChiDinhChoGioiTinh" xml:space="preserve">
+    <value>Dịch vụ chỉ sử dụng cho giới tính</value>
+  </data>
+  <data name="Plugin_AssignService__HSDTKhongCoHoacDaThanhToanDichVu" xml:space="preserve">
+    <value>Hồ sơ điều trị không có hoặc đã thanh toán hết dịch vụ</value>
+  </data>
+  <data name="Plugin_AssignService__KhongCoDoiTuongThanhToan" xml:space="preserve">
+    <value>Không chọn đối tượng thanh toán</value>
+  </data>
+  <data name="Plugin_AssignService__KhongNhapSoLuong" xml:space="preserve">
+    <value>Không nhập số lượng</value>
+  </data>
+  <data name="Plugin_AssignService__KhongTimThayDoiTuongThanhToanTrongThoiGianYLenh" xml:space="preserve">
+    <value>Không tìm thấy đối tượng, vui lòng liên hệ quản trị hệ thống để được hỗ trợ</value>
+  </data>
+  <data name="Plugin_AssignService__KhongTimThayIcdTuongUngVoiCacMaSau" xml:space="preserve">
+    <value>Mã ICD sau không tồn tại hoặc sai định dạng: {0}. Phần mềm chỉ nhận danh sách các mã ICD ngăn cách nhau bởi dấu chấm phẩy. Vui lòng kiểm tra lại</value>
+  </data>
+  <data name="Plugin_AssignService__NguoiChiDinhKhongCoThongTinHoTen" xml:space="preserve">
+    <value>Người chỉ định có tài khoản {0} không có thông tin họ tên</value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuChiTiet" xml:space="preserve">
+    <value>{0} (Các dịch vụ có mã: {1}) </value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuCoDichVuDuocCauHinhTrongNhomNhungKhongCoCauHinhChinhSach" xml:space="preserve">
+    <value>Tồn tại nhóm dịch vụ có dịch vụ trong nhóm nhưng không có chính sách giá hoặc không được thiết lập cấu hình dịch vụ phòng hoặc nhóm dịch vụ không có dịch vụ nào. Chi tiết: </value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuCoDichVuKhongCoCauHinh" xml:space="preserve">
+    <value>Nhóm dịch vụ có dịch vụ không có cấu hình, chính sách: {0}. </value>
+  </data>
+  <data name="Plugin_AssignService__NhomDichVuKhongCoDichVu" xml:space="preserve">
+    <value>Nhóm dịch vụ không có dịch vụ: {0}. </value>
+  </data>
+  <data name="Plugin_AssignService__SoLuongXuatLonHonSpoLuongKhadungTrongKho" xml:space="preserve">
+    <value>Số lượng xuất lớn hơn số lượng khả dụng trong kho</value>
+  </data>
+  <data name="Plugin_AssignService__ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa" xml:space="preserve">
+    <value>Thời gian y lệnh không nằm trong khoảng thời gian bệnh nhân hiện diện tại khoa ({0})</value>
+  </data>
+  <data name="Plugin_AssignService__TongTienChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>Tổng số tiền của các dịch vụ đã chỉ định {0} cho BHYT đã vượt quá mức giới hạn {1}</value>
+  </data>
+  <data name="Plugin_AssignService__TongTienHaoPhiVuotQuaDinhMucHaoPhiKhongTheChonDichVuNay" xml:space="preserve">
+    <value>Tổng số tiền hao phí {0} đã vượt quá số tiền định mức hao phí {1} của dịch vụ {2}. </value>
+  </data>
+  <data name="Plugin_AssignService__TongTienTheoDoiTuongDieuTriChoBHYTDaVuotquaMucGioiHan" xml:space="preserve">
+    <value>Tổng số tiền của các dịch vụ đã chỉ định của bệnh nhân đối thuộc diện điều trị {0} cho BHYT là {1} đã vượt quá mức giới hạn {2}</value>
+  </data>
+  <data name="Plugin_AssignService__VuotQuaSoLuongKhaDungTrongKho__CoMuonTiepTuc" xml:space="preserve">
+    <value>vượt quá số lượng khả dụng hoặc không có trong kho. Bạn có muốn tiếp tục không?</value>
+  </data>
+  <data name="SereServConditionAlert__DVChuaDuocNhapDieuKien" xml:space="preserve">
+    <value>Dịch vụ {0} chưa được nhập điều kiện</value>
+  </data>
+  <data name="SereServMinDurationAlert__BanCoMuonChuyenDoiDTTTSangVienPhi" xml:space="preserve">
+    <value>Các dịch vụ sau có thời gian chỉ định nằm trong khoảng thời gian không cho phép: {0} .Bạn có muốn chuyển đổi ĐT thanh toán sang VP?</value>
+  </data>
+  <data name="SereServOtherpaySourceAlert__DVChuaDuocNhapNguonChiTra" xml:space="preserve">
+    <value>Bạn chưa chọn "Nguồn khác" đối với dịch vụ {0}</value>
+  </data>
+  <data name="SereServWithBed_DichVuCoThongTinGiuongChiDuocChiDinhTrongNgay" xml:space="preserve">
+    <value>Dịch vụ có thông tin giường chỉ cho phép chỉ định 1 ngày</value>
+  </data>
+  <data name="SereServWithBed_DichVuThieuThongTinGiuong" xml:space="preserve">
+    <value>Dịch vụ giường {0} chưa có thông tin giường. Bạn có muốn bổ sung thông tin?</value>
+  </data>
+  <data name="VuiLongChonDichVu" xml:space="preserve">
+    <value>Vui lòng chọn dịch vụ</value>
+  </data>
+  <data name="SereServWithBed_ChanKhongPhaiNoiTruChiDinhGiuong" xml:space="preserve">
+    <value>Không cho phép chỉ định giường đối với bệnh nhân không phải điều trị nội trú</value>
+  </data>
+  <data name="SereServWithBed_KhongPhaiNoiTruChiDinhGiuong" xml:space="preserve">
+    <value>Bệnh nhân không phải diện điều trị nội trú. Bạn có chắc muốn chỉ định dịch vụ giường cho bệnh nhân không?</value>
+  </data>
+  <data name="AssignService_DichVuVuotQuaSoLuongThucHien" xml:space="preserve">
+    <value>Dịch vụ {0} vượt quá số lượng thực hiện cho phép ({1})</value>
+  </data>
+</root>

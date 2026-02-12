@@ -275,6 +275,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         {
             try
             {
+                layoutControlItemExtrnalBlood.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 CommonParam param = new CommonParam();
                 this.ListBloodTypeADOProcess = new List<BloodTypeADO>();
                 gridControlBloodType__BloodPage.DataSource = null;

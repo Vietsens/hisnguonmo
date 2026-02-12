@@ -52,7 +52,7 @@ namespace MPS.Processor.Mps000279
             return result;
         }
 
-        private static string ToString(HIS_PATIENT_TYPE_ALTER patyAlter, HIS_SERE_SERV s, long treatmentTypeId)
+        public static string ToString(HIS_PATIENT_TYPE_ALTER patyAlter, HIS_SERE_SERV s, long treatmentTypeId)
         {
             if (patyAlter != null)
             {

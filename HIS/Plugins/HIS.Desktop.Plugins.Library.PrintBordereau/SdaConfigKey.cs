@@ -45,5 +45,6 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau
         internal const string QRCodeConnectInfoCFG = "HIS.Desktop.Plugins.Bordereau.QRCode.ConnectInfo";
         internal const string CreateQRCodeBillCFG = "HIS.Desktop.Plugins.Library.Bordereau.CreateQRCodeBill";
         internal const string MERGE_SERVICE_NOT_HEIN = "HIS.Desktop.Plugins.Library.Bordereau.MergeServiceNotHein";
+        internal const string ConfigKey_IsGroupHeinServiceByUseTime = "HIS.Desktop.Plugins.Library.Bordereau.Mps.IsGroupHeinServiceByUseTime";
     }
 }
