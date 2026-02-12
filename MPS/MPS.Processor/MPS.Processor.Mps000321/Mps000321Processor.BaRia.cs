@@ -17,7 +17,9 @@ namespace MPS.Processor.Mps000321
             #region SereServ Real Sử dụng cho Bà Rịa 
             var sereServADOTemps = new List<SereServADO>();
             sereServADOTemps.AddRange(from r in rdo.SereServs
-                                      select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, ListPta, rdo.Treatment));
+                                      select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services,
+                                      rdo.Rooms, rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, ListPta,
+                                      rdo.Treatment, rdo.ServiceReqs));
 
             sereServADOTemps = sereServADOTemps
                 .Where(o =>

@@ -45,6 +45,7 @@ namespace MPS.Processor.Mps000285.PDO
         public List<HIS_SERVICE_REQ> ServiceReqs { get; set; }
         public List<HIS_DEPARTMENT> Departments { get; set; }
         public List<HIS_MEDI_ORG> ListMediOrg { get; set; }
+        public HisConfigValue HisConfigValue { get; set; }
 
         public Mps000285PDO(
             V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,
@@ -144,6 +145,61 @@ namespace MPS.Processor.Mps000285.PDO
                 this.Departments = _departments;
                 this.ListMediOrg = _listMediOrg;
                 this.PatientTypeAlterAlls = _patientTypeAlterAll;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public Mps000285PDO(
+           V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,
+           List<HIS_PATIENT_TYPE_ALTER> _patientTypeAlterAll,
+           List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,
+           List<V_HIS_TREATMENT_FEE> _treatmentFees,
+           HeinServiceTypeCFG _heinServiceTypeCfg,
+           PatientTypeCFG _patientTypeCfg,
+           List<HIS_SERE_SERV> _sereServ,
+           List<HIS_SERE_SERV_EXT> _sereServExts,
+           V_HIS_TREATMENT _treatment,
+           List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes,
+           List<V_HIS_ROOM> _rooms,
+           List<V_HIS_SERVICE> _services,
+           List<HIS_TREATMENT_TYPE> _treatmentType,
+           HIS_BRANCH _branch,
+           List<HIS_MEDICINE_TYPE> _medicineTypes,
+           List<HIS_MATERIAL_TYPE> _materialTypes,
+           List<HIS_MEDICINE_LINE> _medicineLine,
+           List<HIS_SERVICE_REQ> _serviceReqs,
+           List<HIS_DEPARTMENT> _departments,
+           SingleKeyValue _singleKeyValue,
+           List<HIS_MEDI_ORG> _listMediOrg,
+           HisConfigValue hisConfigValue
+           )
+        {
+            try
+            {
+                this.SereServs = _sereServ;
+                this.Treatment = _treatment;
+                this.DepartmentTrans = _departmentTrans;
+                this.TreatmentFees = _treatmentFees;
+                this.HeinServiceTypeCFG = _heinServiceTypeCfg;
+                this.SingleKeyValue = _singleKeyValue;
+                this.HeinServiceTypes = _heinServiceTypes;
+                this.Services = _services;
+                this.Rooms = _rooms;
+                this.PatientTypeCFG = _patientTypeCfg;
+                this.Branch = _branch;
+                this.TreatmentTypes = _treatmentType;
+                this.CurrentPatyAlter = _currentPatyAlter;
+                this.SereServExts = _sereServExts;
+                this.materialTypes = _materialTypes;
+                this.medicineTypes = _medicineTypes;
+                this.MedicineLines = _medicineLine;
+                this.ServiceReqs = _serviceReqs;
+                this.Departments = _departments;
+                this.ListMediOrg = _listMediOrg;
+                this.PatientTypeAlterAlls = _patientTypeAlterAll;
+                this.HisConfigValue = hisConfigValue;
             }
             catch (Exception ex)
             {

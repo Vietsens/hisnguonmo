@@ -954,17 +954,27 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         {
             try
             {
-                // Sử dụng đúng key cấu hình mới
+               
                 int showOption = 2;
+                string showOptionStr = null;
                 try
                 {
-                    // Đổi key cấu hình theo yêu cầu mới
-                    string showOptionStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.HisMachine_ShowOption");
-                    showOption = Inventec.Common.TypeConvert.Parse.ToInt32(showOptionStr);
-                    if (showOption != 1 && showOption != 2) showOption = 2;
+                   
+                    showOptionStr = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.HisMachine_ShowOption");
+                    if (string.IsNullOrWhiteSpace(showOptionStr))
+                    {
+                     
+                        showOption = 0;
+                    }
+                    else
+                    {   
+                        showOption = Inventec.Common.TypeConvert.Parse.ToInt32(showOptionStr);
+                        if (showOption != 1 && showOption != 2) showOption = 2;
+                    }
                 }
                 catch
                 {
+                    
                     showOption = 2;
                 }
 
@@ -1005,6 +1015,14 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     {
                         // Hiển thị theo thiết lập Máy - Phòng xử lý (HIS_MACHINE.ROOM_IDS)
                         datas = datas.Where(p => ("," + p.ROOM_IDS + ",").Contains("," + this.Module.RoomId + ",")).ToList();
+                    }
+                    else
+                    {
+                       
+                        if (this.Module != null)
+                        {
+                            datas = datas.Where(p => ("," + p.ROOM_IDS + ",").Contains("," + this.Module.RoomId + ",")).ToList();
+                        }
                     }
                 }
 

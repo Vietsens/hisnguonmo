@@ -1317,30 +1317,35 @@ namespace HIS.Desktop.Plugins.BedHistory
                                     return;
                                 }
                             }
+                            if (ado.startTime != null && ado.finishTime <= ado.startTime)
+                            {
+                                ado.ErrorTypeStartTime = ErrorType.Warning;
+                                ado.ErrorMessageStartTime = ResourceMessage.ERROR_FROM_TO_TIME;
+                            }
                             ProcessSaveBedLog(ado);
                         }
 
-                        if (dataBedADOs != null && dataBedADOs.Count > 0)
-                        {
-                            var bed = dataBedADOs.FirstOrDefault(o => o.ID == ado.BED_CODE_ID);
-                            if ((bed != null && bed.AMOUNT > 0) || bed == null)
-                            {
-                                ado.BED_ID = 0;
-                                ado.BED_CODE = null;
-                                ado.BED_CODE_ID = 0;
-                                ado.BED_TYPE_CODE = null;
-                                ado.BED_TYPE_ID = 0;
-                                ado.BED_TYPE_NAME = null;
-                                ado.BED_SERVICE_TYPE_CODE = null;
-                                ado.BED_SERVICE_TYPE_ID = null;
-                                ado.SHARE_COUNT = null;
-                                ado.ErrorMessagePrimaryPatientTypeId = "";
-                                ado.ErrorTypePrimaryPatientTypeId = ErrorType.None;
-                                ado.PATIENT_TYPE_ID = null;
-                                ado.PRIMARY_PATIENT_TYPE_ID = null;
-                                ado.SERVICE_CONDITION_ID = null;
-                            }
-                        }
+                        //if (dataBedADOs != null && dataBedADOs.Count > 0)
+                        //{
+                        //    var bed = dataBedADOs.FirstOrDefault(o => o.ID == ado.BED_CODE_ID);
+                        //    if ((bed != null && bed.AMOUNT > 0) || bed == null)
+                        //    {
+                        //        ado.BED_ID = 0;
+                        //        ado.BED_CODE = null;
+                        //        ado.BED_CODE_ID = 0;
+                        //        ado.BED_TYPE_CODE = null;
+                        //        ado.BED_TYPE_ID = 0;
+                        //        ado.BED_TYPE_NAME = null;
+                        //        ado.BED_SERVICE_TYPE_CODE = null;
+                        //        ado.BED_SERVICE_TYPE_ID = null;
+                        //        ado.SHARE_COUNT = null;
+                        //        ado.ErrorMessagePrimaryPatientTypeId = "";
+                        //        ado.ErrorTypePrimaryPatientTypeId = ErrorType.None;
+                        //        ado.PATIENT_TYPE_ID = null;
+                        //        ado.PRIMARY_PATIENT_TYPE_ID = null;
+                        //        ado.SERVICE_CONDITION_ID = null;
+                        //    }
+                        //}
                         if (!BreakServiceCondition)
                         {
                             var data = gridControlBedServiceType.DataSource as List<HisBedServiceTypeADO>;
@@ -1361,6 +1366,11 @@ namespace HIS.Desktop.Plugins.BedHistory
                                 {
                                     return;
                                 }
+                            }
+                            if (ado.finishTime != null && ado.finishTime <= ado.startTime)
+                            {
+                                ado.ErrorTypeFinishTime = ErrorType.Warning;
+                                ado.ErrorMessageFinishTime = ResourceMessage.ERROR_END_FINISH_TIME;
                             }
                             ProcessSaveBedLog(ado);
                         }
@@ -1599,9 +1609,9 @@ namespace HIS.Desktop.Plugins.BedHistory
 
                     if (ado.ErrorTypeFinishTime == ErrorType.None)
                     {
-                        if (ado.IsChecked && ado.finishTime.HasValue && ado.finishTime < ado.startTime)
+                        if (ado.IsChecked && ado.finishTime.HasValue && ado.finishTime <= ado.startTime)
                         {
-                            ado.ErrorMessageFinishTime = ResourceMessage.ERROR_FROM_TO_TIME;
+                            ado.ErrorMessageFinishTime = ResourceMessage.ERROR_END_FINISH_TIME;
                             ado.ErrorTypeFinishTime = ErrorType.Warning;
                             sucess = false;
                         }

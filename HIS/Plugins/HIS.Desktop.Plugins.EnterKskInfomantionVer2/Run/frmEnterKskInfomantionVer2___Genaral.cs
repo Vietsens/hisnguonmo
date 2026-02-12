@@ -15,6 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using Inventec.Common.Adapter;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,14 +33,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using MOS.SDO;
-using Inventec.Common.Adapter;
-using Inventec.Core;
-using HIS.Desktop.ApiConsumer;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.LocalStorage.BackendData;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
@@ -251,6 +252,15 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                         cboExamDermatologyLoginName.EditValue = currentKskGeneral.EXAM_DERMATOLOGY_LOGINNAME;
                         cboExamSubclinicalLoginName.EditValue = currentKskGeneral.EXAM_SUBCLINICAL_LOGINNAME;
                         cboConcluderLoginName.EditValue = currentKskGeneral.CONCLUDER_LOGINNAME;
+                        if (currentKskGeneral.CONCLUSION_TIME != null && currentKskGeneral.CONCLUSION_TIME > 0)
+                        {
+                            dteConclusionTimeGeneral.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(
+                                currentKskGeneral.CONCLUSION_TIME.Value) ?? DateTime.Now;
+                        }
+                        else
+                        {
+                            dteConclusionTimeGeneral.DateTime = DateTime.Now;
+                        }
                     }
                     else
                     {
@@ -433,6 +443,22 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 obj.EXAM_DERMATOLOGY_LOGINNAME = cboExamDermatologyLoginName.EditValue != null ? cboExamDermatologyLoginName.EditValue.ToString() : null;
                 obj.EXAM_SUBCLINICAL_LOGINNAME = cboExamSubclinicalLoginName.EditValue != null ? cboExamSubclinicalLoginName.EditValue.ToString() : null;
                 obj.CONCLUDER_LOGINNAME = cboConcluderLoginName.EditValue != null ? cboConcluderLoginName.EditValue.ToString() : null;
+                obj.CONCLUSION_TIME = (dteConclusionTimeGeneral.EditValue != null) ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteConclusionTimeGeneral.DateTime) : null;
+                try
+                {
+                    long branchId = WorkPlace.GetBranchId();
+                    var branch = BackendDataWorker.Get<HIS_BRANCH>()
+                        .FirstOrDefault(o => o.ID == branchId);
+
+                    if (branch != null && !string.IsNullOrEmpty(branch.HEIN_MEDI_ORG_CODE))
+                    {
+                        obj.HEIN_MEDI_ORG_CODE = branch.HEIN_MEDI_ORG_CODE;
+                    }
+                }
+                catch (Exception ex2)
+                {
+                    Inventec.Common.Logging.LogSystem.Error("L?i l?y HEIN_MEDI_ORG_CODE t? Branch: " + ex2);
+                }
 
             }
             catch (Exception ex)
@@ -1766,6 +1792,21 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
                 }
             }
             catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void dteConclusionTimeGeneral_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                   // btnSave.Focus();
+                }
+            }
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }

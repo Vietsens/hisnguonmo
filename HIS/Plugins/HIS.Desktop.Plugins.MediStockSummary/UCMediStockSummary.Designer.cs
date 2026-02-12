@@ -45,11 +45,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCMediStockSummary));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.chkExportExcel = new DevExpress.XtraEditors.CheckEdit();
             this.chkHienThiLoHet = new DevExpress.XtraEditors.CheckEdit();
             this.cboIsActive = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -89,7 +87,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciHienThiLoHet = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.txtKeyWork = new DevExpress.XtraEditors.TextEdit();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
@@ -114,9 +111,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
+            this.imageListIcon = new System.Windows.Forms.ImageList();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -160,7 +157,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHienThiLoHet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWork.Properties)).BeginInit();
@@ -197,7 +193,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             // 
             // layoutControl3
             // 
-            this.layoutControl3.Controls.Add(this.checkBox1);
             this.layoutControl3.Controls.Add(this.chkExportExcel);
             this.layoutControl3.Controls.Add(this.chkHienThiLoHet);
             this.layoutControl3.Controls.Add(this.cboIsActive);
@@ -222,15 +217,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControl3.Size = new System.Drawing.Size(990, 768);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.Location = new System.Drawing.Point(2, 746);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(986, 20);
-            this.checkBox1.TabIndex = 23;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // chkExportExcel
             // 
@@ -433,7 +419,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.panelControlMediMate.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControlMediMate.Location = new System.Drawing.Point(2, 52);
             this.panelControlMediMate.Name = "panelControlMediMate";
-            this.panelControlMediMate.Size = new System.Drawing.Size(986, 690);
+            this.panelControlMediMate.Size = new System.Drawing.Size(986, 714);
             this.panelControlMediMate.TabIndex = 4;
             // 
             // dtExpiredDate
@@ -481,8 +467,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.emptySpaceItem2,
             this.layoutControlItem22,
             this.lciHienThiLoHet,
-            this.layoutControlItem23,
-            this.layoutControlItem24});
+            this.layoutControlItem23});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -494,7 +479,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlItem5.Control = this.panelControlMediMate;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 50);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(990, 694);
+            this.layoutControlItem5.Size = new System.Drawing.Size(990, 718);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -676,15 +661,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             this.layoutControlItem23.Size = new System.Drawing.Size(118, 27);
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem23.TextVisible = false;
-            // 
-            // layoutControlItem24
-            // 
-            this.layoutControlItem24.Control = this.checkBox1;
-            this.layoutControlItem24.Location = new System.Drawing.Point(0, 744);
-            this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(990, 24);
-            this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem24.TextVisible = false;
             // 
             // layoutControl2
             // 
@@ -1016,7 +992,6 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciHienThiLoHet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtKeyWork.Properties)).EndInit();
@@ -1110,7 +1085,5 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         private DevExpress.XtraLayout.LayoutControlItem lciHienThiLoHet;
         private DevExpress.XtraEditors.CheckEdit chkExportExcel;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem24;
     }
 }

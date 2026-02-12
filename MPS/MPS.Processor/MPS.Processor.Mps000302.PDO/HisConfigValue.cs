@@ -30,5 +30,6 @@ namespace MPS.Processor.Mps000302.PDO
         public bool IsNotSameDepartment { get; set; }
         public bool IsMergeServiceNotHein { get; set; }
         public bool IsNotIncludeIsExpend { get; set; }
+        public bool IsGroupHeinServiceByUseTime { get; set; }
     }
 }

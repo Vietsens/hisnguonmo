@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="frmSumaryTestResults.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="frmSumaryTestResults.grdColTestIndexUnitName.Caption" xml:space="preserve">
+    <value>Unit of calculation</value>
+  </data>
   <data name="frmSumaryTestResults.gridColSerSevAmount.Caption" xml:space="preserve">
     <value>Number</value>
   </data>
@@ -153,8 +159,26 @@
   <data name="frmSumaryTestResults.gridColumn4.Caption" xml:space="preserve">
     <value>Normal index</value>
   </data>
+  <data name="frmSumaryTestResults.gridColumnChart.Caption" xml:space="preserve">
+    <value>Add Chart</value>
+  </data>
+  <data name="frmSumaryTestResults.gridColumnTestIndexCode.Caption" xml:space="preserve">
+    <value>Index code</value>
+  </data>
   <data name="frmSumaryTestResults.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
+  </data>
+  <data name="frmSumaryTestResults.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Obtain all patient laboratory services</value>
+  </data>
+  <data name="frmSumaryTestResults.layoutControlItem4.Text" xml:space="preserve">
+    <value>Taken outside of treatment:</value>
+  </data>
+  <data name="frmSumaryTestResults.layoutControlItem5.Text" xml:space="preserve">
+    <value>Order date: From:</value>
+  </data>
+  <data name="frmSumaryTestResults.layoutControlItem6.Text" xml:space="preserve">
+    <value>Arrive:</value>
   </data>
   <data name="frmSumaryTestResults.Text" xml:space="preserve">
     <value>Test results</value>

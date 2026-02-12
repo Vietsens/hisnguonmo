@@ -55,6 +55,7 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
         List<int> lstVisibleIndex = null;
         Inventec.Desktop.Common.Modules.Module currentModule;
         long treatmentId;
+        long patientId;
 
         public frmSumaryTestResults()
         {
@@ -122,10 +123,14 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkAllTreatment.Properties.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.chkAllTreatment.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.gridColumnTestIndexCode.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColumn2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumnChart.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColumnChart.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.gridColumnTestIndexCode.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColumnTestIndexCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColumn3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn4.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColumn4.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColTestIndexUnitName.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.grdColTestIndexUnitName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColSerSevSTT.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColSerSevSTT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColSerSevView.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColSerSevView.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColSerSevPrint.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColSerSevPrint.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -134,6 +139,10 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
                 this.gridColSerSevUnitName.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColSerSevUnitName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColSerSevAmount.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColSerSevAmount.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColSerSevTypeName.Caption = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.gridColSerSevTypeName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem4.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.layoutControlItem4.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem5.Text = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.layoutControlItem5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmSumaryTestResults.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
@@ -149,8 +158,40 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
                 CommonParam param = new CommonParam();
                 //Load lấy các yêu cầu xét nghiệm của 1 BN
                 MOS.Filter.HisServiceReqFilter serviceReqFilter1 = new HisServiceReqFilter();
-                serviceReqFilter1.TREATMENT_ID = this.treatmentId;
+
+                if (_ServiceReqs != null && _ServiceReqs.Count > 0)
+                {
+                    var req = _ServiceReqs
+                        .FirstOrDefault(o => o.TREATMENT_ID == treatmentId);
+
+                    if (req != null)
+                    {
+                        patientId = req.TDL_PATIENT_ID;
+                    }
+                }
+
+                if (chkAllTreatment.Checked) 
+                {
+                    serviceReqFilter1.TDL_PATIENT_ID = this.patientId;
+                }
+                else
+                {
+                    serviceReqFilter1.TREATMENT_ID = this.treatmentId;
+                }
+
                 serviceReqFilter1.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__XN;
+
+                if (dtIntructionDateFrom.EditValue != null)
+                {
+                    serviceReqFilter1.INTRUCTION_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                Convert.ToDateTime(dtIntructionDateFrom.EditValue).ToString("yyyyMMddHHmm") + "00");
+                }
+                if (dtIntructionDateTo.EditValue != null)
+                {
+                    serviceReqFilter1.INTRUCTION_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                Convert.ToDateTime(dtIntructionDateTo.EditValue).ToString("yyyyMMddHHmm") + "59");
+                }
+
                 this._ServiceReqs = new List<HIS_SERVICE_REQ>();
                 this._ServiceReqs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("/api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter1, param);
                 if (this._ServiceReqs == null || this._ServiceReqs.Count == 0)
@@ -668,6 +709,43 @@ namespace HIS.Desktop.Plugins.SumaryTestResults
             }
         }
 
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            LoadDataToGridSereServ();
+            if (gridViewSereServ.RowCount > 0)
+            {
+                gridViewSereServ.FocusedRowHandle = 0;
 
+                var firstRow = gridViewSereServ.GetRow(0) as HIS_SERE_SERV;
+                if (firstRow != null)
+                {
+                    LoadDataSereServTein(firstRow);
+                }
+            }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.F))
+            {
+                btnSearch.PerformClick();
+                return true; 
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void chkAllTreatment_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkAllTreatment.Checked)
+            {
+                dtIntructionDateFrom.EditValue = new DateTime(DateTime.Now.Year, 1, 1);
+                dtIntructionDateTo.EditValue = DateTime.Now;
+            }
+            else
+            {
+                dtIntructionDateFrom.EditValue = null;
+                dtIntructionDateTo.EditValue = null;
+            }
+        }
     }
 }

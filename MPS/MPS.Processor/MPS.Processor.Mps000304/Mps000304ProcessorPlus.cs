@@ -44,7 +44,12 @@ namespace MPS.Processor.Mps000304
                 sereServADOs = new List<SereServADO>();
                 var sereServADOTemps = new List<SereServADO>();
                 sereServADOTemps.AddRange(from r in rdo.SereServs
-                                          select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, rdo.Departments, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, rdo.ListOtherPaySource, rdo.Treatment));
+                                          select new SereServADO(r, rdo.SereServs, rdo.SereServExts, 
+                                          rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, rdo.Departments, 
+                                          rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, 
+                                          rdo.HisServiceUnit, rdo.ListOtherPaySource, rdo.Treatment,
+                                            rdo.ServiceReqs, rdo.PatientTypeAlterAlls
+                                          ));
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps.Where(o => o.TDL_SERVICE_NAME.Contains("Natri clorid"))), sereServADOTemps.Where(o => o.TDL_SERVICE_NAME.Contains("Natri clorid"))));
 
