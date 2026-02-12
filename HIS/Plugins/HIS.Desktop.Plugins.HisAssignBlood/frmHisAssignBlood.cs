@@ -3718,76 +3718,15 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
 
         private void gridViewExternalBlood_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
         {
-            try
-            {
-                if (!_isExternalMinhTamMode) return;
-
-                // Lấy row từ gridViewBloodType__BloodPage (đã chọn trước đó)
-                var selectedBloodType = gridViewBloodType__BloodPage.GetFocusedRow() as BloodADO;
-                if (selectedBloodType == null) return;
-
-                var externalBloodRow = gridViewExternalBlood.GetFocusedRow();
-                if (externalBloodRow == null) return;
-
-                dynamic externalData = externalBloodRow;
-
-                this.currentBloodType = new BloodADO();
-                this.currentBloodType.BLOOD_TYPE_ID = selectedBloodType.BLOOD_TYPE_ID;
-                this.currentBloodType.BLOOD_TYPE_CODE = selectedBloodType.BLOOD_TYPE_CODE;
-                this.currentBloodType.BLOOD_TYPE_NAME = selectedBloodType.BLOOD_TYPE_NAME;
-                this.currentBloodType.SERVICE_ID = selectedBloodType.SERVICE_ID;
-                this.currentBloodType.ELEMENT = selectedBloodType.ELEMENT;
-                this.currentBloodType.VOLUME = selectedBloodType.VOLUME;
-
-                string aboCode = externalData.ABO?.ToString() ?? externalData.abo?.ToString();
-                string rhCode = externalData.Rh?.ToString() ?? externalData.rh?.ToString();
-
-                if (!string.IsNullOrEmpty(aboCode))
-                {
-                    var abo = (aboCode ?? "").Trim().ToUpper();   // "O " -> "O"
-
-                    var bloodAbo = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_ABO>()
-                        .FirstOrDefault(o => (o.BLOOD_ABO_CODE ?? "").Trim().ToUpper() == abo);
-                    if (bloodAbo != null)
-                    {
-                        this.currentBloodType.BLOOD_ABO_ID = bloodAbo.ID;
-                        this.cboBloodABO.EditValue = bloodAbo.ID;
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(rhCode))
-                {
-                    var bloodRh = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_RH>()
-                        .FirstOrDefault(o => o.BLOOD_RH_CODE == rhCode);
-                    if (bloodRh != null)
-                    {
-                        this.currentBloodType.BLOOD_RH_ID = bloodRh.ID;
-                        this.cboBloodRH.EditValue = bloodRh.ID;
-                    }
-                }
-
-                this.focusedRowHandle = this.gridViewBloodType__BloodPage.FocusedRowHandle;
-                this.actionBosung = GlobalVariables.ActionAdd;
-                this.spinAmount__BloodPage.Value = 0;
-
-                this.cboBloodABO.Enabled = false;
-                this.cboBloodRH.Enabled = false;
-
-                this.spinAmount__BloodPage.SelectAll();
-                this.spinAmount__BloodPage.Focus();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            
         }
 
         private async void gridViewBloodType__BloodPage_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
         {
             try
             {
-                var baseUrl = HisConfigCFG.HisAssignBloodMediStock_External__BaseUrl;
                 if (!_isExternalMinhTamMode) return;
+                var baseUrl = HisConfigCFG.HisAssignBloodMediStock_External__BaseUrl;
 
                 var row = gridViewBloodType__BloodPage.GetFocusedRow() as BloodADO;
                 if (row == null) return;
@@ -4087,6 +4026,72 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
 
             grcBloodABO__TabBlood.OptionsColumn.AllowFocus = !isReadOnly;
             grcBloodRH__TabBlood.OptionsColumn.AllowFocus = !isReadOnly;
+        }
+
+        private void gridViewExternalBlood_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            try
+            {
+                if (!_isExternalMinhTamMode) return;
+
+                // Lấy row từ gridViewBloodType__BloodPage (đã chọn trước đó)
+                var selectedBloodType = gridViewBloodType__BloodPage.GetFocusedRow() as BloodADO;
+                if (selectedBloodType == null) return;
+
+                var externalBloodRow = gridViewExternalBlood.GetFocusedRow();
+                if (externalBloodRow == null) return;
+
+                dynamic externalData = externalBloodRow;
+
+                this.currentBloodType = new BloodADO();
+                this.currentBloodType.BLOOD_TYPE_ID = selectedBloodType.BLOOD_TYPE_ID;
+                this.currentBloodType.BLOOD_TYPE_CODE = selectedBloodType.BLOOD_TYPE_CODE;
+                this.currentBloodType.BLOOD_TYPE_NAME = selectedBloodType.BLOOD_TYPE_NAME;
+                this.currentBloodType.SERVICE_ID = selectedBloodType.SERVICE_ID;
+                this.currentBloodType.ELEMENT = selectedBloodType.ELEMENT;
+                this.currentBloodType.VOLUME = selectedBloodType.VOLUME;
+
+                string aboCode = externalData.ABO?.ToString() ?? externalData.abo?.ToString();
+                string rhCode = externalData.Rh?.ToString() ?? externalData.rh?.ToString();
+
+                if (!string.IsNullOrEmpty(aboCode))
+                {
+                    var abo = (aboCode ?? "").Trim().ToUpper();   // "O " -> "O"
+
+                    var bloodAbo = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_ABO>()
+                        .FirstOrDefault(o => (o.BLOOD_ABO_CODE ?? "").Trim().ToUpper() == abo);
+                    if (bloodAbo != null)
+                    {
+                        this.currentBloodType.BLOOD_ABO_ID = bloodAbo.ID;
+                        this.cboBloodABO.EditValue = bloodAbo.ID;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(rhCode))
+                {
+                    var bloodRh = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_RH>()
+                        .FirstOrDefault(o => o.BLOOD_RH_CODE == rhCode);
+                    if (bloodRh != null)
+                    {
+                        this.currentBloodType.BLOOD_RH_ID = bloodRh.ID;
+                        this.cboBloodRH.EditValue = bloodRh.ID;
+                    }
+                }
+
+                this.focusedRowHandle = this.gridViewBloodType__BloodPage.FocusedRowHandle;
+                this.actionBosung = GlobalVariables.ActionAdd;
+                this.spinAmount__BloodPage.Value = 0;
+
+                this.cboBloodABO.Enabled = false;
+                this.cboBloodRH.Enabled = false;
+
+                this.spinAmount__BloodPage.SelectAll();
+                this.spinAmount__BloodPage.Focus();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
     }
 }
