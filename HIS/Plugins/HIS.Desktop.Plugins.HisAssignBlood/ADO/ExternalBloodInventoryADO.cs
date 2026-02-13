@@ -12,7 +12,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.ADO
         public string Rh { get; set; }
         public string ElementID { get; set; }
         public string ElementName { get; set; }
-        public int Volume { get; set; }
+        public decimal Volume { get; set; }
         public int Quantity { get; set; }
     }
     public class MinhTamInventoryRequest
@@ -20,7 +20,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.ADO
         public string Rh { get; set; }
         public string ABO { get; set; }
         public string ElementID { get; set; }
-        public int Volume { get; set; }
+        public decimal Volume { get; set; }
     }
 
     public class MinhTamInventoryResponse
@@ -37,7 +37,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.ADO
         public string ElementName { get; set; }
         public int Quantity { get; set; }
         public string Rh { get; set; }
-        public int Volume { get; set; }
+        public decimal Volume { get; set; }
     }
     public class ExternalBloodTypeRowADO
     {
@@ -47,7 +47,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.ADO
 
         // Mapping theo yêu cầu
         public string ElementID { get; set; }   // HIS_BLOOD_TYPE.ELEMENT
-        public int? Volume { get; set; }        // HIS_BLOOD_VOLUME.VOLUME
+        public decimal Volume { get; set; }        // HIS_BLOOD_VOLUME.VOLUME
 
         // phục vụ search giống code gốc
         public string SERVICE_NAME_HIDDEN { get; set; }
