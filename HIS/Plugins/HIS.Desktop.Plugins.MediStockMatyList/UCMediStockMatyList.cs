@@ -927,7 +927,7 @@ namespace HIS.Desktop.Plugins.MediStockMatyList
                                 if (dataDeletes != null && dataDeletes.Count > 0)// && dataDeletes.Count < 15)
                                 {
                                     List<long> deleteIds = listMediStockMaty.Where(o => dataDeletes.Select(p => p.ID)
-                                        .Contains(o.MATERIAL_TYPE_ID)).Select(o => o.ID).ToList();
+                                        .Contains(o.MATERIAL_TYPE_ID)).Select(o => o.ID).Distinct().ToList();
                                     bool deleteResult = new BackendAdapter(param).Post<bool>(
                                               "/api/HisMediStockMaty/DeleteList",
                                               HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
@@ -1014,7 +1014,7 @@ namespace HIS.Desktop.Plugins.MediStockMatyList
                             if (dataDeletes != null && dataDeletes.Count > 0)// && dataDeletes.Count < 5)
                             {
                                 List<long> deleteIds = listMediStockMaty.Where(o => dataDeletes.Select(p => p.ID)
-                                    .Contains(o.MEDI_STOCK_ID)).Select(o => o.ID).ToList();
+                                    .Contains(o.MEDI_STOCK_ID)).Select(o => o.ID).Distinct().ToList();
                                 bool deleteResult = new BackendAdapter(param).Post<bool>(
                                           "/api/HisMediStockMaty/DeleteList",
                                           HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer,
