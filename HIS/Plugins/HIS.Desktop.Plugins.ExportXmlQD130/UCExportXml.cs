@@ -39,7 +39,7 @@ using HIS.Desktop.Utility;
 using HIS.UC.SereServTree;
 using HIS.UC.SettingSignInfo;
 using Inventec.Common.Adapter;
-using Inventec.Common.Controls.EditorLoader; 
+using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Common.SignLibrary.ServiceSign;
 using Inventec.Core;
@@ -1131,7 +1131,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         }
 
         bool GenerateXmlPlus(ref CommonParam paramExport, ref MemoryStream memoryStream, bool xuatXml12, List<V_HIS_TREATMENT_1> listSelection, bool isXML3176)
-        {        
+        {
             bool result = false;
             try
             {
@@ -1820,7 +1820,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             string result = "";
             try
-            {             
+            {
                 string connect_infor = HisConfigCFG.QD_130_BYT__CONNECTION_INFO;
                 string username = null, password = null, address = null, typeXml = null;
                 string xml130Api = null, xmlGdykApi = null;
@@ -1848,7 +1848,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
 
                 InputADO ado = new InputADO();
-                ado.IS_3176 = isXML3176;             
+                ado.IS_3176 = isXML3176;
                 ado.ListTreatment = HisTreatments;
                 ado.ListPatientTypeAlter = ListPatientTypeAlter;
                 ado.ListSereServ = ListSereServ;
@@ -3723,13 +3723,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 List<Task> lst = new List<Task>();
-                lst.Add(ProcessSyncTreatment(listTreatmentSync));
                 if (this.configSync.isXML3176 == true)
                 {
                     isAutoSignXML3176 = true;
                     showMessSusscess = false;
                     isXML3176 = true;
                     lst.Add(XML130());
+                }
+                else
+                {
+                    lst.Add(ProcessSyncTreatment(listTreatmentSync));
                 }
                 Task.WaitAll(lst.ToArray());
             }
@@ -4276,7 +4279,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                                     if ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml))
                                     {
-                                        resultSyncTT = xmlProcessor.RunCollinearXml(ref errorMess);
+                                        resultSyncTT = treatment.IS_LOCK_FEE == 1 ? xmlProcessor.RunCollinearXml(ref errorMess) : null;
                                         Task task = null;
                                         List<Task> lstTask = new List<Task>();
                                         if (resultSyncTT != null)
@@ -4387,7 +4390,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 }
                                 else
                                 {
-                                    resultSync = treatment.HEIN_LOCK_TIME != null ? xmlProcessor.Run(ref errorMess) : xmlProcessor.RunCollinearXml(ref errorMess);
+                                    resultSync = treatment.HEIN_LOCK_TIME != null ? xmlProcessor.Run(ref errorMess) : ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml)) && treatment.IS_LOCK_FEE == 1 ? xmlProcessor.RunCollinearXml(ref errorMess) : null;
 
                                     //luu file
                                     if (resultSync != null)
@@ -4407,7 +4410,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     }
                                     else
                                     {
-                                        syncResult = treatment.HEIN_LOCK_TIME != null ? await xmlProcessor.SyncData() : await xmlProcessor.SyncDataCollinear();
+                                        syncResult = treatment.HEIN_LOCK_TIME != null ? await xmlProcessor.SyncData() : ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml)) && treatment.IS_LOCK_FEE == 1 ? await xmlProcessor.SyncDataCollinear() : null;
                                     }
 
                                     //if ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml))
@@ -4455,11 +4458,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             {
                                 string errMessage = "";
                                 bool success = false;
-                                bool signSuccess = true; 
+                                bool signSuccess = true;
 
                                 try
                                 {
-                                    resultSync = xmlProcessor.RunCollinearXml(ref errMessage);
+                                    resultSync = treatment.HEIN_LOCK_TIME != null ? xmlProcessor.Run(ref errorMess) : ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml)) && treatment.IS_LOCK_FEE == 1 ? xmlProcessor.RunCollinearXml(ref errorMess) : null;
                                     if (string.IsNullOrEmpty(errMessage))
                                     {
                                         success = true;
@@ -4476,7 +4479,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                     if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
                                     {
                                         string fullFileName = xmlProcessor.GetFileName();
-                                        saveFilePathXml = string.Format("{0}/{1}{2}",this.configSync.folderPath,"XML",fullFileName);
+                                        saveFilePathXml = string.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
 
                                         using (FileStream fs = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write))
                                         {
@@ -4492,7 +4495,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                                             if (!signSuccess)
                                             {
-                                               if (File.Exists(saveFilePathXml))
+                                                if (File.Exists(saveFilePathXml))
                                                 {
                                                     try
                                                     {
@@ -4520,7 +4523,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         )
                                     );
 
-                                    var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info",ApiConsumers.MosConsumer,xmlResultSDO,paramUpdateXml130);
+                                    var rs = new Inventec.Common.Adapter.BackendAdapter(paramUpdateXml130).Post<bool>("api/HisTreatment/UpdateXml130Info", ApiConsumers.MosConsumer, xmlResultSDO, paramUpdateXml130);
                                 }
                             }
                             count++;
@@ -4683,6 +4686,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     Inventec.Common.Logging.LogSystem.Error(
                         "Không có thông tin cài đặt ký số sendXMLSign"
+                    );
+                    return false;
+                }
+                if (string.IsNullOrEmpty(sourceFile) || !File.Exists(sourceFile))
+                {
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "File nguồn để ký số không tồn tại: " + sourceFile
                     );
                     return false;
                 }
@@ -5012,40 +5022,40 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 try
                 {
-                if (listSelection == null || listSelection.Count == 0) return;
-                CommonParam param = new CommonParam();
-                MemoryStream memoryStream = new MemoryStream();
-                bool success = false;
+                    if (listSelection == null || listSelection.Count == 0) return;
+                    CommonParam param = new CommonParam();
+                    MemoryStream memoryStream = new MemoryStream();
+                    bool success = false;
 
-                if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathXml))
-                {
-                    btnSavePath_Click(null, null);
-                }
-                if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
-                {
-                    WaitingManager.Show();
-                    Inventec.Common.Logging.LogSystem.Info("MenuItemClick_XuatXMLKhongBaoGomGDYK - Checkbox: " + chkXML3176.Checked);
+                    if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathXml))
+                    {
+                        btnSavePath_Click(null, null);
+                    }
+                    if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXml))
+                    {
+                        WaitingManager.Show();
+                        Inventec.Common.Logging.LogSystem.Info("MenuItemClick_XuatXMLKhongBaoGomGDYK - Checkbox: " + chkXML3176.Checked);
                         success = this.GenerateXml(ref param, ref memoryStream, false, false, true, listSelection, chkXML3176.Checked);
-                    WaitingManager.Hide();
-                    if (success && param.Messages.Count == 0)
-                    {
-                        MessageManager.Show(this.ParentForm, param, success);
-                    }
-                    else
-                    {
-                        MessageManager.Show(param, success);
-                    }
+                        WaitingManager.Hide();
+                        if (success && param.Messages.Count == 0)
+                        {
+                            MessageManager.Show(this.ParentForm, param, success);
+                        }
+                        else
+                        {
+                            MessageManager.Show(param, success);
+                        }
 
-                    this.gridControlTreatment.RefreshDataSource();
+                        this.gridControlTreatment.RefreshDataSource();
+                    }
+                    SessionManager.ProcessTokenLost(param);
                 }
-                SessionManager.ProcessTokenLost(param);
+                catch (Exception ex)
+                {
+                    WaitingManager.Hide();
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
             }
-            catch (Exception ex)
-            {
-                WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
