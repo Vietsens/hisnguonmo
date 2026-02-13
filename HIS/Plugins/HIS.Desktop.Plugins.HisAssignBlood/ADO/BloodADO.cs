@@ -27,7 +27,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood.ADO
     public class BloodADO : MOS.EFMODEL.DataModels.V_HIS_BLOOD
     {
         public decimal? AMOUNT { get; set; }
-        public int? VOLUME { get; set; }
         public string SERVICE_CODE_HIDDEN { get; set; }
         public string SERVICE_NAME_HIDDEN { get; set; }
         public BloodADO() : base()

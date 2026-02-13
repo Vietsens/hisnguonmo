@@ -127,12 +127,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         string moduleLink = "HIS.Desktop.Plugins.HisAssignBlood";
         MOS.EFMODEL.DataModels.HIS_TRACKING tracking { get; set; }
         bool isReturn;
-		private List<V_HIS_EXECUTE_ROOM> allDataExecuteRooms;
-		private V_HIS_ROOM requestRoom;
-		private List<HIS_SERVICE> lstSerivce;
-		private HIS_DEPARTMENT currentDepartment;
-		private List<HIS_SERE_SERV> sereServsInTreatmentRaw;
-		private List<HIS_SERE_SERV> sereServWithTreatment;
+        private List<V_HIS_EXECUTE_ROOM> allDataExecuteRooms;
+        private V_HIS_ROOM requestRoom;
+        private List<HIS_SERVICE> lstSerivce;
+        private HIS_DEPARTMENT currentDepartment;
+        private List<HIS_SERE_SERV> sereServsInTreatmentRaw;
+        private List<HIS_SERE_SERV> sereServWithTreatment;
         private V_HIS_TREATMENT currentTreatment;
         PrintPopupMenuProcessor PrintPopupMenuProcessor;
 
@@ -300,7 +300,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 if (dataExpMests != null && dataExpMests.Count > 0)
                 {
                     this.cboMediStockExport_TabBlood.EditValue = dataExpMests.First().MEDI_STOCK_ID;
-                    this.cboMediStockExport_TabBlood.Enabled = false;                   
+                    this.cboMediStockExport_TabBlood.Enabled = false;
                     this.btnNew.Enabled = false;
                     this.dropDownPrintBlood.Enabled = true;
 
@@ -316,7 +316,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         MOS.Filter.HisBloodTypeFilter bloodTypeFilter = new MOS.Filter.HisBloodTypeFilter();
                         bloodTypeFilter.IDs = dataExpMestBltyReqs.Select(p => p.BLOOD_TYPE_ID).ToList();
                         var dataBloodType = new BackendAdapter(new CommonParam()).Get<List<HIS_BLOOD_TYPE>>("/api/HisBloodType/Get", ApiConsumers.MosConsumer, bloodTypeFilter, null);
-                       
+
                         foreach (var item in dataExpMestBltyReqs)
                         {
                             HIS_EXP_MEST_BLTY_REQ bltyPrint = new HIS_EXP_MEST_BLTY_REQ();
@@ -352,6 +352,35 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         }
                     }
                 }
+                else
+                {
+                    HisSereServFilter hisSereServFilter = new HisSereServFilter();
+                    hisSereServFilter.SERVICE_REQ_ID = _serviceReqId;
+                    var sereServs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, hisSereServFilter, null);
+                    if (sereServs != null && sereServs.Count > 0)
+                    {
+
+                        foreach (var item in sereServs)
+                        {
+                            HIS_EXP_MEST_BLTY_REQ bltyPrint = new HIS_EXP_MEST_BLTY_REQ();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_BLTY_REQ>(bltyPrint, item);
+                            sdoEdit.Bloods.Add(bltyPrint);
+
+                            BloodTypeADO ado = new BloodTypeADO();
+                            ado.AMOUNT = item.AMOUNT;
+                            ado.BLOOD_TYPE_NAME = item.TDL_SERVICE_NAME;
+                            ado.BLOOD_TYPE_CODE = item.TDL_SERVICE_CODE;
+                            //ado.BLOOD_ABO_ID = item.A;
+                            //ado.BLOOD_RH_ID = item.BLOOD_RH_ID;
+                            ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
+                            ado.IS_OUT_PARENT_FEE = item.IS_OUT_PARENT_FEE;
+                            ado.PRICE = item.PRICE;
+                            ado.TOT_PRICE = ado.PRICE * ado.AMOUNT;
+                            this.ListBloodTypeADOProcess.Add(ado);
+                        }
+                    }
+                }
+
                 this.HisPrescriptionSDOPrint.Add(sdoEdit);
                 this.gridControlServiceProcess__TabBlood.DataSource = null;
                 this.gridControlServiceProcess__TabBlood.DataSource = this.ListBloodTypeADOProcess;
@@ -621,7 +650,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         {
             try
             {
-              
+
                 LogSystem.Debug("_____________" + intructionTime);
                 LogSystem.Debug("frmHisAssignBlood_Load => Starting...");
                 this.SetCaptionByLanguageKey();
@@ -738,7 +767,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 }
                 else
                 {
-                    
+
                     this.sereServWithTreatment = this.sereServsInTreatmentRaw.Where(o =>
                         o.TDL_TREATMENT_ID == treatmentId
                         && (INTRUCTION_TIME_FROM == null || (INTRUCTION_TIME_FROM.HasValue && o.TDL_INTRUCTION_TIME >= INTRUCTION_TIME_FROM.Value))
@@ -863,7 +892,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         Inventec.Common.Logging.LogSystem.Debug("Ben ngoai truyen vao to dieu tri____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => tracking), tracking));
 
                         cboTracking.EditValue = this.tracking.ID;
-                        if(HisConfigCFG.IsServiceReqIcdOption)
+                        if (HisConfigCFG.IsServiceReqIcdOption)
                         {
                             HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
                             icd.ICD_CODE = tracking.ICD_CODE;
@@ -880,7 +909,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                             {
                                 subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
                             }
-                        }    
+                        }
                         Inventec.Common.Logging.LogSystem.Info("Truong hop co tracking ben ngoai truyen vao, gan vao doi tuong tracking de phuc vu cho nghiep vu load cac du lieu: + Mã bệnh chỉnh,+ Tên bệnh chính,+ Mã bệnh phụ,+ Tên bệnh phụ,+ Mã bệnh YHCT chính,+ Tên bệnh YHCT chính,+ Mã bệnh YHCT phụ,+ Tên bệnh YHCT phụ tu ban ghi tracking do");
                     }
                     else if (isDefaultTracking == "1")
@@ -1279,26 +1308,26 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     this.spinAmount__BloodPage.Value = 0;
                     this.InitBloodADO__RH__FromPatientInfo();
                     this.spinAmount__BloodPage.SelectAll();
-                    this.spinAmount__BloodPage.Focus();                  
-                    if(chkShowGroupBlood.Checked)
-					{
+                    this.spinAmount__BloodPage.Focus();
+                    if (chkShowGroupBlood.Checked)
+                    {
                         this.cboBloodABO.Enabled = false;
                         this.cboBloodRH.Enabled = false;
                         this.cboBloodABO.EditValue = currentBloodType.BLOOD_ABO_ID;
                         this.cboBloodRH.EditValue = currentBloodType.BLOOD_RH_ID;
                     }
-					else
-					{
+                    else
+                    {
                         this.cboBloodABO.Enabled = true;
                         this.cboBloodRH.Enabled = true;
-                        if(!string.IsNullOrEmpty(currentPatient.BLOOD_ABO_CODE))
-						{
+                        if (!string.IsNullOrEmpty(currentPatient.BLOOD_ABO_CODE))
+                        {
                             this.cboBloodABO.EditValue = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_ABO>().First(o => o.BLOOD_ABO_CODE == currentPatient.BLOOD_ABO_CODE).ID;
-						}
-						else
-						{
+                        }
+                        else
+                        {
                             this.cboBloodABO.EditValue = null;
-						}
+                        }
                         if (!string.IsNullOrEmpty(currentPatient.BLOOD_RH_CODE))
                         {
                             this.cboBloodRH.EditValue = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_RH>().First(o => o.BLOOD_RH_CODE == currentPatient.BLOOD_RH_CODE).ID;
@@ -1307,7 +1336,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         {
                             this.cboBloodRH.EditValue = null;
                         }
-                    }                        
+                    }
                 }
             }
             catch (Exception ex)
@@ -1476,16 +1505,16 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         {
                             var dtAbo = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_ABO>().First(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboBloodABO.EditValue ?? "0").ToString()));
                             HIS_BLOOD_RH dtRh = null;
-                            if (cboBloodRH.EditValue !=null)
+                            if (cboBloodRH.EditValue != null)
                                 dtRh = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_RH>().First(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((this.cboBloodRH.EditValue ?? "0").ToString()));
-                            if (dtRh == null ? currentPatient.BLOOD_ABO_CODE != dtAbo.BLOOD_ABO_CODE  : (currentPatient.BLOOD_ABO_CODE != dtAbo.BLOOD_ABO_CODE && currentPatient.BLOOD_RH_CODE != dtRh.BLOOD_RH_CODE))
+                            if (dtRh == null ? currentPatient.BLOOD_ABO_CODE != dtAbo.BLOOD_ABO_CODE : (currentPatient.BLOOD_ABO_CODE != dtAbo.BLOOD_ABO_CODE && currentPatient.BLOOD_RH_CODE != dtRh.BLOOD_RH_CODE))
                             {
                                 if (HisConfigCFG.IsAllowToAssignDifferenceBloodOption)
                                 {
                                     string message = null;
                                     if (dtRh != null)
                                         message = String.Format("Bệnh nhân có thông tin máu khác với thông tin máu đã chọn (nhóm máu: {0}, Rh: {1})", dtAbo.BLOOD_ABO_CODE, dtRh.BLOOD_RH_CODE);
-									else
+                                    else
                                         message = String.Format("Bệnh nhân có thông tin máu khác với thông tin máu đã chọn (nhóm máu: {0})", dtAbo.BLOOD_ABO_CODE);
                                     DevExpress.XtraEditors.XtraMessageBox.Show(message, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao));
                                     return;
@@ -1504,7 +1533,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                                 }
                             }
                         }
-                    }                
+                    }
                     //Neu dang la sua du lieu da them vao truoc do thi dau tien phai remove du lieu cu khoi danh sach
                     //sau do moi bo xung them du lieu moi vao
                     if (this.actionBosung == GlobalVariables.ActionEdit)
@@ -1563,18 +1592,18 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     {
                         this.currentBloodTypeADO.BLOOD_RH_ID = Inventec.Common.TypeConvert.Parse.ToInt64((this.cboBloodRH.EditValue ?? "0").ToString());
                     }
-					if (this.currentBloodType.SERVICE_ID > 0)
-					{
-						var dtService = lstSerivce.FirstOrDefault(o => o.ID == this.currentBloodType.SERVICE_ID);
-						if (dtService != null)
-						{
+                    if (this.currentBloodType.SERVICE_ID > 0)
+                    {
+                        var dtService = lstSerivce.FirstOrDefault(o => o.ID == this.currentBloodType.SERVICE_ID);
+                        if (dtService != null)
+                        {
                             this.currentBloodTypeADO.SERVICE_TYPE_ID = dtService.SERVICE_TYPE_ID;
                             this.currentBloodTypeADO.HEIN_LIMIT_PRICE_IN_TIME = dtService.HEIN_LIMIT_PRICE_IN_TIME;
-							this.currentBloodTypeADO.HEIN_LIMIT_PRICE_INTR_TIME = dtService.HEIN_LIMIT_PRICE_INTR_TIME;
-							this.currentBloodTypeADO.HEIN_LIMIT_PRICE_OLD = dtService.HEIN_LIMIT_PRICE_OLD;
-							this.currentBloodTypeADO.HEIN_LIMIT_PRICE = dtService.HEIN_LIMIT_PRICE;
-						}
-					}
+                            this.currentBloodTypeADO.HEIN_LIMIT_PRICE_INTR_TIME = dtService.HEIN_LIMIT_PRICE_INTR_TIME;
+                            this.currentBloodTypeADO.HEIN_LIMIT_PRICE_OLD = dtService.HEIN_LIMIT_PRICE_OLD;
+                            this.currentBloodTypeADO.HEIN_LIMIT_PRICE = dtService.HEIN_LIMIT_PRICE;
+                        }
+                    }
                     currentBloodTypeADO.PRICE = GetPriceByBloodType(currentBloodTypeADO);
                     currentBloodTypeADO.TOT_PRICE = currentBloodTypeADO.PRICE * currentBloodTypeADO.AMOUNT;
 
@@ -1804,7 +1833,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     {
                         data.TOT_PRICE = data.PRICE * data.AMOUNT;
                     }
-                }            
+                }
             }
             catch (Exception ex)
             {
@@ -1939,7 +1968,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     List<V_HIS_SERVICE_PATY> servicePaties = BranchDataWorker.ServicePatyWithListPatientType(bloodTypeADO.SERVICE_ID, new List<long> { bloodTypeADO.PATIENT_TYPE_ID ?? 0 });
 
                     V_HIS_SERVICE_PATY oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, bloodTypeADO.TDL_EXECUTE_BRANCH_ID, currentModule.RoomId, this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, currentTreatment.IN_TIME, bloodTypeADO.SERVICE_ID, bloodTypeADO.PATIENT_TYPE_ID ?? 0, null);
-                 
+
 
                     if (bloodTypeADO.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                     {
@@ -2524,7 +2553,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                                 if (strList != null && strList.Count > 0)
                                 {
                                     string message = String.Format("Khoa chỉ định chưa tạo Biên bản hội chẩn đối với (các) dịch vụ:\n {0}", String.Join(", ", strList));
-                                   
+
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listService), listService));
 
                                     frmServiceDebateConfirmNew frm = new frmServiceDebateConfirmNew(this.currentModule, listService, dataDebate, message, treatmentId);
@@ -2545,14 +2574,14 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         this.currentHisPrescriptionSDOPrint = new BackendAdapter(param).Post<PatientBloodPresResultSDO>(RequestUriStore.HIS_SERVICE_REQ__BLOOD_UPDATE, ApiConsumers.MosConsumer, HisPrescriptionSDO, ProcessLostToken, param);
 
                         this.HisPrescriptionSDOPrint = new List<PatientBloodPresResultSDO>();
-                        if(currentHisPrescriptionSDOPrint!=null)
+                        if (currentHisPrescriptionSDOPrint != null)
                             this.HisPrescriptionSDOPrint.Add(this.currentHisPrescriptionSDOPrint);
                     }
                     else
                         this.HisPrescriptionSDOPrint = new BackendAdapter(param).Post<List<PatientBloodPresResultSDO>>(RequestUriStore.HIS_SERVICE_REQ__BLOODPRESCREATE, ApiConsumers.MosConsumer, HisPrescriptionSDO, ProcessLostToken, param);
 
-					Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisPrescriptionSDOPrint), HisPrescriptionSDOPrint));
-                    if (this.HisPrescriptionSDOPrint != null && this.HisPrescriptionSDOPrint.Count >  0)
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisPrescriptionSDOPrint), HisPrescriptionSDOPrint));
+                    if (this.HisPrescriptionSDOPrint != null && this.HisPrescriptionSDOPrint.Count > 0)
                     {
                         this.btnSave.Enabled = this.btnSaveAndPrint.Enabled = false;
 
@@ -2583,13 +2612,13 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         string message = "";
                         if (this.actionType == GlobalVariables.ActionEdit)
                         {
-							foreach (var item in HisPrescriptionSDOPrint)
-							{
-                                if(item.ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM)
-								{
+                            foreach (var item in HisPrescriptionSDOPrint)
+                            {
+                                if (item.ServiceReq.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM)
+                                {
                                     message += string.Format("Sửa đơn máu. SERVICE_REQ_CODE: {0}. TDL_TREATMENT_CODE: {1}. [BLOOD_TYPE_CODE - AMOUNT]: [{2}].\r\n", item.ServiceReq.SERVICE_REQ_CODE, item.ServiceReq.TDL_TREATMENT_CODE, testIndexStr);
-                                }                                    
-							}
+                                }
+                            }
                         }
                         else
                         {
@@ -2600,7 +2629,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                                     message = string.Format("Kê đơn máu. SERVICE_REQ_CODE: {0}. TDL_TREATMENT_CODE: {1}. [BLOOD_TYPE_CODE - AMOUNT]: [{2}]", item.ServiceReq.SERVICE_REQ_CODE, item.ServiceReq.TDL_TREATMENT_CODE, testIndexStr);
                                 }
                             }
-                           
+
                         }
 
                         string login = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
@@ -2692,10 +2721,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             }
         }
         private void SetUpToPrint108(bool IsPrintNow)
-		{
-			try
-			{
-                
+        {
+            try
+            {
+
                 if (HisPrescriptionSDOPrint == null && HisPrescriptionSDOPrint.Count == 0)
                 {
                     MessageManager.Show(Inventec.Desktop.Common.LibraryMessage.MessageUtil.GetMessage(Inventec.Desktop.Common.LibraryMessage.Message.Enum.ThongBaoDuLieuTrong));
@@ -2707,12 +2736,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
 
 
                 CommonParam param = new CommonParam();
-                if(HisPrescriptionSDOPrint.Where(o=>o.ServiceReq != null).ToList().Count > 1)
-				{
+                if (HisPrescriptionSDOPrint.Where(o => o.ServiceReq != null).ToList().Count > 1)
+                {
                     IsMultilData = true;
-				}                    
-				foreach (var item in HisPrescriptionSDOPrint)
-				{
+                }
+                foreach (var item in HisPrescriptionSDOPrint)
+                {
                     this.HisPrescriptionSDOResultPrint = item;
 
                     bool result = false;
@@ -2724,20 +2753,20 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     {
                         richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000108, DelegateRunPrinter);
                     }
-                    
-                }              
+
+                }
                 this.TotalPrint = total108;
                 WaitingManager.Hide();
-                if(!this.isSaveAndPrint)
+                if (!this.isSaveAndPrint)
                     PrintMerge();
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-		}
-      
+        }
+
         //Lay Chan doan mac dinh: Lay chan doan cuoi cung trong cac xu ly dich vu Kham benh
         private void LoadIcdDefault()
         {
@@ -3159,27 +3188,27 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             }
         }
 
-		private void chkShowGroupBlood_CheckedChanged(object sender, EventArgs e)
-		{
-			try
-			{
+        private void chkShowGroupBlood_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
                 MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK ms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMediStockExport_TabBlood.EditValue ?? "0").ToString()));
                 this.LoadDataToGridBloodType(ms);
-                if(chkShowGroupBlood.Checked)
-				{
+                if (chkShowGroupBlood.Checked)
+                {
                     cboBloodABO.Enabled = false;
                     cboBloodRH.Enabled = false;
                     grcBloodABO__TabBlood.OptionsColumn.AllowEdit = false;
                     grcBloodRH__TabBlood.OptionsColumn.AllowEdit = false;
 
                 }
-				else
-				{
+                else
+                {
                     cboBloodABO.Enabled = true;
                     cboBloodRH.Enabled = true;
                     grcBloodABO__TabBlood.OptionsColumn.AllowEdit = true;
                     grcBloodRH__TabBlood.OptionsColumn.AllowEdit = true;
-                }                    
+                }
                 HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkShowGroupBlood.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
                 if (csAddOrUpdate != null)
                 {
@@ -3198,12 +3227,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.controlStateWorker.SetData(this.currentControlStateRDO);
                 WaitingManager.Hide();
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
 
             }
-		}
+        }
 
         void InitControlState()
         {
@@ -3218,7 +3247,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         if (item.KEY == chkShowGroupBlood.Name)
                         {
                             chkShowGroupBlood.Checked = item.VALUE == "1";
-                        }                      
+                        }
                     }
                 }
             }
@@ -3235,12 +3264,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 if (row != null)
                 {
                     WaitingManager.Show();
-                        List<object> listArgs = new List<object>();
-                        AssignServiceTestADO assignBloodADO = new AssignServiceTestADO(0, 0, 0, null);
-                        assignBloodADO.TreatmentId = treatmentId;
-                        assignBloodADO.GenderName = currentPatient.GENDER_NAME;
-                        assignBloodADO.PatientDob = currentPatient.DOB;
-                        assignBloodADO.PatientName = currentPatient.VIR_PATIENT_NAME;
+                    List<object> listArgs = new List<object>();
+                    AssignServiceTestADO assignBloodADO = new AssignServiceTestADO(0, 0, 0, null);
+                    assignBloodADO.TreatmentId = treatmentId;
+                    assignBloodADO.GenderName = currentPatient.GENDER_NAME;
+                    assignBloodADO.PatientDob = currentPatient.DOB;
+                    assignBloodADO.PatientName = currentPatient.VIR_PATIENT_NAME;
                     if (this._ServiceReqEdit != null)
                     {
                         assignBloodADO.ServiceReqId = _ServiceReqEdit.ID;
@@ -3248,24 +3277,24 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         MOS.Filter.HisExpMestFilter filter = new MOS.Filter.HisExpMestFilter();
                         filter.SERVICE_REQ_ID = _ServiceReqEdit.ID;
                         var dataExpMests = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("/api/HisExpMest/Get", ApiConsumers.MosConsumer, filter, null);
-                        if(dataExpMests!=null && dataExpMests.Count > 0)
-						{
+                        if (dataExpMests != null && dataExpMests.Count > 0)
+                        {
                             assignBloodADO.ExpMestId = dataExpMests[0].ID;
-                        }                            
+                        }
                     }
-                        listArgs.Add(assignBloodADO);
-                        long keyconfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("HIS.Desktop.Plugins.AssignServiceTestSelect");
-                        if (keyconfig == 1)
-                        {
-                            CallModuleProcess("HIS.Desktop.Plugins.AssignServiceTest", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
-                        }
-                        else
-                        {
-                            CallModuleProcess("HIS.Desktop.Plugins.AssignServiceTestMulti", this.currentModule.RoomId, this.currentModule.RoomId, listArgs);
-                        }
+                    listArgs.Add(assignBloodADO);
+                    long keyconfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<int>("HIS.Desktop.Plugins.AssignServiceTestSelect");
+                    if (keyconfig == 1)
+                    {
+                        CallModuleProcess("HIS.Desktop.Plugins.AssignServiceTest", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                    }
+                    else
+                    {
+                        CallModuleProcess("HIS.Desktop.Plugins.AssignServiceTestMulti", this.currentModule.RoomId, this.currentModule.RoomId, listArgs);
+                    }
 
-                        WaitingManager.Hide();
-                    
+                    WaitingManager.Hide();
+
                 }
             }
             catch (Exception ex)
@@ -3274,15 +3303,15 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             }
         }
 
-		private void CallModuleProcess(string _moduleLink, long _roomId, long _roomTypeId, List<object> _listObj)
+        private void CallModuleProcess(string _moduleLink, long _roomId, long _roomTypeId, List<object> _listObj)
         {
             HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(_moduleLink, _roomId, _roomTypeId, _listObj);
         }
 
-		private void gridViewServiceProcess__TabBlood_PopupMenuShowing(object sender, PopupMenuShowingEventArgs e)
-		{
-			try
-			{
+        private void gridViewServiceProcess__TabBlood_PopupMenuShowing(object sender, PopupMenuShowingEventArgs e)
+        {
+            try
+            {
                 //var row = (ADO.BloodTypeADO)gridViewServiceProcess__TabBlood.GetFocusedRow();
                 //if (row != null)
                 //{                   
@@ -3290,11 +3319,11 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 //    PrintPopupMenuProcessor.RightMenu();
                 //}
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-		}
+        }
 
         private void RightMenu_Click(object sender, ItemClickEventArgs e)
         {
@@ -3322,10 +3351,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
 
         }
 
-		private void frmHisAssignBlood_FormClosing(object sender, FormClosingEventArgs e)
-		{
-			try
-			{
+        private void frmHisAssignBlood_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
                 arrControlEnableNotChange = null;
                 dicOrderTabIndexControl = null;
                 currentSereServ = null;
@@ -3371,18 +3400,19 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 }
                 this.Dispose(true);
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-		}
+        }
 
         private void cboBloodLevel_SelectedIndexChanged(object sender, EventArgs e)
         {
 
             try
             {
-                if(cboBloodLevel.SelectedIndex == 0) {
+                if (cboBloodLevel.SelectedIndex == 0)
+                {
                     chkShowGroupBlood.Checked = true;
                 }
                 chkShowGroupBlood_CheckedChanged(null, null);
@@ -3398,7 +3428,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             LogSystem.Debug("CheckTimeSereServ Start");
             try
             {
-                LogSystem.Debug("txtLoginName.Text1"+ txtLoginName.Text);
+                LogSystem.Debug("txtLoginName.Text1" + txtLoginName.Text);
                 if (txtLoginName.Text == null) return;
                 List<long> intructionTimeSelecteds = this.ucDateProcessor.GetValue(this.ucDate);
                 LogSystem.Debug("intructionTimeSelecteds1" + intructionTimeSelecteds);
@@ -3421,7 +3451,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         Loginnames = new List<string> { username },
                         SereTimes = intructionTimeSelecteds.ToList()
                     };
-                    Inventec.Common.Logging.LogSystem.Info("HisServiceReqCheckSereTimesSDO1: " 
+                    Inventec.Common.Logging.LogSystem.Info("HisServiceReqCheckSereTimesSDO1: "
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                     bool rs = new BackendAdapter(param).Post<bool>(
                         "/api/HisServiceReq/CheckSereTimes",
@@ -3477,7 +3507,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                             CheckTimes = intructionTimeSelecteds
                         }
                     }
-                        };
+                    };
 
                     bool rs = new BackendAdapter(param).Post<bool>(
                         "/api/HisServiceReq/CheckAssignSimultaneity",
@@ -3529,14 +3559,14 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             {
                 LogSystem.Debug("cboUser_EditValueChanged Start");
                 if (this.cboUser.EditValue != null)
+                {
+                    ACS.EFMODEL.DataModels.ACS_USER data = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == ((this.cboUser.EditValue ?? "").ToString()));
+                    if (data != null)
                     {
-                        ACS.EFMODEL.DataModels.ACS_USER data = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.LOGINNAME == ((this.cboUser.EditValue ?? "").ToString()));
-                        if (data != null)
-                        {
-                            this.txtLoginName.Text = data.LOGINNAME;
-                        }
-                        CheckTimeSereServ();
+                        this.txtLoginName.Text = data.LOGINNAME;
                     }
+                    CheckTimeSereServ();
+                }
             }
             catch (Exception ex)
             {
@@ -3674,7 +3704,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     .ToList();
 
                 var volumeMap = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_VOLUME>()
-                    .ToDictionary(v => v.ID, v => (int?)v.VOLUME);
+                    .ToDictionary(v => v.ID, v => v.VOLUME);
 
                 var data = bloodTypes
                     .Where(x => !string.IsNullOrWhiteSpace(x.ELEMENT)) // ELEMENT != null theo thiết kế
@@ -3684,8 +3714,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         BLOOD_TYPE_CODE = x.BLOOD_TYPE_CODE,
                         BLOOD_TYPE_NAME = x.BLOOD_TYPE_NAME,
                         SERVICE_ID = x.SERVICE_ID,
-                        ELEMENT = (x.ELEMENT ?? "").Trim(), 
-                        VOLUME = volumeMap.ContainsKey(x.BLOOD_VOLUME_ID) ? volumeMap[x.BLOOD_VOLUME_ID] : null,
+                        ELEMENT = (x.ELEMENT ?? "").Trim(),
+                        VOLUME = volumeMap.ContainsKey(x.BLOOD_VOLUME_ID) ? volumeMap[x.BLOOD_VOLUME_ID] : 0,
 
                         SERVICE_NAME_HIDDEN = convertToUnSign3(x.BLOOD_TYPE_NAME) + x.BLOOD_TYPE_NAME,
                         SERVICE_CODE_HIDDEN = convertToUnSign3(x.BLOOD_TYPE_CODE) + x.BLOOD_TYPE_CODE
@@ -3718,85 +3748,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
 
         private void gridViewExternalBlood_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
         {
-            
+
         }
 
-        private async void gridViewBloodType__BloodPage_FocusedRowChanged(object sender, FocusedRowChangedEventArgs e)
-        {
-            try
-            {
-                if (!_isExternalMinhTamMode) return;
-                var baseUrl = HisConfigCFG.HisAssignBloodMediStock_External__BaseUrl;
-
-                var row = gridViewBloodType__BloodPage.GetFocusedRow() as BloodADO;
-                if (row == null) return;
-
-                string elementId = (row.ELEMENT ?? "").Trim();
-                int volume = Convert.ToInt32(row.VOLUME);
-
-                if (string.IsNullOrWhiteSpace(elementId) || volume <= 0)
-                {
-                    gridControlExternalBlood.DataSource = null;
-                    return;
-                }
-
-                Cursor.Current = Cursors.WaitCursor;
-
-                var requestObj = new
-                {   
-                    ElementID = elementId,
-                    Volume = volume
-                };
-
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(requestObj);
-
-                using (var client = new System.Net.Http.HttpClient())
-                {
-                    client.Timeout = TimeSpan.FromSeconds(30);
-
-                    var content = new System.Net.Http.StringContent(
-                        json,
-                        Encoding.UTF8,
-                        "application/json"
-                    );
-
-                    var response = await client.PostAsync(baseUrl+"LisReceiver/web/GetInventory",content);
-
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        MessageBox.Show("Không gọi được API Minh Tâm");
-                        gridControlExternalBlood.DataSource = null;
-                        return;
-                    }
-
-                    string responseJson = await response.Content.ReadAsStringAsync();
-
-                    // Deserialize đơn giản
-                    dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseJson);
-
-                    bool isSuccess = result.IsSuccess ?? result.isSuccess;
-
-                    if (isSuccess == true)
-                    {
-                        var data = result.InventoryInfo ?? result.inventoryInfo;
-                        gridControlExternalBlood.DataSource = data;
-                    }
-                    else
-                    {
-                        gridControlExternalBlood.DataSource = null;
-                        MessageBox.Show("API trả về lỗi");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
-            }
-        }
         private HisServiceExternalBloodSDO BuildExternalBloodSDO()
         {
             var sdo = new HisServiceExternalBloodSDO();
@@ -4093,5 +4047,86 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private async void gridViewBloodType__BloodPage_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            try
+            {
+                if (!_isExternalMinhTamMode) return;
+                var baseUrl = HisConfigCFG.HisAssignBloodMediStock_External__BaseUrl;
+
+                var row = gridViewBloodType__BloodPage.GetFocusedRow() as BloodADO;
+                if (row == null) return;
+
+                string elementId = (row.ELEMENT ?? "").Trim();
+                int volume = (int)row.VOLUME;
+
+                if (string.IsNullOrWhiteSpace(elementId) || volume <= 0)
+                {
+                    gridControlExternalBlood.DataSource = null;
+                    return;
+                }
+
+                Cursor.Current = Cursors.WaitCursor;
+
+                var requestObj = new
+                {
+                    ElementID = elementId,
+                    Volume = volume
+                };
+
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(requestObj);
+
+                using (var client = new System.Net.Http.HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(30);
+
+                    var content = new System.Net.Http.StringContent(
+                        json,
+                        Encoding.UTF8,
+                        "application/json"
+                    );
+
+                    var response = await client.PostAsync(baseUrl + "LisReceiver/web/GetInventory", content);
+
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => response), response));
+
+                    Inventec.Common.Logging.LogSystem.Debug(baseUrl + "LisReceiver/web/GetInventory" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => json), json));
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        XtraMessageBox.Show("Không gọi được API Minh Tâm");
+                        gridControlExternalBlood.DataSource = null;
+                        return;
+                    }
+
+                    string responseJson = await response.Content.ReadAsStringAsync();
+
+                    // Deserialize đơn giản
+                    dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseJson);
+
+                    bool isSuccess = result.IsSuccess ?? result.isSuccess;
+
+                    if (isSuccess == true)
+                    {
+                        var data = result.InventoryInfo ?? result.inventoryInfo;
+                        gridControlExternalBlood.DataSource = data;
+                    }
+                    else
+                    {
+                        gridControlExternalBlood.DataSource = null;
+                        XtraMessageBox.Show("API trả về lỗi");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
     }
 }
