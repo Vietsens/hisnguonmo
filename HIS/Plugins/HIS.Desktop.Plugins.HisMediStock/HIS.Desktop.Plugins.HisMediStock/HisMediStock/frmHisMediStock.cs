@@ -495,6 +495,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                     chkNotAllowMaterial.Checked = (data.DO_NOT_IMP_MATERIAL == 1 ? true : false);
                     cboCabinetManageOption.SelectedIndex = data.CABINET_MANAGE_OPTION.HasValue ? (data.CABINET_MANAGE_OPTION.Value - 1) : -1;
 
+                    chkIsExternal.Checked = (data.IS_EXTERNAL == 1 ? true : false);
+
                     chkIS_FOR_REJECTED_MOBA.Checked = (data.IS_FOR_REJECTED_MOBA == 1 ? true : false);
                     chkIS_MOBA_CHANGE_AMOUNT.Checked = (data.IS_MOBA_CHANGE_AMOUNT == 1 ? true : false);
                     chkIsExpend.Checked = (data.IS_EXPEND == 1 ? true : false);
@@ -724,7 +726,9 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 chkIsShowAnticipate.CheckState = CheckState.Unchecked;
                 txtTLQR.Properties.Buttons[0].Visible = false;
                 cboRooomTN.Properties.Buttons[1].Visible = false;
-            }
+
+                chkIsExternal.CheckState = CheckState.Unchecked;  
+            } 
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
@@ -1025,6 +1029,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 mediStock.IS_EXPEND = (chkIsExpend.Checked ? (short?)1 : null);
                 mediStock.DO_NOT_IMP_MEDICINE = (chkNotAllowMedicine.Checked ? (short?)1 : null);
                 mediStock.DO_NOT_IMP_MATERIAL = (chkNotAllowMaterial.Checked ? (short?)1 : null);
+
+                mediStock.IS_EXTERNAL = (chkIsExternal.Checked ? (short?)1 : (short?)0); 
 
             }
             catch (Exception ex)
@@ -1840,6 +1846,18 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                         catch (Exception ex)
                         {
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri kho kinh doanh IS_BUSINESS_STR", ex);
+                        }
+                    }
+
+                    else if (e.Column.FieldName == "IS_EXTERNAL_STR")
+                    {
+                        try
+                        {
+                            e.Value = pData != null && pData.IS_EXTERNAL == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri kho mau IS_EXTERNAL_STR", ex);
                         }
                     }
 
