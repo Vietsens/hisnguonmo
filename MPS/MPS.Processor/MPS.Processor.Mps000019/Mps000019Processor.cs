@@ -62,6 +62,8 @@ namespace MPS.Processor.Mps000019
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 SetSingleKey();
+                Inventec.Common.Logging.LogSystem.Info("Test hiscode mps19");
+                SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
                 singleTag.ProcessData(store, singleValueDictionary);
                 //barCodeTag.ProcessData(store, dicImage);
                 objectTag.AddObjectData(store, "Participants", rdo.lstHisDebateUser);
@@ -236,6 +238,26 @@ namespace MPS.Processor.Mps000019
 
                 return result;
             }
+        }
+        public override string ProcessUniqueCodeData()
+        {
+            string result = "";
+            try
+            {
+                if (rdo != null && rdo.currentHisDebate != null && rdo.treatment != null)
+                {
+                    string treatmentCode = "TREATMENT_CODE:" + rdo.treatment.TREATMENT_CODE;
+                    string debateId = "HIS_DEBATE:" + rdo.currentHisDebate.ID;
+                    result = String.Format("Mps000019 {0} {1}", treatmentCode, debateId);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            Inventec.Common.Logging.LogSystem.Debug("HIS_CODE: " + result);
+            return result;
         }
     }
 }
