@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -369,6 +369,14 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                // Bỏ check IsGuaranteed khi row bị bỏ check
+                var nodeData = e.Node.TreeList.GetDataRecordByNode(e.Node) as VHisSereServADO;
+                if (nodeData != null && e.Node.CheckState == CheckState.Unchecked)
+                {
+                    nodeData.IsGuaranteed = false;
+                    // Nếu cần cập nhật giao diện ngay lập tức:
+                    treeListSereServ.RefreshDataSource();
+                }
                 this.ProcessAfterCheckNode();
             }
             catch (Exception ex)
@@ -631,5 +639,6 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
             return result;
         }
+
     }
 }

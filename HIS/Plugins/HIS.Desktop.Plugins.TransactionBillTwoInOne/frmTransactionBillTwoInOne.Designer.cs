@@ -116,9 +116,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem41 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTongTinHoanThu = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem9 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItemlblGuaranteed = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem8 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem10 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.txtSearch = new DevExpress.XtraEditors.TextEdit();
             this.BtnSaveAndSign = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlFund = new DevExpress.XtraGrid.GridControl();
@@ -313,6 +312,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.treeListColumn_SereServ_Discount = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn_SereServ_Expend = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.treeListColumn_SereServ_IsGuaranteed = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.repositoryItemCheckEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.treeListColumn_SereServ_ServiceCode = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.btnSavePrint = new DevExpress.XtraEditors.SimpleButton();
             this.gridControlTransaction = new DevExpress.XtraGrid.GridControl();
@@ -421,9 +422,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTongTinHoanThu)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemlblGuaranteed)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlFund)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewFund)).BeginInit();
@@ -586,6 +586,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.dtTransactionTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListSereServ)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransaction)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransaction)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLock)).BeginInit();
@@ -1142,7 +1143,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.lblTongTienBaoLanh.Location = new System.Drawing.Point(120, 120);
             this.lblTongTienBaoLanh.Name = "lblTongTienBaoLanh";
-            this.lblTongTienBaoLanh.Size = new System.Drawing.Size(88, 20);
+            this.lblTongTienBaoLanh.Size = new System.Drawing.Size(289, 20);
             this.lblTongTienBaoLanh.StyleController = this.layoutControl3;
             this.lblTongTienBaoLanh.TabIndex = 12;
             this.lblTongTienBaoLanh.ToolTip = "Tổng số tiền cần phải bảo lãnh";
@@ -1150,36 +1151,36 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // lblTongTienPhaiHoan
             // 
             this.lblTongTienPhaiHoan.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblTongTienPhaiHoan.Location = new System.Drawing.Point(337, 96);
+            this.lblTongTienPhaiHoan.Location = new System.Drawing.Point(331, 96);
             this.lblTongTienPhaiHoan.Name = "lblTongTienPhaiHoan";
-            this.lblTongTienPhaiHoan.Size = new System.Drawing.Size(72, 20);
+            this.lblTongTienPhaiHoan.Size = new System.Drawing.Size(78, 20);
             this.lblTongTienPhaiHoan.StyleController = this.layoutControl3;
             this.lblTongTienPhaiHoan.TabIndex = 11;
             // 
             // lblTongTienMienGiam
             // 
             this.lblTongTienMienGiam.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblTongTienMienGiam.Location = new System.Drawing.Point(337, 72);
+            this.lblTongTienMienGiam.Location = new System.Drawing.Point(331, 72);
             this.lblTongTienMienGiam.Name = "lblTongTienMienGiam";
-            this.lblTongTienMienGiam.Size = new System.Drawing.Size(72, 20);
+            this.lblTongTienMienGiam.Size = new System.Drawing.Size(78, 20);
             this.lblTongTienMienGiam.StyleController = this.layoutControl3;
             this.lblTongTienMienGiam.TabIndex = 10;
             // 
             // lblTongChiPhiNguoiBenh
             // 
             this.lblTongChiPhiNguoiBenh.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblTongChiPhiNguoiBenh.Location = new System.Drawing.Point(337, 48);
+            this.lblTongChiPhiNguoiBenh.Location = new System.Drawing.Point(331, 48);
             this.lblTongChiPhiNguoiBenh.Name = "lblTongChiPhiNguoiBenh";
-            this.lblTongChiPhiNguoiBenh.Size = new System.Drawing.Size(72, 20);
+            this.lblTongChiPhiNguoiBenh.Size = new System.Drawing.Size(78, 20);
             this.lblTongChiPhiNguoiBenh.StyleController = this.layoutControl3;
             this.lblTongChiPhiNguoiBenh.TabIndex = 9;
             // 
             // lblTongTienTamUng
             // 
             this.lblTongTienTamUng.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblTongTienTamUng.Location = new System.Drawing.Point(337, 24);
+            this.lblTongTienTamUng.Location = new System.Drawing.Point(331, 24);
             this.lblTongTienTamUng.Name = "lblTongTienTamUng";
-            this.lblTongTienTamUng.Size = new System.Drawing.Size(72, 20);
+            this.lblTongTienTamUng.Size = new System.Drawing.Size(78, 20);
             this.lblTongTienTamUng.StyleController = this.layoutControl3;
             this.lblTongTienTamUng.TabIndex = 8;
             // 
@@ -1187,7 +1188,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.lblPhaiThuDichVu.Location = new System.Drawing.Point(120, 96);
             this.lblPhaiThuDichVu.Name = "lblPhaiThuDichVu";
-            this.lblPhaiThuDichVu.Size = new System.Drawing.Size(88, 20);
+            this.lblPhaiThuDichVu.Size = new System.Drawing.Size(82, 20);
             this.lblPhaiThuDichVu.StyleController = this.layoutControl3;
             this.lblPhaiThuDichVu.TabIndex = 7;
             // 
@@ -1195,7 +1196,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.lblTongTienDichVu.Location = new System.Drawing.Point(120, 72);
             this.lblTongTienDichVu.Name = "lblTongTienDichVu";
-            this.lblTongTienDichVu.Size = new System.Drawing.Size(88, 20);
+            this.lblTongTienDichVu.Size = new System.Drawing.Size(82, 20);
             this.lblTongTienDichVu.StyleController = this.layoutControl3;
             this.lblTongTienDichVu.TabIndex = 6;
             // 
@@ -1203,7 +1204,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.lblPhaiThuVienPhi.Location = new System.Drawing.Point(120, 48);
             this.lblPhaiThuVienPhi.Name = "lblPhaiThuVienPhi";
-            this.lblPhaiThuVienPhi.Size = new System.Drawing.Size(88, 20);
+            this.lblPhaiThuVienPhi.Size = new System.Drawing.Size(82, 20);
             this.lblPhaiThuVienPhi.StyleController = this.layoutControl3;
             this.lblPhaiThuVienPhi.TabIndex = 5;
             // 
@@ -1211,7 +1212,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // 
             this.lblTongTienVienPhi.Location = new System.Drawing.Point(120, 24);
             this.lblTongTienVienPhi.Name = "lblTongTienVienPhi";
-            this.lblTongTienVienPhi.Size = new System.Drawing.Size(88, 20);
+            this.lblTongTienVienPhi.Size = new System.Drawing.Size(82, 20);
             this.lblTongTienVienPhi.StyleController = this.layoutControl3;
             this.lblTongTienVienPhi.TabIndex = 4;
             // 
@@ -1230,9 +1231,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem41,
             this.layoutControlItem42,
             this.lciTongTinHoanThu,
-            this.emptySpaceItem9,
             this.layoutControlItemlblGuaranteed,
-            this.emptySpaceItem8});
+            this.emptySpaceItem10});
             this.lcgThongTinVienPhi.Location = new System.Drawing.Point(0, 0);
             this.lcgThongTinVienPhi.Name = "lcgThongTinVienPhi";
             this.lcgThongTinVienPhi.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
@@ -1246,7 +1246,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem36.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem36.MinSize = new System.Drawing.Size(119, 24);
             this.layoutControlItem36.Name = "layoutControlItem36";
-            this.layoutControlItem36.Size = new System.Drawing.Size(207, 24);
+            this.layoutControlItem36.Size = new System.Drawing.Size(201, 24);
             this.layoutControlItem36.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem36.Text = "Tổng tiền viện phí:";
             this.layoutControlItem36.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1262,7 +1262,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem37.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem37.MinSize = new System.Drawing.Size(119, 24);
             this.layoutControlItem37.Name = "layoutControlItem37";
-            this.layoutControlItem37.Size = new System.Drawing.Size(207, 24);
+            this.layoutControlItem37.Size = new System.Drawing.Size(201, 24);
             this.layoutControlItem37.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem37.Text = "Phải thu viện phí:";
             this.layoutControlItem37.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1276,7 +1276,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem38.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem38.MinSize = new System.Drawing.Size(119, 24);
             this.layoutControlItem38.Name = "layoutControlItem38";
-            this.layoutControlItem38.Size = new System.Drawing.Size(207, 24);
+            this.layoutControlItem38.Size = new System.Drawing.Size(201, 24);
             this.layoutControlItem38.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem38.Text = "Tổng tiền dịch vụ:";
             this.layoutControlItem38.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1292,7 +1292,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem39.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem39.MinSize = new System.Drawing.Size(119, 24);
             this.layoutControlItem39.Name = "layoutControlItem39";
-            this.layoutControlItem39.Size = new System.Drawing.Size(207, 24);
+            this.layoutControlItem39.Size = new System.Drawing.Size(201, 24);
             this.layoutControlItem39.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem39.Text = "Phải thu dịch vụ:";
             this.layoutControlItem39.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1302,9 +1302,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // layoutControlItem40
             // 
             this.layoutControlItem40.Control = this.lblTongTienTamUng;
-            this.layoutControlItem40.Location = new System.Drawing.Point(207, 0);
+            this.layoutControlItem40.Location = new System.Drawing.Point(201, 0);
             this.layoutControlItem40.Name = "layoutControlItem40";
-            this.layoutControlItem40.Size = new System.Drawing.Size(201, 24);
+            this.layoutControlItem40.Size = new System.Drawing.Size(207, 24);
             this.layoutControlItem40.Text = "Tổng tiền tạm ứng:";
             this.layoutControlItem40.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem40.TextSize = new System.Drawing.Size(120, 20);
@@ -1315,10 +1315,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItem41.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.layoutControlItem41.AppearanceItemCaption.Options.UseFont = true;
             this.layoutControlItem41.Control = this.lblTongChiPhiNguoiBenh;
-            this.layoutControlItem41.Location = new System.Drawing.Point(207, 24);
+            this.layoutControlItem41.Location = new System.Drawing.Point(201, 24);
             this.layoutControlItem41.Name = "layoutControlItem41";
             this.layoutControlItem41.OptionsToolTip.ToolTip = "Tổng chi phí người bệnh";
-            this.layoutControlItem41.Size = new System.Drawing.Size(201, 24);
+            this.layoutControlItem41.Size = new System.Drawing.Size(207, 24);
             this.layoutControlItem41.Text = "Tổng chi phí NB:";
             this.layoutControlItem41.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem41.TextSize = new System.Drawing.Size(120, 20);
@@ -1327,9 +1327,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             // layoutControlItem42
             // 
             this.layoutControlItem42.Control = this.lblTongTienMienGiam;
-            this.layoutControlItem42.Location = new System.Drawing.Point(207, 48);
+            this.layoutControlItem42.Location = new System.Drawing.Point(201, 48);
             this.layoutControlItem42.Name = "layoutControlItem42";
-            this.layoutControlItem42.Size = new System.Drawing.Size(201, 24);
+            this.layoutControlItem42.Size = new System.Drawing.Size(207, 24);
             this.layoutControlItem42.Text = "Tổng tiền miễn giảm:";
             this.layoutControlItem42.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem42.TextSize = new System.Drawing.Size(120, 20);
@@ -1340,21 +1340,13 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.lciTongTinHoanThu.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lciTongTinHoanThu.AppearanceItemCaption.Options.UseFont = true;
             this.lciTongTinHoanThu.Control = this.lblTongTienPhaiHoan;
-            this.lciTongTinHoanThu.Location = new System.Drawing.Point(207, 72);
+            this.lciTongTinHoanThu.Location = new System.Drawing.Point(201, 72);
             this.lciTongTinHoanThu.Name = "lciTongTinHoanThu";
-            this.lciTongTinHoanThu.Size = new System.Drawing.Size(201, 24);
+            this.lciTongTinHoanThu.Size = new System.Drawing.Size(207, 24);
             this.lciTongTinHoanThu.Text = "Tổng tiền phải hoàn:";
             this.lciTongTinHoanThu.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTongTinHoanThu.TextSize = new System.Drawing.Size(120, 20);
             this.lciTongTinHoanThu.TextToControlDistance = 5;
-            // 
-            // emptySpaceItem9
-            // 
-            this.emptySpaceItem9.AllowHotTrack = false;
-            this.emptySpaceItem9.Location = new System.Drawing.Point(0, 120);
-            this.emptySpaceItem9.Name = "emptySpaceItem9";
-            this.emptySpaceItem9.Size = new System.Drawing.Size(408, 14);
-            this.emptySpaceItem9.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItemlblGuaranteed
             // 
@@ -1365,21 +1357,21 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.layoutControlItemlblGuaranteed.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItemlblGuaranteed.MinSize = new System.Drawing.Size(119, 24);
             this.layoutControlItemlblGuaranteed.Name = "layoutControlItemlblGuaranteed";
-            this.layoutControlItemlblGuaranteed.OptionsToolTip.ToolTip = "Tổng số tiền cần bảo lãnh";
-            this.layoutControlItemlblGuaranteed.Size = new System.Drawing.Size(207, 24);
+            this.layoutControlItemlblGuaranteed.OptionsToolTip.ToolTip = "Số tiền cần bảo lãnh/hạn mức bảo lãnh";
+            this.layoutControlItemlblGuaranteed.Size = new System.Drawing.Size(408, 24);
             this.layoutControlItemlblGuaranteed.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItemlblGuaranteed.Text = "Bảo lãnh:";
             this.layoutControlItemlblGuaranteed.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItemlblGuaranteed.TextSize = new System.Drawing.Size(110, 20);
             this.layoutControlItemlblGuaranteed.TextToControlDistance = 5;
             // 
-            // emptySpaceItem8
+            // emptySpaceItem10
             // 
-            this.emptySpaceItem8.AllowHotTrack = false;
-            this.emptySpaceItem8.Location = new System.Drawing.Point(207, 96);
-            this.emptySpaceItem8.Name = "emptySpaceItem8";
-            this.emptySpaceItem8.Size = new System.Drawing.Size(201, 24);
-            this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
+            this.emptySpaceItem10.AllowHotTrack = false;
+            this.emptySpaceItem10.Location = new System.Drawing.Point(0, 120);
+            this.emptySpaceItem10.Name = "emptySpaceItem10";
+            this.emptySpaceItem10.Size = new System.Drawing.Size(408, 14);
+            this.emptySpaceItem10.TextSize = new System.Drawing.Size(0, 0);
             // 
             // txtSearch
             // 
@@ -3726,6 +3718,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.treeListColumn_SereServ_DifferentPrice,
             this.treeListColumn_SereServ_Discount,
             this.treeListColumn_SereServ_Expend,
+            this.treeListColumn_SereServ_IsGuaranteed,
             this.treeListColumn_SereServ_ServiceCode});
             this.treeListSereServ.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeListSereServ.KeyFieldName = "CONCRETE_ID__IN_SETY";
@@ -3744,7 +3737,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.treeListSereServ.OptionsView.ShowVertLines = false;
             this.treeListSereServ.ParentFieldName = "PARENT_ID__IN_SETY";
             this.treeListSereServ.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemCheckEdit1});
+            this.repositoryItemCheckEdit1,
+            this.repositoryItemCheckEdit2});
             this.treeListSereServ.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
             this.treeListSereServ.Size = new System.Drawing.Size(1286, 146);
             this.treeListSereServ.TabIndex = 18;
@@ -3753,6 +3747,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.treeListSereServ.AfterCheckNode += new DevExpress.XtraTreeList.NodeEventHandler(this.treeListSereServ_AfterCheckNode);
             this.treeListSereServ.CustomDrawNodeCell += new DevExpress.XtraTreeList.CustomDrawNodeCellEventHandler(this.treeListSereServ_CustomDrawNodeCell);
             this.treeListSereServ.CustomDrawNodeCheckBox += new DevExpress.XtraTreeList.CustomDrawNodeCheckBoxEventHandler(this.treeListSereServ_CustomDrawNodeCheckBox);
+            this.treeListSereServ.CellValueChanging += new DevExpress.XtraTreeList.CellValueChangedEventHandler(this.treeListSereServ_CellValueChanging);
             // 
             // treeListColumn_SereServ_ServiceName
             // 
@@ -3893,12 +3888,31 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.treeListColumn_SereServ_Expend.OptionsColumn.AllowFocus = false;
             this.treeListColumn_SereServ_Expend.Visible = true;
             this.treeListColumn_SereServ_Expend.VisibleIndex = 8;
-            this.treeListColumn_SereServ_Expend.Width = 50;
+            this.treeListColumn_SereServ_Expend.Width = 90;
             // 
             // repositoryItemCheckEdit1
             // 
             this.repositoryItemCheckEdit1.AutoHeight = false;
             this.repositoryItemCheckEdit1.Name = "repositoryItemCheckEdit1";
+            // 
+            // treeListColumn_SereServ_IsGuaranteed
+            // 
+            this.treeListColumn_SereServ_IsGuaranteed.AppearanceCell.Options.UseTextOptions = true;
+            this.treeListColumn_SereServ_IsGuaranteed.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.treeListColumn_SereServ_IsGuaranteed.AppearanceHeader.Options.UseTextOptions = true;
+            this.treeListColumn_SereServ_IsGuaranteed.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.treeListColumn_SereServ_IsGuaranteed.Caption = "Bảo lãnh";
+            this.treeListColumn_SereServ_IsGuaranteed.ColumnEdit = this.repositoryItemCheckEdit2;
+            this.treeListColumn_SereServ_IsGuaranteed.FieldName = "IsGuaranteed";
+            this.treeListColumn_SereServ_IsGuaranteed.Name = "treeListColumn_SereServ_IsGuaranteed";
+            this.treeListColumn_SereServ_IsGuaranteed.Visible = true;
+            this.treeListColumn_SereServ_IsGuaranteed.VisibleIndex = 9;
+            this.treeListColumn_SereServ_IsGuaranteed.Width = 90;
+            // 
+            // repositoryItemCheckEdit2
+            // 
+            this.repositoryItemCheckEdit2.AutoHeight = false;
+            this.repositoryItemCheckEdit2.Name = "repositoryItemCheckEdit2";
             // 
             // treeListColumn_SereServ_ServiceCode
             // 
@@ -3908,7 +3922,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             this.treeListColumn_SereServ_ServiceCode.FieldName = "TDL_SERVICE_CODE";
             this.treeListColumn_SereServ_ServiceCode.Name = "treeListColumn_SereServ_ServiceCode";
             this.treeListColumn_SereServ_ServiceCode.Visible = true;
-            this.treeListColumn_SereServ_ServiceCode.VisibleIndex = 9;
+            this.treeListColumn_SereServ_ServiceCode.VisibleIndex = 10;
             // 
             // btnSavePrint
             // 
@@ -4792,9 +4806,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem42)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTongTinHoanThu)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemlblGuaranteed)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlFund)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewFund)).EndInit();
@@ -4957,6 +4970,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             ((System.ComponentModel.ISupportInitialize)(this.dtTransactionTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.treeListSereServ)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransaction)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransaction)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLock)).EndInit();
@@ -5344,7 +5358,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem7;
         private DevExpress.XtraEditors.LabelControl lblTongTienBaoLanh;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItemlblGuaranteed;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem8;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem9;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn_SereServ_IsGuaranteed;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit2;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem10;
     }
 }
