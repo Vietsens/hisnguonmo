@@ -378,6 +378,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.gridViewExternalBlood.Name = "gridViewExternalBlood";
             this.gridViewExternalBlood.OptionsView.ShowGroupPanel = false;
             this.gridViewExternalBlood.OptionsView.ShowIndicator = false;
+            this.gridViewExternalBlood.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridViewExternalBlood_RowCellClick);
             this.gridViewExternalBlood.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewExternalBlood_FocusedRowChanged);
             // 
             // colCode
@@ -914,7 +915,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.gridViewBloodType__BloodPage.OptionsFind.ShowFindButton = false;
             this.gridViewBloodType__BloodPage.OptionsView.ShowGroupPanel = false;
             this.gridViewBloodType__BloodPage.OptionsView.ShowIndicator = false;
-            this.gridViewBloodType__BloodPage.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewBloodType__BloodPage_FocusedRowChanged);
+            this.gridViewBloodType__BloodPage.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridViewBloodType__BloodPage_RowCellClick);
             this.gridViewBloodType__BloodPage.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewBloodType__BloodPage_CustomUnboundColumnData);
             // 
             // grcAvailableAmount_TabBlood

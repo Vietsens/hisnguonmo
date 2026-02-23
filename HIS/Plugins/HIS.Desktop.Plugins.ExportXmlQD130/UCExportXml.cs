@@ -1264,7 +1264,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("gia tri key 0 dong khac 1", sereServ));
                         }
 
-                        if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && addSereServ)
+                        if (sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && addSereServ)
                         {
                             if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                 dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
@@ -3723,13 +3723,16 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 List<Task> lst = new List<Task>();
-                lst.Add(ProcessSyncTreatment(listTreatmentSync));
                 if (this.configSync.isXML3176 == true)
                 {
                     isAutoSignXML3176 = true;
                     showMessSusscess = false;
                     isXML3176 = true;
                     lst.Add(XML130());
+                }
+                else
+                {
+                    lst.Add(ProcessSyncTreatment(listTreatmentSync));
                 }
                 Task.WaitAll(lst.ToArray());
             }
@@ -4007,7 +4010,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             foreach (var sereServ in ListSereServ)
                             {
-                                if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
+                                if (sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
                                 {
                                     if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                         dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
@@ -4274,7 +4277,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                                     if ((isAutoSync && configSync != null && configSync.isCheckCollinearXml) || (isSendCollinearXml))
                                     {
-                                        resultSyncTT = xmlProcessor.RunCollinearXml(ref errorMess);
+                                        resultSyncTT = treatment.IS_LOCK_FEE == 1 ? xmlProcessor.RunCollinearXml(ref errorMess) : null;
                                         Task task = null;
                                         List<Task> lstTask = new List<Task>();
                                         if (resultSyncTT != null)
@@ -4701,6 +4704,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     Inventec.Common.Logging.LogSystem.Error(
                         "Không có thông tin cài đặt ký số sendXMLSign"
+                    );
+                    return false;
+                }
+                if (string.IsNullOrEmpty(sourceFile) || !File.Exists(sourceFile))
+                {
+                    Inventec.Common.Logging.LogSystem.Error(
+                        "File nguồn để ký số không tồn tại: " + sourceFile
                     );
                     return false;
                 }
