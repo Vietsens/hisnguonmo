@@ -651,6 +651,9 @@
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_IS_EXPEND" xml:space="preserve">
     <value>Expend</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_IS_GUARANTEED" xml:space="preserve">
+    <value>Guaranteed</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_CODE" xml:space="preserve">
     <value>Service code</value>
   </data>

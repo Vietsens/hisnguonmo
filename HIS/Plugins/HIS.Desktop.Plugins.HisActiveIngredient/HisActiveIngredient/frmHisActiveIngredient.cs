@@ -66,6 +66,8 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
         List<string> arrControlEnableNotChange = new List<string>();
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         Inventec.Desktop.Common.Modules.Module moduleData;
+        private DelegateReturnMutilObject _callback;
+        private bool _isResetting = false;
         #endregion
 
         #region Construct
@@ -83,6 +85,35 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                 try
                 {
                     string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
+                    this.Icon = Icon.ExtractAssociatedIcon(iconPath);
+                }
+                catch (Exception ex)
+                {
+                    LogSystem.Warn(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        public frmHisActiveIngredient(Inventec.Desktop.Common.Modules.Module moduleData, DelegateReturnMutilObject callback)
+    : base(moduleData)
+        {
+            try
+            {
+                InitializeComponent();
+
+                pagingGrid = new PagingGrid();
+                this.moduleData = moduleData;
+                _callback = callback;
+                gridControlFormList.ToolTipController = toolTipControllerGrid;
+
+                try
+                {
+                    string iconPath = System.IO.Path.Combine(
+                        HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath,
+                        System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
                     this.Icon = Icon.ExtractAssociatedIcon(iconPath);
                 }
                 catch (Exception ex)
@@ -489,11 +520,13 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
         {
             try
             {
-                this.currentData = (MOS.EFMODEL.DataModels.HIS_ACTIVE_INGREDIENT)(gridControlFormList.DataSource as List<MOS.EFMODEL.DataModels.HIS_ACTIVE_INGREDIENT>)[dnNavigation.Position];
+                if (_isResetting) return;
+
+                this.currentData = (MOS.EFMODEL.DataModels.HIS_ACTIVE_INGREDIENT)
+                    (gridControlFormList.DataSource as List<MOS.EFMODEL.DataModels.HIS_ACTIVE_INGREDIENT>)[dnNavigation.Position];
+
                 if (this.currentData != null)
-                {
                     ChangedDataRow(this.currentData);
-                }
             }
             catch (Exception ex)
             {
@@ -716,18 +749,30 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
         {
             try
             {
+                _isResetting = true;
+
                 this.ActionType = GlobalVariables.ActionAdd;
                 EnableControlChanged(this.ActionType);
                 positionHandle = -1;
+
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProviderEditorInfo, dxErrorProvider);
+
                 ResetFormData();
                 FillDataToGridControl();
+                dnNavigation.Position = -1;
+                gridviewFormList.FocusedRowHandle = DevExpress.XtraGrid.GridControl.InvalidRowHandle;
+
                 SetFocusEditor();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            finally
+            {
+                _isResetting = false;
+            }
+
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -796,10 +841,14 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
                         FillDataToGridControl();
                     }
                 }
-
+                
                 if (success)
                 {
                     SetFocusEditor();
+                    if (_callback != null)
+                    {
+                        _callback(new object[] { /* optional data nếu cần */ });
+                    }
                 }
 
                 WaitingManager.Hide();
@@ -1320,6 +1369,18 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void frmHisActiveIngredient_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                _callback?.Invoke(null); // báo màn cha reload
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

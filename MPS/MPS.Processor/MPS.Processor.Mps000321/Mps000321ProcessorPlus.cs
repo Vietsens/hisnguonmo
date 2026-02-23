@@ -44,7 +44,9 @@ namespace MPS.Processor.Mps000321
                 sereServADOs = new List<SereServADO>();
                 var sereServADOTemps = new List<SereServADO>();
                 sereServADOTemps.AddRange(from r in rdo.SereServs
-                                          select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, ListPta, rdo.Treatment));
+                                          select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, 
+                                          rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, ListPta, 
+                                          rdo.Treatment, rdo.ServiceReqs));
 
                 sereServADOTemps = sereServADOTemps
                     .Where(o =>

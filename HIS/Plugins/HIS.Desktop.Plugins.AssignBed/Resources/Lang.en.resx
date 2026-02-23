@@ -1,0 +1,522 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmAssignBed.bar2.Text" xml:space="preserve">
+    <value>Main menu</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem1.Caption" xml:space="preserve">
+    <value>barButtonItem1</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem2.Caption" xml:space="preserve">
+    <value>Save(Ctrl S)</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem3.Caption" xml:space="preserve">
+    <value>Save print (Ctrl I)</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem4.Caption" xml:space="preserve">
+    <value>New (Ctrl N)</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem5.Caption" xml:space="preserve">
+    <value>barButtonItem5</value>
+  </data>
+  <data name="frmAssignBed.btnCreateBill.Text" xml:space="preserve">
+    <value>Pay</value>
+  </data>
+  <data name="frmAssignBed.btnDepositService.Text" xml:space="preserve">
+    <value>Temporary collection\r\n</value>
+  </data>
+  <data name="frmAssignBed.btnNew.Text" xml:space="preserve">
+    <value>New\r\n</value>
+  </data>
+  <data name="frmAssignBed.btnQRPay.Text" xml:space="preserve">
+    <value>Temporarily collected QR</value>
+  </data>
+  <data name="frmAssignBed.btnSave.Text" xml:space="preserve">
+    <value>Save\r\n</value>
+  </data>
+  <data name="frmAssignBed.btnSaveAndPrint.Text" xml:space="preserve">
+    <value>Save Print\r\n</value>
+  </data>
+  <data name="frmAssignBed.btnServiceReqList.Text" xml:space="preserve">
+    <value>List of orders</value>
+  </data>
+  <data name="frmAssignBed.chkEditIcd.Properties.Caption" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="frmAssignBed.chkEditIcdCause.Properties.Caption" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="frmAssignBed.grcServiceCode_TabService.Caption" xml:space="preserve">
+    <value>Service code</value>
+  </data>
+  <data name="frmAssignBed.gridColumn_Service_PrimaryPatientType.Caption" xml:space="preserve">
+    <value>Telephone surcharge</value>
+  </data>
+  <data name="frmAssignBed.gridColumn1.Caption" xml:space="preserve">
+    <value>Disease name</value>
+  </data>
+  <data name="frmAssignBed.gridColumn10.Caption" xml:space="preserve">
+    <value>Unit price</value>
+  </data>
+  <data name="frmAssignBed.gridColumn11.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="frmAssignBed.gridColumn12.Caption" xml:space="preserve">
+    <value>Paired numbers</value>
+  </data>
+  <data name="frmAssignBed.gridColumn13.Caption" xml:space="preserve">
+    <value>Other sources</value>
+  </data>
+  <data name="frmAssignBed.gridColumn14.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmAssignBed.gridColumn15.Caption" xml:space="preserve">
+    <value>gridColumn15</value>
+  </data>
+  <data name="frmAssignBed.gridColumn16.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="frmAssignBed.gridColumn17.Caption" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="frmAssignBed.gridColumn18.Caption" xml:space="preserve">
+    <value>Payment rate</value>
+  </data>
+  <data name="frmAssignBed.gridColumn2.Caption" xml:space="preserve">
+    <value>Health insurance code</value>
+  </data>
+  <data name="frmAssignBed.gridColumn3.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="frmAssignBed.gridColumn4.Caption" xml:space="preserve">
+    <value>Bed</value>
+  </data>
+  <data name="frmAssignBed.gridColumn5.Caption" xml:space="preserve">
+    <value>Start time</value>
+  </data>
+  <data name="frmAssignBed.gridColumn6.Caption" xml:space="preserve">
+    <value>End time</value>
+  </data>
+  <data name="frmAssignBed.gridColumn7.Caption" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="frmAssignBed.gridColumn8.Caption" xml:space="preserve">
+    <value>Disease code</value>
+  </data>
+  <data name="frmAssignBed.gridColumn9.Caption" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="frmAssignBed.gridColumnExecuteRoomName__TabService.Caption" xml:space="preserve">
+    <value>Processing room</value>
+  </data>
+  <data name="frmAssignBed.gridColumnPatientTypeName__TabService.Caption" xml:space="preserve">
+    <value>DTTTT</value>
+  </data>
+  <data name="frmAssignBed.gridViewServiceProcess.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>Search keywords...</value>
+  </data>
+  <data name="frmAssignBed.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmAssignBed.layoutControl2.Text" xml:space="preserve">
+    <value>layoutControl2</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem14.Text" xml:space="preserve">
+    <value>Preliminary college:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem15.Text" xml:space="preserve">
+    <value>Designator:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem20.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Total cost the patient must pay</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem20.Text" xml:space="preserve">
+    <value>Total expenses payable by BN:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem21.Text" xml:space="preserve">
+    <value>Arise:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem22.Text" xml:space="preserve">
+    <value>In which: Health insurance:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem23.Text" xml:space="preserve">
+    <value>Other:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem24.Text" xml:space="preserve">
+    <value>Patient:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem26.Text" xml:space="preserve">
+    <value>Closed:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem28.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Health insurance gap</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem28.Text" xml:space="preserve">
+    <value>Health insurance difference:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem29.Text" xml:space="preserve">
+    <value>Weight:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem30.Text" xml:space="preserve">
+    <value>Height:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem31.Text" xml:space="preserve">
+    <value>BMI:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem33.Text" xml:space="preserve">
+    <value>Sign:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem34.Text" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem35.Text" xml:space="preserve">
+    <value>Preview before printing</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem36.Text" xml:space="preserve">
+    <value>Laboratory:</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem5.Text" xml:space="preserve">
+    <value>Secondary colleges:</value>
+  </data>
+  <data name="frmAssignBed.lblCaptionFortoggleSwitchDataChecked.Text" xml:space="preserve">
+    <value>All services</value>
+  </data>
+  <data name="frmAssignBed.lciForlblConThua.Text" xml:space="preserve">
+    <value>Missing:</value>
+  </data>
+  <data name="frmAssignBed.lciForlblSoDuTaiKhoan.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Account balance</value>
+  </data>
+  <data name="frmAssignBed.lciForlblSoDuTaiKhoan.Text" xml:space="preserve">
+    <value>Account balance:</value>
+  </data>
+  <data name="frmAssignBed.lciIcdText.Text" xml:space="preserve">
+    <value>Main College:</value>
+  </data>
+  <data name="frmAssignBed.lciIcdTextCause.Text" xml:space="preserve">
+    <value>External recipient:</value>
+  </data>
+  <data name="frmAssignBed.Text" xml:space="preserve">
+    <value>Bed assignment</value>
+  </data>
+  <data name="frmAssignBed.toggleSwitchDataChecked.Properties.OffText" xml:space="preserve">
+    <value>All services</value>
+  </data>
+  <data name="frmAssignBed.toggleSwitchDataChecked.Properties.OnText" xml:space="preserve">
+    <value>Selected service</value>
+  </data>
+  <data name="frmAssignBed.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Press F1 to select disease</value>
+  </data>
+  <data name="frmContraindicated.btnN.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmContraindicated.btnY.Text" xml:space="preserve">
+    <value>Have</value>
+  </data>
+  <data name="frmContraindicated.emptySpaceItem1.Text" xml:space="preserve">
+    <value>Block services are contraindicated in the following diagnoses:</value>
+  </data>
+  <data name="frmContraindicated.gridColumn1.Caption" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="frmContraindicated.gridColumn2.Caption" xml:space="preserve">
+    <value>Diagnosis (ICD)</value>
+  </data>
+  <data name="frmContraindicated.gridColumn3.Caption" xml:space="preserve">
+    <value>Contraindicated content</value>
+  </data>
+  <data name="frmContraindicated.layoutControlRoot.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmContraindicated.Text" xml:space="preserve">
+    <value>Block contraindications</value>
+  </data>
+  <data name="frmDetail.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmDetail.bbtnPrint.Caption" xml:space="preserve">
+    <value>Print (Ctrl P)</value>
+  </data>
+  <data name="frmDetail.btnPrint.Text" xml:space="preserve">
+    <value>Print (Ctrl P)</value>
+  </data>
+  <data name="frmDetail.grcCreator_TabService.Caption" xml:space="preserve">
+    <value>Requester</value>
+  </data>
+  <data name="frmDetail.grcExecuteRoomName_TabService.Caption" xml:space="preserve">
+    <value>Processing room</value>
+  </data>
+  <data name="frmDetail.grcIntructionTime_TabService.Caption" xml:space="preserve">
+    <value>Requested time</value>
+  </data>
+  <data name="frmDetail.grcServiceReqCode_TabService.Caption" xml:space="preserve">
+    <value>Request code</value>
+  </data>
+  <data name="frmDetail.grcServiceReqTypeName_TabService.Caption" xml:space="preserve">
+    <value>Request type</value>
+  </data>
+  <data name="frmDetail.grcStt__TabService.Caption" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="frmDetail.grcTotalAmount_TabService.Caption" xml:space="preserve">
+    <value>Number of services</value>
+  </data>
+  <data name="frmDetail.grcTotalPrice_TabService.Caption" xml:space="preserve">
+    <value>Total amount</value>
+  </data>
+  <data name="frmDetail.gridColumn1.Caption" xml:space="preserve">
+    <value>Specimen type</value>
+  </data>
+  <data name="frmDetail.gridColumn7.Caption" xml:space="preserve">
+    <value>Print request form</value>
+  </data>
+  <data name="frmDetail.gridColumn7.ToolTip" xml:space="preserve">
+    <value>Print request form</value>
+  </data>
+  <data name="frmDetail.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDetail.repositoryItemButtonTabServiceViewReq_Print.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmDetail.Text" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="frmDetailsSereServ.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn1.Caption" xml:space="preserve">
+    <value>Command code</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn2.Caption" xml:space="preserve">
+    <value>Service name</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn3.Caption" xml:space="preserve">
+    <value>Make money</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn4.Caption" xml:space="preserve">
+    <value>Designated room</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn5.Caption" xml:space="preserve">
+    <value>Implementation room</value>
+  </data>
+  <data name="frmDetailsSereServ.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmDetailsSereServ.layoutControlItem1.Text" xml:space="preserve">
+    <value>The patient still owes money.</value>
+  </data>
+  <data name="frmDetailsSereServ.Text" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="frmMissingIcd.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmMissingIcd.bbtnPrint.Caption" xml:space="preserve">
+    <value>Print (Ctrl P)</value>
+  </data>
+  <data name="frmMissingIcd.bbtnSearch.Caption" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="frmMissingIcd.btnAddIcd.Text" xml:space="preserve">
+    <value>Additional diagnostics</value>
+  </data>
+  <data name="frmMissingIcd.btnPrint.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmMissingIcd.btnSearch.Text" xml:space="preserve">
+    <value>Find (Ctrl F)</value>
+  </data>
+  <data name="frmMissingIcd.btnSkip.Text" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIcdName.Caption" xml:space="preserve">
+    <value>Diagnosis (ICD)</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIsCauseIcd.Caption" xml:space="preserve">
+    <value>Secondary college</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIsCauseIcd.ToolTip" xml:space="preserve">
+    <value>Secondary diagnosis</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIsMainIcd.Caption" xml:space="preserve">
+    <value>Main college</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIsMainIcd.ToolTip" xml:space="preserve">
+    <value>Primary diagnosis</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnServiceName.Caption" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="frmMissingIcd.labelControl1.Text" xml:space="preserve">
+    <value>Services only allow appointment in the following diagnostic cases:</value>
+  </data>
+  <data name="frmMissingIcd.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmMissingIcd.Text" xml:space="preserve">
+    <value>Missing diagnostic information</value>
+  </data>
+  <data name="frmPriceEdit.bar1.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="frmPriceEdit.barbtnOK.Caption" xml:space="preserve">
+    <value>ok</value>
+  </data>
+  <data name="frmPriceEdit.btnOK.Text" xml:space="preserve">
+    <value>Agree (Ctrl S)</value>
+  </data>
+  <data name="frmPriceEdit.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmPriceEdit.layoutControlItem1.Text" xml:space="preserve">
+    <value>Price:</value>
+  </data>
+  <data name="frmPriceEdit.Text" xml:space="preserve">
+    <value>Fix price</value>
+  </data>
+  <data name="frmServiceDebateConfirm.btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="frmServiceDebateConfirm.btnCreateDebate.Text" xml:space="preserve">
+    <value>Create consultation minutes</value>
+  </data>
+  <data name="frmServiceDebateConfirm.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmServiceDebateConfirm.Text" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="frmWaringConfigIcdService.btnNo.Text" xml:space="preserve">
+    <value>Are not</value>
+  </data>
+  <data name="frmWaringConfigIcdService.btnServiceICD.Text" xml:space="preserve">
+    <value>Additional regimen</value>
+  </data>
+  <data name="frmWaringConfigIcdService.btnYes.Text" xml:space="preserve">
+    <value>Have</value>
+  </data>
+  <data name="frmWaringConfigIcdService.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="frmWaringConfigIcdService.Text" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+</root>

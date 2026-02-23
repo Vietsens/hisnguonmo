@@ -161,7 +161,7 @@
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000046.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000047.PDO">
-      <HintPath>..\..\..\..\..\His_test\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000047.PDO.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000047.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000049.PDO">
       <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000049.PDO.dll</HintPath>
@@ -235,6 +235,7 @@
     <Compile Include="Run\PrintNow.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Run\frmAggregateExpMestPrintFilter.resx">
       <DependentUpon>frmAggregateExpMestPrintFilter.cs</DependentUpon>
       <SubType>Designer</SubType>

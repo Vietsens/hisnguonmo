@@ -1220,5 +1220,35 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 LogSystem.Error(ex);
             }
         }
+        private void TryAutoCheckBankAccount()
+        {
+            try
+            {
+                if (cboListBank.EditValue == null) return;
+                var bankIdObj = cboListBank.EditValue;
+                var account = txtAccNumber.Text?.Trim();
+                if (string.IsNullOrEmpty(account)) return;
+
+                long bankId;
+                if (!long.TryParse(bankIdObj.ToString(), out bankId)) return;
+
+
+              
+                CommonParam param = new CommonParam();
+                HIS_PATIENT_BANK_ACCOUNT dto = new HIS_PATIENT_BANK_ACCOUNT();
+                dto.PAYEE_BANK_ID = bankId;
+                dto.PAYEE_ACCOUNT_NUMBER = account;
+
+                CheckBankAccount(param, ref dto);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void txtAccNumber_Leave(object sender, EventArgs e)
+        {
+            TryAutoCheckBankAccount();
+        }
     }
 }

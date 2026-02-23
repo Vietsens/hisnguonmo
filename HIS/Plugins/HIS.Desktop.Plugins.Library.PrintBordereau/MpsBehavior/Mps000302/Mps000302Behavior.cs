@@ -86,11 +86,13 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000302
                 bool IsNotSameDepartment = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.MOS__BHYT__CALC_MATERIAL_PACKAGE_PRICE_OPTION)) == 1 ? true : false;
                 bool IsMergeServiceNotHein = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.MERGE_SERVICE_NOT_HEIN)) == 1 ? true : false;
                 bool IsNotIncludeIsExpend = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKey.ConfigKey_NotIncludeIsExpend) == 1 ? true : false;
+                bool IsGroupHeinServiceByUseTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKey.ConfigKey_IsGroupHeinServiceByUseTime) == 1 ? true : false;
                 HisConfigValue hisConfigValue = new HisConfigValue();
                 hisConfigValue.IsPriceWithDifference = isPriceWithDifference;
                 hisConfigValue.IsNotSameDepartment = IsNotSameDepartment;
                 hisConfigValue.IsMergeServiceNotHein = IsMergeServiceNotHein;
                 hisConfigValue.IsNotIncludeIsExpend = IsNotIncludeIsExpend;
+                hisConfigValue.IsGroupHeinServiceByUseTime = IsGroupHeinServiceByUseTime;
 
                 HIS_BRANCH branch = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetBranchId());
                 List<HIS_TREATMENT_TYPE> treatmentTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TREATMENT_TYPE>();
@@ -120,10 +122,20 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000302
                 List<HIS_MEDI_ORG> mediOrg = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDI_ORG>();
                 List<HIS_PATIENT_TYPE> patientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PATIENT_TYPE>();
 
+                //
+                List<HIS_SERVICE_REQ> serviceReqs = null;
+                if (IsGroupHeinServiceByUseTime)
+                {
+                    HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
+                    serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
+                    serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
+                    serviceReqs = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
+                }
                 MPS.Processor.Mps000302.PDO.Mps000302PDO rdo = new MPS.Processor.Mps000302.PDO.Mps000302PDO(this.CurrentPatientTypeAlter, patientTypeAlters,
                     DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, this.Patient, HeinServiceTypes,
                     Rooms, Services, treatmentTypes, branch, materialTypes, departments, singleValue, hisConfigValue, servuceUnit, mediOrg, patientType,
-                    this.SereServBills, this.SereServDeposits, this.SeseDepoRepays, this.transReq, this.lstConfig);
+                    this.SereServBills, this.SereServDeposits, this.SeseDepoRepays, this.transReq, this.lstConfig, serviceReqs);
                 rdo.ListTransactionBill = transactions;
                 #region Run Print
 

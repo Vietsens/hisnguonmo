@@ -375,14 +375,20 @@
   <data name="UCHisImportMestMedicine.layoutControlItem30.Text" xml:space="preserve">
     <value>Nhóm thầu:</value>
   </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem31.Text" xml:space="preserve">
+    <value>Số hợp đồng:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ngày hóa đơn từ</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem32.Text" xml:space="preserve">
+    <value>Ngày hóa đơn từ:</value>
+  </data>
   <data name="UCHisImportMestMedicine.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Công ty xuất hóa đơn</value>
   </data>
   <data name="UCHisImportMestMedicine.layoutControlItem33.Text" xml:space="preserve">
     <value>Cty xuất hóa đơn:</value>
-  </data>
-  <data name="UCHisImportMestMedicine.layoutControlItem31.Text" xml:space="preserve">
-    <value>Số hợp đồng:</value>
   </data>
   <data name="UCHisImportMestMedicine.layoutControlItem34.Text" xml:space="preserve">
     <value> </value>
@@ -432,6 +438,15 @@
   <data name="UCHisImportMestMedicine.layoutControlItem46.Text" xml:space="preserve">
     <value>Địa chỉ:</value>
   </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem47.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số tiền thuế trên hóa đơn chứng từ</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem47.Text" xml:space="preserve">
+    <value>Số tiền thuế trên hóa đơn:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem48.Text" xml:space="preserve">
+    <value>Đến:</value>
+  </data>
   <data name="UCHisImportMestMedicine.layoutControlItem8.Text" xml:space="preserve">
     <value>Trạng thái:</value>
   </data>
@@ -461,11 +476,5 @@
   </data>
   <data name="UCHisImportMestMedicine.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Mã điều trị</value>
-  </data>
-  <data name="UCHisImportMestMedicine.layoutControlItem47.Text" xml:space="preserve">
-    <value>Số tiền thuế trên hóa đơn:</value>
-  </data>
-  <data name="UCHisImportMestMedicine.layoutControlItem47.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Số tiền thuế trên hóa đơn chứng từ</value>
   </data>
 </root>

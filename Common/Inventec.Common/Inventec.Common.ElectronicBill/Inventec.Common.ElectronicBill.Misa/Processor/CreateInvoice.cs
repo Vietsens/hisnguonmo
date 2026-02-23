@@ -197,6 +197,18 @@ namespace Inventec.Common.ElectronicBill.Misa.Processor
             {
                 if (this.CheckListDataV2(createData, ref result))
                 {
+                    createData.ForEach(o =>
+                    {
+                        o.IsInvoiceCalculatingMachine = true;
+                        o.InvoiceName = "HÓA ĐƠN GTGT KHỞI TẠO TỪ MÁY TÍNH TIỀN";
+                        if (!o.TotalAmount.HasValue) o.TotalAmount = 0;
+                        if (!o.TotalAmountOC.HasValue) o.TotalAmountOC = 0;
+                        if (!o.TotalAmountWithoutVATOC.HasValue) o.TotalAmountWithoutVATOC = 0;
+                        if (!o.TotalDiscountAmountOC.HasValue) o.TotalDiscountAmountOC = 0;
+                        if (!o.TotalSaleAmount.HasValue) o.TotalSaleAmount = 0;
+                        if (!o.TotalSaleAmountOC.HasValue) o.TotalSaleAmountOC = 0;
+                        if (!o.TotalVATAmountOC.HasValue) o.TotalVATAmountOC = 0;
+                    });
                     var apiResult = new Base.ApiConsumerV2(this.Data.BaseUrl, this.Data.AppID, this.Data.TaxCode, this.Data.User, this.Data.Pass)
                         .CreateRequest<ApiResult>(Base.RequestUriStore.CreateInvoiceV2, createData);
                     if (apiResult == null || !apiResult.Success)

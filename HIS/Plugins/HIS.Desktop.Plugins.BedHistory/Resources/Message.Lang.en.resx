@@ -136,7 +136,7 @@
     <value>The end date of the bed should not be less than the start date</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__FORM_BED_HISTORY__ERROR_END_FINISH_TIME" xml:space="preserve">
-    <value>End date should not be less than start date</value>
+    <value>End date must be greater than start date</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__FORM_BED_HISTORY__ERROR_SERVICE_REQ" xml:space="preserve">
     <value>Data service is invalid</value>

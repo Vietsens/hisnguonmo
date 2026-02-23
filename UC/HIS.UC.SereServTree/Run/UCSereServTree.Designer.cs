@@ -45,6 +45,7 @@ namespace HIS.UC.SereServTree.Run
         /// </summary>
         private void InitializeComponent()
         {
+            DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.trvService = new DevExpress.XtraTreeList.TreeList();
             this.treeColumnServiceName = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeColumnAmount = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -58,27 +59,32 @@ namespace HIS.UC.SereServTree.Run
             this.treeColumnServiceReqCode = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeColumnTransactionCode = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeColumnIsExpend = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeColumnGuaranteed = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeColumnDVKTC = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumnPrice = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemchkIsExpend__Enable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemchkIsExpend__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemchkIsGuaranteed__Enable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.repositoryItemchkIsGuaranteed__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtKeyword = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciKeyword = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.toolTipController = new DevExpress.Utils.ToolTipController();
-            this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             ((System.ComponentModel.ISupportInitialize)(this.trvService)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(repositoryItemTextEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsExpend__Enable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsExpend__Disable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsGuaranteed__Enable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsGuaranteed__Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKeyword)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).BeginInit();
             this.SuspendLayout();
             // 
             // trvService
@@ -102,6 +108,7 @@ namespace HIS.UC.SereServTree.Run
             this.treeColumnServiceReqCode,
             this.treeColumnTransactionCode,
             this.treeColumnIsExpend,
+            this.treeColumnGuaranteed,
             this.treeColumnDVKTC,
             this.treeListColumnPrice});
             this.trvService.Cursor = System.Windows.Forms.Cursors.Default;
@@ -129,7 +136,9 @@ namespace HIS.UC.SereServTree.Run
             this.trvService.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemchkIsExpend__Enable,
             this.repositoryItemchkIsExpend__Disable,
-            this.repositoryItemButtonEdit1});
+            this.repositoryItemButtonEdit1,
+            this.repositoryItemchkIsGuaranteed__Enable,
+            this.repositoryItemchkIsGuaranteed__Disable});
             this.trvService.ShowButtonMode = DevExpress.XtraTreeList.ShowButtonModeEnum.ShowAlways;
             this.trvService.Size = new System.Drawing.Size(872, 522);
             this.trvService.TabIndex = 3;
@@ -146,6 +155,7 @@ namespace HIS.UC.SereServTree.Run
             this.trvService.CustomDrawNodeCell += new DevExpress.XtraTreeList.CustomDrawNodeCellEventHandler(this.trvService_CustomDrawNodeCell);
             this.trvService.CustomDrawNodeCheckBox += new DevExpress.XtraTreeList.CustomDrawNodeCheckBoxEventHandler(this.trvService_CustomDrawNodeCheckBox);
             this.trvService.PopupMenuShowing += new DevExpress.XtraTreeList.PopupMenuShowingEventHandler(this.trvService_PopupMenuShowing);
+            this.trvService.CellValueChanging += new DevExpress.XtraTreeList.CellValueChangedEventHandler(this.trvService_CellValueChanging_1);
             this.trvService.ShowingEditor += new System.ComponentModel.CancelEventHandler(this.trvService_ShowingEditor);
             this.trvService.KeyDown += new System.Windows.Forms.KeyEventHandler(this.trvService_KeyDown);
             // 
@@ -260,6 +270,14 @@ namespace HIS.UC.SereServTree.Run
             this.treeColumnIsExpend.Name = "treeColumnIsExpend";
             this.treeColumnIsExpend.Width = 78;
             // 
+            // treeColumnGuaranteed
+            // 
+            this.treeColumnGuaranteed.Caption = "Bảo lãnh";
+            this.treeColumnGuaranteed.ColumnEdit = repositoryItemTextEdit2;
+            this.treeColumnGuaranteed.FieldName = "IsGuaranteed";
+            this.treeColumnGuaranteed.Name = "treeColumnGuaranteed";
+            this.treeColumnGuaranteed.Width = 85;
+            // 
             // treeColumnDVKTC
             // 
             this.treeColumnDVKTC.Caption = "DVKTC";
@@ -291,6 +309,27 @@ namespace HIS.UC.SereServTree.Run
             this.repositoryItemchkIsExpend__Disable.Name = "repositoryItemchkIsExpend__Disable";
             this.repositoryItemchkIsExpend__Disable.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.repositoryItemchkIsExpend__Disable.ReadOnly = true;
+            // 
+            // repositoryItemButtonEdit1
+            // 
+            this.repositoryItemButtonEdit1.AutoHeight = false;
+            this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
+            // 
+            // repositoryItemchkIsGuaranteed__Enable
+            // 
+            this.repositoryItemchkIsGuaranteed__Enable.AutoHeight = false;
+            this.repositoryItemchkIsGuaranteed__Enable.Name = "repositoryItemchkIsGuaranteed__Enable";
+            this.repositoryItemchkIsGuaranteed__Enable.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemchkIsGuaranteed__Enable.CheckedChanged += new System.EventHandler(this.repositoryItemchkIsGuaranteed_CheckedChanged);
+            // 
+            // repositoryItemchkIsGuaranteed__Disable
+            // 
+            this.repositoryItemchkIsGuaranteed__Disable.AutoHeight = false;
+            this.repositoryItemchkIsGuaranteed__Disable.Name = "repositoryItemchkIsGuaranteed__Disable";
+            this.repositoryItemchkIsGuaranteed__Disable.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemchkIsGuaranteed__Disable.CheckedChanged += new System.EventHandler(this.repositoryItemchkIsGuaranteed_CheckedChanged);
             // 
             // layoutControl1
             // 
@@ -348,13 +387,6 @@ namespace HIS.UC.SereServTree.Run
             // 
             this.toolTipController.GetActiveObjectInfo += new DevExpress.Utils.ToolTipControllerGetActiveObjectInfoEventHandler(this.toolTipController_GetActiveObjectInfo);
             // 
-            // repositoryItemButtonEdit1
-            // 
-            this.repositoryItemButtonEdit1.AutoHeight = false;
-            this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton()});
-            this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
-            // 
             // UCSereServTree
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -366,15 +398,17 @@ namespace HIS.UC.SereServTree.Run
             this.Size = new System.Drawing.Size(876, 550);
             this.Load += new System.EventHandler(this.UCServiceTree_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trvService)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(repositoryItemTextEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsExpend__Enable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsExpend__Disable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsGuaranteed__Enable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemchkIsGuaranteed__Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtKeyword.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciKeyword)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEdit1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -405,5 +439,8 @@ namespace HIS.UC.SereServTree.Run
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumnPrice;
         private DevExpress.Utils.ToolTipController toolTipController;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit1;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeColumnGuaranteed;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemchkIsGuaranteed__Enable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemchkIsGuaranteed__Disable;
     }
 }

@@ -26,8 +26,6 @@ using MOS.Filter;
 using MOS.LibraryHein.Bhyt;
 using MOS.SDO;
 using Newtonsoft.Json;
-using RAR.IdCard.Sdk.Reader;
-using RAR.IdCard.Sdk.Reader.HN212;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

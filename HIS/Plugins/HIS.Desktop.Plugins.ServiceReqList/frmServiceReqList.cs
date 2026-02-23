@@ -1914,7 +1914,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         //{
                         //    e.RepositoryItem = repositoryItemReadOnly;
                         //}
-                        if (creator == this.loginName || reqLoginName == this.loginName || CheckLoginAdmin.IsAdmin(this.loginName))
+                        if (HisConfigCFG.AssignBedOption == "2" && data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G)
+                        {
+                            e.RepositoryItem = repositoryItemBtnEditServiceReqDisable;
+                        }    
+                        else if (creator == this.loginName || reqLoginName == this.loginName || CheckLoginAdmin.IsAdmin(this.loginName))
                         {
                             if (isNoExecute != Base.GlobalStore.IS_TRUE)
                             {

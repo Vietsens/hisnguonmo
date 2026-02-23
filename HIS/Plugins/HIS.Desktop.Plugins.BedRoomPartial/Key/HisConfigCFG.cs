@@ -30,12 +30,33 @@ namespace HIS.Desktop.Plugins.BedRoomPartial.Key
     {
         private const string IS_ShowResultWhenReqComplete = "HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete";
         private const string AI_ConnectionInfo = "HIS.Desktop.AI.ConnectionInfo";
+        private const string ASSIGN_BED_OPTION = "HIS.Desktop.Plugins.AssignBed.Option";
         internal static string AIConnectionInfo
         {
             get
             {
                 var AIConec = HisConfigs.Get<string>(AI_ConnectionInfo);
                 return AIConec;
+            }
+        }
+        internal static int AssignBedOption
+        {
+            get
+            {
+                try
+                {
+                    var optStr = HisConfigs.Get<string>(ASSIGN_BED_OPTION);
+                    int opt;
+                    if (!int.TryParse(optStr, out opt) || (opt != 1 && opt != 2))
+                    {
+                        opt = 1;
+                    }
+                    return opt;
+                }
+                catch
+                {
+                    return 1;
+                }
             }
         }
         internal static string IsShowResultWhenReqComplete

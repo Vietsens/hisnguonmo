@@ -46,7 +46,12 @@ namespace MPS.Processor.Mps000279
                 var sereServADOTemps = new List<SereServADO>();
                 var allSereServs = rdo.SereServs;
                 sereServADOTemps.AddRange(from r in rdo.SereServs
-                                          select new SereServADO(r, allSereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, rdo.Treatment));
+                                          select new SereServADO(r, allSereServs, rdo.SereServExts, rdo.HeinServiceTypes, 
+                                          rdo.Services, rdo.Rooms, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes, rdo.PatientTypeCFG, 
+                                          rdo.HisConfigValue, rdo.HisServiceUnit, rdo.Treatment,
+                                          rdo.ServiceReqs,
+                                          rdo.PatientTypeAlterAlls
+                                          ));
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps), sereServADOTemps));
 

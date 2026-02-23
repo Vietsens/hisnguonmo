@@ -140,7 +140,8 @@
     <Reference Include="Inventec.Common.SignFile">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignFile\Inventec.Common.SignFile.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.SignLibrary">
+    <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">

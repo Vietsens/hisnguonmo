@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -40,22 +40,24 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
             try
             {
                 Inventec.Desktop.Common.Modules.Module moduleData = null;
+                DelegateReturnMutilObject callback = null;
 
-                if (entity.GetType() == typeof(object[]))
+                if (entity != null && entity.Length > 0)
                 {
-                    if (entity != null && entity.Count() > 0)
+                    foreach (var item in entity)
                     {
-                        for (int i = 0; i < entity.Count(); i++)
-                        {
-                            if (entity[i] is Inventec.Desktop.Common.Modules.Module)
-                            {
-                                moduleData = (Inventec.Desktop.Common.Modules.Module)entity[i];
-                            }
-                        }
+                        if (item is Inventec.Desktop.Common.Modules.Module)
+                            moduleData = (Inventec.Desktop.Common.Modules.Module)item;
+
+                        else if (item is DelegateReturnMutilObject)
+                            callback = (DelegateReturnMutilObject)item;
                     }
                 }
 
-                return new frmHisActiveIngredient(moduleData);
+                // Ưu tiên ctor có callback
+                return callback != null
+                    ? new frmHisActiveIngredient(moduleData, callback)
+                    : new frmHisActiveIngredient(moduleData);
             }
             catch (Exception ex)
             {

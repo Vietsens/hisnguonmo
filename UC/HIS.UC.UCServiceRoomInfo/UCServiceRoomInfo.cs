@@ -15,33 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraLayout;
+using DevExpress.XtraLayout.Utils;
+using DevExpress.XtraSplashScreen;
+using HIS.Desktop.DelegateRegister;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.RegisterConfig;
+using HIS.Desktop.Utility;
+using HIS.UC.ServiceRoom;
+using HIS.UC.ServiceRoom.ADO;
+using HIS.UC.UCServiceRoomInfo.ADO;
+using HIS.UC.UCServiceRoomInfo.ClassServiceRoomInfo;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.UC.ServiceRoom.ADO;
-using Inventec.Core;
-using DevExpress.XtraLayout;
-using DevExpress.XtraLayout.Utils;
-using HIS.UC.UCServiceRoomInfo.ClassServiceRoomInfo;
-using HIS.UC.ServiceRoom;
-using HIS.Desktop.DelegateRegister;
-using HIS.UC.UCServiceRoomInfo.ADO;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.Plugins.Library.RegisterConfig;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.Utility;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
 
 namespace HIS.UC.UCServiceRoomInfo
 {
@@ -64,6 +65,7 @@ namespace HIS.UC.UCServiceRoomInfo
         DelegateGetIntructionTime dlgGetIntructionTime;
         bool isEmergency = false;
         string preExamId = null;
+        long? intructionTimeSelected;
         #endregion
 
         #region Constructor - Load
@@ -259,6 +261,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 this.layoutControl2.EndUpdate();
                 this.roomExamServiceNumber = 0;
                 this.CboPatientTypePrimary.EditValue = null;
+                ProcessCheckOT();
                 this.InitExamServiceRoom(true, null);
             }
             catch (Exception ex)
@@ -292,6 +295,10 @@ namespace HIS.UC.UCServiceRoomInfo
             try
             {
                 this.isEmergency = isEmergency;
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                {
+                    ProcessCheckOT();
+                }
                 foreach (var item in lstUserRoomExam)
                 {
                     ((UC.ServiceRoom.UCRoomExamService)item).getIsEmergency(isEmergency);
@@ -309,6 +316,10 @@ namespace HIS.UC.UCServiceRoomInfo
             try
             {
                 this.preExamId = tmType;
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                {
+                    ProcessCheckOT();
+                }
                 //((UC.ServiceRoom.UCRoomExamService)ucRoomExamService).getTreatmentType(tmType);
                 foreach (var item in lstUserRoomExam)
                 {
@@ -320,6 +331,29 @@ namespace HIS.UC.UCServiceRoomInfo
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        public void ReceivedIntructionTime(long? time)
+        {
+            try
+            {
+                this.intructionTimeSelected = time;
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                {
+                    ProcessCheckOT();
+                }
+                //((UC.ServiceRoom.UCRoomExamService)ucRoomExamService).getTreatmentType(tmType);
+                foreach (var item in lstUserRoomExam)
+                {
+                    ((UC.ServiceRoom.UCRoomExamService)item).ReceiveIntructionTime(intructionTimeSelected);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
         List<UserControl> lstUserRoomExam = new List<UserControl>();
         public void InitExamServiceRoom(bool isInit, V_HIS_SERE_SERV sereServExam)
         {
@@ -529,6 +563,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 roomExamServiceData.GetIntructionTime = this.dlgGetIntructionTime;
                 roomExamServiceData._isEmergencies = this.isEmergency;
                 roomExamServiceData._treatmentTypeId = this.preExamId;
+                roomExamServiceData._intructionTimeSelected = this.intructionTimeSelected;
                 List<long> _roomIdByPatientTypeRooms = new List<long>();//#15492
                 long _patientTypeId = 0;
                 if (this.cboPatientType.EditValue != null)
@@ -675,6 +710,31 @@ namespace HIS.UC.UCServiceRoomInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 		}
+
+        private void ProcessCheckOT()
+        {
+            try
+            {
+                bool isOutOfHour = CheckIsOutOfHoursTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)intructionTimeSelected));
+                var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.PATIENT_TYPE_CODE == "OT").FirstOrDefault();
+                // ✅ Nếu thỏa điều kiện → Set OT
+                if (isOutOfHour && (!this.isEmergency && preExamId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU.ToString()))
+                {
+                    if (CboPatientTypePrimary.EditValue == null || CboPatientTypePrimary.EditValue == "")
+                        CboPatientTypePrimary.EditValue = patientType.ID;
+                }
+                // ✅ Nếu KHÔNG thỏa điều kiện NHƯNG đang là OT → Clear
+                else if (CboPatientTypePrimary.EditValue != null && (long)CboPatientTypePrimary.EditValue == patientType.ID)
+                {
+                    CboPatientTypePrimary.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void ProcessPrimaryPatientTypeChangeService(long billPatientTypeId)
         {
             try
@@ -683,11 +743,9 @@ namespace HIS.UC.UCServiceRoomInfo
                 //CboPatientTypePrimary.EditValue = null;
                 if (billPatientTypeId > 0)
                 {
-                    bool isOutOfHour = CheckIsOutOfHoursTime();
-                    if(isOutOfHour && !this.isEmergency && HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                    if(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
                     {
-                        patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.PATIENT_TYPE_CODE == "OT").FirstOrDefault();
-                        CboPatientTypePrimary.EditValue = patientType.ID;
+                        ProcessCheckOT();
                     }
                     else
                     {
@@ -1262,6 +1320,8 @@ namespace HIS.UC.UCServiceRoomInfo
                 {
                     lciCboPatientTypePhuThu.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     LoadComboPatientTypePrimary();
+
+                    ProcessCheckOT();
                 }
             }
             catch (Exception ex)

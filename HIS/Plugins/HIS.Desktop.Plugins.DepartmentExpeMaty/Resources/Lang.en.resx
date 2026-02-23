@@ -276,6 +276,9 @@
   <data name="frmDepartmentExpeMaty.layoutControlItem10.Text" xml:space="preserve">
     <value>Export warehouse:</value>
   </data>
+  <data name="frmDepartmentExpeMaty.layoutControlItem15.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Ceiling amount of waste</value>
+  </data>
   <data name="frmDepartmentExpeMaty.layoutControlItem15.Text" xml:space="preserve">
     <value>Waste ceiling:</value>
   </data>

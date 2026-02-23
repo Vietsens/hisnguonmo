@@ -55,11 +55,13 @@ namespace HIS.Desktop.Plugins.MchTreatmentExamService.MainForm
 
                 if (baby.BORN_RESULT_ID == 1)
                 {
-                    _child.LIVE_BIRTH = "1";
+                    
+                    _child.LIVE_BIRTH = "0";
                     _child.IS_DEATH = 0;
                 }
                 else if (baby.BORN_RESULT_ID == 2)
                 {
+                    _child.LIVE_BIRTH = "1";
                     _child.IS_DEATH = 1;
                 }
 

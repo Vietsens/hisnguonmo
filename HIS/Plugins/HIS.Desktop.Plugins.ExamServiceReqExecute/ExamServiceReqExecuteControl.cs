@@ -289,34 +289,34 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         }
         private void ApplyLowResolution()
         {
-                this.txtHistoryAllergy.Properties.NullValuePrompt = "Dị ứng";
-                this.txtPathologicalHistoryFamily.Properties.NullValuePrompt = "Gia đình";
+            this.txtHistoryAllergy.Properties.NullValuePrompt = "Dị ứng";
+            this.txtPathologicalHistoryFamily.Properties.NullValuePrompt = "Gia đình";
 
-                lciBloodPressure.TextSize = new Size(60, 20);
-                lciWeight.TextSize = new Size(60, 20);
-                lciHeight.TextSize = new Size(60, 20);
-                lciPulse.TextSize = new Size(60, 20);
-                lciNote.TextSize = new Size(60, 20);
+            lciBloodPressure.TextSize = new Size(60, 20);
+            lciWeight.TextSize = new Size(60, 20);
+            lciHeight.TextSize = new Size(60, 20);
+            lciPulse.TextSize = new Size(60, 20);
+            lciNote.TextSize = new Size(60, 20);
 
-                emptySpaceItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                emptySpaceItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                emptySpaceItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                lciProvisionalDianosis.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-                lciChuY.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-                lblCaptionDiagnostic.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-                lblCaptionConclude.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            emptySpaceItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            emptySpaceItem3.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            emptySpaceItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            lciProvisionalDianosis.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            lciChuY.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            lblCaptionDiagnostic.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            lblCaptionConclude.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
 
-                lciProvisionalDianosis.MinSize = new Size(0, 24);
-                lciProvisionalDianosis.MaxSize = new Size(0, 24);
+            lciProvisionalDianosis.MinSize = new Size(0, 24);
+            lciProvisionalDianosis.MaxSize = new Size(0, 24);
 
-                lciChuY.MinSize = new Size(0, 24);
-                lciChuY.MaxSize = new Size(0, 24);
+            lciChuY.MinSize = new Size(0, 24);
+            lciChuY.MaxSize = new Size(0, 24);
 
-                lblCaptionDiagnostic.MinSize = new Size(0, 24);
-                lblCaptionDiagnostic.MaxSize = new Size(0, 24);
+            lblCaptionDiagnostic.MinSize = new Size(0, 24);
+            lblCaptionDiagnostic.MaxSize = new Size(0, 24);
 
-                lblCaptionConclude.MinSize = new Size(0, 24);
-                lblCaptionConclude.MaxSize = new Size(0, 24);
+            lblCaptionConclude.MinSize = new Size(0, 24);
+            lblCaptionConclude.MaxSize = new Size(0, 24);
         }
         private void ExamServiceReqExecuteControl_Load(object sender, EventArgs e)
         {
@@ -2109,6 +2109,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     return;
                 }
 
+
                 if (chkHospitalize.Checked)
                 {
                     SetCheckExecute(true, chkHospitalize, chkExamServiceAdd, chkTreatmentFinish, chkExamFinish);
@@ -3079,6 +3080,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
+                bool isCheckMustFinishAllServices = false;
                 if (!AllowManyTreatmentOpeningOption())
                 {
                     return;
@@ -3197,14 +3199,19 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 {
                     return;
                 }
-                if (!CheckAssignServiceSimultaneityOption())
-                {
-                    return;
-                }
+             
                 hisServiceReqSDO.TraditionalIcdCode = IcdCodeYHCT;
                 hisServiceReqSDO.TraditionalIcdName = IcdNameYHCT;
                 hisServiceReqSDO.TraditionalIcdSubCode = IcdSubCodeYHCT;
                 hisServiceReqSDO.TraditionalIcdText = IcdTextYHCT;
+                if (chkHospitalize.Checked)
+                {
+                    if (!CheckMustFinishAllServices(HisServiceReqView.ID))
+                    {
+                        return;
+                    }
+                    isCheckMustFinishAllServices = true;
+                }
                 if (this.CheckExecuteExt(hisServiceReqSDO)
                     && this.CheckHospitalizeTime(hisServiceReqSDO)
                     //&& this.CheckSunSatAppointmentTime(hisServiceReqSDO)//đã cảnh báo trong popup chọn thời gian hẹn khám
@@ -3262,13 +3269,13 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         if (MessageBox.Show("Bệnh nhân không được hưởng BHYT các chi phí phát sinh tại phòng khám thêm. Bạn có muốn tiếp tục?",
                                             "Thông báo", MessageBoxButtons.YesNo) == DialogResult.Yes)
                         {
-                            if (!CheckMustFinishAllServices(HisServiceReqView.ID)) return;
+                            if (!isCheckMustFinishAllServices && !CheckMustFinishAllServices(HisServiceReqView.ID)) return;
                             SaveExamServiceReq(hisServiceReqSDO);
                         }
                     }
                     else
                     {
-                        if (!CheckMustFinishAllServices(HisServiceReqView.ID)) return;
+                        if (!isCheckMustFinishAllServices && !CheckMustFinishAllServices(HisServiceReqView.ID)) return;
                         SaveExamServiceReq(hisServiceReqSDO);
                     }
                 }
@@ -3660,6 +3667,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                 if (!CheckExamServiceFinish())
                     return;
+
                 GetUcIcdYHCT();
                 LogSystem.Debug("Valid ICD");
                 if (!ValidIcd(true)) return;
@@ -7979,9 +7987,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
         {
             try
             {
-                if (HisConfigCFG.IsEnableEditStartTime != "1" && HisConfigCFG.NotUpdateExecuteLoginNameWhenFinishExam == "1") 
-                { 
-                    return true; 
+                if (HisConfigCFG.IsEnableEditStartTime != "1" && HisConfigCFG.NotUpdateExecuteLoginNameWhenFinishExam == "1")
+                {
+                    return true;
                 }
                 if ((HisConfigCFG.AssignServiceSimultaneityOption != "1" && HisConfigCFG.AssignServiceSimultaneityOption != "2"))
                 {

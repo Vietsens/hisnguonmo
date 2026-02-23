@@ -276,8 +276,11 @@
   <data name="frmDepartmentExpeMaty.layoutControlItem10.Text" xml:space="preserve">
     <value>Kho xuất:</value>
   </data>
+  <data name="frmDepartmentExpeMaty.layoutControlItem15.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Số lượng trần hao phí</value>
+  </data>
   <data name="frmDepartmentExpeMaty.layoutControlItem15.Text" xml:space="preserve">
-    <value>Trần hao phí:</value>
+    <value>SL trần hao phí:</value>
   </data>
   <data name="frmDepartmentExpeMaty.layoutControlItem7.Text" xml:space="preserve">
     <value>NK chi tiết mặc định:</value>

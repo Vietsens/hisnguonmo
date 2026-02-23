@@ -2020,7 +2020,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                         #endregion
                         #region Phụ thu
-                        bool isOutOfHour = CheckIsOutOfHoursTime();
+                        bool isOutOfHour = false;   
+                        if (intructionTimeSelected.Count == 1)
+                            isOutOfHour = CheckIsOutOfHoursTime(intructionTimeSelected.FirstOrDefault());
                         if (HisConfigCFG.IsSetPrimaryPatientType != "2" && currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && isOutOfHour && currentHisTreatment.IS_EMERGENCY != 1)
                         {
                             var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == "OT");
@@ -4140,7 +4142,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 // Nếu không có thông tin bảo lãnh hoặc không có GUARANTEE_CODE thì bỏ qua
-                if (this.guaranteeInfo == null || (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE)))
+                if (this.guaranteeInfo == null || (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE)) || this.currentTreatment.TDL_PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                     return true;
                 //CommonParam param = new CommonParam();
                 //HisSereServBillFilter  hisSereServBillFilter = new HisSereServBillFilter();
@@ -4154,7 +4156,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Debug("totalGuaranteeArise qtcode: " + Inventec.Common.Logging.LogUtil.TraceData("Data", totalGuaranteeArise));
                 if ((this.totalGuaranteePrice_1 - this.treatmentPrint.TOTAL_BILL_AMOUNT) > this.guaranteeInfo.GUARANTEE_BALANCE)
                 {
-                    message = "Tổng tiền dịch vụ đã vượt hạn mức bảo lãnh, vui lòng kiểm tra lại.";
+                    message = "Tổng tiền dịch vụ đã vượt hạn mức, vui lòng kiểm tra lại.";
                     return false;
                 }
 

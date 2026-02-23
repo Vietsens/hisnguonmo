@@ -41,6 +41,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         private const string CONFIG_KEY__AutoDeleteEmrDocumentWhenEditReq = "HIS.Desktop.Plugins.ServiceReqList.AutoDeleteEmrDocumentWhenEditReq";
         internal const string CONFIG_KEY__ShowResultWhenReqComplete = "HIS.Desktop.Plugins.ContentSubclinical.ShowResultWhenReqComplete";
         internal const string HIS_CONFIG_KEY__MaxTimeFilter__Option = "HIS.Desktop.Plugins.MaxTimeFilter.Option";
+        internal const string HIS_CONFIG_KEY__AssignBed__Option = "HIS.Desktop.Plugins.AssignBed.Option";
 
 
         internal static bool IsShowPresAmount;
@@ -52,6 +53,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
         internal static string AutoDeleteEmrDocumentWhenEditReq;
         internal static string ShowResultWhenReqComplete;
         internal static string MaxTimeFilterOption;
+        internal static string AssignBedOption;
 
         internal static void LoadConfig()
         {
@@ -67,6 +69,7 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                 IsShowPresAmount = GetValue(CONFIG_KEY__ShowPresAmount) == GlobalVariables.CommonStringTrue;
                 AutoDeleteEmrDocumentWhenEditReq = GetValue(CONFIG_KEY__AutoDeleteEmrDocumentWhenEditReq);
                 ShowResultWhenReqComplete = GetValue(CONFIG_KEY__ShowResultWhenReqComplete);
+                AssignBedOption = GetValue(HIS_CONFIG_KEY__AssignBed__Option);
             }
             catch (Exception ex)
             {

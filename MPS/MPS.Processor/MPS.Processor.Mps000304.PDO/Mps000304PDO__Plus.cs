@@ -30,6 +30,8 @@ namespace MPS.Processor.Mps000304.PDO
 
         public bool IsNotSameDepartment { get; set; }
         public bool IsGroupReqDepartment { get; set; }
+        public bool IsGroupHeinServiceByUseTime { get; set; }
+
     }
 
     public class SingleKeyValue
