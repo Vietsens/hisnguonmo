@@ -1081,6 +1081,10 @@ namespace HIS.UC.ExamTreatmentFinish.EndTypeForm
                 ValidationControlMaxLength(txtHuongDieuTri, 3000);
                 ValidationControlMaxLength(txtPhuongTienVanChuyen, 3000);
                 ValidationControlMaxLength(txtUsedMedicine, 3000);
+                ValidationRequired(txtClinicalNote);
+                ValidationRequired(txtHuongDieuTri);
+                ValidationRequired(txtPPKTThuoc);
+                ValidationRequired(txtPhuongTienVanChuyen);
                 if (!dxValidationProvider.Validate()) return;
                 if (!string.IsNullOrEmpty(memPttt.Text)
                 && Inventec.Common.String.CountVi.Count(memPttt.Text) > 3000)
