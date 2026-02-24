@@ -4229,6 +4229,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     }
                                     hasService = true;
                                     service.IsChecked = true;
+                                    if (this.currentHisTreatment != null && this.currentHisTreatment.GUARANTEE_CODE != null)
+                                        service.IsGuarantee = true; // Tích luôn cột bảo lãnh khi tích dịch vụ
                                     this.SetAssignNumOrder(service);
                                     service.IsKHBHYT = false;
                                     service.SERVICE_GROUP_ID_SELECTEDs = idSelecteds;
@@ -6199,7 +6201,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 {
                     preServiceReqsADOs.ForEach(o => o.IsReqPicked = false);
                 }
-                cboPriviousServiceReq.Text = ""; 
+                cboPriviousServiceReq.Text = "";
                 this.isCheckAssignServiceSimultaneityOption = false;
                 this.SetDefaultData();
                 this.LoadIcdDefault();
@@ -10180,9 +10182,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         V_HIS_SERVICE_REQ_6 rowdataAssignOld { get; set; }
         private void gridView14_RowCellClick(object sender, RowCellClickEventArgs e)
         {
-            
+
         }
-        
+
 
 
 
@@ -10789,8 +10791,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                 if (isCheckBoxClick)
                 {
-                    ado.IsReqPicked = !ado.IsReqPicked; 
-                    bool isNowChecked = ado.IsReqPicked;  
+                    ado.IsReqPicked = !ado.IsReqPicked;
+                    bool isNowChecked = ado.IsReqPicked;
 
                     cboPriviousServiceReq.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(ado.INTRUCTION_TIME);
                     this.cboPriviousServiceReq.Properties.Buttons[1].Visible = true;
@@ -10803,7 +10805,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
 
                     UpdateHeaderCheckState();
 
-                    // Commit và refresh để tránh lỗi focus cũ
                     gridView14.PostEditor();
                     gridView14.RefreshRow(hitInfo.RowHandle);
                 }
@@ -10816,12 +10817,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     ProcessChoiceServiceReqPrevious(ado);
                     this.btnSave.Focus();
                     UpdateHeaderCheckState();
-                    popupControlContainer3.HidePopup(); 
+                    popupControlContainer3.HidePopup();
                 }
             }
             gridView14.RefreshRow(hitInfo.RowHandle);
         }
-        
+
         private void UpdateHeaderCheckState()
         {
             var dataSource = gridView14.DataSource as IList<PreServiceReqsADO>;
@@ -10832,10 +10833,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 return;
             }
 
-            // Kiểm tra xem TẤT CẢ có checked không
             bool allChecked = dataSource.All(ado => ado.IsReqPicked);
 
-            // Nếu danh sách rỗng → false, nhưng ở đây đã check count > 0
             isHeaderReqChecked = allChecked;
 
             // Làm mới header để hiển thị đúng (checked hoặc unchecked)
