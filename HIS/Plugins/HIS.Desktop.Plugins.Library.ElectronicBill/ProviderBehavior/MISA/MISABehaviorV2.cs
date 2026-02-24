@@ -460,7 +460,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                 result = new CreateInvoiceV2();
                 //result.AdjustmentType = 1;
 
-                InvoiceInfo.InvoiceInfoADO adoInfo = InvoiceInfo.InvoiceInfoProcessor.GetData(this.ElectronicBillDataInput, false);
+                InvoiceInfo.InvoiceInfoADO adoInfo = InvoiceInfo.InvoiceInfoProcessor.GetData(this.ElectronicBillDataInput, true);
 
                 result.BuyerAddress = adoInfo.BuyerAddress;
                 result.BuyerBankAccount = adoInfo.BuyerAccountNumber;
@@ -470,6 +470,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                 result.BuyerLegalName = adoInfo.BuyerOrganization;
                 result.BuyerPhoneNumber = adoInfo.BuyerPhone;
                 result.BuyerTaxCode = adoInfo.BuyerTaxCode;
+                result.BuyerIDNumber = !string.IsNullOrWhiteSpace(adoInfo.BuyerIdentityNumber) ? adoInfo.BuyerIdentityNumber : adoInfo.BuyerCCCD;
 
                 if (electronicBillDataInput.Transaction != null)
                 {

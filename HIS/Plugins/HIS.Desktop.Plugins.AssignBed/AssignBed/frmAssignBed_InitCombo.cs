@@ -173,12 +173,12 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
-                lstLoaiPhieu = new List<LoaiPhieuInADO>()
+                lstLoaiPhieu = new List<ADO.LoaiPhieuInADO>()
                 {
-                    new LoaiPhieuInADO("gridView7_1", "Phiếu yêu cầu dịch vụ",true),
-                    new LoaiPhieuInADO("gridView7_2", "Hướng dẫn bệnh nhân"),
-                    new LoaiPhieuInADO("gridView7_3", "Yêu cầu thanh toán QR"),
-                    new LoaiPhieuInADO("gridView7_4", "Phiếu yêu cầu tổng hợp")
+                    new ADO.LoaiPhieuInADO("gridView7_1", "Phiếu yêu cầu dịch vụ",true),
+                    new ADO.LoaiPhieuInADO("gridView7_2", "Hướng dẫn bệnh nhân"),
+                    new ADO.LoaiPhieuInADO("gridView7_3", "Yêu cầu thanh toán QR"),
+                    new ADO.LoaiPhieuInADO("gridView7_4", "Phiếu yêu cầu tổng hợp")
                 };
 
                 gridView7.BeginUpdate();

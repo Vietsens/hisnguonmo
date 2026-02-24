@@ -13,6 +13,8 @@ namespace HIS.Desktop.Plugins.AssignBed.ADO
         public DateTime? TIME_FROM { get; set; }
         public DateTime? TIME_TO { get; set; }
         public decimal? QUANTITY { get; set; }
+        public long? TDL_EXECUTE_ROOM_ID_STR { get; set; } = null;
+        public long? PATIENT_TYPE_ID_STR { get; set; } = null;
         public string BED_CODE { get; set; }
 
         public string TIME_FROM_STR => TIME_FROM?.ToString("dd/MM/yyyy HH:mm");

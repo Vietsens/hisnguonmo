@@ -780,6 +780,43 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
             }
         }
 
+        private void btnActiveIngredient_Click(object sender, EventArgs e)
+        {
+            var moduleLink = "HIS.Desktop.Plugins.HisActiveIngredient";
+            long roomId = 0;
+            long roomTypeId = 0;
 
+            var listArgs = new List<object>();
+            DelegateReturnMutilObject reloadDelegate = objs =>
+            {
+                try
+                {
+                    this.BeginInvoke(new Action(() =>
+                    {
+                        ReloadActiveIngredientAfterCatalogChanged();
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+            };
+
+            listArgs.Add(reloadDelegate);
+
+            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(moduleLink, roomId, roomTypeId, listArgs);
+        }
+        public void ReloadActiveIngredientAfterCatalogChanged()
+        {
+            try
+            {
+                FillDataToGrid2();
+                LoadDataChecked();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

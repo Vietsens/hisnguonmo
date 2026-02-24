@@ -30,7 +30,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             try
             {
                 //this.SetCaptionByLanguageKey();
-                //SetCaptionByLanguageKeyNew();
+                SetCaptionByLanguageKey();
                 this.isAutoCheckIcd = (HisConfigCFG.AutoCheckIcd == GlobalVariables.CommonStringTrue);
                 this.currentIcds = BackendDataWorker.Get<HIS_ICD>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.ICD_CODE).ToList();
 

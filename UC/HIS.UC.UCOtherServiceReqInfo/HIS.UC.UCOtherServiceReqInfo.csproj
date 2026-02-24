@@ -166,6 +166,7 @@
     <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\otherPaySourceDetailADO.cs" />
     <Compile Include="ADO\UCServiceReqInfoADO.cs" />
     <Compile Include="Config\HisConfig.cs" />
     <Compile Include="FUN\frmFun.cs">

@@ -56,5 +56,7 @@ namespace Inventec.Common.ElectronicBill.Misa.Model
         /// Bắt buộc khi IsSendEmail = true
         /// </summary>
         public string ReceiverEmail { get; set; }
+
+        public bool IsInvoiceCalculatingMachine { get; set; }
     }
 }

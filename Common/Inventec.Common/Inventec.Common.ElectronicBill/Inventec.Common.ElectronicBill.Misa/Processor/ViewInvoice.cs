@@ -18,6 +18,7 @@
 using Inventec.Common.ElectronicBill.Misa.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -145,13 +146,69 @@ namespace Inventec.Common.ElectronicBill.Misa.Processor
             {
                 if (this.CheckGetDataV2(dataGet, ref result))
                 {
-                    result.fileDownload = string.Format("{0}/{1}", this.Data.DownloadUrl, string.Format(Base.RequestUriStore.GetFileInvoiceV2, HttpUtility.UrlEncode(dataGet.TransactionID)));
+                    //result.fileDownload = string.Format("{0}/{1}", this.Data.DownloadUrl, string.Format(Base.RequestUriStore.GetFileInvoiceV2, HttpUtility.UrlEncode(dataGet.TransactionID)));
+
+                    var apiResult = new Base.ApiConsumerV2(this.Data.BaseUrl, this.Data.AppID, this.Data.TaxCode, this.Data.User, this.Data.Pass)
+                       .CreateRequest<ApiResult>(Base.RequestUriStore.DownloadInvoiceV2, new List<string>() { dataGet.TransactionID });
+                    if (apiResult == null || !apiResult.Success)
+                    {
+                        string error = apiResult != null && !String.IsNullOrWhiteSpace(apiResult.ErrorCode) ? (MappingError.DicMapping.ContainsKey(apiResult.ErrorCode) ? MappingError.DicMapping[apiResult.ErrorCode] : apiResult.ErrorCode) : "";
+                        throw new Exception("Tải hóa đơn thất bại. " + error);
+                    }
+
+                    if (!String.IsNullOrWhiteSpace(apiResult.Data))
+                    {
+                        List<GetFileResult> fileData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<GetFileResult>>(apiResult.Data);
+                        if (fileData != null && fileData.Count > 0)
+                        {
+                            List<string> errorCode = fileData.Where(o => !String.IsNullOrWhiteSpace(o.ErrorCode)).Select(s => s.ErrorCode).Distinct().ToList();
+                            List<string> messError = new List<string>();
+                            foreach (var item in errorCode)
+                            {
+                                messError.Add(MappingError.DicMapping.ContainsKey(item) ? MappingError.DicMapping[item] : item);
+                            }
+
+                            result.description = string.Join(", ", messError);
+                            if (!String.IsNullOrWhiteSpace(fileData.First().Data))
+                            {
+                                result.fileDownload = ProcessPdfFileResult(System.Convert.FromBase64String(fileData.First().Data));
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
                 result = new Response();
                 result.description = ex.Message;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        private string ProcessPdfFileResult(byte[] fileToBytes)
+        {
+            string result = "";
+            try
+            {
+                string tempFileName = Path.GetTempFileName();
+                if (File.Exists(tempFileName)) File.Delete(tempFileName);
+                tempFileName = tempFileName.Replace("tmp", "pdf");
+                if (File.Exists(tempFileName)) File.Delete(tempFileName);
+
+                try
+                {
+                    File.WriteAllBytes(tempFileName, fileToBytes);
+                    result = tempFileName;
+                }
+                catch (Exception ex)
+                {
+                    result = "";
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;

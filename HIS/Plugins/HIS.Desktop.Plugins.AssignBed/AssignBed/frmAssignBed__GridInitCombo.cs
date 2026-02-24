@@ -66,16 +66,39 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             }
         }
 
+        // Thêm các field cache vào class
+        private long _lastLoadedBedServiceId = -1;
+        private DateTime _lastLoadedTimeFrom = DateTime.MinValue;
+        private DateTime _lastLoadedTimeTo = DateTime.MinValue;
+
         private void LoadBedDataByServiceId(long serviceId, DateTime timeFrom, DateTime timeTo)
         {
             try
             {
+                // ✅ Chỉ load lại nếu tham số thay đổi
+                if (serviceId == _lastLoadedBedServiceId
+                    && timeFrom == _lastLoadedTimeFrom
+                    && timeTo == _lastLoadedTimeTo)
+                {
+                    return; // Không load lại, tránh trigger repaint grid 
+                }
+
+                _lastLoadedBedServiceId = serviceId;
+                _lastLoadedTimeFrom = timeFrom;
+                _lastLoadedTimeTo = timeTo;
+
                 List<V_HIS_BED> listBed = null;
-                repositoryItemGridLookUpEditBed = new RepositoryItemGridLookUpEdit();
+
+                if (repositoryItemGridLookUpEditBed != null)
+                {
+                    repositoryItemGridLookUpEditBed.NullText = "";
+                    repositoryItemGridLookUpEditBed.NullValuePrompt = "";
+                    repositoryItemGridLookUpEditBed.NullValuePromptShowForEmptyValue = false;
+                }
+
                 if (dicBedByServiceId != null && dicBedByServiceId.ContainsKey(serviceId))
                 {
                     listBed = dicBedByServiceId[serviceId];
-
                     this.dataBedADOs = ProcessDataBedAdo(listBed, timeFrom, timeTo);
                 }
                 else
@@ -84,10 +107,12 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     this.dataBedADOs = null;
                 }
 
-                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("BED_CODE", "", 50, 1));
-                columnInfos.Add(new ColumnInfo("BED_NAME", "", 250, 2));
-                columnInfos.Add(new ColumnInfo("AMOUNT_STR", "", 50, 3));
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>
+                {
+                    new ColumnInfo("BED_CODE", "", 50, 1),
+                    new ColumnInfo("BED_NAME", "", 250, 2),
+                    new ColumnInfo("AMOUNT_STR", "", 50, 3)
+                };
                 ControlEditorADO controlEditorADO = new ControlEditorADO("BED_NAME", "ID", columnInfos, false, 250);
                 ControlEditorLoader.Load(repositoryItemGridLookUpEditBed, this.dataBedADOs, controlEditorADO);
             }

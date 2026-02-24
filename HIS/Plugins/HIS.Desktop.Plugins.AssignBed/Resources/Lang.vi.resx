@@ -133,7 +133,8 @@ toán</value>
     <value>QR tạm thu</value>
   </data>
   <data name="frmAssignBed.btnSave.Text" xml:space="preserve">
-    <value>Lưu(Ctrl S)</value>
+    <value>Lưu
+	(Ctrl S)</value>
   </data>
   <data name="frmAssignBed.btnSaveAndPrint.Text" xml:space="preserve">
     <value>Lưu In
@@ -225,5 +226,65 @@ toán</value>
   </data>
   <data name="frmAssignBed.lciIcdTextCause.Text" xml:space="preserve">
     <value>Ng/nhận ngoài:</value>
+  </data>
+  <data name="frmAssignBed.lciForlblConThieu.Text" xml:space="preserve">
+    <value>Còn thiếu:</value>
+  </data>
+	<data name="frmAssignBed.grcServiceCode_TabService.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+	<data name="frmAssignBed.gridColumn3.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+	<data name="frmAssignBed.gridColumn2.Caption" xml:space="preserve">
+    <value>Mã BHYT</value>
+  </data>
+	<data name="frmAssignBed.gridColumn4.Caption" xml:space="preserve">
+    <value>Giường</value>
+  </data>
+	<data name="frmAssignBed.gridColumn5.Caption" xml:space="preserve">
+    <value>Thời gian bắt đầu</value>
+  </data>
+	<data name="frmAssignBed.gridColumn6.Caption" xml:space="preserve">
+    <value>Thời gian kết thúc</value>
+  </data>
+	<data name="frmAssignBed.gridColumn7.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+	<data name="frmAssignBed.gridColumnExecuteRoomName__TabService.Caption" xml:space="preserve">
+    <value>Phòng xử lý</value>
+  </data>
+	<data name="frmAssignBed.gridColumnPatientTypeName__TabService.Caption" xml:space="preserve">
+    <value>ĐTTT</value>
+  </data>
+	<data name="frmAssignBed.gridColumn_Service_PrimaryPatientType.Caption" xml:space="preserve">
+    <value>Đối tượng PT</value>
+  </data>
+	<data name="frmAssignBed.gridColumn12.Caption" xml:space="preserve">
+    <value>Số nằm ghép</value>
+  </data>
+	<data name="frmAssignBed.gridColumn10.Caption" xml:space="preserve">
+    <value>Đơn giá</value>
+  </data>
+	<data name="frmAssignBed.gridColumn13.Caption" xml:space="preserve">
+    <value>Nguồn khác</value>
+  </data>
+	<data name="frmAssignBed.gridColumn11.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+	<data name="frmAssignBed.gridColumn16.Caption" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+	<data name="frmAssignBed.gridColumn1.Caption" xml:space="preserve">
+    <value>Tên bệnh</value>
+  </data>
+	<data name="frmAssignBed.gridColumn8.Caption" xml:space="preserve">
+    <value>Mã bệnh</value>
+  </data>
+	<data name="frmAssignBed.gridColumn9.Caption" xml:space="preserve">
+    <value>Chọn</value>
+  </data>
+	<data name="frmAssignBed.gridColumn14.Caption" xml:space="preserve">
+    <value>Tên</value>
   </data>
 </root>
