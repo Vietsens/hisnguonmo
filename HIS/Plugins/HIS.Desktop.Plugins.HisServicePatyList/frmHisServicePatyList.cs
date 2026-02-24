@@ -344,6 +344,9 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
             try
             {
                 spinActualPrice.Properties.MinValue = 0;
+                txtBhytCode.Properties.MaxLength = 100;
+                txtBhytName.Properties.MaxLength = 1500;
+                txtIssueNumber.Properties.MaxLength = 50;
             }
             catch (Exception ex)
             {
@@ -1386,6 +1389,11 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                     txtServiceTypeName.ReadOnly = true;
                     txtServiceName.EditValue = data.SERVICE_CODE;
                     txtServiceName.ReadOnly = true;
+
+                    txtBhytCode.Text = data.HEIN_SERVICE_BHYT_CODE;
+                    txtBhytName.Text = data.HEIN_SERVICE_BHYT_NAME;
+                    txtIssueNumber.Text = data.ISSUE_NUMBER;
+
                     if (data.PACKAGE_ID != null)
                     {
                         cboPackageService1.EditValue = data.PACKAGE_ID;
@@ -2027,6 +2035,9 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                 cboServiceCondition.EditValue = null;
                 cboPatientClassify.EditValue = null;
                 cboRationTime.Properties.Buttons[1].Visible = false;
+                txtBhytCode.EditValue = null;
+                txtBhytName.EditValue = null;
+                txtIssueNumber.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -2176,6 +2187,11 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                 }
                 if (cboPatientClassify.EditValue != null)
                     updateDTO.PATIENT_CLASSIFY_ID = (long)cboPatientClassify.EditValue;
+
+
+                updateDTO.HEIN_SERVICE_BHYT_CODE = string.IsNullOrWhiteSpace(txtBhytCode.Text) ? null : txtBhytCode.Text.Trim();
+                updateDTO.HEIN_SERVICE_BHYT_NAME = string.IsNullOrWhiteSpace(txtBhytName.Text) ? null : txtBhytName.Text.Trim();
+                updateDTO.ISSUE_NUMBER = string.IsNullOrWhiteSpace(txtIssueNumber.Text) ? null : txtIssueNumber.Text.Trim();
             }
             catch (Exception ex)
             {
