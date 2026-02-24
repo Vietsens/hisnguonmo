@@ -361,8 +361,10 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             }
                         }
                         numCopy = 1;
-                        if (NumCopy.NumCopyConfig.NumCopys != null && NumCopy.NumCopyConfig.NumCopys.Count > 0)
+                        if (NumCopy.NumCopyConfig.NumCopys != null && NumCopy.NumCopyConfig.NumCopys.Count > 0 && vHisPatientTypeAlter != null) 
                         {
+                            Inventec.Common.Logging.LogSystem.Info("vHisPatientTypeAlter " + vHisPatientTypeAlter);
+                            Inventec.Common.Logging.LogSystem.Info("vHisPatientTypeAlter " + NumCopy.NumCopyConfig.NumCopys.Count);
                             var num = NumCopy.NumCopyConfig.NumCopys.Where(o => o.Id == vHisPatientTypeAlter.PATIENT_TYPE_ID).ToList();
                             if (num != null && num.Count > 0) numCopy = num[0].Num;
                         }
