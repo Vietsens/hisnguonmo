@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAssignService));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -113,13 +114,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject62 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject63 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject64 = new DevExpress.Utils.SerializableAppearanceObject();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
             this.lblTotalGuarantee = new System.Windows.Forms.Label();
             this.lblGuarantee = new System.Windows.Forms.Label();
             this.chkPrintVBA = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barbtnSaveShortcut = new DevExpress.XtraBars.BarButtonItem();
             this.barbtnSaveAndPrintShortcut = new DevExpress.XtraBars.BarButtonItem();
@@ -129,15 +130,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.barBtnSaveNShow = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnEditCtrlU = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.btnAssignAI = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainer4 = new DevExpress.XtraBars.PopupControlContainer();
-            this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
-            this.btnSave_DutruTime = new DevExpress.XtraEditors.SimpleButton();
-            this.calendarControl1 = new DevExpress.XtraEditors.Controls.CalendarControl();
-            this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem9 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.txtDutruTime = new DevExpress.XtraEditors.ButtonEdit();
             this.pnSubIcdTranditional = new System.Windows.Forms.Panel();
             this.pnIcdTranditional = new System.Windows.Forms.Panel();
@@ -155,7 +152,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.btnCreateServiceGroup = new DevExpress.XtraEditors.SimpleButton();
             this.ckTK = new DevExpress.XtraEditors.CheckEdit();
             this.beditRoom = new DevExpress.XtraEditors.ButtonEdit();
-            this.popupControlContainerRoom = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerRoom = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlContainerRoom = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewContainerRoom = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.lblSoDuTaiKhoan = new DevExpress.XtraEditors.LabelControl();
@@ -196,7 +193,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControlItem48 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem49 = new DevExpress.XtraLayout.LayoutControlItem();
             this.panelControlServiceGrid = new DevExpress.XtraEditors.PanelControl();
-            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl21 = new DevExpress.XtraLayout.LayoutControl();
             this.customGridControlSubIcdName = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.customGridViewSubIcdName = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -206,43 +203,53 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup22 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem103 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.popupControlContainer2 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer2 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControl2 = new DevExpress.XtraGrid.GridControl();
             this.gridView8 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer();
-            this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
-            this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
-            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemCheckEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.popupControlContainerCondition = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerCondition = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlCondition = new DevExpress.XtraGrid.GridControl();
             this.gridViewCondition = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
+            this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView7 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.popupControlContainer3 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer3 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
             this.gridControl3 = new DevExpress.XtraGrid.GridControl();
             this.gridView14 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn25 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckEditReq = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn21 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn22 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.popupControlContainer4 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnSave_DutruTime = new DevExpress.XtraEditors.SimpleButton();
+            this.calendarControl1 = new DevExpress.XtraEditors.Controls.CalendarControl();
+            this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem9 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.gridControlServiceProcess = new Inventec.Desktop.CustomControl.MyGridControl();
             this.gridViewServiceProcess = new Inventec.Desktop.CustomControl.MyGridView();
             this.grcView_TabService = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -508,33 +515,20 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciGuarantee = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTotalGuarantee = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn3 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
-            this.tooltipService = new DevExpress.Utils.ToolTipController();
-            this.timerInitForm = new System.Windows.Forms.Timer();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.tooltipService = new DevExpress.Utils.ToolTipController(this.components);
+            this.timerInitForm = new System.Windows.Forms.Timer(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintVBA.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer4)).BeginInit();
-            this.popupControlContainer4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
-            this.layoutControl3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.calendarControl1.CalendarTimeProperties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDutruTime.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNotCheckService.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoCheckPDDT.Properties)).BeginInit();
@@ -589,17 +583,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.popupControlContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView8)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).BeginInit();
-            this.popupControlContainerOtherPaySource.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerCondition)).BeginInit();
             this.popupControlContainerCondition.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCondition)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewCondition)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).BeginInit();
+            this.popupControlContainerOtherPaySource.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
             this.popupControlContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
@@ -611,9 +605,19 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditReq)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer4)).BeginInit();
+            this.popupControlContainer4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
+            this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.calendarControl1.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemIsView)).BeginInit();
@@ -823,7 +827,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lcEditorInfo.Controls.Add(this.lblGuarantee);
             this.lcEditorInfo.Controls.Add(this.chkPrintVBA);
             this.lcEditorInfo.Controls.Add(this.btnAssignAI);
-            this.lcEditorInfo.Controls.Add(this.popupControlContainer4);
             this.lcEditorInfo.Controls.Add(this.txtDutruTime);
             this.lcEditorInfo.Controls.Add(this.pnSubIcdTranditional);
             this.lcEditorInfo.Controls.Add(this.pnIcdTranditional);
@@ -941,6 +944,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barbtnSaveShortcut,
@@ -1035,6 +1042,34 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1352, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 617);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1352, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 588);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1352, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 588);
+            // 
             // btnAssignAI
             // 
             this.btnAssignAI.Appearance.Options.UseTextOptions = true;
@@ -1047,91 +1082,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.btnAssignAI.TabIndex = 151;
             this.btnAssignAI.Text = "Gợi ý \r\nchỉ định (AI) ";
             this.btnAssignAI.Click += new System.EventHandler(this.btnAssignAI_Click);
-            // 
-            // popupControlContainer4
-            // 
-            this.popupControlContainer4.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainer4.Controls.Add(this.layoutControl3);
-            this.popupControlContainer4.Location = new System.Drawing.Point(20, 192);
-            this.popupControlContainer4.Manager = this.barManager1;
-            this.popupControlContainer4.Name = "popupControlContainer4";
-            this.popupControlContainer4.Size = new System.Drawing.Size(270, 284);
-            this.popupControlContainer4.TabIndex = 150;
-            this.popupControlContainer4.Visible = false;
-            // 
-            // layoutControl3
-            // 
-            this.layoutControl3.Controls.Add(this.btnSave_DutruTime);
-            this.layoutControl3.Controls.Add(this.calendarControl1);
-            this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl3.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl3.Name = "layoutControl3";
-            this.layoutControl3.Root = this.layoutControlGroup4;
-            this.layoutControl3.Size = new System.Drawing.Size(270, 284);
-            this.layoutControl3.TabIndex = 0;
-            this.layoutControl3.Text = "layoutControl3";
-            // 
-            // btnSave_DutruTime
-            // 
-            this.btnSave_DutruTime.Location = new System.Drawing.Point(156, 243);
-            this.btnSave_DutruTime.Name = "btnSave_DutruTime";
-            this.btnSave_DutruTime.Size = new System.Drawing.Size(102, 22);
-            this.btnSave_DutruTime.StyleController = this.layoutControl3;
-            this.btnSave_DutruTime.TabIndex = 5;
-            this.btnSave_DutruTime.Text = "Đồng ý";
-            this.btnSave_DutruTime.Click += new System.EventHandler(this.btnSave_duTru_Click);
-            // 
-            // calendarControl1
-            // 
-            this.calendarControl1.AutoSize = false;
-            this.calendarControl1.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.calendarControl1.Location = new System.Drawing.Point(12, 12);
-            this.calendarControl1.Name = "calendarControl1";
-            this.calendarControl1.SelectionBehavior = DevExpress.XtraEditors.Controls.CalendarSelectionBehavior.OutlookStyle;
-            this.calendarControl1.SelectionMode = DevExpress.XtraEditors.Repository.CalendarSelectionMode.Multiple;
-            this.calendarControl1.Size = new System.Drawing.Size(246, 227);
-            this.calendarControl1.StyleController = this.layoutControl3;
-            this.calendarControl1.TabIndex = 4;
-            // 
-            // layoutControlGroup4
-            // 
-            this.layoutControlGroup4.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
-            this.layoutControlGroup4.GroupBordersVisible = false;
-            this.layoutControlGroup4.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
-            this.layoutControlItem37,
-            this.layoutControlItem38,
-            this.emptySpaceItem9});
-            this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlGroup4.Name = "layoutControlGroup4";
-            this.layoutControlGroup4.Size = new System.Drawing.Size(270, 284);
-            this.layoutControlGroup4.TextVisible = false;
-            // 
-            // layoutControlItem37
-            // 
-            this.layoutControlItem37.Control = this.calendarControl1;
-            this.layoutControlItem37.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem37.Name = "layoutControlItem37";
-            this.layoutControlItem37.Size = new System.Drawing.Size(250, 231);
-            this.layoutControlItem37.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem37.TextVisible = false;
-            // 
-            // layoutControlItem38
-            // 
-            this.layoutControlItem38.Control = this.btnSave_DutruTime;
-            this.layoutControlItem38.Location = new System.Drawing.Point(144, 231);
-            this.layoutControlItem38.Name = "layoutControlItem38";
-            this.layoutControlItem38.Size = new System.Drawing.Size(106, 33);
-            this.layoutControlItem38.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem38.TextVisible = false;
-            // 
-            // emptySpaceItem9
-            // 
-            this.emptySpaceItem9.AllowHotTrack = false;
-            this.emptySpaceItem9.Location = new System.Drawing.Point(0, 231);
-            this.emptySpaceItem9.Name = "emptySpaceItem9";
-            this.emptySpaceItem9.Size = new System.Drawing.Size(144, 33);
-            this.emptySpaceItem9.TextSize = new System.Drawing.Size(0, 0);
             // 
             // txtDutruTime
             // 
@@ -1812,10 +1762,9 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // 
             this.panelControlServiceGrid.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControlServiceGrid.Controls.Add(this.popupControlContainerSubIcdName);
-            this.panelControlServiceGrid.Controls.Add(this.popupControlContainerOtherPaySource);
             this.panelControlServiceGrid.Controls.Add(this.popupControlContainerCondition);
-            this.panelControlServiceGrid.Controls.Add(this.popupControlContainer1);
             this.panelControlServiceGrid.Controls.Add(this.popupControlContainer3);
+            this.panelControlServiceGrid.Controls.Add(this.popupControlContainer4);
             this.panelControlServiceGrid.Controls.Add(this.gridControlServiceProcess);
             this.panelControlServiceGrid.Location = new System.Drawing.Point(170, 192);
             this.panelControlServiceGrid.Name = "panelControlServiceGrid";
@@ -1977,108 +1926,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridView8.OptionsView.ShowGroupPanel = false;
             this.gridView8.OptionsView.ShowIndicator = false;
             // 
-            // popupControlContainerOtherPaySource
-            // 
-            this.popupControlContainerOtherPaySource.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainerOtherPaySource.Controls.Add(this.gridControlOtherPaySource);
-            this.popupControlContainerOtherPaySource.Location = new System.Drawing.Point(109, 61);
-            this.popupControlContainerOtherPaySource.Manager = this.barManager1;
-            this.popupControlContainerOtherPaySource.Name = "popupControlContainerOtherPaySource";
-            this.popupControlContainerOtherPaySource.Size = new System.Drawing.Size(400, 180);
-            this.popupControlContainerOtherPaySource.TabIndex = 130;
-            this.popupControlContainerOtherPaySource.Visible = false;
-            // 
-            // gridControlOtherPaySource
-            // 
-            this.gridControlOtherPaySource.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlOtherPaySource.Location = new System.Drawing.Point(0, 0);
-            this.gridControlOtherPaySource.MainView = this.gridViewOtherPaySource;
-            this.gridControlOtherPaySource.MenuManager = this.barManager1;
-            this.gridControlOtherPaySource.Name = "gridControlOtherPaySource";
-            this.gridControlOtherPaySource.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemCheckEdit3});
-            this.gridControlOtherPaySource.Size = new System.Drawing.Size(400, 180);
-            this.gridControlOtherPaySource.TabIndex = 0;
-            this.gridControlOtherPaySource.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewOtherPaySource});
-            this.gridControlOtherPaySource.Click += new System.EventHandler(this.gridControlOtherPaySource_Click);
-            // 
-            // gridViewOtherPaySource
-            // 
-            this.gridViewOtherPaySource.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn12,
-            this.gridColumn13,
-            this.gridColumn14,
-            this.gridColumn15});
-            this.gridViewOtherPaySource.GridControl = this.gridControlOtherPaySource;
-            this.gridViewOtherPaySource.Name = "gridViewOtherPaySource";
-            this.gridViewOtherPaySource.OptionsView.RowAutoHeight = true;
-            this.gridViewOtherPaySource.OptionsView.ShowGroupPanel = false;
-            this.gridViewOtherPaySource.OptionsView.ShowIndicator = false;
-            this.gridViewOtherPaySource.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewOtherPaySource_CustomUnboundColumnData);
-            this.gridViewOtherPaySource.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewOtherPaySource_KeyDown);
-            // 
-            // gridColumn12
-            // 
-            this.gridColumn12.Caption = "Mã";
-            this.gridColumn12.FieldName = "OTHER_PAY_SOURCE_CODE";
-            this.gridColumn12.Name = "gridColumn12";
-            this.gridColumn12.OptionsColumn.AllowEdit = false;
-            this.gridColumn12.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn12.Visible = true;
-            this.gridColumn12.VisibleIndex = 0;
-            this.gridColumn12.Width = 100;
-            // 
-            // gridColumn13
-            // 
-            this.gridColumn13.Caption = "Tên";
-            this.gridColumn13.ColumnEdit = this.repositoryItemMemoEdit1;
-            this.gridColumn13.FieldName = "OTHER_PAY_SOURCE_NAME";
-            this.gridColumn13.Name = "gridColumn13";
-            this.gridColumn13.OptionsColumn.AllowEdit = false;
-            this.gridColumn13.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 1;
-            this.gridColumn13.Width = 300;
-            // 
-            // repositoryItemMemoEdit1
-            // 
-            this.repositoryItemMemoEdit1.Appearance.Options.UseTextOptions = true;
-            this.repositoryItemMemoEdit1.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
-            // 
-            // gridColumn14
-            // 
-            this.gridColumn14.Caption = "Giá tiền";
-            this.gridColumn14.DisplayFormat.FormatString = "#,###";
-            this.gridColumn14.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.gridColumn14.FieldName = "PRICE";
-            this.gridColumn14.Name = "gridColumn14";
-            this.gridColumn14.OptionsColumn.AllowEdit = false;
-            this.gridColumn14.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn14.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn14.Width = 100;
-            // 
-            // gridColumn15
-            // 
-            this.gridColumn15.Caption = "Tỉ lệ thanh toán";
-            this.gridColumn15.FieldName = "HEIN_RATIO_DISPLAY";
-            this.gridColumn15.Name = "gridColumn15";
-            this.gridColumn15.OptionsColumn.AllowEdit = false;
-            this.gridColumn15.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn15.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            this.gridColumn15.Width = 100;
-            // 
-            // repositoryItemCheckEdit3
-            // 
-            this.repositoryItemCheckEdit3.AutoHeight = false;
-            this.repositoryItemCheckEdit3.Name = "repositoryItemCheckEdit3";
-            this.repositoryItemCheckEdit3.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            // 
             // popupControlContainerCondition
             // 
             this.popupControlContainerCondition.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainerCondition.Controls.Add(this.gridControlCondition);
+            this.popupControlContainerCondition.Controls.Add(this.popupControlContainerOtherPaySource);
             this.popupControlContainerCondition.Location = new System.Drawing.Point(480, 122);
             this.popupControlContainerCondition.Manager = this.barManager1;
             this.popupControlContainerCondition.Name = "popupControlContainerCondition";
@@ -2142,6 +1994,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn8.VisibleIndex = 1;
             this.gridColumn8.Width = 300;
             // 
+            // repositoryItemMemoEdit1
+            // 
+            this.repositoryItemMemoEdit1.Appearance.Options.UseTextOptions = true;
+            this.repositoryItemMemoEdit1.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
+            // 
             // gridColumn9
             // 
             this.gridColumn9.Caption = "Giá tiền";
@@ -2172,11 +2030,104 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.repositoryItemCheckEdit2.Name = "repositoryItemCheckEdit2";
             this.repositoryItemCheckEdit2.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             // 
+            // popupControlContainerOtherPaySource
+            // 
+            this.popupControlContainerOtherPaySource.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainerOtherPaySource.Controls.Add(this.gridControlOtherPaySource);
+            this.popupControlContainerOtherPaySource.Controls.Add(this.popupControlContainer1);
+            this.popupControlContainerOtherPaySource.Location = new System.Drawing.Point(40, 79);
+            this.popupControlContainerOtherPaySource.Manager = this.barManager1;
+            this.popupControlContainerOtherPaySource.Name = "popupControlContainerOtherPaySource";
+            this.popupControlContainerOtherPaySource.Size = new System.Drawing.Size(400, 180);
+            this.popupControlContainerOtherPaySource.TabIndex = 130;
+            this.popupControlContainerOtherPaySource.Visible = false;
+            // 
+            // gridControlOtherPaySource
+            // 
+            this.gridControlOtherPaySource.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControlOtherPaySource.Location = new System.Drawing.Point(0, 0);
+            this.gridControlOtherPaySource.MainView = this.gridViewOtherPaySource;
+            this.gridControlOtherPaySource.MenuManager = this.barManager1;
+            this.gridControlOtherPaySource.Name = "gridControlOtherPaySource";
+            this.gridControlOtherPaySource.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemCheckEdit3});
+            this.gridControlOtherPaySource.Size = new System.Drawing.Size(400, 180);
+            this.gridControlOtherPaySource.TabIndex = 0;
+            this.gridControlOtherPaySource.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewOtherPaySource});
+            this.gridControlOtherPaySource.Click += new System.EventHandler(this.gridControlOtherPaySource_Click);
+            // 
+            // gridViewOtherPaySource
+            // 
+            this.gridViewOtherPaySource.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn12,
+            this.gridColumn13,
+            this.gridColumn14,
+            this.gridColumn15});
+            this.gridViewOtherPaySource.GridControl = this.gridControlOtherPaySource;
+            this.gridViewOtherPaySource.Name = "gridViewOtherPaySource";
+            this.gridViewOtherPaySource.OptionsView.RowAutoHeight = true;
+            this.gridViewOtherPaySource.OptionsView.ShowGroupPanel = false;
+            this.gridViewOtherPaySource.OptionsView.ShowIndicator = false;
+            this.gridViewOtherPaySource.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewOtherPaySource_CustomUnboundColumnData);
+            this.gridViewOtherPaySource.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewOtherPaySource_KeyDown);
+            // 
+            // gridColumn12
+            // 
+            this.gridColumn12.Caption = "Mã";
+            this.gridColumn12.FieldName = "OTHER_PAY_SOURCE_CODE";
+            this.gridColumn12.Name = "gridColumn12";
+            this.gridColumn12.OptionsColumn.AllowEdit = false;
+            this.gridColumn12.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn12.Visible = true;
+            this.gridColumn12.VisibleIndex = 0;
+            this.gridColumn12.Width = 100;
+            // 
+            // gridColumn13
+            // 
+            this.gridColumn13.Caption = "Tên";
+            this.gridColumn13.ColumnEdit = this.repositoryItemMemoEdit1;
+            this.gridColumn13.FieldName = "OTHER_PAY_SOURCE_NAME";
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.OptionsColumn.AllowEdit = false;
+            this.gridColumn13.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 1;
+            this.gridColumn13.Width = 300;
+            // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "Giá tiền";
+            this.gridColumn14.DisplayFormat.FormatString = "#,###";
+            this.gridColumn14.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.gridColumn14.FieldName = "PRICE";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.OptionsColumn.AllowEdit = false;
+            this.gridColumn14.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn14.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn14.Width = 100;
+            // 
+            // gridColumn15
+            // 
+            this.gridColumn15.Caption = "Tỉ lệ thanh toán";
+            this.gridColumn15.FieldName = "HEIN_RATIO_DISPLAY";
+            this.gridColumn15.Name = "gridColumn15";
+            this.gridColumn15.OptionsColumn.AllowEdit = false;
+            this.gridColumn15.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn15.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn15.Width = 100;
+            // 
+            // repositoryItemCheckEdit3
+            // 
+            this.repositoryItemCheckEdit3.AutoHeight = false;
+            this.repositoryItemCheckEdit3.Name = "repositoryItemCheckEdit3";
+            this.repositoryItemCheckEdit3.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            // 
             // popupControlContainer1
             // 
             this.popupControlContainer1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainer1.Controls.Add(this.gridControl1);
-            this.popupControlContainer1.Location = new System.Drawing.Point(216, 125);
+            this.popupControlContainer1.Location = new System.Drawing.Point(110, 14);
             this.popupControlContainer1.Manager = this.barManager1;
             this.popupControlContainer1.Name = "popupControlContainer1";
             this.popupControlContainer1.Size = new System.Drawing.Size(250, 130);
@@ -2241,7 +2192,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // 
             this.popupControlContainer3.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.popupControlContainer3.Controls.Add(this.layoutControl1);
-            this.popupControlContainer3.Location = new System.Drawing.Point(67, 146);
+            this.popupControlContainer3.Location = new System.Drawing.Point(27, 23);
             this.popupControlContainer3.Manager = this.barManager1;
             this.popupControlContainer3.Name = "popupControlContainer3";
             this.popupControlContainer3.Size = new System.Drawing.Size(447, 227);
@@ -2273,6 +2224,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridControl3.MainView = this.gridView14;
             this.gridControl3.MenuManager = this.barManager1;
             this.gridControl3.Name = "gridControl3";
+            this.gridControl3.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemCheckEditReq});
             this.gridControl3.Size = new System.Drawing.Size(443, 199);
             this.gridControl3.TabIndex = 4;
             this.gridControl3.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -2281,6 +2234,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             // gridView14
             // 
             this.gridView14.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn25,
             this.gridColumn20,
             this.gridColumn21,
             this.gridColumn22});
@@ -2289,7 +2243,28 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridView14.OptionsView.ShowGroupPanel = false;
             this.gridView14.OptionsView.ShowIndicator = false;
             this.gridView14.RowCellClick += new DevExpress.XtraGrid.Views.Grid.RowCellClickEventHandler(this.gridView14_RowCellClick);
+            this.gridView14.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridView14_CustomDrawColumnHeader);
             this.gridView14.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView14_CustomUnboundColumnData);
+            this.gridView14.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridView14_MouseDown);
+            this.gridView14.Click += new System.EventHandler(this.gridView14_Click);
+            // 
+            // gridColumn25
+            // 
+            this.gridColumn25.Caption = "gridColumn25";
+            this.gridColumn25.ColumnEdit = this.repositoryItemCheckEditReq;
+            this.gridColumn25.FieldName = "IS_REQ_CHECKED";
+            this.gridColumn25.Name = "gridColumn25";
+            this.gridColumn25.OptionsColumn.ShowCaption = false;
+            this.gridColumn25.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn25.Visible = true;
+            this.gridColumn25.VisibleIndex = 0;
+            this.gridColumn25.Width = 40;
+            // 
+            // repositoryItemCheckEditReq
+            // 
+            this.repositoryItemCheckEditReq.AutoHeight = false;
+            this.repositoryItemCheckEditReq.Name = "repositoryItemCheckEditReq";
+            this.repositoryItemCheckEditReq.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             // 
             // gridColumn20
             // 
@@ -2300,7 +2275,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn20.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn20.OptionsColumn.ReadOnly = true;
             this.gridColumn20.Visible = true;
-            this.gridColumn20.VisibleIndex = 0;
+            this.gridColumn20.VisibleIndex = 1;
+            this.gridColumn20.Width = 133;
             // 
             // gridColumn21
             // 
@@ -2312,7 +2288,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn21.OptionsColumn.ReadOnly = true;
             this.gridColumn21.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn21.Visible = true;
-            this.gridColumn21.VisibleIndex = 1;
+            this.gridColumn21.VisibleIndex = 2;
+            this.gridColumn21.Width = 133;
             // 
             // gridColumn22
             // 
@@ -2323,7 +2300,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.gridColumn22.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn22.OptionsColumn.ReadOnly = true;
             this.gridColumn22.Visible = true;
-            this.gridColumn22.VisibleIndex = 2;
+            this.gridColumn22.VisibleIndex = 3;
+            this.gridColumn22.Width = 135;
             // 
             // layoutControlGroup3
             // 
@@ -2354,6 +2332,91 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControlItem34.Size = new System.Drawing.Size(447, 24);
             this.layoutControlItem34.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem34.TextVisible = false;
+            // 
+            // popupControlContainer4
+            // 
+            this.popupControlContainer4.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainer4.Controls.Add(this.layoutControl3);
+            this.popupControlContainer4.Location = new System.Drawing.Point(707, 61);
+            this.popupControlContainer4.Manager = this.barManager1;
+            this.popupControlContainer4.Name = "popupControlContainer4";
+            this.popupControlContainer4.Size = new System.Drawing.Size(270, 284);
+            this.popupControlContainer4.TabIndex = 150;
+            this.popupControlContainer4.Visible = false;
+            // 
+            // layoutControl3
+            // 
+            this.layoutControl3.Controls.Add(this.btnSave_DutruTime);
+            this.layoutControl3.Controls.Add(this.calendarControl1);
+            this.layoutControl3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.layoutControl3.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl3.Name = "layoutControl3";
+            this.layoutControl3.Root = this.layoutControlGroup4;
+            this.layoutControl3.Size = new System.Drawing.Size(270, 284);
+            this.layoutControl3.TabIndex = 0;
+            this.layoutControl3.Text = "layoutControl3";
+            // 
+            // btnSave_DutruTime
+            // 
+            this.btnSave_DutruTime.Location = new System.Drawing.Point(156, 243);
+            this.btnSave_DutruTime.Name = "btnSave_DutruTime";
+            this.btnSave_DutruTime.Size = new System.Drawing.Size(102, 22);
+            this.btnSave_DutruTime.StyleController = this.layoutControl3;
+            this.btnSave_DutruTime.TabIndex = 5;
+            this.btnSave_DutruTime.Text = "Đồng ý";
+            this.btnSave_DutruTime.Click += new System.EventHandler(this.btnSave_duTru_Click);
+            // 
+            // calendarControl1
+            // 
+            this.calendarControl1.AutoSize = false;
+            this.calendarControl1.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.calendarControl1.Location = new System.Drawing.Point(12, 12);
+            this.calendarControl1.Name = "calendarControl1";
+            this.calendarControl1.SelectionBehavior = DevExpress.XtraEditors.Controls.CalendarSelectionBehavior.OutlookStyle;
+            this.calendarControl1.SelectionMode = DevExpress.XtraEditors.Repository.CalendarSelectionMode.Multiple;
+            this.calendarControl1.Size = new System.Drawing.Size(246, 227);
+            this.calendarControl1.StyleController = this.layoutControl3;
+            this.calendarControl1.TabIndex = 4;
+            // 
+            // layoutControlGroup4
+            // 
+            this.layoutControlGroup4.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
+            this.layoutControlGroup4.GroupBordersVisible = false;
+            this.layoutControlGroup4.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
+            this.layoutControlItem37,
+            this.layoutControlItem38,
+            this.emptySpaceItem9});
+            this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup4.Name = "layoutControlGroup4";
+            this.layoutControlGroup4.Size = new System.Drawing.Size(270, 284);
+            this.layoutControlGroup4.TextVisible = false;
+            // 
+            // layoutControlItem37
+            // 
+            this.layoutControlItem37.Control = this.calendarControl1;
+            this.layoutControlItem37.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem37.Name = "layoutControlItem37";
+            this.layoutControlItem37.Size = new System.Drawing.Size(250, 231);
+            this.layoutControlItem37.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem37.TextVisible = false;
+            // 
+            // layoutControlItem38
+            // 
+            this.layoutControlItem38.Control = this.btnSave_DutruTime;
+            this.layoutControlItem38.Location = new System.Drawing.Point(144, 231);
+            this.layoutControlItem38.Name = "layoutControlItem38";
+            this.layoutControlItem38.Size = new System.Drawing.Size(106, 33);
+            this.layoutControlItem38.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem38.TextVisible = false;
+            // 
+            // emptySpaceItem9
+            // 
+            this.emptySpaceItem9.AllowHotTrack = false;
+            this.emptySpaceItem9.Location = new System.Drawing.Point(0, 231);
+            this.emptySpaceItem9.Name = "emptySpaceItem9";
+            this.emptySpaceItem9.Size = new System.Drawing.Size(144, 33);
+            this.emptySpaceItem9.TextSize = new System.Drawing.Size(0, 0);
             // 
             // gridControlServiceProcess
             // 
@@ -5568,34 +5631,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lciTotalGuarantee.TextSize = new System.Drawing.Size(120, 20);
             this.lciTotalGuarantee.TextToControlDistance = 5;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1352, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 617);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1352, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 588);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1352, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 588);
-            // 
             // customGridLookUpEditWithFilterMultiColumn1View
             // 
             this.customGridLookUpEditWithFilterMultiColumn1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
@@ -5677,15 +5712,6 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.lcEditorInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintVBA.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer4)).EndInit();
-            this.popupControlContainer4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
-            this.layoutControl3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.calendarControl1.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDutruTime.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkNotCheckService.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoCheckPDDT.Properties)).EndInit();
@@ -5740,17 +5766,17 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.popupControlContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView8)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).EndInit();
-            this.popupControlContainerOtherPaySource.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerCondition)).EndInit();
             this.popupControlContainerCondition.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControlCondition)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewCondition)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).EndInit();
+            this.popupControlContainerOtherPaySource.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).EndInit();
             this.popupControlContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
@@ -5762,9 +5788,19 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditReq)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer4)).EndInit();
+            this.popupControlContainer4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
+            this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.calendarControl1.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemIsView)).EndInit();
@@ -6375,5 +6411,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         private DevExpress.XtraGrid.Columns.GridColumn colIsGuaranteeUnb;
         private System.Windows.Forms.Label lblTotalGuarantee;
         private DevExpress.XtraLayout.LayoutControlItem lciTotalGuarantee;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditReq;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn25;
     }
 }

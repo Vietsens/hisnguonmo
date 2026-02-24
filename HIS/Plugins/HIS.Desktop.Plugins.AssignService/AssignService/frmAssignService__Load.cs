@@ -2834,10 +2834,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (apiResult != null)
                 {
                     currentPreServiceReqs = (List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_6>)apiResult.Data;
-                    if (currentPreServiceReqs != null)
+                    preServiceReqsADOs = currentPreServiceReqs.Select(o => new PreServiceReqsADO(o)).ToList(); 
+                    if (preServiceReqsADOs != null)
                     {
-                        gridControl3.DataSource = currentPreServiceReqs;
-                        rowCount = (currentPreServiceReqs == null ? 0 : currentPreServiceReqs.Count);
+                        gridControl3.DataSource = preServiceReqsADOs;
+                        rowCount = (preServiceReqsADOs == null ? 0 : preServiceReqsADOs.Count);
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                     }
                 }

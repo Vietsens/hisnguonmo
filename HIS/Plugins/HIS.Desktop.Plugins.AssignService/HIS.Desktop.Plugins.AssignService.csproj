@@ -322,6 +322,7 @@
     <Compile Include="ADO\ICDADO.cs" />
     <Compile Include="ADO\LoaiPhieuInADO.cs" />
     <Compile Include="ADO\MissingIcdADO.cs" />
+    <Compile Include="ADO\PreServiceReqsADO.cs" />
     <Compile Include="ADO\RequestAIADO.cs" />
     <Compile Include="ADO\ResponseAIADO.cs" />
     <Compile Include="ADO\ServiceGroupADO.cs" />
@@ -591,7 +592,6 @@
     <EmbeddedResource Include="frmSettingAssignOld.resx">
       <DependentUpon>frmSettingAssignOld.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
