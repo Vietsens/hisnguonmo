@@ -70,6 +70,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         bool isLuuKy = false;
         const string invoiceTypeCreate__CreateInvoiceVnpt = "1";
         const string invoiceTypeCreate__CreateInvoiceHIS = "2";
+        bool hideMessage = false;
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -97,7 +98,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 {
                     MessageManager.Show(this, param, success);
                 }
-                else
+                else if (!hideMessage)
                 {
                     MessageManager.Show(param, success);
                 }
@@ -245,9 +246,23 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                if (chkGuarantee.Checked && guaranteeInfo != null)
+                {
+                    WaitingManager.Hide();
+                    if (tongTienBaoLanh > guaranteeInfo.GUARANTEE_BALANCE)
+                    {
+                        XtraMessageBox.Show(this, "Số tiền cần bảo lãnh lớn hơn hạn mức bảo lãnh",
+                         "Thông báo",
+                         MessageBoxButtons.OK,
+                         MessageBoxIcon.Warning
+                         );
+                        hideMessage = true;
+                        success = false;
+                        return;
+                    }
+                }
                 if (!CheckBaoLanh())
                     return;
-
                 //List<HisTransactionBillSDO> listSdo = new List<HisTransactionBillSDO>();
                 HisTransactionBillTwoBookSDO billTwoBookSDO = new HisTransactionBillTwoBookSDO();
                 V_HIS_ACCOUNT_BOOK recieptAccBook = null;

@@ -616,7 +616,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.BKAV
                     }
                     else if (item.TaxPercentage == 3)
                     {
-                        product.TaxRateID = 6;
+                        product.TaxRateID = 9;
                     }
                     else
                     {

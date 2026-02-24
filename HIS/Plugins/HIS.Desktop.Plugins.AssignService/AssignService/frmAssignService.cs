@@ -1,3 +1,6 @@
+
+
+
 /* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
@@ -79,6 +82,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static MPS.ProcessorBase.PrintConfig;
 using HIS.Desktop.Plugins.Library.FormMedicalRecord;
+using HIS.Desktop.Plugins.AssignService.ADO;
 
 namespace HIS.Desktop.Plugins.AssignService.AssignService
 {
@@ -86,6 +90,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
     {
         #region Reclare variable
         // qtcode
+        List<PreServiceReqsADO> preServiceReqsADOs = new List<PreServiceReqsADO>();
         bool isLoadingGuaranteeInfo = false;
         GuaranteeInfoADO guaranteeInfo = null;
         List<string> arrControlEnableNotChange = new List<string>();
@@ -1455,7 +1460,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (this.patientTypeByPT != null && this.patientTypeByPT.IS_CHECK_FEE_WHEN_ASSIGN == 1
                             && this.currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
                             && this.transferTreatmentFee >= 0 && this.currentModule.RoomTypeId != IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__TD
-                            && (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE)) 
+                            && (this.currentHisTreatment != null && string.IsNullOrEmpty(this.currentHisTreatment.GUARANTEE_CODE))
                         )
                     {
                         SereSerView = SereSerView.Where(o => o.IS_GUARANTEED != 1).ToList();
@@ -2573,6 +2578,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             }
                         }
                     }
+                    // Nếu bỏ chọn dịch vụ thì đồng bộ lại trạng thái y lệnh cũ
+                    //qtcode4
+                    //if (e.Column.FieldName == this.grcChecked_TabService.FieldName && !sereServADO.IsChecked && sereServADO.SERVICE_REQ_ID > 0)
+                    //{
+                    //    SyncPreServiceReqCheckedByService(sereServADO.SERVICE_REQ_ID);
+                    //}
                     //qtcode
                     if (e.Column.FieldName == this.grcSampleType.FieldName)
                     {
@@ -2805,7 +2816,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        //qtcode4
+        //private void SyncPreServiceReqCheckedByService(long? serviceReqId)
+        //{
+        //    Inventec.Common.Logging.LogSystem.Debug("UNCHECK qtcode"); 
+        //    if (serviceReqId == null || preServiceReqsADOs == null) return;
+        //    var req = preServiceReqsADOs.FirstOrDefault(x => x.ID == serviceReqId);
+        //    if (req != null && req.IsReqPicked)
+        //    {
+        //        // Nếu có bất kỳ dịch vụ nào thuộc y lệnh này bị bỏ tích thì y lệnh cũng bỏ tích ngay
+        //        if (ServiceIsleafADOs != null && ServiceIsleafADOs.Any(s => s.SERVICE_REQ_ID == serviceReqId && !s.IsChecked))
+        //        {
+        //            req.IsReqPicked = false;
+        //        }
+        //    }
+        //}
         private void gridViewServiceProcess_MouseDown(object sender, MouseEventArgs e)
         {
             try
@@ -3048,7 +3073,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             var dataSource = editor.Properties.DataSource;
                             this.FillDataIntoPatientTypeCombo(data, editor, ref patyId);
                             data.IsNotLoadDefaultPatientType = true;
-                            if(cboPackage.EditValue == null && HisConfigCFG.ServicePatyForServicePackage != "2")
+                            if (cboPackage.EditValue == null && HisConfigCFG.ServicePatyForServicePackage != "2")
                                 editor.EditValue = data.PATIENT_TYPE_ID;
                             //else 
                             //    editor.EditValue = patyId;
@@ -6170,6 +6195,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             try
             {
                 WaitingManager.Show();
+                if (preServiceReqsADOs != null)
+                {
+                    preServiceReqsADOs.ForEach(o => o.IsReqPicked = false);
+                }
+                cboPriviousServiceReq.Text = ""; 
                 this.isCheckAssignServiceSimultaneityOption = false;
                 this.SetDefaultData();
                 this.LoadIcdDefault();
@@ -10115,20 +10145,30 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    if (((IList)((BaseView)sender).DataSource) != null && ((IList)((BaseView)sender).DataSource).Count > 0)
+                    var row = e.Row as PreServiceReqsADO;
+                    if (row != null)
                     {
-                        V_HIS_SERVICE_REQ_6 oneServiceSDO = (V_HIS_SERVICE_REQ_6)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                        if (oneServiceSDO != null)
+                        if (e.Column.FieldName == "IS_REQ_CHECKED")
                         {
-                            if (e.Column.FieldName == "INTRUCTION_TIME_str")
-                            {
-                                e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(oneServiceSDO.INTRUCTION_TIME);
-                            }
+                            e.Value = row.IsReqPicked;
                         }
-                        else
+                        else if (e.Column.FieldName == "INTRUCTION_TIME_str")
                         {
-                            e.Value = null;
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(row.INTRUCTION_TIME);
                         }
+                    }
+                    else
+                    {
+                        e.Value = null;
+                    }
+                }
+                //qtcode4
+                else if (e.IsSetData && e.Column.FieldName == "IS_REQ_CHECKED")
+                {
+                    var ado = gridView14.GetRow(e.ListSourceRowIndex) as PreServiceReqsADO;
+                    if (ado != null)
+                    {
+                        ado.IsReqPicked = (bool)e.Value;
                     }
                 }
             }
@@ -10140,26 +10180,12 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         V_HIS_SERVICE_REQ_6 rowdataAssignOld { get; set; }
         private void gridView14_RowCellClick(object sender, RowCellClickEventArgs e)
         {
-
-            try
-            {
-                rowdataAssignOld = (MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_6)gridView14.GetFocusedRow();
-
-                if (rowdataAssignOld != null)
-                {
-                    cboPriviousServiceReq.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowdataAssignOld.INTRUCTION_TIME);
-                    this.cboPriviousServiceReq.Properties.Buttons[1].Visible = true;
-                    this.ProcessChoiceServiceReqPrevious(rowdataAssignOld);
-                    this.btnSave.Focus();
-                }
-                popupControlContainer3.HidePopup();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-
+            
         }
+        
+
+
+
         List<HIS_CONFIG> listConfig = new List<HIS_CONFIG>();
         #region thanh toan QR
         private void CheckEnableBtnQR()
@@ -10724,7 +10750,133 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             }
         }
 
-        private void gridControlServiceProcess_Click(object sender, EventArgs e)
+
+        bool isHeaderReqChecked = false;
+
+        //qtcode4
+        private void gridView14_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left) return;
+
+            GridHitInfo hitInfo = gridView14.CalcHitInfo(e.Location);
+
+            //Header checkbox
+            if (hitInfo.InColumn && hitInfo.Column?.FieldName == "IS_REQ_CHECKED")
+            {
+                isHeaderReqChecked = !isHeaderReqChecked;
+                gridView14.BeginUpdate();
+                foreach (PreServiceReqsADO ado in gridView14.DataSource as IEnumerable<PreServiceReqsADO> ?? Enumerable.Empty<PreServiceReqsADO>())
+                {
+                    ado.IsReqPicked = isHeaderReqChecked;
+                    if (isHeaderReqChecked)
+                    {
+                        ProcessChoiceServiceReqPrevious(ado);
+                    }
+                }
+                gridView14.EndUpdate();
+                gridView14.InvalidateColumnHeader(gridView14.Columns["IS_REQ_CHECKED"]);
+                return;
+            }
+
+            // Click trong row
+            if (hitInfo.InRow && gridView14.IsDataRow(hitInfo.RowHandle))
+            {
+                var ado = gridView14.GetRow(hitInfo.RowHandle) as PreServiceReqsADO;
+                if (ado == null) return;
+
+                bool isCheckBoxClick = hitInfo.InRowCell &&
+                                       hitInfo.Column?.FieldName == "IS_REQ_CHECKED";
+
+                if (isCheckBoxClick)
+                {
+                    ado.IsReqPicked = !ado.IsReqPicked; 
+                    bool isNowChecked = ado.IsReqPicked;  
+
+                    cboPriviousServiceReq.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(ado.INTRUCTION_TIME);
+                    this.cboPriviousServiceReq.Properties.Buttons[1].Visible = true;
+                    rowdataAssignOld = ado;
+
+                    if (isNowChecked)
+                    {
+                        ProcessChoiceServiceReqPrevious(ado);
+                    }
+
+                    UpdateHeaderCheckState();
+
+                    // Commit và refresh để tránh lỗi focus cũ
+                    gridView14.PostEditor();
+                    gridView14.RefreshRow(hitInfo.RowHandle);
+                }
+                else
+                {
+                    ado.IsReqPicked = !ado.IsReqPicked;
+                    rowdataAssignOld = ado;
+                    cboPriviousServiceReq.Text = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(ado.INTRUCTION_TIME);
+                    this.cboPriviousServiceReq.Properties.Buttons[1].Visible = true;
+                    ProcessChoiceServiceReqPrevious(ado);
+                    this.btnSave.Focus();
+                    UpdateHeaderCheckState();
+                    popupControlContainer3.HidePopup(); 
+                }
+            }
+            gridView14.RefreshRow(hitInfo.RowHandle);
+        }
+        
+        private void UpdateHeaderCheckState()
+        {
+            var dataSource = gridView14.DataSource as IList<PreServiceReqsADO>;
+            if (dataSource == null || dataSource.Count == 0)
+            {
+                isHeaderReqChecked = false;
+                gridView14.InvalidateColumnHeader(gridView14.Columns["IS_REQ_CHECKED"]);
+                return;
+            }
+
+            // Kiểm tra xem TẤT CẢ có checked không
+            bool allChecked = dataSource.All(ado => ado.IsReqPicked);
+
+            // Nếu danh sách rỗng → false, nhưng ở đây đã check count > 0
+            isHeaderReqChecked = allChecked;
+
+            // Làm mới header để hiển thị đúng (checked hoặc unchecked)
+            gridView14.InvalidateColumnHeader(gridView14.Columns["IS_REQ_CHECKED"]);
+        }
+        private void gridView14_CustomDrawColumnHeader(object sender, ColumnHeaderCustomDrawEventArgs e)
+        {
+            if (e.Column != null && e.Column.FieldName == "IS_REQ_CHECKED")
+            {
+                // Xóa các element mặc định nếu cần (để vẽ sạch)
+                e.Info.InnerElements.Clear();
+                e.Painter.DrawObject(e.Info);
+
+                RepositoryItemCheckEdit checkEdit = e.Column.ColumnEdit as RepositoryItemCheckEdit;
+                if (checkEdit != null)
+                {
+                    int size = 16;  // Kích thước checkbox
+                    int x = e.Bounds.X + (e.Bounds.Width - size) / 2;
+                    int y = e.Bounds.Y + (e.Bounds.Height - size) / 2;
+                    Rectangle rect = new Rectangle(x, y, size, size);
+
+                    var info = (DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo)checkEdit.CreateViewInfo();
+                    var painter = (DevExpress.XtraEditors.Drawing.CheckEditPainter)checkEdit.CreatePainter();
+
+                    // Trạng thái checkbox header dựa trên biến
+                    info.EditValue = isHeaderReqChecked;
+
+                    info.Bounds = rect;
+                    info.CalcViewInfo(e.Graphics);
+
+                    using (DevExpress.Utils.Drawing.GraphicsCache cache = new DevExpress.Utils.Drawing.GraphicsCache(e.Graphics))
+                    {
+                        painter.Draw(new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(info, cache, rect));
+                    }
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        private void gridView14_Click(object sender, EventArgs e)
         {
 
         }

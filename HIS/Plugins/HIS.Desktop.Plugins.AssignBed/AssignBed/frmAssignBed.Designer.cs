@@ -57,6 +57,15 @@
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtIcdMainText = new DevExpress.XtraEditors.TextEdit();
             this.pnlUCPanel = new DevExpress.XtraEditors.PanelControl();
+            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
+            this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.customGridControlSubIcdName = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.customGridViewSubIcdName = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -79,6 +88,7 @@
             this.gridColumn_Service_PrimaryPatientType = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEditOtherPaySource = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemGridLookUpEditBed = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.repositoryItemGridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.repositoryItemGridLookUpEditPatientType = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
@@ -99,7 +109,6 @@
             this.gridView6 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.repositoryItemCustomGridLookUpEditBed = new HIS.Desktop.Utilities.Extensions.RepositoryItemCustomGridLookUpEdit();
             this.repositoryItemCustomGridLookUpEdit1View = new HIS.Desktop.Utilities.Extensions.CustomGridView();
-            this.repositoryItemButtonEditOtherPaySource = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnServiceReqList = new DevExpress.XtraEditors.SimpleButton();
             this.btnSaveAndPrint = new DevExpress.XtraEditors.SimpleButton();
@@ -204,15 +213,6 @@
             this.customGridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.tooltipService = new DevExpress.Utils.ToolTipController(this.components);
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer(this.components);
-            this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
-            this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemCheckEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
@@ -233,6 +233,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdMainText.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlUCPanel)).BeginInit();
             this.pnlUCPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).BeginInit();
+            this.popupControlContainerOtherPaySource.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerSubIcdName)).BeginInit();
             this.popupControlContainerSubIcdName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.customGridControlSubIcdName)).BeginInit();
@@ -240,6 +246,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceProcess)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditBed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditPatientType)).BeginInit();
@@ -263,7 +270,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEditBed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).BeginInit();
@@ -345,12 +351,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit2View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).BeginInit();
-            this.popupControlContainerOtherPaySource.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -635,6 +635,97 @@
             this.pnlUCPanel.Size = new System.Drawing.Size(318, 708);
             this.pnlUCPanel.TabIndex = 27;
             // 
+            // popupControlContainerOtherPaySource
+            // 
+            this.popupControlContainerOtherPaySource.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainerOtherPaySource.Controls.Add(this.gridControlOtherPaySource);
+            this.popupControlContainerOtherPaySource.Location = new System.Drawing.Point(46, 125);
+            this.popupControlContainerOtherPaySource.Manager = this.barManager1;
+            this.popupControlContainerOtherPaySource.Name = "popupControlContainerOtherPaySource";
+            this.popupControlContainerOtherPaySource.Size = new System.Drawing.Size(312, 130);
+            this.popupControlContainerOtherPaySource.TabIndex = 1;
+            this.popupControlContainerOtherPaySource.Visible = false;
+            // 
+            // gridControlOtherPaySource
+            // 
+            this.gridControlOtherPaySource.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControlOtherPaySource.Location = new System.Drawing.Point(0, 0);
+            this.gridControlOtherPaySource.MainView = this.gridViewOtherPaySource;
+            this.gridControlOtherPaySource.MenuManager = this.barManager1;
+            this.gridControlOtherPaySource.Name = "gridControlOtherPaySource";
+            this.gridControlOtherPaySource.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemCheckEdit3,
+            this.repositoryItemMemoEdit1});
+            this.gridControlOtherPaySource.Size = new System.Drawing.Size(312, 130);
+            this.gridControlOtherPaySource.TabIndex = 0;
+            this.gridControlOtherPaySource.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewOtherPaySource});
+            this.gridControlOtherPaySource.Click += new System.EventHandler(this.gridControlOtherPaySource_Click);
+            // 
+            // gridViewOtherPaySource
+            // 
+            this.gridViewOtherPaySource.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn11,
+            this.gridColumn16,
+            this.gridColumn17,
+            this.gridColumn18});
+            this.gridViewOtherPaySource.GridControl = this.gridControlOtherPaySource;
+            this.gridViewOtherPaySource.Name = "gridViewOtherPaySource";
+            this.gridViewOtherPaySource.OptionsView.RowAutoHeight = true;
+            this.gridViewOtherPaySource.OptionsView.ShowGroupPanel = false;
+            this.gridViewOtherPaySource.OptionsView.ShowIndicator = false;
+            this.gridViewOtherPaySource.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewOtherPaySource_CustomUnboundColumnData);
+            this.gridViewOtherPaySource.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewOtherPaySource_KeyDown);
+            // 
+            // gridColumn11
+            // 
+            this.gridColumn11.Caption = "Mã";
+            this.gridColumn11.FieldName = "OTHER_PAY_SOURCE_CODE";
+            this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.OptionsColumn.AllowEdit = false;
+            this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn11.Visible = true;
+            this.gridColumn11.VisibleIndex = 0;
+            // 
+            // gridColumn16
+            // 
+            this.gridColumn16.Caption = "Tên";
+            this.gridColumn16.ColumnEdit = this.repositoryItemMemoEdit1;
+            this.gridColumn16.FieldName = "OTHER_PAY_SOURCE_NAME";
+            this.gridColumn16.Name = "gridColumn16";
+            this.gridColumn16.Visible = true;
+            this.gridColumn16.VisibleIndex = 1;
+            // 
+            // repositoryItemMemoEdit1
+            // 
+            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
+            // 
+            // gridColumn17
+            // 
+            this.gridColumn17.Caption = "Giá tiền";
+            this.gridColumn17.DisplayFormat.FormatString = "#,###";
+            this.gridColumn17.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.gridColumn17.FieldName = "PRICE";
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.OptionsColumn.AllowEdit = false;
+            this.gridColumn17.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            // 
+            // gridColumn18
+            // 
+            this.gridColumn18.Caption = "Tỉ lệ thanh toán";
+            this.gridColumn18.FieldName = "HEIN_RATIO_DISPLAY";
+            this.gridColumn18.Name = "gridColumn18";
+            this.gridColumn18.OptionsColumn.AllowEdit = false;
+            this.gridColumn18.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn18.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            // 
+            // repositoryItemCheckEdit3
+            // 
+            this.repositoryItemCheckEdit3.AutoHeight = false;
+            this.repositoryItemCheckEdit3.Name = "repositoryItemCheckEdit3";
+            this.repositoryItemCheckEdit3.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            // 
             // popupControlContainerSubIcdName
             // 
             this.popupControlContainerSubIcdName.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
@@ -854,7 +945,7 @@
             // gridColumnExecuteRoomName__TabService
             // 
             this.gridColumnExecuteRoomName__TabService.Caption = "Phòng xử lý";
-            this.gridColumnExecuteRoomName__TabService.FieldName = "TDL_EXECUTE_ROOM_ID";
+            this.gridColumnExecuteRoomName__TabService.FieldName = "TDL_EXECUTE_ROOM_ID_STR";
             this.gridColumnExecuteRoomName__TabService.Name = "gridColumnExecuteRoomName__TabService";
             this.gridColumnExecuteRoomName__TabService.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnExecuteRoomName__TabService.OptionsFilter.AllowAutoFilter = false;
@@ -868,7 +959,7 @@
             // gridColumnPatientTypeName__TabService
             // 
             this.gridColumnPatientTypeName__TabService.Caption = "ĐTTT";
-            this.gridColumnPatientTypeName__TabService.FieldName = "PATIENT_TYPE_ID";
+            this.gridColumnPatientTypeName__TabService.FieldName = "PATIENT_TYPE_ID_STR";
             this.gridColumnPatientTypeName__TabService.Name = "gridColumnPatientTypeName__TabService";
             this.gridColumnPatientTypeName__TabService.Visible = true;
             this.gridColumnPatientTypeName__TabService.VisibleIndex = 9;
@@ -915,7 +1006,17 @@
             this.gridColumn13.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn13.Visible = true;
             this.gridColumn13.VisibleIndex = 13;
-            this.gridColumn13.Width = 105;
+            this.gridColumn13.Width = 130;
+            // 
+            // repositoryItemButtonEditOtherPaySource
+            // 
+            this.repositoryItemButtonEditOtherPaySource.AutoHeight = false;
+            this.repositoryItemButtonEditOtherPaySource.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Down),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.repositoryItemButtonEditOtherPaySource.Name = "repositoryItemButtonEditOtherPaySource";
+            this.repositoryItemButtonEditOtherPaySource.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.repositoryItemButtonEditOtherPaySource.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditOtherPaySource_ButtonClick);
             // 
             // repositoryItemGridLookUpEditBed
             // 
@@ -927,6 +1028,8 @@
             this.repositoryItemGridLookUpEditBed.NullText = "";
             this.repositoryItemGridLookUpEditBed.NullValuePromptShowForEmptyValue = true;
             this.repositoryItemGridLookUpEditBed.View = this.repositoryItemGridLookUpEdit1View;
+            this.repositoryItemGridLookUpEditBed.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemGridLookUpEditBed_ButtonClick);
+            this.repositoryItemGridLookUpEditBed.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemGridLookUpEditBed_EditValueChanging);
             // 
             // repositoryItemGridLookUpEdit1View
             // 
@@ -945,6 +1048,7 @@
             this.repositoryItemGridLookUpEditPatientType.NullText = "";
             this.repositoryItemGridLookUpEditPatientType.NullValuePromptShowForEmptyValue = true;
             this.repositoryItemGridLookUpEditPatientType.View = this.gridView1;
+            this.repositoryItemGridLookUpEditPatientType.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemGridLookUpEditPatientType_ButtonClick);
             // 
             // gridView1
             // 
@@ -1008,6 +1112,7 @@
             this.repositoryItemcboExcuteRoom_TabService.NullValuePromptShowForEmptyValue = true;
             this.repositoryItemcboExcuteRoom_TabService.View = this.gridView4;
             this.repositoryItemcboExcuteRoom_TabService.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.repositoryItemcboExcuteRoom_TabService_Closed);
+            this.repositoryItemcboExcuteRoom_TabService.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemcboExcuteRoom_TabService_ButtonClick);
             // 
             // gridView4
             // 
@@ -1090,16 +1195,6 @@
             this.repositoryItemCustomGridLookUpEdit1View.Name = "repositoryItemCustomGridLookUpEdit1View";
             this.repositoryItemCustomGridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.repositoryItemCustomGridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
-            // 
-            // repositoryItemButtonEditOtherPaySource
-            // 
-            this.repositoryItemButtonEditOtherPaySource.AutoHeight = false;
-            this.repositoryItemButtonEditOtherPaySource.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Down),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.repositoryItemButtonEditOtherPaySource.Name = "repositoryItemButtonEditOtherPaySource";
-            this.repositoryItemButtonEditOtherPaySource.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.repositoryItemButtonEditOtherPaySource.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditOtherPaySource_ButtonClick);
             // 
             // layoutControl2
             // 
@@ -2315,94 +2410,6 @@
             this.popupMenu1.Manager = this.barManager1;
             this.popupMenu1.Name = "popupMenu1";
             // 
-            // popupControlContainerOtherPaySource
-            // 
-            this.popupControlContainerOtherPaySource.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainerOtherPaySource.Controls.Add(this.gridControlOtherPaySource);
-            this.popupControlContainerOtherPaySource.Location = new System.Drawing.Point(46, 125);
-            this.popupControlContainerOtherPaySource.Manager = this.barManager1;
-            this.popupControlContainerOtherPaySource.Name = "popupControlContainerOtherPaySource";
-            this.popupControlContainerOtherPaySource.Size = new System.Drawing.Size(312, 130);
-            this.popupControlContainerOtherPaySource.TabIndex = 1;
-            this.popupControlContainerOtherPaySource.Visible = false;
-            // 
-            // gridControlOtherPaySource
-            // 
-            this.gridControlOtherPaySource.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlOtherPaySource.Location = new System.Drawing.Point(0, 0);
-            this.gridControlOtherPaySource.MainView = this.gridViewOtherPaySource;
-            this.gridControlOtherPaySource.MenuManager = this.barManager1;
-            this.gridControlOtherPaySource.Name = "gridControlOtherPaySource";
-            this.gridControlOtherPaySource.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemCheckEdit3,
-            this.repositoryItemMemoEdit1});
-            this.gridControlOtherPaySource.Size = new System.Drawing.Size(312, 130);
-            this.gridControlOtherPaySource.TabIndex = 0;
-            this.gridControlOtherPaySource.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewOtherPaySource});
-            // 
-            // gridViewOtherPaySource
-            // 
-            this.gridViewOtherPaySource.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn11,
-            this.gridColumn16,
-            this.gridColumn17,
-            this.gridColumn18});
-            this.gridViewOtherPaySource.GridControl = this.gridControlOtherPaySource;
-            this.gridViewOtherPaySource.Name = "gridViewOtherPaySource";
-            this.gridViewOtherPaySource.OptionsView.RowAutoHeight = true;
-            this.gridViewOtherPaySource.OptionsView.ShowGroupPanel = false;
-            this.gridViewOtherPaySource.OptionsView.ShowIndicator = false;
-            // 
-            // gridColumn11
-            // 
-            this.gridColumn11.Caption = "Mã";
-            this.gridColumn11.FieldName = "OTHER_PAY_SOURCE_CODE";
-            this.gridColumn11.Name = "gridColumn11";
-            this.gridColumn11.OptionsColumn.AllowEdit = false;
-            this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 0;
-            // 
-            // gridColumn16
-            // 
-            this.gridColumn16.Caption = "Tên";
-            this.gridColumn16.ColumnEdit = this.repositoryItemMemoEdit1;
-            this.gridColumn16.FieldName = "OTHER_PAY_SOURCE_NAME";
-            this.gridColumn16.Name = "gridColumn16";
-            this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 1;
-            // 
-            // gridColumn17
-            // 
-            this.gridColumn17.Caption = "Giá tiền";
-            this.gridColumn17.DisplayFormat.FormatString = "#,###";
-            this.gridColumn17.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.gridColumn17.FieldName = "PRICE";
-            this.gridColumn17.Name = "gridColumn17";
-            this.gridColumn17.OptionsColumn.AllowEdit = false;
-            this.gridColumn17.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            // 
-            // gridColumn18
-            // 
-            this.gridColumn18.Caption = "Tỉ lệ thanh toán";
-            this.gridColumn18.FieldName = "HEIN_RATIO_DISPLAY";
-            this.gridColumn18.Name = "gridColumn18";
-            this.gridColumn18.OptionsColumn.AllowEdit = false;
-            this.gridColumn18.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn18.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            // 
-            // repositoryItemCheckEdit3
-            // 
-            this.repositoryItemCheckEdit3.AutoHeight = false;
-            this.repositoryItemCheckEdit3.Name = "repositoryItemCheckEdit3";
-            this.repositoryItemCheckEdit3.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            // 
-            // repositoryItemMemoEdit1
-            // 
-            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
-            // 
             // frmAssignBed
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2444,6 +2451,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdMainText.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlUCPanel)).EndInit();
             this.pnlUCPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).EndInit();
+            this.popupControlContainerOtherPaySource.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerSubIcdName)).EndInit();
             this.popupControlContainerSubIcdName.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.customGridControlSubIcdName)).EndInit();
@@ -2451,6 +2464,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceProcess)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditBed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditPatientType)).EndInit();
@@ -2474,7 +2488,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEditBed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).EndInit();
@@ -2556,12 +2569,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit2View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).EndInit();
-            this.popupControlContainerOtherPaySource.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
