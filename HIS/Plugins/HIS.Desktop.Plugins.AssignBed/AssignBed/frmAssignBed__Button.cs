@@ -28,90 +28,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 {
     public partial class frmAssignBed : HIS.Desktop.Utility.FormBase
     {
-        private void btnNew_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                WaitingManager.Show();
-                this.isCheckAssignServiceSimultaneityOption = false;
-                this.SetDefaultData();
-                this.LoadIcdDefault();
-                //this.DisablecheckEmergencyPriorityByConfig();
-                //this.treeService.UncheckAll();
-                //this.isPrinted = false;
-                foreach (var item in this.DataGridAdo)
-                {
-                    item.AssignNumOrder = null;
-                    item.AMOUNT = 1;
-                    item.IsChecked = false;
-                    item.ShareCount = null;
-                    item.PATIENT_TYPE_ID = 0;
-                    item.PATIENT_TYPE_CODE = "";
-                    item.PATIENT_TYPE_NAME = "";
-                    item.PRICE = 0;
-                    item.TDL_EXECUTE_ROOM_ID = 0;
-                    item.IsExpend = false;
-                    item.IsOutKtcFee = false;
-                    item.IsKHBHYT = false;
-                    item.InstructionNote = "";
-                    item.SERVICE_GROUP_ID_SELECTEDs = null;
-                    item.SERVICE_CONDITION_ID = null;
-                    item.SERVICE_CONDITION_NAME = "";
-                    item.AssignPackagePriceEdit = null;
-                    item.AssignSurgPriceEdit = null;
-                    item.IsNoDifference = false;
-                    item.ErrorMessageAmount = "";
-                    item.ErrorMessageIsAssignDay = "";
-                    item.ErrorMessagePatientTypeId = "";
-                    item.ErrorTypeAmount = ErrorType.None;
-                    item.ErrorTypeIsAssignDay = ErrorType.None;
-                    item.ErrorTypePatientTypeId = ErrorType.None;
-                    item.PRIMARY_PATIENT_TYPE_ID = null;
-                    item.IsNotChangePrimaryPaty = false;
-                    item.PackagePriceId = null;
-                    item.SERVICE_CONDITION_ID = null;
-                    item.SERVICE_CONDITION_NAME = null;
-
-                    item.OTHER_PAY_SOURCE_ID = null;
-                    item.OTHER_PAY_SOURCE_CODE = null;
-                    item.OTHER_PAY_SOURCE_NAME = null;
-                    item.BedFinishTime = null;
-                    item.BedId = null;
-                    item.BedStartTime = null;
-                    item.TEST_SAMPLE_TYPE_ID = 0;
-                    item.TEST_SAMPLE_TYPE_CODE = null;
-                    item.TEST_SAMPLE_TYPE_NAME = null;
-                    item.SereServEkipADO = null;
-                    item.NumberOfTimes = 1;
-                }
-
-                this.isNotHandlerWhileChangeToggetSwith = true;
-                if ((this.toggleSwitchDataChecked.EditValue ?? "").ToString().ToLower() == "true")
-                    this.toggleSwitchDataChecked.EditValue = false;
-                this.isNotHandlerWhileChangeToggetSwith = false;
-
-                this.gridControlServiceProcess.DataSource = null;
-                if (!HisConfigCFG.IsNotAutoLoadServiceOpenAssignService)
-                {
-                    this.gridControlServiceProcess.DataSource = this.DataGridAdo;
-                    this.gridControlServiceProcess.RefreshDataSource();
-                }
-
-                this.gridViewServiceProcess.ClearColumnsFilter();
-                //this.EnableCboTracking();
-                //this.CheckOverTotalPatientPrice();
-                //this.LoadTotalSereServByHeinWithTreatment(this.treatmentId);
-                this.RefeshSereServInTreatmentData();
-                this.SetEnableButtonControl(this.actionType);
-                this.CheckAssignServiceSimultaneityOption();
-                WaitingManager.Hide();
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-                WaitingManager.Hide();
-            }
-        }
+        //private void btnNew_Click(object sender, EventArgs e)
+        //{
+            
+        //}
 
         private void btnServiceReqList_Click(object sender, EventArgs e)
         {
@@ -428,7 +348,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
-                popupControlContainer1.ShowPopup(new Point(btnConfiguration.Bounds.X, btnConfiguration.Bounds.Bottom - 170));
+                popupControlContainer1.ShowPopup(new Point(btnConfiguration.Bounds.X + 255, btnConfiguration.Bounds.Bottom + 590));
             }
             catch (Exception ex)
             {
