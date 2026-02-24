@@ -357,22 +357,29 @@ namespace HIS.UC.SecondaryIcd
                 var outCodes = ordered.Select(o => o.ICD_CODE).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
                 var outNames = new List<string>();
 
+                //foreach (var code in outCodes)
+                //{
+                //    // Ưu tiên lấy từ mapping (có nội dung nhập thêm)
+                //    if (codeToFullNameMap.TryGetValue(code, out string fullName) && !string.IsNullOrWhiteSpace(fullName))
+                //    {
+                //        outNames.Add(fullName);
+                //    }
+                //    else
+                //    {
+                //        var icdItem = ordered.FirstOrDefault(x =>
+                //            string.Equals(x.ICD_CODE, code, StringComparison.OrdinalIgnoreCase));
+                //        string defaultName = icdItem?.ICD_NAME ?? "";
+                //        outNames.Add(defaultName);
+
+                //        codeToFullNameMap[code] = defaultName;
+                //    }
+                //}
                 foreach (var code in outCodes)
                 {
-                    // Ưu tiên lấy từ mapping (có nội dung nhập thêm)
-                    if (codeToFullNameMap.TryGetValue(code, out string fullName) && !string.IsNullOrWhiteSpace(fullName))
-                    {
-                        outNames.Add(fullName);
-                    }
-                    else
-                    {
-                        var icdItem = ordered.FirstOrDefault(x =>
-                            string.Equals(x.ICD_CODE, code, StringComparison.OrdinalIgnoreCase));
-                        string defaultName = icdItem?.ICD_NAME ?? "";
-                        outNames.Add(defaultName);
-
-                        codeToFullNameMap[code] = defaultName;
-                    }
+                    var icdItem = ordered.FirstOrDefault(x =>
+                        string.Equals(x.ICD_CODE, code, StringComparison.OrdinalIgnoreCase));
+                    string defaultName = icdItem?.ICD_NAME ?? "";
+                    outNames.Add(defaultName);
                 }
 
                 // BƯỚC 6: Cập nhật textboxes
