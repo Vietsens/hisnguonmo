@@ -292,6 +292,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     {
                         subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
                     }
+                    long assignedStockId = dataServiceReqs.ASSIGNED_MEDI_STOCK_ID ?? 0;
+                    if (assignedStockId > 0)
+                    {
+                        this.cboMediStockExport_TabBlood.EditValue = assignedStockId;
+                        this.cboMediStockExport_TabBlood.Enabled = true;
+                    }
                 }
 
                 MOS.Filter.HisExpMestFilter filter = new MOS.Filter.HisExpMestFilter();
