@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private const string KEY__IsCheckHeinCard = "HIS.Desktop.Plugins.ExamServiceReqExecute.IsCheckHeinCard";
         private const string KEY__MustSignBeforeStart = "HIS.Desktop.Plugins.ExecuteRoom.MustSignBeforeStart";
         private const string HIS_MODEL = "HIS.Desktop.ApplyRestoreLayout.ModuleLinks";
+        private const string KEY__FilterByParentService = "HIS.Desktop.Plugins.ExecuteRoom.FilterByParentService";
         internal static bool IsCheckHeinCard;
         internal static bool IsHasConnectionEmr;
         internal static string IsShowResultWhenReqComplete;
@@ -88,6 +89,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         internal static string Simultaneity;
         internal static string model;
         internal static bool isRestoreLayout;
+        internal static string FilterByParentService;
 
         internal static string IsSplitTotalReceivePrice
         {
@@ -102,6 +104,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             try
             {
                 LogSystem.Debug("LoadConfig => 1");
+                FilterByParentService = GetValue(KEY__FilterByParentService);
                 Simultaneity = GetValue(CONFIG_KEY__ASSIGN_SIMULTANEITY_OPTION);
                 ServiceSimultaneity = GetValue(CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION);
                 IsEnableEditStartTime = GetValue(KEY_HIS_DESKTOP_PLUGINS_EXAMSERVICEREQEXECUTE_ISENABLEEDITSTARTTIME) == GlobalVariables.CommonStringTrue;
