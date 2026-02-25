@@ -43,9 +43,11 @@ namespace HIS.Desktop.Plugins.Transaction.Config
         private const string CONFIG_KEY__UNLOCK_FEE_OPTION = "HIS.DESKTOP.HIS_TREATMENT.UNLOCK_FEE_OPTION";
         private const string CONFIG_KEY__CALL_PATIENT_FORMAT = "HIS.TRANSACTION_ROOM.CALL_PATIENT_FORMAT";
         private const string CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT = "HIS.Desktop.Plugins.Transaction.ShowBtnTransactionDebt";
+        private const string CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT_COLLECT = "HIS.Desktop.Plugins.Transaction.ShowBtnTransactionDebtCollect";
 
         internal static string CallPatientFormat;
         internal static string ShowBtnTransactionDebt;
+        internal static string ShowBtnTransactionDebtCollect;
         internal static string PatientTypeCode__BHYT;
         internal static long PatientTypeId__BHYT;
 
@@ -82,7 +84,8 @@ namespace HIS.Desktop.Plugins.Transaction.Config
                 LogSystem.Debug("LoadConfig => 1");
                 CallPatientFormat = GetValue(CONFIG_KEY__CALL_PATIENT_FORMAT);
                 IsNotBillCFG = GetValue(IsNotBillString);
-                ShowBtnTransactionDebt = GetValue(CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT); 
+                ShowBtnTransactionDebt = GetValue(CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT);
+                ShowBtnTransactionDebtCollect = GetValue(CONFIG_KEY__SHOW_BTN_TRANSACTION_DEBT_COLLECT); 
                 ShowElectronicNumorderCFG = GetValue(ShowElectronicNumorderString);
                 DirectlyBillingOption = GetValue(CONFIG_KEY__DIRECTLY_BILLING_OPTION);
                 IsAllowAfterLocking = GetValue(CONFIG_KEY__ALLOWAFTERLOCKING) == "1";

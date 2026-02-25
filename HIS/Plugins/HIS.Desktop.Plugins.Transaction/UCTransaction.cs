@@ -396,7 +396,8 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.Load => 6");
                 HisConfigCFG.LoadConfig();
                 // qtcode
-                lciDebtClose.Visibility = lciDebtCollection.Visibility = HisConfigCFG.ShowBtnTransactionDebt == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciDebtClose.Visibility = HisConfigCFG.ShowBtnTransactionDebt == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciDebtCollection.Visibility = HisConfigCFG.ShowBtnTransactionDebtCollect == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never; 
                 lciEbill.Visibility = HisConfigCFG.ShowElectronicNumorderCFG == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.Load => 8");
                 InitCheck(cboTreatmentType, SelectionGrid__Status);
@@ -2430,7 +2431,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     moduleData.RoomTypeId = this.RoomTypeId;
 
                     List<object> listArgs = new List<object>();
-                    listArgs.Add(this.currentTreatment.TREATMENT_CODE);
+                    listArgs.Add(this.currentTreatment);
                     listArgs.Add(moduleData);
 
                     var extenceInstance = PluginInstance.GetPluginInstance(
@@ -2481,7 +2482,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     moduleData.RoomTypeId = this.RoomTypeId;
 
                     List<object> listArgs = new List<object>();
-                    listArgs.Add(this.currentTreatment.TREATMENT_CODE);
+                    listArgs.Add(this.currentTreatment);
                     listArgs.Add(moduleData);
 
                     var extenceInstance = PluginInstance.GetPluginInstance(
