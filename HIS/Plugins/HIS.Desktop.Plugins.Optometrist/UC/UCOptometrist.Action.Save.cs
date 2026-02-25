@@ -28,7 +28,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 bool success = false;
 
                 HIS_SERE_SERV_VIEX sdo = new HIS_SERE_SERV_VIEX();
-                BuildVisionExamSdo(ref sdo);
+                HisSereServVIEXSdo(ref sdo);
                 var requestUri = ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_UPDATE;
                 if (sdo.ID == 0)
                 {
@@ -40,18 +40,24 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     var selected = GetSelectedSereServ();
                     if (selected != null)
                     {
-                        if (selected.HIS_SERE_SERV_VIEX == null)
-                        {
-                            selected.HIS_SERE_SERV_VIEX = new List<HIS_SERE_SERV_VIEX>();
-                        }
-                        else
-                        {
-                            selected.HIS_SERE_SERV_VIEX.Clear();
-                        }
-                        selected.HIS_SERE_SERV_VIEX.Add(result);
-                        selected.VISION_TEST_TIME = result.VISION_TEST_TIME;
-                        selected.VISION_TEST_ROOM_NAME = result.VISION_TEST_ROOM_NAME;
-                        selected.VISION_TEST_NUM = result.VISION_TEST_NUM;
+                        //if (selected.HIS_SERE_SERV_VIEX == null)
+                        //{
+                        //    selected.HIS_SERE_SERV_VIEX = new List<HIS_SERE_SERV_VIEX>();
+                        //}
+                        //else
+                        //{
+                        //    selected.HIS_SERE_SERV_VIEX.Clear();
+                        //}
+                        //selected.HIS_SERE_SERV_VIEX.Add(result);
+                        //var id = selected.SERVICE_REQ_ID;
+                        //var id2 = selected.SERE_SERV_ID;
+                        var currentsereServSave = new V_HIS_SERE_SERV_VIEX();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_SERE_SERV_VIEX>(selected, result);
+                        //selected.SERVICE_REQ_ID = id;
+                        //selected.SERE_SERV_ID = id2;
+                        //selected.VISION_TEST_TIME = result.VISION_TEST_TIME;
+                        //selected.VISION_TEST_ROOM_NAME = result.VISION_TEST_ROOM_NAME;
+                        //selected.VISION_TEST_NUM = result.VISION_TEST_NUM;
                         gridViewSereServ.UpdateCurrentRow();
                     }
                     success = true;
@@ -86,17 +92,18 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             }
         }
 
-        private void BuildVisionExamSdo(ref HIS_SERE_SERV_VIEX sdo)
+        private void HisSereServVIEXSdo(ref HIS_SERE_SERV_VIEX sdo)
         {
             try
             {
                 if (sdo == null) sdo = new HIS_SERE_SERV_VIEX();
                 sdo.TDL_TREATMENT_ID = currentSR.TREATMENT_ID;
-                var ss6 = gridViewSereServ.GetFocusedRow() as SereServOptometristADO;
-                sdo.SERE_SERV_ID = ss6.ID;
-                if (ss6.HIS_SERE_SERV_VIEX.Count > 0)
+                var ss6 = gridViewSereServ.GetFocusedRow() as V_HIS_SERE_SERV_VIEX;
+
+                sdo.SERE_SERV_ID = ss6.SERE_SERV_ID;
+                if (ss6.ID > 0)
                 {
-                    sdo.ID = ss6.HIS_SERE_SERV_VIEX.FirstOrDefault().ID; // ID
+                    sdo.ID = ss6.ID; // ID
                 }
                 // Thông tin chung
                 if (VISION_TEST_TIME.EditValue != null)
@@ -233,6 +240,17 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 {
                     sdo.MEDI_USE_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(MEDI_USE_TIME.DateTime);
                 }
+                //
+                sdo.HALF_FRONT_RIGHT = HALF_FRONT_RIGHT.Text;
+                sdo.HALF_FRONT_LEFT = HALF_FRONT_LEFT.Text;
+                sdo.HALF_BACK_RIGHT = HALF_BACK_RIGHT.Text;
+                sdo.HALF_BACK_LEFT = HALF_BACK_LEFT.Text;
+                sdo.RIGHT_ICD_CODE = RIGHT_ICD_CODE.Text;
+                sdo.RIGHT_ICD_NAME = RIGHT_ICD_NAME.Text;
+                sdo.LEFT_ICD_CODE = LEFT_ICD_CODE.Text;
+                sdo.LEFT_ICD_NAME = LEFT_ICD_NAME.Text;
+                sdo.BOTH_ICD_CODE = BOTH_ICD_CODE.Text;
+                sdo.BOTH_ICD_NAME = BOTH_ICD_NAME.Text;
             }
             catch (Exception ex)
             {

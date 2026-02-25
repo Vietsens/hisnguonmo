@@ -18,6 +18,9 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
 
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.BOTH_ICD_NAME.Properties.NullText = Inventec.Common.Resource.Get.Value("UCOptometrist.BOTH_ICD_NAME.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.LEFT_ICD_NAME.Properties.NullText = Inventec.Common.Resource.Get.Value("UCOptometrist.LEFT_ICD_NAME.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.RIGHT_ICD_NAME.Properties.NullText = Inventec.Common.Resource.Get.Value("UCOptometrist.RIGHT_ICD_NAME.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.chkEnd.Properties.Caption = Inventec.Common.Resource.Get.Value("UCOptometrist.chkEnd.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnEndReq.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.btnEndReq.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.VISION_TEST_ROOM_NAME.Properties.NullText = Inventec.Common.Resource.Get.Value("UCOptometrist.VISION_TEST_ROOM_NAME.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -101,10 +104,20 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 this.btnPrintPhieuKham.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.btnPrintPhieuKham.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnPrint.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.btnPrint.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem17.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem17.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem24.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem24.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem27.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem27.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem30.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem30.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem31.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem31.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem32.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem32.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem33.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem33.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem35.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem35.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem36.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem36.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem37.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem37.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.simpleLabelItem1.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.simpleLabelItem1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.simpleLabelItem2.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.simpleLabelItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem24.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem24.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem34.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem34.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem7.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem21.Text = Inventec.Common.Resource.Get.Value("UCOptometrist.layoutControlItem21.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

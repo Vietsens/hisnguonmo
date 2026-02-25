@@ -45,11 +45,38 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.XtraLayout.ColumnDefinition columnDefinition1 = new DevExpress.XtraLayout.ColumnDefinition();
             DevExpress.XtraLayout.ColumnDefinition columnDefinition2 = new DevExpress.XtraLayout.ColumnDefinition();
             DevExpress.XtraLayout.RowDefinition rowDefinition1 = new DevExpress.XtraLayout.RowDefinition();
             DevExpress.XtraLayout.RowDefinition rowDefinition2 = new DevExpress.XtraLayout.RowDefinition();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.BOTH_ICD_NAME = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.LEFT_ICD_NAME = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.RIGHT_ICD_NAME = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
+            this.customGridLookUpEditWithFilterMultiColumn3View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.BOTH_ICD_CODE = new DevExpress.XtraEditors.TextEdit();
+            this.LEFT_ICD_CODE = new DevExpress.XtraEditors.TextEdit();
+            this.RIGHT_ICD_CODE = new DevExpress.XtraEditors.TextEdit();
+            this.HALF_BACK_LEFT = new DevExpress.XtraEditors.TextEdit();
+            this.HALF_BACK_RIGHT = new DevExpress.XtraEditors.TextEdit();
+            this.HALF_FRONT_LEFT = new DevExpress.XtraEditors.TextEdit();
+            this.HALF_FRONT_RIGHT = new DevExpress.XtraEditors.TextEdit();
+            this.label64 = new System.Windows.Forms.Label();
             this.chkEnd = new DevExpress.XtraEditors.CheckEdit();
             this.btnEndReq = new DevExpress.XtraEditors.SimpleButton();
             this.VISION_TEST_ROOM_NAME = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridLookUpEdit();
@@ -236,12 +263,26 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem30 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem35 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem37 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.simpleLabelItem1 = new DevExpress.XtraLayout.SimpleLabelItem();
+            this.simpleLabelItem2 = new DevExpress.XtraLayout.SimpleLabelItem();
+            this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem39 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem40 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -263,7 +304,6 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.emptySpaceItem11 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -273,9 +313,22 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.BOTH_ICD_NAME.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LEFT_ICD_NAME.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RIGHT_ICD_NAME.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn3View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BOTH_ICD_CODE.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LEFT_ICD_CODE.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RIGHT_ICD_CODE.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HALF_BACK_LEFT.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HALF_BACK_RIGHT.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HALF_FRONT_LEFT.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HALF_FRONT_RIGHT.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkEnd.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.VISION_TEST_ROOM_NAME.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
@@ -394,12 +447,26 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem30)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.simpleLabelItem1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.simpleLabelItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -421,7 +488,6 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
@@ -436,6 +502,17 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // layoutControl3
             // 
+            this.layoutControl3.Controls.Add(this.BOTH_ICD_NAME);
+            this.layoutControl3.Controls.Add(this.LEFT_ICD_NAME);
+            this.layoutControl3.Controls.Add(this.RIGHT_ICD_NAME);
+            this.layoutControl3.Controls.Add(this.BOTH_ICD_CODE);
+            this.layoutControl3.Controls.Add(this.LEFT_ICD_CODE);
+            this.layoutControl3.Controls.Add(this.RIGHT_ICD_CODE);
+            this.layoutControl3.Controls.Add(this.HALF_BACK_LEFT);
+            this.layoutControl3.Controls.Add(this.HALF_BACK_RIGHT);
+            this.layoutControl3.Controls.Add(this.HALF_FRONT_LEFT);
+            this.layoutControl3.Controls.Add(this.HALF_FRONT_RIGHT);
+            this.layoutControl3.Controls.Add(this.label64);
             this.layoutControl3.Controls.Add(this.chkEnd);
             this.layoutControl3.Controls.Add(this.btnEndReq);
             this.layoutControl3.Controls.Add(this.VISION_TEST_ROOM_NAME);
@@ -469,15 +546,150 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControl3.Location = new System.Drawing.Point(0, 0);
             this.layoutControl3.Margin = new System.Windows.Forms.Padding(0);
             this.layoutControl3.Name = "layoutControl3";
-            this.layoutControl3.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(0, 237, 807, 350);
+            this.layoutControl3.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(414, 292, 807, 350);
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(1334, 633);
+            this.layoutControl3.Size = new System.Drawing.Size(1334, 726);
             this.layoutControl3.TabIndex = 8;
             this.layoutControl3.Text = "layoutControl3";
             // 
+            // BOTH_ICD_NAME
+            // 
+            this.BOTH_ICD_NAME.EditValue = "";
+            this.BOTH_ICD_NAME.Location = new System.Drawing.Point(248, 663);
+            this.BOTH_ICD_NAME.Name = "BOTH_ICD_NAME";
+            this.BOTH_ICD_NAME.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.BOTH_ICD_NAME.Properties.AutoComplete = false;
+            this.BOTH_ICD_NAME.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            this.BOTH_ICD_NAME.Properties.NullText = "";
+            this.BOTH_ICD_NAME.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.BOTH_ICD_NAME.Properties.View = this.customGridViewWithFilterMultiColumn2;
+            this.BOTH_ICD_NAME.Size = new System.Drawing.Size(450, 20);
+            this.BOTH_ICD_NAME.StyleController = this.layoutControl3;
+            this.BOTH_ICD_NAME.TabIndex = 1000011;
+            // 
+            // customGridViewWithFilterMultiColumn2
+            // 
+            this.customGridViewWithFilterMultiColumn2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn2.Name = "customGridViewWithFilterMultiColumn2";
+            this.customGridViewWithFilterMultiColumn2.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn2.OptionsView.ShowGroupPanel = false;
+            // 
+            // LEFT_ICD_NAME
+            // 
+            this.LEFT_ICD_NAME.EditValue = "";
+            this.LEFT_ICD_NAME.Location = new System.Drawing.Point(248, 639);
+            this.LEFT_ICD_NAME.Name = "LEFT_ICD_NAME";
+            this.LEFT_ICD_NAME.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.LEFT_ICD_NAME.Properties.AutoComplete = false;
+            this.LEFT_ICD_NAME.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            this.LEFT_ICD_NAME.Properties.NullText = "";
+            this.LEFT_ICD_NAME.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.LEFT_ICD_NAME.Properties.View = this.customGridViewWithFilterMultiColumn1;
+            this.LEFT_ICD_NAME.Size = new System.Drawing.Size(450, 20);
+            this.LEFT_ICD_NAME.StyleController = this.layoutControl3;
+            this.LEFT_ICD_NAME.TabIndex = 1000011;
+            // 
+            // customGridViewWithFilterMultiColumn1
+            // 
+            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
+            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
+            // 
+            // RIGHT_ICD_NAME
+            // 
+            this.RIGHT_ICD_NAME.EditValue = "";
+            this.RIGHT_ICD_NAME.Location = new System.Drawing.Point(248, 615);
+            this.RIGHT_ICD_NAME.Name = "RIGHT_ICD_NAME";
+            this.RIGHT_ICD_NAME.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.RIGHT_ICD_NAME.Properties.AutoComplete = false;
+            this.RIGHT_ICD_NAME.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            this.RIGHT_ICD_NAME.Properties.NullText = "";
+            this.RIGHT_ICD_NAME.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.RIGHT_ICD_NAME.Properties.View = this.customGridLookUpEditWithFilterMultiColumn3View;
+            this.RIGHT_ICD_NAME.Size = new System.Drawing.Size(450, 20);
+            this.RIGHT_ICD_NAME.StyleController = this.layoutControl3;
+            this.RIGHT_ICD_NAME.TabIndex = 1000010;
+            // 
+            // customGridLookUpEditWithFilterMultiColumn3View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumn3View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumn3View.Name = "customGridLookUpEditWithFilterMultiColumn3View";
+            this.customGridLookUpEditWithFilterMultiColumn3View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumn3View.OptionsView.ShowGroupPanel = false;
+            // 
+            // BOTH_ICD_CODE
+            // 
+            this.BOTH_ICD_CODE.Location = new System.Drawing.Point(147, 663);
+            this.BOTH_ICD_CODE.Name = "BOTH_ICD_CODE";
+            this.BOTH_ICD_CODE.Size = new System.Drawing.Size(101, 20);
+            this.BOTH_ICD_CODE.StyleController = this.layoutControl3;
+            this.BOTH_ICD_CODE.TabIndex = 1000009;
+            // 
+            // LEFT_ICD_CODE
+            // 
+            this.LEFT_ICD_CODE.Location = new System.Drawing.Point(147, 639);
+            this.LEFT_ICD_CODE.Name = "LEFT_ICD_CODE";
+            this.LEFT_ICD_CODE.Size = new System.Drawing.Size(101, 20);
+            this.LEFT_ICD_CODE.StyleController = this.layoutControl3;
+            this.LEFT_ICD_CODE.TabIndex = 1000008;
+            // 
+            // RIGHT_ICD_CODE
+            // 
+            this.RIGHT_ICD_CODE.Location = new System.Drawing.Point(147, 615);
+            this.RIGHT_ICD_CODE.Name = "RIGHT_ICD_CODE";
+            this.RIGHT_ICD_CODE.Size = new System.Drawing.Size(101, 20);
+            this.RIGHT_ICD_CODE.StyleController = this.layoutControl3;
+            this.RIGHT_ICD_CODE.TabIndex = 1000007;
+            // 
+            // HALF_BACK_LEFT
+            // 
+            this.HALF_BACK_LEFT.Location = new System.Drawing.Point(490, 591);
+            this.HALF_BACK_LEFT.Name = "HALF_BACK_LEFT";
+            this.HALF_BACK_LEFT.Size = new System.Drawing.Size(208, 20);
+            this.HALF_BACK_LEFT.StyleController = this.layoutControl3;
+            this.HALF_BACK_LEFT.TabIndex = 1000006;
+            // 
+            // HALF_BACK_RIGHT
+            // 
+            this.HALF_BACK_RIGHT.Location = new System.Drawing.Point(247, 591);
+            this.HALF_BACK_RIGHT.Name = "HALF_BACK_RIGHT";
+            this.HALF_BACK_RIGHT.Size = new System.Drawing.Size(144, 20);
+            this.HALF_BACK_RIGHT.StyleController = this.layoutControl3;
+            this.HALF_BACK_RIGHT.TabIndex = 1000005;
+            // 
+            // HALF_FRONT_LEFT
+            // 
+            this.HALF_FRONT_LEFT.Location = new System.Drawing.Point(490, 567);
+            this.HALF_FRONT_LEFT.Name = "HALF_FRONT_LEFT";
+            this.HALF_FRONT_LEFT.Size = new System.Drawing.Size(208, 20);
+            this.HALF_FRONT_LEFT.StyleController = this.layoutControl3;
+            this.HALF_FRONT_LEFT.TabIndex = 1000004;
+            // 
+            // HALF_FRONT_RIGHT
+            // 
+            this.HALF_FRONT_RIGHT.Location = new System.Drawing.Point(247, 567);
+            this.HALF_FRONT_RIGHT.Name = "HALF_FRONT_RIGHT";
+            this.HALF_FRONT_RIGHT.Size = new System.Drawing.Size(144, 20);
+            this.HALF_FRONT_RIGHT.StyleController = this.layoutControl3;
+            this.HALF_FRONT_RIGHT.TabIndex = 1000003;
+            // 
+            // label64
+            // 
+            this.label64.Location = new System.Drawing.Point(144, 543);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(554, 20);
+            this.label64.TabIndex = 1000002;
+            // 
             // chkEnd
             // 
-            this.chkEnd.Location = new System.Drawing.Point(612, 609);
+            this.chkEnd.Location = new System.Drawing.Point(612, 702);
             this.chkEnd.Name = "chkEnd";
             this.chkEnd.Properties.Caption = "Kết thúc";
             this.chkEnd.Size = new System.Drawing.Size(96, 19);
@@ -487,7 +699,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // btnEndReq
             // 
-            this.btnEndReq.Location = new System.Drawing.Point(1012, 609);
+            this.btnEndReq.Location = new System.Drawing.Point(1012, 702);
             this.btnEndReq.MaximumSize = new System.Drawing.Size(80, 0);
             this.btnEndReq.MinimumSize = new System.Drawing.Size(80, 0);
             this.btnEndReq.Name = "btnEndReq";
@@ -521,7 +733,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // IS_GLASS_SCRATCHED
             // 
-            this.IS_GLASS_SCRATCHED.Location = new System.Drawing.Point(1228, 495);
+            this.IS_GLASS_SCRATCHED.Location = new System.Drawing.Point(1228, 528);
             this.IS_GLASS_SCRATCHED.Name = "IS_GLASS_SCRATCHED";
             this.IS_GLASS_SCRATCHED.Properties.Caption = "Kính xước";
             this.IS_GLASS_SCRATCHED.Size = new System.Drawing.Size(104, 19);
@@ -530,7 +742,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // GLASS_AMOUNT
             // 
-            this.GLASS_AMOUNT.Location = new System.Drawing.Point(1152, 495);
+            this.GLASS_AMOUNT.Location = new System.Drawing.Point(1152, 528);
             this.GLASS_AMOUNT.Name = "GLASS_AMOUNT";
             this.GLASS_AMOUNT.Properties.Mask.EditMask = "[0-9]{0,}";
             this.GLASS_AMOUNT.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
@@ -562,7 +774,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // MEDI_USE_TIME
             // 
             this.MEDI_USE_TIME.EditValue = null;
-            this.MEDI_USE_TIME.Location = new System.Drawing.Point(844, 519);
+            this.MEDI_USE_TIME.Location = new System.Drawing.Point(844, 552);
             this.MEDI_USE_TIME.Name = "MEDI_USE_TIME";
             this.MEDI_USE_TIME.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -581,7 +793,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // GLASS_USE_TIME
             // 
             this.GLASS_USE_TIME.EditValue = null;
-            this.GLASS_USE_TIME.Location = new System.Drawing.Point(844, 495);
+            this.GLASS_USE_TIME.Location = new System.Drawing.Point(844, 528);
             this.GLASS_USE_TIME.Name = "GLASS_USE_TIME";
             this.GLASS_USE_TIME.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -599,7 +811,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // GLASS_STATUS
             // 
-            this.GLASS_STATUS.Location = new System.Drawing.Point(844, 471);
+            this.GLASS_STATUS.Location = new System.Drawing.Point(844, 504);
             this.GLASS_STATUS.Name = "GLASS_STATUS";
             this.GLASS_STATUS.Size = new System.Drawing.Size(488, 20);
             this.GLASS_STATUS.StyleController = this.layoutControl3;
@@ -608,15 +820,15 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // VISION_EXAM_NOTE
             // 
             this.VISION_EXAM_NOTE.EditValue = "";
-            this.VISION_EXAM_NOTE.Location = new System.Drawing.Point(844, 406);
+            this.VISION_EXAM_NOTE.Location = new System.Drawing.Point(844, 407);
             this.VISION_EXAM_NOTE.Name = "VISION_EXAM_NOTE";
-            this.VISION_EXAM_NOTE.Size = new System.Drawing.Size(488, 61);
+            this.VISION_EXAM_NOTE.Size = new System.Drawing.Size(488, 93);
             this.VISION_EXAM_NOTE.StyleController = this.layoutControl3;
             this.VISION_EXAM_NOTE.TabIndex = 110;
             // 
             // IS_CONTACT_LENSE
             // 
-            this.IS_CONTACT_LENSE.Location = new System.Drawing.Point(935, 383);
+            this.IS_CONTACT_LENSE.Location = new System.Drawing.Point(935, 384);
             this.IS_CONTACT_LENSE.Name = "IS_CONTACT_LENSE";
             this.IS_CONTACT_LENSE.Properties.Caption = "Kính áp tròng (contact len)";
             this.IS_CONTACT_LENSE.Size = new System.Drawing.Size(397, 19);
@@ -625,7 +837,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // IS_POLYCARBONATE_GLASS
             // 
-            this.IS_POLYCARBONATE_GLASS.Location = new System.Drawing.Point(935, 360);
+            this.IS_POLYCARBONATE_GLASS.Location = new System.Drawing.Point(935, 361);
             this.IS_POLYCARBONATE_GLASS.Name = "IS_POLYCARBONATE_GLASS";
             this.IS_POLYCARBONATE_GLASS.Properties.Caption = "Kính polycarbonate";
             this.IS_POLYCARBONATE_GLASS.Size = new System.Drawing.Size(397, 19);
@@ -634,7 +846,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // IS_READING_GLASS
             // 
-            this.IS_READING_GLASS.Location = new System.Drawing.Point(710, 383);
+            this.IS_READING_GLASS.Location = new System.Drawing.Point(710, 384);
             this.IS_READING_GLASS.Name = "IS_READING_GLASS";
             this.IS_READING_GLASS.Properties.Caption = "Kính nhìn gần (reading)";
             this.IS_READING_GLASS.Size = new System.Drawing.Size(221, 19);
@@ -643,7 +855,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // IS_PROGRESSIVE_GLASS
             // 
-            this.IS_PROGRESSIVE_GLASS.Location = new System.Drawing.Point(710, 360);
+            this.IS_PROGRESSIVE_GLASS.Location = new System.Drawing.Point(710, 361);
             this.IS_PROGRESSIVE_GLASS.Name = "IS_PROGRESSIVE_GLASS";
             this.IS_PROGRESSIVE_GLASS.Properties.Caption = "Kính đa tròng (progressive)";
             this.IS_PROGRESSIVE_GLASS.Size = new System.Drawing.Size(221, 19);
@@ -652,7 +864,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // IS_BIFOCAL_GLASS
             // 
-            this.IS_BIFOCAL_GLASS.Location = new System.Drawing.Point(710, 337);
+            this.IS_BIFOCAL_GLASS.Location = new System.Drawing.Point(710, 338);
             this.IS_BIFOCAL_GLASS.Name = "IS_BIFOCAL_GLASS";
             this.IS_BIFOCAL_GLASS.Properties.Caption = "Kính 2 tròng (bifocal)";
             this.IS_BIFOCAL_GLASS.Size = new System.Drawing.Size(221, 19);
@@ -661,7 +873,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // IS_PHOTOCHROMIC_GLASS
             // 
-            this.IS_PHOTOCHROMIC_GLASS.Location = new System.Drawing.Point(935, 337);
+            this.IS_PHOTOCHROMIC_GLASS.Location = new System.Drawing.Point(935, 338);
             this.IS_PHOTOCHROMIC_GLASS.Name = "IS_PHOTOCHROMIC_GLASS";
             this.IS_PHOTOCHROMIC_GLASS.Properties.Caption = "Kính đổi màu (photochromic)";
             this.IS_PHOTOCHROMIC_GLASS.Size = new System.Drawing.Size(397, 19);
@@ -670,7 +882,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // NEAR_BP
             // 
-            this.NEAR_BP.Location = new System.Drawing.Point(1037, 313);
+            this.NEAR_BP.Location = new System.Drawing.Point(1037, 314);
             this.NEAR_BP.Name = "NEAR_BP";
             this.NEAR_BP.Size = new System.Drawing.Size(78, 20);
             this.NEAR_BP.StyleController = this.layoutControl3;
@@ -678,17 +890,17 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // FAR_BP
             // 
-            this.FAR_BP.Location = new System.Drawing.Point(919, 313);
+            this.FAR_BP.Location = new System.Drawing.Point(902, 314);
             this.FAR_BP.Name = "FAR_BP";
-            this.FAR_BP.Size = new System.Drawing.Size(79, 20);
+            this.FAR_BP.Size = new System.Drawing.Size(96, 20);
             this.FAR_BP.StyleController = this.layoutControl3;
             this.FAR_BP.TabIndex = 100;
             // 
             // label63
             // 
-            this.label63.Location = new System.Drawing.Point(702, 313);
+            this.label63.Location = new System.Drawing.Point(702, 314);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(178, 20);
+            this.label63.Size = new System.Drawing.Size(161, 20);
             this.label63.TabIndex = 52;
             this.label63.Text = "Khoảng cách đồng tử (BP):";
             this.label63.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -700,7 +912,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.gridControlSereServ.Name = "gridControlSereServ";
             this.gridControlSereServ.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemDateEdit1});
-            this.gridControlSereServ.Size = new System.Drawing.Size(630, 142);
+            this.gridControlSereServ.Size = new System.Drawing.Size(630, 143);
             this.gridControlSereServ.TabIndex = 999999;
             this.gridControlSereServ.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewSereServ});
@@ -792,10 +1004,10 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // flowLayoutPanel2
             // 
-            this.flowLayoutPanel2.Controls.Add(this.tableLayoutPanel8);
             this.flowLayoutPanel2.Controls.Add(this.tableLayoutPanel7);
+            this.flowLayoutPanel2.Controls.Add(this.tableLayoutPanel8);
             this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(702, 164);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(702, 165);
             this.flowLayoutPanel2.MaximumSize = new System.Drawing.Size(0, 145);
             this.flowLayoutPanel2.MinimumSize = new System.Drawing.Size(0, 145);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
@@ -814,7 +1026,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 192F));
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 195F));
             this.tableLayoutPanel8.Controls.Add(this.NEAR_LEFT_CYL, 2, 2);
             this.tableLayoutPanel8.Controls.Add(this.NEAR_RIGHT_VISION, 4, 1);
             this.tableLayoutPanel8.Controls.Add(this.NEAR_LEFT_SPH, 1, 2);
@@ -836,7 +1048,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(568, 66);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(571, 66);
             this.tableLayoutPanel8.TabIndex = 48;
             // 
             // NEAR_LEFT_CYL
@@ -860,7 +1072,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.NEAR_RIGHT_VISION.Properties.Appearance.Options.UseTextOptions = true;
             this.NEAR_RIGHT_VISION.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.NEAR_RIGHT_VISION.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.NEAR_RIGHT_VISION.Size = new System.Drawing.Size(192, 20);
+            this.NEAR_RIGHT_VISION.Size = new System.Drawing.Size(195, 20);
             this.NEAR_RIGHT_VISION.TabIndex = 93;
             // 
             // NEAR_LEFT_SPH
@@ -977,7 +1189,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.label60.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label60.Location = new System.Drawing.Point(378, 1);
             this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(186, 22);
+            this.label60.Size = new System.Drawing.Size(189, 22);
             this.label60.TabIndex = 0;
             this.label60.Text = "Thị lực";
             this.label60.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1002,7 +1214,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.NEAR_LEFT_VISION.Properties.Appearance.Options.UseTextOptions = true;
             this.NEAR_LEFT_VISION.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.NEAR_LEFT_VISION.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.NEAR_LEFT_VISION.Size = new System.Drawing.Size(192, 20);
+            this.NEAR_LEFT_VISION.Size = new System.Drawing.Size(195, 20);
             this.NEAR_LEFT_VISION.TabIndex = 97;
             // 
             // tableLayoutPanel7
@@ -1018,7 +1230,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.tableLayoutPanel7.Controls.Add(this.FAR_LEFT_CYL, 2, 2);
             this.tableLayoutPanel7.Controls.Add(this.FAR_RIGHT_VISION, 4, 1);
             this.tableLayoutPanel7.Controls.Add(this.FAR_LEFT_SPH, 1, 2);
@@ -1042,7 +1254,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(568, 66);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(571, 66);
             this.tableLayoutPanel7.TabIndex = 48;
             // 
             // FAR_LEFT_CYL
@@ -1217,7 +1429,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.label62.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label62.Location = new System.Drawing.Point(459, 1);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(105, 22);
+            this.label62.Size = new System.Drawing.Size(108, 22);
             this.label62.TabIndex = 0;
             this.label62.Text = "ADD";
             this.label62.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1234,7 +1446,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.FAR_ADD.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.FAR_ADD.Properties.AutoHeight = false;
             this.tableLayoutPanel7.SetRowSpan(this.FAR_ADD, 2);
-            this.FAR_ADD.Size = new System.Drawing.Size(111, 41);
+            this.FAR_ADD.Size = new System.Drawing.Size(114, 41);
             this.FAR_ADD.TabIndex = 89;
             // 
             // flowLayoutPanel1
@@ -1247,7 +1459,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.flowLayoutPanel1.Controls.Add(this.tableLayoutPanel6);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(2, 66);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(696, 539);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(696, 473);
             this.flowLayoutPanel1.TabIndex = 50;
             // 
             // tableLayoutPanel4
@@ -1261,7 +1473,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.tableLayoutPanel4.Controls.Add(this.MACHINE_LEFT_CYL, 2, 2);
             this.tableLayoutPanel4.Controls.Add(this.MACHINE_LEFT_SPH, 1, 2);
             this.tableLayoutPanel4.Controls.Add(this.MACHINE_RIGHT_CYL, 2, 1);
@@ -1280,7 +1492,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(426, 66);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(429, 66);
             this.tableLayoutPanel4.TabIndex = 48;
             // 
             // MACHINE_LEFT_CYL
@@ -1377,7 +1589,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.MACHINE_RIGHT_AXIS.Location = new System.Drawing.Point(314, 24);
             this.MACHINE_RIGHT_AXIS.Margin = new System.Windows.Forms.Padding(0);
             this.MACHINE_RIGHT_AXIS.Name = "MACHINE_RIGHT_AXIS";
-            this.MACHINE_RIGHT_AXIS.Size = new System.Drawing.Size(111, 20);
+            this.MACHINE_RIGHT_AXIS.Size = new System.Drawing.Size(114, 20);
             this.MACHINE_RIGHT_AXIS.TabIndex = 7;
             // 
             // MACHINE_LEFT_AXIS
@@ -1389,7 +1601,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.MACHINE_LEFT_AXIS.Properties.Appearance.Options.UseTextOptions = true;
             this.MACHINE_LEFT_AXIS.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.MACHINE_LEFT_AXIS.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.MACHINE_LEFT_AXIS.Size = new System.Drawing.Size(111, 20);
+            this.MACHINE_LEFT_AXIS.Size = new System.Drawing.Size(114, 20);
             this.MACHINE_LEFT_AXIS.TabIndex = 10;
             // 
             // label24
@@ -1409,7 +1621,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.label25.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label25.Location = new System.Drawing.Point(317, 1);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(105, 22);
+            this.label25.Size = new System.Drawing.Size(108, 22);
             this.label25.TabIndex = 0;
             this.label25.Text = "AXE (Trục)";
             this.label25.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1426,7 +1638,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.tableLayoutPanel2.Controls.Add(this.OLD_LEFT_CYL, 2, 2);
             this.tableLayoutPanel2.Controls.Add(this.OLD_RIGHT_GLASS, 4, 1);
             this.tableLayoutPanel2.Controls.Add(this.OLD_LEFT_SPH, 1, 2);
@@ -1448,7 +1660,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(507, 66);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(510, 66);
             this.tableLayoutPanel2.TabIndex = 48;
             // 
             // OLD_LEFT_CYL
@@ -1472,7 +1684,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.OLD_RIGHT_GLASS.Properties.Appearance.Options.UseTextOptions = true;
             this.OLD_RIGHT_GLASS.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.OLD_RIGHT_GLASS.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.OLD_RIGHT_GLASS.Size = new System.Drawing.Size(111, 20);
+            this.OLD_RIGHT_GLASS.Size = new System.Drawing.Size(114, 20);
             this.OLD_RIGHT_GLASS.TabIndex = 14;
             // 
             // OLD_LEFT_SPH
@@ -1589,7 +1801,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.label31.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label31.Location = new System.Drawing.Point(398, 1);
             this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(105, 22);
+            this.label31.Size = new System.Drawing.Size(108, 22);
             this.label31.TabIndex = 0;
             this.label31.Text = "TL có kính";
             this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1614,7 +1826,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.OLD_LEFT_GLASS.Properties.Appearance.Options.UseTextOptions = true;
             this.OLD_LEFT_GLASS.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.OLD_LEFT_GLASS.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.OLD_LEFT_GLASS.Size = new System.Drawing.Size(111, 20);
+            this.OLD_LEFT_GLASS.Size = new System.Drawing.Size(114, 20);
             this.OLD_LEFT_GLASS.TabIndex = 18;
             // 
             // tableLayoutPanel1
@@ -1631,7 +1843,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 93F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 96F));
             this.tableLayoutPanel1.Controls.Add(this.NOW_LEFT_HOLE, 2, 2);
             this.tableLayoutPanel1.Controls.Add(this.NOW_LEFT_EYE, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.NOW_RIGHT_HOLE, 2, 1);
@@ -1659,7 +1871,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(651, 66);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(654, 66);
             this.tableLayoutPanel1.TabIndex = 48;
             // 
             // NOW_LEFT_HOLE
@@ -1788,7 +2000,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.label37.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label37.Location = new System.Drawing.Point(560, 1);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(87, 22);
+            this.label37.Size = new System.Drawing.Size(90, 22);
             this.label37.TabIndex = 0;
             this.label37.Text = "TL có kính";
             this.label37.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1859,7 +2071,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.NOW_RIGHT_GLASS.Properties.Appearance.Options.UseTextOptions = true;
             this.NOW_RIGHT_GLASS.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.NOW_RIGHT_GLASS.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.NOW_RIGHT_GLASS.Size = new System.Drawing.Size(93, 20);
+            this.NOW_RIGHT_GLASS.Size = new System.Drawing.Size(96, 20);
             this.NOW_RIGHT_GLASS.TabIndex = 25;
             // 
             // NOW_LEFT_CYL
@@ -1895,7 +2107,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.NOW_LEFT_GLASS.Properties.Appearance.Options.UseTextOptions = true;
             this.NOW_LEFT_GLASS.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.NOW_LEFT_GLASS.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.NOW_LEFT_GLASS.Size = new System.Drawing.Size(93, 20);
+            this.NOW_LEFT_GLASS.Size = new System.Drawing.Size(96, 20);
             this.NOW_LEFT_GLASS.TabIndex = 33;
             // 
             // tableLayoutPanel3
@@ -1911,7 +2123,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 93F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 96F));
             this.tableLayoutPanel3.Controls.Add(this.REAL_LEFT_CYL, 3, 2);
             this.tableLayoutPanel3.Controls.Add(this.REAL_RIGHT_EYE, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.REAL_LEFT_SPH, 2, 2);
@@ -1936,7 +2148,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(570, 66);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(573, 66);
             this.tableLayoutPanel3.TabIndex = 48;
             // 
             // REAL_LEFT_CYL
@@ -2077,7 +2289,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.label41.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label41.Location = new System.Drawing.Point(479, 1);
             this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(87, 22);
+            this.label41.Size = new System.Drawing.Size(90, 22);
             this.label41.TabIndex = 0;
             this.label41.Text = "TL có kính";
             this.label41.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2125,7 +2337,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.REAL_RIGHT_GLASS.Properties.Appearance.Options.UseTextOptions = true;
             this.REAL_RIGHT_GLASS.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.REAL_RIGHT_GLASS.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.REAL_RIGHT_GLASS.Size = new System.Drawing.Size(93, 20);
+            this.REAL_RIGHT_GLASS.Size = new System.Drawing.Size(96, 20);
             this.REAL_RIGHT_GLASS.TabIndex = 38;
             // 
             // REAL_LEFT_GLASS
@@ -2137,7 +2349,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.REAL_LEFT_GLASS.Properties.Appearance.Options.UseTextOptions = true;
             this.REAL_LEFT_GLASS.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.REAL_LEFT_GLASS.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.REAL_LEFT_GLASS.Size = new System.Drawing.Size(93, 20);
+            this.REAL_LEFT_GLASS.Size = new System.Drawing.Size(96, 20);
             this.REAL_LEFT_GLASS.TabIndex = 44;
             // 
             // tableLayoutPanel5
@@ -2150,7 +2362,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 99F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 102F));
             this.tableLayoutPanel5.Controls.Add(this.LEFT_EYE_AFTER, 2, 2);
             this.tableLayoutPanel5.Controls.Add(this.RIGHT_EYE_AFTER, 1, 2);
             this.tableLayoutPanel5.Controls.Add(this.LEFT_EYE_BEFORE, 2, 1);
@@ -2182,7 +2394,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(333, 150);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(336, 150);
             this.tableLayoutPanel5.TabIndex = 48;
             // 
             // LEFT_EYE_AFTER
@@ -2194,7 +2406,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_AFTER.Properties.Appearance.Options.UseTextOptions = true;
             this.LEFT_EYE_AFTER.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_AFTER.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.LEFT_EYE_AFTER.Size = new System.Drawing.Size(99, 20);
+            this.LEFT_EYE_AFTER.Size = new System.Drawing.Size(102, 20);
             this.LEFT_EYE_AFTER.TabIndex = 49;
             // 
             // RIGHT_EYE_AFTER
@@ -2219,7 +2431,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_BEFORE.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_BEFORE.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.LEFT_EYE_BEFORE.Properties.AutoHeight = false;
-            this.LEFT_EYE_BEFORE.Size = new System.Drawing.Size(99, 20);
+            this.LEFT_EYE_BEFORE.Size = new System.Drawing.Size(102, 20);
             this.LEFT_EYE_BEFORE.TabIndex = 46;
             // 
             // label26
@@ -2239,7 +2451,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.label27.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label27.Location = new System.Drawing.Point(236, 1);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(93, 22);
+            this.label27.Size = new System.Drawing.Size(96, 22);
             this.label27.TabIndex = 0;
             this.label27.Text = "OS (Mắt trái)";
             this.label27.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2312,7 +2524,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_PRESSURE.Properties.Appearance.Options.UseTextOptions = true;
             this.LEFT_EYE_PRESSURE.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_PRESSURE.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.LEFT_EYE_PRESSURE.Size = new System.Drawing.Size(99, 20);
+            this.LEFT_EYE_PRESSURE.Size = new System.Drawing.Size(102, 20);
             this.LEFT_EYE_PRESSURE.TabIndex = 51;
             // 
             // RIGHT_EYE_THICKNESS
@@ -2371,7 +2583,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_THICKNESS.Properties.Appearance.Options.UseTextOptions = true;
             this.LEFT_EYE_THICKNESS.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_THICKNESS.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.LEFT_EYE_THICKNESS.Size = new System.Drawing.Size(99, 20);
+            this.LEFT_EYE_THICKNESS.Size = new System.Drawing.Size(102, 20);
             this.LEFT_EYE_THICKNESS.TabIndex = 53;
             // 
             // LEFT_EYE_K1
@@ -2383,7 +2595,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_K1.Properties.Appearance.Options.UseTextOptions = true;
             this.LEFT_EYE_K1.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_K1.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.LEFT_EYE_K1.Size = new System.Drawing.Size(99, 20);
+            this.LEFT_EYE_K1.Size = new System.Drawing.Size(102, 20);
             this.LEFT_EYE_K1.TabIndex = 55;
             // 
             // LEFT_EYE_K2
@@ -2395,7 +2607,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_K2.Properties.Appearance.Options.UseTextOptions = true;
             this.LEFT_EYE_K2.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_K2.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.LEFT_EYE_K2.Size = new System.Drawing.Size(99, 20);
+            this.LEFT_EYE_K2.Size = new System.Drawing.Size(102, 20);
             this.LEFT_EYE_K2.TabIndex = 61;
             // 
             // label44
@@ -2441,7 +2653,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel6.ColumnCount = 3;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 130F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 90F));
-            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 111F));
+            this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 114F));
             this.tableLayoutPanel6.Controls.Add(this.LEFT_EYE_SENSE, 2, 2);
             this.tableLayoutPanel6.Controls.Add(this.RIGHT_EYE_SENSE, 1, 2);
             this.tableLayoutPanel6.Controls.Add(this.LEFT_EYE_MOVE, 2, 1);
@@ -2460,7 +2672,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel6.Controls.Add(this.LEFT_EYE_BALL, 2, 5);
             this.tableLayoutPanel6.Controls.Add(this.label47, 0, 4);
             this.tableLayoutPanel6.Controls.Add(this.label48, 0, 5);
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(342, 291);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(345, 291);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 6;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -2469,7 +2681,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(335, 129);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(338, 129);
             this.tableLayoutPanel6.TabIndex = 48;
             // 
             // LEFT_EYE_SENSE
@@ -2481,7 +2693,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_SENSE.Properties.Appearance.Options.UseTextOptions = true;
             this.LEFT_EYE_SENSE.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_SENSE.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.LEFT_EYE_SENSE.Size = new System.Drawing.Size(111, 20);
+            this.LEFT_EYE_SENSE.Size = new System.Drawing.Size(114, 20);
             this.LEFT_EYE_SENSE.TabIndex = 71;
             // 
             // RIGHT_EYE_SENSE
@@ -2502,7 +2714,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_MOVE.Location = new System.Drawing.Point(223, 24);
             this.LEFT_EYE_MOVE.Margin = new System.Windows.Forms.Padding(0);
             this.LEFT_EYE_MOVE.Name = "LEFT_EYE_MOVE";
-            this.LEFT_EYE_MOVE.Size = new System.Drawing.Size(111, 20);
+            this.LEFT_EYE_MOVE.Size = new System.Drawing.Size(114, 20);
             this.LEFT_EYE_MOVE.TabIndex = 65;
             // 
             // label32
@@ -2522,7 +2734,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.label33.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label33.Location = new System.Drawing.Point(226, 1);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(105, 22);
+            this.label33.Size = new System.Drawing.Size(108, 22);
             this.label33.TabIndex = 0;
             this.label33.Text = "OS (Mắt trái)";
             this.label33.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -2591,7 +2803,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_3D.Properties.Appearance.Options.UseTextOptions = true;
             this.LEFT_EYE_3D.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_3D.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.LEFT_EYE_3D.Size = new System.Drawing.Size(111, 20);
+            this.LEFT_EYE_3D.Size = new System.Drawing.Size(114, 20);
             this.LEFT_EYE_3D.TabIndex = 73;
             // 
             // LEFT_EYE_DEVIATION
@@ -2603,7 +2815,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_DEVIATION.Properties.Appearance.Options.UseTextOptions = true;
             this.LEFT_EYE_DEVIATION.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_DEVIATION.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.LEFT_EYE_DEVIATION.Size = new System.Drawing.Size(111, 20);
+            this.LEFT_EYE_DEVIATION.Size = new System.Drawing.Size(114, 20);
             this.LEFT_EYE_DEVIATION.TabIndex = 75;
             // 
             // RIGHT_EYE_DEVIATION
@@ -2650,7 +2862,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.LEFT_EYE_BALL.Properties.Appearance.Options.UseTextOptions = true;
             this.LEFT_EYE_BALL.Properties.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Top;
             this.LEFT_EYE_BALL.Properties.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.LEFT_EYE_BALL.Size = new System.Drawing.Size(111, 20);
+            this.LEFT_EYE_BALL.Size = new System.Drawing.Size(114, 20);
             this.LEFT_EYE_BALL.TabIndex = 77;
             // 
             // label47
@@ -2711,7 +2923,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // chkOptometristPrintKham
             // 
-            this.chkOptometristPrintKham.Location = new System.Drawing.Point(712, 609);
+            this.chkOptometristPrintKham.Location = new System.Drawing.Point(712, 702);
             this.chkOptometristPrintKham.Name = "chkOptometristPrintKham";
             this.chkOptometristPrintKham.Properties.Caption = "In phiếu khám";
             this.chkOptometristPrintKham.Size = new System.Drawing.Size(106, 19);
@@ -2721,7 +2933,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // chkOptometristPrintDon
             // 
-            this.chkOptometristPrintDon.Location = new System.Drawing.Point(822, 609);
+            this.chkOptometristPrintDon.Location = new System.Drawing.Point(822, 702);
             this.chkOptometristPrintDon.Name = "chkOptometristPrintDon";
             this.chkOptometristPrintDon.Properties.Caption = "In đơn";
             this.chkOptometristPrintDon.Size = new System.Drawing.Size(76, 19);
@@ -2731,7 +2943,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(902, 609);
+            this.btnSave.Location = new System.Drawing.Point(902, 702);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(106, 22);
             this.btnSave.StyleController = this.layoutControl3;
@@ -2741,7 +2953,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // btnPrintPhieuKham
             // 
-            this.btnPrintPhieuKham.Location = new System.Drawing.Point(1096, 609);
+            this.btnPrintPhieuKham.Location = new System.Drawing.Point(1096, 702);
             this.btnPrintPhieuKham.Name = "btnPrintPhieuKham";
             this.btnPrintPhieuKham.Size = new System.Drawing.Size(126, 22);
             this.btnPrintPhieuKham.StyleController = this.layoutControl3;
@@ -2751,7 +2963,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(1226, 609);
+            this.btnPrint.Location = new System.Drawing.Point(1226, 702);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(106, 22);
             this.btnPrint.StyleController = this.layoutControl3;
@@ -2784,22 +2996,36 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             rowDefinition1,
             rowDefinition2});
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1334, 633);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1334, 726);
             // 
             // layoutControlGroup5
             // 
             this.layoutControlGroup5.GroupBordersVisible = false;
             this.layoutControlGroup5.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem17,
-            this.layoutControlItem24,
             this.layoutControlItem4,
             this.layoutControlItem2,
             this.layoutControlItem27,
             this.emptySpaceItem4,
-            this.emptySpaceItem5});
+            this.emptySpaceItem5,
+            this.layoutControlItem30,
+            this.layoutControlItem31,
+            this.layoutControlItem32,
+            this.layoutControlItem33,
+            this.emptySpaceItem6,
+            this.layoutControlItem35,
+            this.layoutControlItem36,
+            this.layoutControlItem37,
+            this.simpleLabelItem1,
+            this.simpleLabelItem2,
+            this.layoutControlItem24,
+            this.layoutControlItem38,
+            this.layoutControlItem39,
+            this.layoutControlItem34,
+            this.layoutControlItem40});
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "layoutControlGroup5";
-            this.layoutControlGroup5.Size = new System.Drawing.Size(700, 607);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(700, 700);
             // 
             // layoutControlItem17
             // 
@@ -2808,23 +3034,10 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem17.Control = this.flowLayoutPanel1;
             this.layoutControlItem17.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(700, 559);
+            this.layoutControlItem17.Size = new System.Drawing.Size(700, 493);
             this.layoutControlItem17.Text = "I. Kết quả khám khúc xạ:";
             this.layoutControlItem17.TextLocation = DevExpress.Utils.Locations.Top;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(139, 13);
-            // 
-            // layoutControlItem24
-            // 
-            this.layoutControlItem24.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem24.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem24.Control = this.VISION_TEST_TIME;
-            this.layoutControlItem24.Location = new System.Drawing.Point(0, 0);
-            this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(324, 24);
-            this.layoutControlItem24.Text = "Thời gian đo:";
-            this.layoutControlItem24.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem24.TextSize = new System.Drawing.Size(140, 20);
-            this.layoutControlItem24.TextToControlDistance = 5;
             // 
             // layoutControlItem4
             // 
@@ -2881,6 +3094,189 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.emptySpaceItem5.Size = new System.Drawing.Size(23, 24);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // layoutControlItem30
+            // 
+            this.layoutControlItem30.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.layoutControlItem30.AppearanceItemCaption.Options.UseFont = true;
+            this.layoutControlItem30.Control = this.label64;
+            this.layoutControlItem30.Location = new System.Drawing.Point(0, 541);
+            this.layoutControlItem30.Name = "layoutControlItem30";
+            this.layoutControlItem30.Size = new System.Drawing.Size(700, 24);
+            this.layoutControlItem30.Text = "III. Kết quả khám bệnh";
+            this.layoutControlItem30.TextLocation = DevExpress.Utils.Locations.Left;
+            this.layoutControlItem30.TextSize = new System.Drawing.Size(139, 13);
+            // 
+            // layoutControlItem31
+            // 
+            this.layoutControlItem31.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem31.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem31.Control = this.HALF_FRONT_RIGHT;
+            this.layoutControlItem31.Location = new System.Drawing.Point(150, 565);
+            this.layoutControlItem31.Name = "layoutControlItem31";
+            this.layoutControlItem31.Size = new System.Drawing.Size(243, 24);
+            this.layoutControlItem31.Text = "Mắt phải:";
+            this.layoutControlItem31.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem31.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem31.TextToControlDistance = 5;
+            // 
+            // layoutControlItem32
+            // 
+            this.layoutControlItem32.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem32.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem32.Control = this.HALF_FRONT_LEFT;
+            this.layoutControlItem32.Location = new System.Drawing.Point(393, 565);
+            this.layoutControlItem32.Name = "layoutControlItem32";
+            this.layoutControlItem32.Size = new System.Drawing.Size(307, 24);
+            this.layoutControlItem32.Text = "Mắt trái:";
+            this.layoutControlItem32.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem32.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem32.TextToControlDistance = 5;
+            // 
+            // layoutControlItem33
+            // 
+            this.layoutControlItem33.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem33.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem33.Control = this.HALF_BACK_RIGHT;
+            this.layoutControlItem33.Location = new System.Drawing.Point(150, 589);
+            this.layoutControlItem33.Name = "layoutControlItem33";
+            this.layoutControlItem33.Size = new System.Drawing.Size(243, 24);
+            this.layoutControlItem33.Text = "Mắt phải:";
+            this.layoutControlItem33.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem33.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem33.TextToControlDistance = 5;
+            // 
+            // emptySpaceItem6
+            // 
+            this.emptySpaceItem6.AllowHotTrack = false;
+            this.emptySpaceItem6.Location = new System.Drawing.Point(0, 685);
+            this.emptySpaceItem6.Name = "emptySpaceItem6";
+            this.emptySpaceItem6.Size = new System.Drawing.Size(700, 15);
+            this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem35
+            // 
+            this.layoutControlItem35.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem35.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem35.Control = this.RIGHT_ICD_CODE;
+            this.layoutControlItem35.Location = new System.Drawing.Point(0, 613);
+            this.layoutControlItem35.Name = "layoutControlItem35";
+            this.layoutControlItem35.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
+            this.layoutControlItem35.Size = new System.Drawing.Size(248, 24);
+            this.layoutControlItem35.Text = "Chẩn đoán mắt phải:";
+            this.layoutControlItem35.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem35.TextSize = new System.Drawing.Size(140, 20);
+            this.layoutControlItem35.TextToControlDistance = 5;
+            // 
+            // layoutControlItem36
+            // 
+            this.layoutControlItem36.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem36.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem36.Control = this.LEFT_ICD_CODE;
+            this.layoutControlItem36.Location = new System.Drawing.Point(0, 637);
+            this.layoutControlItem36.Name = "layoutControlItem36";
+            this.layoutControlItem36.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
+            this.layoutControlItem36.Size = new System.Drawing.Size(248, 24);
+            this.layoutControlItem36.Text = "Chẩn đoán mắt trái:";
+            this.layoutControlItem36.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem36.TextSize = new System.Drawing.Size(140, 20);
+            this.layoutControlItem36.TextToControlDistance = 5;
+            // 
+            // layoutControlItem37
+            // 
+            this.layoutControlItem37.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem37.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem37.Control = this.BOTH_ICD_CODE;
+            this.layoutControlItem37.Location = new System.Drawing.Point(0, 661);
+            this.layoutControlItem37.Name = "layoutControlItem37";
+            this.layoutControlItem37.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
+            this.layoutControlItem37.Size = new System.Drawing.Size(248, 24);
+            this.layoutControlItem37.Text = "Chẩn đoán hai mắt:";
+            this.layoutControlItem37.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem37.TextSize = new System.Drawing.Size(140, 20);
+            this.layoutControlItem37.TextToControlDistance = 5;
+            // 
+            // simpleLabelItem1
+            // 
+            this.simpleLabelItem1.AllowHotTrack = false;
+            this.simpleLabelItem1.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.simpleLabelItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.simpleLabelItem1.Location = new System.Drawing.Point(0, 565);
+            this.simpleLabelItem1.Name = "simpleLabelItem1";
+            this.simpleLabelItem1.Size = new System.Drawing.Size(150, 24);
+            this.simpleLabelItem1.Spacing = new DevExpress.XtraLayout.Utils.Padding(0, 5, 0, 0);
+            this.simpleLabelItem1.Text = "Bán phần trước:";
+            this.simpleLabelItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.simpleLabelItem1.TextSize = new System.Drawing.Size(50, 20);
+            // 
+            // simpleLabelItem2
+            // 
+            this.simpleLabelItem2.AllowHotTrack = false;
+            this.simpleLabelItem2.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.simpleLabelItem2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.simpleLabelItem2.Location = new System.Drawing.Point(0, 589);
+            this.simpleLabelItem2.Name = "simpleLabelItem2";
+            this.simpleLabelItem2.Size = new System.Drawing.Size(150, 24);
+            this.simpleLabelItem2.Spacing = new DevExpress.XtraLayout.Utils.Padding(0, 5, 0, 0);
+            this.simpleLabelItem2.Text = "Bán phần sau:";
+            this.simpleLabelItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.simpleLabelItem2.TextSize = new System.Drawing.Size(50, 20);
+            // 
+            // layoutControlItem24
+            // 
+            this.layoutControlItem24.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem24.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem24.Control = this.VISION_TEST_TIME;
+            this.layoutControlItem24.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem24.Name = "layoutControlItem24";
+            this.layoutControlItem24.Size = new System.Drawing.Size(324, 24);
+            this.layoutControlItem24.Text = "Thời gian đo:";
+            this.layoutControlItem24.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem24.TextSize = new System.Drawing.Size(140, 20);
+            this.layoutControlItem24.TextToControlDistance = 5;
+            // 
+            // layoutControlItem38
+            // 
+            this.layoutControlItem38.Control = this.RIGHT_ICD_NAME;
+            this.layoutControlItem38.Location = new System.Drawing.Point(248, 613);
+            this.layoutControlItem38.Name = "layoutControlItem38";
+            this.layoutControlItem38.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
+            this.layoutControlItem38.Size = new System.Drawing.Size(452, 24);
+            this.layoutControlItem38.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem38.TextVisible = false;
+            // 
+            // layoutControlItem39
+            // 
+            this.layoutControlItem39.Control = this.LEFT_ICD_NAME;
+            this.layoutControlItem39.Location = new System.Drawing.Point(248, 637);
+            this.layoutControlItem39.Name = "layoutControlItem39";
+            this.layoutControlItem39.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
+            this.layoutControlItem39.Size = new System.Drawing.Size(452, 24);
+            this.layoutControlItem39.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem39.TextVisible = false;
+            // 
+            // layoutControlItem34
+            // 
+            this.layoutControlItem34.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem34.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem34.Control = this.HALF_BACK_LEFT;
+            this.layoutControlItem34.Location = new System.Drawing.Point(393, 589);
+            this.layoutControlItem34.Name = "layoutControlItem34";
+            this.layoutControlItem34.Size = new System.Drawing.Size(307, 24);
+            this.layoutControlItem34.Text = "Mắt trái:";
+            this.layoutControlItem34.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem34.TextSize = new System.Drawing.Size(90, 20);
+            this.layoutControlItem34.TextToControlDistance = 5;
+            // 
+            // layoutControlItem40
+            // 
+            this.layoutControlItem40.Control = this.BOTH_ICD_NAME;
+            this.layoutControlItem40.Location = new System.Drawing.Point(248, 661);
+            this.layoutControlItem40.Name = "layoutControlItem40";
+            this.layoutControlItem40.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
+            this.layoutControlItem40.Size = new System.Drawing.Size(452, 24);
+            this.layoutControlItem40.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem40.TextVisible = false;
+            // 
             // layoutControlGroup4
             // 
             this.layoutControlGroup4.GroupBordersVisible = false;
@@ -2904,28 +3300,27 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem1,
             this.emptySpaceItem2,
             this.emptySpaceItem1,
-            this.layoutControlItem20,
-            this.emptySpaceItem3});
+            this.layoutControlItem20});
             this.layoutControlGroup4.Location = new System.Drawing.Point(700, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.OptionsTableLayoutItem.ColumnIndex = 1;
-            this.layoutControlGroup4.Size = new System.Drawing.Size(634, 607);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(634, 700);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.gridControlSereServ;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(634, 146);
+            this.layoutControlItem3.Size = new System.Drawing.Size(634, 147);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.label63;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 311);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 312);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(182, 24);
+            this.layoutControlItem5.Size = new System.Drawing.Size(165, 24);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -2934,9 +3329,9 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem6.Control = this.FAR_BP;
-            this.layoutControlItem6.Location = new System.Drawing.Point(182, 311);
+            this.layoutControlItem6.Location = new System.Drawing.Point(165, 312);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(118, 24);
+            this.layoutControlItem6.Size = new System.Drawing.Size(135, 24);
             this.layoutControlItem6.Text = "Xa:";
             this.layoutControlItem6.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem6.TextSize = new System.Drawing.Size(30, 20);
@@ -2947,7 +3342,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.Control = this.NEAR_BP;
-            this.layoutControlItem7.Location = new System.Drawing.Point(300, 311);
+            this.layoutControlItem7.Location = new System.Drawing.Point(300, 312);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(117, 24);
             this.layoutControlItem7.Text = "Gần:";
@@ -2958,7 +3353,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.IS_PHOTOCHROMIC_GLASS;
-            this.layoutControlItem8.Location = new System.Drawing.Point(233, 335);
+            this.layoutControlItem8.Location = new System.Drawing.Point(233, 336);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Size = new System.Drawing.Size(401, 23);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
@@ -2967,7 +3362,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.IS_BIFOCAL_GLASS;
-            this.layoutControlItem9.Location = new System.Drawing.Point(0, 335);
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 336);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 2, 2, 2);
             this.layoutControlItem9.Size = new System.Drawing.Size(233, 23);
@@ -2977,7 +3372,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.IS_PROGRESSIVE_GLASS;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 358);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 359);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 2, 2, 2);
             this.layoutControlItem10.Size = new System.Drawing.Size(233, 23);
@@ -2987,7 +3382,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.IS_READING_GLASS;
-            this.layoutControlItem16.Location = new System.Drawing.Point(0, 381);
+            this.layoutControlItem16.Location = new System.Drawing.Point(0, 382);
             this.layoutControlItem16.Name = "layoutControlItem16";
             this.layoutControlItem16.Padding = new DevExpress.XtraLayout.Utils.Padding(10, 2, 2, 2);
             this.layoutControlItem16.Size = new System.Drawing.Size(233, 23);
@@ -2997,7 +3392,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.IS_POLYCARBONATE_GLASS;
-            this.layoutControlItem18.Location = new System.Drawing.Point(233, 358);
+            this.layoutControlItem18.Location = new System.Drawing.Point(233, 359);
             this.layoutControlItem18.Name = "layoutControlItem18";
             this.layoutControlItem18.Size = new System.Drawing.Size(401, 23);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
@@ -3006,7 +3401,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.IS_CONTACT_LENSE;
-            this.layoutControlItem19.Location = new System.Drawing.Point(233, 381);
+            this.layoutControlItem19.Location = new System.Drawing.Point(233, 382);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.Size = new System.Drawing.Size(401, 23);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
@@ -3017,7 +3412,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem21.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem21.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem21.Control = this.GLASS_STATUS;
-            this.layoutControlItem21.Location = new System.Drawing.Point(0, 469);
+            this.layoutControlItem21.Location = new System.Drawing.Point(0, 502);
             this.layoutControlItem21.Name = "layoutControlItem21";
             this.layoutControlItem21.Size = new System.Drawing.Size(634, 24);
             this.layoutControlItem21.Text = "Trạng thái kính:";
@@ -3028,7 +3423,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem23.Control = this.GLASS_USE_TIME;
-            this.layoutControlItem23.Location = new System.Drawing.Point(0, 493);
+            this.layoutControlItem23.Location = new System.Drawing.Point(0, 526);
             this.layoutControlItem23.Name = "layoutControlItem23";
             this.layoutControlItem23.Size = new System.Drawing.Size(325, 24);
             this.layoutControlItem23.Text = "Thời gian dùng:";
@@ -3039,7 +3434,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem22.Control = this.MEDI_USE_TIME;
-            this.layoutControlItem22.Location = new System.Drawing.Point(0, 517);
+            this.layoutControlItem22.Location = new System.Drawing.Point(0, 550);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.Size = new System.Drawing.Size(325, 24);
             this.layoutControlItem22.Text = "Thời gian tra:";
@@ -3050,7 +3445,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem25.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem25.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem25.Control = this.GLASS_AMOUNT;
-            this.layoutControlItem25.Location = new System.Drawing.Point(325, 493);
+            this.layoutControlItem25.Location = new System.Drawing.Point(325, 526);
             this.layoutControlItem25.Name = "layoutControlItem25";
             this.layoutControlItem25.Size = new System.Drawing.Size(201, 24);
             this.layoutControlItem25.Text = "Số lượng:";
@@ -3061,7 +3456,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // layoutControlItem26
             // 
             this.layoutControlItem26.Control = this.IS_GLASS_SCRATCHED;
-            this.layoutControlItem26.Location = new System.Drawing.Point(526, 493);
+            this.layoutControlItem26.Location = new System.Drawing.Point(526, 526);
             this.layoutControlItem26.Name = "layoutControlItem26";
             this.layoutControlItem26.Size = new System.Drawing.Size(108, 24);
             this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
@@ -3070,7 +3465,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // emptySpaceItem9
             // 
             this.emptySpaceItem9.AllowHotTrack = false;
-            this.emptySpaceItem9.Location = new System.Drawing.Point(325, 517);
+            this.emptySpaceItem9.Location = new System.Drawing.Point(325, 550);
             this.emptySpaceItem9.Name = "emptySpaceItem9";
             this.emptySpaceItem9.Size = new System.Drawing.Size(309, 24);
             this.emptySpaceItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -3080,7 +3475,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem1.AppearanceItemCaption.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.layoutControlItem1.AppearanceItemCaption.Options.UseFont = true;
             this.layoutControlItem1.Control = this.flowLayoutPanel2;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 146);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 147);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Size = new System.Drawing.Size(634, 165);
             this.layoutControlItem1.Text = "II. Đơn kính:";
@@ -3090,16 +3485,16 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 541);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 574);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(634, 43);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(634, 126);
             this.emptySpaceItem2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(417, 311);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(417, 312);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(217, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -3109,19 +3504,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem20.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem20.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem20.Control = this.VISION_EXAM_NOTE;
-            this.layoutControlItem20.Location = new System.Drawing.Point(0, 404);
+            this.layoutControlItem20.Location = new System.Drawing.Point(0, 405);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(634, 65);
+            this.layoutControlItem20.Size = new System.Drawing.Size(634, 97);
             this.layoutControlItem20.Text = "Ghi chú:";
             this.layoutControlItem20.TextSize = new System.Drawing.Size(139, 13);
-            // 
-            // emptySpaceItem3
-            // 
-            this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(0, 584);
-            this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(634, 23);
-            this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup1
             // 
@@ -3135,7 +3522,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.layoutControlItem11,
             this.layoutControlItem28,
             this.layoutControlItem29});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 607);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 700);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.OptionsTableLayoutItem.ColumnSpan = 2;
             this.layoutControlGroup1.OptionsTableLayoutItem.RowIndex = 1;
@@ -3240,10 +3627,23 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.layoutControl3);
             this.Name = "UCOptometrist";
-            this.Size = new System.Drawing.Size(1334, 633);
+            this.Size = new System.Drawing.Size(1334, 726);
             this.Load += new System.EventHandler(this.UCOptometrist_Load);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.BOTH_ICD_NAME.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LEFT_ICD_NAME.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RIGHT_ICD_NAME.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn3View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.BOTH_ICD_CODE.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LEFT_ICD_CODE.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.RIGHT_ICD_CODE.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HALF_BACK_LEFT.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HALF_BACK_RIGHT.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HALF_FRONT_LEFT.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.HALF_FRONT_RIGHT.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkEnd.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.VISION_TEST_ROOM_NAME.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
@@ -3372,12 +3772,26 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem27)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem30)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem35)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem37)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.simpleLabelItem1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.simpleLabelItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem39)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem40)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -3399,7 +3813,6 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
@@ -3633,12 +4046,39 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
         private DevExpress.XtraEditors.Repository.RepositoryItemDateEdit repositoryItemDateEdit1;
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
         private DevExpress.XtraEditors.CheckEdit chkEnd;
         private DevExpress.XtraEditors.SimpleButton btnEndReq;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem28;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem29;
+        private System.Windows.Forms.Label label64;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem30;
+        private DevExpress.XtraEditors.TextEdit HALF_BACK_RIGHT;
+        private DevExpress.XtraEditors.TextEdit HALF_FRONT_LEFT;
+        private DevExpress.XtraEditors.TextEdit HALF_FRONT_RIGHT;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem31;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem32;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem33;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem6;
+        private DevExpress.XtraEditors.TextEdit BOTH_ICD_CODE;
+        private DevExpress.XtraEditors.TextEdit LEFT_ICD_CODE;
+        private DevExpress.XtraEditors.TextEdit RIGHT_ICD_CODE;
+        private DevExpress.XtraEditors.TextEdit HALF_BACK_LEFT;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem34;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem35;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem36;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem37;
+        private DevExpress.XtraLayout.SimpleLabelItem simpleLabelItem1;
+        private DevExpress.XtraLayout.SimpleLabelItem simpleLabelItem2;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn RIGHT_ICD_NAME;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridLookUpEditWithFilterMultiColumn3View;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem38;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn LEFT_ICD_NAME;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem39;
+        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn BOTH_ICD_NAME;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn2;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem40;
     }
 }
