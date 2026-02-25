@@ -108,7 +108,12 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 if (currentsereServ != null)
                 {
                     var serviceReq = GetServiceReq();
-                    MPS.Processor.Mps000386.PDO.Mps000386PDO pdo = new MPS.Processor.Mps000386.PDO.Mps000386PDO(serviceReq, currentsereServ.HIS_SERE_SERV_VIEX.FirstOrDefault());
+
+
+                    var currentsereServSave = new HIS_SERE_SERV_VIEX();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV_VIEX>(currentsereServ, currentsereServSave);
+
+                    MPS.Processor.Mps000386.PDO.Mps000386PDO pdo = new MPS.Processor.Mps000386.PDO.Mps000386PDO(serviceReq, currentsereServSave);
                     WaitingManager.Hide();
                     string printerName = "";
                     if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))
@@ -144,7 +149,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 if (currentsereServ != null)
                 {
                     var serviceReq = GetServiceReq();
-                    MPS.Processor.Mps000506.PDO.Mps000506PDO pdo = new MPS.Processor.Mps000506.PDO.Mps000506PDO(serviceReq, currentsereServ.HIS_SERE_SERV_VIEX.FirstOrDefault());
+
+                    var currentsereServSave = new HIS_SERE_SERV_VIEX();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV_VIEX>(currentsereServ, currentsereServSave);
+
+                    MPS.Processor.Mps000506.PDO.Mps000506PDO pdo = new MPS.Processor.Mps000506.PDO.Mps000506PDO(serviceReq, currentsereServSave);
                     WaitingManager.Hide();
                     string printerName = "";
                     if (GlobalVariables.dicPrinter.ContainsKey(printTypeCode))

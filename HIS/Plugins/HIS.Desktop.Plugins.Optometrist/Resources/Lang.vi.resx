@@ -450,6 +450,30 @@
   <data name="UCOptometrist.layoutControlItem3.Text" xml:space="preserve">
     <value>Người xử lý:</value>
   </data>
+  <data name="UCOptometrist.layoutControlItem30.Text" xml:space="preserve">
+    <value>III. Kết quả khám bệnh</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem31.Text" xml:space="preserve">
+    <value>Mắt phải:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem32.Text" xml:space="preserve">
+    <value>Mắt trái:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem33.Text" xml:space="preserve">
+    <value>Mắt phải:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem34.Text" xml:space="preserve">
+    <value>Mắt trái:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem35.Text" xml:space="preserve">
+    <value>Chẩn đoán mắt phải:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem36.Text" xml:space="preserve">
+    <value>Chẩn đoán mắt trái:</value>
+  </data>
+  <data name="UCOptometrist.layoutControlItem37.Text" xml:space="preserve">
+    <value>Chẩn đoán hai mắt:</value>
+  </data>
   <data name="UCOptometrist.layoutControlItem4.Text" xml:space="preserve">
     <value>Người đo:</value>
   </data>
@@ -599,5 +623,11 @@
   </data>
   <data name="UCOptometrist.lciTimeType.Text" xml:space="preserve">
     <value>Thời điểm đo:</value>
+  </data>
+  <data name="UCOptometrist.simpleLabelItem1.Text" xml:space="preserve">
+    <value>Bán phần trước:</value>
+  </data>
+  <data name="UCOptometrist.simpleLabelItem2.Text" xml:space="preserve">
+    <value>Bán phần sau:</value>
   </data>
 </root>
