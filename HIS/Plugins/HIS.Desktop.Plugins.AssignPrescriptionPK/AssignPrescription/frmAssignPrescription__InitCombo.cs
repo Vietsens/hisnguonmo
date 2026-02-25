@@ -100,7 +100,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 if (mediStocks == null)
                     mediStocks = new List<V_HIS_MEDI_STOCK>();
                 mediStockAllows = mediStocks.Where(o => o.IS_ACTIVE == 1 && o.IS_DRUG_STORE == 1 && o.IS_BUSINESS == 1).ToList();
-                cboNhaThuoc.Enabled = true;
+                cboNhaThuoc.Enabled = true; 
                 if (actionType == GlobalVariables.ActionAdd)
                 {
                     if (HisConfigCFG.IsAutoCreateSaleExpMest == "1" || HisConfigCFG.IsDrugStoreComboboxOption)
@@ -1016,21 +1016,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
 
                 long medistockIdDefault = 0;
-                if (this.assignPrescriptionEditADO != null && this.oldServiceReq != null && this.oldServiceReq.EXECUTE_ROOM_ID > 0)
+                V_HIS_MEDI_STOCK defaultDrugStore = new V_HIS_MEDI_STOCK();
+                if (mediStockAllows.Count == 1)
                 {
+                    defaultDrugStore = mediStockAllows.FirstOrDefault();
+                }
+                else if (this.assignPrescriptionEditADO != null && this.oldServiceReq != null && this.oldServiceReq.EXECUTE_ROOM_ID > 0)
+                {
+
                     var mediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(o => o.ROOM_ID == this.oldServiceReq.EXECUTE_ROOM_ID).FirstOrDefault();
 
                     if (mediStock != null && mediStock.IS_BUSINESS == GlobalVariables.CommonNumberTrue)
                     {
                         medistockIdDefault = mediStock.ID;
                     }
-                }
-                //if (medistockIdDefault == 0 && this.requestRoom.DEFAULT_DRUG_STORE_ID > 0 && mediStockAllows != null && mediStockAllows.Count > 0)
-                //{
-                //    medistockIdDefault = this.requestRoom.DEFAULT_DRUG_STORE_ID.Value;
-                //}
 
-                V_HIS_MEDI_STOCK defaultDrugStore = medistockIdDefault > 0 ? mediStockAllows.Where(o => o.ID == medistockIdDefault).FirstOrDefault() : null;
+                    defaultDrugStore = medistockIdDefault > 0 ? mediStockAllows.Where(o => o.ID == medistockIdDefault).FirstOrDefault() : null;
+                }
+                
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medistockIdDefault), medistockIdDefault) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => defaultDrugStore), defaultDrugStore));
                 if (defaultDrugStore != null)
                 {

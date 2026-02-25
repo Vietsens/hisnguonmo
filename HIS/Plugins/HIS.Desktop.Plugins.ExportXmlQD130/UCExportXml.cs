@@ -3832,6 +3832,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             listMessageError.AddRange(paramUpdateXml130.Messages);
                         }
+                        LogSystem.Info("b1: " + listMessageError);
                         XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
                     }
                     else if (paramUpdateXml130.Messages != null && paramUpdateXml130.Messages.Count > 0)
@@ -3886,6 +3887,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             listMessageError.AddRange(paramUpdateXml130.Messages);
                         }
+                        LogSystem.Info("b2: " + listMessageError);
                         XtraMessageBox.Show(Resources.ResourceMessageLang.XuLyThatBai + String.Join("\r\n", listMessageError), Resources.ResourceMessageLang.ThongBao);
                     }
                     else if (paramUpdateXml130.Messages != null && paramUpdateXml130.Messages.Count > 0)
@@ -3910,7 +3912,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             {
                 listMessageError = new List<string>();
                 string connect_infor = HisConfigCFG.QD_130_BYT__CONNECTION_INFO;
-                string username = null, password = null, address = null, typeXml = null;
+                string username = null, password = null, address = null, typeXml = null; 
                 string xml130Api = null, xmlGdykApi = null;
                 List<string> connectInfors = new List<string>();
                 if (string.IsNullOrEmpty(connect_infor))
@@ -4446,6 +4448,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         }
                                         else
                                         {
+                                            if (errorCode == "07" && isAutoSync) 
+                                            {
+                                                return;
+                                            }
+
                                             callSyncSuccess = true;
                                             if (!syncResult.Success)
                                             {
