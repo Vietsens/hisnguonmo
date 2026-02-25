@@ -150,6 +150,9 @@
   <data name="frmTransactionRepay.chkAutoClose.ToolTip" xml:space="preserve">
     <value>'Save' သို့မဟုတ် 'Save in' အောင်မြင်သောအခါတွင် လုပ်ဆောင်ချက်ကို အလိုအလျောက် ပိတ်ပါ။</value>
   </data>
+  <data name="frmTransactionRepay.chkXemTruoc.Properties.Caption" xml:space="preserve">
+    <value>&#x8;</value>
+  </data>
   <data name="frmTransactionRepay.layoutAccountBook.Text" xml:space="preserve">
     <value>ဝင်ငွေနှင့် အသုံးစရိတ် စာအုပ်-</value>
   </data>
