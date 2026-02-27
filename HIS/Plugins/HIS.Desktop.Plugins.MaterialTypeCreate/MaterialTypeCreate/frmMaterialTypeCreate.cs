@@ -76,6 +76,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
 
         private List<HIS_DEPARTMENT> BlockDepartment__Seleced = new List<HIS_DEPARTMENT>();
         private List<long> oldBlockDepartmentIds = null;
+        private List<V_HIS_ROOM> BlockRoom__Selected = new List<V_HIS_ROOM>();
+        private List<long> oldBlockRoomIds = null;
+        private List<HIS_EXP_MEST_TYPE> BlockExpMestType__Selected = new List<HIS_EXP_MEST_TYPE>();
         private List<HIS_MATERIAL_TYPE> MaterialTypeMap__Seleced = new List<HIS_MATERIAL_TYPE>();
         private List<long> oldMaterialTypeMapIds = null;
         //  private List<long> oldMaterialTypeMapIds_ = null;
@@ -163,6 +166,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
 
                 SetDataToControl();
                 FillBlockDepartment();
+                InitCheck(cboBlockRoom, SelectionGrid__BlockRoom);
+                InitCombo(cboBlockRoom, BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.ROOM_NAME).ToList(), "ROOM_NAME", "ID");
+                FillBlockRoom();
+                InitCheck(cboBlockExpMestType, SelectionGrid__BlockExpMestType);
+                InitCombo(cboBlockExpMestType, BackendDataWorker.Get<HIS_EXP_MEST_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).OrderBy(o => o.EXP_MEST_TYPE_NAME).ToList(), "EXP_MEST_TYPE_NAME", "ID");
+                FillBlockExpMestType();
                 FillDataToGridConrolServicePaty();
                 InitComboMaterialTypeMapId();
                 InitComboMaterialTypeMapId_();
@@ -394,6 +403,100 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                         string displayText = String.Join(", ", seleceds.Select(s => s.DEPARTMENT_NAME).ToList());
                         cboBlockDepartment.Text = displayText;
                         cboBlockDepartment.ToolTip = displayText;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private async Task FillBlockRoom()
+        {
+            try
+            {
+                if (this.materialTypeId > 0 && this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
+                {
+                    HisMestMatyDepaFilter filter = new HisMestMatyDepaFilter();
+                    filter.MATERIAL_TYPE_ID = this.materialTypeId;
+                    filter.HAS_MEDI_STOCK_ID = false;
+
+                    List<HIS_MEST_MATY_DEPA> matyDepas = new BackendAdapter(new CommonParam()).Get<List<HIS_MEST_MATY_DEPA>>("api/HisMestMatyDepa/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
+                    if (matyDepas != null)
+                    {
+                        List<long> roomIds = new List<long>();
+                        foreach (var depa in matyDepas)
+                        {
+                            if (!string.IsNullOrEmpty(depa.ROOM_IDS))
+                            {
+                                var ids = depa.ROOM_IDS.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                                foreach (var id in ids)
+                                {
+                                    long roomId;
+                                    if (long.TryParse(id.Trim(), out roomId))
+                                    {
+                                        roomIds.Add(roomId);
+                                    }
+                                }
+                            }
+                        }
+                        this.oldBlockRoomIds = roomIds.Distinct().ToList();
+                    }
+                }
+                GridCheckMarksSelection gridCheckMark = cboBlockRoom.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboBlockRoom.Properties.View);
+                    if (this.oldBlockRoomIds != null && this.oldBlockRoomIds.Count > 0)
+                    {
+                        List<V_HIS_ROOM> selecteds = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => this.oldBlockRoomIds.Contains(o.ID)).ToList();
+                        gridCheckMark.SelectAll(selecteds);
+
+                        string displayText = String.Join(", ", selecteds.Select(s => s.ROOM_NAME).ToList());
+                        cboBlockRoom.Text = displayText;
+                        cboBlockRoom.ToolTip = displayText;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void FillBlockExpMestType()
+        {
+            try
+            {
+                if (this.materialTypeId > 0 && this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
+                {
+                    if (currentVHisMaterialTypeDTODefault != null && !string.IsNullOrEmpty(currentVHisMaterialTypeDTODefault.NO_EXP_MEST_TYPE_IDS))
+                    {
+                        GridCheckMarksSelection gridCheckMark = cboBlockExpMestType.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheckMark != null)
+                        {
+                            gridCheckMark.ClearSelection(cboBlockExpMestType.Properties.View);
+                            var ids = currentVHisMaterialTypeDTODefault.NO_EXP_MEST_TYPE_IDS.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                            List<long> expMestTypeIds = new List<long>();
+                            foreach (var id in ids)
+                            {
+                                long val;
+                                if (long.TryParse(id.Trim(), out val))
+                                {
+                                    expMestTypeIds.Add(val);
+                                }
+                            }
+                            if (expMestTypeIds.Count > 0)
+                            {
+                                List<HIS_EXP_MEST_TYPE> selecteds = BackendDataWorker.Get<HIS_EXP_MEST_TYPE>().Where(o => expMestTypeIds.Contains(o.ID)).ToList();
+                                gridCheckMark.SelectAll(selecteds);
+
+                                string displayText = String.Join(", ", selecteds.Select(s => s.EXP_MEST_TYPE_NAME).ToList());
+                                cboBlockExpMestType.Text = displayText;
+                                cboBlockExpMestType.ToolTip = displayText;
+                            }
+                        }
                     }
                 }
             }
@@ -1453,6 +1556,16 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
 
                 materialType.BYT_NUM_ORDER = spinBYTNumOrder.EditValue != null ? spinBYTNumOrder.Value.ToString() : null;
 
+                // Chặn xuất theo phiếu - lưu danh sách ID loại phiếu xuất, phân cách bởi dấu phẩy
+                if (this.BlockExpMestType__Selected != null && this.BlockExpMestType__Selected.Count > 0)
+                {
+                    materialType.NO_EXP_MEST_TYPE_IDS = string.Join(",", this.BlockExpMestType__Selected.Select(s => s.ID).Distinct());
+                }
+                else
+                {
+                    materialType.NO_EXP_MEST_TYPE_IDS = null;
+                }
+
             }
             catch (Exception ex)
             {
@@ -1575,6 +1688,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 if (success)
                 {
                     this.SaveBlockDepartment(ref param);
+                    this.SaveBlockRoom(ref param);
                     this.SaveMaterialTypeMap(ref param);
                 }
 
@@ -3605,6 +3719,92 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             }
         }
 
+        private void SaveBlockRoom(ref CommonParam param)
+        {
+            try
+            {
+                List<long> selectedRoomIds = new List<long>();
+                List<long> oldRoomIds = new List<long>();
+
+                if (this.oldBlockRoomIds != null)
+                {
+                    oldRoomIds = this.oldBlockRoomIds;
+                }
+
+                if (this.BlockRoom__Selected != null)
+                {
+                    selectedRoomIds = this.BlockRoom__Selected.Select(s => s.ID).Distinct().ToList();
+                }
+
+                if (selectedRoomIds.Count == 0 && oldRoomIds.Count == 0)
+                {
+                    return;
+                }
+
+                if (selectedRoomIds.Exists(e => !oldRoomIds.Contains(e))
+                    || oldRoomIds.Exists(e => !selectedRoomIds.Contains(e)))
+                {
+                    WaitingManager.Show();
+                    // Lấy danh sách bản ghi MEST_MATY_DEPA hiện tại
+                    HisMestMatyDepaFilter filter = new HisMestMatyDepaFilter();
+                    filter.MATERIAL_TYPE_ID = resultData.ID;
+                    filter.HAS_MEDI_STOCK_ID = false;
+                    List<HIS_MEST_MATY_DEPA> existingRecords = new BackendAdapter(new CommonParam()).Get<List<HIS_MEST_MATY_DEPA>>("api/HisMestMatyDepa/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
+
+                    // Nhóm phòng được chọn theo khoa
+                    var roomsByDepartment = this.BlockRoom__Selected
+                        .GroupBy(r => r.DEPARTMENT_ID)
+                        .ToDictionary(g => g.Key, g => g.Select(r => r.ID).ToList());
+
+                    if (existingRecords != null)
+                    {
+                        foreach (var record in existingRecords)
+                        {
+                            List<long> roomIdsForDepa;
+                            if (roomsByDepartment.TryGetValue(record.DEPARTMENT_ID, out roomIdsForDepa))
+                            {
+                                // Cập nhật ROOM_IDS cho khoa này
+                                record.ROOM_IDS = string.Join(";", roomIdsForDepa);
+                                CommonParam cp = new CommonParam();
+                                new BackendAdapter(cp).Post<HIS_MEST_MATY_DEPA>("api/HisMestMatyDepa/Update", ApiConsumer.ApiConsumers.MosConsumer, record, cp);
+                                roomsByDepartment.Remove(record.DEPARTMENT_ID);
+                            }
+                            else if (!string.IsNullOrEmpty(record.ROOM_IDS))
+                            {
+                                // Xóa ROOM_IDS nếu không còn phòng nào được chọn cho khoa này
+                                record.ROOM_IDS = null;
+                                CommonParam cp = new CommonParam();
+                                new BackendAdapter(cp).Post<HIS_MEST_MATY_DEPA>("api/HisMestMatyDepa/Update", ApiConsumer.ApiConsumers.MosConsumer, record, cp);
+                            }
+                        }
+                    }
+
+                    // Tạo mới bản ghi cho các khoa chưa có
+                    foreach (var kvp in roomsByDepartment)
+                    {
+                        HIS_MEST_MATY_DEPA newRecord = new HIS_MEST_MATY_DEPA();
+                        newRecord.MATERIAL_TYPE_ID = resultData.ID;
+                        newRecord.DEPARTMENT_ID = kvp.Key;
+                        newRecord.ROOM_IDS = string.Join(";", kvp.Value);
+                        CommonParam cp = new CommonParam();
+                        new BackendAdapter(cp).Post<HIS_MEST_MATY_DEPA>("api/HisMestMatyDepa/Create", ApiConsumer.ApiConsumers.MosConsumer, newRecord, cp);
+                    }
+
+                    this.oldBlockRoomIds = new List<long>();
+                    if (selectedRoomIds.Count > 0)
+                    {
+                        this.oldBlockRoomIds.AddRange(selectedRoomIds);
+                    }
+                    WaitingManager.Hide();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
         private void SaveMaterialTypeMap(ref CommonParam param)
         {
             try
@@ -4301,8 +4501,125 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             {
                 if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
                 {
+                    cboBlockExpMestType.Focus();
+                    cboBlockExpMestType.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboBlockRoom_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string display = "";
+                foreach (var item in this.BlockRoom__Selected)
+                {
+                    if (display.Trim().Length > 0)
+                    {
+                        display += ", " + item.ROOM_NAME;
+                    }
+                    else
+                        display = item.ROOM_NAME;
+                }
+                e.DisplayText = display;
+                cboBlockRoom.ToolTip = display;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SelectionGrid__BlockRoom(object sender, EventArgs e)
+        {
+            try
+            {
+                BlockRoom__Selected = new List<V_HIS_ROOM>();
+                foreach (V_HIS_ROOM rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        BlockRoom__Selected.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBlockRoom_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
                     cboCTK.Focus();
                     cboCTK.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboBlockExpMestType_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string display = "";
+                if (this.BlockExpMestType__Selected != null)
+                {
+                    foreach (var item in this.BlockExpMestType__Selected)
+                    {
+                        if (display.Trim().Length > 0)
+                        {
+                            display += ", " + item.EXP_MEST_TYPE_NAME;
+                        }
+                        else
+                            display = item.EXP_MEST_TYPE_NAME;
+                    }
+                }
+                e.DisplayText = display;
+                cboBlockExpMestType.ToolTip = display;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SelectionGrid__BlockExpMestType(object sender, EventArgs e)
+        {
+            try
+            {
+                BlockExpMestType__Selected = new List<HIS_EXP_MEST_TYPE>();
+                foreach (HIS_EXP_MEST_TYPE rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        BlockExpMestType__Selected.Add(rv);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBlockExpMestType_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
+                    cboBlockRoom.Focus();
+                    cboBlockRoom.ShowPopup();
                 }
             }
             catch (Exception ex)
