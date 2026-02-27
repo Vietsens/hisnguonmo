@@ -80,7 +80,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
         List<long> lstRoomSelectedId = new List<long>();
         List<long> lstBedRoomIds = new List<long>();
 
-        bool isCheckAll = true; 
+        bool isCheckAll = true;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         string moduleLink = "HIS.Desktop.Plugins.AggrExpMestDetail";
@@ -129,7 +129,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 InitComboMediStock();
                 InitcboBed();
                 InitCboPatientType();
-                InitComboArea(); 
+                InitComboArea();
                 SetDataDefault();
                 isNotLoadWhileChangeControlStateInFirst = false;
             }
@@ -1441,6 +1441,42 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
 
                         if (hi.Column.FieldName == "DELETE_DISPLAY")
                         {
+                            var departmentId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace(this.currentModule).DepartmentId;
+                            var roomId = HIS.Desktop.LocalStorage.LocalData.WorkPlace.GetWorkPlace(this.currentModule).RoomId;
+                            long expMestSttId = data.EXP_MEST_STT_ID; 
+                            long reqRoomId = data.REQ_ROOM_ID;
+                            string creator = (data.CREATOR ?? "").Trim();
+
+                            bool canDelete = false;
+
+                            if (data.REQ_DEPARTMENT_ID == departmentId &&
+                                (expMestSttId == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DRAFT ||
+                                 expMestSttId == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REJECT ||
+                                 expMestSttId == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST))
+                            {
+                                if (HisConfigCFG.isEnableDeleteAggregate)
+                                {
+                                    if ((CheckLoginAdmin.IsAdmin(loginName) || creator.Equals(loginName)) && reqRoomId == roomId)
+                                    {
+                                        canDelete = true;
+                                    }
+                                    else
+                                    {
+                                        canDelete = false;
+                                    }
+                                }
+                                else
+                                {
+                                    canDelete = true;
+                                }
+                            }
+                            else canDelete = false; 
+
+                            if (!canDelete)
+                            {
+                                return; 
+                            }
+
                             #region ----- DELETE_DISPLAY -----
                             if (data != null
                         && hi.HitTest == GridHitTest.RowCell
@@ -1725,7 +1761,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
 
         void LoadDataMediDetailExpMest(object _listExpMestIDs)
         {
-           
+
             try
             {
                 listSereServeMedi = new List<SereServADO>();
@@ -1798,7 +1834,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                         ado.SERVICE_UNIT_NAME = dataType.SERVICE_UNIT_NAME;
                         ado.TDL_SERVICE_CODE = dataType.MATERIAL_TYPE_CODE;
                         ado.TDL_SERVICE_NAME = dataType.MATERIAL_TYPE_NAME;
-                        
+
                         listSereServeMate.Add(ado);
                     }
                 }
