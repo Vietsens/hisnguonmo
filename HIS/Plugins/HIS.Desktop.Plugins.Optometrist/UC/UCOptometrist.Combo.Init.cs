@@ -127,9 +127,10 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                                 {
                                     var text = s as TextEdit;
                                     var source = cbo.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_ICD>;
-                                    cbo.EditValue = source.FirstOrDefault(o => o.ICD_CODE == text.Text.Trim())?.ICD_CODE;
+                                    cbo.EditValue = source.FirstOrDefault(o => o.ICD_CODE.ToUpper() == text.Text.Trim().ToUpper())?.ICD_CODE;
                                     if (cbo.EditValue != null)
                                     {
+                                        text.Text = cbo.EditValue.ToString();
                                         cbo.Focus();
                                         cbo.SelectAll();
                                     }
@@ -148,7 +149,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                                 {
                                     var cboSender = s as GridLookUpEdit;
                                     var selected = cboSender.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_ICD>;
-                                    RIGHT_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE == cboSender.EditValue.ToString())?.ICD_CODE;
+                                    RIGHT_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == cboSender.EditValue.ToString().ToUpper())?.ICD_CODE;
                                 }
                             }
                             catch (Exception ex)
@@ -198,9 +199,10 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                                 {
                                     var text = s as TextEdit;
                                     var source = cbo.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_ICD>;
-                                    cbo.EditValue = source?.FirstOrDefault(o => o.ICD_CODE == text.Text.Trim())?.ICD_CODE;
+                                    cbo.EditValue = source?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == text.Text.Trim().ToUpper())?.ICD_CODE;
                                     if (cbo.EditValue != null)
                                     {
+                                        text.Text = cbo.EditValue.ToString();
                                         cbo.Focus();
                                         cbo.SelectAll();
                                     }
@@ -219,7 +221,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                                 {
                                     var cboSender = s as GridLookUpEdit;
                                     var selected = cboSender.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_ICD>;
-                                    LEFT_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE == cboSender.EditValue.ToString())?.ICD_CODE;
+                                    LEFT_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == cboSender.EditValue.ToString().ToUpper())?.ICD_CODE;
                                 }
                             }
                             catch (Exception ex)
@@ -267,9 +269,10 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                                 {
                                     var text = s as TextEdit;
                                     var source = cbo.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_ICD>;
-                                    cbo.EditValue = source?.FirstOrDefault(o => o.ICD_CODE == text.Text.Trim())?.ICD_CODE;
+                                    cbo.EditValue = source?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == text.Text.Trim().ToUpper())?.ICD_CODE;
                                     if (cbo.EditValue != null)
                                     {
+                                        text.Text = cbo.EditValue.ToString();
                                         cbo.Focus();
                                         cbo.SelectAll();
                                     }
@@ -288,7 +291,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                                 {
                                     var cboSender = s as GridLookUpEdit;
                                     var selected = cboSender.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_ICD>;
-                                    BOTH_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE == cboSender.EditValue.ToString())?.ICD_CODE;
+                                    BOTH_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == cboSender.EditValue.ToString().ToUpper())?.ICD_CODE;
                                 }
                             }
                             catch (Exception ex)
