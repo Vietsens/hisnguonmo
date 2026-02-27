@@ -105,9 +105,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 // Attach event
                 cbo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cbo_Closed);
                 cbo.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cbo_ButtonClick);
-                //cbo.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cbo_KeyUp);
-                cbo.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cbo_PreviewKeyDown);
+                cbo.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cbo_KeyUp);
+                //cbo.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cbo_PreviewKeyDown);
                 cbo.EditValueChanged += new System.EventHandler(this.cbo_EditValueChanged);
+
+
                 // Load data
                 //var currentBranchs = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>();
                 //var branch = currentBranchs.SingleOrDefault(o => o.ID == BranchDataWorker.GetCurrentBranchId());
@@ -145,11 +147,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                         {
                             try
                             {
-                                if (e.CloseMode == PopupCloseMode.Normal)
+                                //if (e.CloseMode == PopupCloseMode.Normal)
                                 {
                                     var cboSender = s as GridLookUpEdit;
                                     var selected = cboSender.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_ICD>;
-                                    RIGHT_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == cboSender.EditValue.ToString().ToUpper())?.ICD_CODE;
+                                    RIGHT_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == cboSender.EditValue?.ToString().ToUpper())?.ICD_CODE;
                                 }
                             }
                             catch (Exception ex)
@@ -217,11 +219,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                         {
                             try
                             {
-                                if (e.CloseMode == PopupCloseMode.Normal)
+                                //if (e.CloseMode == PopupCloseMode.Normal)
                                 {
                                     var cboSender = s as GridLookUpEdit;
                                     var selected = cboSender.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_ICD>;
-                                    LEFT_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == cboSender.EditValue.ToString().ToUpper())?.ICD_CODE;
+                                    LEFT_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == cboSender.EditValue?.ToString().ToUpper())?.ICD_CODE;
                                 }
                             }
                             catch (Exception ex)
@@ -287,11 +289,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                         {
                             try
                             {
-                                if (e.CloseMode == PopupCloseMode.Normal)
+                                //if (e.CloseMode == PopupCloseMode.Normal)
                                 {
                                     var cboSender = s as GridLookUpEdit;
                                     var selected = cboSender.Properties.DataSource as List<MOS.EFMODEL.DataModels.HIS_ICD>;
-                                    BOTH_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == cboSender.EditValue.ToString().ToUpper())?.ICD_CODE;
+                                    BOTH_ICD_CODE.Text = selected?.FirstOrDefault(o => o.ICD_CODE.ToUpper() == cboSender.EditValue?.ToString().ToUpper())?.ICD_CODE;
                                 }
                             }
                             catch (Exception ex)
@@ -408,7 +410,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
         {
             try
             {
-                if (e.CloseMode == PopupCloseMode.Normal)
+                //if (e.CloseMode == PopupCloseMode.Normal)
                 {
                     var cbo = sender as GridLookUpEdit;
                     if (cbo.IsEditorActive)
@@ -446,6 +448,41 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             catch (Exception ex)
             {
                 LogSystem.Error(ex);
+            }
+        }
+        private void cbo_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                var cbo = sender as GridLookUpEdit;
+                if (e.Control && e.KeyCode == Keys.A)
+                {
+                    cbo.Focus();
+                    cbo.SelectAll();
+                }
+                if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Tab)
+                {
+                    VisibleDeleteButton(cbo, cbo.EditValue != null);
+                    if (cbo.EditValue != null)
+                    {
+                        //FocusNextControl(cbo);
+                    }
+                }
+                //else
+                //{
+                //    cbo.ShowPopup();
+                //    PopupLoader.SelectFirstRowPopup(cbo);
+                //}
+                else
+                {
+                    cbo.ShowPopup();
+                    PopupLoader.SelectFirstRowPopup(cbo);
+                    //e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

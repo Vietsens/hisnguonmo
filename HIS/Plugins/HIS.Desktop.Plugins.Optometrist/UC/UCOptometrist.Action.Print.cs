@@ -111,7 +111,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
 
 
                     var currentsereServSave = new HIS_SERE_SERV_VIEX();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV_VIEX>(currentsereServ, currentsereServSave);
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV_VIEX>(currentsereServSave, currentsereServ);
 
                     MPS.Processor.Mps000386.PDO.Mps000386PDO pdo = new MPS.Processor.Mps000386.PDO.Mps000386PDO(serviceReq, currentsereServSave);
                     WaitingManager.Hide();
@@ -151,7 +151,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     var serviceReq = GetServiceReq();
 
                     var currentsereServSave = new HIS_SERE_SERV_VIEX();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV_VIEX>(currentsereServ, currentsereServSave);
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERE_SERV_VIEX>(currentsereServSave, currentsereServ);
 
                     MPS.Processor.Mps000506.PDO.Mps000506PDO pdo = new MPS.Processor.Mps000506.PDO.Mps000506PDO(serviceReq, currentsereServSave);
                     WaitingManager.Hide();
