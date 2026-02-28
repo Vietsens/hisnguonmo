@@ -2462,7 +2462,7 @@ namespace HIS.Desktop.Plugins.ServiceKsk
                             {
                                 if (isChoseKsk != 2)
                                 {
-                                    MessageManager.Show("Vui lòng chọn máy!");
+                                    MessageManager.Show("Vui lòng chọn nhóm khám sức khỏe!");
                                     break;
                                 }
                                 this.currentCopyKskAdo = (HIS.UC.Ksk.KskADO)sender;
