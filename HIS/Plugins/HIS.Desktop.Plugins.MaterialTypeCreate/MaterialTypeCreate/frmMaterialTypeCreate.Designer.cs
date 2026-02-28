@@ -1152,7 +1152,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem144.Size = new System.Drawing.Size(721, 163);
             this.layoutControlItem144.Text = "Chính sách giá bán:";
             this.layoutControlItem144.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem144.TextSize = new System.Drawing.Size(108, 0);
+            this.layoutControlItem144.TextSize = new System.Drawing.Size(123, 0);
             this.layoutControlItem144.TextToControlDistance = 5;
             // 
             // chkIsSaleEqualImpPrice
@@ -1344,7 +1344,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciImpPrice.Size = new System.Drawing.Size(365, 28);
             this.lciImpPrice.Text = "Giá nhập:";
             this.lciImpPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciImpPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lciImpPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lciImpPrice.TextToControlDistance = 5;
             // 
             // lciImpVatRatio
@@ -1357,7 +1357,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciImpVatRatio.Size = new System.Drawing.Size(362, 28);
             this.lciImpVatRatio.Text = "VAT nhập (%):";
             this.lciImpVatRatio.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciImpVatRatio.TextSize = new System.Drawing.Size(110, 20);
+            this.lciImpVatRatio.TextSize = new System.Drawing.Size(125, 20);
             this.lciImpVatRatio.TextToControlDistance = 5;
             // 
             // lciInternalPrice
@@ -1370,7 +1370,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciInternalPrice.Size = new System.Drawing.Size(365, 28);
             this.lciInternalPrice.Text = "Giá nội bộ:";
             this.lciInternalPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciInternalPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lciInternalPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lciInternalPrice.TextToControlDistance = 5;
             // 
             // lcLastExpPrice
@@ -1383,7 +1383,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcLastExpPrice.Size = new System.Drawing.Size(365, 28);
             this.lcLastExpPrice.Text = "Giá bán:";
             this.lcLastExpPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcLastExpPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lcLastExpPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lcLastExpPrice.TextToControlDistance = 5;
             // 
             // lcIsSaleEqualImpPrice
@@ -1410,7 +1410,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcLastExpVatPrice.Size = new System.Drawing.Size(362, 28);
             this.lcLastExpVatPrice.Text = "VAT bán (%):";
             this.lcLastExpVatPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcLastExpVatPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lcLastExpVatPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lcLastExpVatPrice.TextToControlDistance = 5;
             // 
             // layoutControlItem9
@@ -1587,6 +1587,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.cboBlockRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBlockRoom.Properties.NullText = "";
+            this.cboBlockRoom.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+            this.cboBlockRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboBlockRoom.Properties.View = this.gridViewBlockRoom;
             this.cboBlockRoom.Size = new System.Drawing.Size(585, 22);
             this.cboBlockRoom.StyleController = this.layoutControl6;
@@ -1599,6 +1601,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.gridViewBlockRoom.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridViewBlockRoom.Name = "gridViewBlockRoom";
             this.gridViewBlockRoom.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBlockRoom.OptionsView.ShowAutoFilterRow = true;
+            this.gridViewBlockRoom.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
             this.gridViewBlockRoom.OptionsView.ShowGroupPanel = false;
             // 
             // cboBlockExpMestType
@@ -1841,7 +1845,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciIsStopImp.Size = new System.Drawing.Size(183, 26);
             this.lciIsStopImp.Text = "Dừng nhập:";
             this.lciIsStopImp.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciIsStopImp.TextSize = new System.Drawing.Size(108, 20);
+            this.lciIsStopImp.TextSize = new System.Drawing.Size(123, 20);
             this.lciIsStopImp.TextToControlDistance = 2;
             // 
             // lcCPNG
@@ -1882,7 +1886,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciIsAllowOdd.Size = new System.Drawing.Size(183, 26);
             this.lciIsAllowOdd.Text = "Cho kê lẻ:";
             this.lciIsAllowOdd.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciIsAllowOdd.TextSize = new System.Drawing.Size(108, 20);
+            this.lciIsAllowOdd.TextSize = new System.Drawing.Size(123, 20);
             this.lciIsAllowOdd.TextToControlDistance = 2;
             // 
             // lcIsMustPrepare
@@ -2248,7 +2252,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitRatio.Size = new System.Drawing.Size(356, 28);
             this.lcHeinLimitRatio.Text = "Tỉ lệ BHYT (%):";
             this.lcHeinLimitRatio.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitRatio.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitRatio.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitRatio.TextToControlDistance = 5;
             // 
             // lcHeinLimitRatioOld
@@ -2261,7 +2265,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitRatioOld.Size = new System.Drawing.Size(350, 28);
             this.lcHeinLimitRatioOld.Text = "Tỉ lệ BHYT cũ (%):";
             this.lcHeinLimitRatioOld.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitRatioOld.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitRatioOld.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitRatioOld.TextToControlDistance = 5;
             // 
             // lcIsNoHeinLimitForSpecial
@@ -2274,7 +2278,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcIsNoHeinLimitForSpecial.Size = new System.Drawing.Size(200, 28);
             this.lcIsNoHeinLimitForSpecial.Text = "Không áp trần:";
             this.lcIsNoHeinLimitForSpecial.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcIsNoHeinLimitForSpecial.TextSize = new System.Drawing.Size(110, 20);
+            this.lcIsNoHeinLimitForSpecial.TextSize = new System.Drawing.Size(125, 20);
             this.lcIsNoHeinLimitForSpecial.TextToControlDistance = 2;
             // 
             // lcHeinLimitPriceInTime
@@ -2288,7 +2292,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitPriceInTime.Size = new System.Drawing.Size(356, 28);
             this.lcHeinLimitPriceInTime.Text = "AD tỉ lệ BHYT mới:";
             this.lcHeinLimitPriceInTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitPriceInTime.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitPriceInTime.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitPriceInTime.TextToControlDistance = 5;
             // 
             // lcGender
@@ -2301,7 +2305,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcGender.Size = new System.Drawing.Size(356, 28);
             this.lcGender.Text = "Giới tính:";
             this.lcGender.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcGender.TextSize = new System.Drawing.Size(110, 20);
+            this.lcGender.TextSize = new System.Drawing.Size(125, 20);
             this.lcGender.TextToControlDistance = 5;
             // 
             // lcAlertMaxInPrescription
@@ -2315,7 +2319,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcAlertMaxInPrescription.Size = new System.Drawing.Size(350, 28);
             this.lcAlertMaxInPrescription.Text = "SL tối đa/đơn:";
             this.lcAlertMaxInPrescription.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcAlertMaxInPrescription.TextSize = new System.Drawing.Size(110, 20);
+            this.lcAlertMaxInPrescription.TextSize = new System.Drawing.Size(125, 20);
             this.lcAlertMaxInPrescription.TextToControlDistance = 5;
             // 
             // layoutControlItem19
@@ -2352,7 +2356,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitPrice.Size = new System.Drawing.Size(356, 28);
             this.lcHeinLimitPrice.Text = "Trần BHYT:";
             this.lcHeinLimitPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitPrice.TextToControlDistance = 5;
             // 
             // lcHeinLimitPriceOld
@@ -2365,7 +2369,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitPriceOld.Size = new System.Drawing.Size(350, 28);
             this.lcHeinLimitPriceOld.Text = "Trần BHYT cũ:";
             this.lcHeinLimitPriceOld.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitPriceOld.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitPriceOld.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitPriceOld.TextToControlDistance = 5;
             // 
             // lciBlockDepartment
@@ -2378,7 +2382,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciBlockDepartment.Size = new System.Drawing.Size(356, 28);
             this.lciBlockDepartment.Text = "Chặn xuất cho khoa:";
             this.lciBlockDepartment.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciBlockDepartment.TextSize = new System.Drawing.Size(110, 20);
+            this.lciBlockDepartment.TextSize = new System.Drawing.Size(125, 20);
             this.lciBlockDepartment.TextToControlDistance = 5;
             // 
             // lciBlockExpMestType
@@ -2391,7 +2395,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciBlockExpMestType.Size = new System.Drawing.Size(350, 28);
             this.lciBlockExpMestType.Text = "Chặn xuất theo phiếu:";
             this.lciBlockExpMestType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciBlockExpMestType.TextSize = new System.Drawing.Size(110, 20);
+            this.lciBlockExpMestType.TextSize = new System.Drawing.Size(125, 20);
             this.lciBlockExpMestType.TextToControlDistance = 5;
             // 
             // lciBlockRoom
@@ -2402,9 +2406,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciBlockRoom.Location = new System.Drawing.Point(0, 201);
             this.lciBlockRoom.Name = "lciBlockRoom";
             this.lciBlockRoom.Size = new System.Drawing.Size(706, 28);
-            this.lciBlockRoom.Text = "Chặn xuất theo phòng:";
+            this.lciBlockRoom.Text = "Chặn xuất cho phòng:";
             this.lciBlockRoom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciBlockRoom.TextSize = new System.Drawing.Size(110, 20);
+            this.lciBlockRoom.TextSize = new System.Drawing.Size(125, 20);
             this.lciBlockRoom.TextToControlDistance = 5;
             // 
             // lciCTK
@@ -2418,7 +2422,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciCTK.Size = new System.Drawing.Size(350, 28);
             this.lciCTK.Text = "Nguồn CTK:";
             this.lciCTK.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciCTK.TextSize = new System.Drawing.Size(110, 20);
+            this.lciCTK.TextSize = new System.Drawing.Size(125, 20);
             this.lciCTK.TextToControlDistance = 5;
             // 
             // lciIsSupported
@@ -2434,7 +2438,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciIsSupported.Size = new System.Drawing.Size(356, 28);
             this.lciIsSupported.Text = "Bệnh được hỗ trợ:";
             this.lciIsSupported.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciIsSupported.TextSize = new System.Drawing.Size(110, 20);
+            this.lciIsSupported.TextSize = new System.Drawing.Size(125, 20);
             this.lciIsSupported.TextToControlDistance = 5;
             // 
             // lcAlertMaxInDay
@@ -2448,7 +2452,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcAlertMaxInDay.Size = new System.Drawing.Size(350, 28);
             this.lcAlertMaxInDay.Text = "SL tối đa/ngày:";
             this.lcAlertMaxInDay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcAlertMaxInDay.TextSize = new System.Drawing.Size(110, 20);
+            this.lcAlertMaxInDay.TextSize = new System.Drawing.Size(125, 20);
             this.lcAlertMaxInDay.TextToControlDistance = 5;
             // 
             // lciAlertMinInStock
@@ -2462,7 +2466,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciAlertMinInStock.Size = new System.Drawing.Size(356, 33);
             this.lciAlertMinInStock.Text = "CB tồn kho:";
             this.lciAlertMinInStock.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAlertMinInStock.TextSize = new System.Drawing.Size(110, 20);
+            this.lciAlertMinInStock.TextSize = new System.Drawing.Size(125, 20);
             this.lciAlertMinInStock.TextToControlDistance = 5;
             // 
             // lciAlertExpiredDate
@@ -2476,7 +2480,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciAlertExpiredDate.Size = new System.Drawing.Size(356, 28);
             this.lciAlertExpiredDate.Text = "Cảnh báo HSD:";
             this.lciAlertExpiredDate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAlertExpiredDate.TextSize = new System.Drawing.Size(110, 20);
+            this.lciAlertExpiredDate.TextSize = new System.Drawing.Size(125, 20);
             this.lciAlertExpiredDate.TextToControlDistance = 5;
             // 
             // emptySpaceItem5
@@ -2499,7 +2503,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem31.Size = new System.Drawing.Size(706, 28);
             this.layoutControlItem31.Text = "Đầu mã thẻ BHYT:";
             this.layoutControlItem31.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem31.TextSize = new System.Drawing.Size(110, 20);
+            this.layoutControlItem31.TextSize = new System.Drawing.Size(125, 20);
             this.layoutControlItem31.TextToControlDistance = 5;
             // 
             // layoutControlItem32
