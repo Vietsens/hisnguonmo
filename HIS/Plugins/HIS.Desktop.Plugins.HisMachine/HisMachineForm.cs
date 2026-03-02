@@ -1080,7 +1080,8 @@ namespace HIS.Desktop.Plugins.HisMachine
                     }
                     if (e.Column.FieldName == "IsMachine")
                     {
-                        e.RepositoryItem = (data.HIS_MACHINE_INSPECTION?.Count > 0) ? ButtonEditIsMachine : null;
+                        var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == data.ID ).ToList();
+                        e.RepositoryItem = (listMachineInspection?.Count > 0) ? ButtonEditIsMachine : null;
                     }
                 }
             }
