@@ -1078,6 +1078,10 @@ namespace HIS.Desktop.Plugins.HisMachine
                     {
                         e.RepositoryItem = data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? ButtonEditQcNormation : ButtonEditDisableQcNormation;
                     }
+                    if (e.Column.FieldName == "IsMachine")
+                    {
+                        e.RepositoryItem = (data.HIS_MACHINE_INSPECTION?.Count > 0) ? ButtonEditIsMachine : null;
+                    }
                 }
             }
             catch (Exception ex)
@@ -1879,7 +1883,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                             if (branch != null)
                                 maCSKCB = branch.HEIN_MEDI_ORG_CODE;
                         }
-                    }
+                    }                  
                     xmlCLS.MaCoSoKCB = maCSKCB;
                     xmlCLS.TenThietBi = machine.MACHINE_NAME;
                     xmlCLS.KyHieu = !String.IsNullOrEmpty(machine.SYMBOL) ? machine.SYMBOL : "";
@@ -1889,6 +1893,22 @@ namespace HIS.Desktop.Plugins.HisMachine
                     xmlCLS.NamSD = machine.USED_YEAR;
                     xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : "";
                     xmlCLS.MaMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
+
+                    if (machine.HIS_MACHINE_INSPECTION != null && machine.HIS_MACHINE_INSPECTION.Count > 0)
+                    {
+                        long? maxFromTime = machine.HIS_MACHINE_INSPECTION.Max(o => o.FROM_TIME);
+                        long? maxToTime = machine.HIS_MACHINE_INSPECTION.Max(o => o.TO_TIME);
+
+                        if (maxFromTime.HasValue)
+                        {
+                            xmlCLS.TuNgay = (int)(maxFromTime.Value / 1000000);
+                        }
+
+                        if (maxToTime.HasValue)
+                        {
+                            xmlCLS.DenNgay = (int)(maxToTime.Value / 1000000);
+                        }
+                    }
                     result.Add(xmlCLS);
                     count++;
 
@@ -1921,6 +1941,8 @@ namespace HIS.Desktop.Plugins.HisMachine
                         detail.NAM_SD = ado.NamSD != null ? ado.NamSD.ToString() : "";
                         detail.MA_MAY = ado.MaMay;
                         detail.SO_LUU_HANH = ado.SoLuuHanh;
+                        detail.TU_NGAY = ado.TuNgay != null ? ado.TuNgay.ToString() : "";
+                        detail.DEN_NGAY = ado.DenNgay != null ? ado.DenNgay.ToString() : "";
                         datas.Add(detail);
                     }
                 }
@@ -2032,6 +2054,26 @@ namespace HIS.Desktop.Plugins.HisMachine
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ButtonEditIsMachine_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+
+                var rowData = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                if (rowData == null) return;
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisMachineInspection").FirstOrDefault();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleData), moduleData));
+                List<object> listArgs = new List<object>();
+                listArgs.Add(rowData);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentModule), currentModule));
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisMachineInspection", 0, 0, listArgs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

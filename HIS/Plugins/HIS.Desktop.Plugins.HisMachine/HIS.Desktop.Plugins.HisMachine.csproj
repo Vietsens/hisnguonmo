@@ -132,8 +132,9 @@
     <Reference Include="Inventec.Desktop.CustomControl">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.UC.Paging">
-      <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
+    <Reference Include="Inventec.UC.Paging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
       <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>

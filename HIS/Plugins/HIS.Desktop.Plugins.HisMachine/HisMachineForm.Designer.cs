@@ -92,6 +92,10 @@ namespace HIS.Desktop.Plugins.HisMachine
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.cboConfigTimeConflict = new DevExpress.XtraEditors.GridLookUpEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
@@ -130,6 +134,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gclLock_UnLock = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grlDelete = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnIsMachine = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnIsKidney = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnQcNormation = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gclCode = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -158,6 +163,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.ButtonEditIsKidney = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonEditQcNormation = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.ButtonEditDisableQcNormation = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.ButtonEditIsMachine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
@@ -238,6 +244,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditIsKidney)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditQcNormation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditDisableQcNormation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonEditIsMachine)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).BeginInit();
@@ -654,7 +661,8 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.btnDeleteDisable,
             this.ButtonEditIsKidney,
             this.ButtonEditQcNormation,
-            this.ButtonEditDisableQcNormation});
+            this.ButtonEditDisableQcNormation,
+            this.ButtonEditIsMachine});
             this.gridControl1.Size = new System.Drawing.Size(759, 430);
             this.gridControl1.TabIndex = 5;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -667,6 +675,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.grlSTT,
             this.gclLock_UnLock,
             this.grlDelete,
+            this.gridColumnIsMachine,
             this.gridColumnIsKidney,
             this.gridColumnQcNormation,
             this.gclCode,
@@ -748,6 +757,17 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.grlDelete.VisibleIndex = 2;
             this.grlDelete.Width = 20;
             // 
+            // gridColumnIsMachine
+            // 
+            this.gridColumnIsMachine.Caption = "Thông tin kiểm định máy";
+            this.gridColumnIsMachine.FieldName = "IsMachine";
+            this.gridColumnIsMachine.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
+            this.gridColumnIsMachine.Name = "gridColumnIsMachine";
+            this.gridColumnIsMachine.OptionsColumn.ShowCaption = false;
+            this.gridColumnIsMachine.Visible = true;
+            this.gridColumnIsMachine.VisibleIndex = 3;
+            this.gridColumnIsMachine.Width = 20;
+            // 
             // gridColumnIsKidney
             // 
             this.gridColumnIsKidney.Caption = "Chạy thận";
@@ -757,7 +777,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnIsKidney.OptionsColumn.AllowEdit = false;
             this.gridColumnIsKidney.OptionsColumn.ShowCaption = false;
             this.gridColumnIsKidney.Visible = true;
-            this.gridColumnIsKidney.VisibleIndex = 3;
+            this.gridColumnIsKidney.VisibleIndex = 4;
             this.gridColumnIsKidney.Width = 20;
             // 
             // gridColumnQcNormation
@@ -769,7 +789,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnQcNormation.OptionsColumn.ShowCaption = false;
             this.gridColumnQcNormation.ToolTip = "Định mức hóa chất chạy QC";
             this.gridColumnQcNormation.Visible = true;
-            this.gridColumnQcNormation.VisibleIndex = 4;
+            this.gridColumnQcNormation.VisibleIndex = 5;
             this.gridColumnQcNormation.Width = 20;
             // 
             // gclCode
@@ -781,7 +801,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gclCode.OptionsColumn.AllowEdit = false;
             this.gclCode.OptionsColumn.ReadOnly = true;
             this.gclCode.Visible = true;
-            this.gclCode.VisibleIndex = 5;
+            this.gclCode.VisibleIndex = 6;
             // 
             // gclName
             // 
@@ -792,7 +812,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gclName.OptionsColumn.AllowEdit = false;
             this.gclName.OptionsColumn.ReadOnly = true;
             this.gclName.Visible = true;
-            this.gclName.VisibleIndex = 6;
+            this.gclName.VisibleIndex = 7;
             this.gclName.Width = 100;
             // 
             // gridColumn1
@@ -804,7 +824,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn1.OptionsColumn.ReadOnly = true;
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 7;
+            this.gridColumn1.VisibleIndex = 8;
             this.gridColumn1.Width = 70;
             // 
             // gridColumn2
@@ -816,7 +836,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn2.OptionsColumn.ReadOnly = true;
             this.gridColumn2.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 8;
+            this.gridColumn2.VisibleIndex = 9;
             this.gridColumn2.Width = 76;
             // 
             // gridColumn11
@@ -825,7 +845,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn11.FieldName = "SOURCE_NAME";
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 9;
+            this.gridColumn11.VisibleIndex = 10;
             this.gridColumn11.Width = 60;
             // 
             // gridColumn3
@@ -836,7 +856,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 10;
+            this.gridColumn3.VisibleIndex = 11;
             this.gridColumn3.Width = 100;
             // 
             // gridColumn10
@@ -846,7 +866,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 11;
+            this.gridColumn10.VisibleIndex = 12;
             // 
             // gridColumn9
             // 
@@ -855,7 +875,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 12;
+            this.gridColumn9.VisibleIndex = 13;
             this.gridColumn9.Width = 120;
             // 
             // gridColumn8
@@ -865,7 +885,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 13;
+            this.gridColumn8.VisibleIndex = 14;
             this.gridColumn8.Width = 100;
             // 
             // gridColumn7
@@ -875,7 +895,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 14;
+            this.gridColumn7.VisibleIndex = 15;
             this.gridColumn7.Width = 100;
             // 
             // gridColumn6
@@ -885,7 +905,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 15;
+            this.gridColumn6.VisibleIndex = 16;
             this.gridColumn6.Width = 100;
             // 
             // gridColumn5
@@ -895,7 +915,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
-            this.gridColumn5.VisibleIndex = 16;
+            this.gridColumn5.VisibleIndex = 17;
             this.gridColumn5.Width = 100;
             // 
             // grclIntegrateAddress
@@ -906,7 +926,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.grclIntegrateAddress.OptionsColumn.AllowEdit = false;
             this.grclIntegrateAddress.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grclIntegrateAddress.Visible = true;
-            this.grclIntegrateAddress.VisibleIndex = 17;
+            this.grclIntegrateAddress.VisibleIndex = 18;
             this.grclIntegrateAddress.Width = 86;
             // 
             // gridColumn4
@@ -917,7 +937,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 19;
+            this.gridColumn4.VisibleIndex = 20;
             this.gridColumn4.Width = 107;
             // 
             // gridColumnIs_Action
@@ -928,7 +948,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnIs_Action.OptionsColumn.AllowEdit = false;
             this.gridColumnIs_Action.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnIs_Action.Visible = true;
-            this.gridColumnIs_Action.VisibleIndex = 20;
+            this.gridColumnIs_Action.VisibleIndex = 21;
             this.gridColumnIs_Action.Width = 72;
             // 
             // gridColumnCreateTime
@@ -939,7 +959,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnCreateTime.OptionsColumn.AllowEdit = false;
             this.gridColumnCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnCreateTime.Visible = true;
-            this.gridColumnCreateTime.VisibleIndex = 21;
+            this.gridColumnCreateTime.VisibleIndex = 22;
             this.gridColumnCreateTime.Width = 120;
             // 
             // gridColumnCreator
@@ -949,7 +969,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnCreator.Name = "gridColumnCreator";
             this.gridColumnCreator.OptionsColumn.AllowEdit = false;
             this.gridColumnCreator.Visible = true;
-            this.gridColumnCreator.VisibleIndex = 22;
+            this.gridColumnCreator.VisibleIndex = 23;
             this.gridColumnCreator.Width = 85;
             // 
             // gridColumnModifyTime
@@ -960,7 +980,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnModifyTime.OptionsColumn.AllowEdit = false;
             this.gridColumnModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnModifyTime.Visible = true;
-            this.gridColumnModifyTime.VisibleIndex = 23;
+            this.gridColumnModifyTime.VisibleIndex = 24;
             this.gridColumnModifyTime.Width = 120;
             // 
             // gridColumnModifyer
@@ -971,7 +991,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnModifyer.OptionsColumn.AllowEdit = false;
             this.gridColumnModifyer.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnModifyer.Visible = true;
-            this.gridColumnModifyer.VisibleIndex = 24;
+            this.gridColumnModifyer.VisibleIndex = 25;
             this.gridColumnModifyer.Width = 84;
             // 
             // gridColumnServiceOnDay
@@ -982,7 +1002,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridColumnServiceOnDay.OptionsColumn.AllowEdit = false;
             this.gridColumnServiceOnDay.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnServiceOnDay.Visible = true;
-            this.gridColumnServiceOnDay.VisibleIndex = 18;
+            this.gridColumnServiceOnDay.VisibleIndex = 19;
             this.gridColumnServiceOnDay.Width = 100;
             // 
             // btnDeleteEnable
@@ -1036,6 +1056,15 @@ namespace HIS.Desktop.Plugins.HisMachine
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditDisableQcNormation.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "", null, null, true)});
             this.ButtonEditDisableQcNormation.Name = "ButtonEditDisableQcNormation";
             this.ButtonEditDisableQcNormation.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // ButtonEditIsMachine
+            // 
+            this.ButtonEditIsMachine.AutoHeight = false;
+            this.ButtonEditIsMachine.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditIsMachine.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "", null, null, true)});
+            this.ButtonEditIsMachine.Name = "ButtonEditIsMachine";
+            this.ButtonEditIsMachine.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.ButtonEditIsMachine.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEditIsMachine_ButtonClick);
             // 
             // layoutControlGroup3
             // 
@@ -1190,7 +1219,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.cboRoom.Properties.AutoComplete = false;
             this.cboRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
             this.cboRoom.Properties.NullText = "";
             this.cboRoom.Properties.View = this.gridView2;
             this.cboRoom.Size = new System.Drawing.Size(139, 20);
@@ -1629,6 +1658,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditIsKidney)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditQcNormation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditDisableQcNormation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonEditIsMachine)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup2)).EndInit();
@@ -1790,5 +1820,7 @@ namespace HIS.Desktop.Plugins.HisMachine
         private DevExpress.XtraEditors.GridLookUpEdit cboConfigTimeConflict;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView3;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem28;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnIsMachine;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit ButtonEditIsMachine;
     }
 }
