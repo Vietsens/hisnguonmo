@@ -79,7 +79,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT
                     var mestMetyDepas__IdNotAllows = mestMetyDepas
                         .Where(o =>
                             o.DEPARTMENT_ID == currentWorkPlace.DepartmentId
-                            && mediStockIds.Contains(o.MEDI_STOCK_ID ?? 0) && (o.ROOM_IDS == null || o.ROOM_IDS.Split(';').Select(long.Parse).ToList().Contains(currentWorkPlace.RoomId)))
+                            && (o.MEDI_STOCK_ID == null) && (o.ROOM_IDS == null || o.ROOM_IDS.Split(';').Select(long.Parse).ToList().Contains(currentWorkPlace.RoomId)))
                         .Select(o => o.MEDICINE_TYPE_ID).Distinct().ToList();
                     if (mestMetyDepas__IdNotAllows != null && mestMetyDepas__IdNotAllows.Count > 0)
                     {
