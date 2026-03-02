@@ -32,6 +32,7 @@ namespace MPS.Processor.Mps000480
     {
         Mps000480PDO rdo;
         List<HIS_EXP_MEST> lstExpMest = new List<HIS_EXP_MEST>();
+        List<V_HIS_EXP_MEST> lstExpMestView = new List<V_HIS_EXP_MEST>();
         List<MEDICINE_MATERIAL> lstMedicineMaterials = new List<MEDICINE_MATERIAL>();
         public Mps000480Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -40,6 +41,12 @@ namespace MPS.Processor.Mps000480
             {
                 rdo = (Mps000480PDO)rdoBase;
             }
+        }
+        List<EXP_MEST_AREA> lstArea = new List<EXP_MEST_AREA>();
+        public class EXP_MEST_AREA
+        {
+            public string AREA_NAME { get; set; }
+            public long? AREA_ID { get; set; }
         }
 
         public override bool ProcessData()
@@ -61,8 +68,19 @@ namespace MPS.Processor.Mps000480
                 SetSingleKey();
                 ProcessListKey();
 
+                objectTag.AddObjectData(store, "Areas", lstArea);
+                objectTag.AddObjectData(store, "ExpMestViews", rdo.lstExpMestView);
+                objectTag.AddObjectData(store, "MedicineMaterials", lstMedicineMaterials);
+
+                
+                objectTag.AddRelationship(store, "Areas", "ExpMestViews", "AREA_ID", "REQ_AREA_ID");
+
+                
+                objectTag.AddRelationship(store, "ExpMestViews", "MedicineMaterials", "ID", "EXP_MEST_ID");
+
+
                 objectTag.AddObjectData(store, "ExpMests", this.lstExpMest);
-                objectTag.AddObjectData(store, "MedicineMaterials", this.lstMedicineMaterials);
+                //objectTag.AddObjectData(store, "MedicineMaterials", this.lstMedicineMaterials);
                 objectTag.AddRelationship(store, "ExpMests", "MedicineMaterials", "ID", "EXP_MEST_ID");
 
 
@@ -83,6 +101,22 @@ namespace MPS.Processor.Mps000480
         {
             try
             {
+                if (rdo.lstExpMestView != null && rdo.lstExpMestView.Any())
+                {
+                    lstExpMestView = rdo.lstExpMestView.ToList();
+
+                    var areaGroup = rdo.lstExpMestView
+                        .GroupBy(x => new { x.REQ_AREA_ID, x.REQ_AREA_NAME });
+
+                    foreach (var area in areaGroup)
+                    {
+                        lstArea.Add(new EXP_MEST_AREA
+                        {
+                            AREA_ID = area.Key.REQ_AREA_ID,
+                            AREA_NAME = area.Key.REQ_AREA_NAME
+                        });
+                    }
+                }
                 if (rdo.lstMedicine != null && rdo.lstMedicine.Count() > 0)
                 {
                     rdo.lstMedicine = rdo.lstMedicine.OrderBy(o => o.NUM_ORDER).ThenBy(o => o.ID).ToList();
@@ -133,7 +167,7 @@ namespace MPS.Processor.Mps000480
                         expMest.EXP_MEST_CODE = item.First().EXP_MEST_CODE;
                         lstExpMest.Add(expMest);
                     }
-                    var materialGroupByType = rdo.lstMaterial.GroupBy(o => new { o.MATERIAL_TYPE_ID });
+                    var materialGroupByType = rdo.lstMaterial.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.EXP_MEST_ID });
                     foreach (var item in materialGroupByType)
                     {
                         MEDICINE_MATERIAL medimate = new MEDICINE_MATERIAL();
