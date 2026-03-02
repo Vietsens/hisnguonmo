@@ -389,7 +389,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     filter.HAS_MEDI_STOCK_ID = false;
 
                     List<HIS_MEST_MATY_DEPA> matyDepas = new BackendAdapter(new CommonParam()).Get<List<HIS_MEST_MATY_DEPA>>("api/HisMestMatyDepa/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
-                    this.oldBlockDepartmentIds = matyDepas != null ? matyDepas.Where(o => o.IS_JUST_PRESCRIPTION != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).Select(s => s.DEPARTMENT_ID).Distinct().ToList() : null;
+                    this.oldBlockDepartmentIds = matyDepas != null
+                        ? matyDepas.Where(o => o.IS_JUST_PRESCRIPTION != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                            && string.IsNullOrEmpty(o.ROOM_IDS))
+                            .Select(s => s.DEPARTMENT_ID).Distinct().ToList()
+                        : null;
                 }
                 GridCheckMarksSelection gridCheckMark = cboBlockDepartment.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
@@ -458,15 +462,22 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                         cboBlockRoom.Text = displayText;
                         cboBlockRoom.ToolTip = displayText;
 
-                        cboBlockDepartment.Properties.ReadOnly = true;
+                        var roomDeptIds = selecteds.Select(r => r.DEPARTMENT_ID).Distinct().ToList();
                         GridCheckMarksSelection gridCheckMarkDept = cboBlockDepartment.Properties.Tag as GridCheckMarksSelection;
-                        if (gridCheckMarkDept != null)
+                        if (gridCheckMarkDept != null && this.BlockDepartment__Seleced != null)
                         {
+                            var deptsToKeep = this.BlockDepartment__Seleced.Where(d => !roomDeptIds.Contains(d.ID)).ToList();
                             gridCheckMarkDept.ClearSelection(cboBlockDepartment.Properties.View);
+                            if (deptsToKeep.Count > 0)
+                            {
+                                gridCheckMarkDept.SelectAll(deptsToKeep);
+                            }
+                            this.BlockDepartment__Seleced = deptsToKeep;
+                            string deptDisplay = String.Join(", ", deptsToKeep.Select(s => s.DEPARTMENT_NAME));
+                            cboBlockDepartment.Text = deptDisplay;
+                            cboBlockDepartment.ToolTip = deptDisplay;
                         }
-                        this.BlockDepartment__Seleced = new List<HIS_DEPARTMENT>();
-                        cboBlockDepartment.Text = "";
-                        cboBlockDepartment.ToolTip = "";
+                        RefreshBlockDepartmentDataSource();
                     }
                 }
             }
@@ -3696,14 +3707,16 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     oldDepartmentIds = this.oldBlockDepartmentIds;
                 }
 
+                // Gộp khoa: khoa được chọn trực tiếp + khoa suy ra từ phòng được chọn
+                if (this.BlockDepartment__Seleced != null)
+                {
+                    selectedDepartmentIds.AddRange(this.BlockDepartment__Seleced.Select(s => s.ID));
+                }
                 if (this.BlockRoom__Selected != null && this.BlockRoom__Selected.Count > 0)
                 {
-                    selectedDepartmentIds = this.BlockRoom__Selected.Select(r => r.DEPARTMENT_ID).Distinct().ToList();
+                    selectedDepartmentIds.AddRange(this.BlockRoom__Selected.Select(r => r.DEPARTMENT_ID));
                 }
-                else if (this.BlockDepartment__Seleced != null)
-                {
-                    selectedDepartmentIds = this.BlockDepartment__Seleced.Select(s => s.ID).Distinct().ToList();
-                }
+                selectedDepartmentIds = selectedDepartmentIds.Distinct().ToList();
 
                 if (selectedDepartmentIds.Count == 0 && oldDepartmentIds.Count == 0)
                 {
@@ -4517,7 +4530,22 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
         {
             try
             {
-                // Cập nhật hiển thị text cho combo khoa
+                if (this.BlockRoom__Selected != null && this.BlockRoom__Selected.Count > 0)
+                {
+                    var roomDeptIds = this.BlockRoom__Selected.Select(r => r.DEPARTMENT_ID).Distinct().ToList();
+                    var deptsToKeep = this.BlockDepartment__Seleced.Where(d => !roomDeptIds.Contains(d.ID)).ToList();
+                    if (deptsToKeep.Count != this.BlockDepartment__Seleced.Count)
+                    {
+                        GridCheckMarksSelection gridCheckMarkDept = cboBlockDepartment.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheckMarkDept != null)
+                        {
+                            gridCheckMarkDept.ClearSelection(cboBlockDepartment.Properties.View);
+                            if (deptsToKeep.Count > 0)
+                                gridCheckMarkDept.SelectAll(deptsToKeep);
+                        }
+                        this.BlockDepartment__Seleced = deptsToKeep;
+                    }
+                }
                 string display = String.Join(", ", this.BlockDepartment__Seleced.Select(s => s.DEPARTMENT_NAME));
                 cboBlockDepartment.Text = display;
                 cboBlockDepartment.ToolTip = display;
@@ -4575,29 +4603,47 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             {
                 if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
                 {
-                    GridCheckMarksSelection gridCheckMarkDept = cboBlockDepartment.Properties.Tag as GridCheckMarksSelection;
                     if (this.BlockRoom__Selected != null && this.BlockRoom__Selected.Count > 0)
                     {
-                        // Khi chọn phòng → xóa khoa hiển thị, readonly khoa (khi lưu sẽ tự lấy khoa từ phòng)
-                        if (gridCheckMarkDept != null)
+                        var roomDeptIds = this.BlockRoom__Selected.Select(r => r.DEPARTMENT_ID).Distinct().ToList();
+                        GridCheckMarksSelection gridCheckMarkDept = cboBlockDepartment.Properties.Tag as GridCheckMarksSelection;
+                        if (gridCheckMarkDept != null && this.BlockDepartment__Seleced != null)
                         {
+                            var deptsToKeep = this.BlockDepartment__Seleced.Where(d => !roomDeptIds.Contains(d.ID)).ToList();
                             gridCheckMarkDept.ClearSelection(cboBlockDepartment.Properties.View);
+                            if (deptsToKeep.Count > 0)
+                            {
+                                gridCheckMarkDept.SelectAll(deptsToKeep);
+                            }
+                            this.BlockDepartment__Seleced = deptsToKeep;
+                            string deptDisplay = String.Join(", ", deptsToKeep.Select(s => s.DEPARTMENT_NAME));
+                            cboBlockDepartment.Text = deptDisplay;
+                            cboBlockDepartment.ToolTip = deptDisplay;
                         }
-                        this.BlockDepartment__Seleced = new List<HIS_DEPARTMENT>();
-                        cboBlockDepartment.Text = "";
-                        cboBlockDepartment.ToolTip = "";
-                        cboBlockDepartment.Properties.ReadOnly = true;
                     }
-                    else
-                    {
-                        // Không còn phòng nào → mở lại khoa cho chỉnh sửa
-                        cboBlockDepartment.Properties.ReadOnly = false;
-                    }
-                    // Cập nhật hiển thị text cho combo phòng
+                    RefreshBlockDepartmentDataSource();
                     string roomDisplay = String.Join(", ", this.BlockRoom__Selected.Select(s => s.ROOM_NAME));
                     cboBlockRoom.Text = roomDisplay;
                     cboBlockRoom.ToolTip = roomDisplay;
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void RefreshBlockDepartmentDataSource()
+        {
+            try
+            {
+                var excludedDeptIds = (this.BlockRoom__Selected != null)
+                    ? this.BlockRoom__Selected.Select(r => r.DEPARTMENT_ID).Distinct().ToList()
+                    : new List<long>();
+                var filteredDepts = BackendDataWorker.Get<HIS_DEPARTMENT>()
+                    .Where(d => !excludedDeptIds.Contains(d.ID))
+                    .ToList();
+                cboBlockDepartment.Properties.DataSource = filteredDepts;
             }
             catch (Exception ex)
             {
