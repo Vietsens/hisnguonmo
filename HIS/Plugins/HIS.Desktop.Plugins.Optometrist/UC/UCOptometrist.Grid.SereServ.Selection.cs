@@ -11,11 +11,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
 {
     public partial class UCOptometrist : UserControlBase
     {
-        private SereServOptometristADO GetSelectedSereServ()
+        private V_HIS_SERE_SERV_VIEX GetSelectedSereServ()
         {
             try
             {
-                return gridViewSereServ.GetFocusedRow() as SereServOptometristADO;
+                return gridViewSereServ.GetFocusedRow() as V_HIS_SERE_SERV_VIEX;
             }
             catch
             {
@@ -23,7 +23,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             }
         }
 
-        private void UpdateEditModeBySelectedSereServ(SereServOptometristADO selected)
+        private void UpdateEditModeBySelectedSereServ(V_HIS_SERE_SERV_VIEX selected)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
         {
             try
             {
-                var data = gridViewSereServ.GetRow(e.FocusedRowHandle) as SereServOptometristADO;
+                var data = gridViewSereServ.GetRow(e.FocusedRowHandle) as V_HIS_SERE_SERV_VIEX;
                 BindSelectedSereServ(data);
                 UpdateEditModeBySelectedSereServ(data);
             }
@@ -54,20 +54,13 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
             }
         }
 
-        private void BindSelectedSereServ(SereServOptometristADO hisSereServ = null)
+        private void BindSelectedSereServ(V_HIS_SERE_SERV_VIEX hisSereServViex = null)
         {
             try
             {
 
-                hisSereServ = hisSereServ ?? GetSelectedSereServ();
-                if (hisSereServ == null) return;
-                var hisSereServViex = hisSereServ.HIS_SERE_SERV_VIEX?
-                    .OrderByDescending(o => o.ID)
-                    .FirstOrDefault();
-                if (hisSereServViex == null)
-                {
-                    hisSereServViex = new HIS_SERE_SERV_VIEX();
-                }
+                hisSereServViex = hisSereServViex ?? GetSelectedSereServ();
+                if (hisSereServViex == null) return;
                 {
                     if (hisSereServViex.VISION_TEST_TIME.HasValue)
                     {
@@ -75,7 +68,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     }
                     else
                     {
-                        if (hisSereServ.HIS_SERE_SERV_VIEX.Count == 0)
+                        if (hisSereServViex.ID == 0)
                         {
                             VISION_TEST_TIME.DateTime = DateTime.Now;
                         }
@@ -190,7 +183,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     }
                     else
                     {
-                        if (hisSereServ.HIS_SERE_SERV_VIEX.Count == 0)
+                        if (hisSereServViex.ID == 0)
                         {
                             GLASS_USE_TIME.DateTime = DateTime.Now;
                         }
@@ -208,7 +201,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     }
                     else
                     {
-                        if (hisSereServ.HIS_SERE_SERV_VIEX.Count == 0)
+                        if (hisSereServViex.ID == 0)
                         {
                             MEDI_USE_TIME.DateTime = DateTime.Now;
                         }
@@ -218,7 +211,7 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                         }
                     }
                 }
-                if (VISION_TEST_USERNAME.EditValue == null && hisSereServ.HIS_SERE_SERV_VIEX.Count == 0)
+                if (VISION_TEST_USERNAME.EditValue == null && hisSereServViex.ID == 0)
                 {
                     string loginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                     var user = BackendDataWorker.Get<ACS_USER>().FirstOrDefault(o => o.LOGINNAME == loginname);
@@ -227,9 +220,21 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                         VISION_TEST_USERNAME.EditValue = user.LOGINNAME;
                     }
                 }
+                //
+
+                HALF_FRONT_RIGHT.Text = hisSereServViex.HALF_FRONT_RIGHT;
+                HALF_FRONT_LEFT.Text = hisSereServViex.HALF_FRONT_LEFT;
+                HALF_BACK_RIGHT.Text = hisSereServViex.HALF_BACK_RIGHT;
+                HALF_BACK_LEFT.Text = hisSereServViex.HALF_BACK_LEFT;
+                RIGHT_ICD_CODE.Text = hisSereServViex.RIGHT_ICD_CODE;
+                RIGHT_ICD_NAME.EditValue = hisSereServViex.RIGHT_ICD_CODE;
+                LEFT_ICD_CODE.Text = hisSereServViex.LEFT_ICD_CODE;
+                LEFT_ICD_NAME.EditValue = hisSereServViex.LEFT_ICD_CODE;
+                BOTH_ICD_CODE.Text = hisSereServViex.BOTH_ICD_CODE;
+                BOTH_ICD_NAME.EditValue = hisSereServViex.BOTH_ICD_CODE;
 
                 // cập nhật trạng thái cho phép sửa/lưu theo lần khám đang chọn
-                UpdateEditModeBySelectedSereServ(hisSereServ);
+                UpdateEditModeBySelectedSereServ(hisSereServViex);
             }
             catch (Exception ex)
             {

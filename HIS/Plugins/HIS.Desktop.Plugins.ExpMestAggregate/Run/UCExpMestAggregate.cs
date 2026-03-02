@@ -132,6 +132,7 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
                 InitComboArea();
                 SetDataDefault();
                 isNotLoadWhileChangeControlStateInFirst = false;
+
             }
             catch (Exception ex)
             {

@@ -472,12 +472,27 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate
             try
             {
                 List<V_HIS_MEDI_STOCK> _mediStocks = new List<V_HIS_MEDI_STOCK>();
+
+                List<V_HIS_MEST_ROOM> _mestRooms = new List<V_HIS_MEST_ROOM>();
+
                 var datas = BackendDataWorker.Get<V_HIS_MEST_ROOM>().Where(p => p.ROOM_ID == this.currentModule.RoomId).ToList();
-                if (datas != null)
+
+                if (ADO.HisConfigCFG.IsChooseRoomGroupRoomOption == "1" && ADO.HisConfigCFG.IsAggregateByDepartment == "1" 
+                    && datas.FirstOrDefault().ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG)
                 {
-                    List<long> mediStockIds = datas.Select(p => p.MEDI_STOCK_ID).ToList();
-                    _mediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => mediStockIds.Contains(p.ID) && p.IS_CABINET != 1).ToList();
+                    _mestRooms = BackendDataWorker.Get<V_HIS_MEST_ROOM>().Where(p => p.DEPARTMENT_ID == datas.FirstOrDefault().DEPARTMENT_ID).ToList();
                 }
+                else
+                {
+                    _mestRooms = datas;
+                }
+
+                if (_mestRooms != null) 
+                {
+                    List<long> mediStockIds = _mestRooms.Select(p => p.MEDI_STOCK_ID).ToList();
+                    _mediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => mediStockIds.Contains(p.ID) && p.IS_CABINET != 1 && p.IS_ACTIVE == 1).ToList();
+                }
+
                 cboMediStock.Properties.DataSource = _mediStocks;
                 cboMediStock.Properties.DisplayMember = "MEDI_STOCK_NAME";
                 cboMediStock.Properties.ValueMember = "ID";

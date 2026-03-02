@@ -2368,7 +2368,14 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
 
                     if (success && isSaveAndPrint)
                     {
-                        this.isPrintNow = true;
+                        if (chkPreviewBeforePrint.Checked)
+                        {
+                            this.isPrintNow = false;
+                        }
+                        else
+                        {
+                            this.isPrintNow = true;
+                        }
                         Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
                         richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, DelegateRunPrinter);
                         if (isShowTransation && !isShowTransationQR) // nếu thanh toán QR không tự động thì ko gọi màn thanh toán ngay, khi tắt QR mới gọi
@@ -3500,6 +3507,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         {
                             IsHidePatientPrice = item.VALUE == "1";
                         }
+                        else if (item.KEY == "chkPreviewBeforePrint")
+                        {
+                            chkPreviewBeforePrint.Checked = item.VALUE == "1";
+                        }
                     }
 
                 }
@@ -3542,6 +3553,39 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkConnectionPOS.Name;
                     csAddOrUpdate.VALUE = (chkConnectionPOS.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkPreviewBeforePrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "chkPreviewBeforePrint" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkPreviewBeforePrint.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = "chkPreviewBeforePrint";
+                    csAddOrUpdate.VALUE = (chkPreviewBeforePrint.Checked ? "1" : "");
                     csAddOrUpdate.MODULE_LINK = moduleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();

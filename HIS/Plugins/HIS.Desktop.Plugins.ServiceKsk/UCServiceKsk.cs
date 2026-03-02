@@ -467,6 +467,7 @@ namespace HIS.Desktop.Plugins.ServiceKsk
                 ado.gridViewService_MouseDownMest = gridViewService_MouseDown;
                 ado.Check__Enable_CheckedChanged = Check__Enable_CheckedChanged;
                 ado.btn_Radio_Enable_Click2 = btn_Radio_Enable_Click2;
+                ado.gridView_MouseRightClick = ServiceGridView_MouseRightClick;
 
                 ServiceColumn colRadio2 = new ServiceColumn("   ", "radioService", 30, true);
                 colRadio2.VisibleIndex = 0;
@@ -827,6 +828,7 @@ namespace HIS.Desktop.Plugins.ServiceKsk
                 ado.gridView_RowCellClick = gridViewKsk_RowCellClick;
                 ado.Check__Enable_CheckedChanged2 = Check__Enable_CheckedChanged2;
                 ado.gridViewKsk_CellValueChanged = gridViewKsk_CellValueChanged;
+                ado.gridView_MouseRightClick = gridViewKsk_MouseRightClick;
                 ado.unLockClick = UnLockClick;
                 ado.deleteClick = DeleteClick;
                 ado.lockClick = LockClick;
@@ -2360,6 +2362,176 @@ namespace HIS.Desktop.Plugins.ServiceKsk
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+
+        private void ServiceGridView_MouseRightClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                if ((e.Item is BarButtonItem) && sender != null && sender is HIS.UC.Service.ServiceADO)
+                {
+                    var type = (HIS.UC.Service.Popup.PopupMenuProcessor.ItemType)e.Item.Tag;
+                    switch (type)
+                    {
+                        case HIS.UC.Service.Popup.PopupMenuProcessor.ItemType.Copy:
+                            {
+                                if (isChoseService != 1)
+                                {
+                                    MessageManager.Show("Vui lòng chọn dịch vụ!");
+                                    break;
+                                }
+                                this.currentCopyServiceAdo = (HIS.UC.Service.ServiceADO)sender;
+                                break;
+                            }
+                        case HIS.UC.Service.Popup.PopupMenuProcessor.ItemType.Paste:
+                            {
+                                var currentPaste = (HIS.UC.Service.ServiceADO)sender;
+                                bool success = false;
+                                CommonParam param = new CommonParam();
+                                if (this.currentCopyServiceAdo == null && isChoseService != 1)
+                                {
+                                    MessageManager.Show("Vui lòng copy!");
+                                    break;
+                                }
+                                if (this.currentCopyServiceAdo != null && currentPaste != null && isChoseService == 1)
+                                {
+                                    if (this.currentCopyServiceAdo.ID == currentPaste.ID)
+                                    {
+                                        MessageManager.Show("Trùng dữ liệu copy và paste");
+                                        break;
+                                    }
+                                    HisKskServiceCopyByServiceSDO hisKskServiceCopyByServiceSDO = new HisKskServiceCopyByServiceSDO();
+                                    hisKskServiceCopyByServiceSDO.CopyServiceId = this.currentCopyServiceAdo.ID;
+                                    hisKskServiceCopyByServiceSDO.PasteServiceId = currentPaste.ID;
+                                    hisKskServiceCopyByServiceSDO.RoomIdPaste = this.moduleData.RoomId;
+
+                                    var result = new BackendAdapter(param).Post<List<HIS_KSK_SERVICE>>("api/HisKskService/CopyByService", ApiConsumer.ApiConsumers.MosConsumer, hisKskServiceCopyByServiceSDO, param);
+                                    if (result != null)
+                                    {
+                                        success = true;
+                                        List<HIS.UC.Ksk.KskADO> dataNew = new List<HIS.UC.Ksk.KskADO>();
+                                        dataNew = (from r in listKsk select new KskADO(r)).ToList();
+                                        if (result != null && result.Count > 0)
+                                        {
+                                            foreach (var itemMachine in result)
+                                            {
+                                                var check = dataNew.FirstOrDefault(o => o.ID == itemMachine.KSK_ID);
+                                                if (check != null)
+                                                {
+                                                    check.check1 = true;
+                                                }
+                                            }
+                                        }
+                                        dataNew = dataNew.OrderByDescending(p => p.check1).ToList();
+                                        if (ucGridControlKsk != null)
+                                        {
+                                            KskProcessor.Reload(ucGridControlKsk, dataNew);
+                                        }
+                                        else
+                                        {
+                                            FillDataToGrid2(this);
+                                        }
+                                    }
+                                }
+                                MessageManager.Show(this.ParentForm, param, success);
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewKsk_MouseRightClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+
+            try
+            {
+                if ((e.Item is BarButtonItem) && sender != null && sender is HIS.UC.Ksk.KskADO)
+                {
+                    var type = (HIS.UC.Ksk.Popup.PopupMenuProcessor.ItemType)e.Item.Tag;
+                    switch (type)
+                    {
+                        case HIS.UC.Ksk.Popup.PopupMenuProcessor.ItemType.Copy:
+                            {
+                                if (isChoseKsk != 2)
+                                {
+                                    MessageManager.Show("Vui lòng chọn nhóm khám sức khỏe!");
+                                    break;
+                                }
+                                this.currentCopyKskAdo = (HIS.UC.Ksk.KskADO)sender;
+                                break;
+                            }
+                        case HIS.UC.Ksk.Popup.PopupMenuProcessor.ItemType.Paste:
+                            {
+                                var currentPaste = (HIS.UC.Ksk.KskADO)sender;
+                                bool success = false;
+                                CommonParam param = new CommonParam();
+                                if (this.currentCopyKskAdo == null && isChoseKsk != 2)
+                                {
+                                    MessageManager.Show("Vui lòng copy!");
+                                    break;
+                                }
+                                if (this.currentCopyKskAdo != null && currentPaste != null && isChoseKsk == 2)
+                                {
+                                    if (this.currentCopyKskAdo.ID == currentPaste.ID)
+                                    {
+                                        MessageManager.Show("Trùng dữ liệu copy và paste");
+                                        break;
+                                    }
+                                    HisKskServiceCopyByKskSDO hisKskServiceCopyByKskSDO = new HisKskServiceCopyByKskSDO();
+                                    hisKskServiceCopyByKskSDO.CopyKskId = this.currentCopyKskAdo.ID;
+                                    hisKskServiceCopyByKskSDO.PasteKskId = currentPaste.ID;
+                                    var result = new BackendAdapter(param).Post<List<HIS_KSK_SERVICE>>("api/HisKskService/CopyByKsk", ApiConsumer.ApiConsumers.MosConsumer, hisKskServiceCopyByKskSDO, param);
+                                    if (result != null)
+                                    {
+                                        success = true;
+                                        List<HIS.UC.Service.ServiceADO> dataNew = new List<HIS.UC.Service.ServiceADO>();
+                                        dataNew = (from r in listService select new HIS.UC.Service.ServiceADO(r)).ToList();
+                                        if (result != null && result.Count > 0)
+                                        {
+
+                                            foreach (var itemService in result)
+                                            {
+                                                var check = dataNew.FirstOrDefault(o => o.ID == itemService.SERVICE_ID);
+                                                if (check != null)
+                                                {
+                                                    check.checkService = true;
+                                                }
+                                            }
+
+                                            dataNew = dataNew.OrderByDescending(p => p.checkService).ToList();
+
+                                            if (ucGridControlService != null)
+                                            {
+                                                ServiceProcessor.Reload(ucGridControlService, dataNew);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            FillDataToGrid1(this);
+                                        }
+                                    }
+                                }
+                                MessageManager.Show(this.ParentForm, param, success);
+                                break;
+                            }
+                        default:
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
     }

@@ -82,6 +82,16 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 GLASS_USE_TIME, GLASS_AMOUNT, IS_GLASS_SCRATCHED);
             Register(
                 MEDI_USE_TIME);
+            Register(
+                HALF_FRONT_RIGHT, HALF_FRONT_LEFT);
+            Register(
+                HALF_BACK_RIGHT, HALF_BACK_LEFT);
+            Register(
+                RIGHT_ICD_CODE, RIGHT_ICD_NAME);
+            Register(
+                LEFT_ICD_CODE, LEFT_ICD_NAME);
+            Register(
+                BOTH_ICD_CODE, BOTH_ICD_NAME);
             navigationOrder = navOrder.ToArray();
         }
 
