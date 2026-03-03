@@ -1066,7 +1066,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 //SetDeviceProperty(ref device, 3096,1);
                 WIA.Item items = device.Items[1];
                 //items.Properties["6146"].set_Value(2);
-                AdjustScannerSettings(items, 150, 0, 0, 1250, 1700, 0, 0, 1);
+                // A4 at 150 DPI is ~1241 x 1754 px. Using 1700px height can cut off the bottom of the page.
+                AdjustScannerSettings(items, 150, 0, 0, 1250, 1754, 0, 0, 1);
 
                 ICommonDialog dlg = new WIA.CommonDialog();
                 while (true)
@@ -1108,7 +1109,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
 
                 var scannerItem = device.Items[1];
-                AdjustScannerSettings(scannerItem, 150, 0, 0, 1250, 1700, 0, 0, 1);
+                // A4 at 150 DPI is ~1241 x 1754 px. Using 1700px height can cut off the bottom of the page.
+                AdjustScannerSettings(scannerItem, 150, 0, 0, 1250, 1754, 0, 0, 1);
 
                 ICommonDialog dlg = new WIA.CommonDialog();
 
