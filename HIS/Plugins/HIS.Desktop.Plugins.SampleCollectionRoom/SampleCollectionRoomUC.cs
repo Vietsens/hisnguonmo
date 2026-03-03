@@ -15,57 +15,62 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using AutoMapper;
+using Bartender.PrintClient;
+using DevExpress.Data;
+using DevExpress.Utils;
+using DevExpress.XtraBars;
+using DevExpress.XtraEditors;
+using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Base;
+//using HIS.Desktop.LocalStorage.SdaConfigKey.Config;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.SampleCollectionRoom.ADO;
+using HIS.Desktop.Plugins.SampleCollectionRoom.Config;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using IMSys.DbConfig.HIS_RS;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using LIS.EFMODEL.DataModels;
+using LIS.Filter;
+using LIS.SDO;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using LIS.EFMODEL.DataModels;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.Utils;
-using DevExpress.Data;
-using DevExpress.XtraGrid.Views.Base;
-using System.Collections;
-//using HIS.Desktop.LocalStorage.SdaConfigKey.Config;
-using DevExpress.XtraGrid.Views.Grid;
-using Inventec.Desktop.Common.Message;
-using Inventec.Core;
-using Inventec.Common.Adapter;
-using HIS.Desktop.Controls.Session;
-using DevExpress.XtraEditors;
-using DevExpress.XtraGrid.Views.Grid.ViewInfo;
-using Inventec.Common.Logging;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using MOS.Filter;
-using Inventec.Common.Controls.EditorLoader;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using LIS.Filter;
-using HIS.Desktop.Plugins.SampleCollectionRoom.ADO;
-using LIS.SDO;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.Plugins.SampleCollectionRoom.Config;
-using DevExpress.XtraBars;
-using HIS.Desktop.Common;
-using System.Globalization;
-using HIS.Desktop.LocalStorage.LocalData;
-using AutoMapper;
-using HIS.Desktop.Utility;
-using Bartender.PrintClient;
-using MOS.SDO;
-using HIS.Desktop.Utilities.Extensions;
 
 namespace HIS.Desktop.Plugins.SampleCollectionRoom
 {
     public partial class SampleCollectionRoomUC : HIS.Desktop.Utility.UserControlBase
     {
         #region Declare
+        // In class SampleCollectionRoomUC fields region
+        internal List<string> _ImportedTreatmentCodes = null;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         V_HIS_ROOM room = null;
         V_HIS_EXECUTE_ROOM executeRoom = null;
         Inventec.Desktop.Common.Modules.Module currentModule;
@@ -88,9 +93,9 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         string serviceCodeSelect;
 
         internal List<V_LIS_RESULT> _LisResults = new List<V_LIS_RESULT>();
-        List<HIS_TREATMENT_TYPE> listTreatmentType;
-        List<HIS_TREATMENT_TYPE> _DienDieuTriSelecteds;
-        internal HIS_SERVICE_REQ currentServiceReq = new HIS_SERVICE_REQ();
+        List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> listTreatmentType;
+        List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE> _DienDieuTriSelecteds;
+        internal MOS.EFMODEL.DataModels.HIS_SERVICE_REQ currentServiceReq = new MOS.EFMODEL.DataModels.HIS_SERVICE_REQ();
         internal List<V_HIS_SERE_SERV_TEIN> listSereServTein = new List<V_HIS_SERE_SERV_TEIN>();
         List<V_HIS_TEST_INDEX_RANGE> testIndexRangeAll = null;
         internal List<SampleLisResultADO> lstCheckPrint = new List<SampleLisResultADO>();
@@ -117,6 +122,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             {
                 this.currentModule = currentModule;
                 LisConfigCFG.LoadConfig();
+                this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+
             }
             catch (Exception ex)
             {
@@ -157,7 +164,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                this.listTreatmentType = BackendDataWorker.Get<HIS_TREATMENT_TYPE>();
+                this.listTreatmentType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 ControlEditorADO controlEditorADO = new ControlEditorADO("TREATMENT_TYPE_NAME", "ID", columnInfos, false, 200);
                 ControlEditorLoader.Load(cboTreatmentArea, this.listTreatmentType, controlEditorADO);
@@ -201,8 +208,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                _DienDieuTriSelecteds = new List<HIS_TREATMENT_TYPE>();
-                foreach (HIS_TREATMENT_TYPE rv in (sender as GridCheckMarksSelection).Selection)
+                _DienDieuTriSelecteds = new List<MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE>();
+                foreach (MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE rv in (sender as GridCheckMarksSelection).Selection)
                 {
                     if (rv != null)
                         _DienDieuTriSelecteds.Add(rv);
@@ -365,7 +372,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 lblTreatmentType.Text = rowSample.PATIENT_TYPE_NAME;
                 MOS.Filter.HisServiceReqFilter Filter = new HisServiceReqFilter();
                 Filter.SERVICE_REQ_CODE__EXACT = rowSample.SERVICE_REQ_CODE;
-                var ServiceReq = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, Filter, param);
+                var ServiceReq = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, Filter, param);
                 if (ServiceReq != null && ServiceReq.Count > 0)
                 {
                     lblIcdName.Text = ServiceReq[0].ICD_CODE + " - " + ServiceReq[0].ICD_NAME;
@@ -590,7 +597,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                btnPrintBarcode.Enabled = false;
+                btnPrintBarcode.Enabled = true;
                 WaitingManager.Show();
                 startPage = ((CommonParam)param).Start ?? 0;
                 limit = ((CommonParam)param).Limit ?? 0;
@@ -599,6 +606,10 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 gridControlSample.DataSource = null;
 
                 LisSampleViewFilter lisSampleFilter = new LisSampleViewFilter();
+                if (_ImportedTreatmentCodes != null && _ImportedTreatmentCodes.Count > 0)
+                {
+                    lisSampleFilter.TREATMENT_CODEs = _ImportedTreatmentCodes;
+                }
                 if (room != null)
                 {
                     if (this.room.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BP)
@@ -773,8 +784,8 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                         if (data.Count == 1)
                         {
                             gridViewSample.FocusedRowHandle = 0;
-                            btnPrintBarcode.Enabled = true;
                         }
+                        btnPrintBarcode.Enabled = true;
                     }
                     #region Process has exception
                     SessionManager.ProcessTokenLost((CommonParam)param);
@@ -919,6 +930,12 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
                 }
+
+                // Clear filter import khi user bấm tìm kiếm thủ công
+                this._ImportedTreatmentCodes = null;
+                this.CurrentImportADO = null;
+                this.ProcessedImportADO = null;
+
                 FillDataToGridControl();
             }
             catch (Exception ex)
@@ -951,7 +968,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 {
                     MOS.Filter.HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
                     treatmentFilter.TREATMENT_CODE__EXACT = row.TREATMENT_CODE;
-                    var treatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param).FirstOrDefault();
+                    var treatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param).FirstOrDefault();
                     if (treatment != null && treatment.IS_PAUSE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     {
                         XtraMessageBox.Show("Hồ sơ đã kết thúc điều trị. Không cho phép thực hiện lấy mẫu.", "Thông báo");
@@ -1133,8 +1150,10 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
             try
             {
                 CommonParam param = new CommonParam();
-                rowSample = new SampleListViewADO();
-                rowSample = (SampleListViewADO)gridViewSample.GetFocusedRow();
+                if (rowSample == null)
+                {
+                    rowSample = (SampleListViewADO)gridViewSample.GetFocusedRow();
+                }
                 if (rowSample == null)
                     return;
                 WaitingManager.Show();
@@ -1325,8 +1344,10 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                rowSample = null;
-                rowSample = (SampleListViewADO)gridViewSample.GetFocusedRow();
+                if (rowSample == null)
+                {
+                    rowSample = (SampleListViewADO)gridViewSample.GetFocusedRow();
+                }
                 if (rowSample == null)
                     return;
                 WaitingManager.Show();
@@ -1513,7 +1534,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
 
                 MOS.Filter.HisTreatmentFilter treatmentFilter = new HisTreatmentFilter();
                 treatmentFilter.ID = currentServiceReq.TREATMENT_ID;
-                var curentTreatment = new BackendAdapter(param).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param).FirstOrDefault();
+                var curentTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumers.MosConsumer, treatmentFilter, param).FirstOrDefault();
 
                 var currentPatientTypeAlter = new BackendAdapter(param).Get<HIS_PATIENT_TYPE_ALTER>("api/HisPatientTypeAlter/GetLastByTreatmentId", ApiConsumer.ApiConsumers.MosConsumer, currentServiceReq.TREATMENT_ID, param);
                 List<V_HIS_TEST_INDEX> currentTestIndexs = new List<V_HIS_TEST_INDEX>();
@@ -1936,7 +1957,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                     var query = testIndexRanges.Where(o => o.TEST_INDEX_CODE == testIndexId
                             && ((o.AGE_FROM.HasValue && o.AGE_FROM.Value <= age) || !o.AGE_FROM.HasValue)
                             && ((o.AGE_TO.HasValue && o.AGE_TO.Value >= age) || !o.AGE_TO.HasValue));
-                    HIS_GENDER gender = BackendDataWorker.Get<HIS_GENDER>().FirstOrDefault(p => p.ID == genderId);
+                    MOS.EFMODEL.DataModels.HIS_GENDER gender = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_GENDER>().FirstOrDefault(p => p.ID == genderId);
                     if (gender != null && gender.ID == IMSys.DbConfig.HIS_RS.HIS_GENDER.ID__MALE)
                     {
                         query = query.Where(o => o.IS_MALE == 1);
@@ -2642,6 +2663,130 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        #region in barcode
+        private void PrintBarcodeForSamples(List<SampleListViewADO> samples)
+        {
+            try
+            {
+                if (samples == null || samples.Count == 0)
+                    return;
+
+                WaitingManager.Show();
+
+                bool byBartender = (LisConfigCFG.PRINT_BARCODE_BY_BARTENDER == "1");
+
+                if (byBartender)
+                {
+                    PrintBarcodeForSamples_ByBartender(samples);
+                }
+                else
+                {
+                    PrintBarcodeForSamples_ByInternalPrint(samples);
+                }
+
+                // Thêm refresh grid sau khi in
+                FillDataToGridControl();
+
+                WaitingManager.Hide();
+
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    string.Format("Đã xử lý in barcode cho {0} mẫu bệnh phẩm", samples.Count),
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Có lỗi xảy ra: " + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void PrintBarcodeForSamples_ByInternalPrint(List<SampleListViewADO> samples)
+        {
+            try
+            {
+                if (samples == null || samples.Count == 0)
+                    return;
+
+                int successCount = 0;
+                int failCount = 0;
+
+                foreach (var sample in samples)
+                {
+                    try
+                    {
+                        rowSample = sample;
+                        onClickBtnPrintBarCode();
+                        successCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        failCount++;
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                }
+
+                if (failCount > 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format("Đã in {0} mẫu thành công, {1} mẫu lỗi", successCount, failCount),
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void PrintBarcodeForSamples_ByBartender(List<SampleListViewADO> samples)
+        {
+            try
+            {
+                if (samples == null || samples.Count == 0)
+                    return;
+
+                int successCount = 0;
+                int failCount = 0;
+
+                foreach (var sample in samples)
+                {
+                    try
+                    {
+                        rowSample = sample;
+                        PrintBarcodeByBartender();
+                        successCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        failCount++;
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
+                }
+
+                if (failCount > 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format("Đã in {0} mẫu thành công, {1} mẫu lỗi", successCount, failCount),
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        #endregion
 
         #region in phiếu hẹn
         private void onClickBtnPrintPHieuHen()
@@ -3013,12 +3158,68 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
-                if (!btnPrintBarcode.Enabled) return;
-                this.onClickBtnPrintBarCode();
+                if (gridViewSample.RowCount <= 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Không có mẫu bệnh phẩm nào để in",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                List<SampleListViewADO> selectedSamples = new List<SampleListViewADO>();
+
+                // Lấy danh sách mẫu được tick chọn
+                if (lstAll != null && lstAll.Count > 0)
+                {
+                    selectedSamples = lstAll.Where(o => o.IsChecked).ToList();
+                }
+
+                // Nếu không có mẫu nào được tick, lấy mẫu đang focus
+                if (selectedSamples == null || selectedSamples.Count == 0)
+                {
+                    var focused = (SampleListViewADO)gridViewSample.GetFocusedRow();
+                    if (focused != null)
+                    {
+                        selectedSamples = new List<SampleListViewADO> { focused };
+                    }
+                }
+
+                if (selectedSamples == null || selectedSamples.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Vui lòng chọn mẫu bệnh phẩm cần in",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Xác nhận nếu in nhiều mẫu
+                if (selectedSamples.Count > 1)
+                {
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        string.Format("Bạn có chắc chắn muốn in barcode cho {0} mẫu bệnh phẩm?", selectedSamples.Count),
+                        "Xác nhận",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) != DialogResult.Yes)
+                    {
+                        return;
+                    }
+                }
+
+                // In barcode cho các mẫu đã chọn
+                PrintBarcodeForSamples(selectedSamples);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Có lỗi xảy ra khi in barcode: " + ex.Message,
+                    "Lỗi",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -3372,5 +3573,296 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        #region Import & Download - CHỈ FILTER THEO TREATMENT_CODE
+
+        // Biến lưu trữ danh sách mã điều trị import
+        List<ImportTreatmentCodeADO> CurrentImportADO;
+        List<ImportTreatmentCodeADO> ProcessedImportADO;
+
+        private void btnDownloadFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string fileName = System.IO.Path.Combine(Application.StartupPath + "\\Tmp\\Imp\\", "IMPORT_LIS_SAMPLE_FILTER.xlsx");
+                Inventec.Core.CommonParam param = new Inventec.Core.CommonParam();
+                param.Messages = new List<string>();
+
+                if (File.Exists(fileName))
+                {
+                    saveFileDialog1.Title = "Save File";
+                    saveFileDialog1.FileName = "IMPORT_LIS_SAMPLE_FILTER";
+                    saveFileDialog1.DefaultExt = "xlsx";
+                    saveFileDialog1.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+                    saveFileDialog1.FilterIndex = 1;
+                    saveFileDialog1.RestoreDirectory = true;
+
+                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        File.Copy(fileName, saveFileDialog1.FileName, true);
+                        MessageManager.Show(this.ParentForm, param, true);
+
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                            "Bạn có muốn mở file ngay?",
+                            "Xác nhận",
+                            MessageBoxButtons.YesNo) == DialogResult.Yes)
+                        {
+                            System.Diagnostics.Process.Start(saveFileDialog1.FileName);
+                        }
+                    }
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Không tìm thấy file mẫu. Vui lòng liên hệ quản trị viên.",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnImportFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.Multiselect = false;
+                ofd.Filter = "Excel files (*.xlsx, *.xls)|*.xlsx;*.xls|All files (*.*)|*.*";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    WaitingManager.Show();
+                    var import = new Inventec.Common.ExcelImport.Import();
+                    if (import.ReadFileExcel(ofd.FileName))
+                    {
+                        var importedData = import.GetWithCheck<ImportTreatmentCodeADO>(0);
+                        if (importedData != null && importedData.Count > 0)
+                        {
+                            // Loại bỏ dòng trống
+                            List<ImportTreatmentCodeADO> listAfterRemove = new List<ImportTreatmentCodeADO>();
+                            foreach (var item in importedData)
+                            {
+                                bool checkNull = string.IsNullOrEmpty(item.TREATMENT_CODE);
+                                if (!checkNull)
+                                {
+                                    listAfterRemove.Add(item);
+                                }
+                            }
+
+                            WaitingManager.Hide();
+                            this.CurrentImportADO = listAfterRemove;
+
+                            if (this.CurrentImportADO != null && this.CurrentImportADO.Count > 0)
+                            {
+                                this.ProcessedImportADO = new List<ImportTreatmentCodeADO>();
+
+                                // Validate đơn giản
+                                ValidateTreatmentCodes(CurrentImportADO, ref this.ProcessedImportADO);
+
+                                // Kiểm tra có lỗi không
+                                var hasError = this.ProcessedImportADO.Exists(o => !string.IsNullOrEmpty(o.ERROR));
+
+                                if (!hasError)
+                                {
+                                    // Không có lỗi - tự động apply filter
+                                    List<string> treatmentCodes = ProcessedImportADO.Select(o => o.TREATMENT_CODE).ToList();
+                                    this._ImportedTreatmentCodes = treatmentCodes;
+
+                                    WaitingManager.Show();
+                                    FillDataToGridControl();
+                                    WaitingManager.Hide();
+
+                                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                                        string.Format("Áp dụng bộ lọc thành công với {0} mã điều trị", treatmentCodes.Count),
+                                        "Thông báo",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
+                                }
+                                else
+                                {
+                                    // Có lỗi - hiển thị chi tiết
+                                    ShowImportErrorDetail(ProcessedImportADO);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            WaitingManager.Hide();
+                            DevExpress.XtraEditors.XtraMessageBox.Show("Import thất bại", "Lỗi");
+                        }
+                    }
+                    else
+                    {
+                        WaitingManager.Hide();
+                        DevExpress.XtraEditors.XtraMessageBox.Show("Không đọc được file", "Lỗi");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                LogSystem.Error(ex);
+            }
+        }
+
+        // Validate đơn giản - chỉ check format
+        private void ValidateTreatmentCodes(List<ImportTreatmentCodeADO> inputData, ref List<ImportTreatmentCodeADO> outputData)
+        {
+            try
+            {
+                outputData = new List<ImportTreatmentCodeADO>();
+                long i = 0;
+
+                foreach (var item in inputData)
+                {
+                    i++;
+                    string error = "";
+                    var ado = new ImportTreatmentCodeADO();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<ImportTreatmentCodeADO>(ado, item);
+
+                    // Validate TREATMENT_CODE
+                    if (!string.IsNullOrEmpty(item.TREATMENT_CODE))
+                    {
+                        string code = item.TREATMENT_CODE.Trim();
+
+                        // Kiểm tra độ dài
+                        if (code.Length > 12)
+                        {
+                            error += "Mã điều trị vượt quá 12 chữ số. ";
+                        }
+                        else
+                        {
+                            // Validate: phải là số
+                            long parsedCode;
+                            if (!long.TryParse(code, out parsedCode))
+                            {
+                                error += "Mã điều trị không đúng định dạng (phải là số). ";
+                            }
+                            else
+                            {
+                                // Format về 12 chữ số
+                                if (code.Length < 12)
+                                {
+                                    code = string.Format("{0:000000000000}", parsedCode);
+                                    ado.TREATMENT_CODE = code;
+                                }
+                                else
+                                {
+                                    ado.TREATMENT_CODE = code;
+                                }
+
+                                // Kiểm tra trùng lặp trong file
+                                var checkDuplicate = inputData.Where(p =>
+                                    !string.IsNullOrEmpty(p.TREATMENT_CODE) &&
+                                    p.TREATMENT_CODE.Trim().PadLeft(12, '0') == code).ToList();
+
+                                if (checkDuplicate != null && checkDuplicate.Count > 1)
+                                {
+                                    error += string.Format("Mã điều trị {0} bị trùng lặp trong file. ", code);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        error += "Thiếu thông tin mã điều trị. ";
+                    }
+
+                    ado.ERROR = error;
+                    ado.ID = i;
+                    outputData.Add(ado);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ShowImportErrorDetail(List<ImportTreatmentCodeADO> data)
+        {
+            try
+            {
+                var errorData = data.Where(o => !string.IsNullOrEmpty(o.ERROR)).ToList();
+                var successData = data.Where(o => string.IsNullOrEmpty(o.ERROR)).ToList();
+
+                string message = string.Format("Import có {0} lỗi, {1} thành công.\n\nCác lỗi:\n",
+                    errorData.Count, successData.Count);
+
+                int displayCount = Math.Min(errorData.Count, 10);
+                for (int i = 0; i < displayCount; i++)
+                {
+                    message += string.Format("- Dòng {0}: {1}\n", errorData[i].ID, errorData[i].ERROR);
+                }
+
+                if (errorData.Count > 10)
+                {
+                    message += string.Format("... và {0} lỗi khác\n", errorData.Count - 10);
+                }
+
+                if (successData.Count > 0)
+                {
+                    message += "\n\nBạn có muốn áp dụng bộ lọc với các mã hợp lệ không?";
+
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        message,
+                        "Cảnh báo",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        List<string> treatmentCodes = successData.Select(o => o.TREATMENT_CODE).ToList();
+                        this._ImportedTreatmentCodes = treatmentCodes;
+
+                        WaitingManager.Show();
+                        FillDataToGridControl();
+                        WaitingManager.Hide();
+                    }
+                }
+                else
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        message,
+                        "Lỗi",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void btnClearImportFilter_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this._ImportedTreatmentCodes != null && this._ImportedTreatmentCodes.Count > 0)
+                {
+                    if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Bạn có chắc chắn muốn xóa bộ lọc đã import?",
+                        "Xác nhận",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        this._ImportedTreatmentCodes = null;
+                        this.CurrentImportADO = null;
+                        this.ProcessedImportADO = null;
+                        FillDataToGridControl();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        #endregion
     }
 }
