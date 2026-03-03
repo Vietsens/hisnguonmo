@@ -17,6 +17,7 @@
  */
 using DevExpress.Data;
 using DevExpress.Utils;
+using DevExpress.XtraCharts.GLGraphics;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.Repository;
@@ -90,7 +91,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         string newValue = "";
         List<HIS_SUPPLIER> lstSupplier { get; set; }
         List<HIS_DEPARTMENT> BlockDepartment__Seleced = new List<HIS_DEPARTMENT>();
+        List<V_HIS_ROOM> BlockRoom__Seleced = new List<V_HIS_ROOM>();
         List<long> oldBlockDepartmentIds = null;
+        List<long> oldBlockRoomIds = null;
         List<HIS_CONTRAINDICATION> contraindicationSelecteds = new List<HIS_CONTRAINDICATION>();
         List<long> oldContraindicationSelecteds = null;
         List<HIS_CONTRAINDICATION> datas = new List<HIS_CONTRAINDICATION>();
@@ -126,7 +129,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         public bool isCalledApi = false;
         public bool isClickPick = false;
         List<SupplierADO> lstSupplierChecked = new List<SupplierADO>();
-
+        List<V_HIS_ROOM> rooms = new List<V_HIS_ROOM>();
+        List<HIS_DEPARTMENT> departments = new List<HIS_DEPARTMENT>();
         #endregion
 
         #region Contructor
@@ -202,6 +206,21 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 InitCheck(cboBlockDepartment, SelectionGrid__BlockDepartment);
                 InitCombo(cboBlockDepartment, BackendDataWorker.Get<HIS_DEPARTMENT>(), "DEPARTMENT_NAME", "ID");
 
+                InitCheck(cboBlockRoom, SelectionGrid__BlockRoom);
+                rooms = BackendDataWorker.Get<V_HIS_ROOM>()
+                            .Where(r => r.ROOM_TYPE_ID == 1 || r.ROOM_TYPE_ID == 4).ToList();
+                InitCombo(cboBlockRoom, rooms, "ROOM_NAME", "ID");
+
+                //SetValueDepartment(cboBlockDepartment);
+
+                //GridCheckMarksSelection gridCheck = cboBlockDepartment.Properties.Tag as GridCheckMarksSelection;
+
+                //cboBlockDepartment.Properties.Tag = gridCheck;
+                //gridCheck.ClearSelection(cboBlockDepartment.Properties.View);
+
+                cboBlockDepartment.CloseUp += Cbo_CloseUp;
+                cboBlockRoom.CloseUp += Cbo_CloseUp;
+
                 InitContraindicationCheck();
                 InitComboContraindication();
 
@@ -260,6 +279,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     var mediStock = BackendDataWorker.Get<HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
                 }
 
+                FillBlockRoom(); // Đặt trước FillBlockDepartment
                 FillBlockDepartment();
                 FillContraindication();
                 FillDataToGridConrolServicePaty();
@@ -2139,6 +2159,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         {
             try
             {
+                //if (HasSelection(cboBlockRoom)) return;
                 if (this.currentMedicineTypeId.HasValue && this.currentMedicineTypeId.Value > 0 && this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                 {
                     HisMestMetyDepaFilter filter = new HisMestMetyDepaFilter();
@@ -2147,6 +2168,17 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                     List<HIS_MEST_METY_DEPA> matyDepas = new BackendAdapter(new CommonParam()).Get<List<HIS_MEST_METY_DEPA>>("api/HisMestMetyDepa/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
                     this.oldBlockDepartmentIds = matyDepas != null ? matyDepas.Where(o => o.IS_JUST_PRESCRIPTION != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).Select(s => s.DEPARTMENT_ID).Distinct().ToList() : null;
+                    if (this.oldBlockDepartmentIds != null && this.oldBlockDepartmentIds.Count > 0)
+                    {
+                        if (this.oldBlockRoomIds != null && this.oldBlockRoomIds.Count > 0)
+                        {
+                            List<V_HIS_ROOM> seleceds = rooms.Where(o => this.oldBlockRoomIds.Contains(o.ID)).ToList();
+                            var depOfBlockRoom = seleceds.Select(s => s.DEPARTMENT_ID);
+                            this.oldBlockDepartmentIds = this.oldBlockDepartmentIds.Where(w => !depOfBlockRoom.Any(a => a == w)).ToList();
+                        }
+                        SortRoomSelectedToTop(cboBlockRoom);
+                    }
+
                 }
 
                 GridCheckMarksSelection gridCheckMark = cboBlockDepartment.Properties.Tag as GridCheckMarksSelection;
@@ -2161,6 +2193,64 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         string displayText = String.Join(", ", seleceds.Select(s => s.DEPARTMENT_NAME).ToList());
                         cboBlockDepartment.Text = displayText;
                         cboBlockDepartment.ToolTip = displayText;
+                    }
+                }
+                SortDepartmentSelectedToTop(cboBlockDepartment);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void FillBlockRoom()
+        
+        {
+            try
+            {
+                SortRoomSelectedToTop(cboBlockRoom);
+                if (this.currentMedicineTypeId.HasValue && this.currentMedicineTypeId.Value > 0 && this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
+                {
+                    HisMestMetyDepaFilter filter = new HisMestMetyDepaFilter();
+                    filter.MEDICINE_TYPE_ID = this.currentMedicineTypeId.Value;
+                    filter.HAS_MEDI_STOCK_ID = false;
+
+                    List<HIS_MEST_METY_DEPA> matyDepas = new BackendAdapter(new CommonParam()).Get<List<HIS_MEST_METY_DEPA>>("api/HisMestMetyDepa/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
+                    this.oldBlockRoomIds = new List<long>();
+
+                    if (matyDepas != null)
+                    {
+                        var roomIdStrings = matyDepas
+                            .Where(o => o.IS_JUST_PRESCRIPTION != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                            .Select(s => s.ROOM_IDS)
+                            .Where(s => !String.IsNullOrEmpty(s)).ToList();
+
+                        foreach (var roomStr in roomIdStrings)
+                        {
+                            var ids = roomStr
+                                .Split(';')
+                                .Where(x => !String.IsNullOrWhiteSpace(x))
+                                .Select(x => Convert.ToInt64(x));
+
+                            this.oldBlockRoomIds.AddRange(ids);
+                        }
+
+                        this.oldBlockRoomIds = this.oldBlockRoomIds.Distinct().ToList();
+                    }
+                }
+
+                GridCheckMarksSelection gridCheckMark = cboBlockRoom.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboBlockRoom.Properties.View);
+                    if (this.oldBlockRoomIds != null && this.oldBlockRoomIds.Count > 0)
+                    {
+                        List<V_HIS_ROOM> seleceds = rooms.Where(o => this.oldBlockRoomIds.Contains(o.ID)).ToList();
+                        gridCheckMark.SelectAll(seleceds);
+
+                        string displayText = String.Join(", ", seleceds.Select(s => s.ROOM_NAME).ToList());
+                        cboBlockRoom.Text = displayText;
+                        cboBlockRoom.ToolTip = displayText;
                     }
                 }
             }
@@ -3250,11 +3340,15 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                 if (selectedDepartmentIds.Count == 0 && oldDepartmentIds.Count == 0)
                 {
-                    return;
+                    if(BlockRoom__Seleced.Count == 0 && oldBlockRoomIds.Count == 0)
+                    {
+                        return;
+                    }                   
                 }
 
                 if (selectedDepartmentIds.Exists(e => !oldDepartmentIds.Contains(e))
-                    || oldDepartmentIds.Exists(e => !selectedDepartmentIds.Contains(e)))
+                    || oldDepartmentIds.Exists(e => !selectedDepartmentIds.Contains(e)) 
+                    || BlockRoom__Seleced.Count > 0 || oldBlockRoomIds.Count > 0)
                 {
                     CommonParam commonpara = new CommonParam();
                     HisMestMetyDepaByMedicineSDO sdo = new HisMestMetyDepaByMedicineSDO();
@@ -3274,6 +3368,130 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         this.oldBlockDepartmentIds.AddRange(selectedDepartmentIds);
                     }
                 }
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
+        private void SaveBlockRoom(ref CommonParam param)
+        {
+            try
+            {
+                WaitingManager.Show();
+
+                List<long> selectedRoomIds = new List<long>();
+                List<long> oldRoomIds = new List<long>();
+
+                if (this.oldBlockRoomIds != null)
+                {
+                    oldRoomIds = this.oldBlockRoomIds;
+                }
+
+                if (this.BlockRoom__Seleced != null)
+                {
+                    selectedRoomIds = this.BlockRoom__Seleced.Select(s => s.ID).Distinct().ToList();
+                }
+
+                if (selectedRoomIds.Count == 0 && oldRoomIds.Count == 0)
+                {
+                    return;
+                }                 
+
+                    var grouped = this.BlockRoom__Seleced.GroupBy(x => x.DEPARTMENT_ID).ToList();
+
+                    CommonParam getParam = new CommonParam();
+                    //var oldList = new BackendAdapter(getParam).Get<List<HIS_MEST_METY_DEPA>>("api/HisMestMetyDepa/Get", ApiConsumers.MosConsumer,resultData.ID,getParam);
+                    HisMestMetyDepaFilter filter = new HisMestMetyDepaFilter();
+                    filter.MEDICINE_TYPE_ID = this.currentMedicineTypeId.Value;
+                    filter.HAS_MEDI_STOCK_ID = false;
+
+                    List<HIS_MEST_METY_DEPA> oldList = new BackendAdapter(new CommonParam()).Get<List<HIS_MEST_METY_DEPA>>("api/HisMestMetyDepa/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, null);
+                    //if(oldList != null)
+                    //{
+                    //    foreach (var item in oldList)
+                    //    {
+                    //        CommonParam commonpara = new CommonParam();
+                    //        item.ROOM_IDS = null;
+
+                    //        bool rs = new BackendAdapter(commonpara).Post<bool>("api/HisMestMetyDepa/Update", ApiConsumers.MosConsumer, item, commonpara);
+
+                    //        if (!rs && ((commonpara.Messages != null && commonpara.Messages.Count > 0)
+                    //            || (commonpara.BugCodes != null && commonpara.BugCodes.Count > 0)))
+                    //        {
+                    //            param.Messages.AddRange(commonpara.Messages);
+                    //            param.BugCodes.AddRange(commonpara.BugCodes);
+                    //        }
+                    //    }
+ 
+                    //}
+                    
+                    foreach (var group in grouped)
+                    {
+                        long departmentId = group.Key;
+
+                        string roomIds = string.Join(";",group.Select(x => x.ID).Distinct().OrderBy(x => x));
+
+                        CommonParam commonpara = new CommonParam();
+
+                        var exist = oldList?.FirstOrDefault(x => x.DEPARTMENT_ID == departmentId);
+
+                        HIS_MEST_METY_DEPA sdo = new HIS_MEST_METY_DEPA();
+                        sdo.MEDICINE_TYPE_ID = resultData.ID;
+                        sdo.DEPARTMENT_ID = departmentId;
+                        sdo.ROOM_IDS = roomIds;
+
+                        bool rs;
+
+                        if (exist != null)
+                        {
+                            sdo.ID = exist.ID;
+
+                            rs = new BackendAdapter(commonpara).Post<bool>("api/HisMestMetyDepa/Update",ApiConsumers.MosConsumer,sdo,commonpara);
+                        }
+                        else
+                        {
+                            rs = new BackendAdapter(commonpara).Post<bool>("api/HisMestMetyDepa/Create",ApiConsumers.MosConsumer,sdo,commonpara);
+                        }
+
+                        if (!rs &&((commonpara.Messages != null && commonpara.Messages.Count > 0)
+                            || (commonpara.BugCodes != null && commonpara.BugCodes.Count > 0)))
+                        {
+                            param.Messages.AddRange(commonpara.Messages);
+                            param.BugCodes.AddRange(commonpara.BugCodes);
+                        }
+                    }
+                    //foreach (var group in grouped)
+                    //{
+                    //    long departmentId = group.Key;
+
+                    //    string roomIds = string.Join(";",group.Select(x => x.ID).Distinct().OrderBy(x => x));
+
+                    //    CommonParam commonpara = new CommonParam();
+
+                    //    HIS_MEST_METY_DEPA sdo = new HIS_MEST_METY_DEPA();
+                    //    sdo.MEDICINE_TYPE_ID = resultData.ID;
+                    //    sdo.DEPARTMENT_ID = departmentId;
+                    //    sdo.ROOM_IDS = roomIds;
+
+                    //    var rs = new BackendAdapter(commonpara).Post<bool>("api/HisMestMetyDepa/Create", ApiConsumers.MosConsumer,sdo,commonpara);
+
+                    //    if (!rs && ((commonpara.Messages != null && commonpara.Messages.Count > 0)|| (commonpara.BugCodes != null && commonpara.BugCodes.Count > 0)))
+                    //    {
+                    //        param.Messages.AddRange(commonpara.Messages);
+                    //        param.BugCodes.AddRange(commonpara.BugCodes);
+                    //    }
+                    //}
+                    this.oldBlockRoomIds = new List<long>();
+                    if (selectedRoomIds.Count > 0)
+                    {
+                        this.oldBlockRoomIds.AddRange(selectedRoomIds);
+                    }
+                
+
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -3999,6 +4217,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     }
 
                     SaveBlockDepartment(ref param);
+                    SaveBlockRoom(ref param);
                     SaveContraindication(ref param);
                 }
 
@@ -6480,7 +6699,48 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
         }
 
+        private void cboBlockRoom_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string display = "";
+                foreach (var item in this.BlockRoom__Seleced)
+                {
+                    if (display.Trim().Length > 0)
+                    {
+                        display += ", " + item.ROOM_NAME;
+                    }
+                    else
+                        display = item.ROOM_NAME;
+                }
+                e.DisplayText = display;
+                cboBlockRoom.ToolTip = display;
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void cboBlockDepartment_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
+                    //cboBlockRoom.Focus();
+                    cboOTHER_PAY_SOURCE.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboBlockRoom_Closed(object sender, ClosedEventArgs e)
         {
             try
             {
@@ -6496,6 +6756,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         }
 
         private void SelectionGrid__BlockDepartment(object sender, EventArgs e)
+        
         {
             try
             {
@@ -6505,12 +6766,148 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     if (rv != null)
                         BlockDepartment__Seleced.Add(rv);
                 }
+
+                //SetValueRoom(cboBlockRoom);
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void SetValueRoom(GridLookUpEdit gridLookUpEdit)
+        {
+            try
+            {
+                //var allData = rooms;
+                ////if (this.BlockDepartment__Seleced != null && this.BlockDepartment__Seleced.Count > 0)
+                ////{
+                ////    allData = allData.Where(bed => this.BlockDepartment__Seleced.Exists(dep => bed.DEPARTMENT_ID == dep.ID)).ToList();
+                ////}
+                //gridLookUpEdit.Properties.DataSource = allData;
+                
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboClearSelection(GridLookUpEdit gridLookUpEdit)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = gridLookUpEdit.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(gridLookUpEdit.Properties.View);
+                }
+                if (gridLookUpEdit.Properties.Buttons.Count > 0)
+                {
+                    foreach (EditorButton item in gridLookUpEdit.Properties.Buttons)
+                    {
+                        if (item != null && item.Kind == ButtonPredefines.Delete)
+                        {
+                            item.Visible = false;
+                        }
+                    }
+                }
+                gridLookUpEdit.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SelectionGrid__BlockRoom(object sender, EventArgs e)
+        {
+            try
+            {
+                BlockRoom__Seleced = new List<V_HIS_ROOM>();
+                foreach (V_HIS_ROOM rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        BlockRoom__Seleced.Add(rv);
+                }
+                SetValueDepartment(cboBlockDepartment);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void SetValueDepartment(GridLookUpEdit gridLookUpEdit)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = gridLookUpEdit.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark == null) return;
+
+                //if (this.BlockRoom__Seleced == null || this.BlockRoom__Seleced.Count == 0)
+                //    return;
+
+                var view = gridLookUpEdit.Properties.View;
+
+                var currentSelected = gridCheckMark.Selection
+                    .Cast<HIS_DEPARTMENT>()
+                    .ToList();
+
+                //if (currentSelected.Count == 0) return;
+
+                var remainDepartments = currentSelected
+                    .Where(dep =>  !(this.BlockRoom__Seleced?.Any(room => room.DEPARTMENT_ID == dep.ID) ?? false))
+                    .ToList();
+                //
+
+                var allDepartments = BackendDataWorker.Get<HIS_DEPARTMENT>();
+                if (this.BlockRoom__Seleced != null && this.BlockRoom__Seleced.Count > 0)
+                {
+                    BlockDepartment__Seleced = remainDepartments;
+                    allDepartments = allDepartments.Where(dep => !this.BlockRoom__Seleced.Exists(room => room.DEPARTMENT_ID == dep.ID)).ToList();
+                }
+                
+                gridLookUpEdit.Properties.DataSource = allDepartments;
+                //
+                gridCheckMark.ClearSelection(view);
+                gridCheckMark.SelectAll(remainDepartments);
+
+                string displayText = String.Join(", ",remainDepartments.Select(s => s.DEPARTMENT_NAME));
+
+                gridLookUpEdit.Text = displayText;
+                gridLookUpEdit.ToolTip = displayText;
+                //var allDepartments = BackendDataWorker.Get<HIS_DEPARTMENT>();
+                ////this.cboClearSelection(gridLookUpEdit);
+
+                //if (this.BlockRoom__Seleced != null && this.BlockRoom__Seleced.Count > 0)
+                //{
+                //    allDepartments = allDepartments.Where(dep => !this.BlockRoom__Seleced.Exists(room => room.DEPARTMENT_ID == dep.ID)).ToList();
+                //}
+
+                //gridLookUpEdit.Properties.DataSource = allDepartments;
+
+                //SortDepartmentSelectedToTop(gridLookUpEdit);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        //private void UpdateDepartmentText()
+        //{
+        //    var gridCheckMark = cboBlockDepartment.Properties.Tag as GridCheckMarksSelection;
+        //    if (gridCheckMark == null) return;
+
+        //    var selected = gridCheckMark.Selection.Cast<HIS_DEPARTMENT>().ToList();
+
+        //    string displayText = String.Join(", ", selected.Select(s => s.DEPARTMENT_NAME));
+        //    cboBlockDepartment.Text = displayText;
+        //    cboBlockDepartment.ToolTip = displayText;
+        //}
 
         private void chkAllowMissingInfoPkg_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -8024,6 +8421,22 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             {
                 if (e.KeyCode == Keys.Enter)
                 {
+                    //cboBlockRoom.Focus();
+                    cboOTHER_PAY_SOURCE.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboBlockRoom_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
                     cboOTHER_PAY_SOURCE.Focus();
                 }
             }
@@ -8796,6 +9209,101 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool HasSelection(GridLookUpEdit glu)
+        {
+            GridCheckMarksSelection gridCheck = glu.Properties.Tag as GridCheckMarksSelection;
+
+            if (gridCheck != null)
+            {
+                return gridCheck.Selection.Count > 0;
+            }
+
+            return false;
+        }
+
+        private void Cbo_CloseUp(object sender, DevExpress.XtraEditors.Controls.CloseUpEventArgs e)
+        {
+            UpdateState();
+            SortDepartmentSelectedToTop(cboBlockDepartment);
+            SortRoomSelectedToTop(cboBlockRoom);
+        }
+        private void UpdateState()
+        {
+            //GridCheckMarksSelection gridCheck1 = cboBlockDepartment.Properties.Tag as GridCheckMarksSelection;
+            //GridCheckMarksSelection gridCheck2 = cboBlockRoom.Properties.Tag as GridCheckMarksSelection;
+
+            //bool deptHasValue = HasSelection(cboBlockDepartment);
+            //bool roomHasValue = HasSelection(cboBlockRoom);
+
+            //if (roomHasValue)
+            //{
+            //    deptHasValue = false;
+
+            //    if (gridCheck1 != null)
+            //    {
+            //        //gridCheck1.ClearSelection(cboBlockDepartment.Properties.View);
+            //        cboBlockDepartment.EditValue = null;
+            //    }
+            //}
+            //else if (deptHasValue)
+            //{
+            //    roomHasValue = false;
+
+            //    if (gridCheck2 != null)
+            //    {
+            //        //gridCheck2.ClearSelection(cboBlockRoom.Properties.View);
+            //        cboBlockRoom.EditValue = null;
+            //    }
+            //}
+            //else
+            //{
+            //    deptHasValue = true;
+            //    if (gridCheck1 != null)
+            //    {
+            //        //gridCheck1.ClearSelection(cboBlockDepartment.Properties.View);
+            //        cboBlockDepartment.EditValue = null;
+            //    }
+            //    roomHasValue = true;
+            //    if (gridCheck2 != null)
+            //    {
+            //        //gridCheck2.ClearSelection(cboBlockRoom.Properties.View);
+            //        cboBlockRoom.EditValue = null;
+            //    }
+            //}
+
+            //cboBlockDepartment.Enabled =  deptHasValue;
+            //cboBlockRoom.Enabled = roomHasValue;
+        }
+        private void SortRoomSelectedToTop(GridLookUpEdit glu)
+        {
+            var gridCheck = glu.Properties.Tag as GridCheckMarksSelection;
+            if (gridCheck == null) return;
+
+            var data = glu.Properties.DataSource as List<V_HIS_ROOM>;
+            if (data == null) return;
+
+            var selected = gridCheck.Selection.Cast<V_HIS_ROOM>().Select(x => x.ID).ToList();
+
+            var sorted = data.OrderByDescending(x => selected.Contains(x.ID)).ToList();
+            glu.Properties.DataSource = null;
+            glu.Properties.DataSource = sorted;
+        }
+        private void SortDepartmentSelectedToTop(GridLookUpEdit glu)
+        {
+            var gridCheck = glu.Properties.Tag as GridCheckMarksSelection;
+            if (gridCheck == null) return;
+
+            var data = glu.Properties.DataSource as List<HIS_DEPARTMENT>;
+            if (data == null) return;
+
+            var selected = gridCheck.Selection.Cast<HIS_DEPARTMENT>().Select(x => x.ID).ToList();
+
+            var sorted = data.OrderByDescending(x => selected.Contains(x.ID)).ToList();
+
+            glu.Properties.DataSource = null;
+            glu.Properties.DataSource = sorted;
         }
     }
 }
