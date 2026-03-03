@@ -156,6 +156,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         internal HIS_SUPPLIER currentSupplierForEdit;
         long oldSupplierId = 0;
+
+        private bool _isCheckingDocumentDuplicate;
+        private string _lastCheckedDocumentNumber;
+        private string _lastCheckedInvoiceSymbol;
+        private long? _lastCheckedSupplierId;
+        private bool? _lastCheckedDocumentDuplicateResult;
         internal int d = 0;
         private string moduleLink = "HIS.Desktop.Plugins.ImpMestCreate";
         private bool IsSetBhytInfoFromTypeByDefault;
@@ -828,6 +834,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
+                if (txtNhaCC.EditValue != null && Inventec.Common.TypeConvert.Parse.ToInt64(txtNhaCC.EditValue.ToString()) > 0)
+                {
+                    ValidateDocumentNumberDuplicateCached(forceCheck: false, focusOnInvalid: true);
+                }
             }
             catch (Exception ex)
             {
@@ -2830,7 +2840,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             {
                 positionHandleControl = -1;
                 if (!btnSave.Enabled || !dxValidationProvider1.Validate() || this.listServiceADO.Count <= 0 ||
-                !this.CheckDocumentNumberV2(txtDocumentNumber.Text.Trim(), txtkyHieuHoaDon.Text))
+                !ValidateDocumentNumberDuplicateCached(forceCheck: true, focusOnInvalid: true))
                     return;
 
                 //Check thieu chinh sách giá
@@ -3003,12 +3013,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 positionHandleControl = -1;
                 if (!dxValidationProvider1.Validate() || this.listServiceADO.Count <= 0)
                     return;
-                if (CheckDocumentNumber(txtDocumentNumber.Text, txtkyHieuHoaDon.Text))
-                {
-                    WaitingManager.Hide();
-                    if (DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessageManager.SoChungTuDaDuocSuDung, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
-                        return;
-                }
+                if (!ValidateDocumentNumberDuplicateCached(forceCheck: true, focusOnInvalid: true))
+                    return;
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 bool success = false;
@@ -3177,6 +3183,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 if (!btnNew.Enabled)
                     return;
                 WaitingManager.Show();
+
+                _isCheckingDocumentDuplicate = false;
+                _lastCheckedDocumentNumber = null;
+                _lastCheckedInvoiceSymbol = null;
+                _lastCheckedSupplierId = null;
+                _lastCheckedDocumentDuplicateResult = null;
+
                 this._currentImpMestUp = null;
                 ColorBlack();
                 dxValidationProvider2.RemoveControlError(dtExpiredDate);
@@ -5945,11 +5958,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             }
                             SetDataSourceGridControlMediMateMaterial();
                         }
+
+                        ValidateDocumentNumberDuplicateCached(forceCheck: false, focusOnInvalid: true);
                         return;
 
                     }
                     Supplier_RowClick(supplier);
                     Contract_RowClick();
+
+                    ValidateDocumentNumberDuplicateCached(forceCheck: false, focusOnInvalid: true);
                 }
                 else if (txtNhaCC.EditValue == null && oldSupplierId != 0 && currentImpMestType != null && (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK))
                 {
