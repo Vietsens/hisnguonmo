@@ -487,6 +487,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         _SupplierId = this.currentSupplierForEdit.ID;
                     }
+                    else if (txtNhaCC.EditValue != null)
+                    {
+                        _SupplierId = Inventec.Common.TypeConvert.Parse.ToInt64(txtNhaCC.EditValue.ToString());
+                    }
                     MOS.Filter.HisImpMestFilter manuImpMestFilter = new HisImpMestFilter();
                     manuImpMestFilter.DOCUMENT_NUMBER__EXACT = _document;
                     if (!this.IsShowMessDocument)
@@ -555,6 +559,74 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        private bool ValidateDocumentNumberDuplicateCached(bool forceCheck, bool focusOnInvalid)
+        {
+            try
+            {
+                if (this.isInit)
+                    return true;
+
+                if (this._isCheckingDocumentDuplicate)
+                    return true;
+
+                string documentNumber = (txtDocumentNumber.Text ?? "").Trim();
+                string invoiceSymbol = (txtkyHieuHoaDon.Text ?? "").Trim();
+                long? supplierId = null;
+                if (this.currentSupplierForEdit != null && this.currentSupplierForEdit.ID > 0)
+                {
+                    supplierId = this.currentSupplierForEdit.ID;
+                }
+                else if (txtNhaCC.EditValue != null)
+                {
+                    supplierId = Inventec.Common.TypeConvert.Parse.ToInt64(txtNhaCC.EditValue.ToString());
+                }
+
+                if (!forceCheck && (!supplierId.HasValue || supplierId.Value <= 0))
+                    return true;
+
+                if (string.IsNullOrEmpty(documentNumber))
+                {
+                    this._lastCheckedDocumentNumber = documentNumber;
+                    this._lastCheckedInvoiceSymbol = invoiceSymbol;
+                    this._lastCheckedSupplierId = supplierId;
+                    this._lastCheckedDocumentDuplicateResult = true;
+                    return true;
+                }
+
+                bool sameAsLast = this._lastCheckedDocumentDuplicateResult.HasValue
+                    && string.Equals(this._lastCheckedDocumentNumber, documentNumber, StringComparison.Ordinal)
+                    && string.Equals(this._lastCheckedInvoiceSymbol, invoiceSymbol, StringComparison.Ordinal)
+                    && this._lastCheckedSupplierId == supplierId;
+
+                if (!forceCheck && sameAsLast)
+                    return this._lastCheckedDocumentDuplicateResult.Value;
+
+                this._isCheckingDocumentDuplicate = true;
+                bool result = this.CheckDocumentNumberV2(documentNumber, invoiceSymbol);
+                this._lastCheckedDocumentNumber = documentNumber;
+                this._lastCheckedInvoiceSymbol = invoiceSymbol;
+                this._lastCheckedSupplierId = supplierId;
+                this._lastCheckedDocumentDuplicateResult = result;
+
+                if (!result && focusOnInvalid)
+                {
+                    txtDocumentNumber.Focus();
+                    txtDocumentNumber.SelectAll();
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return true;
+            }
+            finally
+            {
+                this._isCheckingDocumentDuplicate = false;
+            }
         }
 
         private bool HiglightSubString(DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e, string findText)
