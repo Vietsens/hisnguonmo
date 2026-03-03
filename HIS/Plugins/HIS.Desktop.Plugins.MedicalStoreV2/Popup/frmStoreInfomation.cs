@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Popup
         private long mediRecordId;
         private HIS_MEDI_RECORD currentMediRecord;
         private Action refeshData;
+        private long? originalLocationStoreId; // Lưu giá trị ban đầu
 
         public frmStoreInfomation(long _mediRecordId, Action _refeshData)
         {
@@ -104,57 +105,66 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Popup
         {
             try
             {
-                // Lấy dữ liệu vị trí từ Backend và sắp xếp theo Mã, Tên
+                // 1) Lấy dữ liệu
                 lstLocationStore = BackendDataWorker.Get<HIS_LOCATION_STORE>()
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .OrderBy(o => o.LOCATION_STORE_CODE)
                     .ThenBy(o => o.LOCATION_STORE_NAME)
                     .ToList();
 
-                // Cấu hình TreeListLookUpEdit
+                // 2) Gán datasource cho TreeListLookUpEdit
                 cboLoacationStore.Properties.DataSource = lstLocationStore;
                 cboLoacationStore.Properties.DisplayMember = "LOCATION_STORE_NAME";
                 cboLoacationStore.Properties.ValueMember = "ID";
 
-                // Cấu hình TreeList để hiển thị dạng cây phân cấp
-                cboLoacationStore.Properties.TreeList.KeyFieldName = "ID";
-                cboLoacationStore.Properties.TreeList.ParentFieldName = "PARENT_ID";
+                // 3) Cấu hình TreeList phân cấp
+                var tree = cboLoacationStore.Properties.TreeList;
+                tree.KeyFieldName = "ID";
+                tree.ParentFieldName = "PARENT_ID";
 
-                // Xóa các cột cũ nếu có
-                cboLoacationStore.Properties.TreeList.Columns.Clear();
+                // 4) Reset cột
+                tree.Columns.Clear();
 
-                // Thêm cột Mã vị trí
-                TreeListColumn colCode = cboLoacationStore.Properties.TreeList.Columns.Add();
+                // Cột Mã
+                TreeListColumn colCode = tree.Columns.Add();
                 colCode.FieldName = "LOCATION_STORE_CODE";
                 colCode.Caption = "Mã";
                 colCode.Visible = true;
                 colCode.VisibleIndex = 0;
-                colCode.Width = 100;
 
-                // Thêm cột Tên vị trí
-                TreeListColumn colName = cboLoacationStore.Properties.TreeList.Columns.Add();
+                // Cột Tên vị trí
+                TreeListColumn colName = tree.Columns.Add();
                 colName.FieldName = "LOCATION_STORE_NAME";
                 colName.Caption = "Tên vị trí";
                 colName.Visible = true;
                 colName.VisibleIndex = 1;
-                colName.Width = 250;
 
-                // Cấu hình các thuộc tính
-                cboLoacationStore.Properties.PopupFormSize = new Size(400, 300);
+                // 5) UI/Behavior (fit theo dữ liệu + không scroll ngang)
+                cboLoacationStore.Properties.PopupFormSize = new Size(600, 300);
                 cboLoacationStore.Properties.ImmediatePopup = true;
-                cboLoacationStore.Properties.TreeList.OptionsView.ShowCheckBoxes = false;
-                cboLoacationStore.Properties.TreeList.OptionsSelection.EnableAppearanceFocusedCell = false;
-                cboLoacationStore.Properties.TreeList.OptionsView.ShowIndicator = false;
-                cboLoacationStore.Properties.TreeList.OptionsView.AutoWidth = false;
-                cboLoacationStore.Properties.TreeList.OptionsBehavior.EnableFiltering = true;
 
-                // Expand tất cả các node
-                cboLoacationStore.Properties.TreeList.ExpandAll();
+                tree.OptionsView.ShowCheckBoxes = false;
+                tree.OptionsSelection.EnableAppearanceFocusedCell = false;
+                tree.OptionsView.ShowIndicator = false;
 
-                // Thêm button xóa
+                // Quan trọng: tự co giãn theo chiều rộng control (tránh scroll ngang)
+                tree.OptionsView.AutoWidth = true;
+
+                // Filter
+                tree.OptionsBehavior.EnableFiltering = true;
+
+                // 6) Expand + fit cột theo nội dung
+                tree.ExpandAll();
+                tree.BestFitColumns();
+
+                // 7) Buttons (Combo + Delete)
                 cboLoacationStore.Properties.Buttons.Clear();
-                cboLoacationStore.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
-                cboLoacationStore.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));
+                cboLoacationStore.Properties.Buttons.Add(
+                    new DevExpress.XtraEditors.Controls.EditorButton(
+                        DevExpress.XtraEditors.Controls.ButtonPredefines.Combo));
+                cboLoacationStore.Properties.Buttons.Add(
+                    new DevExpress.XtraEditors.Controls.EditorButton(
+                        DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));
             }
             catch (Exception ex)
             {
@@ -176,7 +186,15 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Popup
                     if (currentMediRecord.LOCATION_STORE_ID.HasValue)
                     {
                         cboLoacationStore.EditValue = currentMediRecord.LOCATION_STORE_ID.Value;
+                        originalLocationStoreId = currentMediRecord.LOCATION_STORE_ID.Value;
                     }
+                    else
+                    {
+                        originalLocationStoreId = null;
+                    }
+
+                    // Disable nút Save ban đầu vì chưa có thay đổi
+                    btnSave.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -211,6 +229,10 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Popup
                 {
                     updateData.LOCATION_STORE_ID = null;
                 }
+
+                // Truyền thêm các field null theo yêu cầu
+                updateData.LOCATION_NODE_ID = null;
+                updateData.LOCATION_FULL_PATH = null;
 
                 WaitingManager.Show();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("HisMediRecord/Update Input", updateData));
@@ -270,15 +292,21 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.Popup
         {
             try
             {
+                // Kiểm tra xem giá trị có thay đổi so với ban đầu không
+                long? currentValue = null;
                 if (cboLoacationStore.EditValue != null)
                 {
-                    var data = lstLocationStore.FirstOrDefault(o => o.ID == Int64.Parse(cboLoacationStore.EditValue.ToString()));
+                    currentValue = Convert.ToInt64(cboLoacationStore.EditValue);
+                    var data = lstLocationStore.FirstOrDefault(o => o.ID == currentValue);
                     //if (data != null)
                     //{
                     //    txtStoreCode.Text = data.LOCATION_STORE_CODE;
                     //}
                 }
                 //else { txtStoreCode.Text = null; }
+
+                // Enable/Disable nút Save dựa trên việc giá trị có thay đổi hay không
+                btnSave.Enabled = (currentValue != originalLocationStoreId);
             }
             catch (Exception ex)
             {
