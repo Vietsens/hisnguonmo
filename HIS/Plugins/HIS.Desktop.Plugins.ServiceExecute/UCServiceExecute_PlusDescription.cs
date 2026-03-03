@@ -601,72 +601,45 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 HIS.Desktop.Print.SetCommonKey.SetCommonSingleKey(this.dicParam);//commonkey
                 if (currentServiceReq != null)
                 {
-                    dicParam.Add("INTRUCTION_TIME_FULL_STR",
-                            GetCurrentTimeSeparateBeginTime(
-                            Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(
-                            currentServiceReq.INTRUCTION_TIME) ?? DateTime.Now));
-
-                    dicParam.Add("INTRUCTION_DATE_FULL_STR",
-                        Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(
-                        currentServiceReq.INTRUCTION_TIME));
-
-                    dicParam.Add("INTRUCTION_TIME_STR",
-                        Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(
-                            currentServiceReq.INTRUCTION_TIME));
-
-                    dicParam.Add("START_TIME_STR",
-                        Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(
-                            currentServiceReq.START_TIME ?? 0));
-
-                    dicParam.Add("START_TIME_FULL_STR",
-                            GetCurrentTimeSeparateBeginTime(
-                            Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(
-                            currentServiceReq.START_TIME ?? 0) ?? DateTime.Now));
-
-                    dicParam.Add("ICD_MAIN_TEXT", currentServiceReq.ICD_NAME);
-
-                    dicParam.Add("NATIONAL_NAME", currentServiceReq.TDL_PATIENT_NATIONAL_NAME);
-                    dicParam.Add("WORK_PLACE", currentServiceReq.TDL_PATIENT_WORK_PLACE_NAME);
-                    dicParam.Add("ADDRESS", currentServiceReq.TDL_PATIENT_ADDRESS);
-                    dicParam.Add("CAREER_NAME", currentServiceReq.TDL_PATIENT_CAREER_NAME);
-                    dicParam.Add("PATIENT_CODE", currentServiceReq.TDL_PATIENT_CODE);
-                    dicParam.Add("DISTRICT_CODE", currentServiceReq.TDL_PATIENT_DISTRICT_CODE);
-                    dicParam.Add("GENDER_NAME", currentServiceReq.TDL_PATIENT_GENDER_NAME);
-                    dicParam.Add("MILITARY_RANK_NAME", currentServiceReq.TDL_PATIENT_MILITARY_RANK_NAME);
-                    dicParam.Add("VIR_ADDRESS", currentServiceReq.TDL_PATIENT_ADDRESS);
-                    dicParam.Add("AGE", CalculatorAge(currentServiceReq.TDL_PATIENT_DOB, false));
-                    dicParam.Add("AGE_STRING", Inventec.Common.DateTime.Calculation.AgeString(currentServiceReq.TDL_PATIENT_DOB, "", "", "", "", TreatmentWithPatientTypeAlter.IN_TIME));
-                    dicParam.Add("STR_YEAR", currentServiceReq.TDL_PATIENT_DOB.ToString().Substring(0, 4));
-                    dicParam.Add("VIR_PATIENT_NAME", currentServiceReq.TDL_PATIENT_NAME);
-
-                    dicParam.Add("SAMPLE_TIME_STR", Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(
-                            currentServiceReq.SAMPLE_TIME ?? 0));
-                    dicParam.Add("RECEIVE_SAMPLE_TIME_STR", Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(
-                            currentServiceReq.RECEIVE_SAMPLE_TIME ?? 0));
+                    dicParam["INTRUCTION_TIME_FULL_STR"] = GetCurrentTimeSeparateBeginTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentServiceReq.INTRUCTION_TIME) ?? DateTime.Now);
+                    dicParam["INTRUCTION_DATE_FULL_STR"] = Inventec.Common.DateTime.Convert.TimeNumberToDateStringSeparateString(currentServiceReq.INTRUCTION_TIME);
+                    dicParam["INTRUCTION_TIME_STR"] = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(currentServiceReq.INTRUCTION_TIME);
+                    dicParam["START_TIME_STR"] = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(currentServiceReq.START_TIME ?? 0);
+                    dicParam["START_TIME_FULL_STR"] = GetCurrentTimeSeparateBeginTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentServiceReq.START_TIME ?? 0) ?? DateTime.Now);
+                    dicParam["ICD_MAIN_TEXT"] = currentServiceReq.ICD_NAME;
+                    dicParam["NATIONAL_NAME"] = currentServiceReq.TDL_PATIENT_NATIONAL_NAME;
+                    dicParam["WORK_PLACE"] = currentServiceReq.TDL_PATIENT_WORK_PLACE_NAME;
+                    dicParam["ADDRESS"] = currentServiceReq.TDL_PATIENT_ADDRESS;
+                    dicParam["CAREER_NAME"] = currentServiceReq.TDL_PATIENT_CAREER_NAME;
+                    dicParam["PATIENT_CODE"] = currentServiceReq.TDL_PATIENT_CODE;
+                    dicParam["DISTRICT_CODE"] = currentServiceReq.TDL_PATIENT_DISTRICT_CODE;
+                    dicParam["GENDER_NAME"] = currentServiceReq.TDL_PATIENT_GENDER_NAME;
+                    dicParam["MILITARY_RANK_NAME"] = currentServiceReq.TDL_PATIENT_MILITARY_RANK_NAME;
+                    dicParam["VIR_ADDRESS"] = currentServiceReq.TDL_PATIENT_ADDRESS;
+                    dicParam["AGE"] = CalculatorAge(currentServiceReq.TDL_PATIENT_DOB, false);
+                    dicParam["AGE_STRING"] = Inventec.Common.DateTime.Calculation.AgeString(currentServiceReq.TDL_PATIENT_DOB, "", "", "", "", TreatmentWithPatientTypeAlter.IN_TIME);
+                    dicParam["STR_YEAR"] = currentServiceReq.TDL_PATIENT_DOB.ToString().Substring(0, 4);
+                    dicParam["VIR_PATIENT_NAME"] = currentServiceReq.TDL_PATIENT_NAME;
+                    dicParam["SAMPLE_TIME_STR"] = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(currentServiceReq.SAMPLE_TIME ?? 0);
+                    dicParam["RECEIVE_SAMPLE_TIME_STR"] = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(currentServiceReq.RECEIVE_SAMPLE_TIME ?? 0);
                     var paanPosition = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PAAN_POSITION>().FirstOrDefault(o => o.ID == currentServiceReq.PAAN_POSITION_ID);
-                    if (paanPosition != null)
-                        dicParam.Add("PAAN_POSITION_NAME", paanPosition.PAAN_POSITION_NAME);
-                    else
-                        dicParam.Add("PAAN_POSITION_NAME", "");
-
+                    dicParam["PAAN_POSITION_NAME"] = paanPosition != null ? paanPosition.PAAN_POSITION_NAME : "";
                     var executeRoom = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentServiceReq.EXECUTE_ROOM_ID);
                     if (executeRoom != null)
                     {
-                        dicParam.Add("EXECUTE_DEPARTMENT_CODE", executeRoom.DEPARTMENT_CODE);
-                        dicParam.Add("EXECUTE_DEPARTMENT_NAME", executeRoom.DEPARTMENT_NAME);
-                        dicParam.Add("EXECUTE_ROOM_CODE", executeRoom.ROOM_CODE);
-                        dicParam.Add("EXECUTE_ROOM_NAME", executeRoom.ROOM_NAME);
+                        dicParam["EXECUTE_DEPARTMENT_CODE"] = executeRoom.DEPARTMENT_CODE;
+                        dicParam["EXECUTE_DEPARTMENT_NAME"] = executeRoom.DEPARTMENT_NAME;
+                        dicParam["EXECUTE_ROOM_CODE"] = executeRoom.ROOM_CODE;
+                        dicParam["EXECUTE_ROOM_NAME"] = executeRoom.ROOM_NAME;
                     }
-
                     var reqRoom = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == currentServiceReq.REQUEST_ROOM_ID);
                     if (reqRoom != null)
                     {
-                        dicParam.Add("REQUEST_DEPARTMENT_CODE", reqRoom.DEPARTMENT_CODE);
-                        dicParam.Add("REQUEST_DEPARTMENT_NAME", reqRoom.DEPARTMENT_NAME);
-                        dicParam.Add("REQUEST_ROOM_CODE", reqRoom.ROOM_CODE);
-                        dicParam.Add("REQUEST_ROOM_NAME", reqRoom.ROOM_NAME);
+                        dicParam["REQUEST_DEPARTMENT_CODE"] = reqRoom.DEPARTMENT_CODE;
+                        dicParam["REQUEST_DEPARTMENT_NAME"] = reqRoom.DEPARTMENT_NAME;
+                        dicParam["REQUEST_ROOM_CODE"] = reqRoom.ROOM_CODE;
+                        dicParam["REQUEST_ROOM_NAME"] = reqRoom.ROOM_NAME;
                     }
-
                     if (lstBedLogData != null && lstBedLogData.Count > 0)
                     {
                         var bedLogData = lstBedLogData.Where(o => o.TREATMENT_ID == currentServiceReq.TREATMENT_ID).ToList();
@@ -675,8 +648,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             bedLogData = bedLogData.Where(o => o.START_TIME < currentServiceReq.INTRUCTION_TIME && (o.FINISH_TIME > currentServiceReq.INTRUCTION_TIME || o.FINISH_TIME == null)).OrderByDescending(o => o.FINISH_TIME).ToList();
                             if (bedLogData != null && bedLogData.Count > 0)
                             {
-                                dicParam.Add("BED_NAME", bedLogData.First().BED_NAME);
-                                dicParam.Add("BED_CODE", bedLogData.First().BED_CODE);
+                                dicParam["BED_NAME"] = bedLogData.First().BED_NAME;
+                                dicParam["BED_CODE"] = bedLogData.First().BED_CODE;
                             }
                         }
                     }
@@ -686,52 +659,36 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 {
                     if (!String.IsNullOrEmpty(TreatmentWithPatientTypeAlter.HEIN_CARD_NUMBER))
                     {
-                        dicParam.Add("HEIN_CARD_NUMBER_SEPARATE",
-                            HeinCardHelper.SetHeinCardNumberDisplayByNumber(TreatmentWithPatientTypeAlter.HEIN_CARD_NUMBER));
-                        dicParam.Add("STR_HEIN_CARD_FROM_TIME",
-                            Inventec.Common.DateTime.Convert.TimeNumberToDateString(
-                            TreatmentWithPatientTypeAlter.HEIN_CARD_FROM_TIME));
-                        dicParam.Add("STR_HEIN_CARD_TO_TIME",
-                            Inventec.Common.DateTime.Convert.TimeNumberToDateString(
-                            TreatmentWithPatientTypeAlter.HEIN_CARD_TO_TIME));
-                        dicParam.Add("HEIN_CARD_ADDRESS", TreatmentWithPatientTypeAlter.HEIN_CARD_ADDRESS);
+                        dicParam["HEIN_CARD_NUMBER_SEPARATE"] = HeinCardHelper.SetHeinCardNumberDisplayByNumber(TreatmentWithPatientTypeAlter.HEIN_CARD_NUMBER);
+                        dicParam["STR_HEIN_CARD_FROM_TIME"] = Inventec.Common.DateTime.Convert.TimeNumberToDateString(TreatmentWithPatientTypeAlter.HEIN_CARD_FROM_TIME);
+                        dicParam["STR_HEIN_CARD_TO_TIME"] = Inventec.Common.DateTime.Convert.TimeNumberToDateString(TreatmentWithPatientTypeAlter.HEIN_CARD_TO_TIME);
+                        dicParam["HEIN_CARD_ADDRESS"] = TreatmentWithPatientTypeAlter.HEIN_CARD_ADDRESS;
                     }
                     else
                     {
-                        dicParam.Add("HEIN_CARD_NUMBER_SEPARATE", "");
-                        dicParam.Add("STR_HEIN_CARD_FROM_TIME", "");
-                        dicParam.Add("STR_HEIN_CARD_TO_TIME", "");
-                        dicParam.Add("HEIN_CARD_ADDRESS", "");
+                        dicParam["HEIN_CARD_NUMBER_SEPARATE"] = "";
+                        dicParam["STR_HEIN_CARD_FROM_TIME"] = "";
+                        dicParam["STR_HEIN_CARD_TO_TIME"] = "";
+                        dicParam["HEIN_CARD_ADDRESS"] = "";
                     }
-
                     var patientType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == TreatmentWithPatientTypeAlter.PATIENT_TYPE_CODE);
-                    if (patientType != null)
-                        dicParam.Add("PATIENT_TYPE_NAME", patientType.PATIENT_TYPE_NAME);
-                    else
-                        dicParam.Add("PATIENT_TYPE_NAME", "");
-
+                    dicParam["PATIENT_TYPE_NAME"] = patientType != null ? patientType.PATIENT_TYPE_NAME : "";
                     var treatmentType = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_TREATMENT_TYPE>().FirstOrDefault(o => o.TREATMENT_TYPE_CODE == TreatmentWithPatientTypeAlter.TREATMENT_TYPE_CODE);
-                    if (treatmentType != null)
-                        dicParam.Add("TREATMENT_TYPE_NAME", treatmentType.TREATMENT_TYPE_NAME);
-                    else
-                        dicParam.Add("TREATMENT_TYPE_NAME", "");
-
-                    dicParam.Add("TREATMENT_ICD_CODE", TreatmentWithPatientTypeAlter.ICD_CODE);
-                    dicParam.Add("TREATMENT_ICD_NAME", TreatmentWithPatientTypeAlter.ICD_NAME);
-                    dicParam.Add("TREATMENT_ICD_SUB_CODE", TreatmentWithPatientTypeAlter.ICD_SUB_CODE);
-                    dicParam.Add("TREATMENT_ICD_TEXT", TreatmentWithPatientTypeAlter.ICD_TEXT);
-
+                    dicParam["TREATMENT_TYPE_NAME"] = treatmentType != null ? treatmentType.TREATMENT_TYPE_NAME : "";
+                    dicParam["TREATMENT_ICD_CODE"] = TreatmentWithPatientTypeAlter.ICD_CODE;
+                    dicParam["TREATMENT_ICD_NAME"] = TreatmentWithPatientTypeAlter.ICD_NAME;
+                    dicParam["TREATMENT_ICD_SUB_CODE"] = TreatmentWithPatientTypeAlter.ICD_SUB_CODE;
+                    dicParam["TREATMENT_ICD_TEXT"] = TreatmentWithPatientTypeAlter.ICD_TEXT;
                     AddKeyIntoDictionaryPrint<HisTreatmentWithPatientTypeInfoSDO>(TreatmentWithPatientTypeAlter, this.dicParam, false);
-
                     int AGE_NUM = Inventec.Common.DateTime.Calculation.Age(TreatmentWithPatientTypeAlter.TDL_PATIENT_DOB, TreatmentWithPatientTypeAlter.IN_TIME);
-                    dicParam.Add("AGE_NUM", AGE_NUM);
+                    dicParam["AGE_NUM"] = AGE_NUM;
                 }
                 else
                 {
-                    dicParam.Add("HEIN_CARD_NUMBER_SEPARATE", "");
-                    dicParam.Add("STR_HEIN_CARD_FROM_TIME", "");
-                    dicParam.Add("STR_HEIN_CARD_TO_TIME", "");
-                    dicParam.Add("HEIN_CARD_ADDRESS", "");
+                    dicParam["HEIN_CARD_NUMBER_SEPARATE"] = "";
+                    dicParam["STR_HEIN_CARD_FROM_TIME"] = "";
+                    dicParam["STR_HEIN_CARD_TO_TIME"] = "";
+                    dicParam["HEIN_CARD_ADDRESS"] = "";
                     var typeAlter = new HisTreatmentWithPatientTypeInfoSDO();
                     AddKeyIntoDictionaryPrint<HisTreatmentWithPatientTypeInfoSDO>(typeAlter, this.dicParam, false);
                 }
@@ -812,11 +769,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     dicParam["EXECUTE_TIME_FULL_STR"] = "";
                 }
 
-                dicParam.Add("USER_NAME", UserName);
+                dicParam["USER_NAME"] = UserName;
 
                 if (sereServExt != null && sereServExt.GPBL_STORE_CODE != null)
                 {
-                    dicParam.Add("GPBL_STORE_CODE", sereServExt.GPBL_STORE_CODE);
+                    dicParam["GPBL_STORE_CODE"] = sereServExt.GPBL_STORE_CODE;
                 }
 
                 if (!isPressButtonSave)
@@ -825,8 +782,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     dicParam.Remove("NOTE");
                 }
 
-                dicParam.Add("CONCLUDE_NEW", "<#CONCLUDE;>");
-                dicParam.Add("NOTE_NEW", "<#NOTE;>");
+                dicParam["CONCLUDE_NEW"] = "<#CONCLUDE;>";
+                dicParam["NOTE_NEW"] = "<#NOTE;>";
 
                 List<ADO.ImageADO> image = listImage != null ? listImage.Where(o => o.IsChecked == true).OrderBy(p => p.STTImage).ToList() : null;
                 dicImage = new Dictionary<string, Image>();
@@ -836,7 +793,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     {
                         //fix cứng size ảnh thành 250x140 để add vào kết quả
                         dicImage.Add("IMAGE_DATA_" + (i + 1), ResizeImage(image[i].IMAGE_DISPLAY, 250, 140));
-                        dicParam.Add("IMAGE_CAPTION_" + (i + 1), image[i].CAPTION);
+                        dicParam["IMAGE_CAPTION_" + (i + 1)] = image[i].CAPTION;
                         //image[i].IsChecked = false;
                     }
 
@@ -845,7 +802,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         for (int i = image.Count; i < 10; i++)
                         {
                             dicImage.Add("IMAGE_DATA_" + (i + 1), null);
-                            dicParam.Add("IMAGE_CAPTION_" + (i + 1), "");
+                            dicParam["IMAGE_CAPTION_" + (i + 1)] = "";
                         }
                     }
                 }
@@ -854,7 +811,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     for (int i = 0; i < 10; i++)
                     {
                         dicImage.Add("IMAGE_DATA_" + (i + 1), null);
-                        dicParam.Add("IMAGE_CAPTION_" + (i + 1), "");
+                        dicParam["IMAGE_CAPTION_" + (i + 1)] = "";
                     }
                 }
 
@@ -915,10 +872,10 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                 if (this.dicSereServPttt != null && this.dicSereServPttt.Count > 0 && this.dicSereServPttt.ContainsKey(this.sereServ.ID) & this.dicSereServPttt[this.sereServ.ID] != null)
                 {
-                    dicParam.Add("ICD_CM_CODE", this.dicSereServPttt[this.sereServ.ID].ICD_CM_CODE);
-                    dicParam.Add("ICD_CM_NAME", this.dicSereServPttt[this.sereServ.ID].ICD_CM_NAME);
-                    dicParam.Add("ICD_CM_SUB_CODE", this.dicSereServPttt[this.sereServ.ID].ICD_CM_SUB_CODE);
-                    dicParam.Add("ICD_CM_TEXT", this.dicSereServPttt[this.sereServ.ID].ICD_CM_TEXT);
+                    dicParam["ICD_CM_CODE"] = this.dicSereServPttt[this.sereServ.ID].ICD_CM_CODE;
+                    dicParam["ICD_CM_NAME"] = this.dicSereServPttt[this.sereServ.ID].ICD_CM_NAME;
+                    dicParam["ICD_CM_SUB_CODE"] = this.dicSereServPttt[this.sereServ.ID].ICD_CM_SUB_CODE;
+                    dicParam["ICD_CM_TEXT"] = this.dicSereServPttt[this.sereServ.ID].ICD_CM_TEXT;
                 }
 
                 try
