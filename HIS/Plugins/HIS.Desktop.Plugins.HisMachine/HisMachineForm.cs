@@ -1895,10 +1895,14 @@ namespace HIS.Desktop.Plugins.HisMachine
                     xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : "";
                     xmlCLS.MaMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
 
-                    if (machine.HIS_MACHINE_INSPECTION != null && machine.HIS_MACHINE_INSPECTION.Count > 0)
+                    var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == machine.ID).ToList();
+
+                    if (listMachineInspection != null && listMachineInspection.Count > 0)
                     {
-                        long? maxFromTime = machine.HIS_MACHINE_INSPECTION.Max(o => o.FROM_TIME);
-                        long? maxToTime = machine.HIS_MACHINE_INSPECTION.Max(o => o.TO_TIME);
+                        Inventec.Common.Logging.LogSystem.Info("listMachineInspection1: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listMachineInspection), listMachineInspection));
+
+                        long? maxFromTime = listMachineInspection.Max(o => o.FROM_TIME);
+                        long? maxToTime = listMachineInspection.Max(o => o.TO_TIME);
 
                         if (maxFromTime.HasValue)
                         {
