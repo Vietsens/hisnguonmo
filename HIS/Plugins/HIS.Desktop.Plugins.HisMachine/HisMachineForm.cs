@@ -1081,7 +1081,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                     if (e.Column.FieldName == "IsMachine")
                     {
                         var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == data.ID ).ToList();
-                        e.RepositoryItem = (listMachineInspection?.Count > 0) ? ButtonEditIsMachine : null;
+                        e.RepositoryItem = (listMachineInspection?.Count > 0) ? ButtonEditIsMachine : ButtonEditNonMachine;
                     }
                 }
             }
@@ -2063,6 +2063,26 @@ namespace HIS.Desktop.Plugins.HisMachine
         }
 
         private void ButtonEditIsMachine_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+
+                var rowData = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                if (rowData == null) return;
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisMachineInspection").FirstOrDefault();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleData), moduleData));
+                List<object> listArgs = new List<object>();
+                listArgs.Add(rowData);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentModule), currentModule));
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisMachineInspection", 0, 0, listArgs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ButtonEditNonMachine_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
             {
