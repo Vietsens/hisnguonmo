@@ -49,8 +49,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                 gridViewSereServ.FocusedRowChanged += OnSereServFocusedRowChanged;
                 InitExecuteName();
                 InitExcuteRoom();
+                InitCombo(RIGHT_ICD_NAME);
+                InitCombo(LEFT_ICD_NAME);
+                InitCombo(BOTH_ICD_NAME);
                 InitEnterTabNavigation();
-                LoadSereServGrid();
+                LoadSereServViexGrid();
                 ValidateControl();
                 isNotLoadWhileChangeControlStateInFirst = false;
                 UpdateEditModeBySelectedSereServ(GetSelectedSereServ());

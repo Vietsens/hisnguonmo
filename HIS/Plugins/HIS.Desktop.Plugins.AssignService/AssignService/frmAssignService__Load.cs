@@ -724,7 +724,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, sereServADOOld.PackagePriceId, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
                     }
 
-                    if(HisConfigCFG.ServicePatyForServicePackage == "2" && oneServicePatyPrice == null)
+                    if (HisConfigCFG.ServicePatyForServicePackage == "2" && oneServicePatyPrice == null)
                     {
                         oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, null, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
                     }
@@ -1956,7 +1956,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                 listResult = listResult.Where(o => o.ID != HisConfigCFG.PatientTypeId__BHYT).ToList();
                         }
                         result = (listResult != null && listResult.Count > 0) ? listResult.FirstOrDefault() : null;
-                        if(HisConfigCFG.ServicePatyForServicePackage == "2")
+                        if (HisConfigCFG.ServicePatyForServicePackage == "2")
                         {
                             if (packageId != null || packageId > 0)
                             {
@@ -1980,7 +1980,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                                     result = patyTypeDefaultPackage;
                                 }
                             }
-                        }                        
+                        }
 
                         #region ĐTTT
                         if (HisConfigCFG.DefaultPatientTypeOption && this.serviceReqParentId != null && this.hisSereServForGetPatientType != null && !sereServADO.IsNotLoadDefaultPatientType)
@@ -2020,7 +2020,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         }
                         #endregion
                         #region Phụ thu
-                        bool isOutOfHour = false;   
+                        bool isOutOfHour = false;
                         if (intructionTimeSelected.Count == 1)
                             isOutOfHour = CheckIsOutOfHoursTime(intructionTimeSelected.FirstOrDefault());
                         if (HisConfigCFG.IsSetPrimaryPatientType != "2" && currentHisPatientTypeAlter.TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && isOutOfHour && currentHisTreatment.IS_EMERGENCY != 1)
@@ -2647,7 +2647,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             foreach (var sereServADO in resultData)
                             {
                                 sereServADO.IsChecked = true;
-
+                                if (this.currentHisTreatment != null && this.currentHisTreatment.GUARANTEE_CODE != null)
+                                    sereServADO.IsGuarantee = true;
                                 if (sereServExts != null && sereServExts.Count > 0)
                                 {
                                     var ss = sereServs.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID);
@@ -2834,10 +2835,11 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 if (apiResult != null)
                 {
                     currentPreServiceReqs = (List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_REQ_6>)apiResult.Data;
-                    if (currentPreServiceReqs != null)
+                    preServiceReqsADOs = currentPreServiceReqs.Select(o => new PreServiceReqsADO(o)).ToList();
+                    if (preServiceReqsADOs != null)
                     {
-                        gridControl3.DataSource = currentPreServiceReqs;
-                        rowCount = (currentPreServiceReqs == null ? 0 : currentPreServiceReqs.Count);
+                        gridControl3.DataSource = preServiceReqsADOs;
+                        rowCount = (preServiceReqsADOs == null ? 0 : preServiceReqsADOs.Count);
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                     }
                 }
@@ -4475,7 +4477,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     if (HisConfigCFG.ServicePatyForServicePackage == "2" && cboPackage.EditValue != null)
                     {
                         var inPackage = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Where(o => o.SERVICE_ID == data.SERVICE_ID && o.PACKAGE_ID == (long)cboPackage.EditValue).ToList();
-                        if(inPackage != null && inPackage.Count > 0)
+                        if (inPackage != null && inPackage.Count > 0)
                         {
                             list.AddRange(inPackage.Select(o => o.PATIENT_TYPE_ID).Distinct().ToList());
                         }
@@ -4485,10 +4487,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             list.AddRange(inPackageNull.Select(o => o.PATIENT_TYPE_ID).Distinct().ToList());
                         }
                         dataCombo = dataCombo
-                            .Where(o => list.Contains(o.ID)).OrderBy(o=>o.ID).ToList();
+                            .Where(o => list.Contains(o.ID)).OrderBy(o => o.ID).ToList();
                         this.InitComboPatientType(patientTypeCombo, dataCombo);
                     }
-                    else if((HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2") && cboPackage.EditValue != null)
+                    else if ((HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2") && cboPackage.EditValue != null)
                     {
                         var packageKeyDiff12 = BackendDataWorker.Get<V_HIS_SERVICE_PATY>().Where(o => o.SERVICE_ID == data.SERVICE_ID && o.PACKAGE_ID == (long)cboPackage.EditValue && o.PATIENT_TYPE_ID == data.PATIENT_TYPE_ID).ToList();
                         list.AddRange(packageKeyDiff12.Select(o => o.PATIENT_TYPE_ID).Distinct().ToList());

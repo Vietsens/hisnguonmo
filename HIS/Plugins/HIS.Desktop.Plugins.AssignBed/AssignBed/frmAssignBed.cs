@@ -25,7 +25,6 @@ using HIS.Desktop.Plugins.AssignBed.ADO;
 using HIS.Desktop.Plugins.AssignBed.Config;
 using HIS.Desktop.Plugins.AssignBed.Resources;
 using HIS.Desktop.Plugins.AssignBed.Validation;
-using HIS.Desktop.Plugins.AssignPrescriptionPK.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription;
 using HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseICD;
 using HIS.Desktop.Plugins.Library.AlertWarningFee;
@@ -35,6 +34,7 @@ using HIS.Desktop.Plugins.Library.PrintBordereau.ADO;
 using HIS.Desktop.Plugins.Library.PrintBordereau.Base;
 using HIS.Desktop.Plugins.Library.PrintServiceReq;
 using HIS.Desktop.Print;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using HIS.UC.DateEditor.ADO;
 using HIS.UC.Icd;
@@ -72,6 +72,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 {
     public partial class frmAssignBed : HIS.Desktop.Utility.FormBase
     {
+        private BaseEdit gridServiceProcessActiveEditor;
+        private bool isPostingGridServiceProcessEditorValue;
+        private HashSet<long> serviceProcessSelectedIds = new HashSet<long>();
+        private bool ignoreClearOnServiceProcessSelectionChanged;
         internal IcdProcessor icdYhctProcessor;
         internal UserControl ucIcdYhct;
         internal SecondaryIcdProcessor subIcdYhctProcessor;
@@ -165,7 +169,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         V_HIS_ROOM currentWorkingRoom = null;
 
         long previusTreatmentId = 0;
-        List<LoaiPhieuInADO> lstLoaiPhieu;
+        List<ADO.LoaiPhieuInADO> lstLoaiPhieu;
         bool isNotLoadWhileChangeControlStateInFirst;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
@@ -227,6 +231,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         bool IsSaveAndShowMps000102 = true;
         MPS.ProcessorBase.PrintConfig.PreviewType? PreviewTypeMps000102 = null;
         DataGridAdo currentRowSereServADO;
+
+        bool IsAcceptWordNotInData = false;
+
+
         public enum TypeButton
         {
             SAVE,
@@ -288,6 +296,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
+                EnableDoubleBuffering(this.gridControlServiceProcess);
+
                 this.LoadHisServiceFromRam();
                 this.requestRoom = GetRequestRoom(this.currentModule.RoomId);
                 this.currentPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
@@ -328,6 +338,21 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             }
         }
 
+        private static void EnableDoubleBuffering(Control control)
+        {
+            if (control == null) return;
+            try
+            {
+                typeof(Control)
+                    .GetProperty("DoubleBuffered", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)
+                    ?.SetValue(control, true, null);
+            }
+            catch
+            {
+                // Best-effort only 
+            }
+        }
+
         private void SetCaptionByLanguageKey()
         {
             try
@@ -335,7 +360,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 ////Khoi tao doi tuong resource
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.AssignBed.Resources.Lang", typeof(frmAssignBed).Assembly);
 
-                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt 
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn14.Caption = Inventec.Common.Resource.Get.Value("frmAssignBed.gridColumn14.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn15.Caption = Inventec.Common.Resource.Get.Value("frmAssignBed.gridColumn15.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -365,6 +390,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 this.gridColumn12.Caption = Inventec.Common.Resource.Get.Value("frmAssignBed.gridColumn12.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn13.Caption = Inventec.Common.Resource.Get.Value("frmAssignBed.gridColumn13.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.repositoryItemGridLookUpEditBed.NullText = Inventec.Common.Resource.Get.Value("frmAssignBed.repositoryItemGridLookUpEditBed.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                // Keep BED_CODE empty when no bed selected (avoid the default watermark "EditValue is null").
+                this.repositoryItemGridLookUpEditBed.NullText = "";
+                this.repositoryItemGridLookUpEditBed.NullValuePrompt = "";
+                this.repositoryItemGridLookUpEditBed.NullValuePromptShowForEmptyValue = false;
                 this.repositoryItemGridLookUpEditPatientType.NullText = Inventec.Common.Resource.Get.Value("frmAssignBed.repositoryItemGridLookUpEditPatientType.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.repositoryItemcboExcuteRoom_TabService.NullText = Inventec.Common.Resource.Get.Value("frmAssignBed.repositoryItemcboExcuteRoom_TabService.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.repositoryItemcboShareCount.NullText = Inventec.Common.Resource.Get.Value("frmAssignBed.repositoryItemcboShareCount.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -396,6 +425,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 this.layoutControlItem34.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.layoutControlItem34.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem35.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.layoutControlItem35.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciForlblConThua.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.lciForlblConThua.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciForlblConThua.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.lciForlblConThieu.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciForlblSoDuTaiKhoan.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmAssignBed.lciForlblSoDuTaiKhoan.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciForlblSoDuTaiKhoan.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.lciForlblSoDuTaiKhoan.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem28.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmAssignBed.layoutControlItem28.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -442,7 +472,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             bool valid = true;
             try
             {
-                long patientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewServiceProcess.GetRowCellValue(rowHandle, "PATIENT_TYPE_ID") ?? "0").ToString());
+                long patientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewServiceProcess.GetRowCellValue(rowHandle, "PATIENT_TYPE_ID_STR") ?? "0").ToString());
                 long primaryPatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewServiceProcess.GetRowCellValue(rowHandle, "PRIMARY_PATIENT_TYPE_ID") ?? "0").ToString());
                 if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT || primaryPatientTypeId == HisConfigCFG.PatientTypeId__BHYT)
                 {
@@ -465,7 +495,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 {
                     var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                     DataGridAdo data = (DataGridAdo)gridViewServiceProcess.GetRow(e.RowHandle);
-                    if (e.Column.FieldName == "PATIENT_TYPE_ID")
+                    if (e.Column.FieldName == "PATIENT_TYPE_ID_STR")
                     {
                         e.RepositoryItem = this.repositoryItemGridLookUpEditPatientType;
                     }
@@ -523,12 +553,12 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                     }
                                     else
                                     {
-                                        valueToSet = DateTime.Now;
+                                        valueToSet = DateTime.Now.Date;
                                     }
                                 }
                                 else
                                 {
-                                    valueToSet = DateTime.Now;
+                                    valueToSet = DateTime.Now.Date;
                                 }
                                 repositoryItemDateEditTimeFrom.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
                                 repositoryItemDateEditTimeFrom.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
@@ -567,6 +597,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             {
                                 view.SetRowCellValue(e.RowHandle, "QUANTITY", 1);
                             }
+
+                            repositoryItemSpinEditQuantity.MinValue = 0;
+                            repositoryItemSpinEditQuantity.MaxValue = decimal.MaxValue;
 
                             e.RepositoryItem = repositoryItemSpinEditQuantity;
                         }
@@ -660,17 +693,18 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                 }
 
                                 LoadBedDataByServiceId(Convert.ToInt64(selectedServiceId), timeFrom, timeTo);
+                                AdjustBedAmountStrForPendingSelections(e.RowHandle);
 
                                 e.RepositoryItem = repositoryItemGridLookUpEditBed;
                             }
-                            else
-                            {
-                                e.RepositoryItem = repositoryItemGridLookUpEditBed = null;
-                            }
+                            //else
+                            //{
+                            //    e.RepositoryItem = repositoryItemGridLookUpEditBed = null;
+                            //}
                         }
 
                     }
-                    else if (e.Column.FieldName == "TDL_EXECUTE_ROOM_ID")
+                    else if (e.Column.FieldName == "TDL_EXECUTE_ROOM_ID_STR")
                     {
                         if (this.IsTreatmentInBedRoom && data != null && data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G && data.TDL_EXECUTE_ROOM_ID > 0)
                         {
@@ -744,13 +778,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     if (this.transferTreatmentFee > 0)
                     {
                         lblConThua.Text = Inventec.Common.Number.Convert.NumberToString(Math.Abs(this.transferTreatmentFee), ConfigApplications.NumberSeperator);
-                        lciForlblConThua.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lciForlblConThieu.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                        lciForlblConThua.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.lciForlblConThieu.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                         lciForlblConThua.AppearanceItemCaption.ForeColor = System.Drawing.Color.Red;
                     }
                     else
                     {
                         lblConThua.Text = Inventec.Common.Number.Convert.NumberToString(Math.Abs(this.transferTreatmentFee), ConfigApplications.NumberSeperator);
-                        this.lciForlblConThua.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lciForlblConThua.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                        this.lciForlblConThua.Text = Inventec.Common.Resource.Get.Value("frmAssignBed.lciForlblConThua.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     }
 
                     this.patientTypeByPT = (currentHisPatientTypeAlter != null && currentHisPatientTypeAlter.PATIENT_TYPE_ID > 0) ? BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.ID == currentHisPatientTypeAlter.PATIENT_TYPE_ID).FirstOrDefault() : null;
@@ -1029,9 +1063,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 this.InitComboRepositoryPatientType(this.currentPatientTypeWithPatientTypeAlter);
                 var patientTypePrimary = this.currentPatientTypeWithPatientTypeAlter.Where(o => o.IS_ADDITION == (short)1).ToList();
                 this.InitComboPrimaryPatientType(patientTypePrimary);
-                //this.InitComboUser();
-                //this.InitComboServiceGroup();
-                //this.InitComboExecuteRoom();
                 this.LoadTreatmentInfo__PatientType();
                 this.BindTree();
                 this.LoadDataDhst();
@@ -1102,13 +1133,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 if (input != null)
                 {
-                    //if (input.Time != null && input.Time != DateTime.MinValue)
-                    //{
-                    //    this.timeIntruction.EditValue = input.Time.ToString("HH:mm");
-                    //}
-                    //if (input.Dates != null && input.Dates.Count > 0)
-                    //{
-                    //    this.dtInstructionTime.EditValue = input.Dates[0];
                     this.intructionTimeSelected = new List<DateTime?>();
                     this.intructionTimeSelected.AddRange(input.Dates);
                     //}
@@ -1288,7 +1312,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 CommonParam param = new CommonParam();
                 HisSereServFilter hisSereServFilter = new HisSereServFilter();
                 hisSereServFilter.TREATMENT_ID = treatmentId;
-                //hisSereServFilter.PATIENT_TYPE_ID = HisConfigCFG.PatientTypeId__BHYT;
                 this.sereServsInTreatmentRaw = await new BackendAdapter(param).GetAsync<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, hisSereServFilter, param);
                 this.sereServsInTreatment = this.sereServsInTreatmentRaw != null ? this.sereServsInTreatmentRaw.Where(o => o.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT).ToList() : null;
 
@@ -1322,15 +1345,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 {
                     this.RefeshSereServInTreatmentData();
                     this.isNotHandlerWhileChangeToggetSwith = true;
-                    //if (!HisConfigCFG.IsNotAutoLoadServiceOpenAssignService)
-                    //{
-                    //    this.LoadDataToGrid(true);//TODO
-                    //}
 
                     this.isNotHandlerWhileChangeToggetSwith = false;
-                    //this.FillDataToControlsForm();
-                    //this.InitDefaultDataService();
-                    //this.LoadDataToTrackingCombo();
                     this.CheckOverTotalPatientPrice();
                 }
             }
@@ -1452,12 +1468,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     DelegateSelectedIcd(icdMain);
                 }
 
-                //string[] codes = this.txtIcdSubCode.Text.Split(IcdUtil.seperator.ToCharArray());
-                //this.icdSubcodeAdoChecks = (from m in this.currentIcds.Where(o => o.IS_TRADITIONAL != 1).ToList() select new ADO.IcdADO(m, codes)).ToList();
-
-                //customGridViewSubIcdName.BeginUpdate();
-                //customGridViewSubIcdName.GridControl.DataSource = this.icdSubcodeAdoChecks;
-                //customGridViewSubIcdName.EndUpdate();
                 this.isNotProcessWhileChangedTextSubIcd = false;
                 Inventec.Common.Logging.LogSystem.Debug("LoadIcdDefault. 6");
             }
@@ -1664,18 +1674,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 if (this.icdServicePhacDos != null && this.icdServicePhacDos.Count > 0)
                 {
                     Inventec.Common.Logging.LogSystem.Debug("DelegateSelectedIcd. 1. this.icdServicePhacDos.count=" + this.icdServicePhacDos.Count);
-                    //if ((bool)this.toggleSwitchDataChecked.EditValue == false)
-                    //{
-                    //    this.toggleSwitchDataChecked.EditValue = true;
-                    //}
                     ProcessChoiceIcdPhacDo(this.icdServicePhacDos);
                 }
                 else
                 {
-                    //if ((bool)this.toggleSwitchDataChecked.EditValue == true)
-                    //{
-                    //    this.toggleSwitchDataChecked.EditValue = false;
-                    //}
                     this.ResetDefaultGridData();
                 }
             }
@@ -1761,28 +1763,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                         if (lstSereServResult != null && lstSereServResult.Count > 0)
                         {
-                            //foreach (var sereServADO in lstSereServResult)
-                            //{
-                            //    var ssData = this.ServiceIsleafADOs.Where(o => o.SERVICE_ID == sereServADO.SERVICE_ID).FirstOrDefault();
-                            //    if (ssData != null)
-                            //    {
-                            //        if (!chkAutoCheckPDDT.Checked)
-                            //        {
-                            //            if (!serviceChecked.Exists(o => o.SERVICE_ID == ssData.SERVICE_ID))
-                            //            {
-                            //                this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, ssData.SERVICE_ID, ssData);
-                            //                this.FillDataOtherPaySourceDataRow(ssData);
-                            //                this.ValidServiceDetailProcessing(ssData);
-                            //            }
-                            //            ssData.IsChecked = true;
-                            //            ServicePDDTIds.Add(ssData.SERVICE_ID);
-                            //        }
-                            //        else
-                            //        {
-                            //            ssData.IsChecked = false;
-                            //        }
-                            //    }
-                            //}
                             foreach (var item in ServiceIsleafADOs)
                             {
                                 if (!ServicePDDTIds.Exists(o => o == item.SERVICE_ID))
@@ -1796,16 +1776,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                         this.gridControlServiceProcess.DataSource = null;
                         List<DataGridAdo> gData = new List<DataGridAdo>();
-                        //if (chkAutoCheckPDDT.Checked)
-                        //{
-                        //    this.ResetDefaultGridData();
-                        //    gData = this.ServiceIsleafADOs.OrderBy(o => o.SERVICE_TYPE_ID).ThenByDescending(o => o.SERVICE_NUM_ORDER).ThenBy(o => o.TDL_SERVICE_NAME).ToList();
-                        //}
-                        //else
-                        //{
                         this.toggleSwitchDataChecked.EditValue = true;
                         gData = this.DataGridAdo.Where(o => o.IsChecked).OrderBy(o => o.SERVICE_TYPE_ID).ThenByDescending(o => o.SERVICE_NUM_ORDER).ThenBy(o => o.TDL_SERVICE_NAME).ToList();
-                        //}
                         this.gridControlServiceProcess.DataSource = gData;
                         this.SetEnableButtonControl(this.actionType);
                         VerifyWarningOverCeiling();
@@ -2026,7 +1998,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 var allDatas = this.DataGridAdo != null && this.DataGridAdo.Count > 0 ? this.DataGridAdo.AsQueryable() : null;
                 this.gridControlServiceProcess.DataSource = allDatas.ToList();
                 this.toggleSwitchDataChecked.EditValue = false;
-                //isCheckAssignServiceSimultaneityOption = false;
+                isCheckAssignServiceSimultaneityOption = false;
                 this.SetEnableButtonControl(this.actionType);
                 Inventec.Common.Logging.LogSystem.Debug("ResetDefaultGridData. 3");
             }
@@ -2156,14 +2128,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             .GroupBy(o => o.SERVICE_ID)
                             .ToDictionary(o => o.Key, o => o.ToList());
 
-                //Inventec.Common.Logging.LogSystem.Debug("LoadServicePaty____1:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentPatientTypeWithPatientTypeAlter), currentPatientTypeWithPatientTypeAlter)
-                //    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientTypeIdAls), patientTypeIdAls));
-
-                //this.currentPatientTypeWithPatientTypeAlter = patientTypeAll.Where(o => this.patientTypeIdAls.Contains(o.ID)).OrderBy(o => o.PRIORITY).ToList();
-
-                //Inventec.Common.Logging.LogSystem.Debug("LoadServicePaty____2:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentPatientTypeWithPatientTypeAlter), currentPatientTypeWithPatientTypeAlter)
-                //    );
-
                 this.dicServices = lstService
                     .ToDictionary(o => o.ID);
             }
@@ -2177,11 +2141,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
-                //decimal totalPrice = 0;
-                //if (this.dSereServ1WithTreatment != null && this.dSereServ1WithTreatment.Count > 0)
-                //{
-                //    totalPrice = this.dSereServ1WithTreatment.Sum(o => o.VIR_TOTAL_HEIN_PRICE ?? 0);              
-                //}
                 string patientInfo = "";
                 patientInfo += this.currentHisTreatment.TDL_PATIENT_NAME;
                 if (this.patientDob > 0)
@@ -2241,9 +2200,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     {
                         bmi = (currentDhst.WEIGHT.Value) / ((currentDhst.HEIGHT.Value / 100) * (currentDhst.HEIGHT.Value / 100));
                     }
-                    //double leatherArea = 0.007184 * Math.Pow((double)currentDhst.HEIGHT.Value, 0.725) * Math.Pow((double)currentDhst.WEIGHT.Value, 0.425);
                     s = Math.Round(bmi, 2) + "";
-                    //lblLeatherArea.Text = Math.Round(leatherArea, 2) + "";
                     if (bmi < 16)
                     {
                         bmiDisplay = Inventec.Common.Resource.Get.Value("UCDHST.SKINNY.III", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -2316,32 +2273,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             try
             {
                 isCheckAssignServiceSimultaneityOption = false;
-                //if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") || cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
-                //    return;
-                //CommonParam param = new CommonParam();
-                //HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
-                //sdo.TreatmentId = treatmentId;
-                //sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
-                //sdo.SereTimes = intructionTimeSelecteds;
-                //var CheckSereTimes = new BackendAdapter(param).Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
-                //if (!CheckSereTimes)
-                //{
-                //    if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
-                //    {
-                //        isCheckAssignServiceSimultaneityOption = true;
-                //        btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
-                //        MessageManager.Show(this, param, CheckSereTimes);
-                //    }
-                //    else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
-                //    {
-                //        if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
-                //        {
-                //            isCheckAssignServiceSimultaneityOption = true;
-                //            btnSave.Enabled = btnSaveAndPrint.Enabled = btnEdit.Enabled = false;
-                //        }
-                //    }
-                //}
-
                 if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") ||
             cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
                     return;
@@ -2477,21 +2408,12 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 }
                 else
                 {
-                    //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => INTRUCTION_TIME_FROM), INTRUCTION_TIME_FROM)
-                    //    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => INTRUCTION_TIME_TO), INTRUCTION_TIME_TO)
-                    //    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServWithTreatment), sereServWithTreatment)
-                    //    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServsInTreatmentRaw), sereServsInTreatmentRaw));
                     this.sereServWithTreatment = this.sereServsInTreatmentRaw.Where(o =>
                         o.TDL_TREATMENT_ID == treatmentId
                         && (INTRUCTION_TIME_FROM == null || (INTRUCTION_TIME_FROM.HasValue && o.TDL_INTRUCTION_TIME >= INTRUCTION_TIME_FROM.Value))
                         && (INTRUCTION_TIME_TO == null || (INTRUCTION_TIME_TO.HasValue && o.TDL_INTRUCTION_TIME <= INTRUCTION_TIME_TO.Value))
                         && !setyAllowsIds.Contains(o.TDL_SERVICE_TYPE_ID)).ToList();
                 }
-
-                //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => INTRUCTION_TIME_FROM), INTRUCTION_TIME_FROM)
-                //   + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => INTRUCTION_TIME_TO), INTRUCTION_TIME_TO)
-                //   + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServWithTreatment), sereServWithTreatment)
-                //   + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServsInTreatmentRaw), sereServsInTreatmentRaw));
             }
             catch (Exception ex)
             {
@@ -2529,8 +2451,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 {
                     return;
                 }
-                //this.intructionTimeSelecteds = this.ucDateProcessor.GetValue(ucDate);
-                //this.isMultiDateState = this.ucDateProcessor.GetChkMultiDateState(ucDate);
                 this.LoadDataToCurrentTreatmentData(treatmentId, this.intructionTimeSelecteds.FirstOrDefault());
                 this.SetDateUc();
                 this.ProcessDataWithTreatmentWithPatientTypeInfo();
@@ -2549,58 +2469,16 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 lstSereServExist = new List<HIS_SERE_SERV>();
                 this.gridViewServiceProcess.ActiveFilter.Clear();
                 this.gridViewServiceProcess.ClearColumnsFilter();
-                //this.dicServiceReqList = new Dictionary<long, HisServiceReqListResultSDO>();
-                //this.serviceReqComboResultSDO = null;
-                //this.repositoryItemchkIsCheckedDisable.ReadOnly = true;
-                //this.repositoryItemchkIsCheckedDisable.Enabled = false;
-                //this.ButtonEdit_IsExpenDisable.ReadOnly = true;
-                //this.ButtonEdit_IsExpenDisable.Enabled = false;
-                //this.repositoryItemSpinAmount__Disable_TabService.ReadOnly = true;
-                //this.repositoryItemSpinAmount__Disable_TabService.Enabled = false;
-                //this.btnCreateServiceGroup.Enabled = false;
                 this.btnSave.Enabled = false;
                 this.btnSaveAndPrint.Enabled = false;
-                //this.btnShowDetail.Enabled = false;
                 this.btnCreateBill.Enabled = false;
                 this.btnDepositService.Enabled = false;
-                //this.btnPrintPhieuHuongDanBN.Enabled = false;
-                //this.pnlPrintAssignService.Enabled = false;
-                //this.chkPriority.Checked = false;
-                //this.chkIsNotRequireFee.Checked = false;
-                //this.selectedSeviceGroups = null;
-                //if (this.workingServiceGroupADOs != null && this.workingServiceGroupADOs.Count > 0)
-                //    this.workingServiceGroupADOs.ForEach(o => o.IsChecked = false);
-                //this.beditRoom.EditValue = null;
-                //this.beditRoom.Properties.Buttons[1].Visible = false;
-
-                //this.cboPackage.EditValue = null;
-                //this.txtDescription.Text = "";
-                //this.cboExecuteGroup.EditValue = null;
-                //this.cboExecuteGroup.Properties.Buttons[1].Visible = false;
-                //this.chkExpendAll.Checked = false;
                 this.lblTotalServicePrice.Text = "0";
                 this.lblTotalServicePriceBhyt.Text = "0";
                 this.lblTotalServicePriceOther.Text = "0";
                 this.lblChenhBHYT.Text = "0";
                 this.actionType = GlobalVariables.ActionAdd;
-                //this.btnBoSungPhacDo.Enabled = (HisConfigCFG.IcdServiceAllowUpdate == GlobalVariables.CommonStringTrue);
-                //this.chkIsInformResultBySms.CheckState = CheckState.Unchecked;
-                //this.chkIsEmergency.CheckState = CheckState.Unchecked;
-                //this.chkIsNotRequireFee.Enabled = false;
-                //this.chkIsNotRequireFee.CheckState = CheckState.Unchecked;
                 this.txtProvisionalDiagnosis.Text = this.provisionalDiagnosis;
-                //this.dSignedList = new Dictionary<long, List<Inventec.Common.SignLibrary.DTO.DocumentSignedUpdateIGSysResultDTO>>();
-                //this.repositoryItemSpinNumberOfTimes__Disable_TabService.ReadOnly = true;
-                //this.repositoryItemSpinNumberOfTimes__Disable_TabService.Enabled = false;
-                //this.txtAssignRoomCode.Text = "";
-                //this.cboAssignRoom.EditValue = null;
-
-                //this.lblChiPhiBNPhaiTra.Text = "";
-                //this.lblDaDong.Text = "";
-                //this.lciForlblConThua.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
-                //this.lblConThua.Text = "";
-                //this.lciForlblConThua.Text = Inventec.Common.Resource.Get.Value("frmAssignService.lciForlblConThua.Text", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
-
                 if (isInit || HisConfigCFG.IsUsingServerTime != "1")
                 {
                     UC.DateEditor.ADO.DateInputADO dateInputADO = new UC.DateEditor.ADO.DateInputADO();
@@ -2612,31 +2490,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     }
                     dateInputADO.IsVisibleMultiDate = true;
                     UcDateReload(dateInputADO);
-                    //ucDateProcessor.Reload(ucDate, dateInputADO);
-                    //this.intructionTimeSelecteds = ucDateProcessor.GetValue(ucDate);
                 }
-                //if (!isInit)
-                //{
-                //    string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
-                //    var data = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(o => o.LOGINNAME.ToUpper().Equals(loginName.ToUpper())).FirstOrDefault();
-                //    if (data != null)
-                //    {
-                //        this.cboConsultantUser.EditValue = data.LOGINNAME;
-                //        this.txtConsultantLoginname.Text = data.LOGINNAME;
-                //    }
-                //}
-                //this.isMultiDateState = false;
-
-                //GridCheckMarksSelection gridCheckMark = cboServiceGroup.Properties.Tag as GridCheckMarksSelection;
-                //if (gridCheckMark != null)
-                //    gridCheckMark.ClearSelection(cboServiceGroup.Properties.View);
-
-                //if (HisConfigCFG.SetRequestRoomByBedRoomWhenBeingInSurgery == "1")
-                //{
-                //    txtAssignRoomCode.Enabled = cboAssignRoom.Enabled = true;
-                //}
-
-                //this.beditRoom.Text = "";
             }
             catch (Exception ex)
             {
@@ -2788,6 +2642,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     this.gridViewServiceProcess.FocusedColumn = this.grcServiceCode_TabService;
                     this.gridViewServiceProcess.FocusedColumn = this.gridColumnExecuteRoomName__TabService;
                     gridViewServiceProcess.SetRowCellValue(gridViewServiceProcess.FocusedRowHandle, gridColumnExecuteRoomName__TabService, edit.EditValue);
+
+                    gridViewServiceProcess.PostEditor();
+                    gridViewServiceProcess.UpdateCurrentRow();
                 }
             }
             catch (Exception ex)
@@ -2814,7 +2671,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                 if (e.Column.FieldName == "Check")
                 {
-                    var changedItem = gridView7.GetRow(e.RowHandle) as LoaiPhieuInADO;
+                    var changedItem = gridView7.GetRow(e.RowHandle) as ADO.LoaiPhieuInADO;
                     if (changedItem != null && changedItem.Check)
                     {
                         if (changedItem.ID == "gridView7_1")
@@ -3007,7 +2864,21 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     if (ssADO != null)
                     {
                         ssADO.PRIMARY_PATIENT_TYPE_ID = null;
-                        this.gridControlServiceProcess.RefreshDataSource();
+
+                        if (this.gridViewServiceProcess.ActiveEditor is GridLookUpEdit activeEditor)
+                        {
+                            activeEditor.EditValue = null;
+                        }
+
+                        if (this.gridViewServiceProcess.IsEditing)
+                            this.gridViewServiceProcess.CloseEditor();
+
+                        if (this.gridViewServiceProcess.FocusedRowModified)
+                            this.gridViewServiceProcess.UpdateCurrentRow();
+
+                        int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                        if (rowHandle >= 0)
+                            this.gridViewServiceProcess.RefreshRow(rowHandle);
                     }
                 }
             }
@@ -3087,6 +2958,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     this.gridViewServiceProcess.FocusedColumn = this.grcServiceCode_TabService;
                     this.gridViewServiceProcess.FocusedColumn = this.gridColumnExecuteRoomName__TabService;
                     gridViewServiceProcess.SetRowCellValue(gridViewServiceProcess.FocusedRowHandle, gridColumnExecuteRoomName__TabService, edit.EditValue);
+
+                    gridViewServiceProcess.PostEditor();
+                    gridViewServiceProcess.UpdateCurrentRow();
                 }
             }
             catch (Exception ex)
@@ -3099,6 +2973,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
+                this.gridControlServiceProcess.BeginUpdate();
                 if (toggleSwitchDataChecked.IsOn)
                 {
                     // BẬT → Chỉ hiển thị đã tích
@@ -3111,11 +2986,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     gridControlServiceProcess.DataSource = this.DataGridAdo;
                 }
 
-                gridViewServiceProcess.RefreshData();
+                this.gridViewServiceProcess.RefreshData();
+                this.gridControlServiceProcess.EndUpdate();
                 RestoreSelection();
             }
             catch (Exception ex)
             {
+                try { this.gridControlServiceProcess.EndUpdate(); } catch { }
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -3312,8 +3189,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         this.SetAssignNumOrder(sereServADO, isSelected);
                     }
                     if (//e.Column.FieldName == this.grcAmount_TabService.FieldName || 
-                        e.Column.FieldName == this.gridColumnPatientTypeName__TabService.FieldName
-                        || e.Column.FieldName == this.gridColumnExecuteRoomName__TabService.FieldName
+                        e.Column.FieldName == "PATIENT_TYPE_ID"
+                        || e.Column.FieldName == "TDL_EXECUTE_ROOM_ID"
                         )
                     {
                         if (isSelected)
@@ -3375,102 +3252,22 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             this.VerifyWarningOverCeiling();
                             this.ValidServiceDetailProcessing(sereServADO);
                             this.ProcessNoDifferenceHeinServicePrice(sereServADO);
-
-                            //if (this.selectedSeviceGroups != null && this.selectedSeviceGroups.Count > 0
-                            //    && sereServADO.SERVICE_GROUP_ID_SELECTEDs != null && sereServADO.SERVICE_GROUP_ID_SELECTEDs.Count > 0
-                            //    && this.serviceDeleteWhileSelectSeviceGroups != null && this.serviceDeleteWhileSelectSeviceGroups.Count > 0)
-                            //{
-                            //    var svRemove = this.serviceDeleteWhileSelectSeviceGroups.FirstOrDefault(k => k.SERVICE_ID == sereServADO.SERVICE_ID);
-                            //    if (svRemove != null)
-                            //    {
-                            //        this.serviceDeleteWhileSelectSeviceGroups.Remove(svRemove);
-                            //    }
-                            //}
                             sereServADO.IsChecked = isSelected;
                             if (!VerifyCheckFeeWhileAssign())
                             {
                                 this.ResetOneService(sereServADO);
-                                sereServADO.IsChecked = false;
+                                sereServADO.IsChecked = false; 
                                 return;
                             }
 
                             if (sereServADO.IsAutoExpend == (short?)1 && sereServADO.IsAllowExpend == (short?)1 && !sereServADO.PackagePriceId.HasValue)
                                 sereServADO.IsExpend = true;
 
-                            //if (isSelected)
-                            //{
-                            //    try
-                            //    {
-                            //        var dataCondition = BranchDataWorker.ServicePatyWithListPatientType(sereServADO.SERVICE_ID, new List<long> { (sereServADO.PATIENT_TYPE_ID > 0 ? sereServADO.PATIENT_TYPE_ID : this.currentHisPatientTypeAlter != null ? this.currentHisPatientTypeAlter.PATIENT_TYPE_ID : 0) });
-
-                            //        long instructionTime = this.intructionTimeSelecteds != null && this.intructionTimeSelecteds.Count > 0 ? this.intructionTimeSelecteds.FirstOrDefault() : 0;
-                            //        List<V_HIS_SERVICE_PATY> dataSource = new List<V_HIS_SERVICE_PATY>();
-                            //        long? intructionNumByType = null;
-                            //        List<HIS_SERE_SERV> sameServiceType = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.TDL_SERVICE_TYPE_ID == sereServADO.SERVICE_TYPE_ID).ToList() : null;
-                            //        List<HIS_SERE_SERV> sameService = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.SERVICE_ID == sereServADO.SERVICE_ID).ToList() : null;
-                            //        intructionNumByType = sameServiceType != null ? (long)sameServiceType.Count() + 1 : 1;
-                            //        var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;
-                            //        foreach (var con in dataCondition)
-                            //        {
-                            //            var dt = MOS.ServicePaty.ServicePatyUtil.GetApplied(new List<V_HIS_SERVICE_PATY>() { con }, sereServADO.TDL_EXECUTE_BRANCH_ID, sereServADO.TDL_EXECUTE_ROOM_ID, this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADO.SERVICE_ID, sereServADO.PATIENT_TYPE_ID, intructionNum, intructionNumByType, sereServADO.PackagePriceId, con.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
-                            //            if (dt != null)
-                            //                dataSource.Add(dt);
-                            //        }
-                            //        dataCondition = dataSource;
-                            //        if (dataCondition != null && dataCondition.Count > 0)
-                            //        {
-                            //            dataCondition = dataCondition.Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.SERVICE_CONDITION_ID.HasValue && o.SERVICE_CONDITION_ID > 0 && o.SERVICE_ID == sereServADO.SERVICE_ID).ToList();
-                            //            if (dataCondition != null && dataCondition.Count > 0)
-                            //            {
-                            //                List<V_HIS_SERVICE_PATY> dataConditionTmps = new List<V_HIS_SERVICE_PATY>();
-                            //                foreach (var item in dataCondition)
-                            //                {
-                            //                    if (dataConditionTmps.Count == 0 || !dataConditionTmps.Exists(t => t.SERVICE_CONDITION_NAME == item.SERVICE_CONDITION_NAME && t.HEIN_RATIO == item.HEIN_RATIO))
-                            //                    {
-                            //                        dataConditionTmps.Add(item);
-                            //                    }
-                            //                }
-                            //                dataCondition.Clear();
-                            //                dataCondition.AddRange(dataConditionTmps);
-                            //                GridViewInfo info = gridViewServiceProcess.GetViewInfo() as GridViewInfo;
-                            //                //GridCellInfo cellInfo = info.GetGridCellInfo(gridViewServiceProcess.FocusedRowHandle, gridColumnSERVICE_CONDITION_NAME);
-                            //                //TODO
-                            //                //Rectangle buttonPosition = cellInfo != null ? cellInfo.Bounds : default(Rectangle);
-                            //                //popupControlContainerCondition.ShowPopup(new Point(buttonPosition.X + 532, buttonPosition.Bottom + 170));
-                            //                if (dataCondition != null && dataCondition.Count > 0 && lstConditionService != null && lstConditionService.Count > 0)
-                            //                {
-                            //                    dataCondition = dataCondition.Where(o => lstConditionService.Exists(p => p.SERVICE_ID == sereServADO.SERVICE_ID && p.ID == o.SERVICE_CONDITION_ID)).ToList();
-                            //                }
-                            //                gridControlCondition.DataSource = null;
-                            //                gridControlCondition.DataSource = dataCondition;
-                            //                gridControlCondition.Focus();
-                            //                gridViewCondition.FocusedRowHandle = 0;
-                            //            }
-                            //        }
-                            //    }
-                            //    catch (Exception exx)
-                            //    {
-                            //        Inventec.Common.Logging.LogSystem.Warn(exx);
-                            //    }
-                            //}
                         }
-                        //else
-                        //{
-                        //    if (this.selectedSeviceGroups != null && this.selectedSeviceGroups.Count > 0 && sereServADO.SERVICE_GROUP_ID_SELECTEDs != null && sereServADO.SERVICE_GROUP_ID_SELECTEDs.Count > 0)
-                        //    {
-                        //        if (this.serviceDeleteWhileSelectSeviceGroups == null)
-                        //        {
-                        //            this.serviceDeleteWhileSelectSeviceGroups = new List<SereServADO>();
-                        //        }
-                        //        this.serviceDeleteWhileSelectSeviceGroups.Add(sereServADO);
-                        //    }
-                        //    else
-                        //    {
-                        //        this.serviceDeleteWhileSelectSeviceGroups = new List<SereServADO>();
-                        //    }
-                        //    this.ResetOneService(sereServADO);
-                        //}
-                        this.gridControlServiceProcess.RefreshDataSource();
+                        if (e.RowHandle >= 0)
+                            this.gridViewServiceProcess.RefreshRow(e.RowHandle);
+                        else
+                            this.gridViewServiceProcess.RefreshData();
                         this.SetEnableButtonControl(this.actionType);
                     }
                     else if (e.Column.FieldName == this.gridColumn_Service_PrimaryPatientType.FieldName)
@@ -3498,18 +3295,18 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             bool result = false;
             try
             {
-                string servicePaymentLimit = HisConfigCFG.ServiceHasPaymentLimitBHYT.ToLower();
-                if (!String.IsNullOrEmpty(servicePaymentLimit))
-                {
-                    string[] serviceArr = servicePaymentLimit.Split(',');
-                    if (serviceArr != null && serviceArr.Length > 0)
-                    {
-                        if (serviceArr.Contains(ServiceCode.ToLower()))
-                        {
-                            return true;
-                        }
-                    }
-                }
+                //string servicePaymentLimit = HisConfigCFG.ServiceHasPaymentLimitBHYT.ToLower();
+                //if (!String.IsNullOrEmpty(servicePaymentLimit))
+                //{
+                //    string[] serviceArr = servicePaymentLimit.Split(',');
+                //    if (serviceArr != null && serviceArr.Length > 0)
+                //    {
+                //        if (serviceArr.Contains(ServiceCode.ToLower()))
+                //        {
+                //            return true;
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -4510,7 +4307,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             sereServADO.IsNoDifference = false;
                         }
 
-                        this.gridControlServiceProcess.RefreshDataSource();
+                        this.gridViewServiceProcess.RefreshRow(0);
                         this.SetEnableButtonControl(this.actionType);
                         this.SetDefaultSerServTotalPrice();
 
@@ -4730,6 +4527,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         private void gridViewServiceProcess_DataManagerReset(object sender, EventArgs e)
         {
 
+            // DataSource reset/refresh can trigger SelectionChanged. Don't clear row data in that case.
+            ignoreClearOnServiceProcessSelectionChanged = true;
+            serviceProcessSelectedIds.Clear();
         }
 
         private void gridViewServiceProcess_DoubleClick(object sender, EventArgs e)
@@ -4826,7 +4626,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     sereServADO.IsNoDifference = false;
                 }
 
-                this.gridControlServiceProcess.RefreshDataSource();
+                int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                if (rowHandle >= 0)
+                    this.gridViewServiceProcess.RefreshRow(rowHandle);
+                else
+                    this.gridViewServiceProcess.RefreshData();
                 if (sereServADO.IsChecked)
                 {
                     this.VerifyWarningOverCeiling();
@@ -5090,7 +4894,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
-                //IsActionButtonPrintBill = false;
+                //IsActionButtonPrintBill = false; 
                 SaveWithGridpatientSelect(TypeButton.SAVE, chkPrint.Checked, false, false, chkSign.Checked, chkPrintDocumentSigned.Checked);
             }
             catch (Exception ex)
@@ -5326,7 +5130,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                 //foreach (var detail in serviceReqSDO.ServiceReqDetails)
                                 //{
                                 //    var matchedService = serviceCheckeds__Send.FirstOrDefault(s => s.SERVICE_ID == detail.ServiceId);
-                                //    if (matchedService != null)
+                                //    if (matchedService != null) 
                                 //    {
                                 //        detail.MultipleExecute = matchedService.NumberOfTimes;
                                 //    }
@@ -6509,8 +6313,26 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 if (this.actionType == GlobalVariables.ActionEdit)
                     return;
 
-                this.btnSave.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
-                this.btnSaveAndPrint.Enabled = isCheckAssignServiceSimultaneityOption ? false : isLock;
+                // While processing, always lock the save actions.
+                if (!isLock)
+                {
+                    this.btnSave.Enabled = false;
+                    this.btnSaveAndPrint.Enabled = false;
+                    return;
+                }
+
+                // When unlocked, only allow saving if simultaneity checks do not block
+                // and there is at least one selected (checked) item.
+                if (isCheckAssignServiceSimultaneityOption)
+                {
+                    this.btnSave.Enabled = false;
+                    this.btnSaveAndPrint.Enabled = false;
+                    return;
+                }
+
+                var hasChecked = this.DataGridAdo != null && this.DataGridAdo.Any(o => o.IsChecked);
+                this.btnSave.Enabled = hasChecked;
+                this.btnSaveAndPrint.Enabled = hasChecked;
             }
             catch (Exception ex)
             {
@@ -8270,7 +8092,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     sv1.PATIENT_TYPE_ID = sv.PATIENT_TYPE_ID;
                 }
 
-                gridControlServiceProcess.RefreshDataSource();
+                gridViewServiceProcess.RefreshData();
 
                 //gridViewServiceProcess.BeginUpdate();
                 //gridViewServiceProcess.GridControl.DataSource = serviceCheckeds__Send;
@@ -8286,28 +8108,126 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
+                _lastLoadedBedServiceId = -1;
+                _lastLoadedTimeFrom = DateTime.MinValue;
+                _lastLoadedTimeTo = DateTime.MinValue;
 
-                if (this.DataGridAdo != null)
+                if (this.DataGridAdo == null)
+                    return;
+
+                var view = sender as GridView;
+                if (view == null)
+                    return;
+
+                // Avoid clearing during datasource reset/filter changes (these can raise SelectionChanged).
+                if (ignoreClearOnServiceProcessSelectionChanged)
                 {
-                    foreach (var item in this.DataGridAdo)
+                    ignoreClearOnServiceProcessSelectionChanged = false;
+                    ResyncCheckedStateFromSelection(view);
+                    return;
+                }
+
+                int rowHandleChanged = e.ControllerRow;
+                if (rowHandleChanged < 0)
+                {
+                    // Bulk or non-row selection change (header checkbox, etc.).
+                    ResyncCheckedStateFromSelection(view);
+                    return;
+                }
+
+                var row = view.GetRow(rowHandleChanged) as DataGridAdo;
+                if (row == null)
+                    return;
+
+                if (e.Action == CollectionChangeAction.Add)
+                {
+                    row.IsChecked = true;
+                    serviceProcessSelectedIds.Add(row.ID);
+                    view.RefreshRow(rowHandleChanged);
+                }
+                else if (e.Action == CollectionChangeAction.Remove)
+                {
+                    row.IsChecked = false;
+                    serviceProcessSelectedIds.Remove(row.ID);
+
+                    ClearServiceProcessRowData(row);
+
+                    // If this row was being edited, stop editing so the next click is not swallowed.
+                    if (view.IsEditing && view.FocusedRowHandle == rowHandleChanged)
+                        view.CloseEditor();
+
+                    view.RefreshRow(rowHandleChanged);
+                }
+
+                this.SetEnableButtonControl(this.actionType);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ResyncCheckedStateFromSelection(GridView view)
+        {
+            try
+            {
+                if (view == null || this.DataGridAdo == null)
+                    return;
+
+                foreach (var item in this.DataGridAdo)
+                {
+                    item.IsChecked = false;
+                }
+                serviceProcessSelectedIds.Clear();
+
+                int[] selectedRows = view.GetSelectedRows();
+                foreach (int rh in selectedRows)
+                {
+                    if (rh >= 0)
                     {
-                        item.IsChecked = false;
+                        var it = view.GetRow(rh) as DataGridAdo;
+                        if (it != null)
+                        {
+                            it.IsChecked = true;
+                            serviceProcessSelectedIds.Add(it.ID);
+                        }
                     }
                 }
 
-                int[] selectedRows = gridViewServiceProcess.GetSelectedRows();
-                foreach (int rowHandle in selectedRows)
-                {
-                    if (rowHandle >= 0)
-                    {
-                        var item = gridViewServiceProcess.GetRow(rowHandle) as DataGridAdo;
-                        if (item != null)
-                            item.IsChecked = true;
-                    }
-                }
+                // Refresh visual state only; avoid rebinding DataSource.
+                view.RefreshData();
 
-                // Refresh grid để hiển thị thay đổi (nếu cần)
-                gridViewServiceProcess.RefreshData();
+                this.SetEnableButtonControl(this.actionType);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ClearServiceProcessRowData(DataGridAdo row)
+        {
+            try
+            {
+                if (row == null) return;
+
+                row.BED_CODE = null;
+                row.BedId = null;
+                row.BedStartTime = null;
+                row.BedFinishTime = null;
+
+                row.TIME_FROM = null;
+                row.TIME_TO = null;
+                row.QUANTITY = null;
+
+                row.TDL_EXECUTE_ROOM_ID_STR = null;
+                row.PATIENT_TYPE_ID_STR = null;
+                row.PRIMARY_PATIENT_TYPE_ID = null;
+                row.ShareCount = null;
+
+                row.OTHER_PAY_SOURCE_ID = null;
+                row.OTHER_PAY_SOURCE_CODE = "";
+                row.OTHER_PAY_SOURCE_NAME = "";
             }
             catch (Exception ex)
             {
@@ -8332,7 +8252,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 repositoryItemGridLookUpEdit1View.RowStyle += RepositoryItemGridLookUpEdit1View_RowStyle;
 
                 // 2. Chặn không cho chọn giường đầy
-                repositoryItemGridLookUpEditBed.EditValueChanging += RepositoryItemGridLookUpEditBed_EditValueChanging;
+                //repositoryItemGridLookUpEditBed.EditValueChanging += RepositoryItemGridLookUpEditBed_EditValueChanging;
 
                 // 3. (Tùy chọn) Hiển thị tooltip
                 repositoryItemGridLookUpEdit1View.RowCellStyle += RepositoryItemGridLookUpEdit1View_RowCellStyle;
@@ -8359,34 +8279,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     }
                     else if (data != null && data.IsKey == 1)
                     {
-                        e.Appearance.BackColor = Color.Blue;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        // Event 2: Chặn không cho chọn giường đầy
-        private void RepositoryItemGridLookUpEditBed_EditValueChanging(object sender, ChangingEventArgs e)
-        {
-            try
-            {
-                var repo = sender as RepositoryItemGridLookUpEdit;
-                if (repo != null && repo.View != null)
-                {
-                    var data = repo.View.GetFocusedRow() as HisBedADO;
-                    if (data != null && data.IsKey == 2)
-                    {
-                        e.Cancel = true; // Hủy việc chọn
-                        XtraMessageBox.Show(
-                            "Giường này đã đầy, không thể chọn!",
-                            "Thông báo",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning
-                        );
+                        //e.Appearance.BackColor = Color.Blue;
                     }
                 }
             }
@@ -8445,7 +8338,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 if (this.gridViewServiceProcess.FocusedRowModified)
                     this.gridViewServiceProcess.UpdateCurrentRow();
 
-                this.gridControlServiceProcess.RefreshDataSource();
+                int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                if (rowHandle >= 0)
+                    this.gridViewServiceProcess.RefreshRow(rowHandle);
+                else
+                    this.gridViewServiceProcess.RefreshData();
 
                 this.SetDefaultSerServTotalPrice();
             }
@@ -8466,7 +8363,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     {
                         ButtonEdit editor = sender as ButtonEdit;
                         Rectangle buttonPosition = new Rectangle(editor.Bounds.X, editor.Bounds.Y, editor.Bounds.Width, editor.Bounds.Height);
-                        popupControlContainerOtherPaySource.ShowPopup(new Point(buttonPosition.X + 532, buttonPosition.Bottom + 160));
+                        popupControlContainerOtherPaySource.ShowPopup(new Point(buttonPosition.X + 215, buttonPosition.Bottom + 170));
 
                         var dataOtherPaySources = BackendDataWorker.Get<HIS_OTHER_PAY_SOURCE>();
                         List<HIS_OTHER_PAY_SOURCE> dataOtherPaySourceTmps = new List<HIS_OTHER_PAY_SOURCE>();
@@ -8509,13 +8406,16 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         this.currentRowSereServADO.OTHER_PAY_SOURCE_ID = null;
                         this.currentRowSereServADO.OTHER_PAY_SOURCE_CODE = "";
                         this.currentRowSereServADO.OTHER_PAY_SOURCE_NAME = "";
-                        this.gridControlServiceProcess.RefreshDataSource();
 
                         if (this.gridViewServiceProcess.IsEditing)
                             this.gridViewServiceProcess.CloseEditor();
 
                         if (this.gridViewServiceProcess.FocusedRowModified)
                             this.gridViewServiceProcess.UpdateCurrentRow();
+
+                        int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                        if (rowHandle >= 0)
+                            this.gridViewServiceProcess.RefreshRow(rowHandle);
                     }
                 }
             }
@@ -8523,6 +8423,699 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+
+        private void repositoryItemGridLookUpEditBed_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    DataGridAdo ssADO = (DataGridAdo)gridViewServiceProcess.GetFocusedRow();
+                    if (ssADO != null)
+                    {
+                        ssADO.BED_CODE = null;
+                        ssADO.BedId = null;
+                        ssADO.BedStartTime = null;
+                        ssADO.BedFinishTime = null;
+
+                        if (this.gridViewServiceProcess.ActiveEditor is GridLookUpEdit activeEditor)
+                        {
+                            activeEditor.EditValue = null;
+                        }
+
+                        if (this.gridViewServiceProcess.IsEditing)
+                            this.gridViewServiceProcess.CloseEditor();
+
+                        if (this.gridViewServiceProcess.FocusedRowModified)
+                            this.gridViewServiceProcess.UpdateCurrentRow();
+
+                        int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                        if (rowHandle >= 0)
+                            this.gridViewServiceProcess.RefreshRow(rowHandle);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
+                this.isCheckAssignServiceSimultaneityOption = false;
+                this.SetDefaultData();
+                this.LoadIcdDefault();
+                //this.DisablecheckEmergencyPriorityByConfig();
+                //this.treeService.UncheckAll();
+                //this.isPrinted = false;
+                foreach (var item in this.DataGridAdo)
+                {
+                    item.AssignNumOrder = null;
+                    item.AMOUNT = 1;
+                    item.IsChecked = false;
+                    item.ShareCount = null;
+                    item.PATIENT_TYPE_ID = 0;
+                    item.PATIENT_TYPE_CODE = "";
+                    item.PATIENT_TYPE_NAME = "";
+                    item.PRICE = 0;
+                    item.TDL_EXECUTE_ROOM_ID = 0;
+                    item.IsExpend = false;
+                    item.IsOutKtcFee = false;
+                    item.IsKHBHYT = false;
+                    item.InstructionNote = "";
+                    item.SERVICE_GROUP_ID_SELECTEDs = null;
+                    item.SERVICE_CONDITION_ID = null;
+                    item.SERVICE_CONDITION_NAME = "";
+                    item.AssignPackagePriceEdit = null;
+                    item.AssignSurgPriceEdit = null;
+                    item.IsNoDifference = false;
+                    item.ErrorMessageAmount = "";
+                    item.ErrorMessageIsAssignDay = "";
+                    item.ErrorMessagePatientTypeId = "";
+                    item.ErrorTypeAmount = ErrorType.None;
+                    item.ErrorTypeIsAssignDay = ErrorType.None;
+                    item.ErrorTypePatientTypeId = ErrorType.None;
+                    item.PRIMARY_PATIENT_TYPE_ID = null;
+                    item.IsNotChangePrimaryPaty = false;
+                    item.PackagePriceId = null;
+                    item.SERVICE_CONDITION_ID = null;
+                    item.SERVICE_CONDITION_NAME = null;
+
+                    item.OTHER_PAY_SOURCE_ID = null;
+                    item.OTHER_PAY_SOURCE_CODE = null;
+                    item.OTHER_PAY_SOURCE_NAME = null;
+                    item.BedFinishTime = null;
+                    item.BedId = null;
+                    item.BedStartTime = null;
+                    item.TEST_SAMPLE_TYPE_ID = 0;
+                    item.TEST_SAMPLE_TYPE_CODE = null;
+                    item.TEST_SAMPLE_TYPE_NAME = null;
+                    item.SereServEkipADO = null;
+                    item.NumberOfTimes = 1;
+                }
+
+                this.isNotHandlerWhileChangeToggetSwith = true;
+                if ((this.toggleSwitchDataChecked.EditValue ?? "").ToString().ToLower() == "true")
+                    this.toggleSwitchDataChecked.EditValue = false;
+                this.isNotHandlerWhileChangeToggetSwith = false;
+
+                this.gridControlServiceProcess.DataSource = null;
+                //if (!HisConfigCFG.IsNotAutoLoadServiceOpenAssignService)
+                //{
+                this.gridControlServiceProcess.DataSource = this.DataGridAdo;
+                this.gridViewServiceProcess.RefreshData();
+                //}
+
+                this.gridViewServiceProcess.ClearColumnsFilter();
+                //this.EnableCboTracking();
+                //this.CheckOverTotalPatientPrice();
+                //this.LoadTotalSereServByHeinWithTreatment(this.treatmentId);
+                this.RefeshSereServInTreatmentData();
+                this.SetEnableButtonControl(this.actionType);
+                this.CheckAssignServiceSimultaneityOption();
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
+        private void repositoryItemGridLookUpEditPatientType_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    DataGridAdo ssADO = (DataGridAdo)gridViewServiceProcess.GetFocusedRow();
+                    if (ssADO != null)
+                    {
+                        ssADO.PATIENT_TYPE_ID_STR = null;
+
+                        if (this.gridViewServiceProcess.ActiveEditor is GridLookUpEdit activeEditor)
+                        {
+                            activeEditor.EditValue = null;
+                        }
+
+                        if (this.gridViewServiceProcess.IsEditing)
+                            this.gridViewServiceProcess.CloseEditor();
+
+                        if (this.gridViewServiceProcess.FocusedRowModified)
+                            this.gridViewServiceProcess.UpdateCurrentRow();
+
+                        int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                        if (rowHandle >= 0)
+                            this.gridViewServiceProcess.RefreshRow(rowHandle);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void repositoryItemcboExcuteRoom_TabService_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    DataGridAdo ssADO = (DataGridAdo)gridViewServiceProcess.GetFocusedRow();
+                    if (ssADO != null)
+                    {
+                        ssADO.TDL_EXECUTE_ROOM_ID_STR = null;
+
+                        if (this.gridViewServiceProcess.ActiveEditor is GridLookUpEdit activeEditor)
+                        {
+                            activeEditor.EditValue = null;
+                        }
+
+                        if (this.gridViewServiceProcess.IsEditing)
+                            this.gridViewServiceProcess.CloseEditor();
+
+                        if (this.gridViewServiceProcess.FocusedRowModified)
+                            this.gridViewServiceProcess.UpdateCurrentRow();
+
+                        int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                        if (rowHandle >= 0)
+                            this.gridViewServiceProcess.RefreshRow(rowHandle);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemGridLookUpEditBed_EditValueChanging(object sender, ChangingEventArgs e)
+        {
+            try
+            {
+                // Allow clearing the value (Delete button sets NewValue to null/DBNull)
+                if (e.NewValue == null || e.NewValue == DBNull.Value || string.IsNullOrWhiteSpace(e.NewValue.ToString()))
+                    return;
+
+                var repo = sender as RepositoryItemGridLookUpEdit;
+                if (repo != null && repo.View != null)
+                {
+                    var data = repo.View.GetFocusedRow() as HisBedADO;
+                    if (data != null && data.IsKey == 2)
+                    {
+                        e.Cancel = true; // Hủy việc chọn
+                        XtraMessageBox.Show(
+                            "Giường này đã đầy, không thể chọn!",
+                            "Thông báo",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning
+                        );
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewOtherPaySource_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                {
+                    if (((IList)((BaseView)sender).DataSource) != null && ((IList)((BaseView)sender).DataSource).Count > 0)
+                    {
+                        DataGridAdo ssADO = (DataGridAdo)gridViewServiceProcess.GetFocusedRow();
+                        if (ssADO != null)
+                        {
+                            List<HIS_OTHER_PAY_SOURCE> servicePatieDatas = ((List<HIS_OTHER_PAY_SOURCE>)((BaseView)sender).DataSource);
+
+                            HIS_OTHER_PAY_SOURCE oneServiceSDO = (HIS_OTHER_PAY_SOURCE)servicePatieDatas[e.ListSourceRowIndex];
+                            if (oneServiceSDO != null)
+                            {
+                                if (e.Column.FieldName == "HEIN_RATIO_DISPLAY")
+                                {
+                                    //e.Value = oneServiceSDO.HEIN_RATIO.HasValue ? (decimal?)Inventec.Common.Number.Convert.NumberToNumberRoundMax4((decimal)((oneServiceSDO.HEIN_RATIO ?? 0) * 100)) : null;
+                                }
+                            }
+                            else
+                            {
+                                e.Value = null;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewOtherPaySource_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    var conditionRow = (HIS_OTHER_PAY_SOURCE)this.gridViewOtherPaySource.GetFocusedRow();
+                    if (conditionRow != null)
+                    {
+                        popupControlContainerOtherPaySource.HidePopup();
+                        this.currentRowSereServADO = (DataGridAdo)gridViewServiceProcess.GetFocusedRow();
+                        if (this.currentRowSereServADO != null)
+                        {
+                            this.currentRowSereServADO.OTHER_PAY_SOURCE_ID = conditionRow.ID;
+                            this.currentRowSereServADO.OTHER_PAY_SOURCE_CODE = conditionRow.OTHER_PAY_SOURCE_CODE;
+                            this.currentRowSereServADO.OTHER_PAY_SOURCE_NAME = conditionRow.OTHER_PAY_SOURCE_NAME;
+
+                            if (this.gridViewServiceProcess.IsEditing)
+                                this.gridViewServiceProcess.CloseEditor();
+
+                            if (this.gridViewServiceProcess.FocusedRowModified)
+                                this.gridViewServiceProcess.UpdateCurrentRow();
+
+                            int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                            if (rowHandle >= 0)
+                                this.gridViewServiceProcess.RefreshRow(rowHandle);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+        }
+
+        private void gridControlOtherPaySource_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                HIS_OTHER_PAY_SOURCE conditionRow = (HIS_OTHER_PAY_SOURCE)gridViewOtherPaySource.GetFocusedRow();
+                if (conditionRow != null)
+                {
+                    popupControlContainerOtherPaySource.HidePopup();
+                    this.currentRowSereServADO = (DataGridAdo)gridViewServiceProcess.GetFocusedRow();
+                    if (this.currentRowSereServADO != null)
+                    {
+                        this.currentRowSereServADO.OTHER_PAY_SOURCE_ID = conditionRow.ID;
+                        this.currentRowSereServADO.OTHER_PAY_SOURCE_CODE = conditionRow.OTHER_PAY_SOURCE_CODE;
+                        this.currentRowSereServADO.OTHER_PAY_SOURCE_NAME = conditionRow.OTHER_PAY_SOURCE_NAME;
+
+                        if (this.gridViewServiceProcess.IsEditing)
+                            this.gridViewServiceProcess.CloseEditor();
+
+                        if (this.gridViewServiceProcess.FocusedRowModified)
+                            this.gridViewServiceProcess.UpdateCurrentRow();
+
+                        int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                        if (rowHandle >= 0)
+                            this.gridViewServiceProcess.RefreshRow(rowHandle);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboIcds_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    //if (!cboIcds.Properties.Buttons[1].Visible) 
+                    //    return;
+                    this._TextIcdName = "";
+                    cboIcds.Text = "";
+                    cboIcds.EditValue = null;
+                    txtIcdCode.Text = "";
+                    txtIcdMainText.Text = "";
+                    cboIcds.Properties.Buttons[1].Visible = false;
+                    txtIcdCode.ErrorText = "";
+                    dxValidationProviderControl.RemoveControlError(txtIcdCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboIcdsCause_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    if (!cboIcdsCause.Properties.Buttons[1].Visible)
+                        return;
+                    this._TextIcdNameCause = "";
+                    cboIcdsCause.EditValue = null;
+                    txtIcdCodeCause.Text = "";
+                    txtIcdMainTextCause.Text = "";
+                    cboIcdsCause.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ChangecboChanDoanTD()
+        {
+            try
+            {
+                txtIcdCode.ErrorText = "";
+                dxValidationProviderControl.RemoveControlError(txtIcdCode);
+
+                cboIcds.Properties.Buttons[1].Visible = true;
+                if (currentIcds != null)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("currentIcds count " + currentIcds.Count);
+                }
+
+                MOS.EFMODEL.DataModels.HIS_ICD icd = currentIcds.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboIcds.EditValue ?? 0).ToString()));
+                if (icd != null)
+                {
+                    txtIcdCode.Text = icd.ICD_CODE;
+                    txtIcdMainText.Text = icd.ICD_NAME;
+                    chkEditIcd.Checked = (chkEditIcd.Enabled ? this.isAutoCheckIcd : false);
+                    string messErr = null;
+                    if (!checkIcdManager.ProcessCheckIcd(txtIcdCode.Text.Trim(), txtIcdSubCode.Text.Trim(), ref messErr, false))
+                    {
+                        XtraMessageBox.Show(messErr, "Thông báo", MessageBoxButtons.OK);
+                        if (Desktop.Plugins.Library.CheckIcd.CheckIcdManager.IcdCodeError.Equals(txtIcdCode.Text))
+                        {
+                            txtIcdCode.Text = txtIcdMainText.Text = null;
+                            cboIcds.EditValue = null;
+                        }
+                        return;
+                    }
+                    if (chkEditIcd.Checked)
+                    {
+                        //this.NextForcusSubIcd();
+                    }
+                    else if (chkEditIcd.Enabled)
+                    {
+                        chkEditIcd.Focus();
+                    }
+                    else
+                    {
+                        //this.NextForcusSubIcd();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboIcds_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
+                    if (cboIcds.EditValue != null)
+                        this.ChangecboChanDoanTD();
+                    else if (this.IsAcceptWordNotInData && this.IsObligatoryTranferMediOrg && !string.IsNullOrEmpty(this._TextIcdName))
+                        this.ChangecboChanDoanTD_V2_GanICDNAME(this._TextIcdName);
+                    else
+                        SendKeys.Send("{TAB}");
+                    if (HisConfigCFG.IcdServiceHasCheck != "1" && HisConfigCFG.IcdServiceHasCheck != "2" && HisConfigCFG.IcdServiceHasCheck != "3" && HisConfigCFG.IcdServiceHasCheck != "4" && HisConfigCFG.IcdServiceHasCheck != "5")
+                        return;
+                    List<HIS_ICD> icdFromUc = GetIcdCodeListFromUcIcd();
+                    MOS.Filter.HisIcdServiceFilter icdServiceFilter = new HisIcdServiceFilter();
+                    icdServiceFilter.ICD_CODE__EXACTs = icdFromUc.Select(o => o.ICD_CODE).Distinct().ToList();
+                    icdServicePhacDos = new BackendAdapter(null).Get<List<HIS_ICD_SERVICE>>("api/HisIcdService/Get", ApiConsumer.ApiConsumers.MosConsumer, icdServiceFilter, null);
+                    if (icdServicePhacDos != null && icdServicePhacDos.Count > 0)
+                        ProcessChoiceIcdPhacDo(icdServicePhacDos);
+                    else
+                    {
+                        this.ResetDefaultGridData();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ChangecboChanDoanTD_V2_GanICDNAME(string text)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(text))
+                    return;
+                if (HisConfigCFG.AutoCheckIcd != "2")
+                {
+                    this.chkEditIcd.Enabled = true;
+                    this.chkEditIcd.Checked = true;
+                }
+                this.txtIcdMainText.Text = text;
+                this.txtIcdMainText.Focus();
+                this.txtIcdMainText.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboIcds_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.Control & e.KeyCode == Keys.A)
+                {
+                    cboIcds.ClosePopup();
+                    cboIcds.SelectAll();
+                }
+                else if (e.KeyCode == Keys.Enter)
+                {
+                    cboIcds.ClosePopup();
+                    if (cboIcds.EditValue != null)
+                        this.ChangecboChanDoanTD();
+                }
+                else
+                    cboIcds.ShowPopup();
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboIcdsCause_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
+                    if (cboIcdsCause.EditValue != null)
+                        this.ChangecboChanDoanTDCause();
+                    else if (this.IsAcceptWordNotInData && this.IsObligatoryTranferMediOrg && !string.IsNullOrEmpty(this._TextIcdNameCause))
+                        this.ChangecboChanDoanTD_V2_GanICDNAMECause(this._TextIcdNameCause);
+                    else
+                        SendKeys.Send("{TAB}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ChangecboChanDoanTDCause()
+        {
+            try
+            {
+                cboIcdsCause.Properties.Buttons[1].Visible = true;
+                MOS.EFMODEL.DataModels.HIS_ICD icd = currentIcds.FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboIcdsCause.EditValue ?? 0).ToString()));
+                if (icd != null)
+                {
+                    txtIcdCodeCause.Text = icd.ICD_CODE;
+                    txtIcdMainTextCause.Text = icd.ICD_NAME;
+                    chkEditIcdCause.Checked = (chkEditIcdCause.Enabled ? this.isAutoCheckIcd : false);
+                    if (chkEditIcdCause.Checked)
+                    {
+                        this.NextForcusSubIcdCause();
+                    }
+                    else if (chkEditIcdCause.Enabled)
+                    {
+                        chkEditIcdCause.Focus();
+                    }
+                    else
+                    {
+                        this.NextForcusSubIcdCause();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void NextForcusSubIcdCause()
+        {
+            try
+            {
+                txtIcdSubCode.Focus();
+                txtIcdSubCode.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ChangecboChanDoanTD_V2_GanICDNAMECause(string text)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(text))
+                    return;
+                if (HisConfigCFG.AutoCheckIcd != "2")
+                {
+                    this.chkEditIcdCause.Enabled = true;
+                    this.chkEditIcdCause.Checked = true;
+                }
+                this.txtIcdMainTextCause.Text = text;
+                this.txtIcdMainTextCause.Focus();
+                this.txtIcdMainTextCause.SelectAll();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Sau khi LoadBedDataByServiceId nạp danh sách giường từ server/cache,
+        /// hàm này cập nhật lại AMOUNT_STR và IsKey để phản ánh các giường
+        /// đã được chọn tạm thời ở các dòng khác trong grid (chưa lưu).
+        /// </summary>
+        private void AdjustBedAmountStrForPendingSelections(int currentRowHandle)
+        {
+            try
+            {
+                // Lấy datasource của dropdown giường
+                var bedList = repositoryItemGridLookUpEditBed.DataSource as List<HisBedADO>;
+                if (bedList == null || bedList.Count == 0) return;
+
+                // Xác định row hiện tại để loại trừ khi đếm
+                var currentRow = gridViewServiceProcess.GetRow(currentRowHandle) as DataGridAdo;
+                var currentRowId = currentRow != null ? currentRow.ID : 0;
+
+                // Đếm số lần mỗi bed đang được chọn tạm thời trong form (ngoại trừ dòng hiện tại)
+                var pendingBedCounts = new Dictionary<long, int>();
+                if (this.DataGridAdo != null && this.DataGridAdo.Count > 0)
+                {
+                    foreach (var row in this.DataGridAdo)
+                    {
+                        if (row == null) continue;
+                        if (currentRowId > 0 && row.ID == currentRowId) continue;
+                        if (!row.IsChecked) continue;
+
+                        if (!TryResolveSelectedBedId(row, bedList, out long bedId))
+                            continue;
+
+                        if (!pendingBedCounts.ContainsKey(bedId))
+                            pendingBedCounts[bedId] = 0;
+                        pendingBedCounts[bedId]++;
+                    }
+                }
+
+                // Re-calc AMOUNT_STR from server-used (AMOUNT) + pending to avoid cumulative inflation
+                foreach (var bed in bedList)
+                {
+                    int usedFromServer = (int)Math.Max(0, bed.AMOUNT);
+                    int pendingCount = 0;
+                    pendingBedCounts.TryGetValue(bed.ID, out pendingCount);
+
+                    int totalCapacity = (int)(bed.MAX_CAPACITY ?? 0);
+                    int newUsed = usedFromServer + Math.Max(0, pendingCount);
+
+                    // Keep existing style: when MAX_CAPACITY is null, show "X/" (not "X/0")
+                    string capacityDisplay = bed.MAX_CAPACITY.HasValue ? bed.MAX_CAPACITY.Value.ToString() : "";
+                    bed.AMOUNT_STR = newUsed + "/" + capacityDisplay;
+
+                    if (totalCapacity > 0 && newUsed >= totalCapacity)
+                        bed.IsKey = 2;
+                    else
+                        bed.IsKey = 1;
+                }
+
+                // Ensure popup grid refreshes the recalculated AMOUNT_STR
+                repositoryItemGridLookUpEditBed.View?.RefreshData();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private bool TryResolveSelectedBedId(DataGridAdo row, List<HisBedADO> bedList, out long bedId)
+        {
+            bedId = 0;
+            try
+            {
+                if (row == null) return false;
+
+                // Preferred: explicit BedId (used downstream when saving)
+                if (row.BedId.HasValue && row.BedId.Value > 0)
+                {
+                    bedId = row.BedId.Value;
+                    return true;
+                }
+
+                // Common in this grid: column FieldName is BED_CODE but EditValue is Bed.ID
+                var raw = row.BED_CODE;
+                if (string.IsNullOrWhiteSpace(raw))
+                    return false;
+
+                if (long.TryParse(raw.Trim(), out long parsed) && parsed > 0)
+                {
+                    bedId = parsed;
+                    return true;
+                }
+
+                // Fallback: if BED_CODE stores actual bed code like "A1", map it to ID
+                if (bedList != null)
+                {
+                    var bed = bedList.FirstOrDefault(b => string.Equals(b.BED_CODE, raw.Trim(), StringComparison.OrdinalIgnoreCase));
+                    if (bed != null)
+                    {
+                        bedId = bed.ID;
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return false;
         }
     }
     public class BankInfo

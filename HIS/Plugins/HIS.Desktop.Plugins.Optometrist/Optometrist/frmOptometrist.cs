@@ -41,7 +41,7 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
             uc = new UCOptometrist(currentModule, currentSR);
             uc.Dock = DockStyle.Fill;
             panelControl1.Controls.Add(uc);
-            //this.Load += frmOptometrist_Load_SetSize;
+            this.Load += frmOptometrist_Load_SetSize;
         }
 
         private void frmOptometrist_Load_SetSize(object sender, EventArgs e)
@@ -60,7 +60,7 @@ namespace HIS.Desktop.Plugins.Optometrist.Optometrist
                     Rectangle screenBounds = Screen.FromControl(this).WorkingArea;
                     formWidth = Math.Min(formWidth, screenBounds.Width);
                     formHeight = Math.Min(formHeight, screenBounds.Height);
-                    this.Size = new Size(formWidth + 85, formHeight + 50);
+                    this.Size = new Size(formWidth + 85, formHeight + 5);
                     this.StartPosition = FormStartPosition.CenterScreen;
                 }
             }

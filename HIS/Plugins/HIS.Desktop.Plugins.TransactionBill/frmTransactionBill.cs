@@ -484,10 +484,15 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 //virVatRatioCol.Format.FormatString = "#,##0.00";
                 //virVatRatioCol.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.SereServTreeColumns.Add(virVatRatioCol);
-                //Column bảo lãnh
-                SereServTreeColumn virIsGuaranteedCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_IS_GUARANTEED", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IsGuaranteed", 70, false);
-                virIsGuaranteedCol.VisibleIndex = 9;
-                ado.SereServTreeColumns.Add(virIsGuaranteedCol);
+
+                if (currentTreatment != null && !string.IsNullOrEmpty(currentTreatment.GUARANTEE_CODE))
+                {
+                    //Column bảo lãnh
+                    SereServTreeColumn virIsGuaranteedCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_IS_GUARANTEED", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IsGuaranteed", 70, false);
+                    virIsGuaranteedCol.VisibleIndex = 9;
+                    ado.SereServTreeColumns.Add(virIsGuaranteedCol);
+                }
+
                 //Column mã dịch vụ
                 SereServTreeColumn serviceCodeCol = new SereServTreeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__TREE_SERE_SERV__COLUMN_SERVICE_CODE", Base.ResourceLangManager.LanguageFrmTransactionBill, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "TDL_SERVICE_CODE", 100, false);
                 serviceCodeCol.VisibleIndex = 10;

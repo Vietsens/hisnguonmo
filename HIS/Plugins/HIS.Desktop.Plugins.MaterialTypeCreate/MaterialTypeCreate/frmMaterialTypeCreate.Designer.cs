@@ -149,6 +149,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.gridView10 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboBlockDepartment = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridViewBlockDepartment = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboBlockRoom = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewBlockRoom = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboBlockExpMestType = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewBlockExpMestType = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.layoutControl8 = new DevExpress.XtraLayout.LayoutControl();
             this.chkIsNotExpend = new DevExpress.XtraEditors.CheckEdit();
@@ -197,6 +201,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitPrice = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcHeinLimitPriceOld = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBlockDepartment = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBlockExpMestType = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciBlockRoom = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciCTK = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciIsSupported = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcAlertMaxInDay = new DevExpress.XtraLayout.LayoutControlItem();
@@ -386,6 +392,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.gridView10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBlockDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewBlockDepartment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBlockRoom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBlockRoom)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBlockExpMestType.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBlockExpMestType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).BeginInit();
             this.layoutControl8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsNotExpend.Properties)).BeginInit();
@@ -435,6 +445,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.lcHeinLimitPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcHeinLimitPriceOld)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBlockDepartment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBlockExpMestType)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBlockRoom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCTK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsSupported)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcAlertMaxInDay)).BeginInit();
@@ -622,28 +634,28 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1098, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1464, 38);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 652);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1098, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 802);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1464, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 623);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 764);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1098, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 623);
+            this.barDockControlRight.Location = new System.Drawing.Point(1464, 38);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 764);
             // 
             // dxErrorProvider1
             // 
@@ -658,19 +670,21 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Controls.Add(this.cboMaterialType);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1098, 623);
+            this.layoutControl1.Size = new System.Drawing.Size(1464, 764);
             this.layoutControl1.TabIndex = 5;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // layoutControl11
             // 
-            this.layoutControl11.Location = new System.Drawing.Point(529, 2);
+            this.layoutControl11.Location = new System.Drawing.Point(705, 3);
+            this.layoutControl11.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl11.Name = "layoutControl11";
             this.layoutControl11.Root = this.layoutControlGroup10;
-            this.layoutControl11.Size = new System.Drawing.Size(567, 20);
+            this.layoutControl11.Size = new System.Drawing.Size(756, 26);
             this.layoutControl11.TabIndex = 9;
             this.layoutControl11.Text = "layoutControl11";
             // 
@@ -680,15 +694,16 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlGroup10.GroupBordersVisible = false;
             this.layoutControlGroup10.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup10.Name = "layoutControlGroup10";
-            this.layoutControlGroup10.Size = new System.Drawing.Size(567, 20);
+            this.layoutControlGroup10.Size = new System.Drawing.Size(756, 26);
             this.layoutControlGroup10.TextVisible = false;
             // 
             // txtMaterialType
             // 
             this.txtMaterialType.Location = new System.Drawing.Point(107, 2);
+            this.txtMaterialType.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaterialType.MenuManager = this.barManager1;
             this.txtMaterialType.Name = "txtMaterialType";
-            this.txtMaterialType.Size = new System.Drawing.Size(161, 20);
+            this.txtMaterialType.Size = new System.Drawing.Size(250, 22);
             this.txtMaterialType.StyleController = this.layoutControl1;
             this.txtMaterialType.TabIndex = 0;
             this.txtMaterialType.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.textEdit2_PreviewKeyDown);
@@ -702,20 +717,21 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControl9.Controls.Add(this.simpleButton2);
             this.layoutControl9.Controls.Add(this.rdoUpdateAll);
             this.layoutControl9.Controls.Add(this.rdoUpdateNotFee);
-            this.layoutControl9.Location = new System.Drawing.Point(2, 565);
+            this.layoutControl9.Location = new System.Drawing.Point(3, 693);
+            this.layoutControl9.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl9.Name = "layoutControl9";
             this.layoutControl9.Root = this.layoutControlGroup8;
-            this.layoutControl9.Size = new System.Drawing.Size(1094, 56);
+            this.layoutControl9.Size = new System.Drawing.Size(1458, 68);
             this.layoutControl9.TabIndex = 64;
             this.layoutControl9.Text = "layoutControl9";
             // 
             // layoutControl12
             // 
-            this.layoutControl12.Location = new System.Drawing.Point(2, 26);
-            this.layoutControl12.Margin = new System.Windows.Forms.Padding(2);
+            this.layoutControl12.Location = new System.Drawing.Point(3, 29);
+            this.layoutControl12.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.layoutControl12.Name = "layoutControl12";
             this.layoutControl12.Root = this.layoutControlGroup11;
-            this.layoutControl12.Size = new System.Drawing.Size(271, 28);
+            this.layoutControl12.Size = new System.Drawing.Size(360, 36);
             this.layoutControl12.TabIndex = 71;
             this.layoutControl12.Text = "layoutControl12";
             // 
@@ -726,14 +742,15 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlGroup11.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup11.Name = "layoutControlGroup11";
             this.layoutControlGroup11.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup11.Size = new System.Drawing.Size(271, 28);
+            this.layoutControlGroup11.Size = new System.Drawing.Size(360, 36);
             this.layoutControlGroup11.TextVisible = false;
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(963, 26);
+            this.btnRefresh.Location = new System.Drawing.Point(1284, 29);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(129, 22);
+            this.btnRefresh.Size = new System.Drawing.Size(171, 27);
             this.btnRefresh.StyleController = this.layoutControl9;
             this.btnRefresh.TabIndex = 70;
             this.btnRefresh.Text = "Làm lại (Ctrl R)";
@@ -741,9 +758,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(824, 26);
+            this.btnSave.Location = new System.Drawing.Point(1098, 29);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(135, 22);
+            this.btnSave.Size = new System.Drawing.Size(180, 27);
             this.btnSave.StyleController = this.layoutControl9;
             this.btnSave.TabIndex = 69;
             this.btnSave.Text = "Lưu (Ctrl S)";
@@ -751,9 +769,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // simpleButton1
             // 
-            this.simpleButton1.Location = new System.Drawing.Point(552, 26);
+            this.simpleButton1.Location = new System.Drawing.Point(736, 29);
+            this.simpleButton1.Margin = new System.Windows.Forms.Padding(4);
             this.simpleButton1.Name = "simpleButton1";
-            this.simpleButton1.Size = new System.Drawing.Size(268, 22);
+            this.simpleButton1.Size = new System.Drawing.Size(356, 27);
             this.simpleButton1.StyleController = this.layoutControl9;
             this.simpleButton1.TabIndex = 68;
             this.simpleButton1.Text = "Cập nhập cache máy của tôi";
@@ -761,9 +780,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // simpleButton2
             // 
-            this.simpleButton2.Location = new System.Drawing.Point(277, 26);
+            this.simpleButton2.Location = new System.Drawing.Point(369, 29);
+            this.simpleButton2.Margin = new System.Windows.Forms.Padding(4);
             this.simpleButton2.Name = "simpleButton2";
-            this.simpleButton2.Size = new System.Drawing.Size(271, 22);
+            this.simpleButton2.Size = new System.Drawing.Size(361, 27);
             this.simpleButton2.StyleController = this.layoutControl9;
             this.simpleButton2.TabIndex = 67;
             this.simpleButton2.Text = "Cập nhật cache toàn bộ máy trạm";
@@ -771,26 +791,28 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // rdoUpdateAll
             // 
-            this.rdoUpdateAll.Location = new System.Drawing.Point(757, 2);
+            this.rdoUpdateAll.Location = new System.Drawing.Point(941, 3);
+            this.rdoUpdateAll.Margin = new System.Windows.Forms.Padding(4);
             this.rdoUpdateAll.MenuManager = this.barManager1;
             this.rdoUpdateAll.Name = "rdoUpdateAll";
             this.rdoUpdateAll.Properties.Caption = "";
             this.rdoUpdateAll.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.rdoUpdateAll.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.rdoUpdateAll.Size = new System.Drawing.Size(335, 19);
+            this.rdoUpdateAll.Size = new System.Drawing.Size(514, 19);
             this.rdoUpdateAll.StyleController = this.layoutControl9;
             this.rdoUpdateAll.TabIndex = 66;
             this.rdoUpdateAll.CheckedChanged += new System.EventHandler(this.rdoUpdateAll_CheckedChanged);
             // 
             // rdoUpdateNotFee
             // 
-            this.rdoUpdateNotFee.Location = new System.Drawing.Point(307, 2);
+            this.rdoUpdateNotFee.Location = new System.Drawing.Point(308, 3);
+            this.rdoUpdateNotFee.Margin = new System.Windows.Forms.Padding(4);
             this.rdoUpdateNotFee.MenuManager = this.barManager1;
             this.rdoUpdateNotFee.Name = "rdoUpdateNotFee";
             this.rdoUpdateNotFee.Properties.Caption = "";
             this.rdoUpdateNotFee.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
             this.rdoUpdateNotFee.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.rdoUpdateNotFee.Size = new System.Drawing.Size(241, 19);
+            this.rdoUpdateNotFee.Size = new System.Drawing.Size(422, 19);
             this.rdoUpdateNotFee.StyleController = this.layoutControl9;
             this.rdoUpdateNotFee.TabIndex = 65;
             this.rdoUpdateNotFee.CheckedChanged += new System.EventHandler(this.rdoUpdateNotFee_CheckedChanged);
@@ -809,7 +831,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem29});
             this.layoutControlGroup8.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup8.Name = "layoutControlGroup8";
-            this.layoutControlGroup8.Size = new System.Drawing.Size(1094, 56);
+            this.layoutControlGroup8.Size = new System.Drawing.Size(1458, 68);
             this.layoutControlGroup8.TextVisible = false;
             // 
             // layoutControlItem42
@@ -819,7 +841,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem42.Control = this.rdoUpdateNotFee;
             this.layoutControlItem42.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem42.Name = "layoutControlItem42";
-            this.layoutControlItem42.Size = new System.Drawing.Size(550, 24);
+            this.layoutControlItem42.Size = new System.Drawing.Size(733, 26);
             this.layoutControlItem42.Text = "Cập nhật hồ sơ chưa khóa viện phí:";
             this.layoutControlItem42.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem42.TextSize = new System.Drawing.Size(300, 20);
@@ -830,9 +852,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem43.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem43.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem43.Control = this.rdoUpdateAll;
-            this.layoutControlItem43.Location = new System.Drawing.Point(550, 0);
+            this.layoutControlItem43.Location = new System.Drawing.Point(733, 0);
             this.layoutControlItem43.Name = "layoutControlItem43";
-            this.layoutControlItem43.Size = new System.Drawing.Size(544, 24);
+            this.layoutControlItem43.Size = new System.Drawing.Size(725, 26);
             this.layoutControlItem43.Text = "Cập nhật tất cả:";
             this.layoutControlItem43.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem43.TextSize = new System.Drawing.Size(200, 20);
@@ -841,45 +863,45 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // layoutControlItem44
             // 
             this.layoutControlItem44.Control = this.simpleButton2;
-            this.layoutControlItem44.Location = new System.Drawing.Point(275, 24);
+            this.layoutControlItem44.Location = new System.Drawing.Point(366, 26);
             this.layoutControlItem44.Name = "layoutControlItem44";
-            this.layoutControlItem44.Size = new System.Drawing.Size(275, 32);
+            this.layoutControlItem44.Size = new System.Drawing.Size(367, 42);
             this.layoutControlItem44.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem44.TextVisible = false;
             // 
             // layoutControlItem45
             // 
             this.layoutControlItem45.Control = this.simpleButton1;
-            this.layoutControlItem45.Location = new System.Drawing.Point(550, 24);
+            this.layoutControlItem45.Location = new System.Drawing.Point(733, 26);
             this.layoutControlItem45.Name = "layoutControlItem45";
-            this.layoutControlItem45.Size = new System.Drawing.Size(272, 32);
+            this.layoutControlItem45.Size = new System.Drawing.Size(362, 42);
             this.layoutControlItem45.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem45.TextVisible = false;
             // 
             // layoutControlItem46
             // 
             this.layoutControlItem46.Control = this.btnSave;
-            this.layoutControlItem46.Location = new System.Drawing.Point(822, 24);
+            this.layoutControlItem46.Location = new System.Drawing.Point(1095, 26);
             this.layoutControlItem46.Name = "layoutControlItem46";
-            this.layoutControlItem46.Size = new System.Drawing.Size(139, 32);
+            this.layoutControlItem46.Size = new System.Drawing.Size(186, 42);
             this.layoutControlItem46.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem46.TextVisible = false;
             // 
             // layoutControlItem47
             // 
             this.layoutControlItem47.Control = this.btnRefresh;
-            this.layoutControlItem47.Location = new System.Drawing.Point(961, 24);
+            this.layoutControlItem47.Location = new System.Drawing.Point(1281, 26);
             this.layoutControlItem47.Name = "layoutControlItem47";
-            this.layoutControlItem47.Size = new System.Drawing.Size(133, 32);
+            this.layoutControlItem47.Size = new System.Drawing.Size(177, 42);
             this.layoutControlItem47.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem47.TextVisible = false;
             // 
             // layoutControlItem29
             // 
             this.layoutControlItem29.Control = this.layoutControl12;
-            this.layoutControlItem29.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem29.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem29.Name = "layoutControlItem29";
-            this.layoutControlItem29.Size = new System.Drawing.Size(275, 32);
+            this.layoutControlItem29.Size = new System.Drawing.Size(366, 42);
             this.layoutControlItem29.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem29.TextVisible = false;
             // 
@@ -887,10 +909,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             this.layoutControl3.Controls.Add(this.groupBox3);
             this.layoutControl3.Controls.Add(this.groupBox2);
-            this.layoutControl3.Location = new System.Drawing.Point(540, 26);
+            this.layoutControl3.Location = new System.Drawing.Point(720, 35);
+            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(556, 535);
+            this.layoutControl3.Size = new System.Drawing.Size(741, 652);
             this.layoutControl3.TabIndex = 33;
             this.layoutControl3.Text = "layoutControl3";
             // 
@@ -898,9 +921,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             this.groupBox3.Controls.Add(this.layoutControl7);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(2, 303);
+            this.groupBox3.Location = new System.Drawing.Point(3, 370);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(552, 230);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox3.Size = new System.Drawing.Size(735, 279);
             this.groupBox3.TabIndex = 55;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Thông tin giá";
@@ -915,27 +940,31 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControl7.Controls.Add(this.spinInternalPrice);
             this.layoutControl7.Controls.Add(this.spinLastExpPrice);
             this.layoutControl7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl7.Location = new System.Drawing.Point(3, 17);
+            this.layoutControl7.Location = new System.Drawing.Point(4, 22);
+            this.layoutControl7.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroup6;
-            this.layoutControl7.Size = new System.Drawing.Size(546, 210);
+            this.layoutControl7.Size = new System.Drawing.Size(727, 253);
             this.layoutControl7.TabIndex = 56;
             this.layoutControl7.Text = "layoutControl7";
             // 
             // layoutControl10
             // 
             this.layoutControl10.Controls.Add(this.grdControlHisServicePaty);
-            this.layoutControl10.Location = new System.Drawing.Point(2, 74);
+            this.layoutControl10.Location = new System.Drawing.Point(3, 87);
+            this.layoutControl10.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl10.Name = "layoutControl10";
             this.layoutControl10.Root = this.layoutControlGroup9;
-            this.layoutControl10.Size = new System.Drawing.Size(542, 134);
+            this.layoutControl10.Size = new System.Drawing.Size(721, 163);
             this.layoutControl10.TabIndex = 63;
             this.layoutControl10.Text = "layoutControl10";
             // 
             // grdControlHisServicePaty
             // 
-            this.grdControlHisServicePaty.Location = new System.Drawing.Point(115, 2);
+            this.grdControlHisServicePaty.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            this.grdControlHisServicePaty.Location = new System.Drawing.Point(116, 3);
             this.grdControlHisServicePaty.MainView = this.grdViewHisServicePaty;
+            this.grdControlHisServicePaty.Margin = new System.Windows.Forms.Padding(4);
             this.grdControlHisServicePaty.Name = "grdControlHisServicePaty";
             this.grdControlHisServicePaty.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.btnItem_Add,
@@ -943,7 +972,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.SpinVatRatio,
             this.btnItem_Delete,
             this.repositoryItemGridLookUpPatientType});
-            this.grdControlHisServicePaty.Size = new System.Drawing.Size(425, 130);
+            this.grdControlHisServicePaty.Size = new System.Drawing.Size(602, 157);
             this.grdControlHisServicePaty.TabIndex = 64;
             this.grdControlHisServicePaty.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.grdViewHisServicePaty});
@@ -1108,7 +1137,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem144});
             this.layoutControlGroup9.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup9.Name = "layoutControlGroup9";
-            this.layoutControlGroup9.Size = new System.Drawing.Size(542, 134);
+            this.layoutControlGroup9.Size = new System.Drawing.Size(721, 163);
             this.layoutControlGroup9.TextVisible = false;
             // 
             // layoutControlItem144
@@ -1120,22 +1149,23 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem144.CustomizationFormText = "Chính sách giá bán:";
             this.layoutControlItem144.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem144.Name = "layoutControlItem144";
-            this.layoutControlItem144.Size = new System.Drawing.Size(542, 134);
+            this.layoutControlItem144.Size = new System.Drawing.Size(721, 163);
             this.layoutControlItem144.Text = "Chính sách giá bán:";
             this.layoutControlItem144.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem144.TextSize = new System.Drawing.Size(108, 0);
+            this.layoutControlItem144.TextSize = new System.Drawing.Size(123, 0);
             this.layoutControlItem144.TextToControlDistance = 5;
             // 
             // chkIsSaleEqualImpPrice
             // 
-            this.chkIsSaleEqualImpPrice.Location = new System.Drawing.Point(494, 26);
+            this.chkIsSaleEqualImpPrice.Location = new System.Drawing.Point(585, 30);
+            this.chkIsSaleEqualImpPrice.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsSaleEqualImpPrice.MenuManager = this.barManager1;
             this.chkIsSaleEqualImpPrice.Name = "chkIsSaleEqualImpPrice";
             this.chkIsSaleEqualImpPrice.Properties.Caption = "";
             this.chkIsSaleEqualImpPrice.Properties.FullFocusRect = true;
             this.chkIsSaleEqualImpPrice.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.chkIsSaleEqualImpPrice.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkIsSaleEqualImpPrice.Size = new System.Drawing.Size(53, 19);
+            this.chkIsSaleEqualImpPrice.Size = new System.Drawing.Size(143, 19);
             this.chkIsSaleEqualImpPrice.StyleController = this.layoutControl7;
             this.chkIsSaleEqualImpPrice.TabIndex = 61;
             this.chkIsSaleEqualImpPrice.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsSaleEqualImpPrice_PreviewKeyDown);
@@ -1147,7 +1177,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinImpVatRatio.Location = new System.Drawing.Point(391, 2);
+            this.spinImpVatRatio.Location = new System.Drawing.Point(483, 3);
+            this.spinImpVatRatio.Margin = new System.Windows.Forms.Padding(4);
             this.spinImpVatRatio.MenuManager = this.barManager1;
             this.spinImpVatRatio.Name = "spinImpVatRatio";
             this.spinImpVatRatio.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1163,7 +1194,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             232830,
             0,
             0});
-            this.spinImpVatRatio.Size = new System.Drawing.Size(153, 20);
+            this.spinImpVatRatio.Size = new System.Drawing.Size(241, 22);
             this.spinImpVatRatio.StyleController = this.layoutControl7;
             this.spinImpVatRatio.TabIndex = 59;
             this.spinImpVatRatio.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spinImpVatRatio_KeyPress);
@@ -1176,7 +1207,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinLastExpVatPrice.Location = new System.Drawing.Point(391, 50);
+            this.spinLastExpVatPrice.Location = new System.Drawing.Point(483, 59);
+            this.spinLastExpVatPrice.Margin = new System.Windows.Forms.Padding(4);
             this.spinLastExpVatPrice.MenuManager = this.barManager1;
             this.spinLastExpVatPrice.Name = "spinLastExpVatPrice";
             this.spinLastExpVatPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1192,7 +1224,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             232830,
             0,
             0});
-            this.spinLastExpVatPrice.Size = new System.Drawing.Size(153, 20);
+            this.spinLastExpVatPrice.Size = new System.Drawing.Size(241, 22);
             this.spinLastExpVatPrice.StyleController = this.layoutControl7;
             this.spinLastExpVatPrice.TabIndex = 63;
             this.spinLastExpVatPrice.KeyDown += new System.Windows.Forms.KeyEventHandler(this.spinLastExpVatPrice_KeyDown);
@@ -1205,7 +1237,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinImpPrice.Location = new System.Drawing.Point(117, 2);
+            this.spinImpPrice.Location = new System.Drawing.Point(118, 3);
+            this.spinImpPrice.Margin = new System.Windows.Forms.Padding(4);
             this.spinImpPrice.MenuManager = this.barManager1;
             this.spinImpPrice.Name = "spinImpPrice";
             this.spinImpPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1221,7 +1254,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             23283,
             0,
             0});
-            this.spinImpPrice.Size = new System.Drawing.Size(155, 20);
+            this.spinImpPrice.Size = new System.Drawing.Size(244, 22);
             this.spinImpPrice.StyleController = this.layoutControl7;
             this.spinImpPrice.TabIndex = 58;
             this.spinImpPrice.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinImpPrice_PreviewKeyDown);
@@ -1233,7 +1266,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinInternalPrice.Location = new System.Drawing.Point(117, 26);
+            this.spinInternalPrice.Location = new System.Drawing.Point(118, 31);
+            this.spinInternalPrice.Margin = new System.Windows.Forms.Padding(4);
             this.spinInternalPrice.MenuManager = this.barManager1;
             this.spinInternalPrice.Name = "spinInternalPrice";
             this.spinInternalPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1249,7 +1283,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             23283,
             0,
             0});
-            this.spinInternalPrice.Size = new System.Drawing.Size(155, 20);
+            this.spinInternalPrice.Size = new System.Drawing.Size(244, 22);
             this.spinInternalPrice.StyleController = this.layoutControl7;
             this.spinInternalPrice.TabIndex = 60;
             this.spinInternalPrice.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinInternalPrice_PreviewKeyDown);
@@ -1261,7 +1295,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinLastExpPrice.Location = new System.Drawing.Point(117, 50);
+            this.spinLastExpPrice.Location = new System.Drawing.Point(118, 59);
+            this.spinLastExpPrice.Margin = new System.Windows.Forms.Padding(4);
             this.spinLastExpPrice.MenuManager = this.barManager1;
             this.spinLastExpPrice.Name = "spinLastExpPrice";
             this.spinLastExpPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1277,7 +1312,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             23283,
             0,
             0});
-            this.spinLastExpPrice.Size = new System.Drawing.Size(155, 20);
+            this.spinLastExpPrice.Size = new System.Drawing.Size(244, 22);
             this.spinLastExpPrice.StyleController = this.layoutControl7;
             this.spinLastExpPrice.TabIndex = 62;
             this.spinLastExpPrice.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinLastExpPrice_PreviewKeyDown);
@@ -1296,7 +1331,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem9});
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "layoutControlGroup6";
-            this.layoutControlGroup6.Size = new System.Drawing.Size(546, 210);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(727, 253);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // lciImpPrice
@@ -1306,10 +1341,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciImpPrice.Control = this.spinImpPrice;
             this.lciImpPrice.Location = new System.Drawing.Point(0, 0);
             this.lciImpPrice.Name = "lciImpPrice";
-            this.lciImpPrice.Size = new System.Drawing.Size(274, 24);
+            this.lciImpPrice.Size = new System.Drawing.Size(365, 28);
             this.lciImpPrice.Text = "Giá nhập:";
             this.lciImpPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciImpPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lciImpPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lciImpPrice.TextToControlDistance = 5;
             // 
             // lciImpVatRatio
@@ -1317,12 +1352,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciImpVatRatio.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciImpVatRatio.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciImpVatRatio.Control = this.spinImpVatRatio;
-            this.lciImpVatRatio.Location = new System.Drawing.Point(274, 0);
+            this.lciImpVatRatio.Location = new System.Drawing.Point(365, 0);
             this.lciImpVatRatio.Name = "lciImpVatRatio";
-            this.lciImpVatRatio.Size = new System.Drawing.Size(272, 24);
+            this.lciImpVatRatio.Size = new System.Drawing.Size(362, 28);
             this.lciImpVatRatio.Text = "VAT nhập (%):";
             this.lciImpVatRatio.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciImpVatRatio.TextSize = new System.Drawing.Size(110, 20);
+            this.lciImpVatRatio.TextSize = new System.Drawing.Size(125, 20);
             this.lciImpVatRatio.TextToControlDistance = 5;
             // 
             // lciInternalPrice
@@ -1330,12 +1365,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciInternalPrice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciInternalPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciInternalPrice.Control = this.spinInternalPrice;
-            this.lciInternalPrice.Location = new System.Drawing.Point(0, 24);
+            this.lciInternalPrice.Location = new System.Drawing.Point(0, 28);
             this.lciInternalPrice.Name = "lciInternalPrice";
-            this.lciInternalPrice.Size = new System.Drawing.Size(274, 24);
+            this.lciInternalPrice.Size = new System.Drawing.Size(365, 28);
             this.lciInternalPrice.Text = "Giá nội bộ:";
             this.lciInternalPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciInternalPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lciInternalPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lciInternalPrice.TextToControlDistance = 5;
             // 
             // lcLastExpPrice
@@ -1343,12 +1378,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcLastExpPrice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcLastExpPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcLastExpPrice.Control = this.spinLastExpPrice;
-            this.lcLastExpPrice.Location = new System.Drawing.Point(0, 48);
+            this.lcLastExpPrice.Location = new System.Drawing.Point(0, 56);
             this.lcLastExpPrice.Name = "lcLastExpPrice";
-            this.lcLastExpPrice.Size = new System.Drawing.Size(274, 24);
+            this.lcLastExpPrice.Size = new System.Drawing.Size(365, 28);
             this.lcLastExpPrice.Text = "Giá bán:";
             this.lcLastExpPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcLastExpPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lcLastExpPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lcLastExpPrice.TextToControlDistance = 5;
             // 
             // lcIsSaleEqualImpPrice
@@ -1356,10 +1391,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcIsSaleEqualImpPrice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsSaleEqualImpPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsSaleEqualImpPrice.Control = this.chkIsSaleEqualImpPrice;
-            this.lcIsSaleEqualImpPrice.Location = new System.Drawing.Point(274, 24);
+            this.lcIsSaleEqualImpPrice.Location = new System.Drawing.Point(365, 28);
             this.lcIsSaleEqualImpPrice.Name = "lcIsSaleEqualImpPrice";
             this.lcIsSaleEqualImpPrice.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -1, 2, 2);
-            this.lcIsSaleEqualImpPrice.Size = new System.Drawing.Size(272, 24);
+            this.lcIsSaleEqualImpPrice.Size = new System.Drawing.Size(362, 28);
             this.lcIsSaleEqualImpPrice.Text = "Bán bằng giá nhập:";
             this.lcIsSaleEqualImpPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcIsSaleEqualImpPrice.TextSize = new System.Drawing.Size(213, 20);
@@ -1370,20 +1405,20 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcLastExpVatPrice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcLastExpVatPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcLastExpVatPrice.Control = this.spinLastExpVatPrice;
-            this.lcLastExpVatPrice.Location = new System.Drawing.Point(274, 48);
+            this.lcLastExpVatPrice.Location = new System.Drawing.Point(365, 56);
             this.lcLastExpVatPrice.Name = "lcLastExpVatPrice";
-            this.lcLastExpVatPrice.Size = new System.Drawing.Size(272, 24);
+            this.lcLastExpVatPrice.Size = new System.Drawing.Size(362, 28);
             this.lcLastExpVatPrice.Text = "VAT bán (%):";
             this.lcLastExpVatPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcLastExpVatPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lcLastExpVatPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lcLastExpVatPrice.TextToControlDistance = 5;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.layoutControl10;
-            this.layoutControlItem9.Location = new System.Drawing.Point(0, 72);
+            this.layoutControlItem9.Location = new System.Drawing.Point(0, 84);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(546, 138);
+            this.layoutControlItem9.Size = new System.Drawing.Size(727, 169);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -1391,9 +1426,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             this.groupBox2.Controls.Add(this.layoutControl6);
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(2, 2);
+            this.groupBox2.Location = new System.Drawing.Point(3, 3);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(552, 297);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Size = new System.Drawing.Size(735, 361);
             this.groupBox2.TabIndex = 34;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Thông tin cấu hình";
@@ -1406,6 +1443,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControl6.Controls.Add(this.txtIsSupported);
             this.layoutControl6.Controls.Add(this.cboCTK);
             this.layoutControl6.Controls.Add(this.cboBlockDepartment);
+            this.layoutControl6.Controls.Add(this.cboBlockRoom);
+            this.layoutControl6.Controls.Add(this.cboBlockExpMestType);
             this.layoutControl6.Controls.Add(this.labelControl1);
             this.layoutControl6.Controls.Add(this.layoutControl8);
             this.layoutControl6.Controls.Add(this.ChkIsNoHeinLimitForSpaceil);
@@ -1419,18 +1458,20 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControl6.Controls.Add(this.txtHeinLimitPrice);
             this.layoutControl6.Controls.Add(this.txtHienLimitPriceOld);
             this.layoutControl6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl6.Location = new System.Drawing.Point(3, 17);
+            this.layoutControl6.Location = new System.Drawing.Point(4, 22);
+            this.layoutControl6.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl6.Name = "layoutControl6";
             this.layoutControl6.Root = this.layoutControlGroup5;
-            this.layoutControl6.Size = new System.Drawing.Size(546, 277);
+            this.layoutControl6.Size = new System.Drawing.Size(727, 335);
             this.layoutControl6.TabIndex = 35;
             this.layoutControl6.Text = "layoutControl6";
             // 
             // btnDepartmentPatientType
             // 
-            this.btnDepartmentPatientType.Location = new System.Drawing.Point(383, 122);
+            this.btnDepartmentPatientType.Location = new System.Drawing.Point(511, 143);
+            this.btnDepartmentPatientType.Margin = new System.Windows.Forms.Padding(4);
             this.btnDepartmentPatientType.Name = "btnDepartmentPatientType";
-            this.btnDepartmentPatientType.Size = new System.Drawing.Size(76, 22);
+            this.btnDepartmentPatientType.Size = new System.Drawing.Size(112, 27);
             this.btnDepartmentPatientType.StyleController = this.layoutControl6;
             this.btnDepartmentPatientType.TabIndex = 50;
             this.btnDepartmentPatientType.Text = "Khoa - ĐTTT";
@@ -1439,10 +1480,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // txtBhytWhiteListCodes
             // 
             this.txtBhytWhiteListCodes.Enabled = false;
-            this.txtBhytWhiteListCodes.Location = new System.Drawing.Point(117, 196);
+            this.txtBhytWhiteListCodes.Location = new System.Drawing.Point(118, 260);
+            this.txtBhytWhiteListCodes.Margin = new System.Windows.Forms.Padding(4);
             this.txtBhytWhiteListCodes.MenuManager = this.barManager1;
             this.txtBhytWhiteListCodes.Name = "txtBhytWhiteListCodes";
-            this.txtBhytWhiteListCodes.Size = new System.Drawing.Size(410, 20);
+            this.txtBhytWhiteListCodes.Size = new System.Drawing.Size(585, 22);
             this.txtBhytWhiteListCodes.StyleController = this.layoutControl6;
             this.txtBhytWhiteListCodes.TabIndex = 49;
             // 
@@ -1453,8 +1495,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinAlertMaxInDay.Location = new System.Drawing.Point(383, 98);
-            this.spinAlertMaxInDay.Margin = new System.Windows.Forms.Padding(2);
+            this.spinAlertMaxInDay.Location = new System.Drawing.Point(474, 115);
+            this.spinAlertMaxInDay.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.spinAlertMaxInDay.MenuManager = this.barManager1;
             this.spinAlertMaxInDay.Name = "spinAlertMaxInDay";
             this.spinAlertMaxInDay.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1467,7 +1509,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             23283,
             0,
             0});
-            this.spinAlertMaxInDay.Size = new System.Drawing.Size(144, 20);
+            this.spinAlertMaxInDay.Size = new System.Drawing.Size(229, 22);
             this.spinAlertMaxInDay.StyleController = this.layoutControl6;
             this.spinAlertMaxInDay.TabIndex = 45;
             this.spinAlertMaxInDay.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spinAlertMaxInDay_KeyPress);
@@ -1476,18 +1518,20 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // txtIsSupported
             // 
             this.txtIsSupported.Enabled = false;
-            this.txtIsSupported.Location = new System.Drawing.Point(380, 172);
+            this.txtIsSupported.Location = new System.Drawing.Point(468, 232);
+            this.txtIsSupported.Margin = new System.Windows.Forms.Padding(4);
             this.txtIsSupported.MenuManager = this.barManager1;
             this.txtIsSupported.Name = "txtIsSupported";
             this.txtIsSupported.Properties.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.txtIsSupported.Size = new System.Drawing.Size(147, 20);
+            this.txtIsSupported.Size = new System.Drawing.Size(235, 22);
             this.txtIsSupported.StyleController = this.layoutControl6;
             this.txtIsSupported.TabIndex = 48;
             this.txtIsSupported.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtIsSupported_PreviewKeyDown);
             // 
             // cboCTK
             // 
-            this.cboCTK.Location = new System.Drawing.Point(117, 172);
+            this.cboCTK.Location = new System.Drawing.Point(118, 232);
+            this.cboCTK.Margin = new System.Windows.Forms.Padding(4);
             this.cboCTK.MenuManager = this.barManager1;
             this.cboCTK.Name = "cboCTK";
             this.cboCTK.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1496,7 +1540,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboCTK.Properties.NullText = "";
             this.cboCTK.Properties.View = this.gridView10;
-            this.cboCTK.Size = new System.Drawing.Size(144, 20);
+            this.cboCTK.Size = new System.Drawing.Size(229, 22);
             this.cboCTK.StyleController = this.layoutControl6;
             this.cboCTK.TabIndex = 47;
             this.cboCTK.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboCTK_Closed);
@@ -1513,14 +1557,15 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // cboBlockDepartment
             // 
-            this.cboBlockDepartment.Location = new System.Drawing.Point(117, 148);
+            this.cboBlockDepartment.Location = new System.Drawing.Point(118, 176);
+            this.cboBlockDepartment.Margin = new System.Windows.Forms.Padding(4);
             this.cboBlockDepartment.MenuManager = this.barManager1;
             this.cboBlockDepartment.Name = "cboBlockDepartment";
             this.cboBlockDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboBlockDepartment.Properties.NullText = "";
             this.cboBlockDepartment.Properties.View = this.gridViewBlockDepartment;
-            this.cboBlockDepartment.Size = new System.Drawing.Size(410, 20);
+            this.cboBlockDepartment.Size = new System.Drawing.Size(235, 22);
             this.cboBlockDepartment.StyleController = this.layoutControl6;
             this.cboBlockDepartment.TabIndex = 46;
             this.cboBlockDepartment.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboBlockDepartment_Closed);
@@ -1531,14 +1576,67 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.gridViewBlockDepartment.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridViewBlockDepartment.Name = "gridViewBlockDepartment";
             this.gridViewBlockDepartment.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBlockDepartment.OptionsView.ShowAutoFilterRow = true;
+            this.gridViewBlockDepartment.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
             this.gridViewBlockDepartment.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboBlockRoom
+            // 
+            this.cboBlockRoom.Location = new System.Drawing.Point(118, 204);
+            this.cboBlockRoom.Margin = new System.Windows.Forms.Padding(4);
+            this.cboBlockRoom.MenuManager = this.barManager1;
+            this.cboBlockRoom.Name = "cboBlockRoom";
+            this.cboBlockRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBlockRoom.Properties.NullText = "";
+            this.cboBlockRoom.Properties.PopupFilterMode = DevExpress.XtraEditors.PopupFilterMode.Contains;
+            this.cboBlockRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboBlockRoom.Properties.View = this.gridViewBlockRoom;
+            this.cboBlockRoom.Size = new System.Drawing.Size(585, 22);
+            this.cboBlockRoom.StyleController = this.layoutControl6;
+            this.cboBlockRoom.TabIndex = 51;
+            this.cboBlockRoom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboBlockRoom_Closed);
+            this.cboBlockRoom.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboBlockRoom_CustomDisplayText);
+            // 
+            // gridViewBlockRoom
+            // 
+            this.gridViewBlockRoom.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewBlockRoom.Name = "gridViewBlockRoom";
+            this.gridViewBlockRoom.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBlockRoom.OptionsView.ShowAutoFilterRow = true;
+            this.gridViewBlockRoom.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
+            this.gridViewBlockRoom.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboBlockExpMestType
+            // 
+            this.cboBlockExpMestType.Location = new System.Drawing.Point(474, 176);
+            this.cboBlockExpMestType.Margin = new System.Windows.Forms.Padding(4);
+            this.cboBlockExpMestType.MenuManager = this.barManager1;
+            this.cboBlockExpMestType.Name = "cboBlockExpMestType";
+            this.cboBlockExpMestType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBlockExpMestType.Properties.NullText = "";
+            this.cboBlockExpMestType.Properties.View = this.gridViewBlockExpMestType;
+            this.cboBlockExpMestType.Size = new System.Drawing.Size(229, 22);
+            this.cboBlockExpMestType.StyleController = this.layoutControl6;
+            this.cboBlockExpMestType.TabIndex = 52;
+            this.cboBlockExpMestType.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboBlockExpMestType_Closed);
+            this.cboBlockExpMestType.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.cboBlockExpMestType_CustomDisplayText);
+            // 
+            // gridViewBlockExpMestType
+            // 
+            this.gridViewBlockExpMestType.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewBlockExpMestType.Name = "gridViewBlockExpMestType";
+            this.gridViewBlockExpMestType.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBlockExpMestType.OptionsView.ShowGroupPanel = false;
             // 
             // labelControl1
             // 
             this.labelControl1.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.labelControl1.Location = new System.Drawing.Point(418, 50);
+            this.labelControl1.Location = new System.Drawing.Point(559, 59);
+            this.labelControl1.Margin = new System.Windows.Forms.Padding(4);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(109, 13);
+            this.labelControl1.Size = new System.Drawing.Size(144, 16);
             this.labelControl1.StyleController = this.layoutControl6;
             this.labelControl1.TabIndex = 13;
             this.labelControl1.Text = "(với thẻ đặc biệt)";
@@ -1556,58 +1654,62 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControl8.Controls.Add(this.chkIsExprireDate);
             this.layoutControl8.Controls.Add(this.chkCPNG);
             this.layoutControl8.Controls.Add(this.chkIsStopImp);
-            this.layoutControl8.Location = new System.Drawing.Point(0, 218);
+            this.layoutControl8.Location = new System.Drawing.Point(0, 285);
+            this.layoutControl8.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl8.Name = "layoutControl8";
             this.layoutControl8.Root = this.layoutControlGroup7;
-            this.layoutControl8.Size = new System.Drawing.Size(529, 96);
+            this.layoutControl8.Size = new System.Drawing.Size(706, 104);
             this.layoutControl8.TabIndex = 46;
             this.layoutControl8.Text = "layoutControl8";
             // 
             // chkIsNotExpend
             // 
-            this.chkIsNotExpend.Location = new System.Drawing.Point(115, 74);
+            this.chkIsNotExpend.Location = new System.Drawing.Point(116, 81);
+            this.chkIsNotExpend.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsNotExpend.MenuManager = this.barManager1;
             this.chkIsNotExpend.Name = "chkIsNotExpend";
             this.chkIsNotExpend.Properties.Caption = "";
-            this.chkIsNotExpend.Size = new System.Drawing.Size(20, 19);
+            this.chkIsNotExpend.Size = new System.Drawing.Size(64, 19);
             this.chkIsNotExpend.StyleController = this.layoutControl8;
             this.chkIsNotExpend.TabIndex = 59;
             this.chkIsNotExpend.CheckedChanged += new System.EventHandler(this.chkIsNotExpend_CheckedChanged);
             // 
             // chkDisplay
             // 
-            this.chkDisplay.Location = new System.Drawing.Point(314, 74);
+            this.chkDisplay.Location = new System.Drawing.Point(361, 81);
+            this.chkDisplay.Margin = new System.Windows.Forms.Padding(4);
             this.chkDisplay.MenuManager = this.barManager1;
             this.chkDisplay.Name = "chkDisplay";
             this.chkDisplay.Properties.Caption = "";
             this.chkDisplay.Properties.FullFocusRect = true;
-            this.chkDisplay.Size = new System.Drawing.Size(65, 19);
+            this.chkDisplay.Size = new System.Drawing.Size(145, 19);
             this.chkDisplay.StyleController = this.layoutControl8;
             this.chkDisplay.TabIndex = 58;
             // 
             // chkIS_DRUG_STORE
             // 
-            this.chkIS_DRUG_STORE.Location = new System.Drawing.Point(503, 50);
-            this.chkIS_DRUG_STORE.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
+            this.chkIS_DRUG_STORE.Location = new System.Drawing.Point(632, 55);
+            this.chkIS_DRUG_STORE.Margin = new System.Windows.Forms.Padding(4, 4, 0, 4);
             this.chkIS_DRUG_STORE.MenuManager = this.barManager1;
             this.chkIS_DRUG_STORE.Name = "chkIS_DRUG_STORE";
             this.chkIS_DRUG_STORE.Properties.Caption = "";
             this.chkIS_DRUG_STORE.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkIS_DRUG_STORE.Size = new System.Drawing.Size(24, 19);
+            this.chkIS_DRUG_STORE.Size = new System.Drawing.Size(71, 19);
             this.chkIS_DRUG_STORE.StyleController = this.layoutControl8;
             this.chkIS_DRUG_STORE.TabIndex = 57;
             this.chkIS_DRUG_STORE.ToolTip = "Vật tư sử dụng tại kho có tích “Là quầy thuốc”";
             // 
             // chkIsBusiness
             // 
-            this.chkIsBusiness.Location = new System.Drawing.Point(508, 26);
+            this.chkIsBusiness.Location = new System.Drawing.Point(637, 29);
+            this.chkIsBusiness.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsBusiness.MenuManager = this.barManager1;
             this.chkIsBusiness.Name = "chkIsBusiness";
             this.chkIsBusiness.Properties.Caption = "";
             this.chkIsBusiness.Properties.FullFocusRect = true;
             this.chkIsBusiness.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.chkIsBusiness.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkIsBusiness.Size = new System.Drawing.Size(19, 19);
+            this.chkIsBusiness.Size = new System.Drawing.Size(66, 19);
             this.chkIsBusiness.StyleController = this.layoutControl8;
             this.chkIsBusiness.TabIndex = 54;
             this.chkIsBusiness.CheckedChanged += new System.EventHandler(this.chkIsBusiness_CheckedChanged);
@@ -1616,13 +1718,14 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // chkAutoExpend
             // 
-            this.chkAutoExpend.Location = new System.Drawing.Point(314, 50);
+            this.chkAutoExpend.Location = new System.Drawing.Point(361, 55);
+            this.chkAutoExpend.Margin = new System.Windows.Forms.Padding(4);
             this.chkAutoExpend.MenuManager = this.barManager1;
             this.chkAutoExpend.Name = "chkAutoExpend";
             this.chkAutoExpend.Properties.Caption = "";
             this.chkAutoExpend.Properties.FullFocusRect = true;
             this.chkAutoExpend.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkAutoExpend.Size = new System.Drawing.Size(65, 19);
+            this.chkAutoExpend.Size = new System.Drawing.Size(145, 19);
             this.chkAutoExpend.StyleController = this.layoutControl8;
             this.chkAutoExpend.TabIndex = 56;
             this.chkAutoExpend.CheckedChanged += new System.EventHandler(this.chkAutoExpend_CheckedChanged);
@@ -1630,79 +1733,85 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // chkIsAllowExportOdd
             // 
-            this.chkIsAllowExportOdd.Location = new System.Drawing.Point(314, 26);
+            this.chkIsAllowExportOdd.Location = new System.Drawing.Point(361, 29);
+            this.chkIsAllowExportOdd.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsAllowExportOdd.MenuManager = this.barManager1;
             this.chkIsAllowExportOdd.Name = "chkIsAllowExportOdd";
             this.chkIsAllowExportOdd.Properties.Caption = "";
             this.chkIsAllowExportOdd.Properties.FullFocusRect = true;
             this.chkIsAllowExportOdd.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsAllowExportOdd.Size = new System.Drawing.Size(65, 19);
+            this.chkIsAllowExportOdd.Size = new System.Drawing.Size(145, 19);
             this.chkIsAllowExportOdd.StyleController = this.layoutControl8;
             this.chkIsAllowExportOdd.TabIndex = 53;
             this.chkIsAllowExportOdd.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsAllowExportOdd_PreviewKeyDown);
             // 
             // chkIsMustPrepare
             // 
-            this.chkIsMustPrepare.Location = new System.Drawing.Point(112, 50);
+            this.chkIsMustPrepare.Location = new System.Drawing.Point(113, 55);
+            this.chkIsMustPrepare.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsMustPrepare.MenuManager = this.barManager1;
             this.chkIsMustPrepare.Name = "chkIsMustPrepare";
             this.chkIsMustPrepare.Properties.Caption = "";
             this.chkIsMustPrepare.Properties.FullFocusRect = true;
             this.chkIsMustPrepare.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsMustPrepare.Size = new System.Drawing.Size(23, 19);
+            this.chkIsMustPrepare.Size = new System.Drawing.Size(67, 19);
             this.chkIsMustPrepare.StyleController = this.layoutControl8;
             this.chkIsMustPrepare.TabIndex = 55;
             this.chkIsMustPrepare.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsMustPrepare_PreviewKeyDown);
             // 
             // chkIsAllowOdd
             // 
-            this.chkIsAllowOdd.Location = new System.Drawing.Point(112, 26);
+            this.chkIsAllowOdd.Location = new System.Drawing.Point(113, 29);
+            this.chkIsAllowOdd.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsAllowOdd.MenuManager = this.barManager1;
             this.chkIsAllowOdd.Name = "chkIsAllowOdd";
             this.chkIsAllowOdd.Properties.Caption = "";
             this.chkIsAllowOdd.Properties.FullFocusRect = true;
             this.chkIsAllowOdd.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsAllowOdd.Size = new System.Drawing.Size(23, 19);
+            this.chkIsAllowOdd.Size = new System.Drawing.Size(67, 19);
             this.chkIsAllowOdd.StyleController = this.layoutControl8;
             this.chkIsAllowOdd.TabIndex = 52;
             this.chkIsAllowOdd.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsAllowOdd_PreviewKeyDown);
             // 
             // chkIsExprireDate
             // 
-            this.chkIsExprireDate.Location = new System.Drawing.Point(508, 2);
+            this.chkIsExprireDate.Location = new System.Drawing.Point(637, 3);
+            this.chkIsExprireDate.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsExprireDate.MenuManager = this.barManager1;
             this.chkIsExprireDate.Name = "chkIsExprireDate";
             this.chkIsExprireDate.Properties.Caption = "";
             this.chkIsExprireDate.Properties.FullFocusRect = true;
             this.chkIsExprireDate.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             this.chkIsExprireDate.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkIsExprireDate.Size = new System.Drawing.Size(19, 19);
+            this.chkIsExprireDate.Size = new System.Drawing.Size(66, 19);
             this.chkIsExprireDate.StyleController = this.layoutControl8;
             this.chkIsExprireDate.TabIndex = 51;
             this.chkIsExprireDate.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsExprireDate_PreviewKeyDown);
             // 
             // chkCPNG
             // 
-            this.chkCPNG.Location = new System.Drawing.Point(314, 2);
+            this.chkCPNG.Location = new System.Drawing.Point(361, 3);
+            this.chkCPNG.Margin = new System.Windows.Forms.Padding(4);
             this.chkCPNG.MenuManager = this.barManager1;
             this.chkCPNG.Name = "chkCPNG";
             this.chkCPNG.Properties.Caption = "";
             this.chkCPNG.Properties.FullFocusRect = true;
             this.chkCPNG.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkCPNG.Size = new System.Drawing.Size(65, 19);
+            this.chkCPNG.Size = new System.Drawing.Size(145, 19);
             this.chkCPNG.StyleController = this.layoutControl8;
             this.chkCPNG.TabIndex = 50;
             this.chkCPNG.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkCPNG_PreviewKeyDown);
             // 
             // chkIsStopImp
             // 
-            this.chkIsStopImp.Location = new System.Drawing.Point(112, 2);
+            this.chkIsStopImp.Location = new System.Drawing.Point(113, 3);
+            this.chkIsStopImp.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsStopImp.MenuManager = this.barManager1;
             this.chkIsStopImp.Name = "chkIsStopImp";
             this.chkIsStopImp.Properties.Caption = "";
             this.chkIsStopImp.Properties.FullFocusRect = true;
             this.chkIsStopImp.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsStopImp.Size = new System.Drawing.Size(23, 19);
+            this.chkIsStopImp.Size = new System.Drawing.Size(67, 19);
             this.chkIsStopImp.StyleController = this.layoutControl8;
             this.chkIsStopImp.TabIndex = 49;
             this.chkIsStopImp.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsStopImp_PreviewKeyDown);
@@ -1725,7 +1834,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcIsNotExpend});
             this.layoutControlGroup7.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup7.Name = "layoutControlGroup7";
-            this.layoutControlGroup7.Size = new System.Drawing.Size(529, 96);
+            this.layoutControlGroup7.Size = new System.Drawing.Size(706, 104);
             this.layoutControlGroup7.TextVisible = false;
             // 
             // lciIsStopImp
@@ -1735,10 +1844,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciIsStopImp.Control = this.chkIsStopImp;
             this.lciIsStopImp.Location = new System.Drawing.Point(0, 0);
             this.lciIsStopImp.Name = "lciIsStopImp";
-            this.lciIsStopImp.Size = new System.Drawing.Size(137, 24);
+            this.lciIsStopImp.Size = new System.Drawing.Size(183, 26);
             this.lciIsStopImp.Text = "Dừng nhập:";
             this.lciIsStopImp.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciIsStopImp.TextSize = new System.Drawing.Size(108, 20);
+            this.lciIsStopImp.TextSize = new System.Drawing.Size(123, 20);
             this.lciIsStopImp.TextToControlDistance = 2;
             // 
             // lcCPNG
@@ -1746,10 +1855,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcCPNG.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcCPNG.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcCPNG.Control = this.chkCPNG;
-            this.lcCPNG.Location = new System.Drawing.Point(137, 0);
+            this.lcCPNG.Location = new System.Drawing.Point(183, 0);
             this.lcCPNG.Name = "lcCPNG";
             this.lcCPNG.OptionsToolTip.ToolTip = "Chi phí ngoài gói";
-            this.lcCPNG.Size = new System.Drawing.Size(244, 24);
+            this.lcCPNG.Size = new System.Drawing.Size(326, 26);
             this.lcCPNG.Text = "CP ngoài gói:";
             this.lcCPNG.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcCPNG.TextSize = new System.Drawing.Size(170, 20);
@@ -1760,10 +1869,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcIsExprireDate.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsExprireDate.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsExprireDate.Control = this.chkIsExprireDate;
-            this.lcIsExprireDate.Location = new System.Drawing.Point(381, 0);
+            this.lcIsExprireDate.Location = new System.Drawing.Point(509, 0);
             this.lcIsExprireDate.Name = "lcIsExprireDate";
             this.lcIsExprireDate.OptionsToolTip.ToolTip = "Phải nhập hạn sử dụng";
-            this.lcIsExprireDate.Size = new System.Drawing.Size(148, 24);
+            this.lcIsExprireDate.Size = new System.Drawing.Size(197, 26);
             this.lcIsExprireDate.Text = "Phải nhập HSD:";
             this.lcIsExprireDate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcIsExprireDate.TextSize = new System.Drawing.Size(120, 20);
@@ -1774,12 +1883,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciIsAllowOdd.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsAllowOdd.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsAllowOdd.Control = this.chkIsAllowOdd;
-            this.lciIsAllowOdd.Location = new System.Drawing.Point(0, 24);
+            this.lciIsAllowOdd.Location = new System.Drawing.Point(0, 26);
             this.lciIsAllowOdd.Name = "lciIsAllowOdd";
-            this.lciIsAllowOdd.Size = new System.Drawing.Size(137, 24);
+            this.lciIsAllowOdd.Size = new System.Drawing.Size(183, 26);
             this.lciIsAllowOdd.Text = "Cho kê lẻ:";
             this.lciIsAllowOdd.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciIsAllowOdd.TextSize = new System.Drawing.Size(108, 20);
+            this.lciIsAllowOdd.TextSize = new System.Drawing.Size(123, 20);
             this.lciIsAllowOdd.TextToControlDistance = 2;
             // 
             // lcIsMustPrepare
@@ -1787,9 +1896,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcIsMustPrepare.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsMustPrepare.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsMustPrepare.Control = this.chkIsMustPrepare;
-            this.lcIsMustPrepare.Location = new System.Drawing.Point(0, 48);
+            this.lcIsMustPrepare.Location = new System.Drawing.Point(0, 52);
             this.lcIsMustPrepare.Name = "lcIsMustPrepare";
-            this.lcIsMustPrepare.Size = new System.Drawing.Size(137, 24);
+            this.lcIsMustPrepare.Size = new System.Drawing.Size(183, 26);
             this.lcIsMustPrepare.Text = "Phải dự trù:";
             this.lcIsMustPrepare.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcIsMustPrepare.TextSize = new System.Drawing.Size(108, 20);
@@ -1800,9 +1909,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcIsAllowExportOdd.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsAllowExportOdd.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsAllowExportOdd.Control = this.chkIsAllowExportOdd;
-            this.lcIsAllowExportOdd.Location = new System.Drawing.Point(137, 24);
+            this.lcIsAllowExportOdd.Location = new System.Drawing.Point(183, 26);
             this.lcIsAllowExportOdd.Name = "lcIsAllowExportOdd";
-            this.lcIsAllowExportOdd.Size = new System.Drawing.Size(244, 24);
+            this.lcIsAllowExportOdd.Size = new System.Drawing.Size(326, 26);
             this.lcIsAllowExportOdd.Text = "Cho xuất lẻ:";
             this.lcIsAllowExportOdd.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcIsAllowExportOdd.TextSize = new System.Drawing.Size(170, 20);
@@ -1813,9 +1922,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcAutoExpend.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcAutoExpend.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcAutoExpend.Control = this.chkAutoExpend;
-            this.lcAutoExpend.Location = new System.Drawing.Point(137, 48);
+            this.lcAutoExpend.Location = new System.Drawing.Point(183, 52);
             this.lcAutoExpend.Name = "lcAutoExpend";
-            this.lcAutoExpend.Size = new System.Drawing.Size(244, 24);
+            this.lcAutoExpend.Size = new System.Drawing.Size(326, 26);
             this.lcAutoExpend.Text = "Tự động hao phí:";
             this.lcAutoExpend.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcAutoExpend.TextSize = new System.Drawing.Size(170, 20);
@@ -1826,9 +1935,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcIsBusiness.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsBusiness.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsBusiness.Control = this.chkIsBusiness;
-            this.lcIsBusiness.Location = new System.Drawing.Point(381, 24);
+            this.lcIsBusiness.Location = new System.Drawing.Point(509, 26);
             this.lcIsBusiness.Name = "lcIsBusiness";
-            this.lcIsBusiness.Size = new System.Drawing.Size(148, 24);
+            this.lcIsBusiness.Size = new System.Drawing.Size(197, 26);
             this.lcIsBusiness.Text = "Kinh doanh:";
             this.lcIsBusiness.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcIsBusiness.TextSize = new System.Drawing.Size(120, 20);
@@ -1839,10 +1948,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem13.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem13.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem13.Control = this.chkIS_DRUG_STORE;
-            this.layoutControlItem13.Location = new System.Drawing.Point(381, 48);
+            this.layoutControlItem13.Location = new System.Drawing.Point(509, 52);
             this.layoutControlItem13.Name = "layoutControlItem13";
             this.layoutControlItem13.OptionsToolTip.ToolTip = "Vật tư sử dụng tại kho có tích “Là quầy thuốc”";
-            this.layoutControlItem13.Size = new System.Drawing.Size(148, 48);
+            this.layoutControlItem13.Size = new System.Drawing.Size(197, 52);
             this.layoutControlItem13.Text = "VT quầy thuốc:";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(120, 20);
@@ -1853,9 +1962,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem21.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem21.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem21.Control = this.chkDisplay;
-            this.layoutControlItem21.Location = new System.Drawing.Point(137, 72);
+            this.layoutControlItem21.Location = new System.Drawing.Point(183, 78);
             this.layoutControlItem21.Name = "layoutControlItem21";
-            this.layoutControlItem21.Size = new System.Drawing.Size(244, 24);
+            this.layoutControlItem21.Size = new System.Drawing.Size(326, 26);
             this.layoutControlItem21.Text = "Không hiển thị trên tờ điều trị:";
             this.layoutControlItem21.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem21.TextSize = new System.Drawing.Size(170, 20);
@@ -1866,10 +1975,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcIsNotExpend.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsNotExpend.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsNotExpend.Control = this.chkIsNotExpend;
-            this.lcIsNotExpend.Location = new System.Drawing.Point(0, 72);
+            this.lcIsNotExpend.Location = new System.Drawing.Point(0, 78);
             this.lcIsNotExpend.Name = "lcIsNotExpend";
             this.lcIsNotExpend.OptionsToolTip.ToolTip = "Không cho phép hao phí khi kê cho bệnh nhân";
-            this.lcIsNotExpend.Size = new System.Drawing.Size(137, 24);
+            this.lcIsNotExpend.Size = new System.Drawing.Size(183, 26);
             this.lcIsNotExpend.Text = "Không hao phí:";
             this.lcIsNotExpend.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcIsNotExpend.TextSize = new System.Drawing.Size(108, 20);
@@ -1877,42 +1986,46 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // ChkIsNoHeinLimitForSpaceil
             // 
-            this.ChkIsNoHeinLimitForSpaceil.Location = new System.Drawing.Point(380, 50);
+            this.ChkIsNoHeinLimitForSpaceil.Location = new System.Drawing.Point(471, 59);
+            this.ChkIsNoHeinLimitForSpaceil.Margin = new System.Windows.Forms.Padding(4);
             this.ChkIsNoHeinLimitForSpaceil.MenuManager = this.barManager1;
             this.ChkIsNoHeinLimitForSpaceil.Name = "ChkIsNoHeinLimitForSpaceil";
             this.ChkIsNoHeinLimitForSpaceil.Properties.Caption = "";
             this.ChkIsNoHeinLimitForSpaceil.Properties.FullFocusRect = true;
             this.ChkIsNoHeinLimitForSpaceil.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ChkIsNoHeinLimitForSpaceil.Size = new System.Drawing.Size(34, 19);
+            this.ChkIsNoHeinLimitForSpaceil.Size = new System.Drawing.Size(82, 19);
             this.ChkIsNoHeinLimitForSpaceil.StyleController = this.layoutControl6;
             this.ChkIsNoHeinLimitForSpaceil.TabIndex = 41;
             this.ChkIsNoHeinLimitForSpaceil.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ChkIsNoHeinLimitForSpaceil_PreviewKeyDown);
             // 
             // txtHeinLimitRatioOld
             // 
-            this.txtHeinLimitRatioOld.Location = new System.Drawing.Point(383, 2);
+            this.txtHeinLimitRatioOld.Location = new System.Drawing.Point(474, 3);
+            this.txtHeinLimitRatioOld.Margin = new System.Windows.Forms.Padding(4);
             this.txtHeinLimitRatioOld.MenuManager = this.barManager1;
             this.txtHeinLimitRatioOld.Name = "txtHeinLimitRatioOld";
             this.txtHeinLimitRatioOld.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtHeinLimitRatioOld.Size = new System.Drawing.Size(144, 20);
+            this.txtHeinLimitRatioOld.Size = new System.Drawing.Size(229, 22);
             this.txtHeinLimitRatioOld.StyleController = this.layoutControl6;
             this.txtHeinLimitRatioOld.TabIndex = 37;
             this.txtHeinLimitRatioOld.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtHeinLimitRatioOld_PreviewKeyDown);
             // 
             // txtHeinLimitRatio
             // 
-            this.txtHeinLimitRatio.Location = new System.Drawing.Point(117, 2);
+            this.txtHeinLimitRatio.Location = new System.Drawing.Point(118, 3);
+            this.txtHeinLimitRatio.Margin = new System.Windows.Forms.Padding(4);
             this.txtHeinLimitRatio.MenuManager = this.barManager1;
             this.txtHeinLimitRatio.Name = "txtHeinLimitRatio";
             this.txtHeinLimitRatio.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.txtHeinLimitRatio.Size = new System.Drawing.Size(147, 20);
+            this.txtHeinLimitRatio.Size = new System.Drawing.Size(235, 22);
             this.txtHeinLimitRatio.StyleController = this.layoutControl6;
             this.txtHeinLimitRatio.TabIndex = 36;
             this.txtHeinLimitRatio.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtHeinLimitRatio_PreviewKeyDown);
             // 
             // cboGender
             // 
-            this.cboGender.Location = new System.Drawing.Point(117, 74);
+            this.cboGender.Location = new System.Drawing.Point(118, 87);
+            this.cboGender.Margin = new System.Windows.Forms.Padding(4);
             this.cboGender.MenuManager = this.barManager1;
             this.cboGender.Name = "cboGender";
             this.cboGender.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1922,7 +2035,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.cboGender.Properties.NullText = "";
             this.cboGender.Properties.View = this.gridView8;
             this.cboGender.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.gridLookUpEdit1_Properties_ButtonClick);
-            this.cboGender.Size = new System.Drawing.Size(147, 20);
+            this.cboGender.Size = new System.Drawing.Size(235, 22);
             this.cboGender.StyleController = this.layoutControl6;
             this.cboGender.TabIndex = 42;
             this.cboGender.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboGender_Closed);
@@ -1943,7 +2056,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinAlertExpiredDate.Location = new System.Drawing.Point(117, 98);
+            this.spinAlertExpiredDate.Location = new System.Drawing.Point(118, 115);
+            this.spinAlertExpiredDate.Margin = new System.Windows.Forms.Padding(4);
             this.spinAlertExpiredDate.MenuManager = this.barManager1;
             this.spinAlertExpiredDate.Name = "spinAlertExpiredDate";
             this.spinAlertExpiredDate.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1955,7 +2069,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             -1966660860,
             0,
             0});
-            this.spinAlertExpiredDate.Size = new System.Drawing.Size(147, 20);
+            this.spinAlertExpiredDate.Size = new System.Drawing.Size(235, 22);
             this.spinAlertExpiredDate.StyleController = this.layoutControl6;
             this.spinAlertExpiredDate.TabIndex = 44;
             this.spinAlertExpiredDate.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spinAlertExpiredDate_KeyPress);
@@ -1968,7 +2082,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinAlertMaxInPrescription.Location = new System.Drawing.Point(383, 74);
+            this.spinAlertMaxInPrescription.Location = new System.Drawing.Point(474, 87);
+            this.spinAlertMaxInPrescription.Margin = new System.Windows.Forms.Padding(4);
             this.spinAlertMaxInPrescription.MenuManager = this.barManager1;
             this.spinAlertMaxInPrescription.Name = "spinAlertMaxInPrescription";
             this.spinAlertMaxInPrescription.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1981,7 +2096,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             232830,
             0,
             0});
-            this.spinAlertMaxInPrescription.Size = new System.Drawing.Size(144, 20);
+            this.spinAlertMaxInPrescription.Size = new System.Drawing.Size(229, 22);
             this.spinAlertMaxInPrescription.StyleController = this.layoutControl6;
             this.spinAlertMaxInPrescription.TabIndex = 43;
             this.spinAlertMaxInPrescription.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spinAlertMaxInPrescription_KeyPress);
@@ -1994,7 +2109,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinAlertMinInStock.Location = new System.Drawing.Point(117, 122);
+            this.spinAlertMinInStock.Location = new System.Drawing.Point(118, 143);
+            this.spinAlertMinInStock.Margin = new System.Windows.Forms.Padding(4);
             this.spinAlertMinInStock.MenuManager = this.barManager1;
             this.spinAlertMinInStock.Name = "spinAlertMinInStock";
             this.spinAlertMinInStock.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2007,7 +2123,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             232830,
             0,
             0});
-            this.spinAlertMinInStock.Size = new System.Drawing.Size(147, 20);
+            this.spinAlertMinInStock.Size = new System.Drawing.Size(235, 22);
             this.spinAlertMinInStock.StyleController = this.layoutControl6;
             this.spinAlertMinInStock.TabIndex = 45;
             this.spinAlertMinInStock.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spinAlertMinInStock_KeyPress);
@@ -2016,7 +2132,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // dtHeinLimitPriceInTime
             // 
             this.dtHeinLimitPriceInTime.EditValue = null;
-            this.dtHeinLimitPriceInTime.Location = new System.Drawing.Point(117, 50);
+            this.dtHeinLimitPriceInTime.Location = new System.Drawing.Point(118, 59);
+            this.dtHeinLimitPriceInTime.Margin = new System.Windows.Forms.Padding(4);
             this.dtHeinLimitPriceInTime.MenuManager = this.barManager1;
             this.dtHeinLimitPriceInTime.Name = "dtHeinLimitPriceInTime";
             this.dtHeinLimitPriceInTime.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2030,7 +2147,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.dtHeinLimitPriceInTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtHeinLimitPriceInTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
             this.dtHeinLimitPriceInTime.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.dtHeinLimitPriceInTime.Size = new System.Drawing.Size(147, 20);
+            this.dtHeinLimitPriceInTime.Size = new System.Drawing.Size(235, 22);
             this.dtHeinLimitPriceInTime.StyleController = this.layoutControl6;
             this.dtHeinLimitPriceInTime.TabIndex = 40;
             this.dtHeinLimitPriceInTime.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtHeinLimitPriceInTime_Closed);
@@ -2043,7 +2160,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.txtHeinLimitPrice.Location = new System.Drawing.Point(117, 26);
+            this.txtHeinLimitPrice.Location = new System.Drawing.Point(118, 31);
+            this.txtHeinLimitPrice.Margin = new System.Windows.Forms.Padding(4);
             this.txtHeinLimitPrice.MenuManager = this.barManager1;
             this.txtHeinLimitPrice.Name = "txtHeinLimitPrice";
             this.txtHeinLimitPrice.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2059,7 +2177,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             232830,
             0,
             0});
-            this.txtHeinLimitPrice.Size = new System.Drawing.Size(147, 20);
+            this.txtHeinLimitPrice.Size = new System.Drawing.Size(235, 22);
             this.txtHeinLimitPrice.StyleController = this.layoutControl6;
             this.txtHeinLimitPrice.TabIndex = 38;
             this.txtHeinLimitPrice.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtHeinLimitPrice_PreviewKeyDown_1);
@@ -2071,7 +2189,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.txtHienLimitPriceOld.Location = new System.Drawing.Point(383, 26);
+            this.txtHienLimitPriceOld.Location = new System.Drawing.Point(474, 31);
+            this.txtHienLimitPriceOld.Margin = new System.Windows.Forms.Padding(4);
             this.txtHienLimitPriceOld.MenuManager = this.barManager1;
             this.txtHienLimitPriceOld.Name = "txtHienLimitPriceOld";
             this.txtHienLimitPriceOld.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2087,7 +2206,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             232830,
             0,
             0});
-            this.txtHienLimitPriceOld.Size = new System.Drawing.Size(144, 20);
+            this.txtHienLimitPriceOld.Size = new System.Drawing.Size(229, 22);
             this.txtHienLimitPriceOld.StyleController = this.layoutControl6;
             this.txtHienLimitPriceOld.TabIndex = 39;
             this.txtHienLimitPriceOld.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtHienLimitPriceOld_KeyPress);
@@ -2109,6 +2228,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitPrice,
             this.lcHeinLimitPriceOld,
             this.lciBlockDepartment,
+            this.lciBlockExpMestType,
+            this.lciBlockRoom,
             this.lciCTK,
             this.lciIsSupported,
             this.lcAlertMaxInDay,
@@ -2120,7 +2241,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.emptySpaceItem6});
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "Root";
-            this.layoutControlGroup5.Size = new System.Drawing.Size(529, 314);
+            this.layoutControlGroup5.Size = new System.Drawing.Size(706, 389);
             this.layoutControlGroup5.TextVisible = false;
             // 
             // lcHeinLimitRatio
@@ -2130,10 +2251,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitRatio.Control = this.txtHeinLimitRatio;
             this.lcHeinLimitRatio.Location = new System.Drawing.Point(0, 0);
             this.lcHeinLimitRatio.Name = "lcHeinLimitRatio";
-            this.lcHeinLimitRatio.Size = new System.Drawing.Size(266, 24);
+            this.lcHeinLimitRatio.Size = new System.Drawing.Size(356, 28);
             this.lcHeinLimitRatio.Text = "Tỉ lệ BHYT (%):";
             this.lcHeinLimitRatio.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitRatio.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitRatio.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitRatio.TextToControlDistance = 5;
             // 
             // lcHeinLimitRatioOld
@@ -2141,12 +2262,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitRatioOld.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcHeinLimitRatioOld.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcHeinLimitRatioOld.Control = this.txtHeinLimitRatioOld;
-            this.lcHeinLimitRatioOld.Location = new System.Drawing.Point(266, 0);
+            this.lcHeinLimitRatioOld.Location = new System.Drawing.Point(356, 0);
             this.lcHeinLimitRatioOld.Name = "lcHeinLimitRatioOld";
-            this.lcHeinLimitRatioOld.Size = new System.Drawing.Size(263, 24);
+            this.lcHeinLimitRatioOld.Size = new System.Drawing.Size(350, 28);
             this.lcHeinLimitRatioOld.Text = "Tỉ lệ BHYT cũ (%):";
             this.lcHeinLimitRatioOld.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitRatioOld.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitRatioOld.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitRatioOld.TextToControlDistance = 5;
             // 
             // lcIsNoHeinLimitForSpecial
@@ -2154,12 +2275,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcIsNoHeinLimitForSpecial.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcIsNoHeinLimitForSpecial.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcIsNoHeinLimitForSpecial.Control = this.ChkIsNoHeinLimitForSpaceil;
-            this.lcIsNoHeinLimitForSpecial.Location = new System.Drawing.Point(266, 48);
+            this.lcIsNoHeinLimitForSpecial.Location = new System.Drawing.Point(356, 56);
             this.lcIsNoHeinLimitForSpecial.Name = "lcIsNoHeinLimitForSpecial";
-            this.lcIsNoHeinLimitForSpecial.Size = new System.Drawing.Size(150, 24);
+            this.lcIsNoHeinLimitForSpecial.Size = new System.Drawing.Size(200, 28);
             this.lcIsNoHeinLimitForSpecial.Text = "Không áp trần:";
             this.lcIsNoHeinLimitForSpecial.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcIsNoHeinLimitForSpecial.TextSize = new System.Drawing.Size(110, 20);
+            this.lcIsNoHeinLimitForSpecial.TextSize = new System.Drawing.Size(125, 20);
             this.lcIsNoHeinLimitForSpecial.TextToControlDistance = 2;
             // 
             // lcHeinLimitPriceInTime
@@ -2167,13 +2288,13 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitPriceInTime.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcHeinLimitPriceInTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcHeinLimitPriceInTime.Control = this.dtHeinLimitPriceInTime;
-            this.lcHeinLimitPriceInTime.Location = new System.Drawing.Point(0, 48);
+            this.lcHeinLimitPriceInTime.Location = new System.Drawing.Point(0, 56);
             this.lcHeinLimitPriceInTime.Name = "lcHeinLimitPriceInTime";
             this.lcHeinLimitPriceInTime.OptionsToolTip.ToolTip = "Thời gian áp dụng theo ngày vào viện";
-            this.lcHeinLimitPriceInTime.Size = new System.Drawing.Size(266, 24);
+            this.lcHeinLimitPriceInTime.Size = new System.Drawing.Size(356, 28);
             this.lcHeinLimitPriceInTime.Text = "AD tỉ lệ BHYT mới:";
             this.lcHeinLimitPriceInTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitPriceInTime.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitPriceInTime.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitPriceInTime.TextToControlDistance = 5;
             // 
             // lcGender
@@ -2181,12 +2302,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcGender.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcGender.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcGender.Control = this.cboGender;
-            this.lcGender.Location = new System.Drawing.Point(0, 72);
+            this.lcGender.Location = new System.Drawing.Point(0, 84);
             this.lcGender.Name = "lcGender";
-            this.lcGender.Size = new System.Drawing.Size(266, 24);
+            this.lcGender.Size = new System.Drawing.Size(356, 28);
             this.lcGender.Text = "Giới tính:";
             this.lcGender.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcGender.TextSize = new System.Drawing.Size(110, 20);
+            this.lcGender.TextSize = new System.Drawing.Size(125, 20);
             this.lcGender.TextToControlDistance = 5;
             // 
             // lcAlertMaxInPrescription
@@ -2194,13 +2315,13 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcAlertMaxInPrescription.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcAlertMaxInPrescription.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcAlertMaxInPrescription.Control = this.spinAlertMaxInPrescription;
-            this.lcAlertMaxInPrescription.Location = new System.Drawing.Point(266, 72);
+            this.lcAlertMaxInPrescription.Location = new System.Drawing.Point(356, 84);
             this.lcAlertMaxInPrescription.Name = "lcAlertMaxInPrescription";
             this.lcAlertMaxInPrescription.OptionsToolTip.ToolTip = "Số lượng tối đa trên đơn";
-            this.lcAlertMaxInPrescription.Size = new System.Drawing.Size(263, 24);
+            this.lcAlertMaxInPrescription.Size = new System.Drawing.Size(350, 28);
             this.lcAlertMaxInPrescription.Text = "SL tối đa/đơn:";
             this.lcAlertMaxInPrescription.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcAlertMaxInPrescription.TextSize = new System.Drawing.Size(110, 20);
+            this.lcAlertMaxInPrescription.TextSize = new System.Drawing.Size(125, 20);
             this.lcAlertMaxInPrescription.TextToControlDistance = 5;
             // 
             // layoutControlItem19
@@ -2208,10 +2329,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem19.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem19.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem19.Control = this.layoutControl8;
-            this.layoutControlItem19.Location = new System.Drawing.Point(0, 218);
+            this.layoutControlItem19.Location = new System.Drawing.Point(0, 285);
             this.layoutControlItem19.Name = "layoutControlItem19";
             this.layoutControlItem19.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem19.Size = new System.Drawing.Size(529, 96);
+            this.layoutControlItem19.Size = new System.Drawing.Size(706, 104);
             this.layoutControlItem19.Text = "Đầu mã thẻ BHYT";
             this.layoutControlItem19.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
@@ -2221,9 +2342,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // layoutControlItem48
             // 
             this.layoutControlItem48.Control = this.labelControl1;
-            this.layoutControlItem48.Location = new System.Drawing.Point(416, 48);
+            this.layoutControlItem48.Location = new System.Drawing.Point(556, 56);
             this.layoutControlItem48.Name = "layoutControlItem48";
-            this.layoutControlItem48.Size = new System.Drawing.Size(113, 24);
+            this.layoutControlItem48.Size = new System.Drawing.Size(150, 28);
             this.layoutControlItem48.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem48.TextVisible = false;
             // 
@@ -2232,12 +2353,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitPrice.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcHeinLimitPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcHeinLimitPrice.Control = this.txtHeinLimitPrice;
-            this.lcHeinLimitPrice.Location = new System.Drawing.Point(0, 24);
+            this.lcHeinLimitPrice.Location = new System.Drawing.Point(0, 28);
             this.lcHeinLimitPrice.Name = "lcHeinLimitPrice";
-            this.lcHeinLimitPrice.Size = new System.Drawing.Size(266, 24);
+            this.lcHeinLimitPrice.Size = new System.Drawing.Size(356, 28);
             this.lcHeinLimitPrice.Text = "Trần BHYT:";
             this.lcHeinLimitPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitPrice.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitPrice.TextToControlDistance = 5;
             // 
             // lcHeinLimitPriceOld
@@ -2245,12 +2366,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcHeinLimitPriceOld.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcHeinLimitPriceOld.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcHeinLimitPriceOld.Control = this.txtHienLimitPriceOld;
-            this.lcHeinLimitPriceOld.Location = new System.Drawing.Point(266, 24);
+            this.lcHeinLimitPriceOld.Location = new System.Drawing.Point(356, 28);
             this.lcHeinLimitPriceOld.Name = "lcHeinLimitPriceOld";
-            this.lcHeinLimitPriceOld.Size = new System.Drawing.Size(263, 24);
+            this.lcHeinLimitPriceOld.Size = new System.Drawing.Size(350, 28);
             this.lcHeinLimitPriceOld.Text = "Trần BHYT cũ:";
             this.lcHeinLimitPriceOld.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcHeinLimitPriceOld.TextSize = new System.Drawing.Size(110, 20);
+            this.lcHeinLimitPriceOld.TextSize = new System.Drawing.Size(125, 20);
             this.lcHeinLimitPriceOld.TextToControlDistance = 5;
             // 
             // lciBlockDepartment
@@ -2258,26 +2379,52 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciBlockDepartment.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBlockDepartment.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBlockDepartment.Control = this.cboBlockDepartment;
-            this.lciBlockDepartment.Location = new System.Drawing.Point(0, 146);
+            this.lciBlockDepartment.Location = new System.Drawing.Point(0, 173);
             this.lciBlockDepartment.Name = "lciBlockDepartment";
-            this.lciBlockDepartment.Size = new System.Drawing.Size(529, 24);
+            this.lciBlockDepartment.Size = new System.Drawing.Size(356, 28);
             this.lciBlockDepartment.Text = "Chặn xuất cho khoa:";
             this.lciBlockDepartment.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciBlockDepartment.TextSize = new System.Drawing.Size(110, 20);
+            this.lciBlockDepartment.TextSize = new System.Drawing.Size(125, 20);
             this.lciBlockDepartment.TextToControlDistance = 5;
+            // 
+            // lciBlockExpMestType
+            // 
+            this.lciBlockExpMestType.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBlockExpMestType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBlockExpMestType.Control = this.cboBlockExpMestType;
+            this.lciBlockExpMestType.Location = new System.Drawing.Point(356, 173);
+            this.lciBlockExpMestType.Name = "lciBlockExpMestType";
+            this.lciBlockExpMestType.Size = new System.Drawing.Size(350, 28);
+            this.lciBlockExpMestType.Text = "Chặn xuất theo phiếu:";
+            this.lciBlockExpMestType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBlockExpMestType.TextSize = new System.Drawing.Size(125, 20);
+            this.lciBlockExpMestType.TextToControlDistance = 5;
+            // 
+            // lciBlockRoom
+            // 
+            this.lciBlockRoom.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBlockRoom.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBlockRoom.Control = this.cboBlockRoom;
+            this.lciBlockRoom.Location = new System.Drawing.Point(0, 201);
+            this.lciBlockRoom.Name = "lciBlockRoom";
+            this.lciBlockRoom.Size = new System.Drawing.Size(706, 28);
+            this.lciBlockRoom.Text = "Chặn xuất cho phòng:";
+            this.lciBlockRoom.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBlockRoom.TextSize = new System.Drawing.Size(125, 20);
+            this.lciBlockRoom.TextToControlDistance = 5;
             // 
             // lciCTK
             // 
             this.lciCTK.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciCTK.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCTK.Control = this.cboCTK;
-            this.lciCTK.Location = new System.Drawing.Point(0, 170);
+            this.lciCTK.Location = new System.Drawing.Point(0, 229);
             this.lciCTK.Name = "lciCTK";
             this.lciCTK.OptionsToolTip.ToolTip = "Nguồn chi trả khác trong trường hợp sử dụng dịch vụ này";
-            this.lciCTK.Size = new System.Drawing.Size(263, 24);
+            this.lciCTK.Size = new System.Drawing.Size(350, 28);
             this.lciCTK.Text = "Nguồn CTK:";
             this.lciCTK.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciCTK.TextSize = new System.Drawing.Size(110, 20);
+            this.lciCTK.TextSize = new System.Drawing.Size(125, 20);
             this.lciCTK.TextToControlDistance = 5;
             // 
             // lciIsSupported
@@ -2285,15 +2432,15 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciIsSupported.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsSupported.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsSupported.Control = this.txtIsSupported;
-            this.lciIsSupported.Location = new System.Drawing.Point(263, 170);
+            this.lciIsSupported.Location = new System.Drawing.Point(350, 229);
             this.lciIsSupported.Name = "lciIsSupported";
             this.lciIsSupported.OptionsToolTip.ToolTip = "Nhập mã ICD ngăn cách bởi dấu phẩy của các bệnh mà nguồn chi trả khác chấp nhận h" +
     "ỗ trợ. Nếu không nhập mã bệnh nào được hiểu là nguồn chấp nhận chi trả cho mọi t" +
     "rường hợp bệnh.";
-            this.lciIsSupported.Size = new System.Drawing.Size(266, 24);
+            this.lciIsSupported.Size = new System.Drawing.Size(356, 28);
             this.lciIsSupported.Text = "Bệnh được hỗ trợ:";
             this.lciIsSupported.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciIsSupported.TextSize = new System.Drawing.Size(110, 20);
+            this.lciIsSupported.TextSize = new System.Drawing.Size(125, 20);
             this.lciIsSupported.TextToControlDistance = 5;
             // 
             // lcAlertMaxInDay
@@ -2301,13 +2448,13 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcAlertMaxInDay.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcAlertMaxInDay.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcAlertMaxInDay.Control = this.spinAlertMaxInDay;
-            this.lcAlertMaxInDay.Location = new System.Drawing.Point(266, 96);
+            this.lcAlertMaxInDay.Location = new System.Drawing.Point(356, 112);
             this.lcAlertMaxInDay.Name = "lcAlertMaxInDay";
             this.lcAlertMaxInDay.OptionsToolTip.ToolTip = "Số lượng tối đa trên ngày";
-            this.lcAlertMaxInDay.Size = new System.Drawing.Size(263, 24);
+            this.lcAlertMaxInDay.Size = new System.Drawing.Size(350, 28);
             this.lcAlertMaxInDay.Text = "SL tối đa/ngày:";
             this.lcAlertMaxInDay.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lcAlertMaxInDay.TextSize = new System.Drawing.Size(110, 20);
+            this.lcAlertMaxInDay.TextSize = new System.Drawing.Size(125, 20);
             this.lcAlertMaxInDay.TextToControlDistance = 5;
             // 
             // lciAlertMinInStock
@@ -2315,13 +2462,13 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciAlertMinInStock.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAlertMinInStock.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAlertMinInStock.Control = this.spinAlertMinInStock;
-            this.lciAlertMinInStock.Location = new System.Drawing.Point(0, 120);
+            this.lciAlertMinInStock.Location = new System.Drawing.Point(0, 140);
             this.lciAlertMinInStock.Name = "lciAlertMinInStock";
             this.lciAlertMinInStock.OptionsToolTip.ToolTip = "Cảnh báo tồn kho";
-            this.lciAlertMinInStock.Size = new System.Drawing.Size(266, 26);
+            this.lciAlertMinInStock.Size = new System.Drawing.Size(356, 33);
             this.lciAlertMinInStock.Text = "CB tồn kho:";
             this.lciAlertMinInStock.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAlertMinInStock.TextSize = new System.Drawing.Size(110, 20);
+            this.lciAlertMinInStock.TextSize = new System.Drawing.Size(125, 20);
             this.lciAlertMinInStock.TextToControlDistance = 5;
             // 
             // lciAlertExpiredDate
@@ -2329,21 +2476,21 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciAlertExpiredDate.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAlertExpiredDate.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAlertExpiredDate.Control = this.spinAlertExpiredDate;
-            this.lciAlertExpiredDate.Location = new System.Drawing.Point(0, 96);
+            this.lciAlertExpiredDate.Location = new System.Drawing.Point(0, 112);
             this.lciAlertExpiredDate.Name = "lciAlertExpiredDate";
             this.lciAlertExpiredDate.OptionsToolTip.ToolTip = "Cảnh báo hạn sử dụng";
-            this.lciAlertExpiredDate.Size = new System.Drawing.Size(266, 24);
+            this.lciAlertExpiredDate.Size = new System.Drawing.Size(356, 28);
             this.lciAlertExpiredDate.Text = "Cảnh báo HSD:";
             this.lciAlertExpiredDate.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciAlertExpiredDate.TextSize = new System.Drawing.Size(110, 20);
+            this.lciAlertExpiredDate.TextSize = new System.Drawing.Size(125, 20);
             this.lciAlertExpiredDate.TextToControlDistance = 5;
             // 
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(461, 120);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(626, 140);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(68, 26);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(80, 33);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem31
@@ -2351,31 +2498,31 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem31.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem31.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem31.Control = this.txtBhytWhiteListCodes;
-            this.layoutControlItem31.Location = new System.Drawing.Point(0, 194);
+            this.layoutControlItem31.Location = new System.Drawing.Point(0, 257);
             this.layoutControlItem31.Name = "layoutControlItem31";
             this.layoutControlItem31.OptionsToolTip.ToolTip = "Khai báo các đầu mã thẻ ngăn cách nhau bằng dấu phẩy. Nếu không khai báo được hiể" +
     "u là áp dụng cho tất cả đầu mã thẻ";
-            this.layoutControlItem31.Size = new System.Drawing.Size(529, 24);
+            this.layoutControlItem31.Size = new System.Drawing.Size(706, 28);
             this.layoutControlItem31.Text = "Đầu mã thẻ BHYT:";
             this.layoutControlItem31.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem31.TextSize = new System.Drawing.Size(110, 20);
+            this.layoutControlItem31.TextSize = new System.Drawing.Size(125, 20);
             this.layoutControlItem31.TextToControlDistance = 5;
             // 
             // layoutControlItem32
             // 
             this.layoutControlItem32.Control = this.btnDepartmentPatientType;
-            this.layoutControlItem32.Location = new System.Drawing.Point(381, 120);
+            this.layoutControlItem32.Location = new System.Drawing.Point(508, 140);
             this.layoutControlItem32.Name = "layoutControlItem32";
-            this.layoutControlItem32.Size = new System.Drawing.Size(80, 26);
+            this.layoutControlItem32.Size = new System.Drawing.Size(118, 33);
             this.layoutControlItem32.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem32.TextVisible = false;
             // 
             // emptySpaceItem6
             // 
             this.emptySpaceItem6.AllowHotTrack = false;
-            this.emptySpaceItem6.Location = new System.Drawing.Point(266, 120);
+            this.emptySpaceItem6.Location = new System.Drawing.Point(356, 140);
             this.emptySpaceItem6.Name = "emptySpaceItem6";
-            this.emptySpaceItem6.Size = new System.Drawing.Size(115, 26);
+            this.emptySpaceItem6.Size = new System.Drawing.Size(152, 33);
             this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlGroup2
@@ -2387,7 +2534,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem7});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(556, 535);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(741, 652);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem6
@@ -2395,26 +2542,27 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem6.Control = this.groupBox2;
             this.layoutControlItem6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(556, 301);
+            this.layoutControlItem6.Size = new System.Drawing.Size(741, 367);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.groupBox3;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 301);
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 367);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(556, 234);
+            this.layoutControlItem7.Size = new System.Drawing.Size(741, 285);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.groupBox1);
-            this.layoutControl2.Location = new System.Drawing.Point(2, 26);
+            this.layoutControl2.Location = new System.Drawing.Point(3, 35);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(534, 535);
+            this.layoutControl2.Size = new System.Drawing.Size(711, 652);
             this.layoutControl2.TabIndex = 2;
             this.layoutControl2.Text = "layoutControl2";
             // 
@@ -2422,9 +2570,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             this.groupBox1.Controls.Add(this.layoutControl4);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(2, 2);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(530, 531);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(705, 646);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Thông tin chung";
@@ -2462,10 +2612,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControl4.Controls.Add(this.spinNumOrder);
             this.layoutControl4.Controls.Add(this.cboImpUnit);
             this.layoutControl4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl4.Location = new System.Drawing.Point(3, 17);
+            this.layoutControl4.Location = new System.Drawing.Point(4, 22);
+            this.layoutControl4.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(524, 511);
+            this.layoutControl4.Size = new System.Drawing.Size(697, 620);
             this.layoutControl4.TabIndex = 4;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -2476,7 +2627,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinBYTNumOrder.Location = new System.Drawing.Point(351, 318);
+            this.spinBYTNumOrder.Location = new System.Drawing.Point(447, 361);
+            this.spinBYTNumOrder.Margin = new System.Windows.Forms.Padding(4);
             this.spinBYTNumOrder.MenuManager = this.barManager1;
             this.spinBYTNumOrder.Name = "spinBYTNumOrder";
             this.spinBYTNumOrder.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2488,39 +2640,42 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             -1966660860,
             0,
             0});
-            this.spinBYTNumOrder.Size = new System.Drawing.Size(154, 20);
+            this.spinBYTNumOrder.Size = new System.Drawing.Size(247, 22);
             this.spinBYTNumOrder.StyleController = this.layoutControl4;
             this.spinBYTNumOrder.TabIndex = 35;
             // 
             // txtTTThau
             // 
-            this.txtTTThau.Location = new System.Drawing.Point(107, 170);
+            this.txtTTThau.Location = new System.Drawing.Point(108, 195);
+            this.txtTTThau.Margin = new System.Windows.Forms.Padding(4);
             this.txtTTThau.MenuManager = this.barManager1;
             this.txtTTThau.Name = "txtTTThau";
-            this.txtTTThau.Size = new System.Drawing.Size(398, 20);
+            this.txtTTThau.Size = new System.Drawing.Size(586, 22);
             this.txtTTThau.StyleController = this.layoutControl4;
             this.txtTTThau.TabIndex = 34;
             // 
             // chartPropertyGridControl1
             // 
-            this.chartPropertyGridControl1.Location = new System.Drawing.Point(2, 514);
+            this.chartPropertyGridControl1.Location = new System.Drawing.Point(3, 616);
+            this.chartPropertyGridControl1.Margin = new System.Windows.Forms.Padding(4);
             this.chartPropertyGridControl1.Name = "chartPropertyGridControl1";
             this.chartPropertyGridControl1.SelectedObject = null;
             this.chartPropertyGridControl1.ServiceProvider = null;
-            this.chartPropertyGridControl1.Size = new System.Drawing.Size(503, 1);
+            this.chartPropertyGridControl1.Size = new System.Drawing.Size(691, 1);
             this.chartPropertyGridControl1.TabIndex = 33;
             // 
             // cboSupplier
             // 
             this.cboSupplier.EditValue = "";
-            this.cboSupplier.Location = new System.Drawing.Point(107, 246);
+            this.cboSupplier.Location = new System.Drawing.Point(108, 277);
+            this.cboSupplier.Margin = new System.Windows.Forms.Padding(4);
             this.cboSupplier.MenuManager = this.barManager1;
             this.cboSupplier.Name = "cboSupplier";
             this.cboSupplier.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboSupplier.Properties.NullText = "";
             this.cboSupplier.Properties.View = this.gridView11;
-            this.cboSupplier.Size = new System.Drawing.Size(398, 20);
+            this.cboSupplier.Size = new System.Drawing.Size(586, 22);
             this.cboSupplier.StyleController = this.layoutControl4;
             this.cboSupplier.TabIndex = 32;
             // 
@@ -2533,11 +2688,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // txtModel
             // 
-            this.txtModel.Location = new System.Drawing.Point(107, 366);
-            this.txtModel.Margin = new System.Windows.Forms.Padding(2);
+            this.txtModel.Location = new System.Drawing.Point(108, 417);
+            this.txtModel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtModel.MenuManager = this.barManager1;
             this.txtModel.Name = "txtModel";
-            this.txtModel.Size = new System.Drawing.Size(145, 20);
+            this.txtModel.Size = new System.Drawing.Size(238, 22);
             this.txtModel.StyleController = this.layoutControl4;
             this.txtModel.TabIndex = 31;
             this.txtModel.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtModel_PreviewKeyDown);
@@ -2550,7 +2705,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0});
             this.spUnitConvertRatio.Enabled = false;
-            this.spUnitConvertRatio.Location = new System.Drawing.Point(351, 366);
+            this.spUnitConvertRatio.Location = new System.Drawing.Point(447, 417);
+            this.spUnitConvertRatio.Margin = new System.Windows.Forms.Padding(4);
             this.spUnitConvertRatio.MenuManager = this.barManager1;
             this.spUnitConvertRatio.Name = "spUnitConvertRatio";
             this.spUnitConvertRatio.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2562,7 +2718,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             23283064,
             0,
             0});
-            this.spUnitConvertRatio.Size = new System.Drawing.Size(154, 20);
+            this.spUnitConvertRatio.Size = new System.Drawing.Size(247, 22);
             this.spUnitConvertRatio.StyleController = this.layoutControl4;
             this.spUnitConvertRatio.TabIndex = 30;
             this.spUnitConvertRatio.ToolTip = "Tỷ lệ quy đổi từ đơn vị nhập sang đơn vị quản lý";
@@ -2572,28 +2728,28 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // chkVatTu
             // 
-            this.chkVatTu.Location = new System.Drawing.Point(484, 122);
-            this.chkVatTu.Margin = new System.Windows.Forms.Padding(2);
+            this.chkVatTu.Location = new System.Drawing.Point(666, 139);
+            this.chkVatTu.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkVatTu.MenuManager = this.barManager1;
             this.chkVatTu.Name = "chkVatTu";
             this.chkVatTu.Properties.Caption = "";
             this.chkVatTu.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkVatTu.Size = new System.Drawing.Size(21, 19);
+            this.chkVatTu.Size = new System.Drawing.Size(28, 19);
             this.chkVatTu.StyleController = this.layoutControl4;
             this.chkVatTu.TabIndex = 28;
             this.chkVatTu.CheckedChanged += new System.EventHandler(this.checkEdit1_CheckedChanged);
             // 
             // cboAnhXa
             // 
-            this.cboAnhXa.Location = new System.Drawing.Point(107, 146);
-            this.cboAnhXa.Margin = new System.Windows.Forms.Padding(2);
+            this.cboAnhXa.Location = new System.Drawing.Point(108, 167);
+            this.cboAnhXa.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboAnhXa.MenuManager = this.barManager1;
             this.cboAnhXa.Name = "cboAnhXa";
             this.cboAnhXa.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboAnhXa.Properties.NullText = "";
             this.cboAnhXa.Properties.View = this.gridView9;
-            this.cboAnhXa.Size = new System.Drawing.Size(373, 20);
+            this.cboAnhXa.Size = new System.Drawing.Size(552, 22);
             this.cboAnhXa.StyleController = this.layoutControl4;
             this.cboAnhXa.TabIndex = 27;
             // 
@@ -2606,20 +2762,22 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // txtRegisterNumber
             // 
-            this.txtRegisterNumber.Location = new System.Drawing.Point(351, 270);
+            this.txtRegisterNumber.Location = new System.Drawing.Point(447, 305);
+            this.txtRegisterNumber.Margin = new System.Windows.Forms.Padding(4);
             this.txtRegisterNumber.MenuManager = this.barManager1;
             this.txtRegisterNumber.Name = "txtRegisterNumber";
-            this.txtRegisterNumber.Size = new System.Drawing.Size(154, 20);
+            this.txtRegisterNumber.Size = new System.Drawing.Size(247, 22);
             this.txtRegisterNumber.StyleController = this.layoutControl4;
             this.txtRegisterNumber.TabIndex = 26;
             this.txtRegisterNumber.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtRegisterNumber_PreviewKeyDown);
             // 
             // txtRecordTransation
             // 
-            this.txtRecordTransation.Location = new System.Drawing.Point(351, 342);
+            this.txtRecordTransation.Location = new System.Drawing.Point(447, 389);
+            this.txtRecordTransation.Margin = new System.Windows.Forms.Padding(4);
             this.txtRecordTransation.MenuManager = this.barManager1;
             this.txtRecordTransation.Name = "txtRecordTransation";
-            this.txtRecordTransation.Size = new System.Drawing.Size(154, 20);
+            this.txtRecordTransation.Size = new System.Drawing.Size(247, 22);
             this.txtRecordTransation.StyleController = this.layoutControl4;
             this.txtRecordTransation.TabIndex = 24;
             this.txtRecordTransation.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtRecordTransation_PreviewKeyDown);
@@ -2627,7 +2785,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // dtHSD
             // 
             this.dtHSD.EditValue = null;
-            this.dtHSD.Location = new System.Drawing.Point(107, 318);
+            this.dtHSD.Location = new System.Drawing.Point(108, 361);
+            this.dtHSD.Margin = new System.Windows.Forms.Padding(4);
             this.dtHSD.MenuManager = this.barManager1;
             this.dtHSD.Name = "dtHSD";
             this.dtHSD.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2640,7 +2799,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.dtHSD.Properties.EditFormat.FormatString = "dd/MM/yyyy";
             this.dtHSD.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
             this.dtHSD.Properties.Mask.EditMask = "dd/MM/yyyy ";
-            this.dtHSD.Size = new System.Drawing.Size(145, 20);
+            this.dtHSD.Size = new System.Drawing.Size(238, 22);
             this.dtHSD.StyleController = this.layoutControl4;
             this.dtHSD.TabIndex = 23;
             this.dtHSD.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtHSD_Closed);
@@ -2648,20 +2807,22 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // txtHeinServiceBhytName
             // 
-            this.txtHeinServiceBhytName.Location = new System.Drawing.Point(253, 74);
+            this.txtHeinServiceBhytName.Location = new System.Drawing.Point(348, 84);
+            this.txtHeinServiceBhytName.Margin = new System.Windows.Forms.Padding(4);
             this.txtHeinServiceBhytName.MenuManager = this.barManager1;
             this.txtHeinServiceBhytName.Name = "txtHeinServiceBhytName";
-            this.txtHeinServiceBhytName.Size = new System.Drawing.Size(252, 20);
+            this.txtHeinServiceBhytName.Size = new System.Drawing.Size(347, 22);
             this.txtHeinServiceBhytName.StyleController = this.layoutControl4;
             this.txtHeinServiceBhytName.TabIndex = 13;
             this.txtHeinServiceBhytName.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtHeinServiceBhytName_PreviewKeyDown);
             // 
             // txtMedicineTypeName
             // 
-            this.txtMedicineTypeName.Location = new System.Drawing.Point(253, 2);
+            this.txtMedicineTypeName.Location = new System.Drawing.Point(348, 2);
+            this.txtMedicineTypeName.Margin = new System.Windows.Forms.Padding(4);
             this.txtMedicineTypeName.MenuManager = this.barManager1;
             this.txtMedicineTypeName.Name = "txtMedicineTypeName";
-            this.txtMedicineTypeName.Size = new System.Drawing.Size(252, 20);
+            this.txtMedicineTypeName.Size = new System.Drawing.Size(347, 22);
             this.txtMedicineTypeName.StyleController = this.layoutControl4;
             this.txtMedicineTypeName.TabIndex = 6;
             this.txtMedicineTypeName.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtMedicineTypeName_PreviewKeyDown);
@@ -2682,10 +2843,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControl5.Controls.Add(this.chkIsChemiscalSubstance);
             this.layoutControl5.Controls.Add(this.cboFileSize);
             this.layoutControl5.Controls.Add(this.spinMaxReuseCount);
-            this.layoutControl5.Location = new System.Drawing.Point(2, 390);
+            this.layoutControl5.Location = new System.Drawing.Point(3, 445);
+            this.layoutControl5.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl5.Name = "layoutControl5";
             this.layoutControl5.Root = this.layoutControlGroup4;
-            this.layoutControl5.Size = new System.Drawing.Size(503, 120);
+            this.layoutControl5.Size = new System.Drawing.Size(691, 165);
             this.layoutControl5.TabIndex = 25;
             this.layoutControl5.Text = "layoutControl5";
             // 
@@ -2696,12 +2858,13 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spPricingMaxReuseCount.Location = new System.Drawing.Point(443, 74);
+            this.spPricingMaxReuseCount.Location = new System.Drawing.Point(566, 83);
+            this.spPricingMaxReuseCount.Margin = new System.Windows.Forms.Padding(4);
             this.spPricingMaxReuseCount.MenuManager = this.barManager1;
             this.spPricingMaxReuseCount.Name = "spPricingMaxReuseCount";
             this.spPricingMaxReuseCount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spPricingMaxReuseCount.Size = new System.Drawing.Size(58, 20);
+            this.spPricingMaxReuseCount.Size = new System.Drawing.Size(122, 22);
             this.spPricingMaxReuseCount.StyleController = this.layoutControl5;
             this.spPricingMaxReuseCount.TabIndex = 39;
             this.spPricingMaxReuseCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spPricingMaxReuseCount_KeyPress);
@@ -2714,12 +2877,13 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spReuseFee.Location = new System.Drawing.Point(443, 50);
+            this.spReuseFee.Location = new System.Drawing.Point(566, 55);
+            this.spReuseFee.Margin = new System.Windows.Forms.Padding(4);
             this.spReuseFee.MenuManager = this.barManager1;
             this.spReuseFee.Name = "spReuseFee";
             this.spReuseFee.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.spReuseFee.Size = new System.Drawing.Size(58, 20);
+            this.spReuseFee.Size = new System.Drawing.Size(122, 22);
             this.spReuseFee.StyleController = this.layoutControl5;
             this.spReuseFee.TabIndex = 38;
             this.spReuseFee.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spReuseFee_KeyPress);
@@ -2727,11 +2891,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // ChkIsFilm
             // 
-            this.ChkIsFilm.Location = new System.Drawing.Point(107, 98);
+            this.ChkIsFilm.Location = new System.Drawing.Point(108, 111);
+            this.ChkIsFilm.Margin = new System.Windows.Forms.Padding(4);
             this.ChkIsFilm.MenuManager = this.barManager1;
             this.ChkIsFilm.Name = "ChkIsFilm";
             this.ChkIsFilm.Properties.Caption = "";
-            this.ChkIsFilm.Size = new System.Drawing.Size(63, 19);
+            this.ChkIsFilm.Size = new System.Drawing.Size(125, 19);
             this.ChkIsFilm.StyleController = this.layoutControl5;
             this.ChkIsFilm.TabIndex = 37;
             this.ChkIsFilm.CheckedChanged += new System.EventHandler(this.ChkIsFilm_CheckedChanged);
@@ -2739,13 +2904,14 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // chkIsIdentityManagement
             // 
-            this.chkIsIdentityManagement.Location = new System.Drawing.Point(104, 50);
+            this.chkIsIdentityManagement.Location = new System.Drawing.Point(105, 55);
+            this.chkIsIdentityManagement.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsIdentityManagement.MenuManager = this.barManager1;
             this.chkIsIdentityManagement.Name = "chkIsIdentityManagement";
             this.chkIsIdentityManagement.Properties.Caption = "";
             this.chkIsIdentityManagement.Properties.FullFocusRect = true;
             this.chkIsIdentityManagement.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsIdentityManagement.Size = new System.Drawing.Size(66, 19);
+            this.chkIsIdentityManagement.Size = new System.Drawing.Size(128, 19);
             this.chkIsIdentityManagement.StyleController = this.layoutControl5;
             this.chkIsIdentityManagement.TabIndex = 36;
             this.chkIsIdentityManagement.ToolTip = "Vật tư quản lý đích danh sử dụng số seri. Cần nhập số seri khi nhập và xuất vật t" +
@@ -2755,11 +2921,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // chkNgoaiDRG
             // 
-            this.chkNgoaiDRG.Location = new System.Drawing.Point(443, 26);
+            this.chkNgoaiDRG.Location = new System.Drawing.Point(565, 28);
+            this.chkNgoaiDRG.Margin = new System.Windows.Forms.Padding(4);
             this.chkNgoaiDRG.MenuManager = this.barManager1;
             this.chkNgoaiDRG.Name = "chkNgoaiDRG";
             this.chkNgoaiDRG.Properties.Caption = "";
-            this.chkNgoaiDRG.Size = new System.Drawing.Size(60, 19);
+            this.chkNgoaiDRG.Size = new System.Drawing.Size(126, 19);
             this.chkNgoaiDRG.StyleController = this.layoutControl5;
             this.chkNgoaiDRG.TabIndex = 35;
             this.chkNgoaiDRG.ToolTip = "Ngoài danh mục DRG do Bộ Y Tế ban hành";
@@ -2767,12 +2934,13 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // chkIsOutHospital
             // 
-            this.chkIsOutHospital.Location = new System.Drawing.Point(276, 26);
+            this.chkIsOutHospital.Location = new System.Drawing.Point(341, 29);
+            this.chkIsOutHospital.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsOutHospital.MenuManager = this.barManager1;
             this.chkIsOutHospital.Name = "chkIsOutHospital";
             this.chkIsOutHospital.Properties.Caption = "";
             this.chkIsOutHospital.Properties.FullFocusRect = true;
-            this.chkIsOutHospital.Size = new System.Drawing.Size(48, 19);
+            this.chkIsOutHospital.Size = new System.Drawing.Size(104, 19);
             this.chkIsOutHospital.StyleController = this.layoutControl5;
             this.chkIsOutHospital.TabIndex = 34;
             this.chkIsOutHospital.ToolTip = "Vật tư không nằm trong danh mục vật tư của nhà thuốc hay kho dược/vật tư. Chỉ kha" +
@@ -2781,39 +2949,42 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // chkIsExpendCTTM
             // 
-            this.chkIsExpendCTTM.Location = new System.Drawing.Point(104, 26);
+            this.chkIsExpendCTTM.Location = new System.Drawing.Point(105, 29);
+            this.chkIsExpendCTTM.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsExpendCTTM.MenuManager = this.barManager1;
             this.chkIsExpendCTTM.Name = "chkIsExpendCTTM";
             this.chkIsExpendCTTM.Properties.Caption = "";
             this.chkIsExpendCTTM.Properties.FullFocusRect = true;
             this.chkIsExpendCTTM.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsExpendCTTM.Size = new System.Drawing.Size(66, 19);
+            this.chkIsExpendCTTM.Size = new System.Drawing.Size(128, 19);
             this.chkIsExpendCTTM.StyleController = this.layoutControl5;
             this.chkIsExpendCTTM.TabIndex = 33;
             this.chkIsExpendCTTM.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsExpendCTTM_PreviewKeyDown);
             // 
             // ChkIsSizeRequired
             // 
-            this.ChkIsSizeRequired.Location = new System.Drawing.Point(104, 74);
+            this.ChkIsSizeRequired.Location = new System.Drawing.Point(105, 83);
+            this.ChkIsSizeRequired.Margin = new System.Windows.Forms.Padding(4);
             this.ChkIsSizeRequired.MenuManager = this.barManager1;
             this.ChkIsSizeRequired.Name = "ChkIsSizeRequired";
             this.ChkIsSizeRequired.Properties.Caption = "";
             this.ChkIsSizeRequired.Properties.FullFocusRect = true;
             this.ChkIsSizeRequired.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.ChkIsSizeRequired.Size = new System.Drawing.Size(66, 19);
+            this.ChkIsSizeRequired.Size = new System.Drawing.Size(128, 19);
             this.ChkIsSizeRequired.StyleController = this.layoutControl5;
             this.ChkIsSizeRequired.TabIndex = 31;
             this.ChkIsSizeRequired.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ChkIsSizeRequired_PreviewKeyDown);
             // 
             // chkMaxReuseCount
             // 
-            this.chkMaxReuseCount.Location = new System.Drawing.Point(276, 50);
+            this.chkMaxReuseCount.Location = new System.Drawing.Point(341, 55);
+            this.chkMaxReuseCount.Margin = new System.Windows.Forms.Padding(4);
             this.chkMaxReuseCount.MenuManager = this.barManager1;
             this.chkMaxReuseCount.Name = "chkMaxReuseCount";
             this.chkMaxReuseCount.Properties.Caption = "";
             this.chkMaxReuseCount.Properties.FullFocusRect = true;
             this.chkMaxReuseCount.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkMaxReuseCount.Size = new System.Drawing.Size(48, 19);
+            this.chkMaxReuseCount.Size = new System.Drawing.Size(104, 19);
             this.chkMaxReuseCount.StyleController = this.layoutControl5;
             this.chkMaxReuseCount.TabIndex = 29;
             this.chkMaxReuseCount.CheckedChanged += new System.EventHandler(this.chkMaxReuseCount_CheckedChanged);
@@ -2821,46 +2992,50 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // chkIsRawMaterial
             // 
-            this.chkIsRawMaterial.Location = new System.Drawing.Point(441, 2);
+            this.chkIsRawMaterial.Location = new System.Drawing.Point(563, 2);
+            this.chkIsRawMaterial.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsRawMaterial.MenuManager = this.barManager1;
             this.chkIsRawMaterial.Name = "chkIsRawMaterial";
             this.chkIsRawMaterial.Properties.Caption = "";
             this.chkIsRawMaterial.Properties.FullFocusRect = true;
             this.chkIsRawMaterial.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsRawMaterial.Size = new System.Drawing.Size(64, 19);
+            this.chkIsRawMaterial.Size = new System.Drawing.Size(130, 19);
             this.chkIsRawMaterial.StyleController = this.layoutControl5;
             this.chkIsRawMaterial.TabIndex = 28;
             this.chkIsRawMaterial.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsRawMaterial_PreviewKeyDown);
             // 
             // chkIsStent
             // 
-            this.chkIsStent.Location = new System.Drawing.Point(276, 2);
+            this.chkIsStent.Location = new System.Drawing.Point(341, 3);
+            this.chkIsStent.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsStent.MenuManager = this.barManager1;
             this.chkIsStent.Name = "chkIsStent";
             this.chkIsStent.Properties.Caption = "";
             this.chkIsStent.Properties.FullFocusRect = true;
             this.chkIsStent.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsStent.Size = new System.Drawing.Size(48, 19);
+            this.chkIsStent.Size = new System.Drawing.Size(104, 19);
             this.chkIsStent.StyleController = this.layoutControl5;
             this.chkIsStent.TabIndex = 27;
             this.chkIsStent.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsStent_PreviewKeyDown);
             // 
             // chkIsChemiscalSubstance
             // 
-            this.chkIsChemiscalSubstance.Location = new System.Drawing.Point(104, 2);
+            this.chkIsChemiscalSubstance.Location = new System.Drawing.Point(105, 3);
+            this.chkIsChemiscalSubstance.Margin = new System.Windows.Forms.Padding(4);
             this.chkIsChemiscalSubstance.MenuManager = this.barManager1;
             this.chkIsChemiscalSubstance.Name = "chkIsChemiscalSubstance";
             this.chkIsChemiscalSubstance.Properties.Caption = "";
             this.chkIsChemiscalSubstance.Properties.FullFocusRect = true;
             this.chkIsChemiscalSubstance.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkIsChemiscalSubstance.Size = new System.Drawing.Size(66, 19);
+            this.chkIsChemiscalSubstance.Size = new System.Drawing.Size(128, 19);
             this.chkIsChemiscalSubstance.StyleController = this.layoutControl5;
             this.chkIsChemiscalSubstance.TabIndex = 26;
             this.chkIsChemiscalSubstance.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.chkIsChemiscalSubstance_PreviewKeyDown);
             // 
             // cboFileSize
             // 
-            this.cboFileSize.Location = new System.Drawing.Point(274, 98);
+            this.cboFileSize.Location = new System.Drawing.Point(339, 111);
+            this.cboFileSize.Margin = new System.Windows.Forms.Padding(4);
             this.cboFileSize.MenuManager = this.barManager1;
             this.cboFileSize.Name = "cboFileSize";
             this.cboFileSize.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2868,7 +3043,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboFileSize.Properties.NullText = "";
             this.cboFileSize.Properties.View = this.gridView2;
-            this.cboFileSize.Size = new System.Drawing.Size(50, 20);
+            this.cboFileSize.Size = new System.Drawing.Size(106, 22);
             this.cboFileSize.StyleController = this.layoutControl5;
             this.cboFileSize.TabIndex = 32;
             this.cboFileSize.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboFileSize_Closed);
@@ -2889,7 +3064,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinMaxReuseCount.Location = new System.Drawing.Point(274, 74);
+            this.spinMaxReuseCount.Location = new System.Drawing.Point(339, 83);
+            this.spinMaxReuseCount.Margin = new System.Windows.Forms.Padding(4);
             this.spinMaxReuseCount.MenuManager = this.barManager1;
             this.spinMaxReuseCount.Name = "spinMaxReuseCount";
             this.spinMaxReuseCount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -2902,7 +3078,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             -1966660860,
             0,
             0});
-            this.spinMaxReuseCount.Size = new System.Drawing.Size(50, 20);
+            this.spinMaxReuseCount.Size = new System.Drawing.Size(106, 22);
             this.spinMaxReuseCount.StyleController = this.layoutControl5;
             this.spinMaxReuseCount.TabIndex = 30;
             this.spinMaxReuseCount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.spinMaxReuseCount_KeyPress);
@@ -2931,7 +3107,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.emptySpaceItem2});
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
-            this.layoutControlGroup4.Size = new System.Drawing.Size(503, 120);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(691, 165);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // lciIsChemicalSubstance
@@ -2941,7 +3117,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciIsChemicalSubstance.Control = this.chkIsChemiscalSubstance;
             this.lciIsChemicalSubstance.Location = new System.Drawing.Point(0, 0);
             this.lciIsChemicalSubstance.Name = "lciIsChemicalSubstance";
-            this.lciIsChemicalSubstance.Size = new System.Drawing.Size(172, 24);
+            this.lciIsChemicalSubstance.Size = new System.Drawing.Size(236, 26);
             this.lciIsChemicalSubstance.Text = "Là hóa chất:";
             this.lciIsChemicalSubstance.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIsChemicalSubstance.TextSize = new System.Drawing.Size(100, 20);
@@ -2952,9 +3128,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciIsStent.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsStent.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsStent.Control = this.chkIsStent;
-            this.lciIsStent.Location = new System.Drawing.Point(172, 0);
+            this.lciIsStent.Location = new System.Drawing.Point(236, 0);
             this.lciIsStent.Name = "lciIsStent";
-            this.lciIsStent.Size = new System.Drawing.Size(154, 24);
+            this.lciIsStent.Size = new System.Drawing.Size(212, 26);
             this.lciIsStent.Text = "Là stent:";
             this.lciIsStent.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIsStent.TextSize = new System.Drawing.Size(100, 20);
@@ -2965,11 +3141,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciIsRawMaterial.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciIsRawMaterial.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciIsRawMaterial.Control = this.chkIsRawMaterial;
-            this.lciIsRawMaterial.Location = new System.Drawing.Point(326, 0);
+            this.lciIsRawMaterial.Location = new System.Drawing.Point(448, 0);
             this.lciIsRawMaterial.Name = "lciIsRawMaterial";
             this.lciIsRawMaterial.OptionsToolTip.ToolTip = "Là nguyên liệu bào chế";
             this.lciIsRawMaterial.Padding = new DevExpress.XtraLayout.Utils.Padding(2, -2, 2, 2);
-            this.lciIsRawMaterial.Size = new System.Drawing.Size(177, 24);
+            this.lciIsRawMaterial.Size = new System.Drawing.Size(243, 26);
             this.lciIsRawMaterial.Text = "LNLBC:";
             this.lciIsRawMaterial.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIsRawMaterial.TextSize = new System.Drawing.Size(110, 20);
@@ -2980,10 +3156,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciChkMaxReuseCount.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciChkMaxReuseCount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciChkMaxReuseCount.Control = this.chkMaxReuseCount;
-            this.lciChkMaxReuseCount.Location = new System.Drawing.Point(172, 48);
+            this.lciChkMaxReuseCount.Location = new System.Drawing.Point(236, 52);
             this.lciChkMaxReuseCount.Name = "lciChkMaxReuseCount";
             this.lciChkMaxReuseCount.OptionsToolTip.ToolTip = "Là vật tư tái sử dụng";
-            this.lciChkMaxReuseCount.Size = new System.Drawing.Size(154, 24);
+            this.lciChkMaxReuseCount.Size = new System.Drawing.Size(212, 28);
             this.lciChkMaxReuseCount.Text = "Là vật VT TSD:";
             this.lciChkMaxReuseCount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciChkMaxReuseCount.TextSize = new System.Drawing.Size(100, 20);
@@ -2994,11 +3170,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciChkIsOutHospital.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciChkIsOutHospital.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciChkIsOutHospital.Control = this.chkIsOutHospital;
-            this.lciChkIsOutHospital.Location = new System.Drawing.Point(172, 24);
+            this.lciChkIsOutHospital.Location = new System.Drawing.Point(236, 26);
             this.lciChkIsOutHospital.Name = "lciChkIsOutHospital";
             this.lciChkIsOutHospital.OptionsToolTip.ToolTip = "Vật tư không nằm trong danh mục vật tư của nhà thuốc hay kho dược/vật tư. Chỉ kha" +
     "i báo nhằm hỗ trợ bác sỹ kê vật tư mua ngoài";
-            this.lciChkIsOutHospital.Size = new System.Drawing.Size(154, 24);
+            this.lciChkIsOutHospital.Size = new System.Drawing.Size(212, 26);
             this.lciChkIsOutHospital.Text = "Vật tư ngoại viện:";
             this.lciChkIsOutHospital.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciChkIsOutHospital.TextSize = new System.Drawing.Size(100, 20);
@@ -3009,11 +3185,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem16.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem16.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem16.Control = this.chkNgoaiDRG;
-            this.layoutControlItem16.Location = new System.Drawing.Point(326, 24);
+            this.layoutControlItem16.Location = new System.Drawing.Point(448, 26);
             this.layoutControlItem16.Name = "layoutControlItem16";
             this.layoutControlItem16.OptionsToolTip.ToolTip = "Ngoài danh mục DRG do Bộ Y Tế ban hành";
             this.layoutControlItem16.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.layoutControlItem16.Size = new System.Drawing.Size(177, 24);
+            this.layoutControlItem16.Size = new System.Drawing.Size(243, 26);
             this.layoutControlItem16.Text = "Ngoài DRG:";
             this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem16.TextSize = new System.Drawing.Size(110, 20);
@@ -3024,12 +3200,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem11.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem11.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem11.Control = this.chkIsExpendCTTM;
-            this.layoutControlItem11.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem11.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem11.MaxSize = new System.Drawing.Size(0, 24);
             this.layoutControlItem11.MinSize = new System.Drawing.Size(118, 24);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.OptionsToolTip.ToolTip = "Là vật tư tiêu hao can thiệp tim mạch";
-            this.layoutControlItem11.Size = new System.Drawing.Size(172, 24);
+            this.layoutControlItem11.Size = new System.Drawing.Size(236, 26);
             this.layoutControlItem11.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem11.Text = "Là VTTH CTTM:";
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -3041,9 +3217,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciVTDichDanh.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciVTDichDanh.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciVTDichDanh.Control = this.chkIsIdentityManagement;
-            this.lciVTDichDanh.Location = new System.Drawing.Point(0, 48);
+            this.lciVTDichDanh.Location = new System.Drawing.Point(0, 52);
             this.lciVTDichDanh.Name = "lciVTDichDanh";
-            this.lciVTDichDanh.Size = new System.Drawing.Size(172, 24);
+            this.lciVTDichDanh.Size = new System.Drawing.Size(236, 28);
             this.lciVTDichDanh.Text = "VT đích danh:";
             this.lciVTDichDanh.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciVTDichDanh.TextSize = new System.Drawing.Size(100, 20);
@@ -3055,10 +3231,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciSizeRequired.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSizeRequired.Control = this.ChkIsSizeRequired;
             this.lciSizeRequired.Enabled = false;
-            this.lciSizeRequired.Location = new System.Drawing.Point(0, 72);
+            this.lciSizeRequired.Location = new System.Drawing.Point(0, 80);
             this.lciSizeRequired.Name = "lciSizeRequired";
             this.lciSizeRequired.OptionsToolTip.ToolTip = "Bắt buộc nhập kích thước khi thực nhập";
-            this.lciSizeRequired.Size = new System.Drawing.Size(172, 24);
+            this.lciSizeRequired.Size = new System.Drawing.Size(236, 28);
             this.lciSizeRequired.Text = "Bắt buộc nhập KT:";
             this.lciSizeRequired.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSizeRequired.TextSize = new System.Drawing.Size(100, 20);
@@ -3070,10 +3246,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciReuseFee.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciReuseFee.Control = this.spReuseFee;
             this.lciReuseFee.Enabled = false;
-            this.lciReuseFee.Location = new System.Drawing.Point(326, 48);
+            this.lciReuseFee.Location = new System.Drawing.Point(448, 52);
             this.lciReuseFee.Name = "lciReuseFee";
             this.lciReuseFee.OptionsToolTip.ToolTip = "Chi phí của mỗi lần vệ sinh vật tư trước khi tái sử dụng";
-            this.lciReuseFee.Size = new System.Drawing.Size(177, 24);
+            this.lciReuseFee.Size = new System.Drawing.Size(243, 28);
             this.lciReuseFee.Text = "Chi phí vệ sinh:";
             this.lciReuseFee.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciReuseFee.TextSize = new System.Drawing.Size(110, 20);
@@ -3084,10 +3260,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem22.Control = this.ChkIsFilm;
-            this.layoutControlItem22.Location = new System.Drawing.Point(0, 96);
+            this.layoutControlItem22.Location = new System.Drawing.Point(0, 108);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.OptionsToolTip.ToolTip = "Là phim chụp xquang";
-            this.layoutControlItem22.Size = new System.Drawing.Size(172, 24);
+            this.layoutControlItem22.Size = new System.Drawing.Size(236, 57);
             this.layoutControlItem22.Text = "Là phim chụp:";
             this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem22.TextSize = new System.Drawing.Size(100, 13);
@@ -3098,10 +3274,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem24.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem24.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem24.Control = this.cboFileSize;
-            this.layoutControlItem24.Location = new System.Drawing.Point(172, 96);
+            this.layoutControlItem24.Location = new System.Drawing.Point(236, 108);
             this.layoutControlItem24.Name = "layoutControlItem24";
             this.layoutControlItem24.OptionsToolTip.ToolTip = "Kích thước phim chụp xquang";
-            this.layoutControlItem24.Size = new System.Drawing.Size(154, 24);
+            this.layoutControlItem24.Size = new System.Drawing.Size(212, 57);
             this.layoutControlItem24.Text = "Kích thước phim:";
             this.layoutControlItem24.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem24.TextSize = new System.Drawing.Size(95, 20);
@@ -3115,10 +3291,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciSpinMaxReuseCount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSpinMaxReuseCount.Control = this.spinMaxReuseCount;
             this.lciSpinMaxReuseCount.Enabled = false;
-            this.lciSpinMaxReuseCount.Location = new System.Drawing.Point(172, 72);
+            this.lciSpinMaxReuseCount.Location = new System.Drawing.Point(236, 80);
             this.lciSpinMaxReuseCount.Name = "lciSpinMaxReuseCount";
             this.lciSpinMaxReuseCount.OptionsToolTip.ToolTip = "Số lượng tái sử dụng tối đa";
-            this.lciSpinMaxReuseCount.Size = new System.Drawing.Size(154, 24);
+            this.lciSpinMaxReuseCount.Size = new System.Drawing.Size(212, 28);
             this.lciSpinMaxReuseCount.Text = "SL tái SD tối đa:";
             this.lciSpinMaxReuseCount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciSpinMaxReuseCount.TextSize = new System.Drawing.Size(95, 20);
@@ -3132,10 +3308,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciPricingMaxReuseCount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPricingMaxReuseCount.Control = this.spPricingMaxReuseCount;
             this.lciPricingMaxReuseCount.Enabled = false;
-            this.lciPricingMaxReuseCount.Location = new System.Drawing.Point(326, 72);
+            this.lciPricingMaxReuseCount.Location = new System.Drawing.Point(448, 80);
             this.lciPricingMaxReuseCount.Name = "lciPricingMaxReuseCount";
             this.lciPricingMaxReuseCount.OptionsToolTip.ToolTip = "Số lượng tái sử dụng áp dụng trong công thức tính giá bán";
-            this.lciPricingMaxReuseCount.Size = new System.Drawing.Size(177, 24);
+            this.lciPricingMaxReuseCount.Size = new System.Drawing.Size(243, 28);
             this.lciPricingMaxReuseCount.Text = "SL tái SD tính giá:";
             this.lciPricingMaxReuseCount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPricingMaxReuseCount.TextSize = new System.Drawing.Size(110, 20);
@@ -3144,37 +3320,40 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(326, 96);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(448, 108);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(177, 24);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(243, 57);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // txtConcentra
             // 
-            this.txtConcentra.Location = new System.Drawing.Point(107, 294);
+            this.txtConcentra.Location = new System.Drawing.Point(108, 333);
+            this.txtConcentra.Margin = new System.Windows.Forms.Padding(4);
             this.txtConcentra.MenuManager = this.barManager1;
             this.txtConcentra.Name = "txtConcentra";
-            this.txtConcentra.Size = new System.Drawing.Size(145, 20);
+            this.txtConcentra.Size = new System.Drawing.Size(238, 22);
             this.txtConcentra.StyleController = this.layoutControl4;
             this.txtConcentra.TabIndex = 21;
             this.txtConcentra.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtConcentra_PreviewKeyDown);
             // 
             // txtPackingTypeCode
             // 
-            this.txtPackingTypeCode.Location = new System.Drawing.Point(107, 270);
+            this.txtPackingTypeCode.Location = new System.Drawing.Point(108, 305);
+            this.txtPackingTypeCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtPackingTypeCode.MenuManager = this.barManager1;
             this.txtPackingTypeCode.Name = "txtPackingTypeCode";
-            this.txtPackingTypeCode.Size = new System.Drawing.Size(145, 20);
+            this.txtPackingTypeCode.Size = new System.Drawing.Size(238, 22);
             this.txtPackingTypeCode.StyleController = this.layoutControl4;
             this.txtPackingTypeCode.TabIndex = 20;
             this.txtPackingTypeCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPackingTypeCode_PreviewKeyDown);
             // 
             // txtManufactureCode
             // 
-            this.txtManufactureCode.Location = new System.Drawing.Point(107, 222);
+            this.txtManufactureCode.Location = new System.Drawing.Point(107, 250);
+            this.txtManufactureCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtManufactureCode.MenuManager = this.barManager1;
             this.txtManufactureCode.Name = "txtManufactureCode";
-            this.txtManufactureCode.Size = new System.Drawing.Size(146, 20);
+            this.txtManufactureCode.Size = new System.Drawing.Size(241, 22);
             this.txtManufactureCode.StyleController = this.layoutControl4;
             this.txtManufactureCode.TabIndex = 18;
             this.txtManufactureCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtManufactureCode_PreviewKeyDown);
@@ -3182,47 +3361,52 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // panelControlNational
             // 
             this.panelControlNational.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlNational.Location = new System.Drawing.Point(2, 194);
+            this.panelControlNational.Location = new System.Drawing.Point(3, 223);
+            this.panelControlNational.Margin = new System.Windows.Forms.Padding(4);
             this.panelControlNational.Name = "panelControlNational";
-            this.panelControlNational.Size = new System.Drawing.Size(503, 24);
+            this.panelControlNational.Size = new System.Drawing.Size(691, 22);
             this.panelControlNational.TabIndex = 17;
             // 
             // txtMaterialGroupBHYT
             // 
-            this.txtMaterialGroupBHYT.Location = new System.Drawing.Point(107, 98);
+            this.txtMaterialGroupBHYT.Location = new System.Drawing.Point(108, 111);
+            this.txtMaterialGroupBHYT.Margin = new System.Windows.Forms.Padding(4);
             this.txtMaterialGroupBHYT.MenuManager = this.barManager1;
             this.txtMaterialGroupBHYT.Name = "txtMaterialGroupBHYT";
-            this.txtMaterialGroupBHYT.Size = new System.Drawing.Size(398, 20);
+            this.txtMaterialGroupBHYT.Size = new System.Drawing.Size(586, 22);
             this.txtMaterialGroupBHYT.StyleController = this.layoutControl4;
             this.txtMaterialGroupBHYT.TabIndex = 14;
             this.txtMaterialGroupBHYT.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtMaterialGroupBHYT_PreviewKeyDown);
             // 
             // txtHeinServiceBhytCode
             // 
-            this.txtHeinServiceBhytCode.Location = new System.Drawing.Point(107, 74);
+            this.txtHeinServiceBhytCode.Location = new System.Drawing.Point(107, 84);
+            this.txtHeinServiceBhytCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtHeinServiceBhytCode.MenuManager = this.barManager1;
             this.txtHeinServiceBhytCode.Name = "txtHeinServiceBhytCode";
-            this.txtHeinServiceBhytCode.Size = new System.Drawing.Size(146, 20);
+            this.txtHeinServiceBhytCode.Size = new System.Drawing.Size(241, 22);
             this.txtHeinServiceBhytCode.StyleController = this.layoutControl4;
             this.txtHeinServiceBhytCode.TabIndex = 12;
             this.txtHeinServiceBhytCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtHeinServiceBhytCode_PreviewKeyDown);
             // 
             // txtHeinOrder
             // 
-            this.txtHeinOrder.Location = new System.Drawing.Point(351, 50);
+            this.txtHeinOrder.Location = new System.Drawing.Point(447, 57);
+            this.txtHeinOrder.Margin = new System.Windows.Forms.Padding(4);
             this.txtHeinOrder.MenuManager = this.barManager1;
             this.txtHeinOrder.Name = "txtHeinOrder";
-            this.txtHeinOrder.Size = new System.Drawing.Size(154, 20);
+            this.txtHeinOrder.Size = new System.Drawing.Size(247, 22);
             this.txtHeinOrder.StyleController = this.layoutControl4;
             this.txtHeinOrder.TabIndex = 11;
             this.txtHeinOrder.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtHeinOrder_PreviewKeyDown);
             // 
             // txtServiceUnitCode
             // 
-            this.txtServiceUnitCode.Location = new System.Drawing.Point(351, 26);
+            this.txtServiceUnitCode.Location = new System.Drawing.Point(446, 28);
+            this.txtServiceUnitCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtServiceUnitCode.MenuManager = this.barManager1;
             this.txtServiceUnitCode.Name = "txtServiceUnitCode";
-            this.txtServiceUnitCode.Size = new System.Drawing.Size(66, 20);
+            this.txtServiceUnitCode.Size = new System.Drawing.Size(127, 22);
             this.txtServiceUnitCode.StyleController = this.layoutControl4;
             this.txtServiceUnitCode.TabIndex = 8;
             this.txtServiceUnitCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtServiceUnitCode_PreviewKeyDown);
@@ -3230,16 +3414,18 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // txtMedicineTypeCode
             // 
             this.txtMedicineTypeCode.Location = new System.Drawing.Point(107, 2);
+            this.txtMedicineTypeCode.Margin = new System.Windows.Forms.Padding(4);
             this.txtMedicineTypeCode.MenuManager = this.barManager1;
             this.txtMedicineTypeCode.Name = "txtMedicineTypeCode";
-            this.txtMedicineTypeCode.Size = new System.Drawing.Size(146, 20);
+            this.txtMedicineTypeCode.Size = new System.Drawing.Size(241, 22);
             this.txtMedicineTypeCode.StyleController = this.layoutControl4;
             this.txtMedicineTypeCode.TabIndex = 5;
             this.txtMedicineTypeCode.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtMedicineTypeCode_PreviewKeyDown);
             // 
             // cboMaterialTypeParent
             // 
-            this.cboMaterialTypeParent.Location = new System.Drawing.Point(107, 26);
+            this.cboMaterialTypeParent.Location = new System.Drawing.Point(108, 29);
+            this.cboMaterialTypeParent.Margin = new System.Windows.Forms.Padding(4);
             this.cboMaterialTypeParent.MenuManager = this.barManager1;
             this.cboMaterialTypeParent.Name = "cboMaterialTypeParent";
             this.cboMaterialTypeParent.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3249,7 +3435,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
             this.cboMaterialTypeParent.Properties.NullText = "";
             this.cboMaterialTypeParent.Properties.View = this.gridLookUpEdit1View;
-            this.cboMaterialTypeParent.Size = new System.Drawing.Size(145, 20);
+            this.cboMaterialTypeParent.Size = new System.Drawing.Size(238, 22);
             this.cboMaterialTypeParent.StyleController = this.layoutControl4;
             this.cboMaterialTypeParent.TabIndex = 7;
             this.cboMaterialTypeParent.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboMedicineTypeParent_Closed);
@@ -3265,7 +3451,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // cboHeinServiceType
             // 
-            this.cboHeinServiceType.Location = new System.Drawing.Point(107, 50);
+            this.cboHeinServiceType.Location = new System.Drawing.Point(108, 57);
+            this.cboHeinServiceType.Margin = new System.Windows.Forms.Padding(4);
             this.cboHeinServiceType.MenuManager = this.barManager1;
             this.cboHeinServiceType.Name = "cboHeinServiceType";
             this.cboHeinServiceType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3275,7 +3462,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.cboHeinServiceType.Properties.NullText = "";
             this.cboHeinServiceType.Properties.View = this.gridView1;
-            this.cboHeinServiceType.Size = new System.Drawing.Size(145, 20);
+            this.cboHeinServiceType.Size = new System.Drawing.Size(238, 22);
             this.cboHeinServiceType.StyleController = this.layoutControl4;
             this.cboHeinServiceType.TabIndex = 10;
             this.cboHeinServiceType.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboHeinServiceType_Closed);
@@ -3291,7 +3478,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // cboManufacture
             // 
-            this.cboManufacture.Location = new System.Drawing.Point(253, 222);
+            this.cboManufacture.Location = new System.Drawing.Point(348, 250);
+            this.cboManufacture.Margin = new System.Windows.Forms.Padding(4);
             this.cboManufacture.MenuManager = this.barManager1;
             this.cboManufacture.Name = "cboManufacture";
             this.cboManufacture.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3301,7 +3489,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
             this.cboManufacture.Properties.NullText = "";
             this.cboManufacture.Properties.View = this.gridView3;
-            this.cboManufacture.Size = new System.Drawing.Size(252, 20);
+            this.cboManufacture.Size = new System.Drawing.Size(347, 22);
             this.cboManufacture.StyleController = this.layoutControl4;
             this.cboManufacture.TabIndex = 19;
             this.cboManufacture.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboManufacture_Closed);
@@ -3317,7 +3505,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // cboServiceUnit
             // 
-            this.cboServiceUnit.Location = new System.Drawing.Point(417, 26);
+            this.cboServiceUnit.Location = new System.Drawing.Point(573, 28);
+            this.cboServiceUnit.Margin = new System.Windows.Forms.Padding(4);
             this.cboServiceUnit.MenuManager = this.barManager1;
             this.cboServiceUnit.Name = "cboServiceUnit";
             this.cboServiceUnit.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3326,7 +3515,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
             this.cboServiceUnit.Properties.NullText = "";
             this.cboServiceUnit.Properties.View = this.gridView4;
-            this.cboServiceUnit.Size = new System.Drawing.Size(88, 20);
+            this.cboServiceUnit.Size = new System.Drawing.Size(122, 22);
             this.cboServiceUnit.StyleController = this.layoutControl4;
             this.cboServiceUnit.TabIndex = 9;
             this.cboServiceUnit.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboServiceUnit_Closed);
@@ -3342,7 +3531,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // 
             // cboMaterialTypeMapId
             // 
-            this.cboMaterialTypeMapId.Location = new System.Drawing.Point(107, 122);
+            this.cboMaterialTypeMapId.Location = new System.Drawing.Point(108, 139);
+            this.cboMaterialTypeMapId.Margin = new System.Windows.Forms.Padding(4);
             this.cboMaterialTypeMapId.MenuManager = this.barManager1;
             this.cboMaterialTypeMapId.Name = "cboMaterialTypeMapId";
             this.cboMaterialTypeMapId.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3350,7 +3540,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboMaterialTypeMapId.Properties.NullText = "";
             this.cboMaterialTypeMapId.Properties.View = this.gridView5;
-            this.cboMaterialTypeMapId.Size = new System.Drawing.Size(373, 20);
+            this.cboMaterialTypeMapId.Size = new System.Drawing.Size(552, 22);
             this.cboMaterialTypeMapId.StyleController = this.layoutControl4;
             this.cboMaterialTypeMapId.TabIndex = 16;
             this.cboMaterialTypeMapId.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboMaterialTypeMapId_Closed);
@@ -3372,7 +3562,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             0,
             0,
             0});
-            this.spinNumOrder.Location = new System.Drawing.Point(351, 294);
+            this.spinNumOrder.Location = new System.Drawing.Point(447, 333);
+            this.spinNumOrder.Margin = new System.Windows.Forms.Padding(4);
             this.spinNumOrder.MenuManager = this.barManager1;
             this.spinNumOrder.Name = "spinNumOrder";
             this.spinNumOrder.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3385,14 +3576,15 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             -1966660860,
             0,
             0});
-            this.spinNumOrder.Size = new System.Drawing.Size(154, 20);
+            this.spinNumOrder.Size = new System.Drawing.Size(247, 22);
             this.spinNumOrder.StyleController = this.layoutControl4;
             this.spinNumOrder.TabIndex = 22;
             this.spinNumOrder.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinNumOrder_PreviewKeyDown);
             // 
             // cboImpUnit
             // 
-            this.cboImpUnit.Location = new System.Drawing.Point(107, 342);
+            this.cboImpUnit.Location = new System.Drawing.Point(108, 389);
+            this.cboImpUnit.Margin = new System.Windows.Forms.Padding(4);
             this.cboImpUnit.MenuManager = this.barManager1;
             this.cboImpUnit.Name = "cboImpUnit";
             this.cboImpUnit.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3402,7 +3594,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.cboImpUnit.Properties.NullText = "";
             this.cboImpUnit.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboImpUnit.Properties.View = this.customGridLookUpEditWithFilterMultiColumn1View;
-            this.cboImpUnit.Size = new System.Drawing.Size(145, 20);
+            this.cboImpUnit.Size = new System.Drawing.Size(238, 22);
             this.cboImpUnit.StyleController = this.layoutControl4;
             this.cboImpUnit.TabIndex = 29;
             this.cboImpUnit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboImpUnit_ButtonClick);
@@ -3453,7 +3645,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcRecordTransaction});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
-            this.layoutControlGroup3.Size = new System.Drawing.Size(507, 517);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(697, 620);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // lciMaterialTypeCode
@@ -3466,7 +3658,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciMaterialTypeCode.Location = new System.Drawing.Point(0, 0);
             this.lciMaterialTypeCode.Name = "lciMaterialTypeCode";
             this.lciMaterialTypeCode.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciMaterialTypeCode.Size = new System.Drawing.Size(253, 24);
+            this.lciMaterialTypeCode.Size = new System.Drawing.Size(348, 26);
             this.lciMaterialTypeCode.Text = "Mã/Tên:";
             this.lciMaterialTypeCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMaterialTypeCode.TextSize = new System.Drawing.Size(100, 20);
@@ -3477,9 +3669,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem5.Control = this.cboMaterialTypeParent;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(254, 24);
+            this.layoutControlItem5.Size = new System.Drawing.Size(349, 28);
             this.layoutControlItem5.Text = "Nhóm cha:";
             this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem5.TextSize = new System.Drawing.Size(100, 20);
@@ -3492,10 +3684,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciServiceUnit.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciServiceUnit.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciServiceUnit.Control = this.txtServiceUnitCode;
-            this.lciServiceUnit.Location = new System.Drawing.Point(254, 24);
+            this.lciServiceUnit.Location = new System.Drawing.Point(349, 26);
             this.lciServiceUnit.Name = "lciServiceUnit";
             this.lciServiceUnit.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciServiceUnit.Size = new System.Drawing.Size(163, 24);
+            this.lciServiceUnit.Size = new System.Drawing.Size(224, 28);
             this.lciServiceUnit.Text = "Đơn vị tính:";
             this.lciServiceUnit.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciServiceUnit.TextSize = new System.Drawing.Size(90, 20);
@@ -3508,10 +3700,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciBhytNumOrder.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBhytNumOrder.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBhytNumOrder.Control = this.txtHeinOrder;
-            this.lciBhytNumOrder.Location = new System.Drawing.Point(254, 48);
+            this.lciBhytNumOrder.Location = new System.Drawing.Point(349, 54);
             this.lciBhytNumOrder.Name = "lciBhytNumOrder";
             this.lciBhytNumOrder.OptionsToolTip.ToolTip = "Số thứ tự bảo hiểm y tế";
-            this.lciBhytNumOrder.Size = new System.Drawing.Size(253, 24);
+            this.lciBhytNumOrder.Size = new System.Drawing.Size(348, 28);
             this.lciBhytNumOrder.Text = "Số TT BHYT:";
             this.lciBhytNumOrder.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBhytNumOrder.TextSize = new System.Drawing.Size(90, 20);
@@ -3524,9 +3716,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem8.Control = this.cboHeinServiceType;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 54);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(254, 24);
+            this.layoutControlItem8.Size = new System.Drawing.Size(349, 28);
             this.layoutControlItem8.Text = "Nhóm BHYT:";
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(100, 20);
@@ -3539,10 +3731,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciHeinServiceBhytCode.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciHeinServiceBhytCode.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciHeinServiceBhytCode.Control = this.txtHeinServiceBhytCode;
-            this.lciHeinServiceBhytCode.Location = new System.Drawing.Point(0, 72);
+            this.lciHeinServiceBhytCode.Location = new System.Drawing.Point(0, 82);
             this.lciHeinServiceBhytCode.Name = "lciHeinServiceBhytCode";
             this.lciHeinServiceBhytCode.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciHeinServiceBhytCode.Size = new System.Drawing.Size(253, 24);
+            this.lciHeinServiceBhytCode.Size = new System.Drawing.Size(348, 26);
             this.lciHeinServiceBhytCode.Text = "Mã/Tên BHYT:";
             this.lciHeinServiceBhytCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciHeinServiceBhytCode.TextSize = new System.Drawing.Size(100, 20);
@@ -3555,9 +3747,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcMaterialGroupBHYT.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcMaterialGroupBHYT.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcMaterialGroupBHYT.Control = this.txtMaterialGroupBHYT;
-            this.lcMaterialGroupBHYT.Location = new System.Drawing.Point(0, 96);
+            this.lcMaterialGroupBHYT.Location = new System.Drawing.Point(0, 108);
             this.lcMaterialGroupBHYT.Name = "lcMaterialGroupBHYT";
-            this.lcMaterialGroupBHYT.Size = new System.Drawing.Size(507, 24);
+            this.lcMaterialGroupBHYT.Size = new System.Drawing.Size(697, 28);
             this.lcMaterialGroupBHYT.Text = "Nhóm VT BHYT:";
             this.lcMaterialGroupBHYT.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcMaterialGroupBHYT.TextSize = new System.Drawing.Size(100, 20);
@@ -3566,11 +3758,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.panelControlNational;
-            this.layoutControlItem12.Location = new System.Drawing.Point(0, 192);
+            this.layoutControlItem12.Location = new System.Drawing.Point(0, 220);
             this.layoutControlItem12.MaxSize = new System.Drawing.Size(0, 28);
             this.layoutControlItem12.MinSize = new System.Drawing.Size(440, 28);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(507, 28);
+            this.layoutControlItem12.Size = new System.Drawing.Size(697, 28);
             this.layoutControlItem12.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
@@ -3582,10 +3774,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciManufacture.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciManufacture.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciManufacture.Control = this.txtManufactureCode;
-            this.lciManufacture.Location = new System.Drawing.Point(0, 220);
+            this.lciManufacture.Location = new System.Drawing.Point(0, 248);
             this.lciManufacture.Name = "lciManufacture";
             this.lciManufacture.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciManufacture.Size = new System.Drawing.Size(253, 24);
+            this.lciManufacture.Size = new System.Drawing.Size(348, 26);
             this.lciManufacture.Text = "Hãng sản xuất:";
             this.lciManufacture.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciManufacture.TextSize = new System.Drawing.Size(100, 20);
@@ -3596,10 +3788,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciPackingType.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPackingType.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPackingType.Control = this.txtPackingTypeCode;
-            this.lciPackingType.Location = new System.Drawing.Point(0, 268);
+            this.lciPackingType.Location = new System.Drawing.Point(0, 302);
             this.lciPackingType.Name = "lciPackingType";
             this.lciPackingType.OptionsToolTip.ToolTip = "Quy cách đóng gói";
-            this.lciPackingType.Size = new System.Drawing.Size(254, 24);
+            this.lciPackingType.Size = new System.Drawing.Size(349, 28);
             this.lciPackingType.Text = "Quy cách đ/gói:";
             this.lciPackingType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPackingType.TextSize = new System.Drawing.Size(100, 20);
@@ -3610,9 +3802,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciConcentra.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciConcentra.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciConcentra.Control = this.txtConcentra;
-            this.lciConcentra.Location = new System.Drawing.Point(0, 292);
+            this.lciConcentra.Location = new System.Drawing.Point(0, 330);
             this.lciConcentra.Name = "lciConcentra";
-            this.lciConcentra.Size = new System.Drawing.Size(254, 24);
+            this.lciConcentra.Size = new System.Drawing.Size(349, 28);
             this.lciConcentra.Text = "Hàm lượng:";
             this.lciConcentra.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciConcentra.TextSize = new System.Drawing.Size(100, 20);
@@ -3623,10 +3815,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciNumOrder.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciNumOrder.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciNumOrder.Control = this.spinNumOrder;
-            this.lciNumOrder.Location = new System.Drawing.Point(254, 292);
+            this.lciNumOrder.Location = new System.Drawing.Point(349, 330);
             this.lciNumOrder.Name = "lciNumOrder";
             this.lciNumOrder.OptionsToolTip.ToolTip = "Số thứ tự hiện";
-            this.lciNumOrder.Size = new System.Drawing.Size(253, 24);
+            this.lciNumOrder.Size = new System.Drawing.Size(348, 28);
             this.lciNumOrder.Text = "STT hiện:";
             this.lciNumOrder.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciNumOrder.TextSize = new System.Drawing.Size(90, 20);
@@ -3635,49 +3827,49 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.layoutControl5;
-            this.layoutControlItem17.Location = new System.Drawing.Point(0, 388);
+            this.layoutControlItem17.Location = new System.Drawing.Point(0, 442);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(507, 124);
+            this.layoutControlItem17.Size = new System.Drawing.Size(697, 171);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
             // layoutControlItem25
             // 
             this.layoutControlItem25.Control = this.txtMedicineTypeName;
-            this.layoutControlItem25.Location = new System.Drawing.Point(253, 0);
+            this.layoutControlItem25.Location = new System.Drawing.Point(348, 0);
             this.layoutControlItem25.Name = "layoutControlItem25";
             this.layoutControlItem25.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem25.Size = new System.Drawing.Size(254, 24);
+            this.layoutControlItem25.Size = new System.Drawing.Size(349, 26);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
             // 
             // layoutControlItem26
             // 
             this.layoutControlItem26.Control = this.cboServiceUnit;
-            this.layoutControlItem26.Location = new System.Drawing.Point(417, 24);
+            this.layoutControlItem26.Location = new System.Drawing.Point(573, 26);
             this.layoutControlItem26.Name = "layoutControlItem26";
             this.layoutControlItem26.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem26.Size = new System.Drawing.Size(90, 24);
+            this.layoutControlItem26.Size = new System.Drawing.Size(124, 28);
             this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem26.TextVisible = false;
             // 
             // layoutControlItem27
             // 
             this.layoutControlItem27.Control = this.txtHeinServiceBhytName;
-            this.layoutControlItem27.Location = new System.Drawing.Point(253, 72);
+            this.layoutControlItem27.Location = new System.Drawing.Point(348, 82);
             this.layoutControlItem27.Name = "layoutControlItem27";
             this.layoutControlItem27.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem27.Size = new System.Drawing.Size(254, 24);
+            this.layoutControlItem27.Size = new System.Drawing.Size(349, 26);
             this.layoutControlItem27.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem27.TextVisible = false;
             // 
             // layoutControlItem28
             // 
             this.layoutControlItem28.Control = this.cboManufacture;
-            this.layoutControlItem28.Location = new System.Drawing.Point(253, 220);
+            this.layoutControlItem28.Location = new System.Drawing.Point(348, 248);
             this.layoutControlItem28.Name = "layoutControlItem28";
             this.layoutControlItem28.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem28.Size = new System.Drawing.Size(254, 24);
+            this.layoutControlItem28.Size = new System.Drawing.Size(349, 26);
             this.layoutControlItem28.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem28.TextVisible = false;
             // 
@@ -3686,10 +3878,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lciMaterialTypeMap.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciMaterialTypeMap.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMaterialTypeMap.Control = this.cboMaterialTypeMapId;
-            this.lciMaterialTypeMap.Location = new System.Drawing.Point(0, 120);
+            this.lciMaterialTypeMap.Location = new System.Drawing.Point(0, 136);
             this.lciMaterialTypeMap.Name = "lciMaterialTypeMap";
             this.lciMaterialTypeMap.OptionsToolTip.ToolTip = "Vật tư tương đương";
-            this.lciMaterialTypeMap.Size = new System.Drawing.Size(482, 24);
+            this.lciMaterialTypeMap.Size = new System.Drawing.Size(663, 28);
             this.lciMaterialTypeMap.Text = "VT tương đương:";
             this.lciMaterialTypeMap.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMaterialTypeMap.TextSize = new System.Drawing.Size(100, 20);
@@ -3700,10 +3892,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.dtHSD;
-            this.layoutControlItem10.Location = new System.Drawing.Point(0, 316);
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 358);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.OptionsToolTip.ToolTip = "Hạn sử dụng";
-            this.layoutControlItem10.Size = new System.Drawing.Size(254, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(349, 28);
             this.layoutControlItem10.Text = "HSD:";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem10.TextSize = new System.Drawing.Size(100, 20);
@@ -3714,9 +3906,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem4.Control = this.txtRegisterNumber;
-            this.layoutControlItem4.Location = new System.Drawing.Point(254, 268);
+            this.layoutControlItem4.Location = new System.Drawing.Point(349, 302);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(253, 24);
+            this.layoutControlItem4.Size = new System.Drawing.Size(348, 28);
             this.layoutControlItem4.Text = "Số đăng ký:";
             this.layoutControlItem4.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem4.TextSize = new System.Drawing.Size(90, 20);
@@ -3727,9 +3919,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.LayCboAnhXa.AppearanceItemCaption.Options.UseTextOptions = true;
             this.LayCboAnhXa.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.LayCboAnhXa.Control = this.cboAnhXa;
-            this.LayCboAnhXa.Location = new System.Drawing.Point(0, 144);
+            this.LayCboAnhXa.Location = new System.Drawing.Point(0, 164);
             this.LayCboAnhXa.Name = "LayCboAnhXa";
-            this.LayCboAnhXa.Size = new System.Drawing.Size(482, 24);
+            this.LayCboAnhXa.Size = new System.Drawing.Size(663, 28);
             this.LayCboAnhXa.Text = "VT tương đương:";
             this.LayCboAnhXa.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.LayCboAnhXa.TextSize = new System.Drawing.Size(100, 20);
@@ -3738,9 +3930,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.chkVatTu;
-            this.layoutControlItem18.Location = new System.Drawing.Point(482, 120);
+            this.layoutControlItem18.Location = new System.Drawing.Point(663, 136);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(25, 48);
+            this.layoutControlItem18.Size = new System.Drawing.Size(34, 56);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
@@ -3749,9 +3941,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem20.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem20.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem20.Control = this.cboImpUnit;
-            this.layoutControlItem20.Location = new System.Drawing.Point(0, 340);
+            this.layoutControlItem20.Location = new System.Drawing.Point(0, 386);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(254, 24);
+            this.layoutControlItem20.Size = new System.Drawing.Size(349, 28);
             this.layoutControlItem20.Text = "Đơn vị nhập:";
             this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem20.TextSize = new System.Drawing.Size(100, 20);
@@ -3762,10 +3954,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem30.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem30.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem30.Control = this.txtModel;
-            this.layoutControlItem30.Location = new System.Drawing.Point(0, 364);
+            this.layoutControlItem30.Location = new System.Drawing.Point(0, 414);
             this.layoutControlItem30.Name = "layoutControlItem30";
             this.layoutControlItem30.OptionsToolTip.ToolTip = "Mã model của sản phẩm";
-            this.layoutControlItem30.Size = new System.Drawing.Size(254, 24);
+            this.layoutControlItem30.Size = new System.Drawing.Size(349, 28);
             this.layoutControlItem30.Text = "Model:";
             this.layoutControlItem30.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem30.TextSize = new System.Drawing.Size(100, 20);
@@ -3776,9 +3968,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutSupplier.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutSupplier.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutSupplier.Control = this.cboSupplier;
-            this.layoutSupplier.Location = new System.Drawing.Point(0, 244);
+            this.layoutSupplier.Location = new System.Drawing.Point(0, 274);
             this.layoutSupplier.Name = "layoutSupplier";
-            this.layoutSupplier.Size = new System.Drawing.Size(507, 24);
+            this.layoutSupplier.Size = new System.Drawing.Size(697, 28);
             this.layoutSupplier.Text = "Nhà cung cấp:";
             this.layoutSupplier.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutSupplier.TextSize = new System.Drawing.Size(100, 20);
@@ -3787,9 +3979,9 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // layoutControlItem34
             // 
             this.layoutControlItem34.Control = this.chartPropertyGridControl1;
-            this.layoutControlItem34.Location = new System.Drawing.Point(0, 512);
+            this.layoutControlItem34.Location = new System.Drawing.Point(0, 613);
             this.layoutControlItem34.Name = "layoutControlItem34";
-            this.layoutControlItem34.Size = new System.Drawing.Size(507, 5);
+            this.layoutControlItem34.Size = new System.Drawing.Size(697, 7);
             this.layoutControlItem34.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem34.TextVisible = false;
             // 
@@ -3798,10 +3990,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem33.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem33.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem33.Control = this.txtTTThau;
-            this.layoutControlItem33.Location = new System.Drawing.Point(0, 168);
+            this.layoutControlItem33.Location = new System.Drawing.Point(0, 192);
             this.layoutControlItem33.Name = "layoutControlItem33";
             this.layoutControlItem33.OptionsToolTip.ToolTip = "Thông tin thầu phục vụ cho XML";
-            this.layoutControlItem33.Size = new System.Drawing.Size(507, 24);
+            this.layoutControlItem33.Size = new System.Drawing.Size(697, 28);
             this.layoutControlItem33.Text = "Thông tin thầu:";
             this.layoutControlItem33.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem33.TextSize = new System.Drawing.Size(100, 20);
@@ -3812,10 +4004,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem23.Control = this.spUnitConvertRatio;
-            this.layoutControlItem23.Location = new System.Drawing.Point(254, 364);
+            this.layoutControlItem23.Location = new System.Drawing.Point(349, 414);
             this.layoutControlItem23.Name = "layoutControlItem23";
             this.layoutControlItem23.OptionsToolTip.ToolTip = "Tỷ lệ quy đổi từ đơn vị nhập sang đơn vị quản lý";
-            this.layoutControlItem23.Size = new System.Drawing.Size(253, 24);
+            this.layoutControlItem23.Size = new System.Drawing.Size(348, 28);
             this.layoutControlItem23.Text = "Tỷ lệ QĐ ĐVN:";
             this.layoutControlItem23.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem23.TextSize = new System.Drawing.Size(90, 20);
@@ -3826,10 +4018,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcBytNumOrder.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcBytNumOrder.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcBytNumOrder.Control = this.spinBYTNumOrder;
-            this.lcBytNumOrder.Location = new System.Drawing.Point(254, 316);
+            this.lcBytNumOrder.Location = new System.Drawing.Point(349, 358);
             this.lcBytNumOrder.Name = "lcBytNumOrder";
             this.lcBytNumOrder.OptionsToolTip.ToolTip = "Số thứ tự theo thông tư 04/2017/TT-BYT";
-            this.lcBytNumOrder.Size = new System.Drawing.Size(253, 24);
+            this.lcBytNumOrder.Size = new System.Drawing.Size(348, 28);
             this.lcBytNumOrder.Text = "STT (TT04):";
             this.lcBytNumOrder.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcBytNumOrder.TextSize = new System.Drawing.Size(90, 20);
@@ -3840,10 +4032,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcRecordTransaction.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lcRecordTransaction.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lcRecordTransaction.Control = this.txtRecordTransation;
-            this.lcRecordTransaction.Location = new System.Drawing.Point(254, 340);
+            this.lcRecordTransaction.Location = new System.Drawing.Point(349, 386);
             this.lcRecordTransaction.Name = "lcRecordTransaction";
             this.lcRecordTransaction.OptionsToolTip.ToolTip = "Định khoản kế toán";
-            this.lcRecordTransaction.Size = new System.Drawing.Size(253, 24);
+            this.lcRecordTransaction.Size = new System.Drawing.Size(348, 28);
             this.lcRecordTransaction.Text = "Định khoản KT:";
             this.lcRecordTransaction.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcRecordTransaction.TextSize = new System.Drawing.Size(90, 20);
@@ -3857,7 +4049,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem3});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
-            this.Root.Size = new System.Drawing.Size(534, 535);
+            this.Root.Size = new System.Drawing.Size(711, 652);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem3
@@ -3865,13 +4057,14 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem3.Control = this.groupBox1;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(534, 535);
+            this.layoutControlItem3.Size = new System.Drawing.Size(711, 652);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // cboMaterialType
             // 
-            this.cboMaterialType.Location = new System.Drawing.Point(268, 2);
+            this.cboMaterialType.Location = new System.Drawing.Point(357, 2);
+            this.cboMaterialType.Margin = new System.Windows.Forms.Padding(4);
             this.cboMaterialType.MenuManager = this.barManager1;
             this.cboMaterialType.Name = "cboMaterialType";
             this.cboMaterialType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -3880,7 +4073,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboMaterialType.Properties.NullText = "";
             this.cboMaterialType.Properties.View = this.gridView6;
-            this.cboMaterialType.Size = new System.Drawing.Size(257, 20);
+            this.cboMaterialType.Size = new System.Drawing.Size(343, 22);
             this.cboMaterialType.StyleController = this.layoutControl1;
             this.cboMaterialType.TabIndex = 1;
             this.cboMaterialType.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboMaterialType_Closed);
@@ -3907,33 +4100,33 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.layoutControlItem15});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1098, 623);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1464, 764);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.layoutControl2;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 32);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(538, 539);
+            this.layoutControlItem1.Size = new System.Drawing.Size(717, 658);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.layoutControl3;
-            this.layoutControlItem2.Location = new System.Drawing.Point(538, 24);
+            this.layoutControlItem2.Location = new System.Drawing.Point(717, 32);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(560, 539);
+            this.layoutControlItem2.Size = new System.Drawing.Size(747, 658);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem41
             // 
             this.layoutControlItem41.Control = this.layoutControl9;
-            this.layoutControlItem41.Location = new System.Drawing.Point(0, 563);
+            this.layoutControlItem41.Location = new System.Drawing.Point(0, 690);
             this.layoutControlItem41.Name = "layoutControlItem41";
-            this.layoutControlItem41.Size = new System.Drawing.Size(1098, 60);
+            this.layoutControlItem41.Size = new System.Drawing.Size(1464, 74);
             this.layoutControlItem41.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem41.TextVisible = false;
             // 
@@ -3945,7 +4138,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.lcMaterialType.Location = new System.Drawing.Point(0, 0);
             this.lcMaterialType.Name = "lcMaterialType";
             this.lcMaterialType.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lcMaterialType.Size = new System.Drawing.Size(268, 24);
+            this.lcMaterialType.Size = new System.Drawing.Size(357, 32);
             this.lcMaterialType.Text = "Chọn vật tư:";
             this.lcMaterialType.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcMaterialType.TextSize = new System.Drawing.Size(100, 20);
@@ -3954,32 +4147,33 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.cboMaterialType;
-            this.layoutControlItem14.Location = new System.Drawing.Point(268, 0);
+            this.layoutControlItem14.Location = new System.Drawing.Point(357, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
             this.layoutControlItem14.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem14.Size = new System.Drawing.Size(259, 24);
+            this.layoutControlItem14.Size = new System.Drawing.Size(345, 32);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.layoutControl11;
-            this.layoutControlItem15.Location = new System.Drawing.Point(527, 0);
+            this.layoutControlItem15.Location = new System.Drawing.Point(702, 0);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(571, 24);
+            this.layoutControlItem15.Size = new System.Drawing.Size(762, 32);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
             // frmMaterialTypeCreate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1098, 652);
+            this.ClientSize = new System.Drawing.Size(1464, 802);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "frmMaterialTypeCreate";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -4052,6 +4246,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.gridView10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboBlockDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewBlockDepartment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBlockRoom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBlockRoom)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBlockExpMestType.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewBlockExpMestType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl8)).EndInit();
             this.layoutControl8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.chkIsNotExpend.Properties)).EndInit();
@@ -4101,6 +4299,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             ((System.ComponentModel.ISupportInitialize)(this.lcHeinLimitPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcHeinLimitPriceOld)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBlockDepartment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBlockExpMestType)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBlockRoom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCTK)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciIsSupported)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcAlertMaxInDay)).EndInit();
@@ -4426,6 +4626,12 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
         private DevExpress.XtraEditors.GridLookUpEdit cboBlockDepartment;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewBlockDepartment;
         private DevExpress.XtraLayout.LayoutControlItem lciBlockDepartment;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBlockRoom;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewBlockRoom;
+        private DevExpress.XtraLayout.LayoutControlItem lciBlockRoom;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBlockExpMestType;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewBlockExpMestType;
+        private DevExpress.XtraLayout.LayoutControlItem lciBlockExpMestType;
         private DevExpress.XtraEditors.TextEdit txtRegisterNumber;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraEditors.CheckEdit chkIsExpendCTTM;

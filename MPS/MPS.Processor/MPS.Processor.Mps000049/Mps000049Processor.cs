@@ -18,6 +18,7 @@
 using AutoMapper;
 using FlexCel.Report;
 using HIS.Desktop.LocalStorage.BackendData;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000049.PDO;
@@ -103,7 +104,7 @@ namespace MPS.Processor.Mps000049
                 barCodeTag.ProcessData(store, dicImage);
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("rdo.keyName____", rdo.keyName));
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("rdo.listAdo__", rdo.listAdo));
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("rdo.listAdo1__", rdo.listAdo));
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("medicineUseForms__", medicineUseForms));
 
                 GetMedicineGroup();
@@ -207,6 +208,50 @@ namespace MPS.Processor.Mps000049
                 objectTag.AddRelationship(store, "MedicineParent", "ExpMestAggregates1", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
 
                 objectTag.AddRelationship(store, "MedicineParent", "ExpMests", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+
+                // --- NHÓM 1: VT YHCT (MedicineVT_YHCT) ---
+                var vtData = rdo.listAdo.Where(o => o.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT).ToList();
+                var vtParentIds = vtData.Select(o => o.MEDICINE_PARENT_ID).Distinct().ToList();
+                var vtParents = listParentFilter.Where(o => vtParentIds.Contains(o.MEDICINE_PARENT_ID)).ToList();
+
+                var page1Checker = new List<object>();
+
+                if (vtData.Count > 0 )
+                {
+                    page1Checker.Add(new { HasData = true });
+                }
+
+                objectTag.AddObjectData(store, "Page1Control", page1Checker);
+                objectTag.AddObjectData(store, "MedicineVT_YHCT", vtData);
+                objectTag.AddObjectData(store, "MedicineVT_YHCTParent", vtParents);
+                objectTag.AddRelationship(store, "MedicineVT_YHCTParent", "MedicineVT_YHCT", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+
+                // --- NHÓM 2: TÂN DƯỢC (MedicineTTD) ---
+                var ttdData = rdo.listAdo.Where(o => o.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__TTD).ToList();
+                var ttdParentIds = ttdData.Select(o => o.MEDICINE_PARENT_ID).Distinct().ToList();
+                var ttdParents = listParentFilter.Where(o => ttdParentIds.Contains(o.MEDICINE_PARENT_ID)).ToList();
+
+                objectTag.AddObjectData(store, "MedicineTTD", ttdData);
+                objectTag.AddObjectData(store, "MedicineTTDParent", ttdParents);
+                objectTag.AddRelationship(store, "MedicineTTDParent", "MedicineTTD", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+
+                // --- NHÓM 3: CHẾ PHẨM YHCT (MedicineCP_YHCT) ---
+                var cpData = rdo.listAdo.Where(o => o.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__CP_YHCT).ToList();
+                var cpParentIds = cpData.Select(o => o.MEDICINE_PARENT_ID).Distinct().ToList();
+                var cpParents = listParentFilter.Where(o => cpParentIds.Contains(o.MEDICINE_PARENT_ID)).ToList();
+
+                objectTag.AddObjectData(store, "MedicineCP_YHCT", cpData);
+                objectTag.AddObjectData(store, "MedicineCP_YHCTParent", cpParents);
+                objectTag.AddRelationship(store, "MedicineCP_YHCTParent", "MedicineCP_YHCT", "MEDICINE_PARENT_ID", "MEDICINE_PARENT_ID");
+
+                var page2Checker = new List<object>();
+
+                if (ttdData.Count > 0 || cpData.Count > 0)
+                {
+                    page2Checker.Add(new { HasData = true });
+                }
+
+                objectTag.AddObjectData(store, "Page2Control", page2Checker);
 
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
                 objectTag.SetUserFunction(store, "FuncMergeData12", new CalculateMergerData());

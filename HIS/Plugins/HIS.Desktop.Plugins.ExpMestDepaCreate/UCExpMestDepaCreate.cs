@@ -907,6 +907,21 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                     {
                         listMediTypeInStock = listMediTypeInStock.Where(o => !metyDepa.Select(s => s.MEDICINE_TYPE_ID).Contains(o.Id)).ToList();
                     }
+                    // Ẩn thuốc có NO_EXP_MEST_IDS chứa ID phiếu Hao phí khoa phòng
+                    if (listMediTypeInStock != null && listMediTypeInStock.Count > 0)
+                    {
+                        long expMestTypeDepaId = GetExpMestTypeDepaId();
+                        if (expMestTypeDepaId > 0)
+                        {
+                            string idStr = expMestTypeDepaId.ToString();
+                            var blocked = BackendDataWorker.Get<HIS_MEDICINE_TYPE>()
+                                .Where(p => !string.IsNullOrEmpty(p.NO_EXP_MEST_TYPE_IDS) &&
+                                            p.NO_EXP_MEST_TYPE_IDS.Split(',').Select(s => s.Trim()).Contains(idStr))
+                                .Select(p => p.ID).ToList();
+                            if (blocked.Count > 0)
+                                listMediTypeInStock = listMediTypeInStock.Where(o => !blocked.Contains(o.Id)).ToList();
+                        }
+                    }
                     #endregion
                     #region vật
                     HisMaterialTypeStockViewFilter mateFilter = new HisMaterialTypeStockViewFilter();
@@ -954,7 +969,23 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                         {
                             dataMaterials = dataMaterials.Where(o => !matyDepa.Select(s => s.MATERIAL_TYPE_ID).Contains(o.Id)).ToList();
                         }
+                        // Ẩn vật tư có NO_EXP_MEST_IDS chứa ID phiếu Hao phí khoa phòng
+                        if (dataMaterials != null && dataMaterials.Count > 0)
+                        {
+                            long expMestTypeDepaId = GetExpMestTypeDepaId();
+                            if (expMestTypeDepaId > 0)
+                            {
+                                string idStr = expMestTypeDepaId.ToString();
+                                var blocked = BackendDataWorker.Get<HIS_MATERIAL_TYPE>()
+                                    .Where(p => !string.IsNullOrEmpty(p.NO_EXP_MEST_TYPE_IDS) &&
+                                                p.NO_EXP_MEST_TYPE_IDS.Split(',').Select(s => s.Trim()).Contains(idStr))
+                                    .Select(p => p.ID).ToList();
+                                if (blocked.Count > 0)
+                                    dataMaterials = dataMaterials.Where(o => !blocked.Contains(o.Id)).ToList();
+                            }
+                        }
                     }
+
                     #endregion
                     #region máu
 
@@ -1547,6 +1578,22 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private long GetExpMestTypeDepaId()
+        {
+            try
+            {
+                var expMestType = BackendDataWorker.Get<HIS_EXP_MEST_TYPE>()
+                    .FirstOrDefault(p => p.EXP_MEST_TYPE_CODE == "02");
+                if (expMestType != null)
+                    return expMestType.ID;
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return 0;
             }
         }
     }

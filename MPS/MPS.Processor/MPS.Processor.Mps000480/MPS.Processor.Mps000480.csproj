@@ -53,7 +53,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>..\..\..\..\LIB\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000480.PDO">
       <HintPath>..\MPS.Processor.Mps000480.PDO\bin\Debug\MPS.Processor.Mps000480.PDO.dll</HintPath>

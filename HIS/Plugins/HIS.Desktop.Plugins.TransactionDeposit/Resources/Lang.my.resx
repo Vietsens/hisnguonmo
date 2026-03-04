@@ -234,6 +234,9 @@
   <data name="frmTransactionDeposit.lciPatientName.Text" xml:space="preserve">
     <value>လူနာအမည်-</value>
   </data>
+  <data name="frmTransactionDeposit.lciPreviewPrint.Text" xml:space="preserve">
+    <value>အကြိုကြည့်ရှုရန် ပရင့်ထုတ်ပါ:</value>
+  </data>
   <data name="frmTransactionDeposit.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>လွှဲပြောင်းပမာဏ</value>
   </data>

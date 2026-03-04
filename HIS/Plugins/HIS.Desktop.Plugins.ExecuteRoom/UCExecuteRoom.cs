@@ -3771,9 +3771,35 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
                     listServices = BackendDataWorker.Get<V_HIS_SERVICE>();
 
-                    var lstService = listServices.Where(o => listServiceIds.Any(p => p == o.ID) && o.IS_ACTIVE == 1).ToList();
+                    if (HisConfigCFG.FilterByParentService != "1")
+                    {
+                        var lstService = listServices.Where(o => listServiceIds.Any(p => p == o.ID) && o.IS_ACTIVE == 1).ToList();
+                        cboServiceRoom.Properties.DataSource = lstService;
+                    }
+                    else
+                    {
+                        const long OTHER_GROUP_ID = 0;
 
-                    cboServiceRoom.Properties.DataSource = lstService;
+                        var leafServices = listServices.Where(o => listServiceIds.Contains(o.ID) && o.IS_ACTIVE == 1 && o.IS_LEAF == 1).ToList();
+
+                        var parentIds = leafServices.Where(o => o.PARENT_ID.HasValue).Select(o => o.PARENT_ID.Value).Distinct().ToList();
+
+                        var parentServices = listServices.Where(o => parentIds.Contains(o.ID)).ToList();
+
+                        bool hasOther = leafServices.Any(o => !o.PARENT_ID.HasValue);
+
+                        if (hasOther)
+                        {
+                            parentServices.Add(new V_HIS_SERVICE
+                            {
+                                ID = OTHER_GROUP_ID,
+                                SERVICE_NAME = "Khác",
+                                SERVICE_CODE = "OTHER"
+                            });
+                        }
+
+                        cboServiceRoom.Properties.DataSource = parentServices;
+                    }
                     cboServiceRoom.Properties.DisplayMember = "SERVICE_NAME";
                     cboServiceRoom.Properties.ValueMember = "ID";
                     DevExpress.XtraGrid.Columns.GridColumn col1 = cboServiceRoom.Properties.View.Columns.AddField("SERVICE_CODE");

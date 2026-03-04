@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 namespace HIS.Desktop.Plugins.Transaction
 {
     [KeyboardAction("BtnFind", "HIS.Desktop.Plugins.Transaction.UCTransaction", "BtnFind", KeyStroke = XKeys.Control | XKeys.F)]
+    [KeyboardAction("btnDebtClose", "HIS.Desktop.Plugins.Transaction.UCTransaction", "btnDebtClose", KeyStroke = XKeys.Control | XKeys.F10)]
+    [KeyboardAction("btnDebtCollection", "HIS.Desktop.Plugins.Transaction.UCTransaction", "btnDebtCollection", KeyStroke = XKeys.Control | XKeys.F11)]
     [KeyboardAction("BtnInvoice", "HIS.Desktop.Plugins.Transaction.UCTransaction", "BtnInvoice", KeyStroke = XKeys.Control | XKeys.I)]
     [KeyboardAction("BtnDeposit", "HIS.Desktop.Plugins.Transaction.UCTransaction", "BtnDeposit", KeyStroke = XKeys.Control | XKeys.D)]
     [KeyboardAction("BtnDepositService", "HIS.Desktop.Plugins.Transaction.UCTransaction", "BtnDepositService", KeyStroke = XKeys.F4)]

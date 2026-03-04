@@ -15,12 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using DevExpress.DocumentView.Controls;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
@@ -44,6 +38,13 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Resources;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.TransactionRepay
 {
@@ -64,6 +65,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.Desktop.Plugins.TransactionRepay";
         DateTime dteCommonParam { get; set; }
+        private static bool _isXemNgay = false;
 
         public frmTransactionRepay(Inventec.Desktop.Common.Modules.Module module, TransactionRepayADO data)
             : base(module)
@@ -110,6 +112,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionRepay_Load. 1");
                 WaitingManager.Show();
                 this.LoadKeyFrmLanguage();
+                chkXemTruoc.Checked = _isXemNgay;
                 if (this.treatmentId.HasValue)
                 {
                     this.ValidControl();
@@ -907,7 +910,14 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 }
                 else
                 {
-                    this.InPhieuHoanUng(true);
+                    if (chkXemTruoc.Checked)
+                    {
+                        this.InPhieuHoanUng(false);
+                    }
+                    else
+                    {
+                        this.InPhieuHoanUng(true);
+                    }
                 }
                 SessionManager.ProcessTokenLost(param);
             }
@@ -963,7 +973,14 @@ namespace HIS.Desktop.Plugins.TransactionRepay
             {
                 if (!btnPrint.Enabled || this.resultTransaction == null)
                     return;
-                this.InPhieuHoanUng(false);
+                if (chkXemTruoc.Checked)
+                {
+                    this.InPhieuHoanUng(false);
+                }    
+                else
+                {
+                    this.InPhieuHoanUng(true);
+                }    
             }
             catch (Exception ex)
             {
@@ -1628,6 +1645,7 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 //check box
                 this.chkAutoClose.Properties.Caption = Inventec.Common.Resource.Get.Value("frmTransactionRepay.chkAutoClose.Properties.Caption", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
                 this.chkAutoClose.ToolTip = Inventec.Common.Resource.Get.Value("frmTransactionRepay.chkAutoClose.ToolTip", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
+                this.chkXemTruoc.Properties.Caption = Inventec.Common.Resource.Get.Value("frmTransactionRepay.chkXemTruoc.Properties.Caption", Base.ResourceLangManager.LanguageFrmTransactionRepay, LanguageManager.GetCulture());
 
 
             }
@@ -1991,6 +2009,11 @@ namespace HIS.Desktop.Plugins.TransactionRepay
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void chkXemTruoc_CheckedChanged(object sender, EventArgs e)
+        {
+            _isXemNgay = chkXemTruoc.Checked;
         }
     }
 }

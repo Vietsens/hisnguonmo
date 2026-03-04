@@ -286,6 +286,7 @@
     <Compile Include="ADO\DataGridAdo.cs" />
     <Compile Include="ADO\HisBedADO.cs" />
     <Compile Include="ADO\ICDADO.cs" />
+    <Compile Include="ADO\LoaiPhieuInADO.cs" />
     <Compile Include="ADO\MissingIcdADO.cs" />
     <Compile Include="AssignBed\AcsUserADO.cs" />
     <Compile Include="AssignBed\AssignBedBehavior.cs" />
@@ -401,7 +402,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Lang.vi.resx" />
+    <EmbeddedResource Include="Resources\Lang.vi.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

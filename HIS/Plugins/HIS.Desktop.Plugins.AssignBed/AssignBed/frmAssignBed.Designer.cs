@@ -57,6 +57,15 @@
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtIcdMainText = new DevExpress.XtraEditors.TextEdit();
             this.pnlUCPanel = new DevExpress.XtraEditors.PanelControl();
+            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
+            this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.customGridControlSubIcdName = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.customGridViewSubIcdName = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
@@ -79,6 +88,7 @@
             this.gridColumn_Service_PrimaryPatientType = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEditOtherPaySource = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemGridLookUpEditBed = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
             this.repositoryItemGridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.repositoryItemGridLookUpEditPatientType = new DevExpress.XtraEditors.Repository.RepositoryItemGridLookUpEdit();
@@ -99,7 +109,6 @@
             this.gridView6 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.repositoryItemCustomGridLookUpEditBed = new HIS.Desktop.Utilities.Extensions.RepositoryItemCustomGridLookUpEdit();
             this.repositoryItemCustomGridLookUpEdit1View = new HIS.Desktop.Utilities.Extensions.CustomGridView();
-            this.repositoryItemButtonEditOtherPaySource = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.btnServiceReqList = new DevExpress.XtraEditors.SimpleButton();
             this.btnSaveAndPrint = new DevExpress.XtraEditors.SimpleButton();
@@ -204,15 +213,6 @@
             this.customGridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.tooltipService = new DevExpress.Utils.ToolTipController(this.components);
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
-            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer(this.components);
-            this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
-            this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repositoryItemCheckEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.repositoryItemMemoEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
@@ -233,6 +233,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdMainText.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlUCPanel)).BeginInit();
             this.pnlUCPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).BeginInit();
+            this.popupControlContainerOtherPaySource.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerSubIcdName)).BeginInit();
             this.popupControlContainerSubIcdName.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.customGridControlSubIcdName)).BeginInit();
@@ -240,6 +246,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceProcess)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceProcess)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditBed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditPatientType)).BeginInit();
@@ -263,7 +270,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEditBed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).BeginInit();
@@ -345,12 +351,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit2View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).BeginInit();
-            this.popupControlContainerOtherPaySource.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -545,9 +545,9 @@
             this.panelControl2.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControl2.Controls.Add(this.cboIcdsCause);
             this.panelControl2.Controls.Add(this.txtIcdMainTextCause);
-            this.panelControl2.Location = new System.Drawing.Point(538, 55);
+            this.panelControl2.Location = new System.Drawing.Point(543, 55);
             this.panelControl2.Name = "panelControl2";
-            this.panelControl2.Size = new System.Drawing.Size(278, 20);
+            this.panelControl2.Size = new System.Drawing.Size(296, 20);
             this.panelControl2.TabIndex = 29;
             // 
             // cboIcdsCause
@@ -556,15 +556,19 @@
             this.cboIcdsCause.Location = new System.Drawing.Point(0, 0);
             this.cboIcdsCause.MenuManager = this.barManager1;
             this.cboIcdsCause.Name = "cboIcdsCause";
+            this.cboIcdsCause.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboIcdsCause.Properties.AutoComplete = false;
             this.cboIcdsCause.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboIcdsCause.Properties.NullText = "";
             this.cboIcdsCause.Properties.NullValuePromptShowForEmptyValue = true;
             this.cboIcdsCause.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboIcdsCause.Properties.View = this.customGridViewWithFilterMultiColumn3;
-            this.cboIcdsCause.Size = new System.Drawing.Size(278, 20);
+            this.cboIcdsCause.Size = new System.Drawing.Size(296, 20);
             this.cboIcdsCause.TabIndex = 1;
+            this.cboIcdsCause.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboIcdsCause_Closed);
+            this.cboIcdsCause.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboIcdsCause_ButtonClick);
             // 
             // customGridViewWithFilterMultiColumn3
             // 
@@ -579,7 +583,7 @@
             this.txtIcdMainTextCause.Location = new System.Drawing.Point(0, 0);
             this.txtIcdMainTextCause.MenuManager = this.barManager1;
             this.txtIcdMainTextCause.Name = "txtIcdMainTextCause";
-            this.txtIcdMainTextCause.Size = new System.Drawing.Size(278, 20);
+            this.txtIcdMainTextCause.Size = new System.Drawing.Size(296, 20);
             this.txtIcdMainTextCause.TabIndex = 0;
             this.txtIcdMainTextCause.Visible = false;
             // 
@@ -588,9 +592,9 @@
             this.panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControl1.Controls.Add(this.cboIcds);
             this.panelControl1.Controls.Add(this.txtIcdMainText);
-            this.panelControl1.Location = new System.Drawing.Point(538, 2);
+            this.panelControl1.Location = new System.Drawing.Point(543, 2);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(278, 20);
+            this.panelControl1.Size = new System.Drawing.Size(296, 20);
             this.panelControl1.TabIndex = 28;
             // 
             // cboIcds
@@ -599,15 +603,20 @@
             this.cboIcds.Location = new System.Drawing.Point(0, 0);
             this.cboIcds.MenuManager = this.barManager1;
             this.cboIcds.Name = "cboIcds";
+            this.cboIcds.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboIcds.Properties.AutoComplete = false;
             this.cboIcds.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboIcds.Properties.NullText = "";
             this.cboIcds.Properties.NullValuePromptShowForEmptyValue = true;
             this.cboIcds.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboIcds.Properties.View = this.customGridViewWithFilterMultiColumn2;
-            this.cboIcds.Size = new System.Drawing.Size(278, 20);
+            this.cboIcds.Size = new System.Drawing.Size(296, 20);
             this.cboIcds.TabIndex = 1;
+            this.cboIcds.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboIcds_Closed);
+            this.cboIcds.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboIcds_ButtonClick);
+            this.cboIcds.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboIcds_KeyUp);
             // 
             // customGridViewWithFilterMultiColumn2
             // 
@@ -622,7 +631,7 @@
             this.txtIcdMainText.Location = new System.Drawing.Point(0, 0);
             this.txtIcdMainText.MenuManager = this.barManager1;
             this.txtIcdMainText.Name = "txtIcdMainText";
-            this.txtIcdMainText.Size = new System.Drawing.Size(278, 20);
+            this.txtIcdMainText.Size = new System.Drawing.Size(296, 20);
             this.txtIcdMainText.TabIndex = 0;
             this.txtIcdMainText.Visible = false;
             // 
@@ -634,6 +643,97 @@
             this.pnlUCPanel.Name = "pnlUCPanel";
             this.pnlUCPanel.Size = new System.Drawing.Size(318, 708);
             this.pnlUCPanel.TabIndex = 27;
+            // 
+            // popupControlContainerOtherPaySource
+            // 
+            this.popupControlContainerOtherPaySource.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
+            this.popupControlContainerOtherPaySource.Controls.Add(this.gridControlOtherPaySource);
+            this.popupControlContainerOtherPaySource.Location = new System.Drawing.Point(46, 125);
+            this.popupControlContainerOtherPaySource.Manager = this.barManager1;
+            this.popupControlContainerOtherPaySource.Name = "popupControlContainerOtherPaySource";
+            this.popupControlContainerOtherPaySource.Size = new System.Drawing.Size(312, 130);
+            this.popupControlContainerOtherPaySource.TabIndex = 1;
+            this.popupControlContainerOtherPaySource.Visible = false;
+            // 
+            // gridControlOtherPaySource
+            // 
+            this.gridControlOtherPaySource.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridControlOtherPaySource.Location = new System.Drawing.Point(0, 0);
+            this.gridControlOtherPaySource.MainView = this.gridViewOtherPaySource;
+            this.gridControlOtherPaySource.MenuManager = this.barManager1;
+            this.gridControlOtherPaySource.Name = "gridControlOtherPaySource";
+            this.gridControlOtherPaySource.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.repositoryItemCheckEdit3,
+            this.repositoryItemMemoEdit1});
+            this.gridControlOtherPaySource.Size = new System.Drawing.Size(312, 130);
+            this.gridControlOtherPaySource.TabIndex = 0;
+            this.gridControlOtherPaySource.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
+            this.gridViewOtherPaySource});
+            this.gridControlOtherPaySource.Click += new System.EventHandler(this.gridControlOtherPaySource_Click);
+            // 
+            // gridViewOtherPaySource
+            // 
+            this.gridViewOtherPaySource.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumn11,
+            this.gridColumn16,
+            this.gridColumn17,
+            this.gridColumn18});
+            this.gridViewOtherPaySource.GridControl = this.gridControlOtherPaySource;
+            this.gridViewOtherPaySource.Name = "gridViewOtherPaySource";
+            this.gridViewOtherPaySource.OptionsView.RowAutoHeight = true;
+            this.gridViewOtherPaySource.OptionsView.ShowGroupPanel = false;
+            this.gridViewOtherPaySource.OptionsView.ShowIndicator = false;
+            this.gridViewOtherPaySource.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewOtherPaySource_CustomUnboundColumnData);
+            this.gridViewOtherPaySource.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridViewOtherPaySource_KeyDown);
+            // 
+            // gridColumn11
+            // 
+            this.gridColumn11.Caption = "Mã";
+            this.gridColumn11.FieldName = "OTHER_PAY_SOURCE_CODE";
+            this.gridColumn11.Name = "gridColumn11";
+            this.gridColumn11.OptionsColumn.AllowEdit = false;
+            this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn11.Visible = true;
+            this.gridColumn11.VisibleIndex = 0;
+            // 
+            // gridColumn16
+            // 
+            this.gridColumn16.Caption = "Tên";
+            this.gridColumn16.ColumnEdit = this.repositoryItemMemoEdit1;
+            this.gridColumn16.FieldName = "OTHER_PAY_SOURCE_NAME";
+            this.gridColumn16.Name = "gridColumn16";
+            this.gridColumn16.Visible = true;
+            this.gridColumn16.VisibleIndex = 1;
+            // 
+            // repositoryItemMemoEdit1
+            // 
+            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
+            // 
+            // gridColumn17
+            // 
+            this.gridColumn17.Caption = "Giá tiền";
+            this.gridColumn17.DisplayFormat.FormatString = "#,###";
+            this.gridColumn17.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.gridColumn17.FieldName = "PRICE";
+            this.gridColumn17.Name = "gridColumn17";
+            this.gridColumn17.OptionsColumn.AllowEdit = false;
+            this.gridColumn17.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            // 
+            // gridColumn18
+            // 
+            this.gridColumn18.Caption = "Tỉ lệ thanh toán";
+            this.gridColumn18.FieldName = "HEIN_RATIO_DISPLAY";
+            this.gridColumn18.Name = "gridColumn18";
+            this.gridColumn18.OptionsColumn.AllowEdit = false;
+            this.gridColumn18.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn18.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            // 
+            // repositoryItemCheckEdit3
+            // 
+            this.repositoryItemCheckEdit3.AutoHeight = false;
+            this.repositoryItemCheckEdit3.Name = "repositoryItemCheckEdit3";
+            this.repositoryItemCheckEdit3.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
             // 
             // popupControlContainerSubIcdName
             // 
@@ -756,6 +856,7 @@
             this.gridViewServiceProcess.Name = "gridViewServiceProcess";
             this.gridViewServiceProcess.OptionsBehavior.AutoExpandAllGroups = true;
             this.gridViewServiceProcess.OptionsBehavior.AutoPopulateColumns = false;
+            this.gridViewServiceProcess.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDown;
             this.gridViewServiceProcess.OptionsFind.FindNullPrompt = "Từ khóa tìm kiếm...";
             this.gridViewServiceProcess.OptionsFind.ShowClearButton = false;
             this.gridViewServiceProcess.OptionsFind.ShowCloseButton = false;
@@ -854,7 +955,7 @@
             // gridColumnExecuteRoomName__TabService
             // 
             this.gridColumnExecuteRoomName__TabService.Caption = "Phòng xử lý";
-            this.gridColumnExecuteRoomName__TabService.FieldName = "TDL_EXECUTE_ROOM_ID";
+            this.gridColumnExecuteRoomName__TabService.FieldName = "TDL_EXECUTE_ROOM_ID_STR";
             this.gridColumnExecuteRoomName__TabService.Name = "gridColumnExecuteRoomName__TabService";
             this.gridColumnExecuteRoomName__TabService.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumnExecuteRoomName__TabService.OptionsFilter.AllowAutoFilter = false;
@@ -868,7 +969,7 @@
             // gridColumnPatientTypeName__TabService
             // 
             this.gridColumnPatientTypeName__TabService.Caption = "ĐTTT";
-            this.gridColumnPatientTypeName__TabService.FieldName = "PATIENT_TYPE_ID";
+            this.gridColumnPatientTypeName__TabService.FieldName = "PATIENT_TYPE_ID_STR";
             this.gridColumnPatientTypeName__TabService.Name = "gridColumnPatientTypeName__TabService";
             this.gridColumnPatientTypeName__TabService.Visible = true;
             this.gridColumnPatientTypeName__TabService.VisibleIndex = 9;
@@ -915,7 +1016,17 @@
             this.gridColumn13.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn13.Visible = true;
             this.gridColumn13.VisibleIndex = 13;
-            this.gridColumn13.Width = 105;
+            this.gridColumn13.Width = 130;
+            // 
+            // repositoryItemButtonEditOtherPaySource
+            // 
+            this.repositoryItemButtonEditOtherPaySource.AutoHeight = false;
+            this.repositoryItemButtonEditOtherPaySource.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Down),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.repositoryItemButtonEditOtherPaySource.Name = "repositoryItemButtonEditOtherPaySource";
+            this.repositoryItemButtonEditOtherPaySource.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.repositoryItemButtonEditOtherPaySource.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditOtherPaySource_ButtonClick);
             // 
             // repositoryItemGridLookUpEditBed
             // 
@@ -927,6 +1038,8 @@
             this.repositoryItemGridLookUpEditBed.NullText = "";
             this.repositoryItemGridLookUpEditBed.NullValuePromptShowForEmptyValue = true;
             this.repositoryItemGridLookUpEditBed.View = this.repositoryItemGridLookUpEdit1View;
+            this.repositoryItemGridLookUpEditBed.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemGridLookUpEditBed_ButtonClick);
+            this.repositoryItemGridLookUpEditBed.EditValueChanging += new DevExpress.XtraEditors.Controls.ChangingEventHandler(this.repositoryItemGridLookUpEditBed_EditValueChanging);
             // 
             // repositoryItemGridLookUpEdit1View
             // 
@@ -945,6 +1058,7 @@
             this.repositoryItemGridLookUpEditPatientType.NullText = "";
             this.repositoryItemGridLookUpEditPatientType.NullValuePromptShowForEmptyValue = true;
             this.repositoryItemGridLookUpEditPatientType.View = this.gridView1;
+            this.repositoryItemGridLookUpEditPatientType.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemGridLookUpEditPatientType_ButtonClick);
             // 
             // gridView1
             // 
@@ -1008,6 +1122,7 @@
             this.repositoryItemcboExcuteRoom_TabService.NullValuePromptShowForEmptyValue = true;
             this.repositoryItemcboExcuteRoom_TabService.View = this.gridView4;
             this.repositoryItemcboExcuteRoom_TabService.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.repositoryItemcboExcuteRoom_TabService_Closed);
+            this.repositoryItemcboExcuteRoom_TabService.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemcboExcuteRoom_TabService_ButtonClick);
             // 
             // gridView4
             // 
@@ -1090,16 +1205,6 @@
             this.repositoryItemCustomGridLookUpEdit1View.Name = "repositoryItemCustomGridLookUpEdit1View";
             this.repositoryItemCustomGridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.repositoryItemCustomGridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
-            // 
-            // repositoryItemButtonEditOtherPaySource
-            // 
-            this.repositoryItemButtonEditOtherPaySource.AutoHeight = false;
-            this.repositoryItemButtonEditOtherPaySource.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Down),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.repositoryItemButtonEditOtherPaySource.Name = "repositoryItemButtonEditOtherPaySource";
-            this.repositoryItemButtonEditOtherPaySource.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
-            this.repositoryItemButtonEditOtherPaySource.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditOtherPaySource_ButtonClick);
             // 
             // layoutControl2
             // 
@@ -1932,22 +2037,22 @@
             // 
             // chkEditIcdCause
             // 
-            this.chkEditIcdCause.Location = new System.Drawing.Point(820, 55);
+            this.chkEditIcdCause.Location = new System.Drawing.Point(843, 55);
             this.chkEditIcdCause.Name = "chkEditIcdCause";
             this.chkEditIcdCause.Properties.Caption = "Sửa";
-            this.chkEditIcdCause.Size = new System.Drawing.Size(58, 19);
+            this.chkEditIcdCause.Size = new System.Drawing.Size(56, 19);
             this.chkEditIcdCause.StyleController = this.layoutControl1;
             this.chkEditIcdCause.TabIndex = 20;
             this.chkEditIcdCause.CheckedChanged += new System.EventHandler(this.chkEditIcdCause_CheckedChanged);
             // 
             // cboUser
             // 
-            this.cboUser.Location = new System.Drawing.Point(538, 79);
+            this.cboUser.Location = new System.Drawing.Point(543, 79);
             this.cboUser.Name = "cboUser";
             this.cboUser.Properties.NullText = "";
             this.cboUser.Properties.NullValuePromptShowForEmptyValue = true;
             this.cboUser.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboUser.Size = new System.Drawing.Size(340, 20);
+            this.cboUser.Size = new System.Drawing.Size(356, 20);
             this.cboUser.StyleController = this.layoutControl1;
             this.cboUser.TabIndex = 19;
             // 
@@ -1955,15 +2060,15 @@
             // 
             this.txtLoginName.Location = new System.Drawing.Point(419, 79);
             this.txtLoginName.Name = "txtLoginName";
-            this.txtLoginName.Size = new System.Drawing.Size(119, 20);
+            this.txtLoginName.Size = new System.Drawing.Size(124, 20);
             this.txtLoginName.StyleController = this.layoutControl1;
             this.txtLoginName.TabIndex = 18;
             // 
             // txtProvisionalDiagnosis
             // 
-            this.txtProvisionalDiagnosis.Location = new System.Drawing.Point(957, 55);
+            this.txtProvisionalDiagnosis.Location = new System.Drawing.Point(988, 55);
             this.txtProvisionalDiagnosis.Name = "txtProvisionalDiagnosis";
-            this.txtProvisionalDiagnosis.Size = new System.Drawing.Size(471, 20);
+            this.txtProvisionalDiagnosis.Size = new System.Drawing.Size(440, 20);
             this.txtProvisionalDiagnosis.StyleController = this.layoutControl1;
             this.txtProvisionalDiagnosis.TabIndex = 17;
             // 
@@ -1971,48 +2076,48 @@
             // 
             this.txtIcdCodeCause.Location = new System.Drawing.Point(419, 55);
             this.txtIcdCodeCause.Name = "txtIcdCodeCause";
-            this.txtIcdCodeCause.Size = new System.Drawing.Size(119, 20);
+            this.txtIcdCodeCause.Size = new System.Drawing.Size(124, 20);
             this.txtIcdCodeCause.StyleController = this.layoutControl1;
             this.txtIcdCodeCause.TabIndex = 14;
             // 
             // txtIcdText
             // 
-            this.txtIcdText.Location = new System.Drawing.Point(1085, 2);
+            this.txtIcdText.Location = new System.Drawing.Point(1124, 2);
             this.txtIcdText.Name = "txtIcdText";
             this.txtIcdText.Properties.NullValuePrompt = "Nhấn F1 để chọn bệnh";
-            this.txtIcdText.Size = new System.Drawing.Size(343, 20);
+            this.txtIcdText.Size = new System.Drawing.Size(304, 20);
             this.txtIcdText.StyleController = this.layoutControl1;
             this.txtIcdText.TabIndex = 13;
             // 
             // pnSubIcdTranditional
             // 
-            this.pnSubIcdTranditional.Location = new System.Drawing.Point(882, 26);
+            this.pnSubIcdTranditional.Location = new System.Drawing.Point(903, 26);
             this.pnSubIcdTranditional.Name = "pnSubIcdTranditional";
-            this.pnSubIcdTranditional.Size = new System.Drawing.Size(546, 25);
+            this.pnSubIcdTranditional.Size = new System.Drawing.Size(525, 25);
             this.pnSubIcdTranditional.TabIndex = 11;
             // 
             // pnIcdTranditional
             // 
             this.pnIcdTranditional.Location = new System.Drawing.Point(324, 26);
             this.pnIcdTranditional.Name = "pnIcdTranditional";
-            this.pnIcdTranditional.Size = new System.Drawing.Size(554, 25);
+            this.pnIcdTranditional.Size = new System.Drawing.Size(575, 25);
             this.pnIcdTranditional.TabIndex = 10;
             // 
             // chkEditIcd
             // 
-            this.chkEditIcd.Location = new System.Drawing.Point(820, 2);
+            this.chkEditIcd.Location = new System.Drawing.Point(843, 2);
             this.chkEditIcd.Name = "chkEditIcd";
             this.chkEditIcd.Properties.Caption = "Sửa";
-            this.chkEditIcd.Size = new System.Drawing.Size(58, 19);
+            this.chkEditIcd.Size = new System.Drawing.Size(56, 19);
             this.chkEditIcd.StyleController = this.layoutControl1;
             this.chkEditIcd.TabIndex = 9;
             this.chkEditIcd.CheckedChanged += new System.EventHandler(this.chkEditIcd_CheckedChanged);
             // 
             // txtIcdSubCode
             // 
-            this.txtIcdSubCode.Location = new System.Drawing.Point(957, 2);
+            this.txtIcdSubCode.Location = new System.Drawing.Point(988, 2);
             this.txtIcdSubCode.Name = "txtIcdSubCode";
-            this.txtIcdSubCode.Size = new System.Drawing.Size(128, 20);
+            this.txtIcdSubCode.Size = new System.Drawing.Size(136, 20);
             this.txtIcdSubCode.StyleController = this.layoutControl1;
             this.txtIcdSubCode.TabIndex = 8;
             // 
@@ -2021,7 +2126,7 @@
             this.txtIcdCode.Location = new System.Drawing.Point(419, 2);
             this.txtIcdCode.Margin = new System.Windows.Forms.Padding(0);
             this.txtIcdCode.Name = "txtIcdCode";
-            this.txtIcdCode.Size = new System.Drawing.Size(119, 20);
+            this.txtIcdCode.Size = new System.Drawing.Size(124, 20);
             this.txtIcdCode.StyleController = this.layoutControl1;
             this.txtIcdCode.TabIndex = 7;
             // 
@@ -2078,7 +2183,7 @@
             this.lciIcdText.Location = new System.Drawing.Point(322, 0);
             this.lciIcdText.Name = "lciIcdText";
             this.lciIcdText.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciIcdText.Size = new System.Drawing.Size(216, 24);
+            this.lciIcdText.Size = new System.Drawing.Size(221, 24);
             this.lciIcdText.Text = "CĐ chính:";
             this.lciIcdText.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIcdText.TextSize = new System.Drawing.Size(90, 13);
@@ -2089,31 +2194,31 @@
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem5.Control = this.txtIcdSubCode;
-            this.layoutControlItem5.Location = new System.Drawing.Point(880, 0);
+            this.layoutControlItem5.Location = new System.Drawing.Point(901, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.layoutControlItem5.Size = new System.Drawing.Size(205, 24);
+            this.layoutControlItem5.Size = new System.Drawing.Size(223, 24);
             this.layoutControlItem5.Text = "CĐ phụ:";
             this.layoutControlItem5.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(70, 13);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(80, 13);
             this.layoutControlItem5.TextToControlDistance = 5;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.chkEditIcd;
-            this.layoutControlItem6.Location = new System.Drawing.Point(818, 0);
+            this.layoutControlItem6.Location = new System.Drawing.Point(841, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(62, 24);
+            this.layoutControlItem6.Size = new System.Drawing.Size(60, 24);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.txtIcdText;
-            this.layoutControlItem10.Location = new System.Drawing.Point(1085, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(1124, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem10.Size = new System.Drawing.Size(345, 24);
+            this.layoutControlItem10.Size = new System.Drawing.Size(306, 24);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -2138,10 +2243,10 @@
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.panelControl1;
-            this.layoutControlItem1.Location = new System.Drawing.Point(538, 0);
+            this.layoutControlItem1.Location = new System.Drawing.Point(543, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem1.Size = new System.Drawing.Size(280, 24);
+            this.layoutControlItem1.Size = new System.Drawing.Size(298, 24);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -2165,9 +2270,9 @@
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.pnSubIcdTranditional;
-            this.layoutControlItem8.Location = new System.Drawing.Point(880, 24);
+            this.layoutControlItem8.Location = new System.Drawing.Point(901, 24);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(550, 29);
+            this.layoutControlItem8.Size = new System.Drawing.Size(529, 29);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -2176,20 +2281,20 @@
             this.layoutControlItem14.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem14.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem14.Control = this.txtProvisionalDiagnosis;
-            this.layoutControlItem14.Location = new System.Drawing.Point(880, 53);
+            this.layoutControlItem14.Location = new System.Drawing.Point(901, 53);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(550, 24);
+            this.layoutControlItem14.Size = new System.Drawing.Size(529, 24);
             this.layoutControlItem14.Text = "CĐ sơ bộ:";
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem14.TextSize = new System.Drawing.Size(70, 13);
+            this.layoutControlItem14.TextSize = new System.Drawing.Size(80, 13);
             this.layoutControlItem14.TextToControlDistance = 5;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(880, 77);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(901, 77);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(550, 24);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(529, 24);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem7
@@ -2197,7 +2302,7 @@
             this.layoutControlItem7.Control = this.pnIcdTranditional;
             this.layoutControlItem7.Location = new System.Drawing.Point(322, 24);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(558, 29);
+            this.layoutControlItem7.Size = new System.Drawing.Size(579, 29);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
@@ -2209,7 +2314,7 @@
             this.lciIcdTextCause.Location = new System.Drawing.Point(322, 53);
             this.lciIcdTextCause.Name = "lciIcdTextCause";
             this.lciIcdTextCause.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.lciIcdTextCause.Size = new System.Drawing.Size(216, 24);
+            this.lciIcdTextCause.Size = new System.Drawing.Size(221, 24);
             this.lciIcdTextCause.Text = "Ng/nhận ngoài:";
             this.lciIcdTextCause.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciIcdTextCause.TextSize = new System.Drawing.Size(90, 13);
@@ -2218,19 +2323,19 @@
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.panelControl2;
-            this.layoutControlItem9.Location = new System.Drawing.Point(538, 53);
+            this.layoutControlItem9.Location = new System.Drawing.Point(543, 53);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem9.Size = new System.Drawing.Size(280, 24);
+            this.layoutControlItem9.Size = new System.Drawing.Size(298, 24);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.chkEditIcdCause;
-            this.layoutControlItem17.Location = new System.Drawing.Point(818, 53);
+            this.layoutControlItem17.Location = new System.Drawing.Point(841, 53);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(62, 24);
+            this.layoutControlItem17.Size = new System.Drawing.Size(60, 24);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
@@ -2244,7 +2349,7 @@
             this.layoutControlItem15.Location = new System.Drawing.Point(322, 77);
             this.layoutControlItem15.Name = "layoutControlItem15";
             this.layoutControlItem15.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.layoutControlItem15.Size = new System.Drawing.Size(216, 24);
+            this.layoutControlItem15.Size = new System.Drawing.Size(221, 24);
             this.layoutControlItem15.Text = "Người chỉ định:";
             this.layoutControlItem15.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem15.TextSize = new System.Drawing.Size(90, 13);
@@ -2253,10 +2358,10 @@
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.cboUser;
-            this.layoutControlItem16.Location = new System.Drawing.Point(538, 77);
+            this.layoutControlItem16.Location = new System.Drawing.Point(543, 77);
             this.layoutControlItem16.Name = "layoutControlItem16";
             this.layoutControlItem16.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem16.Size = new System.Drawing.Size(342, 24);
+            this.layoutControlItem16.Size = new System.Drawing.Size(358, 24);
             this.layoutControlItem16.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem16.TextVisible = false;
             // 
@@ -2315,94 +2420,6 @@
             this.popupMenu1.Manager = this.barManager1;
             this.popupMenu1.Name = "popupMenu1";
             // 
-            // popupControlContainerOtherPaySource
-            // 
-            this.popupControlContainerOtherPaySource.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.popupControlContainerOtherPaySource.Controls.Add(this.gridControlOtherPaySource);
-            this.popupControlContainerOtherPaySource.Location = new System.Drawing.Point(46, 125);
-            this.popupControlContainerOtherPaySource.Manager = this.barManager1;
-            this.popupControlContainerOtherPaySource.Name = "popupControlContainerOtherPaySource";
-            this.popupControlContainerOtherPaySource.Size = new System.Drawing.Size(312, 130);
-            this.popupControlContainerOtherPaySource.TabIndex = 1;
-            this.popupControlContainerOtherPaySource.Visible = false;
-            // 
-            // gridControlOtherPaySource
-            // 
-            this.gridControlOtherPaySource.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridControlOtherPaySource.Location = new System.Drawing.Point(0, 0);
-            this.gridControlOtherPaySource.MainView = this.gridViewOtherPaySource;
-            this.gridControlOtherPaySource.MenuManager = this.barManager1;
-            this.gridControlOtherPaySource.Name = "gridControlOtherPaySource";
-            this.gridControlOtherPaySource.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
-            this.repositoryItemCheckEdit3,
-            this.repositoryItemMemoEdit1});
-            this.gridControlOtherPaySource.Size = new System.Drawing.Size(312, 130);
-            this.gridControlOtherPaySource.TabIndex = 0;
-            this.gridControlOtherPaySource.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewOtherPaySource});
-            // 
-            // gridViewOtherPaySource
-            // 
-            this.gridViewOtherPaySource.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
-            this.gridColumn11,
-            this.gridColumn16,
-            this.gridColumn17,
-            this.gridColumn18});
-            this.gridViewOtherPaySource.GridControl = this.gridControlOtherPaySource;
-            this.gridViewOtherPaySource.Name = "gridViewOtherPaySource";
-            this.gridViewOtherPaySource.OptionsView.RowAutoHeight = true;
-            this.gridViewOtherPaySource.OptionsView.ShowGroupPanel = false;
-            this.gridViewOtherPaySource.OptionsView.ShowIndicator = false;
-            // 
-            // gridColumn11
-            // 
-            this.gridColumn11.Caption = "Mã";
-            this.gridColumn11.FieldName = "OTHER_PAY_SOURCE_CODE";
-            this.gridColumn11.Name = "gridColumn11";
-            this.gridColumn11.OptionsColumn.AllowEdit = false;
-            this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 0;
-            // 
-            // gridColumn16
-            // 
-            this.gridColumn16.Caption = "Tên";
-            this.gridColumn16.ColumnEdit = this.repositoryItemMemoEdit1;
-            this.gridColumn16.FieldName = "OTHER_PAY_SOURCE_NAME";
-            this.gridColumn16.Name = "gridColumn16";
-            this.gridColumn16.Visible = true;
-            this.gridColumn16.VisibleIndex = 1;
-            // 
-            // gridColumn17
-            // 
-            this.gridColumn17.Caption = "Giá tiền";
-            this.gridColumn17.DisplayFormat.FormatString = "#,###";
-            this.gridColumn17.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.gridColumn17.FieldName = "PRICE";
-            this.gridColumn17.Name = "gridColumn17";
-            this.gridColumn17.OptionsColumn.AllowEdit = false;
-            this.gridColumn17.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn17.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            // 
-            // gridColumn18
-            // 
-            this.gridColumn18.Caption = "Tỉ lệ thanh toán";
-            this.gridColumn18.FieldName = "HEIN_RATIO_DISPLAY";
-            this.gridColumn18.Name = "gridColumn18";
-            this.gridColumn18.OptionsColumn.AllowEdit = false;
-            this.gridColumn18.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
-            this.gridColumn18.UnboundType = DevExpress.Data.UnboundColumnType.Object;
-            // 
-            // repositoryItemCheckEdit3
-            // 
-            this.repositoryItemCheckEdit3.AutoHeight = false;
-            this.repositoryItemCheckEdit3.Name = "repositoryItemCheckEdit3";
-            this.repositoryItemCheckEdit3.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            // 
-            // repositoryItemMemoEdit1
-            // 
-            this.repositoryItemMemoEdit1.Name = "repositoryItemMemoEdit1";
-            // 
             // frmAssignBed
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2444,6 +2461,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdMainText.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pnlUCPanel)).EndInit();
             this.pnlUCPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).EndInit();
+            this.popupControlContainerOtherPaySource.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerSubIcdName)).EndInit();
             this.popupControlContainerSubIcdName.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.customGridControlSubIcdName)).EndInit();
@@ -2451,6 +2474,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlServiceProcess)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewServiceProcess)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditBed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemGridLookUpEditPatientType)).EndInit();
@@ -2474,7 +2498,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEditBed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditOtherPaySource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cboCashierRoom.Properties)).EndInit();
@@ -2556,12 +2579,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEdit2View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerOtherPaySource)).EndInit();
-            this.popupControlContainerOtherPaySource.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gridControlOtherPaySource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridViewOtherPaySource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
