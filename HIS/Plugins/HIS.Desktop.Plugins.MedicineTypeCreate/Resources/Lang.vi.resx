@@ -1513,7 +1513,7 @@
     <value>Ngoài danh mục DRG do Bộ Y Tế ban hành</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem393.Text" xml:space="preserve">
-    <value>Ngoài DRG:</value>
+    <value>Chặn xuất theo phiếu:</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem394.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Thuốc không nằm trong danh mục thuốc của nhà thuốc hay kho dược. Chỉ khai báo nhằm hỗ trợ bác sỹ kê thuốc mua ngoài</value>

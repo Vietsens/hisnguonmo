@@ -26,6 +26,7 @@ using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraRichEdit.Import.Html;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
@@ -92,6 +93,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         List<HIS_SUPPLIER> lstSupplier { get; set; }
         List<HIS_DEPARTMENT> BlockDepartment__Seleced = new List<HIS_DEPARTMENT>();
         List<V_HIS_ROOM> BlockRoom__Seleced = new List<V_HIS_ROOM>();
+        List<HIS_EXP_MEST_TYPE> _TypeSelecteds = new List<HIS_EXP_MEST_TYPE>();
         List<long> oldBlockDepartmentIds = null;
         List<long> oldBlockRoomIds = null;
         List<HIS_CONTRAINDICATION> contraindicationSelecteds = new List<HIS_CONTRAINDICATION>();
@@ -130,6 +132,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         public bool isClickPick = false;
         List<SupplierADO> lstSupplierChecked = new List<SupplierADO>();
         List<V_HIS_ROOM> rooms = new List<V_HIS_ROOM>();
+        List<HIS_EXP_MEST_TYPE> expMest = new List<HIS_EXP_MEST_TYPE>();
         List<HIS_DEPARTMENT> departments = new List<HIS_DEPARTMENT>();
         #endregion
 
@@ -210,6 +213,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 rooms = BackendDataWorker.Get<V_HIS_ROOM>()
                             .Where(r => r.ROOM_TYPE_ID == 1 || r.ROOM_TYPE_ID == 4).ToList();
                 InitCombo(cboBlockRoom, rooms, "ROOM_NAME", "ID");
+
+                InitCheck(cboNoExpMestTypeIds, SelectionGrid__BlockExpMest);
+                expMest = BackendDataWorker.Get<HIS_EXP_MEST_TYPE>().Where(m => m.ID == 2).ToList();
+                InitCombo(cboNoExpMestTypeIds, expMest,"EXP_MEST_TYPE_NAME","ID");
 
                 //SetValueDepartment(cboBlockDepartment);
 
@@ -1158,6 +1165,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 txtOTHER_PAY_SOURCE.Enabled = false;
                 txtContentWarning.Enabled = false;
                 btnContentWarning.Enabled = false;
+                cboNoExpMestTypeIds.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -1490,6 +1498,29 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 if (cboOTHER_PAY_SOURCE.EditValue == null)
                 {
                     txtBhytWhiteListCodes.Enabled = false;
+                }
+                cboNoExpMestTypeIds.EditValue = hIS_MEDICINE_TYPE.NO_EXP_MEST_TYPE_IDS;
+                GridCheckMarksSelection gridCheckMark = cboNoExpMestTypeIds.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    gridCheckMark.ClearSelection(cboNoExpMestTypeIds.Properties.View);
+                    if (!string.IsNullOrEmpty(hIS_MEDICINE_TYPE.NO_EXP_MEST_TYPE_IDS))
+                    {
+                        List<HIS_EXP_MEST_TYPE> NoExpMestTypeIds = new List<HIS_EXP_MEST_TYPE>();
+                        foreach (var id in hIS_MEDICINE_TYPE.NO_EXP_MEST_TYPE_IDS.Split(','))
+                        {
+                            var item = BackendDataWorker.Get<HIS_EXP_MEST_TYPE>().FirstOrDefault(o => o.ID.ToString() == id);
+                            if (item != null)
+                            {
+                                NoExpMestTypeIds.Add(item);
+                            }
+                        }
+                        gridCheckMark.SelectAll(NoExpMestTypeIds);
+
+                        string displayText = String.Join(",", NoExpMestTypeIds.Select(s => s.EXP_MEST_TYPE_NAME).ToList());
+                        cboNoExpMestTypeIds.Text = displayText;
+                        cboNoExpMestTypeIds.ToolTip = displayText;
+                    }
                 }
                 txtRecordingTransaction.Text = hIS_MEDICINE_TYPE.RECORDING_TRANSACTION;
                 txtBytNumOrder.Text = hIS_MEDICINE_TYPE.BYT_NUM_ORDER;
@@ -2641,6 +2672,14 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 else
                 {
                     medicineType.HIS_SERVICE.OTHER_PAY_SOURCE_ID = null;
+                }
+                if(_TypeSelecteds.Count > 0)
+                {
+                    medicineType.NO_EXP_MEST_TYPE_IDS = string.Join(",", _TypeSelecteds.Select(o => o.ID).ToList());
+                }
+                else
+                {
+                    medicineType.NO_EXP_MEST_TYPE_IDS = null;
                 }
                 if (txtOTHER_PAY_SOURCE.Enabled)
                 {
@@ -4215,6 +4254,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         MessageBox.Show("Lưu chính sách giá thất bại, không thể lưu cùng loại đối tượng trên cùng một chi nhánh.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         return;
                     }
+
+
 
                     SaveBlockDepartment(ref param);
                     SaveBlockRoom(ref param);
@@ -6909,6 +6950,25 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         //    cboBlockDepartment.ToolTip = displayText;
         //}
 
+        private void SelectionGrid__BlockExpMest(object sender, EventArgs e)
+        {
+            try
+            {
+                _TypeSelecteds = new List<HIS_EXP_MEST_TYPE>();
+                foreach (HIS_EXP_MEST_TYPE rv in (sender as GridCheckMarksSelection).Selection)
+                {
+                    if (rv != null)
+                        _TypeSelecteds.Add(rv);
+                }
+                cboNoExpMestTypeIds.Text = String.Join(", ", _TypeSelecteds.Select(s => s.EXP_MEST_TYPE_NAME));
+                cboNoExpMestTypeIds.ToolTip = cboNoExpMestTypeIds.Text;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void chkAllowMissingInfoPkg_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
@@ -9305,6 +9365,41 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             glu.Properties.DataSource = null;
             glu.Properties.DataSource = sorted;
         }
+
+        private void cboBlockExpMest_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal || e.CloseMode == PopupCloseMode.Immediate)
+                {
+                    spinImpPrice.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboBlockExpMest_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string display = "";
+                foreach (var item in this._TypeSelecteds)
+                {
+                        display = item.EXP_MEST_TYPE_NAME;
+                }
+                e.DisplayText = display;
+                cboBlockDepartment.ToolTip = display;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
     }
 }
 
