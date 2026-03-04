@@ -32,7 +32,7 @@ namespace HIS.Desktop.Plugins.HisImportBid.ADO
         public string VALID_FROM_TIME { get; set; }
         public string VALID_TO_TIME { get; set; }
         public string BID_APTHAU_CODE { get; set; }
-
+        public string TT_THAU { get; set; }
         public string IS_MEDICINE { get; set; }
 
         public double IdRow { get; set; }
