@@ -84,6 +84,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn20 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repoTextEdit25 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -103,6 +104,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_MonthLifespan = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridCol_DayLifespan = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridCol_HourLifespan = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.spAdjustAmount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.spAdjustAmountDisable = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.repAdjustAmount = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -110,7 +112,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
@@ -186,6 +187,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn6,
             this.gridColumn16,
             this.gridColumn7,
+            this.gridColumn20,
             this.gridColumn15,
             this.gridColumn17,
             this.gridColumn8,
@@ -365,7 +367,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
-            this.gridColumn15.VisibleIndex = 9;
+            this.gridColumn15.VisibleIndex = 10;
             // 
             // gridColumn17
             // 
@@ -380,7 +382,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn17.Name = "gridColumn17";
             this.gridColumn17.ToolTip = "Nhập giá trị dương để điều tiết tăng và giá trị âm để điều tiết giảm";
             this.gridColumn17.Visible = true;
-            this.gridColumn17.VisibleIndex = 10;
+            this.gridColumn17.VisibleIndex = 11;
             this.gridColumn17.Width = 80;
             // 
             // gridColumn8
@@ -390,7 +392,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 11;
+            this.gridColumn8.VisibleIndex = 12;
             this.gridColumn8.Width = 125;
             // 
             // gridColumn9
@@ -400,8 +402,18 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 12;
+            this.gridColumn9.VisibleIndex = 13;
             this.gridColumn9.Width = 61;
+            // 
+            // gridColumn20
+            // 
+            this.gridColumn20.Caption = "TT Thầu";
+            this.gridColumn20.FieldName = "TT_THAU";
+            this.gridColumn20.Name = "gridColumn20";
+            this.gridColumn20.OptionsColumn.AllowEdit = false;
+            this.gridColumn20.Visible = true;
+            this.gridColumn20.VisibleIndex = 8;
+            this.gridColumn20.Width = 100;
             // 
             // gridColumn18
             // 
@@ -410,7 +422,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn18.FieldName = "BATCH_DIVISION_CODE";
             this.gridColumn18.Name = "gridColumn18";
             this.gridColumn18.Visible = true;
-            this.gridColumn18.VisibleIndex = 13;
+            this.gridColumn18.VisibleIndex = 14;
             // 
             // repoTextEdit25
             // 
@@ -423,7 +435,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
-            this.gridColumn13.VisibleIndex = 14;
+            this.gridColumn13.VisibleIndex = 15;
             this.gridColumn13.Width = 70;
             // 
             // gridColumn10
@@ -433,7 +445,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowEdit = false;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 15;
+            this.gridColumn10.VisibleIndex = 16;
             this.gridColumn10.Width = 97;
             // 
             // gridColumn11
@@ -443,7 +455,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 16;
+            this.gridColumn11.VisibleIndex = 17;
             this.gridColumn11.Width = 132;
             // 
             // gridColumn12
@@ -463,7 +475,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_HeinServiceBhytName.Name = "gridCol_HeinServiceBhytName";
             this.gridCol_HeinServiceBhytName.OptionsColumn.AllowEdit = false;
             this.gridCol_HeinServiceBhytName.Visible = true;
-            this.gridCol_HeinServiceBhytName.VisibleIndex = 17;
+            this.gridCol_HeinServiceBhytName.VisibleIndex = 18;
             this.gridCol_HeinServiceBhytName.Width = 100;
             // 
             // gridCol_ActiveBhyt
@@ -473,7 +485,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_ActiveBhyt.Name = "gridCol_ActiveBhyt";
             this.gridCol_ActiveBhyt.OptionsColumn.AllowEdit = false;
             this.gridCol_ActiveBhyt.Visible = true;
-            this.gridCol_ActiveBhyt.VisibleIndex = 18;
+            this.gridCol_ActiveBhyt.VisibleIndex = 19;
             this.gridCol_ActiveBhyt.Width = 142;
             // 
             // gridCol_MediUseForm
@@ -485,7 +497,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_MediUseForm.Name = "gridCol_MediUseForm";
             this.gridCol_MediUseForm.OptionsColumn.AllowEdit = false;
             this.gridCol_MediUseForm.Visible = true;
-            this.gridCol_MediUseForm.VisibleIndex = 19;
+            this.gridCol_MediUseForm.VisibleIndex = 20;
             // 
             // gridCol_DosageForm
             // 
@@ -496,7 +508,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_DosageForm.Name = "gridCol_DosageForm";
             this.gridCol_DosageForm.OptionsColumn.AllowEdit = false;
             this.gridCol_DosageForm.Visible = true;
-            this.gridCol_DosageForm.VisibleIndex = 20;
+            this.gridCol_DosageForm.VisibleIndex = 21;
             // 
             // gridColumn14
             // 
@@ -505,7 +517,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.OptionsColumn.AllowEdit = false;
             this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 21;
+            this.gridColumn14.VisibleIndex = 22;
             this.gridColumn14.Width = 81;
             // 
             // gridCol_ParkingType
@@ -515,7 +527,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_ParkingType.Name = "gridCol_ParkingType";
             this.gridCol_ParkingType.OptionsColumn.AllowEdit = false;
             this.gridCol_ParkingType.Visible = true;
-            this.gridCol_ParkingType.VisibleIndex = 22;
+            this.gridCol_ParkingType.VisibleIndex = 23;
             this.gridCol_ParkingType.Width = 112;
             // 
             // gridCol_RegisterNumber
@@ -525,7 +537,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_RegisterNumber.Name = "gridCol_RegisterNumber";
             this.gridCol_RegisterNumber.OptionsColumn.AllowEdit = false;
             this.gridCol_RegisterNumber.Visible = true;
-            this.gridCol_RegisterNumber.VisibleIndex = 23;
+            this.gridCol_RegisterNumber.VisibleIndex = 24;
             this.gridCol_RegisterNumber.Width = 80;
             // 
             // gridCol_BidMaterialTypeCode
@@ -538,7 +550,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_BidMaterialTypeCode.OptionsColumn.AllowEdit = false;
             this.gridCol_BidMaterialTypeCode.ToolTip = "Mã trúng thầu";
             this.gridCol_BidMaterialTypeCode.Visible = true;
-            this.gridCol_BidMaterialTypeCode.VisibleIndex = 24;
+            this.gridCol_BidMaterialTypeCode.VisibleIndex = 25;
             // 
             // gridCol_BidMaterialTypeName
             // 
@@ -550,7 +562,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_BidMaterialTypeName.OptionsColumn.AllowEdit = false;
             this.gridCol_BidMaterialTypeName.ToolTip = "Tên trúng thầu";
             this.gridCol_BidMaterialTypeName.Visible = true;
-            this.gridCol_BidMaterialTypeName.VisibleIndex = 25;
+            this.gridCol_BidMaterialTypeName.VisibleIndex = 26;
             // 
             // gridCol_JoinBidMaterialTypeCode
             // 
@@ -562,7 +574,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_JoinBidMaterialTypeCode.OptionsColumn.AllowEdit = false;
             this.gridCol_JoinBidMaterialTypeCode.ToolTip = "Mã dự thầu";
             this.gridCol_JoinBidMaterialTypeCode.Visible = true;
-            this.gridCol_JoinBidMaterialTypeCode.VisibleIndex = 27;
+            this.gridCol_JoinBidMaterialTypeCode.VisibleIndex = 28;
             // 
             // gridCol_MonthLifespan
             // 
@@ -575,7 +587,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_MonthLifespan.Name = "gridCol_MonthLifespan";
             this.gridCol_MonthLifespan.OptionsColumn.AllowEdit = false;
             this.gridCol_MonthLifespan.Visible = true;
-            this.gridCol_MonthLifespan.VisibleIndex = 26;
+            this.gridCol_MonthLifespan.VisibleIndex = 27;
             // 
             // gridCol_DayLifespan
             // 
@@ -588,7 +600,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_DayLifespan.Name = "gridCol_DayLifespan";
             this.gridCol_DayLifespan.OptionsColumn.AllowEdit = false;
             this.gridCol_DayLifespan.Visible = true;
-            this.gridCol_DayLifespan.VisibleIndex = 28;
+            this.gridCol_DayLifespan.VisibleIndex = 29;
             // 
             // gridCol_HourLifespan
             // 
@@ -601,7 +613,15 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.gridCol_HourLifespan.Name = "gridCol_HourLifespan";
             this.gridCol_HourLifespan.OptionsColumn.AllowEdit = false;
             this.gridCol_HourLifespan.Visible = true;
-            this.gridCol_HourLifespan.VisibleIndex = 29;
+            this.gridCol_HourLifespan.VisibleIndex = 30;
+            // 
+            // gridColumn19
+            // 
+            this.gridColumn19.Caption = "Giá trần BHYT";
+            this.gridColumn19.FieldName = "HEIN_LIMIT_PRICE";
+            this.gridColumn19.Name = "gridColumn19";
+            this.gridColumn19.Visible = true;
+            this.gridColumn19.VisibleIndex = 9;
             // 
             // spAdjustAmount
             // 
@@ -679,14 +699,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
             this.layoutControlItem2.Size = new System.Drawing.Size(589, 24);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
-            // 
-            // gridColumn19
-            // 
-            this.gridColumn19.Caption = "Giá trần BHYT";
-            this.gridColumn19.FieldName = "HEIN_LIMIT_PRICE";
-            this.gridColumn19.Name = "gridColumn19";
-            this.gridColumn19.Visible = true;
-            this.gridColumn19.VisibleIndex = 8;
             // 
             // UC_LoadEdit
             // 
@@ -766,5 +778,6 @@ namespace HIS.Desktop.Plugins.BidUpdate
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn18;
         private RepositoryItemTextEdit repoTextEdit25;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn20;
     }
 }

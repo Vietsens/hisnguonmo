@@ -202,6 +202,22 @@ namespace HIS.Desktop.Plugins.BidUpdate.Resources
             }
         }
 
+        internal static string TTThauQuaDai
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("TTThauQuaDai", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string NhomThauQuaDai
         {
             get
