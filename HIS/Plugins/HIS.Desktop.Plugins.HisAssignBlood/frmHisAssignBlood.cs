@@ -49,6 +49,7 @@ using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -107,6 +108,8 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         List<HIS_BLOOD_TYPE> lstBloodGroups = new List<HIS_BLOOD_TYPE>();
         bool isSaveAndPrint = false;
         Dictionary<long, List<V_HIS_SERVICE_PATY>> servicePatyInBranchs;
+        private readonly Dictionary<long, List<HIS_BLOOD_ABO>> _mtAboByBloodTypeId = new Dictionary<long, List<HIS_BLOOD_ABO>>();
+        private readonly Dictionary<long, List<HIS_BLOOD_RH>> _mtRhByBloodTypeId = new Dictionary<long, List<HIS_BLOOD_RH>>();
         List<TrackingAdo> listTracking_ForCboTracking = null;
 
         internal bool isMultiDateState = false;
@@ -159,7 +162,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         {
             try
             {
-                InitializeComponent();
+                InitializeComponent(); 
                 this.layoutControlItemExtrnalBlood.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 try
                 {
@@ -257,133 +260,276 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             }
         }
 
+        //private void LoadServiceReqOld(long _serviceReqId)
+        //{
+        //    try
+        //    {
+        //        this.ListBloodTypeADOProcess = new List<BloodTypeADO>();
+        //        this.HisPrescriptionSDOPrint = new List<PatientBloodPresResultSDO>();
+        //        PatientBloodPresResultSDO sdoEdit = new PatientBloodPresResultSDO();
+        //        MOS.Filter.HisServiceReqFilter _serviceReqfilter = new MOS.Filter.HisServiceReqFilter();
+        //        _serviceReqfilter.ID = _serviceReqId;
+        //        var dataServiceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("/api/HisServiceReq/Get", ApiConsumers.MosConsumer, _serviceReqfilter, null);
+        //        if (dataServiceReqs != null && dataServiceReqs.Count > 0)
+        //        {
+        //            sdoEdit.ServiceReq = dataServiceReqs.First();
+        //            UC.DateEditor.ADO.DateInputADO dateInputADO = new UC.DateEditor.ADO.DateInputADO();
+        //            dateInputADO.Time = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataServiceReqs.First().INTRUCTION_TIME) ?? DateTime.Now;
+        //            dateInputADO.Dates = new List<DateTime?>();
+        //            dateInputADO.Dates.Add(dateInputADO.Time);
+        //            ucDateProcessor.Reload(ucDate, dateInputADO);
+
+
+        //            HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
+        //            icd.ICD_CODE = dataServiceReqs.First().ICD_CODE;
+        //            icd.ICD_NAME = dataServiceReqs.First().ICD_NAME;
+        //            if (ucIcd != null)
+        //            {
+        //                icdProcessor.Reload(ucIcd, icd);
+        //            }
+
+        //            HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subIcd = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
+        //            subIcd.ICD_SUB_CODE = dataServiceReqs.First().ICD_SUB_CODE;
+        //            subIcd.ICD_TEXT = dataServiceReqs.First().ICD_TEXT;
+        //            if (ucSecondaryIcd != null)
+        //            {
+        //                subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
+        //            }
+        //            long assignedStockId = dataServiceReqs.First().ASSIGNED_MEDI_STOCK_ID ?? 0;
+        //            if (assignedStockId > 0)
+        //            {
+        //                this.cboMediStockExport_TabBlood.EditValue = assignedStockId;
+        //                this.cboMediStockExport_TabBlood.Enabled = false;
+        //            }
+        //        }
+
+        //        MOS.Filter.HisExpMestFilter filter = new MOS.Filter.HisExpMestFilter();
+        //        filter.SERVICE_REQ_ID = _serviceReqId;
+        //        var dataExpMests = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("/api/HisExpMest/Get", ApiConsumers.MosConsumer, filter, null);
+        //        if (dataExpMests != null && dataExpMests.Count > 0)
+        //        {
+        //            this.cboMediStockExport_TabBlood.EditValue = dataExpMests.First().MEDI_STOCK_ID;
+        //            this.cboMediStockExport_TabBlood.Enabled = false;
+        //            this.btnNew.Enabled = false;
+        //            this.dropDownPrintBlood.Enabled = true;
+
+        //            sdoEdit.ExpMest = dataExpMests.First();
+        //            sdoEdit.Bloods = new List<HIS_EXP_MEST_BLTY_REQ>();
+
+        //            MOS.Filter.HisExpMestBltyReqViewFilter _expMestBltyFilter = new MOS.Filter.HisExpMestBltyReqViewFilter();
+        //            _expMestBltyFilter.EXP_MEST_IDs = dataExpMests.Select(p => p.ID).ToList();
+        //            var dataExpMestBltyReqs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_BLTY_REQ>>("/api/HisExpMestBltyReq/GetView", ApiConsumers.MosConsumer, _expMestBltyFilter, null);
+
+        //            if (dataExpMestBltyReqs != null && dataExpMestBltyReqs.Count > 0)
+        //            {
+        //                MOS.Filter.HisBloodTypeFilter bloodTypeFilter = new MOS.Filter.HisBloodTypeFilter();
+        //                bloodTypeFilter.IDs = dataExpMestBltyReqs.Select(p => p.BLOOD_TYPE_ID).ToList();
+        //                var dataBloodType = new BackendAdapter(new CommonParam()).Get<List<HIS_BLOOD_TYPE>>("/api/HisBloodType/Get", ApiConsumers.MosConsumer, bloodTypeFilter, null);
+
+        //                foreach (var item in dataExpMestBltyReqs)
+        //                {
+        //                    HIS_EXP_MEST_BLTY_REQ bltyPrint = new HIS_EXP_MEST_BLTY_REQ();
+        //                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_BLTY_REQ>(bltyPrint, item);
+        //                    sdoEdit.Bloods.Add(bltyPrint);
+
+        //                    BloodTypeADO ado = new BloodTypeADO();
+        //                    ado.ID = item.BLOOD_TYPE_ID;
+        //                    ado.AMOUNT = item.AMOUNT;
+        //                    ado.BLOOD_TYPE_NAME = item.BLOOD_TYPE_NAME;
+        //                    ado.BLOOD_TYPE_CODE = item.BLOOD_TYPE_CODE;
+        //                    ado.BLOOD_ABO_ID = item.BLOOD_ABO_ID;
+        //                    ado.BLOOD_RH_ID = item.BLOOD_RH_ID;
+        //                    ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
+        //                    ado.IS_OUT_PARENT_FEE = item.IS_OUT_PARENT_FEE;
+        //                    if (dataBloodType.First(o => o.ID == item.BLOOD_TYPE_ID) != null)
+        //                    {
+        //                        var currentService = lstSerivce.First(o => o.ID == dataBloodType.First(p => p.ID == item.BLOOD_TYPE_ID).SERVICE_ID);
+        //                        if (currentService != null)
+        //                        {
+        //                            ado.SERVICE_TYPE_ID = currentService.SERVICE_TYPE_ID;
+        //                            ado.SERVICE_ID = currentService.ID;
+        //                            ado.HEIN_LIMIT_PRICE_IN_TIME = currentService.HEIN_LIMIT_PRICE_IN_TIME;
+        //                            ado.HEIN_LIMIT_PRICE_INTR_TIME = currentService.HEIN_LIMIT_PRICE_INTR_TIME;
+        //                            ado.HEIN_LIMIT_PRICE_OLD = currentService.HEIN_LIMIT_PRICE_OLD;
+        //                            ado.HEIN_LIMIT_PRICE = currentService.HEIN_LIMIT_PRICE;
+        //                        }
+        //                    }
+
+        //                    ado.PRICE = GetPriceByBloodType(ado);
+        //                    ado.TOT_PRICE = ado.PRICE * ado.AMOUNT;
+        //                    this.ListBloodTypeADOProcess.Add(ado);
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            if (sdoEdit.Bloods == null)
+        //                sdoEdit.Bloods = new List<HIS_EXP_MEST_BLTY_REQ>();
+        //            HisSereServFilter hisSereServFilter = new HisSereServFilter();
+        //            hisSereServFilter.SERVICE_REQ_ID = _serviceReqId;
+        //            var sereServs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, hisSereServFilter, null);
+        //            if (sereServs != null && sereServs.Count > 0)
+        //            {
+
+        //                foreach (var item in sereServs)
+        //                {
+        //                    HIS_EXP_MEST_BLTY_REQ bltyPrint = new HIS_EXP_MEST_BLTY_REQ();
+        //                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_BLTY_REQ>(bltyPrint, item);
+        //                    sdoEdit.Bloods.Add(bltyPrint);
+
+        //                    BloodTypeADO ado = new BloodTypeADO();
+        //                    ado.AMOUNT = item.AMOUNT;
+        //                    ado.BLOOD_TYPE_NAME = item.TDL_SERVICE_NAME;
+        //                    ado.BLOOD_TYPE_CODE = item.TDL_SERVICE_CODE;
+        //                    //ado.BLOOD_ABO_ID = item.A;
+        //                    //ado.BLOOD_RH_ID = item.BLOOD_RH_ID;
+        //                    ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
+        //                    ado.IS_OUT_PARENT_FEE = item.IS_OUT_PARENT_FEE;
+        //                    ado.PRICE = item.PRICE;
+        //                    ado.TOT_PRICE = ado.PRICE * ado.AMOUNT;
+        //                    this.ListBloodTypeADOProcess.Add(ado);
+        //                }
+        //            }
+        //        }
+
+        //        this.HisPrescriptionSDOPrint.Add(sdoEdit);
+        //        this.gridControlServiceProcess__TabBlood.DataSource = null;
+        //        this.gridControlServiceProcess__TabBlood.DataSource = this.ListBloodTypeADOProcess;
+        //        this.EnableAndDisableControlWithGirdcontrol();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        ////}
         private void LoadServiceReqOld(long _serviceReqId)
         {
             try
             {
                 this.ListBloodTypeADOProcess = new List<BloodTypeADO>();
                 this.HisPrescriptionSDOPrint = new List<PatientBloodPresResultSDO>();
+
                 PatientBloodPresResultSDO sdoEdit = new PatientBloodPresResultSDO();
+                if (sdoEdit.Bloods == null)
+                    sdoEdit.Bloods = new List<HIS_EXP_MEST_BLTY_REQ>();
+
                 MOS.Filter.HisServiceReqFilter _serviceReqfilter = new MOS.Filter.HisServiceReqFilter();
                 _serviceReqfilter.ID = _serviceReqId;
-                var dataServiceReqs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERVICE_REQ>>("/api/HisServiceReq/Get", ApiConsumers.MosConsumer, _serviceReqfilter, null);
+
+                var dataServiceReqs = new BackendAdapter(new CommonParam())
+                    .Get<List<HIS_SERVICE_REQ>>("/api/HisServiceReq/Get", ApiConsumers.MosConsumer, _serviceReqfilter, null);
+
+                long assignedStockId = 0;
+                bool forceLoadBySereServ = false;
+
                 if (dataServiceReqs != null && dataServiceReqs.Count > 0)
                 {
-                    sdoEdit.ServiceReq = dataServiceReqs.First();
+                    var serviceReq = dataServiceReqs.First();
+                    sdoEdit.ServiceReq = serviceReq;
+
                     UC.DateEditor.ADO.DateInputADO dateInputADO = new UC.DateEditor.ADO.DateInputADO();
-                    dateInputADO.Time = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataServiceReqs.First().INTRUCTION_TIME) ?? DateTime.Now;
-                    dateInputADO.Dates = new List<DateTime?>();
-                    dateInputADO.Dates.Add(dateInputADO.Time);
+                    dateInputADO.Time = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(serviceReq.INTRUCTION_TIME) ?? DateTime.Now;
+                    dateInputADO.Dates = new List<DateTime?> { dateInputADO.Time };
                     ucDateProcessor.Reload(ucDate, dateInputADO);
 
-
+                    // fill ICD
                     HIS.UC.Icd.ADO.IcdInputADO icd = new HIS.UC.Icd.ADO.IcdInputADO();
-                    icd.ICD_CODE = dataServiceReqs.First().ICD_CODE;
-                    icd.ICD_NAME = dataServiceReqs.First().ICD_NAME;
-                    if (ucIcd != null)
-                    {
-                        icdProcessor.Reload(ucIcd, icd);
-                    }
+                    icd.ICD_CODE = serviceReq.ICD_CODE;
+                    icd.ICD_NAME = serviceReq.ICD_NAME;
+                    if (ucIcd != null) icdProcessor.Reload(ucIcd, icd);
 
+                    // fill sub ICD
                     HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO subIcd = new HIS.UC.SecondaryIcd.ADO.SecondaryIcdDataADO();
-                    subIcd.ICD_SUB_CODE = dataServiceReqs.First().ICD_SUB_CODE;
-                    subIcd.ICD_TEXT = dataServiceReqs.First().ICD_TEXT;
-                    if (ucSecondaryIcd != null)
-                    {
-                        subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
-                    }
-                    long assignedStockId = dataServiceReqs.ASSIGNED_MEDI_STOCK_ID ?? 0;
+                    subIcd.ICD_SUB_CODE = serviceReq.ICD_SUB_CODE;
+                    subIcd.ICD_TEXT = serviceReq.ICD_TEXT;
+                    if (ucSecondaryIcd != null) subIcdProcessor.Reload(ucSecondaryIcd, subIcd);
+
+                    // ASSIGNED_MEDI_STOCK_ID rule
+                    assignedStockId = serviceReq.ASSIGNED_MEDI_STOCK_ID ?? 0;
                     if (assignedStockId > 0)
                     {
+                        forceLoadBySereServ = true;
                         this.cboMediStockExport_TabBlood.EditValue = assignedStockId;
-                        this.cboMediStockExport_TabBlood.Enabled = true;
+                        this.cboMediStockExport_TabBlood.Enabled = false;
                     }
                 }
 
-                MOS.Filter.HisExpMestFilter filter = new MOS.Filter.HisExpMestFilter();
-                filter.SERVICE_REQ_ID = _serviceReqId;
-                var dataExpMests = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEST>>("/api/HisExpMest/Get", ApiConsumers.MosConsumer, filter, null);
-                if (dataExpMests != null && dataExpMests.Count > 0)
+                if (forceLoadBySereServ)
                 {
-                    this.cboMediStockExport_TabBlood.EditValue = dataExpMests.First().MEDI_STOCK_ID;
-                    this.cboMediStockExport_TabBlood.Enabled = false;
-                    this.btnNew.Enabled = false;
-                    this.dropDownPrintBlood.Enabled = true;
-
-                    sdoEdit.ExpMest = dataExpMests.First();
-                    sdoEdit.Bloods = new List<HIS_EXP_MEST_BLTY_REQ>();
-
-                    MOS.Filter.HisExpMestBltyReqViewFilter _expMestBltyFilter = new MOS.Filter.HisExpMestBltyReqViewFilter();
-                    _expMestBltyFilter.EXP_MEST_IDs = dataExpMests.Select(p => p.ID).ToList();
-                    var dataExpMestBltyReqs = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_BLTY_REQ>>("/api/HisExpMestBltyReq/GetView", ApiConsumers.MosConsumer, _expMestBltyFilter, null);
-
-                    if (dataExpMestBltyReqs != null && dataExpMestBltyReqs.Count > 0)
-                    {
-                        MOS.Filter.HisBloodTypeFilter bloodTypeFilter = new MOS.Filter.HisBloodTypeFilter();
-                        bloodTypeFilter.IDs = dataExpMestBltyReqs.Select(p => p.BLOOD_TYPE_ID).ToList();
-                        var dataBloodType = new BackendAdapter(new CommonParam()).Get<List<HIS_BLOOD_TYPE>>("/api/HisBloodType/Get", ApiConsumers.MosConsumer, bloodTypeFilter, null);
-
-                        foreach (var item in dataExpMestBltyReqs)
-                        {
-                            HIS_EXP_MEST_BLTY_REQ bltyPrint = new HIS_EXP_MEST_BLTY_REQ();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_BLTY_REQ>(bltyPrint, item);
-                            sdoEdit.Bloods.Add(bltyPrint);
-
-                            BloodTypeADO ado = new BloodTypeADO();
-                            ado.ID = item.BLOOD_TYPE_ID;
-                            ado.AMOUNT = item.AMOUNT;
-                            ado.BLOOD_TYPE_NAME = item.BLOOD_TYPE_NAME;
-                            ado.BLOOD_TYPE_CODE = item.BLOOD_TYPE_CODE;
-                            ado.BLOOD_ABO_ID = item.BLOOD_ABO_ID;
-                            ado.BLOOD_RH_ID = item.BLOOD_RH_ID;
-                            ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
-                            ado.IS_OUT_PARENT_FEE = item.IS_OUT_PARENT_FEE;
-                            if (dataBloodType.First(o => o.ID == item.BLOOD_TYPE_ID) != null)
-                            {
-                                var currentService = lstSerivce.First(o => o.ID == dataBloodType.First(p => p.ID == item.BLOOD_TYPE_ID).SERVICE_ID);
-                                if (currentService != null)
-                                {
-                                    ado.SERVICE_TYPE_ID = currentService.SERVICE_TYPE_ID;
-                                    ado.SERVICE_ID = currentService.ID;
-                                    ado.HEIN_LIMIT_PRICE_IN_TIME = currentService.HEIN_LIMIT_PRICE_IN_TIME;
-                                    ado.HEIN_LIMIT_PRICE_INTR_TIME = currentService.HEIN_LIMIT_PRICE_INTR_TIME;
-                                    ado.HEIN_LIMIT_PRICE_OLD = currentService.HEIN_LIMIT_PRICE_OLD;
-                                    ado.HEIN_LIMIT_PRICE = currentService.HEIN_LIMIT_PRICE;
-                                }
-                            }
-
-                            ado.PRICE = GetPriceByBloodType(ado);
-                            ado.TOT_PRICE = ado.PRICE * ado.AMOUNT;
-                            this.ListBloodTypeADOProcess.Add(ado);
-                        }
-                    }
+                    LoadBloodBySereServ(_serviceReqId, sdoEdit);
                 }
                 else
                 {
-                    HisSereServFilter hisSereServFilter = new HisSereServFilter();
-                    hisSereServFilter.SERVICE_REQ_ID = _serviceReqId;
-                    var sereServs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, hisSereServFilter, null);
-                    if (sereServs != null && sereServs.Count > 0)
+                    MOS.Filter.HisExpMestFilter filter = new MOS.Filter.HisExpMestFilter();
+                    filter.SERVICE_REQ_ID = _serviceReqId;
+
+                    var dataExpMests = new BackendAdapter(new CommonParam())
+                        .Get<List<HIS_EXP_MEST>>("/api/HisExpMest/Get", ApiConsumers.MosConsumer, filter, null);
+
+                    if (dataExpMests != null && dataExpMests.Count > 0)
                     {
+                        this.cboMediStockExport_TabBlood.EditValue = dataExpMests.First().MEDI_STOCK_ID;
+                        this.cboMediStockExport_TabBlood.Enabled = false;
+                        this.btnNew.Enabled = false;
+                        this.dropDownPrintBlood.Enabled = true;
 
-                        foreach (var item in sereServs)
+                        sdoEdit.ExpMest = dataExpMests.First();
+
+                        MOS.Filter.HisExpMestBltyReqViewFilter _expMestBltyFilter = new MOS.Filter.HisExpMestBltyReqViewFilter();
+                        _expMestBltyFilter.EXP_MEST_IDs = dataExpMests.Select(p => p.ID).ToList();
+
+                        var dataExpMestBltyReqs = new BackendAdapter(new CommonParam())
+                            .Get<List<V_HIS_EXP_MEST_BLTY_REQ>>("/api/HisExpMestBltyReq/GetView", ApiConsumers.MosConsumer, _expMestBltyFilter, null);
+
+                        if (dataExpMestBltyReqs != null && dataExpMestBltyReqs.Count > 0)
                         {
-                            HIS_EXP_MEST_BLTY_REQ bltyPrint = new HIS_EXP_MEST_BLTY_REQ();
-                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_BLTY_REQ>(bltyPrint, item);
-                            sdoEdit.Bloods.Add(bltyPrint);
+                            MOS.Filter.HisBloodTypeFilter bloodTypeFilter = new MOS.Filter.HisBloodTypeFilter();
+                            bloodTypeFilter.IDs = dataExpMestBltyReqs.Select(p => p.BLOOD_TYPE_ID).ToList();
 
-                            BloodTypeADO ado = new BloodTypeADO();
-                            ado.AMOUNT = item.AMOUNT;
-                            ado.BLOOD_TYPE_NAME = item.TDL_SERVICE_NAME;
-                            ado.BLOOD_TYPE_CODE = item.TDL_SERVICE_CODE;
-                            //ado.BLOOD_ABO_ID = item.A;
-                            //ado.BLOOD_RH_ID = item.BLOOD_RH_ID;
-                            ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
-                            ado.IS_OUT_PARENT_FEE = item.IS_OUT_PARENT_FEE;
-                            ado.PRICE = item.PRICE;
-                            ado.TOT_PRICE = ado.PRICE * ado.AMOUNT;
-                            this.ListBloodTypeADOProcess.Add(ado);
+                            var dataBloodType = new BackendAdapter(new CommonParam())
+                                .Get<List<HIS_BLOOD_TYPE>>("/api/HisBloodType/Get", ApiConsumers.MosConsumer, bloodTypeFilter, null);
+
+                            foreach (var item in dataExpMestBltyReqs)
+                            {
+                                HIS_EXP_MEST_BLTY_REQ bltyPrint = new HIS_EXP_MEST_BLTY_REQ();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_BLTY_REQ>(bltyPrint, item);
+                                sdoEdit.Bloods.Add(bltyPrint);
+
+                                BloodTypeADO ado = new BloodTypeADO();
+                                ado.ID = item.BLOOD_TYPE_ID;
+                                ado.AMOUNT = item.AMOUNT;
+                                ado.BLOOD_TYPE_NAME = item.BLOOD_TYPE_NAME;
+                                ado.BLOOD_TYPE_CODE = item.BLOOD_TYPE_CODE;
+                                ado.BLOOD_ABO_ID = item.BLOOD_ABO_ID;
+                                ado.BLOOD_RH_ID = item.BLOOD_RH_ID;
+                                ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
+                                ado.IS_OUT_PARENT_FEE = item.IS_OUT_PARENT_FEE;
+
+                                var bloodType = dataBloodType?.FirstOrDefault(o => o.ID == item.BLOOD_TYPE_ID);
+                                if (bloodType != null)
+                                {
+                                    var currentService = lstSerivce?.FirstOrDefault(o => o.ID == bloodType.SERVICE_ID);
+                                    if (currentService != null)
+                                    {
+                                        ado.SERVICE_TYPE_ID = currentService.SERVICE_TYPE_ID;
+                                        ado.SERVICE_ID = currentService.ID;
+                                        ado.HEIN_LIMIT_PRICE_IN_TIME = currentService.HEIN_LIMIT_PRICE_IN_TIME;
+                                        ado.HEIN_LIMIT_PRICE_INTR_TIME = currentService.HEIN_LIMIT_PRICE_INTR_TIME;
+                                        ado.HEIN_LIMIT_PRICE_OLD = currentService.HEIN_LIMIT_PRICE_OLD;
+                                        ado.HEIN_LIMIT_PRICE = currentService.HEIN_LIMIT_PRICE;
+                                    }
+                                }
+
+                                ado.PRICE = GetPriceByBloodType(ado);
+                                ado.TOT_PRICE = ado.PRICE * ado.AMOUNT;
+                                this.ListBloodTypeADOProcess.Add(ado);
+                            }
                         }
+                    }
+                    else
+                    {
+                        // không có exp_mest thì load sere_serv như cũ
+                        LoadBloodBySereServ(_serviceReqId, sdoEdit);
                     }
                 }
 
@@ -391,10 +537,85 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.gridControlServiceProcess__TabBlood.DataSource = null;
                 this.gridControlServiceProcess__TabBlood.DataSource = this.ListBloodTypeADOProcess;
                 this.EnableAndDisableControlWithGirdcontrol();
+
+                bool isEditOld = (this._ServiceReqEdit != null && this._ServiceReqEdit.ID > 0
+                  && this.actionType == GlobalVariables.ActionEdit);
+
+                if (isEditOld && _isExternalMinhTamMode)
+                {
+                    EnableAboRhEditOnOldServiceReq();
+
+                    foreach (var r in this.ListBloodTypeADOProcess)
+                    {
+                        r.BLOOD_ABO_ID = null;
+                        r.BLOOD_RH_ID = null;
+                    }
+                    this.gridControlServiceProcess__TabBlood.RefreshDataSource();
+
+                    var btIds = this.ListBloodTypeADOProcess.Select(x => x.ID).Distinct().ToList();
+                    PreloadMinhTamAboRhForOldOrder(btIds);
+
+                    var firstId = btIds.FirstOrDefault();
+                    if (firstId > 0)
+                        BindAboRhDatasourceForBloodType(firstId);
+
+                    cboBloodABO.EditValue = null;
+                    cboBloodRH.EditValue = null;
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadBloodBySereServ(long serviceReqId, PatientBloodPresResultSDO sdoEdit)
+        {
+            if (sdoEdit.Bloods == null)
+                sdoEdit.Bloods = new List<HIS_EXP_MEST_BLTY_REQ>();
+
+            var hisSereServFilter = new HisSereServFilter();
+            hisSereServFilter.SERVICE_REQ_ID = serviceReqId;
+
+            var sereServs = new BackendAdapter(new CommonParam())
+                .Get<List<HIS_SERE_SERV>>("/api/HisSereServ/Get", ApiConsumers.MosConsumer, hisSereServFilter, null);
+
+            if (sereServs == null || sereServs.Count == 0) return;
+
+           var allBloodTypes = BackendDataWorker.Get<HIS_BLOOD_TYPE>()
+                .Where(bt => bt.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                          && bt.SERVICE_ID > 0
+                          && bt.ID > 0)
+                .ToList();
+
+            var dicServiceIdToBloodTypeId = allBloodTypes
+                .GroupBy(bt => bt.SERVICE_ID)
+                .ToDictionary(g => g.Key, g => g.First().ID);
+
+            foreach (var item in sereServs)
+            {
+                var bltyPrint = new HIS_EXP_MEST_BLTY_REQ();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EXP_MEST_BLTY_REQ>(bltyPrint, item);
+                sdoEdit.Bloods.Add(bltyPrint);
+
+                long bloodTypeId = 0;
+                if (item.SERVICE_ID > 0)
+                    dicServiceIdToBloodTypeId.TryGetValue(item.SERVICE_ID, out bloodTypeId);
+
+                var ado = new BloodTypeADO();
+                ado.ID = bloodTypeId;
+                ado.SERVICE_ID = item.SERVICE_ID;
+                ado.AMOUNT = item.AMOUNT;
+                ado.BLOOD_TYPE_NAME = item.TDL_SERVICE_NAME;
+                ado.BLOOD_TYPE_CODE = item.TDL_SERVICE_CODE;
+                ado.BLOOD_ABO_ID = null;
+                ado.BLOOD_RH_ID = null;
+                ado.PATIENT_TYPE_ID = item.PATIENT_TYPE_ID;
+                ado.IS_OUT_PARENT_FEE = item.IS_OUT_PARENT_FEE;
+                ado.PRICE = item.PRICE;
+                ado.TOT_PRICE = ado.PRICE * ado.AMOUNT;
+
+                this.ListBloodTypeADOProcess.Add(ado);
             }
         }
         private void AttachTimeChangedEvent(Control parent)
@@ -1886,6 +2107,14 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     {
                         e.RepositoryItem = this.repositoryItemChkOutKtcFee_Enable_TabBlood;
                     }
+                    else if (e.Column.FieldName == "BLOOD_ABO_ID")
+                    {
+                        e.RepositoryItem = this.repositoryItemcboBloodABO;
+                    }
+                    else if (e.Column.FieldName == "BLOOD_RH_ID")
+                    {
+                        e.RepositoryItem = this.repositoryItemcboBloodRH;
+                    }
 
                 }
             }
@@ -2197,6 +2426,20 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                         editor.ReadOnly = true;
                     }
                 }
+                if ((view.FocusedColumn.FieldName == "BLOOD_ABO_ID" || view.FocusedColumn.FieldName == "BLOOD_RH_ID")
+                && _isExternalMinhTamMode
+                && this._ServiceReqEdit != null && this._ServiceReqEdit.ID > 0
+                && this.actionType == GlobalVariables.ActionEdit)
+                {
+                    var row = view.GetFocusedRow() as BloodTypeADO;
+                    if (row != null && row.ID > 0)
+                    {
+                        // đổi datasource theo BLOOD_TYPE_ID của dòng đang sửa (không gọi API nữa vì đã preload)
+                        BindAboRhDatasourceForBloodType(row.ID);
+                        // không gợi ý
+                        // (đừng set editor.EditValue)
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -2235,47 +2478,98 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             }
         }
 
+        //private bool CheckValidGridBLoodType()
+        //{
+        //    bool success = true;
+        //    try
+        //    {
+        //        string message = "";
+
+        //        var medicinesMaterials = this.gridViewServiceProcess__TabBlood.DataSource as List<BloodTypeADO>;
+        //        if (medicinesMaterials != null && medicinesMaterials.Count > 0)
+        //        {
+        //            foreach (var item in medicinesMaterials)
+        //            {
+        //                string error = String.Format(ResourceMessage.MessageMau, item.BLOOD_TYPE_NAME);
+        //                bool valid = true;
+        //                if (item.AMOUNT <= 0)
+        //                {
+        //                    valid = false;
+        //                    error += " " + ResourceMessage.KhongNhapSoLuong;
+        //                }
+        //                if (item.PATIENT_TYPE_ID == null || item.PATIENT_TYPE_ID <= 0)
+        //                {
+        //                    valid = false;
+        //                    error += " " + ResourceMessage.KhongCoDoiTuongThanhToan;
+        //                }
+        //                if (!valid)
+        //                {
+        //                    message += error;
+        //                    success = false;
+        //                }
+        //            }
+        //        }
+
+        //        if (!success)
+        //        {
+        //            MessageManager.Show(message);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //    return success;
+        //}
         private bool CheckValidGridBLoodType()
         {
             bool success = true;
             try
             {
-                string message = "";
+                var rows = this.gridViewServiceProcess__TabBlood.DataSource as List<BloodTypeADO>;
+                if (rows == null || rows.Count == 0) return true;
 
-                var medicinesMaterials = this.gridViewServiceProcess__TabBlood.DataSource as List<BloodTypeADO>;
-                if (medicinesMaterials != null && medicinesMaterials.Count > 0)
+                // Chỉ bắt buộc ABO/RH trong mode External Minh Tâm (đúng yêu cầu tránh lệch kho ngoài)
+                bool mustCheckAboRh = _isExternalMinhTamMode;
+
+                StringBuilder sb = new StringBuilder();
+
+                foreach (var item in rows)
                 {
-                    foreach (var item in medicinesMaterials)
+                    List<string> errs = new List<string>();
+
+                    if ((item.AMOUNT ?? 0) <= 0)
+                        errs.Add(ResourceMessage.KhongNhapSoLuong);
+
+                    if ((item.PATIENT_TYPE_ID ?? 0) <= 0)
+                        errs.Add(ResourceMessage.KhongCoDoiTuongThanhToan);
+
+                    if (mustCheckAboRh)
                     {
-                        string error = String.Format(ResourceMessage.MessageMau, item.BLOOD_TYPE_NAME);
-                        bool valid = true;
-                        if (item.AMOUNT <= 0)
-                        {
-                            valid = false;
-                            error += " " + ResourceMessage.KhongNhapSoLuong;
-                        }
-                        if (item.PATIENT_TYPE_ID == null || item.PATIENT_TYPE_ID <= 0)
-                        {
-                            valid = false;
-                            error += " " + ResourceMessage.KhongCoDoiTuongThanhToan;
-                        }
-                        if (!valid)
-                        {
-                            message += error;
-                            success = false;
-                        }
+                        if (!item.BLOOD_ABO_ID.HasValue || item.BLOOD_ABO_ID.Value <= 0)
+                            errs.Add("Chưa chọn nhóm máu (ABO)");
+
+                        if (!item.BLOOD_RH_ID.HasValue || item.BLOOD_RH_ID.Value <= 0)
+                            errs.Add("Chưa chọn Rh");
+                    }
+
+                    if (errs.Count > 0)
+                    {
+                        success = false;
+                        sb.AppendLine($"{item.BLOOD_TYPE_NAME}: {string.Join(", ", errs)}");
                     }
                 }
 
                 if (!success)
                 {
-                    MessageManager.Show(message);
+                    MessageManager.Show(sb.ToString());
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+
             return success;
         }
 
@@ -2693,6 +2987,12 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     MessageManager.Show(ResourceMessage.DuLieuKhongHopHeVuiLongKiemTraLai);
                     return;
                 }
+                if (this.actionType == GlobalVariables.ActionEdit
+            && this._ServiceReqEdit != null
+            && this._ServiceReqEdit.ID > 0)
+                {
+                    sdo.Id = this._ServiceReqEdit.ID;
+                }
                 Inventec.Common.Logging.LogSystem.Info("HisServiceExternalBloodSDO: "
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
 
@@ -2703,6 +3003,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     ProcessLostToken,
                     param
                 );
+                LogSystem.Debug("resultExternalBlood:" + result);
 
                 success = result != null ? true : false;
                 WaitingManager.Hide();
@@ -4016,7 +4317,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
 
                 if (!string.IsNullOrEmpty(aboCode))
                 {
-                    var abo = (aboCode ?? "").Trim().ToUpper();   // "O " -> "O"
+                    var abo = (aboCode ?? "").Trim().ToUpper();
 
                     var bloodAbo = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BLOOD_ABO>()
                         .FirstOrDefault(o => (o.BLOOD_ABO_CODE ?? "").Trim().ToUpper() == abo);
@@ -4131,6 +4432,146 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             finally
             {
                 Cursor.Current = Cursors.Default;
+            }
+        }
+        private void EnableAboRhEditOnOldServiceReq()
+        {
+            // cho sửa trên grid
+            grcBloodABO__TabBlood.OptionsColumn.AllowEdit = true;
+            grcBloodRH__TabBlood.OptionsColumn.AllowEdit = true;
+
+            grcBloodABO__TabBlood.OptionsColumn.ReadOnly = false;
+            grcBloodRH__TabBlood.OptionsColumn.ReadOnly = false;
+
+            grcBloodABO__TabBlood.OptionsColumn.AllowFocus = true;
+            grcBloodRH__TabBlood.OptionsColumn.AllowFocus = true;
+
+            // cho sửa trên 2 combo “bổ sung”
+            cboBloodABO.Enabled = true;
+            cboBloodRH.Enabled = true;
+        }
+        private void PreloadMinhTamAboRhForOldOrder(List<long> bloodTypeIds)
+        {
+            try
+            {
+                _mtAboByBloodTypeId.Clear();
+                _mtRhByBloodTypeId.Clear();
+
+                var allAbo = BackendDataWorker.Get<HIS_BLOOD_ABO>();
+                var allRh = BackendDataWorker.Get<HIS_BLOOD_RH>();
+
+                var bloodTypes = BackendDataWorker.Get<HIS_BLOOD_TYPE>();
+                var volumes = BackendDataWorker.Get<HIS_BLOOD_VOLUME>();
+
+                string baseUrl = HisConfigCFG.HisAssignBloodMediStock_External__BaseUrl;
+                if (string.IsNullOrWhiteSpace(baseUrl)) return;
+
+                foreach (var btId in bloodTypeIds.Distinct().Where(x => x > 0))
+                {
+                    var bt = bloodTypes.FirstOrDefault(x => x.ID == btId);
+                    if (bt == null) continue;
+
+                    string elementId = (bt.ELEMENT ?? "").Trim();
+                    if (string.IsNullOrWhiteSpace(elementId)) continue;
+
+                    int volume = (int)(volumes.FirstOrDefault(v => v.ID == bt.BLOOD_VOLUME_ID)?.VOLUME ?? 0);
+                    if (volume <= 0) continue;
+
+                    // call Minh Tâm
+                    var inv = CallMinhTamGetInventory(baseUrl, elementId, volume);
+                    if (inv == null) continue;
+
+                    // lấy tập ABO/Rh codes có trong inventory
+                    var aboCodes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    var rhCodes = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                    foreach (var it in inv)
+                    {
+                        string abo = (it["ABO"] ?? it["abo"])?.ToString();
+                        string rh = (it["Rh"] ?? it["rh"])?.ToString();
+
+                        if (!string.IsNullOrWhiteSpace(abo)) aboCodes.Add(abo.Trim().ToUpper());
+                        if (!string.IsNullOrWhiteSpace(rh)) rhCodes.Add(rh.Trim().ToUpper());
+                    }
+
+                    // map codes -> entity list
+                    var aboList = (aboCodes.Count > 0)
+                        ? allAbo.Where(x => aboCodes.Contains((x.BLOOD_ABO_CODE ?? "").Trim().ToUpper())).ToList()
+                        : allAbo.ToList();
+
+                    var rhList = (rhCodes.Count > 0)
+                        ? allRh.Where(x => rhCodes.Contains((x.BLOOD_RH_CODE ?? "").Trim().ToUpper())).ToList()
+                        : allRh.ToList();
+
+                    _mtAboByBloodTypeId[btId] = aboList;
+                    _mtRhByBloodTypeId[btId] = rhList;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
+        private Newtonsoft.Json.Linq.JArray CallMinhTamGetInventory(string baseUrl, string elementId, int volume)
+        {
+            try
+            {
+                var requestObj = new { ElementID = elementId, Volume = volume };
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(requestObj);
+
+                using (var client = new System.Net.Http.HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(30);
+                    var content = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
+
+                    // ConfigureAwait(false) để tránh deadlock khi GetResult trên UI thread
+                    var resp = client.PostAsync(baseUrl + "LisReceiver/web/GetInventory", content)
+                                     .ConfigureAwait(false).GetAwaiter().GetResult();
+
+                    if (!resp.IsSuccessStatusCode) return null;
+
+                    string respJson = resp.Content.ReadAsStringAsync()
+                                       .ConfigureAwait(false).GetAwaiter().GetResult();
+
+                    var jo = Newtonsoft.Json.JsonConvert.DeserializeObject<Newtonsoft.Json.Linq.JObject>(respJson);
+                    bool ok = (jo?["IsSuccess"] ?? jo?["isSuccess"])?.Value<bool>() == true;
+                    if (!ok) return null;
+
+                    var data = (jo["InventoryInfo"] ?? jo["inventoryInfo"]) as Newtonsoft.Json.Linq.JArray;
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return null;
+            }
+        }
+        private void BindAboRhDatasourceForBloodType(long bloodTypeId)
+        {
+            // fallback: full list
+            var abo = _mtAboByBloodTypeId.ContainsKey(bloodTypeId)
+                ? _mtAboByBloodTypeId[bloodTypeId]
+                : BackendDataWorker.Get<HIS_BLOOD_ABO>();
+
+            var rh = _mtRhByBloodTypeId.ContainsKey(bloodTypeId)
+                ? _mtRhByBloodTypeId[bloodTypeId]
+                : BackendDataWorker.Get<HIS_BLOOD_RH>();
+
+            // ABO
+            {
+                var cols = new List<ColumnInfo> { new ColumnInfo("BLOOD_ABO_CODE", "", 250, 2) };
+                var ado = new ControlEditorADO("BLOOD_ABO_CODE", "ID", cols, false, 250);
+                ControlEditorLoader.Load(cboBloodABO, abo, ado);
+                ControlEditorLoader.Load(repositoryItemcboBloodABO, abo, ado);
+            }
+
+            // RH
+            {
+                var cols = new List<ColumnInfo> { new ColumnInfo("BLOOD_RH_CODE", "", 250, 2) };
+                var ado = new ControlEditorADO("BLOOD_RH_CODE", "ID", cols, false, 250);
+                ControlEditorLoader.Load(cboBloodRH, rh, ado);
+                ControlEditorLoader.Load(repositoryItemcboBloodRH, rh, ado);
             }
         }
 
