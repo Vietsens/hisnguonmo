@@ -839,6 +839,7 @@ namespace HIS.Desktop.ApiConsumer
         public const string HIS_SPECIALIST_EXAM_CREATE = "api/HisSpecialistExam/Create";
 
         public const string HIS_SERE_SERV_VIEX_GET = "/api/HisSereServViex/Get";
+        public const string HIS_SERE_SERV_VIEX_GETVIEW = "/api/HisSereServViex/GetView";
         public const string HIS_SERE_SERV_VIEX_CREATE = "/api/HisSereServViex/Create";
         public const string HIS_SERE_SERV_VIEX_UPDATE = "/api/HisSereServViex/Update";
     }
