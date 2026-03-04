@@ -83,10 +83,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.bbtnSaveAndPrint = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
             this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.cboBloodLevel = new DevExpress.XtraEditors.ComboBoxEdit();
             this.chkShowGroupBlood = new DevExpress.XtraEditors.CheckEdit();
             this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
@@ -219,6 +215,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemExtrnalBlood = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidProviderBoXung__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxValidationProviderControl__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
@@ -384,7 +384,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // colCode
             // 
             this.colCode.Caption = "Mã";
-            this.colCode.FieldName = "elementID";
+            this.colCode.FieldName = "ElementID";
             this.colCode.Name = "colCode";
             this.colCode.OptionsColumn.AllowEdit = false;
             this.colCode.Visible = true;
@@ -393,7 +393,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // colName
             // 
             this.colName.Caption = "Tên";
-            this.colName.FieldName = "elementName";
+            this.colName.FieldName = "ElementName";
             this.colName.Name = "colName";
             this.colName.OptionsColumn.AllowEdit = false;
             this.colName.Visible = true;
@@ -402,7 +402,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // colAbo
             // 
             this.colAbo.Caption = "ABO";
-            this.colAbo.FieldName = "abo";
+            this.colAbo.FieldName = "Abo";
             this.colAbo.Name = "colAbo";
             this.colAbo.OptionsColumn.AllowEdit = false;
             this.colAbo.Visible = true;
@@ -411,7 +411,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // colRh
             // 
             this.colRh.Caption = "RH";
-            this.colRh.FieldName = "rh";
+            this.colRh.FieldName = "Rh";
             this.colRh.Name = "colRh";
             this.colRh.OptionsColumn.AllowEdit = false;
             this.colRh.Visible = true;
@@ -420,7 +420,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // colMl
             // 
             this.colMl.Caption = "Dung tích (ml)";
-            this.colMl.FieldName = "volume";
+            this.colMl.FieldName = "Volume";
             this.colMl.Name = "colMl";
             this.colMl.OptionsColumn.AllowEdit = false;
             this.colMl.Visible = true;
@@ -429,7 +429,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // colStockValue
             // 
             this.colStockValue.Caption = "Tồn kho";
-            this.colStockValue.FieldName = "quantity";
+            this.colStockValue.FieldName = "Quantity";
             this.colStockValue.Name = "colStockValue";
             this.colStockValue.OptionsColumn.AllowEdit = false;
             this.colStockValue.Visible = true;
@@ -439,10 +439,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Images = this.imageCollection1;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
@@ -525,34 +521,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.imageCollection1.Images.SetKeyName(10, "solidpurpledatabar_16x16.png");
             this.imageCollection1.InsertGalleryImage("solidreddatabar_16x16.png", "images/data%20bars/solidreddatabar_16x16.png", DevExpress.Images.ImageResourceCache.Default.GetImage("images/data%20bars/solidreddatabar_16x16.png"), 11);
             this.imageCollection1.Images.SetKeyName(11, "solidreddatabar_16x16.png");
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1427, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 694);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1427, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 665);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1427, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 665);
             // 
             // cboBloodLevel
             // 
@@ -2065,6 +2033,34 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.layoutControlItemExtrnalBlood.Size = new System.Drawing.Size(651, 261);
             this.layoutControlItemExtrnalBlood.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItemExtrnalBlood.TextVisible = false;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1427, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 694);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1427, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 665);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1427, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 665);
             // 
             // dxValidProviderBoXung__MedicinePage
             // 
