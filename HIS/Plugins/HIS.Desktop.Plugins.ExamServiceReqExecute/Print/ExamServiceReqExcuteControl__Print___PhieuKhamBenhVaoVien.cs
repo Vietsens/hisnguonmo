@@ -145,8 +145,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 filterViexView.TDL_PATIENT_ID = patient.ID;
                 filterViexView.SERVICE_REQ_ID = this.HisServiceReqView.ID;
                 var sereServViexViews = new BackendAdapter(paramViex).Get<List<V_HIS_SERE_SERV_VIEX>>
-                    (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filterViexView, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramViex)
-                    ?? new List<V_HIS_SERE_SERV_VIEX>();
+                    (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filterViexView, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramViex);
                 MPS.Processor.Mps000007.PDO.Mps000007PDO rdo = new MPS.Processor.Mps000007.PDO.Mps000007PDO(
                     patient,
                     patientTypeAlter,
