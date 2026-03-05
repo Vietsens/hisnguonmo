@@ -26,6 +26,7 @@ using HIS.Desktop.Plugins.TreatmentList.Base;
 using HIS.Desktop.Print;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Common.RichEditor.DAL;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
@@ -824,6 +825,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
                 V_HIS_SERVICE_REQ currentHisVExamServiceReq = null;
                 var dhst = new HIS_DHST();
+                var sereServViexView = new V_HIS_SERE_SERV_VIEX();
                 Task tsServiceReq = Task.Factory.StartNew(() =>
                 {
                     HisServiceReqViewFilter examServiceReqFilter = new HisServiceReqViewFilter();
@@ -851,9 +853,22 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         HisDhstFilter hisDhstFilter = new MOS.Filter.HisDhstFilter();
                         hisDhstFilter.ID = currentHisVExamServiceReq.DHST_ID.Value;
                         dhst = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, hisDhstFilter, param).FirstOrDefault();
+
+                        LogSystem.Info("currentHisVExamServiceReq 1 " + LogUtil.TraceData(" __data__ ", currentHisVExamServiceReq));
+                        LogSystem.Info("currentHisVExamServiceReq " + currentHisVExamServiceReq.ID);
+
+                        HisSereServViexViewFilter hisSereServViexViewFilter = new HisSereServViexViewFilter();
+                        hisSereServViexViewFilter.SERVICE_REQ_ID = currentHisVExamServiceReq.ID;
+                        LogSystem.Info("input 1 " + LogUtil.TraceData(" __data__ ", hisSereServViexViewFilter));
+                        var lstSereServViexView = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_VIEX>>("api/HisSereServViex/GetView", ApiConsumers.MosConsumer, hisSereServViexViewFilter, param).ToList();
+                        LogSystem.Info("tra ra 1 " + LogUtil.TraceData(" __data__ ", lstSereServViexView)); 
+
+                        LogSystem.Info("sereServViexView count " + lstSereServViexView.Count());
+                        LogSystem.Info("sereServViexView 1 " + LogUtil.TraceData(" __data__ ", lstSereServViexView.OrderByDescending(o => o.VISION_TEST_TIME).FirstOrDefault()));
+                        sereServViexView = lstSereServViexView.OrderByDescending(o => o.VISION_TEST_TIME).FirstOrDefault();
                     }
                 });
-                taskall.Add(tsServiceReq);
+                taskall.Add(tsServiceReq); 
 
                 List<HIS_SERE_SERV> ClsSereServs = null;
                 //cac can lam sang
@@ -990,7 +1005,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
                     Task.WaitAll(taskallExpMest.ToArray());
                 }
-
+                LogSystem.Info("sereServViexView " + LogUtil.TraceData(" __data__ ", sereServViexView));
                 MPS.Processor.Mps000007.PDO.Mps000007PDO mps000007RDO = new MPS.Processor.Mps000007.PDO.Mps000007PDO(
                     currentPatient,
                     currentHispatientTypeAlter,
@@ -1003,7 +1018,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     ExpMestBloodList,
                     ExpMestBltyReqList,
                     ExpMestMedicineList,
-                    ExpMestMaterialList
+                    ExpMestMaterialList,
+                    sereServViexView
                     );
 
                 string printerName = "";
