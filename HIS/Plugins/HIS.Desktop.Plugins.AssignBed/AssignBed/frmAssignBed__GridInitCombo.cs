@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -53,6 +54,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             try
             {
                 allHisBedBstys = BackendDataWorker.Get<HIS_BED_BSTY>().Where(o => o.IS_ACTIVE == 1).ToList();
+
+                var bedRooms = BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == 1 && o.DEPARTMENT_ID == this.currentDepartment.ID).ToList();
 
                 var hisBedIds = allHisBedBstys.Select(o => o.BED_ID).ToList();
 
@@ -207,12 +210,23 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                 if (itemADO.MAX_CAPACITY.HasValue)
                                 {
                                     if (dataByBedLogs.Count >= itemADO.MAX_CAPACITY)
+                                    {
                                         itemADO.IsKey = 2;
+                                    }
+                                    else if (dataByBedLogs.Count == 0)
+                                    {
+                                        itemADO.IsKey = 0;
+                                    }
                                     else
+                                    {
                                         itemADO.IsKey = 1;
+                                    }
+
                                 }
                                 else
-                                    itemADO.IsKey = 1;
+                                {
+                                    itemADO.IsKey = 0;
+                                }    
                                 itemADO.BedLogAllIds = dataByBedLogs.Select(o => o.ID).ToList();
                                 itemADO.AMOUNT = dataByBedLogs.Count;
 

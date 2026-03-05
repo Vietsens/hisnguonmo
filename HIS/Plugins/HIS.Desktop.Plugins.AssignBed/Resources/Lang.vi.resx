@@ -287,4 +287,7 @@ toán</value>
 	<data name="frmAssignBed.gridColumn14.Caption" xml:space="preserve">
     <value>Tên</value>
   </data>
+	<data name="frmAssignBed.layoutControlItem36.Text" xml:space="preserve">
+    <value>Phòng TN</value>
+  </data>
 </root>

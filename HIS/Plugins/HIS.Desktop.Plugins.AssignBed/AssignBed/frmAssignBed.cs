@@ -50,6 +50,7 @@ using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.LibraryMessage;
 using Inventec.Desktop.Common.Message;
+using Inventec.Desktop.Core;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
@@ -67,6 +68,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 {
@@ -119,6 +121,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         List<HIS_PATIENT_TYPE_ROOM> PatientTypeRooms { get; set; }
         private List<HIS_DEPARTMENT_TRAN> ListDepartmentTranCheckTime = null;
         private List<HIS_CO_TREATMENT> ListCoTreatmentCheckTime = null;
+        private bool _isBedCodeClickOnCheckedRow = false;
+        // Lưu SERVICE_ID của các row mà người dùng chủ động xóa ĐTTT bằng nút Delete.
+        // Dùng để ngăn CellValueChanged tự động restore lại ĐTTT khi chạy cho các cột khác (TIME_FROM, QUANTITY…).
+        private HashSet<long> _manuallyPatientTypeClearedServiceIds = new HashSet<long>();
 
         DateTime timeSelested;
         internal long InstructionTime { get; set; }
@@ -472,7 +478,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             bool valid = true;
             try
             {
-                long patientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewServiceProcess.GetRowCellValue(rowHandle, "PATIENT_TYPE_ID_STR") ?? "0").ToString());
+                long patientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewServiceProcess.GetRowCellValue(rowHandle, "PATIENT_TYPE_ID") ?? "0").ToString());
                 long primaryPatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewServiceProcess.GetRowCellValue(rowHandle, "PRIMARY_PATIENT_TYPE_ID") ?? "0").ToString());
                 if (patientTypeId == HisConfigCFG.PatientTypeId__BHYT || primaryPatientTypeId == HisConfigCFG.PatientTypeId__BHYT)
                 {
@@ -495,7 +501,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 {
                     var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                     DataGridAdo data = (DataGridAdo)gridViewServiceProcess.GetRow(e.RowHandle);
-                    if (e.Column.FieldName == "PATIENT_TYPE_ID_STR")
+                    if (e.Column.FieldName == "PATIENT_TYPE_ID")
                     {
                         e.RepositoryItem = this.repositoryItemGridLookUpEditPatientType;
                     }
@@ -605,7 +611,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         }
                         else
                         {
-                            e.RepositoryItem = null; // Hoặc repository mặc định
+                            e.RepositoryItem = null;
                         }
                     }
                     else if (e.Column.FieldName == "TIME_TO")
@@ -638,7 +644,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                 if (decimal.TryParse(quantityValue.ToString(), out quantity))
                                 {
                                     // Tính TIME_TO = TIME_FROM + QUANTITY (số ngày)
-                                    int daysToAdd = (int)quantity;
+                                    int daysToAdd = Math.Max(0, (int)quantity - 1);
                                     DateTime timeTo = timeFrom.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
 
                                     // Cập nhật giá trị TIME_TO vào cell
@@ -704,7 +710,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         }
 
                     }
-                    else if (e.Column.FieldName == "TDL_EXECUTE_ROOM_ID_STR")
+                    else if (e.Column.FieldName == "TDL_EXECUTE_ROOM_ID")
                     {
                         if (this.IsTreatmentInBedRoom && data != null && data.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G && data.TDL_EXECUTE_ROOM_ID > 0)
                         {
@@ -2517,9 +2523,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 }
                 else
                 {
-                    //this.txtInstructionTime.Visible = false;
-                    //this.dtInstructionTime.Visible = true;
-                    //this.timeIntruction.EditValue = now.ToString("HH:mm");
                     nowTmp = now;
                     this.intructionTimeSelected = new List<DateTime?>();
                     this.intructionTimeSelected.Add(now);
@@ -2534,14 +2537,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 long time = long.Parse(DateTime.Now.ToString("yyyyMMddHHmmss"));
                 this.intructionTimeSelecteds.Add(time);
                 this.InstructionTime = intructionTimeSelecteds.First();
-
-                //this.chkMultiIntructionTime.Checked = false;
-
-                //if (input != null && input.IsVisibleMultiDate.HasValue)
-                //{
-                //    this.lcichkMultiDate.Visibility = (input.IsVisibleMultiDate.Value ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never);
-                //}
-                //this.isMultiDateState = chkMultiIntructionTime.Checked;
             }
             catch (Exception ex)
             {
@@ -3045,7 +3040,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     serviceTypeIds.AddRange(ServiceParentADOs.Select(p => p.SERVICE_TYPE_ID).Distinct());
 
                 }
-                
+
                 this.gridControlServiceProcess.DataSource = null;
                 //if (!String.IsNullOrWhiteSpace(txtServiceName_Search.Text) && listSereServADO != null && listSereServADO.Count() > 0)
                 //{
@@ -3131,12 +3126,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
-
-
                 var datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().ToList();
-                //var datas = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_ROOM>().Select(o => o.DEPARTMENT_ID).ToList();
-
-
             }
             catch (Exception ex)
             {
@@ -3148,17 +3138,77 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
-                var sereServADO = (DataGridAdo)this.gridViewServiceProcess.GetFocusedRow();
                 var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-                serviceIdClick = sereServADO.SERVICE_ID;
+                var sereServADO = (view != null ? view.GetRow(e.RowHandle) : null) as DataGridAdo
+                    ?? (DataGridAdo)this.gridViewServiceProcess.GetFocusedRow();
                 if (sereServADO != null)
                 {
-                    bool isSelected = view.IsRowSelected(e.RowHandle);
+                    serviceIdClick = sereServADO.SERVICE_ID;
+
+                    // Nếu thay đổi cột IsChecked thì cập nhật giá trị đúng với checkbox
+                    if (e.Column.FieldName == "IsChecked")
+                    {
+                        bool isChecked = false;
+                        if (e.Value != null)
+                        {
+                            bool.TryParse(e.Value.ToString(), out isChecked);
+                        }
+                        sereServADO.IsChecked = isChecked;
+                    }
+
+                    // Nếu bỏ tích thì clear các dữ liệu ĐTTT / phòng xử lý / ĐT phụ thu (tránh còn hiển thị trên grid)
+                    if (e.Column.FieldName == "IsChecked" && !sereServADO.IsChecked)
+                    {
+                        this.ResetOneService(sereServADO);
+                        if (view != null && e.RowHandle >= 0)
+                        {
+                            // ép GridView cập nhật lại display text của các cột lookup
+                            view.SetRowCellValue(e.RowHandle, this.gridColumnPatientTypeName__TabService, sereServADO.PATIENT_TYPE_ID);
+                            view.SetRowCellValue(e.RowHandle, this.gridColumnExecuteRoomName__TabService, sereServADO.TDL_EXECUTE_ROOM_ID);
+                            view.SetRowCellValue(e.RowHandle, this.gridColumn_Service_PrimaryPatientType, sereServADO.PRIMARY_PATIENT_TYPE_ID);
+                            view.RefreshRow(e.RowHandle);
+                            view.UpdateCurrentRow();
+                        }
+                        else
+                        {
+                            if (e.RowHandle >= 0)
+                                this.gridViewServiceProcess.RefreshRow(e.RowHandle);
+                            else
+                                this.gridViewServiceProcess.RefreshData();
+                        }
+                        this.SetEnableButtonControl(this.actionType);
+                        this.SetDefaultSerServTotalPrice();
+                        return;
+                    }
+
+                    bool isSelected = view != null && view.IsRowSelected(e.RowHandle);
                     if (isSelected)
                     {
                         if (lstSereServExist != null && lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID) != null && DevExpress.XtraEditors.XtraMessageBox.Show(String.Format("Dịch vụ có thời gian chỉ định nằm trong khoảng thời gian thiết lập của phác đồ điều trị. Thời gian chỉ định {0} (mã y lệnh: {1}). Bạn có muốn tiếp tục?", Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID).TDL_INTRUCTION_TIME), lstSereServExist.FirstOrDefault(o => o.SERVICE_ID == sereServADO.SERVICE_ID).TDL_SERVICE_REQ_CODE), HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) != DialogResult.Yes)
                         {
                             sereServADO.IsChecked = false;
+                        }
+
+                        // Trường hợp vừa tích nhưng người dùng chọn "Không" ở cảnh báo => IsChecked bị trả về false
+                        // cần clear dữ liệu để không còn hiển thị ĐTTT / phòng xử lý / ĐT phụ thu trên grid.
+                        if (e.Column.FieldName == "IsChecked" && !sereServADO.IsChecked)
+                        {
+                            this.ResetOneService(sereServADO);
+                            if (view != null && e.RowHandle >= 0)
+                            {
+                                view.SetRowCellValue(e.RowHandle, this.gridColumnPatientTypeName__TabService, sereServADO.PATIENT_TYPE_ID);
+                                view.SetRowCellValue(e.RowHandle, this.gridColumnExecuteRoomName__TabService, sereServADO.TDL_EXECUTE_ROOM_ID);
+                                view.SetRowCellValue(e.RowHandle, this.gridColumn_Service_PrimaryPatientType, sereServADO.PRIMARY_PATIENT_TYPE_ID);
+                                view.RefreshRow(e.RowHandle);
+                                view.UpdateCurrentRow();
+                            }
+                            else
+                            {
+                                this.gridViewServiceProcess.RefreshRow(e.RowHandle);
+                            }
+                            this.SetEnableButtonControl(this.actionType);
+                            this.SetDefaultSerServTotalPrice();
+                            return;
                         }
                         if (sereServADO.IsChecked)
                         {
@@ -3183,18 +3233,43 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             }
                         }
                     }
-                    
+
                     if (isSelected)
                     {
                         this.SetAssignNumOrder(sereServADO, isSelected);
                     }
-                    if (//e.Column.FieldName == this.grcAmount_TabService.FieldName || 
-                        e.Column.FieldName == "PATIENT_TYPE_ID"
-                        || e.Column.FieldName == "TDL_EXECUTE_ROOM_ID"
+                    if (e.Column.FieldName == "TIME_FROM"
+                        || e.Column.FieldName == "QUANTITY"
+                        || e.Column.FieldName == "TIME_TO"
+                        || e.Column.FieldName == gridColumnPatientTypeName__TabService.FieldName
+                        || e.Column.FieldName == gridColumnExecuteRoomName__TabService.FieldName
                         )
                     {
                         if (isSelected)
                         {
+                            // Cảnh báo nếu QUANTITY = 0
+                            if (e.Column.FieldName == "QUANTITY" && isSelected) 
+                            {
+                                decimal qty = 0;
+                                decimal.TryParse((e.Value ?? "0").ToString(), out qty);
+                                if (qty <= 0)
+                                {
+                                    XtraMessageBox.Show(
+                                        "Số ngày nằm viện phải lớn hơn 0.",
+                                        HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Warning);
+
+                                    // Focus lại ô QUANTITY để người dùng nhập lại
+                                    this.BeginInvoke(new Action(() =>
+                                    {
+                                        int rh = this.gridViewServiceProcess.FocusedRowHandle;
+                                        this.gridViewServiceProcess.FocusedColumn = this.gridViewServiceProcess.Columns["QUANTITY"];
+                                        this.gridViewServiceProcess.ShowEditor();
+                                    }));
+                                    return;
+                                }
+                            }
                             //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;
                             if (((HisConfigCFG.IntegrationVersionValue == "1" && HisConfigCFG.IntegrationOptionValue != "1") || (HisConfigCFG.IntegrationVersionValue == "2" && HisConfigCFG.IntegrationTypeValue != "1")) && sereServADO.SERVICE_TYPE_ID > 0 && serviceTypeIdSplitReq != null && serviceTypeIdSplitReq.Count > 0 && serviceTypeIdSplitReq.Exists(o => o == sereServADO.SERVICE_TYPE_ID))
                             {
@@ -3210,15 +3285,26 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                 }
                             }
                             bool isNotChange = (e.Column.FieldName == this.gridColumnExecuteRoomName__TabService.FieldName);
-                            if (sereServADO.PATIENT_TYPE_ID > 0)
+
+                            // Nếu user vừa chủ động chọn một ĐTTT mới (> 0) thì xóa khỏi danh sách "đã xóa thủ công"
+                            if (e.Column.FieldName == this.gridColumnPatientTypeName__TabService.FieldName
+                                && sereServADO.PATIENT_TYPE_ID > 0)
                             {
-                                this.ChoosePatientTypeDefaultlService(sereServADO.PATIENT_TYPE_ID, sereServADO.SERVICE_ID, sereServADO, isNotChange, null, true);
-                            }
-                            else
-                            {
-                                this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, sereServADO.SERVICE_ID, sereServADO, isNotChange);
+                                _manuallyPatientTypeClearedServiceIds.Remove(sereServADO.SERVICE_ID);
                             }
 
+                            // Chỉ auto-fill ĐTTT nếu người dùng CHƯA chủ động xóa nó ở row này
+                            if (!_manuallyPatientTypeClearedServiceIds.Contains(sereServADO.SERVICE_ID))
+                            {
+                                if (sereServADO.PATIENT_TYPE_ID > 0)
+                                {
+                                    this.ChoosePatientTypeDefaultlService(sereServADO.PATIENT_TYPE_ID, sereServADO.SERVICE_ID, sereServADO, isNotChange, null, true);
+                                }
+                                else
+                                {
+                                    this.ChoosePatientTypeDefaultlService(this.currentHisPatientTypeAlter.PATIENT_TYPE_ID, sereServADO.SERVICE_ID, sereServADO, isNotChange);
+                                }
+                            }
                             if (sereServADO.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT && sereServADO.IsNotUseBhyt)
                             {
                                 if (DevExpress.XtraEditors.XtraMessageBox.Show("Bạn đã tích chọn \"Không hưởng BHYT\", nếu đổi đối tượng sang BHYT, phần mềm sẽ tự động bỏ chọn. Bạn có muốn thực hiện không?", HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -3252,11 +3338,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             this.VerifyWarningOverCeiling();
                             this.ValidServiceDetailProcessing(sereServADO);
                             this.ProcessNoDifferenceHeinServicePrice(sereServADO);
-                            sereServADO.IsChecked = isSelected;
+                            //sereServADO.IsChecked = isSelected;
                             if (!VerifyCheckFeeWhileAssign())
                             {
                                 this.ResetOneService(sereServADO);
-                                sereServADO.IsChecked = false; 
+                                sereServADO.IsChecked = false;
                                 return;
                             }
 
@@ -3954,9 +4040,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 resultSelect = null;
                 if (sereServADO != null && serviceSameAll != null && serviceSameAll.Count > 0)
                 {
-                    //Lay ra cac dich vu cung co che voi dich vu dang duoc chon
-
-                    //Lay cac dich vu cung co che voi no
                     List<long> serviceSameId1s = serviceSameAll
                         .Where(o => o.SERVICE_ID == sereServADO.SERVICE_ID && o.SAME_ID != sereServADO.SERVICE_ID)
                         .Select(o => o.SAME_ID).ToList();
@@ -4184,6 +4267,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
+                // Bỏ tích hoặc reset row => xóa trạng thái "đã xóa ĐTTT thủ công" để lần tích tiếp theo auto-fill bình thường
+                _manuallyPatientTypeClearedServiceIds.Remove(item.SERVICE_ID);
+
                 item.PATIENT_TYPE_ID = 0;
                 item.PATIENT_TYPE_CODE = null;
                 item.PATIENT_TYPE_NAME = null;
@@ -4264,12 +4350,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                 MessageBox.Show(ResourceMessage.DichVuCLSCoGioiHanChiDinhThanhToanBHYT_DeNghiBSXemXetTruocKhiChiDinh, HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                             ValidOnlyShowNoticeService(sereServADO);
-                            //if (HisConfigCFG.DefaultPatientTypeOption && this.serviceReqParentId != null && this.hisSereServForGetPatientType != null && !sereServADO.IsNotLoadDefaultPatientType)
-                            //{
-                            //    sereServADO.PATIENT_TYPE_ID = this.hisSereServForGetPatientType.PATIENT_TYPE_ID;
-                            //    sereServADO.PATIENT_TYPE_CODE = currentPatientTypes.First(o => o.ID == this.hisSereServForGetPatientType.PATIENT_TYPE_ID).PATIENT_TYPE_CODE;
-                            //    sereServADO.PATIENT_TYPE_NAME = currentPatientTypes.First(o => o.ID == this.hisSereServForGetPatientType.PATIENT_TYPE_ID).PATIENT_TYPE_NAME;
-                            //}
                             if (sereServADO.PATIENT_TYPE_ID > 0)
                             {
                                 this.ChoosePatientTypeDefaultlService(sereServADO.PATIENT_TYPE_ID, sereServADO.SERVICE_ID, sereServADO, false, null, true);
@@ -4439,9 +4519,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     V_HIS_SERVICE_PATY oneServicePatyPrice = new V_HIS_SERVICE_PATY();
                     if (HisConfigCFG.ServicePatyForServicePackage == "1")
                     {
-                        //List<V_HIS_SERVICE_PATY> servicePatiesFirst = new List<V_HIS_SERVICE_PATY>();
-                        //servicePatiesFirst.Add(this.GetServicePaties(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null));
-
                         oneServicePatyPrice = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADOOld.TDL_EXECUTE_BRANCH_ID, (sereServADOOld.TDL_EXECUTE_ROOM_ID > 0 ? (long?)sereServADOOld.TDL_EXECUTE_ROOM_ID : null), this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADOOld.SERVICE_ID, sereServADOOld.PATIENT_TYPE_ID, intructionNum, intructionNumByType, null, sereServADOOld.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
                     }
                     else
@@ -4503,20 +4580,16 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
         private void GetHeinLimitPrice(DataGridAdo hisService, long instructionTime, long inTime, ref decimal? heinLimitPrice, ref decimal? heinLimitRatio)
         {
-            //neu dich vu khai bao gia tran
             if (hisService.HEIN_LIMIT_PRICE.HasValue || hisService.HEIN_LIMIT_PRICE_OLD.HasValue)
             {
-                //neu gia ap dung theo ngay vao vien, thi cac benh nhan vao vien truoc ngay ap dung se lay gia cu
                 if (hisService.HEIN_LIMIT_PRICE_IN_TIME.HasValue)
                 {
                     heinLimitPrice = inTime < hisService.HEIN_LIMIT_PRICE_IN_TIME.Value ? hisService.HEIN_LIMIT_PRICE_OLD : hisService.HEIN_LIMIT_PRICE;
                 }
-                //neu ap dung theo ngay chi dinh, thi cac chi dinh truoc ngay ap dung se tinh gia cu
                 else if (hisService.HEIN_LIMIT_PRICE_INTR_TIME.HasValue)
                 {
                     heinLimitPrice = instructionTime < hisService.HEIN_LIMIT_PRICE_INTR_TIME.Value ? hisService.HEIN_LIMIT_PRICE_OLD : hisService.HEIN_LIMIT_PRICE;
                 }
-                //neu ca 2 truong ko co gia tri thi luon lay theo gia moi
                 else
                 {
                     heinLimitPrice = hisService.HEIN_LIMIT_PRICE;
@@ -4526,8 +4599,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
         private void gridViewServiceProcess_DataManagerReset(object sender, EventArgs e)
         {
-
-            // DataSource reset/refresh can trigger SelectionChanged. Don't clear row data in that case.
             ignoreClearOnServiceProcessSelectionChanged = true;
             serviceProcessSelectedIds.Clear();
         }
@@ -6350,7 +6421,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 //if (this.chkPriority.Checked)
                 //    serviceReqSDO.Priority = GlobalVariables.HAS_PRIORITY;
                 //else
-                    serviceReqSDO.Priority = null;
+                serviceReqSDO.Priority = null;
 
                 //if (this.chkIsNotRequireFee.Checked)
                 //    serviceReqSDO.IsNotRequireFee = 1;
@@ -6475,17 +6546,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         // Thêm thông tin bảo lãnh
                         //if (item.IsGuarantee)
                         //    sdo.IsGuaranteed = true;
-                        if (HisConfigCFG.ServicePatyForServicePackage != "1")
-                        {
-                            sdo.PackageId = item.PackagePriceId;
-                        }
-                        if (item.OTHER_PAY_SOURCE_ID.HasValue)
-                            sdo.OtherPaySourceId = item.OTHER_PAY_SOURCE_ID;
-                        if (HisConfigCFG.IsSetPrimaryPatientType == "1"
-                            || HisConfigCFG.IsSetPrimaryPatientType == "2")
-                        {
-                            sdo.PrimaryPatientTypeId = item.PRIMARY_PATIENT_TYPE_ID;
-                        }
                         if (item.IsNoDifference.HasValue)
                             sdo.IsNoHeinDifference = item.IsNoDifference.Value;
                         if (item.SERVICE_CONDITION_ID.HasValue)
@@ -6501,9 +6561,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                 sdo.EkipInfos.Add(ekipSdo);
                             }
                         }
-                        sdo.BedId = item.BedId;
-                        sdo.BedFinishTime = item.BedFinishTime;
-                        sdo.BedStartTime = item.BedStartTime;
+
+                        sdo.BedId = long.Parse(item.BED_CODE);
+                        sdo.BedFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(item.TIME_TO);
+                        sdo.BedStartTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(item.TIME_FROM);
                         sdo.IsNotUseBhyt = item.IsNotUseBhyt;
                         sdo.AssignNumOrder = item.AssignNumOrder;
                         if (item.TEST_SAMPLE_TYPE_ID > 0)
@@ -6742,7 +6803,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 serviceReqSDO.InstructionTime = intructionTimeSelecteds.First();
                 serviceReqSDO.InstructionTimes = intructionTimeSelecteds;//TODO
 
-                serviceReqSDO.UseTimes = this.USE_TIME;
+                //serviceReqSDO.UseTimes = this.USE_TIME;
                 //Trường hợp chỉ định từ màn hình xử lý pttt, cập nhật dữ liệu cùng kíp, khác kíp tương ứng
                 long sereservid = this.GetSereServInKip();
                 if (sereservid > 0)
@@ -6938,7 +6999,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         //    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
                         //}
                         //else 
-                            if (isPrintPreview)
+                        if (isPrintPreview)
                         {
                             previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
                             isSaveAndShow = true;
@@ -7604,10 +7665,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     }
 
                 }
+
                 if (HisConfigCFG.IsCheckDepartmentInTimeWhenPresOrAssign && this.currentWorkingRoom != null && currentWorkingRoom.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__BUONG)
                 {
                     isValid = isValid && CheckTimeInDepartment(this.intructionTimeSelecteds);
                 }
+
+                isValid = isValid && this.checkBed(serviceCheckeds__Send);
 
                 ValidConsultationReqiured(serviceCheckeds__Send, this.treatmentId);
 
@@ -7617,7 +7681,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     ChangeLockButtonWhileProcess(false);
                     AssignServiceSDO serviceReqSDO = new AssignServiceSDO();
                     serviceReqSDO.ServiceReqDetails = new List<ServiceReqDetailSDO>();
-                    
+
                     bool isDupicate = false;
                     this.ProcessServiceReqSDO(serviceReqSDO, serviceCheckeds__Send, ref isDupicate, treatmentId, true);
                     if (isDupicate)
@@ -7649,6 +7713,43 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 this.ChangeLockButtonWhileProcess(true);
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool checkBed(List<DataGridAdo> serviceCheckeds__Send)
+        {
+            try
+            {
+                if (serviceCheckeds__Send == null || serviceCheckeds__Send.Count == 0)
+                    return true;
+
+                var servicesWithoutBed = serviceCheckeds__Send
+                    .Where(x => string.IsNullOrWhiteSpace(x.BED_CODE))
+                    .Select(x => x.TDL_SERVICE_NAME)
+                    .ToList();
+
+                if (servicesWithoutBed.Any())
+                {
+                    string message = string.Format(
+                        "Dịch vụ {0} chưa được chọn giường. \nVui lòng chọn giường trước khi tiếp tục chỉ định dịch vụ.",
+                        string.Join(", ", servicesWithoutBed)
+                    );
+
+                    XtraMessageBox.Show(
+                        message,
+                        "Chỉ định dịch vụ giường",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
         }
 
@@ -8147,6 +8248,16 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 }
                 else if (e.Action == CollectionChangeAction.Remove)
                 {
+
+                    if (_isBedCodeClickOnCheckedRow)
+                    {
+                        _isBedCodeClickOnCheckedRow = false;
+                        gridControlServiceProcess.BeginUpdate();
+                        try { view.SelectRow(rowHandleChanged); }
+                        finally { gridControlServiceProcess.EndUpdate(); }
+                        return;
+                    }
+
                     row.IsChecked = false;
                     serviceProcessSelectedIds.Remove(row.ID);
 
@@ -8220,8 +8331,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 row.TIME_TO = null;
                 row.QUANTITY = null;
 
-                row.TDL_EXECUTE_ROOM_ID_STR = null;
-                row.PATIENT_TYPE_ID_STR = null;
+                row.TDL_EXECUTE_ROOM_ID = 0;
+                row.PATIENT_TYPE_ID = 0;
+                row.PATIENT_TYPE_CODE = null;
+                row.PATIENT_TYPE_NAME = null;
                 row.PRIMARY_PATIENT_TYPE_ID = null;
                 row.ShareCount = null;
 
@@ -8235,15 +8348,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             }
         }
 
-        private void gridViewServiceProcess_CustomDrawCell(object sender, RowCellCustomDrawEventArgs e)
-        {
-            var data = gridViewServiceProcess.GetRow(e.RowHandle) as HisBedADO;
-            if (data != null && data.IsKey == 2)
-            {
-                e.Appearance.ForeColor = Color.Red;  
-            }
-        }
-
         private void InitGridLookUpEditBed()
         {
             try
@@ -8251,17 +8355,16 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 // 1. Tô màu đỏ cho giường đầy
                 repositoryItemGridLookUpEdit1View.RowStyle += RepositoryItemGridLookUpEdit1View_RowStyle;
 
-                // 2. Chặn không cho chọn giường đầy
-                //repositoryItemGridLookUpEditBed.EditValueChanging += RepositoryItemGridLookUpEditBed_EditValueChanging;
-
-                // 3. (Tùy chọn) Hiển thị tooltip
-                repositoryItemGridLookUpEdit1View.RowCellStyle += RepositoryItemGridLookUpEdit1View_RowCellStyle;
+                // 2. Tự động mở popup ngay khi editor được activate (cả click chuột lẫn bàn phím).
+                //    Dùng ShownEditor thay vì ShowingEditor/MouseDown timer để chỉ mở đúng 1 lần.
+                this.gridViewServiceProcess.ShownEditor += gridViewServiceProcess_ShownEditor;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private void RepositoryItemGridLookUpEdit1View_RowStyle(object sender, RowStyleEventArgs e)
         {
@@ -8273,35 +8376,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     var data = view.GetRow(e.RowHandle) as HisBedADO;
                     if (data != null && data.IsKey == 2)
                     {
-                        e.Appearance.BackColor = Color.LightCoral;  // Màu đỏ nhạt
-                        e.Appearance.ForeColor = Color.DarkRed;     // Chữ đỏ đậm
-                                                                    // Hoặc dùng: e.Appearance.BackColor = Color.FromArgb(255, 200, 200);
+                        //e.Appearance.BackColor = Color.Red;  // Màu đỏ nhạt
+                        e.Appearance.ForeColor = Color.FromArgb(255, 0, 0);
                     }
                     else if (data != null && data.IsKey == 1)
                     {
-                        //e.Appearance.BackColor = Color.Blue;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        // Event 3 (Tùy chọn): Thêm text "(Đầy)" vào hiển thị
-        private void RepositoryItemGridLookUpEdit1View_RowCellStyle(object sender, RowCellStyleEventArgs e)
-        {
-            try
-            {
-                GridView view = sender as GridView;
-                if (view != null && e.RowHandle >= 0)
-                {
-                    var data = view.GetRow(e.RowHandle) as HisBedADO;
-                    if (data != null && data.IsKey == 2)
-                    {
-                        e.Appearance.BackColor = Color.LightCoral;
-                        e.Appearance.ForeColor = Color.DarkRed;
+                        //e.Appearance.BackColor = Color.FromArgb(255, 255, 255);
+                        e.Appearance.ForeColor = Color.FromArgb(0, 0, 255);
                     }
                 }
             }
@@ -8533,9 +8614,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 //}
 
                 this.gridViewServiceProcess.ClearColumnsFilter();
-                //this.EnableCboTracking();
-                //this.CheckOverTotalPatientPrice();
-                //this.LoadTotalSereServByHeinWithTreatment(this.treatmentId);
                 this.RefeshSereServInTreatmentData();
                 this.SetEnableButtonControl(this.actionType);
                 this.CheckAssignServiceSimultaneityOption();
@@ -8557,7 +8635,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     DataGridAdo ssADO = (DataGridAdo)gridViewServiceProcess.GetFocusedRow();
                     if (ssADO != null)
                     {
-                        ssADO.PATIENT_TYPE_ID_STR = null;
+                        // Đánh dấu row này đã bị xóa ĐTTT thủ công — tồn tại cho đến khi user chọn lại hoặc bỏ tích
+                        _manuallyPatientTypeClearedServiceIds.Add(ssADO.SERVICE_ID);
+
+                        ssADO.PATIENT_TYPE_ID = 0;
+                        ssADO.PATIENT_TYPE_CODE = "";
+                        ssADO.PATIENT_TYPE_NAME = "";
+                        ssADO.PRIMARY_PATIENT_TYPE_ID = null;
 
                         if (this.gridViewServiceProcess.ActiveEditor is GridLookUpEdit activeEditor)
                         {
@@ -8580,7 +8664,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
 
         private void repositoryItemcboExcuteRoom_TabService_ButtonClick(object sender, ButtonPressedEventArgs e)
@@ -8592,7 +8675,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     DataGridAdo ssADO = (DataGridAdo)gridViewServiceProcess.GetFocusedRow();
                     if (ssADO != null)
                     {
-                        ssADO.TDL_EXECUTE_ROOM_ID_STR = null;
+                        ssADO.TDL_EXECUTE_ROOM_ID = 0;
 
                         if (this.gridViewServiceProcess.ActiveEditor is GridLookUpEdit activeEditor)
                         {
@@ -8621,29 +8704,193 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
-                // Allow clearing the value (Delete button sets NewValue to null/DBNull)
                 if (e.NewValue == null || e.NewValue == DBNull.Value || string.IsNullOrWhiteSpace(e.NewValue.ToString()))
                     return;
 
-                var repo = sender as RepositoryItemGridLookUpEdit;
-                if (repo != null && repo.View != null)
+                RepositoryItemGridLookUpEdit repo = sender as RepositoryItemGridLookUpEdit;
+                if (repo == null)
                 {
-                    var data = repo.View.GetFocusedRow() as HisBedADO;
-                    if (data != null && data.IsKey == 2)
+                    var editor = sender as GridLookUpEdit;
+                    repo = editor?.Properties as RepositoryItemGridLookUpEdit;
+                }
+                if (repo == null && this.gridViewServiceProcess?.ActiveEditor is GridLookUpEdit activeEditor)
+                {
+                    repo = activeEditor.Properties as RepositoryItemGridLookUpEdit;
+                }
+                if (repo == null)
+                {
+                    // Fallback cuối cùng: dùng repositoryItem của form
+                    repo = this.repositoryItemGridLookUpEditBed;
+                }
+                if (repo == null)
+                    return;
+
+                // DevExpress có thể không luôn focus đúng row khi user gõ/keyboard,
+                // nên ưu tiên validate theo e.NewValue (ID giường được chọn).
+                long bedId = 0;
+                if (!long.TryParse(e.NewValue.ToString(), out bedId) || bedId <= 0)
+                {
+                    // Fallback: nếu không parse được thì vẫn giữ hành vi cũ theo focused row
+                    var fallback = repo.View?.GetFocusedRow() as HisBedADO;
+                    if (fallback != null)
+                    {
+                        if (fallback.IsKey == 2)
+                        {
+                            e.Cancel = true;
+                            var dialogResult = XtraMessageBox.Show(
+                                "Giường đã đạt số lượt sử dụng tối đa " + fallback.AMOUNT_STR + ", không thể chọn!",
+                                "Thông báo",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+
+                            if (dialogResult == DialogResult.OK)
+                                ReopenBedLookupPopup();
+                        }
+                    }
+                    return;
+                }
+
+                var bedList = repo.DataSource as List<HisBedADO>;
+                var selectedBed = bedList != null ? bedList.FirstOrDefault(b => b.ID == bedId) : null;
+                if (selectedBed == null)
+                {
+                    // Fallback cuối: lấy từ view nếu datasource không cast được
+                    selectedBed = repo.View?.GetFocusedRow() as HisBedADO;
+                }
+
+                if (selectedBed != null)
+                {
+                    bool isFull = selectedBed.IsKey == 2;
+
+                    int? usedCount = null;
+                    int? maxCount = null;
+                    TryParseBedAmountStr(selectedBed.AMOUNT_STR, out usedCount, out maxCount);
+
+                    // Fallback kiểm tra theo AMOUNT_STR (vd "2/2") nếu IsKey chưa kịp cập nhật
+                    if (!isFull && !string.IsNullOrWhiteSpace(selectedBed.AMOUNT_STR))
+                    {
+                        var parts = selectedBed.AMOUNT_STR.Split('/');
+                        if (parts.Length >= 2
+                            && int.TryParse(parts[0].Trim(), out int used)
+                            && int.TryParse(parts[1].Trim(), out int capacity)
+                            && capacity > 0
+                            && used >= capacity)
+                        {
+                            isFull = true;
+                        }
+                    }
+
+                    if (isFull)
                     {
                         e.Cancel = true; // Hủy việc chọn
-                        XtraMessageBox.Show(
-                            "Giường này đã đầy, không thể chọn!",
+                        var dialogResult = XtraMessageBox.Show(
+                            "Giường đã đạt số lượt sử dụng tối đa " + selectedBed.AMOUNT_STR + ", không thể chọn!",
                             "Thông báo",
                             MessageBoxButtons.OK,
                             MessageBoxIcon.Warning
                         );
+
+                        if (dialogResult == DialogResult.OK)
+                            ReopenBedLookupPopup();
+                    }
+                    else
+                    {
+                        // Nếu giường đang có bệnh nhân nằm (chưa đạt max) hoặc IsKey=1 => hỏi có cho nằm ghép không
+                        bool shouldAskShare = selectedBed.IsKey == 1;
+                        if (!shouldAskShare
+                            && usedCount.HasValue
+                            && maxCount.HasValue
+                            && maxCount.Value > 0
+                            && usedCount.Value > 0
+                            && usedCount.Value < maxCount.Value)
+                        {
+                            shouldAskShare = true;
+                        }
+
+                        if (shouldAskShare)
+                        {
+                            var dialogResult = XtraMessageBox.Show(
+                                "Giường đã có bệnh nhân nằm. Bạn có muốn cho bệnh nhân nằm ghép không?",
+                                "Thông báo",
+                                MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question
+                            );
+
+                            if (dialogResult == DialogResult.No)
+                            {
+                                e.Cancel = true;
+                                ReopenBedLookupPopup();
+                            }
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void TryParseBedAmountStr(string amountStr, out int? used, out int? capacity)
+        {
+            used = null;
+            capacity = null;
+            try
+            {
+                if (string.IsNullOrWhiteSpace(amountStr))
+                    return;
+
+                var parts = amountStr.Split('/');
+                if (parts.Length >= 1)
+                {
+                    if (int.TryParse((parts[0] ?? "").Trim(), out int u))
+                        used = u;
+                }
+
+                if (parts.Length >= 2)
+                {
+                    if (int.TryParse((parts[1] ?? "").Trim(), out int c))
+                        capacity = c;
+                }
+            }
+            catch
+            {
+                // ignore parse errors
+            }
+        }
+
+        private void ReopenBedLookupPopup()
+        {
+            try
+            {
+                if (this.IsDisposed) return;
+
+                this.BeginInvoke((Action)(() =>
+                {
+                    try
+                    {
+                        if (this.IsDisposed) return;
+                        if (this.gridViewServiceProcess == null) return;
+
+                        if (!this.gridViewServiceProcess.IsEditing)
+                            this.gridViewServiceProcess.ShowEditor();
+
+                        if (this.gridViewServiceProcess.ActiveEditor is GridLookUpEdit activeEditor)
+                        {
+                            activeEditor.Focus();
+                            activeEditor.ShowPopup();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -9060,9 +9307,17 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     bed.AMOUNT_STR = newUsed + "/" + capacityDisplay;
 
                     if (totalCapacity > 0 && newUsed >= totalCapacity)
+                    {
                         bed.IsKey = 2;
+                    }
+                    else if (newUsed == 0)
+                    {
+                        bed.IsKey = 0;
+                    }
                     else
+                    {
                         bed.IsKey = 1;
+                    }
                 }
 
                 // Ensure popup grid refreshes the recalculated AMOUNT_STR
@@ -9117,7 +9372,50 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
             return false;
         }
+
+        private void gridViewServiceProcess_ShowingEditor(object sender, CancelEventArgs e)
+        {
+            // Không làm gì với BED_CODE ở đây — việc mở popup được xử lý
+            // trong gridViewServiceProcess_ShownEditor để tránh mở 2 lần.
+        }
+
+        private void gridViewServiceProcess_ShownEditor(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.gridViewServiceProcess.FocusedColumn?.FieldName != "BED_CODE") return;
+                if (this.gridViewServiceProcess.ActiveEditor is GridLookUpEdit editor && !editor.IsPopupOpen)
+                    editor.ShowPopup();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewServiceProcess_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (e.Button != MouseButtons.Left) return;
+
+                var hitInfo = this.gridViewServiceProcess.CalcHitInfo(e.Location);
+                if (!hitInfo.InRow || hitInfo.RowHandle < 0) return;
+                if (hitInfo.Column == null || hitInfo.Column.FieldName != "BED_CODE") return;
+
+                var row = this.gridViewServiceProcess.GetRow(hitInfo.RowHandle) as DataGridAdo;
+                if (row == null || !row.IsChecked) return;
+
+                // Set flag để SelectionChanged không deselect row này
+                _isBedCodeClickOnCheckedRow = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
+
     public class BankInfo
     {
         public BankInfo() { }
