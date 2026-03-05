@@ -39,6 +39,7 @@ namespace MPS.Processor.Mps000007
         List<V_HIS_EXP_MEST_MEDICINE> ExpMestMedicines { get; set; }
         List<V_HIS_EXP_MEST_MATERIAL> ExpMestMaterials { get; set; }
         List<ExpMestBloods> ExpMestBloods { get; set; }
+        V_HIS_SERE_SERV_VIEX SereServViex { get; set; }
 
         Mps000007PDO rdo;
         public Mps000007Processor(CommonParam param, PrintData printData)
@@ -186,6 +187,7 @@ namespace MPS.Processor.Mps000007
 
                 AddObjectKeyIntoListkey<V_HIS_TREATMENT>(rdo.Treatment, false);
                 AddObjectKeyIntoListkey<PatientADO>(patientADO, false);
+                AddObjectKeyIntoListkey<V_HIS_SERE_SERV_VIEX>(rdo.SereServViex, false);
 
                 if (rdo.ExamServiceReq != null)
                 {
