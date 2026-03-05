@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -83,24 +82,24 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.DeleteD = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
             this.spinMax = new DevExpress.XtraEditors.SpinEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bar2 = new DevExpress.XtraBars.Bar();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.txtPrefix = new DevExpress.XtraEditors.TextEdit();
-            this.cboParent = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtDataStoreCode = new DevExpress.XtraEditors.TextEdit();
             this.btnReset = new DevExpress.XtraEditors.SimpleButton();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.btnEdit = new DevExpress.XtraEditors.SimpleButton();
             this.txtName = new DevExpress.XtraEditors.TextEdit();
             this.txtCode = new DevExpress.XtraEditors.TextEdit();
-            this.cboDataStore = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
-            this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciName = new DevExpress.XtraLayout.LayoutControlItem();
@@ -113,23 +112,27 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
             this.txtSearch = new DevExpress.XtraEditors.TextEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcEditorInfoItem = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.customGridLookUpEditWithFilterMultiColumn1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.dnNavigation = new DevExpress.XtraEditors.DataNavigator();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
+            this.customGridViewWithFilterMultiColumnNoFocus1 = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
+            this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.customGridViewWithFilterMultiColumn3 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
+            this.cboDataStore = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
+            this.customGridViewWithFilterMultiColumnNoFocus2 = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
+            this.cboParent = new Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus();
+            this.customGridViewWithFilterMultiColumnNoFocus3 = new Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.treeList1)).BeginInit();
@@ -142,13 +145,9 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             ((System.ComponentModel.ISupportInitialize)(this.spinMax.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPrefix.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboParent.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDataStoreCode.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCode.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboDataStore.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciName)).BeginInit();
@@ -166,18 +165,26 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfoItem)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumnNoFocus1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboDataStore.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumnNoFocus2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboParent.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumnNoFocus3)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.treeList1);
             this.layoutControl2.Controls.Add(this.lcEditorInfo);
-            this.layoutControl2.Controls.Add(this.ucPaging);
             this.layoutControl2.Controls.Add(this.btnSearch);
             this.layoutControl2.Controls.Add(this.txtSearch);
             this.layoutControl2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -206,6 +213,7 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.treeList1.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.treeList1.Location = new System.Drawing.Point(12, 38);
             this.treeList1.Name = "treeList1";
+            this.treeList1.OptionsCustomization.AllowColumnResizing = false;
             this.treeList1.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.treeList1.OptionsSelection.EnableAppearanceFocusedRow = false;
             this.treeList1.OptionsView.AutoWidth = false;
@@ -215,12 +223,13 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.unLockT,
             this.DeleteD,
             this.DeleteE});
-            this.treeList1.Size = new System.Drawing.Size(810, 379);
+            this.treeList1.Size = new System.Drawing.Size(810, 412);
             this.treeList1.TabIndex = 10;
             this.treeList1.CustomNodeCellEdit += new DevExpress.XtraTreeList.GetCustomNodeCellEditEventHandler(this.treeList1_CustomNodeCellEdit);
             this.treeList1.CustomUnboundColumnData += new DevExpress.XtraTreeList.CustomColumnDataEventHandler(this.treeList1_CustomUnboundColumnData);
             this.treeList1.FocusedNodeChanged += new DevExpress.XtraTreeList.FocusedNodeChangedEventHandler(this.treeList1_FocusedNodeChanged);
             this.treeList1.Click += new System.EventHandler(this.treeList1_Click);
+            this.treeList1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeList1_MouseDown);
             // 
             // treeListColumn1
             // 
@@ -299,9 +308,9 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.treeListColumn6.FieldName = "STATUS";
             this.treeListColumn6.Name = "treeListColumn6";
             this.treeListColumn6.OptionsColumn.AllowEdit = false;
+            this.treeListColumn6.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn6.Visible = true;
             this.treeListColumn6.VisibleIndex = 5;
-            this.treeListColumn6.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             // 
             // treeListColumn7
             // 
@@ -309,9 +318,9 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.treeListColumn7.FieldName = "CREATE_TIME_STR";
             this.treeListColumn7.Name = "treeListColumn7";
             this.treeListColumn7.OptionsColumn.AllowEdit = false;
+            this.treeListColumn7.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn7.Visible = true;
             this.treeListColumn7.VisibleIndex = 6;
-            this.treeListColumn7.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             // 
             // treeListColumn8
             // 
@@ -329,9 +338,9 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.treeListColumn9.FieldName = "MODIFIER_TIME_STR";
             this.treeListColumn9.Name = "treeListColumn9";
             this.treeListColumn9.OptionsColumn.AllowEdit = false;
+            this.treeListColumn9.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn9.Visible = true;
             this.treeListColumn9.VisibleIndex = 8;
-            this.treeListColumn9.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             // 
             // treeListColumn10
             // 
@@ -381,7 +390,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             // 
             this.lcEditorInfo.Controls.Add(this.spinMax);
             this.lcEditorInfo.Controls.Add(this.txtPrefix);
-            this.lcEditorInfo.Controls.Add(this.cboParent);
             this.lcEditorInfo.Controls.Add(this.txtDataStoreCode);
             this.lcEditorInfo.Controls.Add(this.btnReset);
             this.lcEditorInfo.Controls.Add(this.btnAdd);
@@ -389,6 +397,7 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.lcEditorInfo.Controls.Add(this.txtName);
             this.lcEditorInfo.Controls.Add(this.txtCode);
             this.lcEditorInfo.Controls.Add(this.cboDataStore);
+            this.lcEditorInfo.Controls.Add(this.cboParent);
             this.lcEditorInfo.Location = new System.Drawing.Point(826, 12);
             this.lcEditorInfo.Name = "lcEditorInfo";
             this.lcEditorInfo.Root = this.Root;
@@ -417,6 +426,10 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1,
             this.bar2});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnEdit,
@@ -483,6 +496,34 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.bar2.Text = "Main menu";
             this.bar2.Visible = false;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1184, 49);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 49);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 462);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1184, 49);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 462);
+            // 
             // txtPrefix
             // 
             this.txtPrefix.Location = new System.Drawing.Point(117, 98);
@@ -491,29 +532,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.txtPrefix.Size = new System.Drawing.Size(227, 20);
             this.txtPrefix.StyleController = this.lcEditorInfo;
             this.txtPrefix.TabIndex = 12;
-            // 
-            // cboParent
-            // 
-            this.cboParent.Location = new System.Drawing.Point(117, 74);
-            this.cboParent.MenuManager = this.barManager1;
-            this.cboParent.Name = "cboParent";
-            this.cboParent.Properties.AutoComplete = false;
-            this.cboParent.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.cboParent.Properties.NullText = "";
-            this.cboParent.Properties.NullValuePromptShowForEmptyValue = true;
-            this.cboParent.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboParent.Properties.View = this.customGridViewWithFilterMultiColumn1;
-            this.cboParent.Size = new System.Drawing.Size(227, 20);
-            this.cboParent.StyleController = this.lcEditorInfo;
-            this.cboParent.TabIndex = 11;
-            // 
-            // customGridViewWithFilterMultiColumn1
-            // 
-            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
-            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
             // 
             // txtDataStoreCode
             // 
@@ -574,31 +592,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.txtCode.StyleController = this.lcEditorInfo;
             this.txtCode.TabIndex = 4;
             this.txtCode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtCode_KeyUp);
-            // 
-            // cboDataStore
-            // 
-            this.cboDataStore.Location = new System.Drawing.Point(178, 50);
-            this.cboDataStore.MenuManager = this.barManager1;
-            this.cboDataStore.Name = "cboDataStore";
-            this.cboDataStore.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.cboDataStore.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.cboDataStore.Properties.NullText = "";
-            this.cboDataStore.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
-            this.cboDataStore.Properties.View = this.customGridLookUpEditWithFilterMultiColumn1View;
-            this.cboDataStore.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboDataStore_Properties_ButtonClick);
-            this.cboDataStore.Size = new System.Drawing.Size(166, 20);
-            this.cboDataStore.StyleController = this.lcEditorInfo;
-            this.cboDataStore.TabIndex = 10;
-            this.cboDataStore.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboDataStore_Closed);
-            // 
-            // customGridLookUpEditWithFilterMultiColumn1View
-            // 
-            this.customGridLookUpEditWithFilterMultiColumn1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
-            this.customGridLookUpEditWithFilterMultiColumn1View.Name = "customGridLookUpEditWithFilterMultiColumn1View";
-            this.customGridLookUpEditWithFilterMultiColumn1View.OptionsSelection.EnableAppearanceFocusedCell = false;
-            this.customGridLookUpEditWithFilterMultiColumn1View.OptionsView.ShowGroupPanel = false;
             // 
             // Root
             // 
@@ -756,13 +749,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.layoutControlItem12.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem12.TextToControlDistance = 5;
             // 
-            // ucPaging
-            // 
-            this.ucPaging.Location = new System.Drawing.Point(12, 421);
-            this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(810, 29);
-            this.ucPaging.TabIndex = 7;
-            // 
             // btnSearch
             // 
             this.btnSearch.Location = new System.Drawing.Point(683, 12);
@@ -793,7 +779,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.layoutControlItem2,
             this.layoutControlItem3,
             this.emptySpaceItem1,
-            this.layoutControlItem4,
             this.lcEditorInfoItem,
             this.layoutControlItem14});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
@@ -830,15 +815,6 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.emptySpaceItem1.Size = new System.Drawing.Size(23, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // layoutControlItem4
-            // 
-            this.layoutControlItem4.Control = this.ucPaging;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 409);
-            this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(814, 33);
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem4.TextVisible = false;
-            // 
             // lcEditorInfoItem
             // 
             this.lcEditorInfoItem.Control = this.lcEditorInfo;
@@ -856,37 +832,23 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             this.layoutControlItem14.Control = this.treeList1;
             this.layoutControlItem14.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(814, 383);
+            this.layoutControlItem14.Size = new System.Drawing.Size(814, 416);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
-            // barDockControlTop
+            // customGridViewWithFilterMultiColumn1
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 49);
-            this.barDockControlTop.Size = new System.Drawing.Size(1184, 0);
+            this.customGridViewWithFilterMultiColumn1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn1.Name = "customGridViewWithFilterMultiColumn1";
+            this.customGridViewWithFilterMultiColumn1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn1.OptionsView.ShowGroupPanel = false;
             // 
-            // barDockControlBottom
+            // customGridLookUpEditWithFilterMultiColumn1View
             // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1184, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 49);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 462);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1184, 49);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 462);
+            this.customGridLookUpEditWithFilterMultiColumn1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumn1View.Name = "customGridLookUpEditWithFilterMultiColumn1View";
+            this.customGridLookUpEditWithFilterMultiColumn1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumn1View.OptionsView.ShowGroupPanel = false;
             // 
             // dnNavigation
             // 
@@ -900,6 +862,87 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             // dxErrorProvider
             // 
             this.dxErrorProvider.ContainerControl = this;
+            // 
+            // customGridLookUpEditWithFilterMultiColumnNoFocus1View
+            // 
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.Name = "customGridLookUpEditWithFilterMultiColumnNoFocus1View";
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridLookUpEditWithFilterMultiColumnNoFocus1View.OptionsView.ShowGroupPanel = false;
+            // 
+            // customGridViewWithFilterMultiColumnNoFocus1
+            // 
+            this.customGridViewWithFilterMultiColumnNoFocus1.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumnNoFocus1.Name = "customGridViewWithFilterMultiColumnNoFocus1";
+            this.customGridViewWithFilterMultiColumnNoFocus1.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumnNoFocus1.OptionsView.ShowGroupPanel = false;
+            // 
+            // customGridViewWithFilterMultiColumn2
+            // 
+            this.customGridViewWithFilterMultiColumn2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn2.Name = "customGridViewWithFilterMultiColumn2";
+            this.customGridViewWithFilterMultiColumn2.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn2.OptionsView.ShowGroupPanel = false;
+            // 
+            // customGridViewWithFilterMultiColumn3
+            // 
+            this.customGridViewWithFilterMultiColumn3.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumn3.Name = "customGridViewWithFilterMultiColumn3";
+            this.customGridViewWithFilterMultiColumn3.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumn3.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboDataStore
+            // 
+            this.cboDataStore.EditValue = "";
+            this.cboDataStore.Location = new System.Drawing.Point(178, 50);
+            this.cboDataStore.MenuManager = this.barManager1;
+            this.cboDataStore.Name = "cboDataStore";
+            this.cboDataStore.Properties.AutoComplete = false;
+            this.cboDataStore.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboDataStore.Properties.NullText = "";
+            this.cboDataStore.Properties.NullValuePromptShowForEmptyValue = true;
+            this.cboDataStore.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboDataStore.Properties.View = this.customGridViewWithFilterMultiColumnNoFocus2;
+            this.cboDataStore.Size = new System.Drawing.Size(166, 20);
+            this.cboDataStore.StyleController = this.lcEditorInfo;
+            this.cboDataStore.TabIndex = 10;
+            this.cboDataStore.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboDataStore_Closed);
+            this.cboDataStore.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboDataStore_ButtonClick);
+            // 
+            // customGridViewWithFilterMultiColumnNoFocus2
+            // 
+            this.customGridViewWithFilterMultiColumnNoFocus2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumnNoFocus2.Name = "customGridViewWithFilterMultiColumnNoFocus2";
+            this.customGridViewWithFilterMultiColumnNoFocus2.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumnNoFocus2.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboParent
+            // 
+            this.cboParent.EditValue = "";
+            this.cboParent.Location = new System.Drawing.Point(117, 74);
+            this.cboParent.MenuManager = this.barManager1;
+            this.cboParent.Name = "cboParent";
+            this.cboParent.Properties.AutoComplete = false;
+            this.cboParent.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboParent.Properties.NullText = "";
+            this.cboParent.Properties.NullValuePromptShowForEmptyValue = true;
+            this.cboParent.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboParent.Properties.View = this.customGridViewWithFilterMultiColumnNoFocus3;
+            this.cboParent.Size = new System.Drawing.Size(227, 20);
+            this.cboParent.StyleController = this.lcEditorInfo;
+            this.cboParent.TabIndex = 11;
+            this.cboParent.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboParent_ButtonClick);
+            // 
+            // customGridViewWithFilterMultiColumnNoFocus3
+            // 
+            this.customGridViewWithFilterMultiColumnNoFocus3.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.customGridViewWithFilterMultiColumnNoFocus3.Name = "customGridViewWithFilterMultiColumnNoFocus3";
+            this.customGridViewWithFilterMultiColumnNoFocus3.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.customGridViewWithFilterMultiColumnNoFocus3.OptionsView.ShowGroupPanel = false;
             // 
             // frmLocationTreatment
             // 
@@ -934,13 +977,9 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             ((System.ComponentModel.ISupportInitialize)(this.spinMax.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtPrefix.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboParent.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtDataStoreCode.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtName.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtCode.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cboDataStore.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Root)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciName)).EndInit();
@@ -958,11 +997,20 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfoItem)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumn1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridLookUpEditWithFilterMultiColumnNoFocus1View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumnNoFocus1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboDataStore.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumnNoFocus2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboParent.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumnNoFocus3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -974,13 +1022,11 @@ namespace HIS.Desktop.Plugins.LocationTreatment
         private DevExpress.XtraLayout.LayoutControlGroup layoutControlGroup1;
         private DevExpress.XtraLayout.LayoutControl lcEditorInfo;
         private DevExpress.XtraLayout.LayoutControlGroup Root;
-        private Inventec.UC.Paging.UcPaging ucPaging;
         private DevExpress.XtraEditors.SimpleButton btnSearch;
         private DevExpress.XtraEditors.TextEdit txtSearch;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem2;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
         private DevExpress.XtraLayout.LayoutControlItem lcEditorInfoItem;
         private DevExpress.XtraBars.BarManager barManager1;
         private DevExpress.XtraBars.Bar bar1;
@@ -1010,9 +1056,7 @@ namespace HIS.Desktop.Plugins.LocationTreatment
         private DevExpress.XtraEditors.TextEdit txtDataStoreCode;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
-        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboDataStore;
         private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridLookUpEditWithFilterMultiColumn1View;
-        private Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn cboParent;
         private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraEditors.SpinEdit spinMax;
@@ -1037,5 +1081,13 @@ namespace HIS.Desktop.Plugins.LocationTreatment
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit unLockT;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit DeleteD;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit DeleteE;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridLookUpEditWithFilterMultiColumnNoFocus1View;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridViewWithFilterMultiColumnNoFocus1;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn2;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn customGridViewWithFilterMultiColumn3;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus cboDataStore;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridViewWithFilterMultiColumnNoFocus2;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridLookUpEditWithFilterMultiColumnNoFocus cboParent;
+        private Inventec.Desktop.CustomControl.NoFocus.CustomGridViewWithFilterMultiColumnNoFocus customGridViewWithFilterMultiColumnNoFocus3;
     }
 }

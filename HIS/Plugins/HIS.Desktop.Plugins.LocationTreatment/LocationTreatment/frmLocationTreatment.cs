@@ -211,43 +211,41 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             }
         }
 
+        //private void FillDataToGridControl()
+        //{
+        //    try
+        //    {
+        //        WaitingManager.Show();
+        //        int numPageSize = 0;
+        //        if (ucPaging.pagingGrid != null)
+        //        {
+        //            numPageSize = ucPaging.pagingGrid.PageSize;
+        //        }
+        //        else
+        //        {
+        //            numPageSize = ConfigApplicationWorker.Get<int>("CONFIG_KEY__NUM_PAGESIZE");
+        //        }
+
+        //        LoadPaging(new CommonParam(0, numPageSize));
+
+        //        CommonParam param = new CommonParam();
+        //        param.Limit = rowCount;
+        //        param.Count = dataTotal;
+        //        ucPaging.Init(LoadPaging, param, numPageSize, this.treeList1);
+        //        WaitingManager.Hide();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogSystem.Error(ex);
+        //        WaitingManager.Hide();
+        //    }
+        //}
+
         private void FillDataToGridControl()
         {
             try
             {
-                WaitingManager.Show();
-                int numPageSize = 0;
-                if (ucPaging.pagingGrid != null)
-                {
-                    numPageSize = ucPaging.pagingGrid.PageSize;
-                }
-                else
-                {
-                    numPageSize = ConfigApplicationWorker.Get<int>("CONFIG_KEY__NUM_PAGESIZE");
-                }
-
-                LoadPaging(new CommonParam(0, numPageSize));
-
-                CommonParam param = new CommonParam();
-                param.Limit = rowCount;
-                param.Count = dataTotal;
-                ucPaging.Init(LoadPaging, param, numPageSize, this.treeList1);
-                WaitingManager.Hide();
-            }
-            catch (Exception ex)
-            {
-                LogSystem.Error(ex);
-                WaitingManager.Hide();
-            }
-        }
-
-        private void LoadPaging(object param)
-        {
-            try
-            {
-                startPage = ((CommonParam)param).Start ?? 0;
-                int limit = ((CommonParam)param).Limit ?? 0;
-                CommonParam paramCommon = new CommonParam(startPage, limit);
+                CommonParam paramCommon = new CommonParam();
                 Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_LOCATION_STORE>> apiResult = null;
                 HisLocationStoreFilter filter = new HisLocationStoreFilter();
                 SetFilterNavBar(ref filter);
@@ -267,8 +265,8 @@ namespace HIS.Desktop.Plugins.LocationTreatment
 
                     treeList1.KeyFieldName = "ID";
                     treeList1.ParentFieldName = "PARENT_ID";
-                    treeList1.DataSource = data;
-
+                    var dataOr = data.OrderByDescending(o => o.CREATE_TIME).ToList();
+                    treeList1.DataSource = dataOr;
                     treeList1.ForceInitialize();
                     treeList1.FocusedNode = null;
 
@@ -370,7 +368,7 @@ namespace HIS.Desktop.Plugins.LocationTreatment
                     }
 
                     txtPrefix.Text = data.PREFIX;
-                    cboDataStore.EditValue = data.PARENT_ID;
+                    cboDataStore.EditValue = data.DATA_STORE_ID;
                     cboParent.EditValue = data.PARENT_ID;
                     spinMax.EditValue = data.MAX_CHILD;
                 }
@@ -1052,35 +1050,35 @@ namespace HIS.Desktop.Plugins.LocationTreatment
 
         private void treeList1_Click(object sender, EventArgs e)
         {
-            try
-            {
-                this.ClearControls();
-                TreeList tree = sender as TreeList;
-                if (tree == null) return;
+            //try
+            //{
+            //    this.ClearControls();
+            //    TreeList tree = sender as TreeList;
+            //    if (tree == null) return;
 
-                Point pt = tree.PointToClient(Control.MousePosition);
-                TreeListHitInfo hitInfo = tree.CalcHitInfo(pt);
+            //    Point pt = tree.PointToClient(Control.MousePosition);
+            //    TreeListHitInfo hitInfo = tree.CalcHitInfo(pt);
 
-                if (hitInfo.Node == null) return;
-                if (!hitInfo.HitInfoType.HasFlag(HitInfoType.Cell)) return;
+            //    if (hitInfo.Node == null) return;
+            //    if (!hitInfo.HitInfoType.HasFlag(HitInfoType.Cell)) return;
 
-                HIS_LOCATION_STORE data =
-                    tree.GetDataRecordByNode(hitInfo.Node) as HIS_LOCATION_STORE;
+            //    HIS_LOCATION_STORE data =
+            //        tree.GetDataRecordByNode(hitInfo.Node) as HIS_LOCATION_STORE;
 
-                if (data != null)
-                {
-                    FillDataToControlsForm(data);
-                    this.ActionType = GlobalVariables.ActionEdit;
-                    EnableControlChanged(this.ActionType);
-                    btnEdit.Enabled = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
-                    this.currentData = data;
-                    positionHandle = -1;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
+            //    if (data != null)
+            //    {
+            //        FillDataToControlsForm(data);
+            //        this.ActionType = GlobalVariables.ActionEdit;
+            //        EnableControlChanged(this.ActionType);
+            //        btnEdit.Enabled = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+            //        this.currentData = data;
+            //        positionHandle = -1;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Inventec.Common.Logging.LogSystem.Warn(ex);
+            //}
         }
 
         private void treeList1_CustomUnboundColumnData(object sender, TreeListCustomColumnDataEventArgs e)
@@ -1147,6 +1145,70 @@ namespace HIS.Desktop.Plugins.LocationTreatment
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void treeList1_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                TreeList tree = sender as TreeList;
+                if (tree == null) return;
+
+                TreeListHitInfo hitInfo = tree.CalcHitInfo(e.Location);
+
+                if (hitInfo.Node == null)
+                    return;
+
+                this.ClearControls();
+
+                HIS_LOCATION_STORE data =
+                    tree.GetDataRecordByNode(hitInfo.Node) as HIS_LOCATION_STORE;
+
+                if (data == null) return;
+
+                FillDataToControlsForm(data);
+                this.ActionType = GlobalVariables.ActionEdit;
+                EnableControlChanged(this.ActionType);
+                btnEdit.Enabled = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+                this.currentData = data;
+                positionHandle = -1;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboParent_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboParent.EditValue = null;
+                    cboParent.Text = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDataStore_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboDataStore.EditValue = null;
+                    cboDataStore.Text = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
