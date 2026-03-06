@@ -364,6 +364,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     layoutControlItemlblGuaranteed.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItemchkGuaranteed.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItemtxtGuaranteedReftCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    treeListSereServ.Columns["IsGuaranteed"].Visible = false;
                 }
                 txtGuaranteedRefCode.Enabled = false;
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 7");
