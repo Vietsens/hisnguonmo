@@ -25,8 +25,6 @@ using HIS.Desktop.Plugins.AssignBed.ADO;
 using HIS.Desktop.Plugins.AssignBed.Config;
 using HIS.Desktop.Plugins.AssignBed.Resources;
 using HIS.Desktop.Plugins.AssignBed.Validation;
-using HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription;
-using HIS.Desktop.Plugins.AssignPrescriptionPK.ChooseICD;
 using HIS.Desktop.Plugins.Library.AlertWarningFee;
 using HIS.Desktop.Plugins.Library.CheckIcd;
 using HIS.Desktop.Plugins.Library.PrintBordereau;
@@ -515,7 +513,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         //+ Khoa người dùng làm việc có cấu hình "Cho phép chỉ định giá phẫu thuật" --> hiển thị icon "sửa" ở ô "Giá" 
                         //+ Khoa người dùng làm việc có cấu hình "Cho phép chỉ định giá gói" --> hiển thị icon "sửa" ở ô "Giá gói" 
                         //Lưu ý: chỉ cho sửa 1 trong 2 trường ("giá" hoặc "giá gói"), chứ ko cho phép sửa cả 2. Ưu tiên "giá gói"
-                        //Lưu ý: Ko cho sửa nếu ĐTTT hoặc đối tượng phụ thu là BHYT
+                        //Lưu ý: Ko cho sửa nếu ĐTTT hoặc đối tượng phụ thu là BHYT 
 
                         if (data.PATIENT_TYPE_CODE == HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK"))
                         {
@@ -666,49 +664,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     }
                     else if (e.Column.FieldName == "BED_CODE")
                     {
-                        var selectedServiceId = data.SERVICE_ID;
-
-                        if (selectedServiceId != null)
-                        {
-                            DateTime timeFrom = new DateTime();
-                            DateTime timeTo = new DateTime();
-
-                            // Kiểm tra xem dòng có được tích chọn không
-                            bool isSelected = view.IsRowSelected(e.RowHandle);
-
-                            if (isSelected)
-                            {
-                                // Lấy giá trị từ cột TIME_FROM
-                                var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
-                                if (timeFromValue != null && timeFromValue != DBNull.Value)
-                                {
-                                    if (timeFromValue is DateTime)
-                                    {
-                                        timeFrom = (DateTime)timeFromValue;
-                                    }
-                                }
-
-                                // Lấy giá trị từ cột TIME_TO 
-                                var timeToValue = view.GetRowCellValue(e.RowHandle, "TIME_TO");
-                                if (timeToValue != null && timeToValue != DBNull.Value)
-                                {
-                                    if (timeToValue is DateTime)
-                                    {
-                                        timeTo = (DateTime)timeToValue;
-                                    }
-                                }
-
-                                LoadBedDataByServiceId(Convert.ToInt64(selectedServiceId), timeFrom, timeTo);
-                                AdjustBedAmountStrForPendingSelections(e.RowHandle);
-
-                                e.RepositoryItem = repositoryItemGridLookUpEditBed;
-                            }
-                            //else
-                            //{
-                            //    e.RepositoryItem = repositoryItemGridLookUpEditBed = null;
-                            //}
-                        }
-
+                        // Chỉ gán RepositoryItem để grid biết dùng editor nào khi hiển thị.
+                        // Việc load dữ liệu giường (LoadBedDataByServiceId) được thực hiện trong
+                        // CustomRowCellEditForEditing — event chỉ bắn khi thực sự mở editor,
+                        // tránh overwrite datasource dùng chung mỗi lần grid render lại các row.
+                        bool isSelected = view != null && view.IsRowSelected(e.RowHandle);
+                        if (isSelected)
+                            e.RepositoryItem = repositoryItemGridLookUpEditBed;
                     }
                     else if (e.Column.FieldName == "TDL_EXECUTE_ROOM_ID")
                     {
@@ -8555,48 +8517,26 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 //this.DisablecheckEmergencyPriorityByConfig();
                 //this.treeService.UncheckAll();
                 //this.isPrinted = false;
+                _manuallyPatientTypeClearedServiceIds.Clear();
+                serviceProcessSelectedIds.Clear();
                 foreach (var item in this.DataGridAdo)
                 {
-                    item.AssignNumOrder = null;
-                    item.AMOUNT = 1;
                     item.IsChecked = false;
-                    item.ShareCount = null;
-                    item.PATIENT_TYPE_ID = 0;
-                    item.PATIENT_TYPE_CODE = "";
-                    item.PATIENT_TYPE_NAME = "";
+
+                    // Dùng lại 2 method clean giống khi bỏ tích chọn đối tượng trên grid
+                    this.ResetOneService(item);
+                    this.ClearServiceProcessRowData(item);
+
+                    // Các field riêng của btnNew không có trong 2 method trên
+                    item.AMOUNT = 1;
                     item.PRICE = 0;
-                    item.TDL_EXECUTE_ROOM_ID = 0;
-                    item.IsExpend = false;
                     item.IsOutKtcFee = false;
                     item.IsKHBHYT = false;
                     item.InstructionNote = "";
                     item.SERVICE_GROUP_ID_SELECTEDs = null;
-                    item.SERVICE_CONDITION_ID = null;
-                    item.SERVICE_CONDITION_NAME = "";
                     item.AssignPackagePriceEdit = null;
                     item.AssignSurgPriceEdit = null;
-                    item.IsNoDifference = false;
-                    item.ErrorMessageAmount = "";
-                    item.ErrorMessageIsAssignDay = "";
-                    item.ErrorMessagePatientTypeId = "";
-                    item.ErrorTypeAmount = ErrorType.None;
-                    item.ErrorTypeIsAssignDay = ErrorType.None;
-                    item.ErrorTypePatientTypeId = ErrorType.None;
-                    item.PRIMARY_PATIENT_TYPE_ID = null;
-                    item.IsNotChangePrimaryPaty = false;
                     item.PackagePriceId = null;
-                    item.SERVICE_CONDITION_ID = null;
-                    item.SERVICE_CONDITION_NAME = null;
-
-                    item.OTHER_PAY_SOURCE_ID = null;
-                    item.OTHER_PAY_SOURCE_CODE = null;
-                    item.OTHER_PAY_SOURCE_NAME = null;
-                    item.BedFinishTime = null;
-                    item.BedId = null;
-                    item.BedStartTime = null;
-                    item.TEST_SAMPLE_TYPE_ID = 0;
-                    item.TEST_SAMPLE_TYPE_CODE = null;
-                    item.TEST_SAMPLE_TYPE_NAME = null;
                     item.SereServEkipADO = null;
                     item.NumberOfTimes = 1;
                 }
@@ -9408,6 +9348,40 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                 // Set flag để SelectionChanged không deselect row này
                 _isBedCodeClickOnCheckedRow = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewServiceProcess_CustomRowCellEditForEditing(object sender, CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                if (e.RowHandle < 0) return;
+                if (e.Column.FieldName != "BED_CODE") return;
+
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                var data = gridViewServiceProcess.GetRow(e.RowHandle) as DataGridAdo;
+                if (data == null) return;
+                if (view == null || !view.IsRowSelected(e.RowHandle)) return;
+
+                DateTime timeFrom = new DateTime();
+                DateTime timeTo = new DateTime();
+
+                var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
+                if (timeFromValue != null && timeFromValue != DBNull.Value && timeFromValue is DateTime)
+                    timeFrom = (DateTime)timeFromValue;
+
+                var timeToValue = view.GetRowCellValue(e.RowHandle, "TIME_TO");
+                if (timeToValue != null && timeToValue != DBNull.Value && timeToValue is DateTime)
+                    timeTo = (DateTime)timeToValue;
+
+                LoadBedDataByServiceId(Convert.ToInt64(data.SERVICE_ID), timeFrom, timeTo);
+                AdjustBedAmountStrForPendingSelections(e.RowHandle);
+
+                e.RepositoryItem = repositoryItemGridLookUpEditBed;
             }
             catch (Exception ex)
             {
