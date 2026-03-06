@@ -561,10 +561,10 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 long startTime = Inventec.Common.TypeConvert.Parse.ToInt64(
                     Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd000000"));
                 int key = 0;
-                int count = 0;              
+                int count = 0;
                 if (cboExpriedDate.SelectedIndex == 0)
                 {
-                     key = 0;
+                    key = 0;
                     timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
                     Convert.ToDateTime(DateTime.Now).ToString("yyyyMMdd235959"));
                 }
@@ -573,14 +573,14 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                     key = 1;
                     timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
                     Convert.ToDateTime(DateTime.Now.AddDays(29)).ToString("yyyyMMdd235959"));
-                    
+
                 }
                 else if (cboExpriedDate.SelectedIndex == 2)
                 {
                     key = 2;
                     timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
                    Convert.ToDateTime(DateTime.Now.AddDays(89)).ToString("yyyyMMdd235959"));
-                    
+
                 }
                 else if (cboExpriedDate.SelectedIndex == 3)
                 {
@@ -590,7 +590,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                 }
                 else if (cboExpriedDate.SelectedIndex == 4)
                 {
-                     key = 4;
+                    key = 4;
                     if (dateEdit1.EditValue != null && dateEdit1.DateTime != DateTime.MinValue)
                     {
                         timeToTal = Inventec.Common.TypeConvert.Parse.ToInt64(
@@ -630,24 +630,25 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                         var lstMediInStocks = new BackendAdapter(param).Get<List<List<HisMedicineInStockSDO>>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE_BY_EXPIRED_DATE, ApiConsumers.MosConsumer, mediFilter, param);
                         List<long> _MedicineTypeIds = new List<long>();
                         List<V_HIS_MEDI_STOCK> lstMediStock = new List<V_HIS_MEDI_STOCK>();
-                        if (chkMediStock.Checked)
+                        if (chkMediStock.Checked && lstMediInStocks != null)
                         {
-                            List<long> MediStockIds = lstMediInStocks.SelectMany(x => x).Select(x => x.MEDI_STOCK_ID ?? 0).Distinct().ToList();
+                            List<long> MediStockIds = lstMediInStocks.SelectMany(x => x ?? Enumerable.Empty<HisMedicineInStockSDO>()).Select(x => x.MEDI_STOCK_ID ?? 0).Distinct().ToList();
                             lstMediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => MediStockIds.Contains(p.ID)).ToList();
                         }
 
                         if (lstMediInStocks != null && lstMediInStocks.Count > 0 && timeToTal > 0)
                         {
 
-                            if (key == 0 || key ==4)
+                            if (key == 0 || key == 4)
                             {
                                 lstMediInStocks = lstMediInStocks.Select(o => o.Where(p => p.EXPIRED_DATE != null && p.EXPIRED_DATE < timeToTal).ToList()).ToList();
-                            } else
+                            }
+                            else
                             {
                                 lstMediInStocks = lstMediInStocks.Select(o => o.Where(p => p.EXPIRED_DATE != null && p.EXPIRED_DATE >= startTime && p.EXPIRED_DATE <= timeToTal).ToList()).ToList();
                             }
                         }
-                       
+
                         if (lstMediInStocks != null && lstMediInStocks.Count > 0)
                         {
                             var dataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS == 1).ToList();
@@ -683,24 +684,24 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             }
                         }
 
-                         List<List<HisMedicineInStockSDO>> lstParent = new List<List<HisMedicineInStockSDO>>();
+                        List<List<HisMedicineInStockSDO>> lstParent = new List<List<HisMedicineInStockSDO>>();
                         for (int i = 0; i < lstMediInStocks.Count; i++)
                         {
                             if (lstMediInStocks[i] != null && lstMediInStocks[i].Count > 0)
                             {
                                 lstParent.Add(lstMediInStocks[i]);
-                                
+
                             }
                         }
-                        
+
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstParent, _MedicineTypeIds, lstMediStock);
                         var list = hisMediInStockProcessor.GetListTreeView(ucMedicineInfo);
-                        count =list !=null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count():0;
-                  
+                        count = list != null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count() : 0;
+
                     }
                 }
                 else if (chkMaterial.Checked)
-                { 
+                {
                     if (this.ucMaterialInfo != null)
                     {
                         this.panelControlMediMate.Controls.Add(this.ucMaterialInfo);
@@ -724,9 +725,9 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 
                         List<long> _MaterialTypeIds = new List<long>();
                         List<V_HIS_MEDI_STOCK> lstMediStock = new List<V_HIS_MEDI_STOCK>();
-                        if (chkMediStock.Checked)
+                        if (chkMediStock.Checked && lstMateInStocks != null)
                         {
-                            List<long> MediStockIds = lstMateInStocks.SelectMany(x => x).Select(x => x.MEDI_STOCK_ID ?? 0).Distinct().ToList();
+                            List<long> MediStockIds = lstMateInStocks.SelectMany(x => x ?? Enumerable.Empty<HisMaterialInStockSDO>()).Select(x => x.MEDI_STOCK_ID ?? 0).Distinct().ToList();
                             lstMediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => MediStockIds.Contains(p.ID)).ToList();
                         }
                         if (lstMateInStocks != null && lstMateInStocks.Count > 0 && timeToTal > 0)
@@ -739,7 +740,7 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             {
                                 lstMateInStocks = lstMateInStocks.Select(o => o.Where(p => p.EXPIRED_DATE != null && p.EXPIRED_DATE >= startTime && p.EXPIRED_DATE <= timeToTal).ToList()).ToList();
                             }
-                         
+
                         }
 
                         if (lstMateInStocks != null && lstMateInStocks.Count > 0)
@@ -775,18 +776,18 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                                 }
                             }
                         }
-                   
-                        
+
+
                         List<List<HisMaterialInStockSDO>> lstParent = new List<List<HisMaterialInStockSDO>>();
                         for (int i = 0; i < lstMateInStocks.Count; i++)
                         {
                             if (lstMateInStocks[i] != null && lstMateInStocks[i].Count > 0)
                             {
                                 lstParent.Add(lstMateInStocks[i]);
-                                
+
                             }
                         }
-                        
+
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstParent, _MaterialTypeIds, lstMediStock);
                         var list = hisMateInStockProcessor.GetListTreeView(ucMaterialInfo);
                         count = list != null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count() : 0;
