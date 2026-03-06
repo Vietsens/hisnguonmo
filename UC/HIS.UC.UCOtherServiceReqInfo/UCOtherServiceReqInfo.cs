@@ -22,6 +22,7 @@ using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
@@ -86,6 +87,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
         string treatmentTypeId; 
         public string HospitalizeReasonCode { get; private set; }
         public string HospitalizeReasonName { get; private set; }
+        public string manualCustomerSourceDetailInput = "";
         List<HIS_CUSTOMER_SOURCE_DT> lstOtherDetail { get; set; }
         List<HIS_CUSTOMER_SOURCE_DT> lstOtherDetailDefault { get; set; }
         #region Constructor - Load
@@ -253,6 +255,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 }
 
                 this.cboNguonKhachCT.Text = sb.ToString();
+                UpdateCustomerSourceDetailDisplay();
             }
             catch (Exception ex)
             {
@@ -265,16 +268,16 @@ namespace HIS.UC.UCOtherServiceReqInfo
             cboNguonKhachCT.Properties.DataSource = listADO;
             cboNguonKhachCT.Properties.DisplayMember = "USERNAME";
             cboNguonKhachCT.Properties.ValueMember = "LOGINNAME";
-            cboNguonKhachCT.Properties.NullText = "";
-            cboNguonKhachCT.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            cboNguonKhachCT.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            cboNguonKhachCT.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+            cboNguonKhachCT.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+            cboNguonKhachCT.Properties.View.OptionsView.ShowAutoFilterRow = true;
+            cboNguonKhachCT.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             cboNguonKhachCT.Properties.View.OptionsView.ShowDetailButtons = false;
             cboNguonKhachCT.Properties.View.OptionsView.ShowGroupPanel = false;
             cboNguonKhachCT.Properties.View.OptionsView.ShowIndicator = false;
 
-            // Chỉ add columns nếu chưa tồn tại
-            if (cboNguonKhachCT.Properties.View.Columns.Count == 0)
-            {
+                cboNguonKhachCT.Properties.View.Columns.Clear();
+
                 DevExpress.XtraGrid.Columns.GridColumn column = cboNguonKhachCT.Properties.View.Columns.AddField("LOGINNAME");
                 column.Caption = "Mã";
                 column.Visible = true;
@@ -298,7 +301,6 @@ namespace HIS.UC.UCOtherServiceReqInfo
 
                 cboNguonKhachCT.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cboNguonKhachCT.Properties.View.OptionsSelection.MultiSelect = true;
-            }
         }
 
         private void UpdateComboOtherDetailDataSource(List<otherPaySourceDetailADO> listADO)
@@ -2169,6 +2171,16 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 {
                     this.cboNguonKhach.EditValue = null;
                 }
+                else if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    var moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisCustomerSource").FirstOrDefault();
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        var instance = PluginInstance.GetPluginInstance(moduleData, null);
+                        ((Form)instance).ShowDialog();
+                        this.LoadNguonKhach();
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -2217,6 +2229,93 @@ namespace HIS.UC.UCOtherServiceReqInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void buttonEdit1_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+
+                    cboNguonKhachCT.ShowPopup();
+                }
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+
+                    cboNguonKhachCT.EditValue = null;
+                    GridCheckMarksSelection gridCheckMark = cboNguonKhachCT.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboNguonKhachCT.Properties.View);
+                    }
+                    this.cboNguonKhachCT.Focus();
+                    buttonEdit1.Text = "";
+                    manualCustomerSourceDetailInput = "";
+                }
+                else if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    var moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisCustomerSourceDetail").FirstOrDefault();
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        var instance = PluginInstance.GetPluginInstance(moduleData, null);
+                        ((Form)instance).ShowDialog();
+                        this.LoadNguonKhachCT();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void UpdateCustomerSourceDetailDisplay()
+        {
+            try
+            {
+                string manualInput = manualCustomerSourceDetailInput?.Trim();
+                string selected = lstOtherDetail != null && lstOtherDetail.Count > 0
+                    ? string.Join(", ", lstOtherDetail.Select(x => x.USERNAME))
+                    : "";
+
+                string displayText = "";
+                if (!string.IsNullOrEmpty(selected) && !string.IsNullOrEmpty(manualInput))
+                    displayText = selected + ", " + manualInput;
+                else if (!string.IsNullOrEmpty(selected))
+                    displayText = selected;
+                else
+                    displayText = manualInput;
+
+                buttonEdit1.EditValueChanged -= buttonEdit1_EditValueChanged;
+                buttonEdit1.Text = displayText;
+                buttonEdit1.EditValueChanged += buttonEdit1_EditValueChanged;
+
+                cboNguonKhachCT.Text = displayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void buttonEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var text = buttonEdit1.Text ?? "";
+                var selectedUsernames = lstOtherDetail?.Select(x => x.USERNAME).ToList() ?? new List<string>();
+                var parts = text.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x.Trim()).ToList();
+
+                // Lấy phần nhập tay không trùng với nguồn đã chọn
+                manualCustomerSourceDetailInput = string.Join(", ", parts.Where(x => !selectedUsernames.Contains(x)));
+
+                UpdateCustomerSourceDetailDisplay();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
