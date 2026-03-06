@@ -178,7 +178,8 @@ namespace HIS.Desktop.Plugins.Register.Register
                 this.customerSourceCode = ucServiceRequestRegiter.txtCustomerSource.Text;
                 this.customerSourceName = ucServiceRequestRegiter.cboCustomerSource.Text;
                 //this.customerSourceCodeDetail = (string)(ucServiceRequestRegiter.cboCustomerSourceDetail.EditValue);
-                //this.customerSourceCodeDetail = GetSelectedCustomerSourceDetailLoginNames();
+                var stringSelect = GetSelectedCustomerSourceDetailLoginNames();
+                this.customerSourceCodeDetail = this.customerSourceCodeDetail = string.Join(";", new[] { stringSelect, ucServiceRequestRegiter.manualCustomerSourceDetailInput }.Where(s => !string.IsNullOrWhiteSpace(s)));
                 if (ucServiceRequestRegiter.cboGender.EditValue != null)
                     this.GenderId = (long)(ucServiceRequestRegiter.cboGender.EditValue);
                 this.nationalName = ucServiceRequestRegiter.cboNational.Text;
