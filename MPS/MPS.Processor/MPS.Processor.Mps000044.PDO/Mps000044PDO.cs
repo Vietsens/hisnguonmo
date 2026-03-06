@@ -41,6 +41,7 @@ namespace MPS.Processor.Mps000044.PDO
         public HIS_EXP_MEST HisExpMest { get; set; }
         public HIS_TRANS_REQ TransReq { get; set; }
         public List<HIS_CONFIG> ListHisConfigPaymentQrCode { get; set; }
+        public V_HIS_SERE_SERV_VIEX HisSereServViex { get; set; }
 
         public Mps000044PDO() { }
 
@@ -278,6 +279,42 @@ namespace MPS.Processor.Mps000044.PDO
                 this.hisServiceReq_CurentExam = _hisServiceReq_CurentExam;
                 this.TransReq = transReq;
                 this.ListHisConfigPaymentQrCode = listHisConfigPaymentQrCode;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public Mps000044PDO(
+            V_HIS_PATIENT_TYPE_ALTER vHisPatientTypeAlter,
+            HIS_DHST dhsts,
+            HIS_SERVICE_REQ vHisPrescription5,
+            List<ExpMestMedicineSDO> expMestMedicines,
+            Mps000044ADO mps000044ADO,
+            HIS_TREATMENT _hisTreatment,
+            long? _KeyUseForm,
+            HIS_EXP_MEST _hisExpMest,
+            HIS_SERVICE_REQ _hisServiceReq_CurentExam,
+            HIS_TRANS_REQ transReq,
+            List<HIS_CONFIG> listHisConfigPaymentQrCode,
+            V_HIS_SERE_SERV_VIEX _hisSereServViex
+            )
+        {
+            try
+            {
+                this.vHisPatientTypeAlter = vHisPatientTypeAlter;
+                this.dhsts = dhsts;
+                this.vHisPrescription5 = vHisPrescription5;
+                this.expMestMedicines = expMestMedicines.ToList();
+                this.Mps000044ADO = mps000044ADO;
+                this.hisTreatment = _hisTreatment;
+                this.KeyUseForm = _KeyUseForm;
+                this.HisExpMest = _hisExpMest;
+                this.hisServiceReq_CurentExam = _hisServiceReq_CurentExam;
+                this.TransReq = transReq;
+                this.ListHisConfigPaymentQrCode = listHisConfigPaymentQrCode;
+                this.HisSereServViex = _hisSereServViex;
             }
             catch (Exception ex)
             {

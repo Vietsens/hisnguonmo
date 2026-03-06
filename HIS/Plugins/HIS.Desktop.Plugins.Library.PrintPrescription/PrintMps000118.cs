@@ -375,6 +375,19 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             numCopy = 1;
                         }
 
+                        var filterViexView = new MOS.Filter.HisSereServViexViewFilter();
+                        filterViexView.TDL_PATIENT_ID = hisTreatment.PATIENT_ID;
+
+                        var sereServViexViews = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                            .Get<List<V_HIS_SERE_SERV_VIEX>>(
+                                ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GETVIEW,
+                                ApiConsumer.ApiConsumers.MosConsumer,
+                                filterViexView,
+                                HIS.Desktop.Controls.Session.SessionManager.ActionLostToken,
+                                new CommonParam())
+                            ?.OrderByDescending(o => o.VISION_TEST_TIME)
+                            .FirstOrDefault();
+
                         #region in thuong
                         //không có đơn thuốc sẽ gán dữ liệu với ID = -1 để in
                         if (lstMedicineExpmestTypeADO != null && lstMedicineExpmestTypeADO.Count > 0
@@ -424,7 +437,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 item,
                                 hisServiceReq_CurentExam,
                                 transReq,
-                                _lstConfig);
+                                _lstConfig,
+                                sereServViexViews
+                                );
 
                             Print.PrintData(printTypeCode, fileName, mps000118RDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, lstMedicineExpmestTypeADO.Count, this.SavedData, numCopy);
                             //PrintData(printTypeCode, fileName, mps000118RDO, printNow, numCopy, ref result);
@@ -477,7 +492,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 item,
                                 hisServiceReq_CurentExam,
                                 transReq,
-                                _lstConfig);
+                                _lstConfig,
+                                sereServViexViews
+                                );
 
                             Print.PrintData(printTypeCode, fileName, mps000118RDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listTThuongNgoaiKho.Count, this.SavedData, numCopy);
                         }
@@ -556,7 +573,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 item,
                                 hisServiceReq_CurentExam,
                                 transReq,
-                                _lstConfig);
+                                _lstConfig,
+                                sereServViexViews
+                                );
 
                             Print.PrintData(printTypeCode, fileName, mps000118RDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listNgoaiVien.Count, this.SavedData, numCopy);
                             //PrintData(printTypeCode, fileName, mps000118RDO, printNow, numCopy, ref result);
