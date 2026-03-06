@@ -344,9 +344,6 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
             try
             {
                 spinActualPrice.Properties.MinValue = 0;
-                txtBhytCode.Properties.MaxLength = 100;
-                txtBhytName.Properties.MaxLength = 1500;
-                txtIssueNumber.Properties.MaxLength = 50;
             }
             catch (Exception ex)
             {
@@ -4747,6 +4744,54 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
             else
             {
                 e.ErrorText = string.Empty;
+            }
+        }
+
+        private void txtBhytCode_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            try
+            {
+                if (e.NewValue != null && e.NewValue.ToString().Length > 100)
+                {
+                    e.Cancel = true; // Chặn hành động nhập/paste
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Mã DV BHYT không được vượt quá 100 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtBhytName_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            try
+            {
+                if (e.NewValue != null && e.NewValue.ToString().Length > 1500)
+                {
+                    e.Cancel = true;
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Tên DV BHYT không được vượt quá 1500 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtIssueNumber_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            try
+            {
+                if (e.NewValue != null && e.NewValue.ToString().Length > 50)
+                {
+                    e.Cancel = true;
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Số quyết định không được vượt quá 50 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
