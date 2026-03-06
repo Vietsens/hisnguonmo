@@ -6,7 +6,6 @@ using HIS.Desktop.LocalStorage.BackendData.ADO;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.AssignBed.ADO;
 using HIS.Desktop.Plugins.AssignBed.Config;
-using HIS.Desktop.Plugins.AssignPrescriptionPK.ADO;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;

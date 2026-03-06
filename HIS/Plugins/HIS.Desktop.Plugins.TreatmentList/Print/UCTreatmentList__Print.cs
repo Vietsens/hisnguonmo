@@ -853,7 +853,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         HisDhstFilter hisDhstFilter = new MOS.Filter.HisDhstFilter();
                         hisDhstFilter.ID = currentHisVExamServiceReq.DHST_ID.Value;
                         dhst = new BackendAdapter(param).Get<List<HIS_DHST>>("api/HisDhst/Get", ApiConsumers.MosConsumer, hisDhstFilter, param).FirstOrDefault();
+                    }
 
+                    if (currentHisVExamServiceReq != null)
+                    {
                         LogSystem.Info("currentHisVExamServiceReq 1 " + LogUtil.TraceData(" __data__ ", currentHisVExamServiceReq));
                         LogSystem.Info("currentHisVExamServiceReq " + currentHisVExamServiceReq.ID);
 
@@ -861,7 +864,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         hisSereServViexViewFilter.SERVICE_REQ_ID = currentHisVExamServiceReq.ID;
                         LogSystem.Info("input 1 " + LogUtil.TraceData(" __data__ ", hisSereServViexViewFilter));
                         var lstSereServViexView = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_VIEX>>("api/HisSereServViex/GetView", ApiConsumers.MosConsumer, hisSereServViexViewFilter, param).ToList();
-                        LogSystem.Info("tra ra 1 " + LogUtil.TraceData(" __data__ ", lstSereServViexView)); 
+                        LogSystem.Info("tra ra 1 " + LogUtil.TraceData(" __data__ ", lstSereServViexView));
 
                         LogSystem.Info("sereServViexView count " + lstSereServViexView.Count());
                         LogSystem.Info("sereServViexView 1 " + LogUtil.TraceData(" __data__ ", lstSereServViexView.OrderByDescending(o => o.VISION_TEST_TIME).FirstOrDefault()));

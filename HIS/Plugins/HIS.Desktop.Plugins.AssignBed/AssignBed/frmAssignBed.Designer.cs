@@ -872,6 +872,7 @@
             this.gridViewServiceProcess.OptionsView.ShowIndicator = false;
             this.gridViewServiceProcess.CustomDrawGroupRow += new DevExpress.XtraGrid.Views.Base.RowObjectCustomDrawEventHandler(this.gridViewServiceProcess_CustomDrawGroupRow);
             this.gridViewServiceProcess.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewServiceProcess_CustomRowCellEdit);
+            this.gridViewServiceProcess.CustomRowCellEditForEditing += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewServiceProcess_CustomRowCellEditForEditing);
             this.gridViewServiceProcess.SelectionChanged += new DevExpress.Data.SelectionChangedEventHandler(this.gridViewServiceProcess_SelectionChanged);
             this.gridViewServiceProcess.ShowingEditor += new System.ComponentModel.CancelEventHandler(this.gridViewServiceProcess_ShowingEditor);
             this.gridViewServiceProcess.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewServiceProcess_CellValueChanged);
@@ -1243,11 +1244,11 @@
             this.btnServiceReqList.Appearance.Options.UseTextOptions = true;
             this.btnServiceReqList.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
             this.btnServiceReqList.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
-            this.btnServiceReqList.Location = new System.Drawing.Point(873, 99);
-            this.btnServiceReqList.MaximumSize = new System.Drawing.Size(62, 37);
-            this.btnServiceReqList.MinimumSize = new System.Drawing.Size(62, 37);
+            this.btnServiceReqList.Location = new System.Drawing.Point(848, 99);
+            this.btnServiceReqList.MaximumSize = new System.Drawing.Size(71, 37);
+            this.btnServiceReqList.MinimumSize = new System.Drawing.Size(71, 37);
             this.btnServiceReqList.Name = "btnServiceReqList";
-            this.btnServiceReqList.Size = new System.Drawing.Size(62, 37);
+            this.btnServiceReqList.Size = new System.Drawing.Size(71, 37);
             this.btnServiceReqList.StyleController = this.layoutControl2;
             this.btnServiceReqList.TabIndex = 29;
             this.btnServiceReqList.Text = "Danh sách y lệnh";
@@ -1255,7 +1256,7 @@
             // 
             // btnSaveAndPrint
             // 
-            this.btnSaveAndPrint.Location = new System.Drawing.Point(940, 99);
+            this.btnSaveAndPrint.Location = new System.Drawing.Point(923, 99);
             this.btnSaveAndPrint.MaximumSize = new System.Drawing.Size(56, 37);
             this.btnSaveAndPrint.MinimumSize = new System.Drawing.Size(56, 37);
             this.btnSaveAndPrint.Name = "btnSaveAndPrint";
@@ -1271,7 +1272,7 @@
             this.btnConfiguration.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.btnConfiguration.Image = ((System.Drawing.Image)(resources.GetObject("btnConfiguration.Image")));
             this.btnConfiguration.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnConfiguration.Location = new System.Drawing.Point(1121, 99);
+            this.btnConfiguration.Location = new System.Drawing.Point(1104, 99);
             this.btnConfiguration.MaximumSize = new System.Drawing.Size(36, 36);
             this.btnConfiguration.MinimumSize = new System.Drawing.Size(36, 36);
             this.btnConfiguration.Name = "btnConfiguration";
@@ -1282,7 +1283,7 @@
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(1061, 99);
+            this.btnNew.Location = new System.Drawing.Point(1044, 99);
             this.btnNew.MaximumSize = new System.Drawing.Size(56, 37);
             this.btnNew.MinimumSize = new System.Drawing.Size(56, 37);
             this.btnNew.Name = "btnNew";
@@ -1294,7 +1295,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(1001, 99);
+            this.btnSave.Location = new System.Drawing.Point(984, 99);
             this.btnSave.MaximumSize = new System.Drawing.Size(56, 37);
             this.btnSave.MinimumSize = new System.Drawing.Size(56, 37);
             this.btnSave.Name = "btnSave";
@@ -1354,16 +1355,16 @@
             // 
             // chkPrintDocumentSigned
             // 
-            this.chkPrintDocumentSigned.Location = new System.Drawing.Point(1038, 76);
+            this.chkPrintDocumentSigned.Location = new System.Drawing.Point(1013, 76);
             this.chkPrintDocumentSigned.Name = "chkPrintDocumentSigned";
             this.chkPrintDocumentSigned.Properties.Caption = "";
-            this.chkPrintDocumentSigned.Size = new System.Drawing.Size(19, 19);
+            this.chkPrintDocumentSigned.Size = new System.Drawing.Size(27, 19);
             this.chkPrintDocumentSigned.StyleController = this.layoutControl2;
             this.chkPrintDocumentSigned.TabIndex = 20;
             // 
             // chkPrint
             // 
-            this.chkPrint.Location = new System.Drawing.Point(918, 76);
+            this.chkPrint.Location = new System.Drawing.Point(893, 76);
             this.chkPrint.Name = "chkPrint";
             this.chkPrint.Properties.Caption = "";
             this.chkPrint.Size = new System.Drawing.Size(37, 19);
@@ -1372,7 +1373,7 @@
             // 
             // chkSign
             // 
-            this.chkSign.Location = new System.Drawing.Point(840, 76);
+            this.chkSign.Location = new System.Drawing.Point(815, 76);
             this.chkSign.Name = "chkSign";
             this.chkSign.Properties.Caption = "";
             this.chkSign.Size = new System.Drawing.Size(29, 19);
@@ -1704,7 +1705,7 @@
             this.emptySpaceItem3.Location = new System.Drawing.Point(0, 74);
             this.emptySpaceItem3.MinSize = new System.Drawing.Size(10, 10);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(773, 23);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(748, 23);
             this.emptySpaceItem3.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
@@ -1714,7 +1715,7 @@
             this.layoutControlItem33.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem33.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem33.Control = this.chkSign;
-            this.layoutControlItem33.Location = new System.Drawing.Point(773, 74);
+            this.layoutControlItem33.Location = new System.Drawing.Point(748, 74);
             this.layoutControlItem33.MinSize = new System.Drawing.Size(98, 23);
             this.layoutControlItem33.Name = "layoutControlItem33";
             this.layoutControlItem33.Size = new System.Drawing.Size(98, 23);
@@ -1729,7 +1730,7 @@
             this.layoutControlItem34.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem34.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem34.Control = this.chkPrint;
-            this.layoutControlItem34.Location = new System.Drawing.Point(871, 74);
+            this.layoutControlItem34.Location = new System.Drawing.Point(846, 74);
             this.layoutControlItem34.Name = "layoutControlItem34";
             this.layoutControlItem34.Size = new System.Drawing.Size(86, 23);
             this.layoutControlItem34.Text = "In";
@@ -1742,9 +1743,9 @@
             this.layoutControlItem35.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem35.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem35.Control = this.chkPrintDocumentSigned;
-            this.layoutControlItem35.Location = new System.Drawing.Point(957, 74);
+            this.layoutControlItem35.Location = new System.Drawing.Point(932, 74);
             this.layoutControlItem35.Name = "layoutControlItem35";
-            this.layoutControlItem35.Size = new System.Drawing.Size(102, 23);
+            this.layoutControlItem35.Size = new System.Drawing.Size(110, 23);
             this.layoutControlItem35.Text = "Xem trước khi in";
             this.layoutControlItem35.TextSize = new System.Drawing.Size(76, 13);
             // 
@@ -1798,7 +1799,7 @@
             // layoutControlItem40
             // 
             this.layoutControlItem40.Control = this.btnSave;
-            this.layoutControlItem40.Location = new System.Drawing.Point(999, 97);
+            this.layoutControlItem40.Location = new System.Drawing.Point(982, 97);
             this.layoutControlItem40.MaxSize = new System.Drawing.Size(60, 41);
             this.layoutControlItem40.MinSize = new System.Drawing.Size(60, 41);
             this.layoutControlItem40.Name = "layoutControlItem40";
@@ -1810,7 +1811,7 @@
             // layoutControlItem41
             // 
             this.layoutControlItem41.Control = this.btnNew;
-            this.layoutControlItem41.Location = new System.Drawing.Point(1059, 97);
+            this.layoutControlItem41.Location = new System.Drawing.Point(1042, 97);
             this.layoutControlItem41.MaxSize = new System.Drawing.Size(60, 41);
             this.layoutControlItem41.MinSize = new System.Drawing.Size(60, 41);
             this.layoutControlItem41.Name = "layoutControlItem41";
@@ -1822,7 +1823,7 @@
             // layoutControlItem42
             // 
             this.layoutControlItem42.Control = this.btnConfiguration;
-            this.layoutControlItem42.Location = new System.Drawing.Point(1119, 97);
+            this.layoutControlItem42.Location = new System.Drawing.Point(1102, 97);
             this.layoutControlItem42.MaxSize = new System.Drawing.Size(40, 40);
             this.layoutControlItem42.MinSize = new System.Drawing.Size(40, 40);
             this.layoutControlItem42.Name = "layoutControlItem42";
@@ -1837,7 +1838,7 @@
             this.emptySpaceItem5.Location = new System.Drawing.Point(403, 97);
             this.emptySpaceItem5.MinSize = new System.Drawing.Size(104, 24);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(468, 41);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(443, 41);
             this.emptySpaceItem5.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
@@ -1985,11 +1986,11 @@
             // emptySpaceItem7
             // 
             this.emptySpaceItem7.AllowHotTrack = false;
-            this.emptySpaceItem7.Location = new System.Drawing.Point(1059, 74);
+            this.emptySpaceItem7.Location = new System.Drawing.Point(1042, 74);
             this.emptySpaceItem7.MaxSize = new System.Drawing.Size(161, 0);
             this.emptySpaceItem7.MinSize = new System.Drawing.Size(10, 10);
             this.emptySpaceItem7.Name = "emptySpaceItem7";
-            this.emptySpaceItem7.Size = new System.Drawing.Size(110, 23);
+            this.emptySpaceItem7.Size = new System.Drawing.Size(127, 23);
             this.emptySpaceItem7.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem7.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.emptySpaceItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -1997,7 +1998,7 @@
             // layoutControlItem43
             // 
             this.layoutControlItem43.Control = this.btnSaveAndPrint;
-            this.layoutControlItem43.Location = new System.Drawing.Point(938, 97);
+            this.layoutControlItem43.Location = new System.Drawing.Point(921, 97);
             this.layoutControlItem43.MaxSize = new System.Drawing.Size(61, 41);
             this.layoutControlItem43.MinSize = new System.Drawing.Size(61, 41);
             this.layoutControlItem43.Name = "layoutControlItem43";
@@ -2009,11 +2010,11 @@
             // layoutControlItem44
             // 
             this.layoutControlItem44.Control = this.btnServiceReqList;
-            this.layoutControlItem44.Location = new System.Drawing.Point(871, 97);
-            this.layoutControlItem44.MaxSize = new System.Drawing.Size(67, 41);
+            this.layoutControlItem44.Location = new System.Drawing.Point(846, 97);
+            this.layoutControlItem44.MaxSize = new System.Drawing.Size(75, 41);
             this.layoutControlItem44.MinSize = new System.Drawing.Size(67, 41);
             this.layoutControlItem44.Name = "layoutControlItem44";
-            this.layoutControlItem44.Size = new System.Drawing.Size(67, 41);
+            this.layoutControlItem44.Size = new System.Drawing.Size(75, 41);
             this.layoutControlItem44.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem44.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem44.TextVisible = false;
@@ -2021,10 +2022,10 @@
             // emptySpaceItem8
             // 
             this.emptySpaceItem8.AllowHotTrack = false;
-            this.emptySpaceItem8.Location = new System.Drawing.Point(1159, 97);
+            this.emptySpaceItem8.Location = new System.Drawing.Point(1142, 97);
             this.emptySpaceItem8.MinSize = new System.Drawing.Size(10, 10);
             this.emptySpaceItem8.Name = "emptySpaceItem8";
-            this.emptySpaceItem8.Size = new System.Drawing.Size(10, 41);
+            this.emptySpaceItem8.Size = new System.Drawing.Size(27, 41);
             this.emptySpaceItem8.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.emptySpaceItem8.TextSize = new System.Drawing.Size(0, 0);
             // 

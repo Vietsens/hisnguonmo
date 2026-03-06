@@ -59,7 +59,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                 var hisBedIds = allHisBedBstys.Select(o => o.BED_ID).ToList();
 
-                allBeds = BackendDataWorker.Get<V_HIS_BED>().Where(o => hisBedIds.Contains(o.ID)).ToList();
+                allBeds = BackendDataWorker.Get<V_HIS_BED>().Where(o => bedRooms.Exists(s => s.ID == o.BED_ROOM_ID) && hisBedIds.Contains(o.ID)).ToList();
 
                 this.dicBedByServiceId = allHisBedBstys.GroupBy(o => o.BED_SERVICE_TYPE_ID).ToDictionary(g => g.Key,g => allBeds.Where(t => g.Any(b => b.BED_ID == t.ID)).ToList());
             }
