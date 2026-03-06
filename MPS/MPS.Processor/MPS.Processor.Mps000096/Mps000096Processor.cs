@@ -264,7 +264,6 @@ namespace MPS.Processor.Mps000096
                 {
                     AddObjectKeyIntoListkey<HIS_PATIENT>(rdo.currentPatient, false);
                 }
-                SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
             }
             catch (Exception ex)
             {
@@ -1041,6 +1040,7 @@ namespace MPS.Processor.Mps000096
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
 
+                SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
                 this.SetListData2();
                 this.SetSingleKey();
                 //this.GetTestIndexRanges();
@@ -1099,23 +1099,33 @@ namespace MPS.Processor.Mps000096
                         .GroupBy(service => service.PARENT_ID.Value)
                         .ToList();
 
-                    foreach (var group in groupedServices)
+                    if (groupedServices == null || groupedServices.Count == 0)
                     {
-                        var parentService = rdo.ListTestService.FirstOrDefault(o => o.ID == group.Key);
-                        string serviceCode = parentService != null ? parentService.SERVICE_CODE : null;
-
-                        string currentResult = string.Format("{0} {1} {2} {3}",
+                        result = string.Format("{0} {1} {2} {3}",
                             this.printTypeCode,
                             string.Format("TREATMENT_CODE:{0}", rdo.currentTreatment.TREATMENT_CODE),
                             string.Format("SERVICE_REQ_CODE:{0}", rdo.currentServiceReq.SERVICE_REQ_CODE),
                             string.Format("BARCODE:{0}", rdo.currentSample.BARCODE));
-
-
-                        if (!string.IsNullOrEmpty(serviceCode))
+                    }
+                    else
+                    {
+                        foreach (var group in groupedServices)
                         {
-                            currentResult += string.Format(" SERVICE_CODE:{0}", serviceCode);
+                            var parentService = rdo.ListTestService.FirstOrDefault(o => o.ID == group.Key);
+                            string serviceCode = parentService != null ? parentService.SERVICE_CODE : null;
+
+                            string currentResult = string.Format("{0} {1} {2} {3}",
+                                this.printTypeCode,
+                                string.Format("TREATMENT_CODE:{0}", rdo.currentTreatment.TREATMENT_CODE),
+                                string.Format("SERVICE_REQ_CODE:{0}", rdo.currentServiceReq.SERVICE_REQ_CODE),
+                                string.Format("BARCODE:{0}", rdo.currentSample.BARCODE));
+
+                            if (!string.IsNullOrEmpty(serviceCode))
+                            {
+                                currentResult += string.Format(" SERVICE_CODE:{0}", serviceCode);
+                            }
+                            result = currentResult;
                         }
-                        result = currentResult;
                     }
                 }
             }
