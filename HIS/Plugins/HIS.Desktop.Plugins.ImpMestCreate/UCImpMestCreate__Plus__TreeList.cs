@@ -444,6 +444,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.currrentServiceAdo.TDL_BID_NUMBER = bidMedi.BID_NUMBER;
                             this.currrentServiceAdo.EXPIRED_DATE = bidMedi.EXPIRED_DATE;
                             this.currrentServiceAdo.monthLifespan = bidMedi.MONTH_LIFESPAN;
+                            this.txtTtthau.Text = bidMedi.TT_THAU;
                         }
                     }
 
@@ -490,7 +491,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Maroon;
                     }
                 }
-                
+
                 VisibleLayoutTemperature();
                 this.SetPrimary();
                 SetValueByServiceAdo();
@@ -521,7 +522,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.spinEditGiaTrongThau.Enabled = true;
                     this.spinImpPrice.Enabled = true;
                     //this.cboDosageForm.Enabled = true;
-                    this.cboNationals.Enabled = true;     
+                    this.cboNationals.Enabled = true;
                     this.cboHangSX.Enabled = true;
                     this.txtSoDangKy.Enabled = true;
                     this.SpMaxReuseCount.Enabled = false;
@@ -882,6 +883,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 this.cboInformationBid.Enabled = false;
                             }
+
+                            this.txtTtthau.Text = bidMate.TT_THAU;
                         }
                     }
 
@@ -1082,8 +1085,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             this.txtHeinServiceBidMateType.Text = dataMediType.HEIN_SERVICE_BHYT_NAME;
                             this.txtDescriptionMedicineType.Text = dataMediType.DESCRIPTION;
                             this.txtActiveIngrBhytName.Text = dataMediType.ACTIVE_INGR_BHYT_NAME;
-                            var ds=( cboDosageForm.Properties.DataSource as List < DosageFormADO >).FirstOrDefault (o=>o.DOSAGE_FORM_NAME== dataMediType.DOSAGE_FORM);
-                            this.cboDosageForm.EditValue = ds != null ? ds.DOSAGE_FORM_NAME : null; 
+                            var ds = (cboDosageForm.Properties.DataSource as List<DosageFormADO>).FirstOrDefault(o => o.DOSAGE_FORM_NAME == dataMediType.DOSAGE_FORM);
+                            this.cboDosageForm.EditValue = ds != null ? ds.DOSAGE_FORM_NAME : null;
                             this.cboMedicineUseForm.EditValue = dataMediType.MEDICINE_USE_FORM_ID;
                             txtBidNumber.Text = this.currrentServiceAdo.TDL_BID_NUMBER;
                         }
@@ -1258,7 +1261,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         }
 
                         spinCanImpAmount.Value = Math.Round(bidMediType.AMOUNT + (bidMediType.AMOUNT * bidMediType.IMP_MORE_RATIO ?? 0) - (bidMediType.IN_AMOUNT ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0), MidpointRounding.AwayFromZero);
-                        
+
                         this.currrentServiceAdo.BidImpPrice = bidMediType.IMP_PRICE;
                         this.currrentServiceAdo.BidImpVatRatio = bidMediType.IMP_VAT_RATIO;
                         if (bidMediType.IMP_PRICE.HasValue)
@@ -1430,11 +1433,16 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("this.currrentServiceAdo", this.currrentServiceAdo));
                 if (this.currrentServiceAdo != null && chkImprice.Checked == false && (!this._VACCINE_EXP_PRICE_OPTION || !currrentServiceAdo.IsVaccin))
                 {
+                    Dictionary<long, VHisServicePatyADO> dicPaty = new Dictionary<long, VHisServicePatyADO>();
+                    bool isEdit = false;
+                    List<V_HIS_SERVICE_PATY> listServicePaty = new List<V_HIS_SERVICE_PATY>();
                     if (!dicServicePaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID) || dicServicePaty[this.currrentServiceAdo.SERVICE_ID].Count == 0)
                     {
-                        Dictionary<long, VHisServicePatyADO> dicPaty = new Dictionary<long, VHisServicePatyADO>();
-
-                        var listServicePaty = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERVICE_PATY>>("api/HisServicePaty/GetAppliedView", ApiConsumers.MosConsumer, null, null, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, "serviceId", this.currrentServiceAdo.SERVICE_ID, "treatmentTime", null);
+                        listServicePaty = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<V_HIS_SERVICE_PATY>>("api/HisServicePaty/GetAppliedView", ApiConsumers.MosConsumer, null, null, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, "serviceId", this.currrentServiceAdo.SERVICE_ID, "treatmentTime", null);
+                        if ((!dicAppliedPaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID) || dicAppliedPaty[this.currrentServiceAdo.SERVICE_ID].Count == 0) && listServicePaty != null && listServicePaty.Count > 0)
+                        {
+                            dicAppliedPaty[this.currrentServiceAdo.SERVICE_ID] = listServicePaty;
+                        }
                         int row = 1;
                         List<HIS_MEDICINE_PATY> listMedcinePaty = new List<HIS_MEDICINE_PATY>();
                         List<HIS_MATERIAL_PATY> listMaterialPaty = new List<HIS_MATERIAL_PATY>();
@@ -1455,10 +1463,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             ado.PATIENT_TYPE_NAME = item.PATIENT_TYPE_NAME;
                             ado.PATIENT_TYPE_ID = item.ID;
                             ado.PATIENT_TYPE_CODE = item.PATIENT_TYPE_CODE;
-                            if(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.NotAutoIsNotSell") == "1")
+                            if (HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.Desktop.Plugins.ImpMestCreate.NotAutoIsNotSell") == "1")
                             {
                                 ado.IsNotSell = false;
-                            }else
+                            }
+                            else
                             {
                                 ado.IsNotSell = true;
                             }
@@ -1467,43 +1476,47 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             if (listMedcinePaty != null && listMedcinePaty.Count > 0)
                             {
                                 var dataMePaty = listMedcinePaty.Where(o => o.PATIENT_TYPE_ID == ado.PATIENT_TYPE_ID).ToList();
-                                ado.PRE_PRICE_Str = dataMePaty != null && dataMePaty.Count > 0 ? (dataMePaty.FirstOrDefault().EXP_PRICE * (1 + dataMePaty.FirstOrDefault().EXP_VAT_RATIO)) : 0;
+                                ado.PRE_PRICE_Str = dataMePaty != null && dataMePaty.Count > 0 ? (dataMePaty.FirstOrDefault().EXP_PRICE) : 0;
                             }
                             if (listMaterialPaty != null && listMaterialPaty.Count > 0)
                             {
                                 var dataMaPaty = listMaterialPaty.Where(o => o.PATIENT_TYPE_ID == ado.PATIENT_TYPE_ID).ToList();
-                                ado.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE * (1 + dataMaPaty.FirstOrDefault().EXP_VAT_RATIO)) : 0;
+                                ado.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE) : 0;
                             }
                             ado.ID = row;
                             row++;
                             dicPaty[item.ID] = ado;
                         }
-
-                        if (listServicePaty != null && listServicePaty.Count > 0)
+                    }
+                    else
+                    {
+                        isEdit = true;
+                        dicPaty = dicServicePaty[this.currrentServiceAdo.SERVICE_ID].ToDictionary(k => k.PATIENT_TYPE_ID, v => v);
+                        if (dicAppliedPaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
+                            listServicePaty = dicAppliedPaty[this.currrentServiceAdo.SERVICE_ID];                     
+                    }
+                    if (listServicePaty != null && listServicePaty.Count > 0)
+                    {
+                        foreach (var item in listServicePaty)
                         {
-                            foreach (var item in listServicePaty)
+                            if (dicPaty.ContainsKey(item.PATIENT_TYPE_ID))
                             {
-                                if (dicPaty.ContainsKey(item.PATIENT_TYPE_ID))
+                                var ado = dicPaty[item.PATIENT_TYPE_ID];
+                                if (!ado.IsSetExpPrice)
                                 {
-                                    var ado = dicPaty[item.PATIENT_TYPE_ID];
-                                    if (!ado.IsSetExpPrice)
-                                    {
-                                        ado.ExpPrice = item.PRICE;
-                                        ado.VAT_RATIO = item.VAT_RATIO;
-                                        ado.ExpVatRatio = item.VAT_RATIO * 100;
-                                        ado.ExpPriceVat = item.PRICE * (1 + item.VAT_RATIO);
-                                        ado.PRICE = item.PRICE * (1 + item.VAT_RATIO);
-                                        ado.PercentProfit = 0;
-                                        ado.IsNotSell = false;
-                                        ado.IsSetExpPrice = true;
-                                    }
+                                    ado.ExpPrice = item.PRICE;
+                                    ado.VAT_RATIO = item.VAT_RATIO;
+                                    ado.ExpVatRatio = item.VAT_RATIO * 100;
+                                    ado.PRICE = chkPreExpPrice.Checked ? (ado.PRE_PRICE_Str ?? 0) : item.PRICE * (!HisConfig.ApplyServicePatyPrice ? (1 + item.VAT_RATIO) : 1);
+                                    ado.ExpPriceVat = ado.PRICE;
+                                    ado.PercentProfit = 0;
+                                    ado.IsNotSell = false;
+                                    ado.IsSetExpPrice = true;
                                 }
                             }
                         }
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("dicPaty", dicPaty));
-
-                        dicServicePaty[this.currrentServiceAdo.SERVICE_ID] = dicPaty.Select(s => s.Value).ToList();
                     }
+                    dicServicePaty[this.currrentServiceAdo.SERVICE_ID] = dicPaty.Select(s => s.Value).ToList();
 
                     var listData = dicServicePaty[this.currrentServiceAdo.SERVICE_ID];
                     AutoMapper.Mapper.CreateMap<VHisServicePatyADO, VHisServicePatyADO>();
@@ -1512,6 +1525,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                     foreach (var item in listServicePatyAdo)
                     {
+                        if(!item.IsNotSell)
+                        {
+
+                        }    
                         if (this.currrentServiceAdo.IsServiceUnitPrimary)
                         {
                             item.VAT_RATIO = this.currrentServiceAdo.IMP_VAT_RATIO;
@@ -1522,8 +1539,36 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         item.IsIdentity = this.currrentServiceAdo.IsIdentity;
                         //                           item.ExpPriceVat = item.ExpPrice * (1 + item.VAT_RATIO);
                         item.ExpPriceVat = price;
+                        item.ExpPrice = this.currrentServiceAdo.IMP_PRICE;
                         item.PercentProfit = CheckProfitCfg(price, item.ID);
-                        item.PRICE = (1 + item.PercentProfit / 100) * item.ExpPriceVat;
+                        if (!chkPreExpPrice.Checked)
+                        {
+                            if (!HisConfig.ApplyServicePatyPrice)
+                            {
+                                item.PRICE = (1 + item.PercentProfit / 100) * item.ExpPriceVat;
+                            }
+                            else
+                            {
+                                item.ExpPrice = item.PRICE;
+                                if(listServicePaty == null || listServicePaty.Count ==0 || !listServicePaty.Exists(o=>o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID))
+                                    item.PRICE = (1 + item.PercentProfit / 100) * item.ExpPriceVat;
+                            }
+                        }
+                        else
+                        {
+                            item.PRICE = item.PRE_PRICE_Str ?? 0;
+                            item.ExpPrice = item.PRICE;
+                        }
+                        decimal profit = 0;
+
+                        if (item.ExpPriceVat > 0 && item.PRICE > 0)
+                            profit = 100 * (item.PRICE - item.ExpPriceVat) / item.ExpPriceVat;
+                        if (item.PercentProfit < profit && item.PRICE > 0 || isEdit == true)
+                        {
+                            item.PercentProfit = profit;
+                        }
+                        if (item.IsNotSell)
+                            item.PRICE = (1 + item.PercentProfit / 100) * item.ExpPriceVat;
                     }
                 }
                 else
@@ -2173,7 +2218,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         listMedicineType = new List<MedicineTypeADO>();
                         foreach (var item in dicContractMety)
                         {
-                            if (item.Value == null || item.Value.IS_ACTIVE != 1) continue; 
+                            if (item.Value == null || item.Value.IS_ACTIVE != 1) continue;
                             var medicineType = listMedicineTypeTemp.FirstOrDefault(o => Base.StaticMethod.GetTypeKey(o.ID, item.Value.BID_GROUP_CODE) == item.Key.Substring(0, item.Key.LastIndexOf("_")));
                             if (medicineType == null)
                                 continue;
