@@ -232,6 +232,10 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 {
                     ExpFilter.PACKAGE_NUMBER__EXACT = txtPakageNumber.Text.Trim();
                 }
+                if (!chkIsNotTaken.Checked)
+                {
+                    ExpFilter.IS_NOT_TAKEN = false;
+                }
                 startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);

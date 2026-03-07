@@ -300,6 +300,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         {
             try
             {
+                HisConfigCFG.LoadConfig();
                 EnableDoubleBuffering(this.gridControlServiceProcess);
 
                 this.LoadHisServiceFromRam();
@@ -3122,22 +3123,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     if (e.Column.FieldName == "IsChecked" && !sereServADO.IsChecked)
                     {
                         this.ResetOneService(sereServADO);
-                        if (view != null && e.RowHandle >= 0)
-                        {
-                            // ép GridView cập nhật lại display text của các cột lookup
-                            view.SetRowCellValue(e.RowHandle, this.gridColumnPatientTypeName__TabService, sereServADO.PATIENT_TYPE_ID);
-                            view.SetRowCellValue(e.RowHandle, this.gridColumnExecuteRoomName__TabService, sereServADO.TDL_EXECUTE_ROOM_ID);
-                            view.SetRowCellValue(e.RowHandle, this.gridColumn_Service_PrimaryPatientType, sereServADO.PRIMARY_PATIENT_TYPE_ID);
-                            view.RefreshRow(e.RowHandle);
-                            view.UpdateCurrentRow();
-                        }
-                        else
-                        {
+                        // KHÔNG dùng SetRowCellValue ở đây vì nó trigger CellValueChanged đệ quy:
+                        // lần gọi lồng đó thấy view.IsRowSelected = true nên chạy ChoosePatientTypeDefaultlService
+                        // và fill lại dữ liệu vừa xóa. RefreshRow đủ để grid re-render từ object đã reset.
                             if (e.RowHandle >= 0)
-                                this.gridViewServiceProcess.RefreshRow(e.RowHandle);
+                            view?.RefreshRow(e.RowHandle);
                             else
                                 this.gridViewServiceProcess.RefreshData();
-                        }
                         this.SetEnableButtonControl(this.actionType);
                         this.SetDefaultSerServTotalPrice();
                         return;
@@ -6414,86 +6406,13 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     cboUser.EditValue = acsUser.LOGINNAME;
                 }
 
-                //if (cboConsultantUser.EditValue != null)
-                //{
-                //    var conUser = BackendDataWorker.Get<ACS_USER>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.LOGINNAME.Equals(cboConsultantUser.EditValue.ToString()));
-
-                //    if (conUser != null)
-                //    {
-                //        serviceReqSDO.ConsultantLoginName = conUser.LOGINNAME;
-                //        serviceReqSDO.ConsultantUserName = conUser.USERNAME;
-                //    }
-                //}
-
-
-                //if (this.cboExecuteGroup.EditValue != null)
-                //    serviceReqSDO.ExecuteGroupId = Inventec.Common.TypeConvert.Parse.ToInt64(this.cboExecuteGroup.EditValue.ToString());
-
-                //if (IsNeedTrackingCreate)
-                //{
-                //    // điều kiện nhiều tờ điều trị
-                //    GridCheckMarksSelection gridCheckMarkBusiness = cboTracking.Properties.Tag as GridCheckMarksSelection;
-                //    var lstCheck = intructionTimeSelecteds.Select(o => o.ToString().Substring(0, 8)).ToList();
-                //    if (gridCheckMarkBusiness != null && gridCheckMarkBusiness.SelectedCount > 0)
-                //    {
-                //        List<string> lstTrackingTimeDupicate = new List<string>();
-                //        serviceReqSDO.TrackingInfos = new List<TrackingInfoSDO>();
-                //        string mgsKhongNamTrongNgayChiDinh = "";
-                //        string mgsTrungNgay = "";
-                //        foreach (TrackingAdo rv in gridCheckMarkBusiness.Selection)
-                //        {
-                //            if (rv != null && !lstCheck.Exists(o => o == rv.TRACKING_TIME.ToString().Substring(0, 8)))
-                //            {
-                //                mgsKhongNamTrongNgayChiDinh += rv.TrackingTimeStr.Substring(0, 10) + ",";
-                //            }
-                //            else if (rv != null && lstTrackingTimeDupicate.Exists(o => o == rv.TRACKING_TIME.ToString().Substring(0, 8)))
-                //            {
-                //                mgsTrungNgay += rv.TrackingTimeStr.Substring(0, 10) + ",";
-                //            }
-                //            else
-                //            {
-                //                lstTrackingTimeDupicate.Add(rv.TRACKING_TIME.ToString().Substring(0, 8));
-                //                TrackingInfoSDO sdo = new TrackingInfoSDO();
-                //                sdo.TrackingId = rv.ID;
-                //                sdo.IntructionTime = Convert.ToInt64(intructionTimeSelecteds.Where(o => o.ToString().Substring(0, 8) == rv.TRACKING_TIME.ToString().Substring(0, 8)).FirstOrDefault());
-                //                serviceReqSDO.TrackingInfos.Add(sdo);
-                //            }
-                //        }
-                //        if (!string.IsNullOrEmpty(mgsKhongNamTrongNgayChiDinh))
-                //        {
-                //            MessageBox.Show(string.Format("Tờ điều trị ngày {0} không nằm trong ngày chỉ định", mgsKhongNamTrongNgayChiDinh), "Thông báo");
-                //            isDupicate = true;
-                //            return;
-                //        }
-                //        if (!string.IsNullOrEmpty(mgsTrungNgay))
-                //        {
-                //            MessageBox.Show(string.Format("Ngày {0} có nhiều hơn 1 tờ điều trị", mgsTrungNgay), "Thông báo");
-                //            isDupicate = true;
-                //            return;
-                //        }
-
-                //    }// nếu chỉ có 1 tờ điều trị
-                //    //else if (this.cboTracking.EditValue != null && !string.IsNullOrEmpty(this.cboTracking.EditValue.ToString()))
-                //    //{
-                //    //    serviceReqSDO.TrackingId = Inventec.Common.TypeConvert.Parse.ToInt64(this.cboTracking.EditValue.ToString());
-                //    //}
-                //    //else
-                //    //{
-                //    //    serviceReqSDO.TrackingId = null;
-                //    //}
-                //}
-
-                //serviceReqSDO.IsNotRequireFee = (chkIsNotRequireFee.CheckState == CheckState.Checked) ? (short?)1 : null;
-                //serviceReqSDO.IsInformResultBySms = (chkIsInformResultBySms.CheckState == CheckState.Checked);
-                //serviceReqSDO.IsEmergency = (chkIsEmergency.CheckState == CheckState.Checked);
-
                 if (dataSereServModel != null && dataSereServModel.Count > 0)
                 {
                     foreach (var item in dataSereServModel)
                     {
                         ServiceReqDetailSDO sdo = new ServiceReqDetailSDO();
                         sdo.EkipInfos = new List<EkipSDO>();
-                        sdo.Amount = item.AMOUNT;
+                        sdo.Amount = decimal.Parse(item.QUANTITY_STR);
                         sdo.PatientTypeId = item.PATIENT_TYPE_ID;
                         sdo.RoomId = item.TDL_EXECUTE_ROOM_ID;
                         sdo.ServiceId = item.SERVICE_ID;
@@ -6956,12 +6875,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null;
                     if (isSign)
                     {
-                        //if (isSaveAndPrint)
-                        //{
-                        //    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
-                        //}
-                        //else 
-                        if (isPrintPreview)
+                        if (isSaveAndPrint)
+                        {
+                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow;
+                        }
+                        else if (isPrintPreview)
                         {
                             previewType = MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview;
                             isSaveAndShow = true;
@@ -6971,12 +6889,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     }
                     else
                     {
-                        //if (isSaveAndPrint)
-                        //{
-                        //    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
-                        //}
-                        //else
-                        if (isPrintPreview)
+                        if (isSaveAndPrint)
+                        {
+                            previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                        }
+                        else if (isPrintPreview)
                         {
                             previewType = MPS.ProcessorBase.PrintConfig.PreviewType.Show;
                             isSaveAndShow = true;
@@ -6990,7 +6907,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstLoaiPhieu), lstLoaiPhieu)
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => printTH), printTH));
                     //Nếu click nút lưu in => tự động gọi hàm xử lý in ngay
-                    if (isPrintPreview || isSign)
+                    if (this.isSaveAndPrint || isPrintPreview || isSign)
                     {
                         if (workingAssignServiceADO.OpenFromBedRoomPartial && this.patientSelectProcessor != null && this.ucPatientSelect != null && this.patientSelectProcessor.GetSelectedRows(this.ucPatientSelect).Count > 1 && serviceReqComboResultSDO.ServiceReqs != null && serviceReqComboResultSDO.ServiceReqs.Count > 0)
                         {
@@ -9386,6 +9303,211 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboUser_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    if (this.cboUser.EditValue != null)
+                    {
+                        ACS.EFMODEL.DataModels.ACS_USER data = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.LOGINNAME == ((this.cboUser.EditValue ?? "").ToString()));
+                        if (data != null)
+                        {
+                            this.txtLoginName.Text = data.LOGINNAME;
+
+                            CheckAssignServiceSimultaneityOption();
+                        }
+                    }
+                    this.FocusWhileSelectedUser();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboUser_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (this.cboUser.EditValue != null)
+                    {
+                        ACS.EFMODEL.DataModels.ACS_USER data = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.LOGINNAME == ((this.cboUser.EditValue ?? "").ToString()));
+                        if (data != null)
+                        {
+                            this.FocusWhileSelectedUser();
+                            this.txtLoginName.Text = data.LOGINNAME;
+                            CheckAssignServiceSimultaneityOption();
+                        }
+                    }
+                }
+                else
+                {
+                    this.cboUser.ShowPopup();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void FocusWhileSelectedUser()
+        {
+            try
+            {
+                this.gridControlServiceProcess.Focus();
+                this.gridViewServiceProcess.FocusedRowHandle = 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkSign_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                //chkPrintDocumentSigned.Enabled = chkSign.Checked;
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                //if (chkSign.Checked == false)
+                //{
+                //    chkPrintDocumentSigned.Checked = false;
+                //}
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkSign && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkSign.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.chkSign;
+                    csAddOrUpdate.VALUE = (chkSign.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkPrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                isNotLoadWhileChangeControlStateInFirst = true;
+                if (chkPrint.Checked)
+                    chkPrintDocumentSigned.Checked = !chkPrint.Checked;
+                isNotLoadWhileChangeControlStateInFirst = false;
+                ChangeCheckPrintAndPreview();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ChangeCheckPrintAndPreview()
+        {
+            try
+            {
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdatePrintDocumentSigned = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkPrintDocumentSigned && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdatePrintDocumentSigned != null)
+                {
+                    csAddOrUpdatePrintDocumentSigned.VALUE = (chkPrintDocumentSigned.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdatePrintDocumentSigned = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdatePrintDocumentSigned.KEY = ControlStateConstant.chkPrintDocumentSigned;
+                    csAddOrUpdatePrintDocumentSigned.VALUE = (chkPrintDocumentSigned.Checked ? "1" : "");
+                    csAddOrUpdatePrintDocumentSigned.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdatePrintDocumentSigned);
+                }
+
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == ControlStateConstant.chkPrint && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkPrint.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = ControlStateConstant.chkPrint;
+                    csAddOrUpdate.VALUE = (chkPrint.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkPrintDocumentSigned_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                isNotLoadWhileChangeControlStateInFirst = true;
+                if (chkPrintDocumentSigned.Checked)
+                    chkPrint.Checked = !chkPrintDocumentSigned.Checked;
+                isNotLoadWhileChangeControlStateInFirst = false;
+                ChangeCheckPrintAndPreview();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void btnSaveAndPrint_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SaveWithGridpatientSelect(TypeButton.SAVE_AND_PRINT, true, false, false);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }
