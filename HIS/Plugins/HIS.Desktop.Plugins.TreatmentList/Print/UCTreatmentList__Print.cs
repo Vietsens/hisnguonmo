@@ -861,7 +861,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         LogSystem.Info("currentHisVExamServiceReq " + currentHisVExamServiceReq.ID);
 
                         HisSereServViexViewFilter hisSereServViexViewFilter = new HisSereServViexViewFilter();
-                        hisSereServViexViewFilter.SERVICE_REQ_ID = currentHisVExamServiceReq.ID;
+                        //hisSereServViexViewFilter.SERVICE_REQ_ID = currentHisVExamServiceReq.ID;
+                        hisSereServViexViewFilter.TDL_PATIENT_ID = currentTreatment.PATIENT_ID;
                         LogSystem.Info("input 1 " + LogUtil.TraceData(" __data__ ", hisSereServViexViewFilter));
                         var lstSereServViexView = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_VIEX>>("api/HisSereServViex/GetView", ApiConsumers.MosConsumer, hisSereServViexViewFilter, param).ToList();
                         LogSystem.Info("tra ra 1 " + LogUtil.TraceData(" __data__ ", lstSereServViexView));
