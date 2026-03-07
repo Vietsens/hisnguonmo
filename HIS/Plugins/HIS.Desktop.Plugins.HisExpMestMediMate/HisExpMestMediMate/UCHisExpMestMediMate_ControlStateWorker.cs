@@ -39,10 +39,12 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
     {
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        bool isNotLoadWhileChangeControlStateInFirst;
         private void InitControlState()
         {
             try
             {
+                isNotLoadWhileChangeControlStateInFirst = true;
                 this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
                 this.currentControlStateRDO = controlStateWorker.GetData(_Module.ModuleLink);
                 if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
@@ -58,11 +60,24 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                     {
                         chkHistoryMedicine.Checked = true;
                     }
+
+                    var itemChkTaken = currentControlStateRDO.Where(o => o.KEY == chkIsNotTaken.Name).FirstOrDefault();
+                    if (itemChkTaken != null)
+                    {
+                        chkIsNotTaken.Checked = itemChkTaken.VALUE == "1";
+                    }
+                    else
+                    {
+                        chkIsNotTaken.Checked = false;
+                    }
                 }
                 else
                 {
                     chkHistoryMedicine.Checked = true;
+                    chkIsNotTaken.Checked = false;
                 }
+
+                isNotLoadWhileChangeControlStateInFirst = false;
                 chkHistoryMaterial.Checked = !chkHistoryMedicine.Checked;
             }
             catch (Exception ex)
