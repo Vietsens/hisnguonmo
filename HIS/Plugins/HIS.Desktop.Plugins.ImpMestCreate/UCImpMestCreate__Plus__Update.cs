@@ -26,6 +26,7 @@ using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.ImpMestCreate.ADO;
 using HIS.Desktop.Plugins.ImpMestCreate.Base;
+using HIS.Desktop.Plugins.ImpMestCreate.Config;
 using HIS.Desktop.Plugins.ImpMestCreate.Save;
 using HIS.Desktop.Plugins.Library.EmrGenerate;
 using HIS.Desktop.Print;
@@ -383,7 +384,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             if (listMaterialPaty != null && listMaterialPaty.Count > 0)
                             {
                                 var dataMaPaty = listMaterialPaty.Where(o => o.PATIENT_TYPE_ID == patient.ID).ToList();
-                                serviceAdo.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE * (1 + dataMaPaty.FirstOrDefault().EXP_VAT_RATIO)) : 0;
+                                serviceAdo.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE) : 0;
                             }
                             serviceAdo.IsNotSell = true;
                             serviceAdo.SERVICE_TYPE_ID = material.SERVICE_TYPE_ID;
@@ -408,7 +409,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     var pa = dicPaty[service.PATIENT_TYPE_ID];
                                     if (!pa.IsSetExpPrice)
                                     {
-                                        pa.PRICE = service.EXP_PRICE * (1 + service.EXP_VAT_RATIO);
+                                        pa.PRICE = chkPreExpPrice.Checked ? (pa.PRE_PRICE_Str ?? 0) : service.EXP_PRICE * (!HisConfig.ApplyServicePatyPrice ? (1 + service.EXP_VAT_RATIO) : 1);
                                         pa.VAT_RATIO = service.EXP_VAT_RATIO;
                                         pa.ExpVatRatio = service.EXP_VAT_RATIO * 100;
                                         pa.ExpPriceVat = item.VIR_PRICE ?? 0;
@@ -599,7 +600,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             if (listMedcinePaty != null && listMedcinePaty.Count > 0)
                             {
                                 var dataMaPaty = listMedcinePaty.Where(o => o.PATIENT_TYPE_ID == patient.ID).ToList();
-                                serviceAdo.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE * (1 + dataMaPaty.FirstOrDefault().EXP_VAT_RATIO)) : 0;
+                                serviceAdo.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE) : 0;
                             }
                             serviceAdo.SERVICE_TYPE_ID = medicine.SERVICE_TYPE_ID;
                             serviceAdo.SERVICE_ID = medicine.SERVICE_ID;
@@ -623,7 +624,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     var pa = dicPaty[service.PATIENT_TYPE_ID];
                                     if (!pa.IsSetExpPrice)
                                     {
-                                        pa.PRICE = service.EXP_PRICE * (1 + service.EXP_VAT_RATIO);
+                                        pa.PRICE = chkPreExpPrice.Checked ? (pa.PRE_PRICE_Str ?? 0) : service.EXP_PRICE * (!HisConfig.ApplyServicePatyPrice ? (1 + service.EXP_VAT_RATIO) : 1);
                                         pa.VAT_RATIO = service.EXP_VAT_RATIO;
                                         pa.ExpVatRatio = service.EXP_VAT_RATIO * 100;
                                         pa.ExpPriceVat = item.VIR_PRICE ?? 0;

@@ -28,6 +28,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Config
     {
         private const string EditSaleProfitCFG = "HIS.Desktop.Plugins.ImpMestCreate.EditSaleProfit";
         private const string AllowDuplicateCFG = "HIS.Desktop.Plugins.ImpMestCreate.AllowDuplicate";
+        private const string ApplyServicePatyPriceCFG = "HIS.Desktop.Plugins.ImpMestCreate.ApplyServicePatyPrice";
+        private const string OnlyShowBidInfoCFG = "HIS.Desktop.Plugins.ImpMestCreate.OnlyShowBidInfo";
         internal static bool DisableSaleProfitCFG
         {
             get { return Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>(EditSaleProfitCFG)) != 1; }
@@ -35,6 +37,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate.Config
         internal static bool AllowDuplicate
         {
             get { return Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>(AllowDuplicateCFG)) == 1; }
+        }
+        internal static bool OnlyShowBidInfo
+        {
+            get { return Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>(OnlyShowBidInfoCFG)) == 1; }
+        }
+        internal static bool ApplyServicePatyPrice
+        {
+            get { return Inventec.Common.TypeConvert.Parse.ToInt64(HisConfigs.Get<string>(ApplyServicePatyPriceCFG)) == 1; }
         }
     }
 }
