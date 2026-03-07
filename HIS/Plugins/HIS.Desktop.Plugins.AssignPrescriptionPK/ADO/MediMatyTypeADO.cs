@@ -34,6 +34,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 {
     public class MediMatyTypeADO : MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE
     {
+        // qtcode
+        public bool IsGuarantee { get; set; } = false;
         public MediMatyTypeADO()
         {
 

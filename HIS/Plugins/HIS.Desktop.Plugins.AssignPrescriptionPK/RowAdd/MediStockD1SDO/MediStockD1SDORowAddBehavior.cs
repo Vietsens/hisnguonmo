@@ -142,6 +142,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
             {
                 if (this.ValidMetyMatyType__Add())
                 {
+                    // qtcode
+                    
                     List<MediMatyTypeADO> mediMatyTypeADOTemps = new List<MediMatyTypeADO>();
                     //Nếu thuốc đã kê không đủ khả dụng trong kho, người dùng chọn lấy thuốc ngoài kho thay thế
                     //==> Lấy các thuốc ngoài kho + các thông tin số lượng, đường dùng, cách dùng, hướng dẫn sử dụng,.. đã chọn => tự động bổ sung vào danh sách thuốc đã chọn luôn
@@ -150,8 +152,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
                         SetValidAssianInDayError();
                         SetValidAmountError();
                         UpdateMediMatyByMedicineTypeCategory(medicineTypeSDO__Category__SameMediAcin);
+                        // qtcode
+                        this.medicineTypeSDO.IsGuarantee = true;
                         this.medicineTypeSDO.IsMultiDateState = this.IsMultiDateState;//TODO
                         this.medicineTypeSDO.IntructionTimeSelecteds = this.IntructionTimeSelecteds;//TODO
+                        //qtcode 
+                        //this.medicineTypeSDO.IsGuarantee = true; 
                         mediMatyTypeADOTemps.Add(this.medicineTypeSDO);
                     }
                     //Nếu thuốc còn khả dụng trong kho
@@ -165,6 +171,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
                             if (!frmAssignPrescription.GetOverReason(medicineTypeSDO))
                                 return success;
                         }
+                        this.medicineTypeSDO.IsGuarantee = true;
                         this.UpdateMedicinePackageInfoInDataRow(this.medicineTypeSDO);
                         this.UpdatePatientTypeInDataRow(this.medicineTypeSDO);
                         this.UpdateExpMestReasonInDataRow(this.medicineTypeSDO);
