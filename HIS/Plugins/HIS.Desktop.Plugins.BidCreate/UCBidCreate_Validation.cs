@@ -148,21 +148,21 @@ namespace HIS.Desktop.Plugins.BidCreate
             }
         }
 
-        private void ValidBidNumOrder()
-        {
-            try
-            {
-                BidNumOrderValidationRule bidNumOrderValidationRule = new BidNumOrderValidationRule();
-                bidNumOrderValidationRule.txtBidNumOrder = txtBidNumOrder;
-                //bidNumOrderValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
-                bidNumOrderValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
-                dxValidationProviderLeft.SetValidationRule(txtBidNumOrder, bidNumOrderValidationRule);
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
+        //private void ValidBidNumOrder()
+        //{
+        //    try
+        //    {
+        //        BidNumOrderValidationRule bidNumOrderValidationRule = new BidNumOrderValidationRule();
+        //        bidNumOrderValidationRule.txtBidNumOrder = txtBidNumOrder;
+        //        //bidNumOrderValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
+        //        bidNumOrderValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+        //        dxValidationProviderLeft.SetValidationRule(txtBidNumOrder, bidNumOrderValidationRule);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
 
         private void ValidSupplier()
         {

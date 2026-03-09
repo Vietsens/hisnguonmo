@@ -17,6 +17,7 @@
  */
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using Inventec.Common.Logging;
@@ -28,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.BidCreate
@@ -46,6 +48,13 @@ namespace HIS.Desktop.Plugins.BidCreate
                 if (!btnAdd.Enabled && this.ActionType == GlobalVariables.ActionEdit)
                     return;
                 btnAdd.Focus();
+                if(Encoding.UTF8.GetByteCount(txtBidInfo.Text) > 50)
+                {
+                    dxErrorProvider1.SetError(txtBidInfo, "Thông tin thầu tối đa 50 ký tự", ErrorType.Warning);
+                    return; 
+                }
+                dxErrorProvider1.SetError(txtBidInfo, null);
+
                 if (!dxValidationProviderLeft.Validate()) return;
                 if (xtraTabControl1.SelectedTabPageIndex == 0) // thuoc
                 {
@@ -215,6 +224,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                         spinImpVat.Value = 0;
                         spinImpMoreRatio.Value = 0;
                         txtBidNumOrder.Text = "";
+                        // qtcode
+                        txtBidInfo.Text = "";
                         txtBidGroupCode.Text = "";
                         txtBidPackageCode.Text = "";
                         txtMaTT.Text = "";
@@ -352,7 +363,10 @@ namespace HIS.Desktop.Plugins.BidCreate
                 {
                     if (item.Type == Base.GlobalConfig.THUOC)
                     {
+
                         var bidMedicineType = new MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE();
+                        // qtcode
+                        bidMedicineType.TT_THAU = item.TT_THAU; 
                         bidMedicineType.AMOUNT = (decimal)(item.AMOUNT ?? 0);
                         bidMedicineType.IMP_PRICE = (decimal)(item.IMP_PRICE ?? 0);
                         bidMedicineType.IMP_VAT_RATIO = item.IMP_VAT_RATIO;
@@ -392,6 +406,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                     else if (item.Type == Base.GlobalConfig.VATTU)
                     {
                         var bidMaterialType = new MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE();
+                        // qtcode
+                        bidMaterialType.TT_THAU = item.TT_THAU; 
                         bidMaterialType.AMOUNT = (decimal)(item.AMOUNT ?? 0);
                         bidMaterialType.IMP_PRICE = (decimal)(item.IMP_PRICE ?? 0);
                         bidMaterialType.IMP_VAT_RATIO = item.IMP_VAT_RATIO;
@@ -749,6 +765,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                     spinImpMoreRatio.EditValue = row.ImpMoreRatio;
                     spinGiaTran.EditValue = row.HEIN_LIMIT_PRICE ?? null;
                     txtBidNumOrder.Text = row.BID_NUM_ORDER;
+                    // qtcode
+                    txtBidInfo.Text = row.TT_THAU;
                     txtBidGroupCode.Text = row.BID_GROUP_CODE;
                     txtBidPackageCode.Text = row.BID_PACKAGE_CODE;
                     txtBatchDivisionCode.Text = row.BATCH_DIVISION_CODE;
@@ -1024,6 +1042,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             {
                 this.medicineType.IMP_PRICE = spinImpPrice.Value;
                 this.medicineType.BID_NUM_ORDER = txtBidNumOrder.Text;
+                this.medicineType.TT_THAU = txtBidInfo.Text;
                 this.medicineType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.medicineType.ImpVatRatio = spinImpVat.Value;
                 this.medicineType.ImpMoreRatio = spinImpMoreRatio.Value;
@@ -1138,9 +1157,9 @@ namespace HIS.Desktop.Plugins.BidCreate
                 {
                     this.medicineType.MONTH_LIFESPAN = null;
                 }
-                if (cboDosageForm.EditValue != null)
+                if (cboDosageForm.EditValue != null && long.TryParse(cboDosageForm.EditValue.ToString(), out long dosageId))
                 {
-                    this.medicineType.DOSAGE_FORM = dataDosageForm.FirstOrDefault(o => o.ID == (long)cboDosageForm.EditValue).DOSAGE_FORM_NAME;
+                    this.medicineType.DOSAGE_FORM = dataDosageForm.FirstOrDefault(o => o.ID == dosageId) != null ? dataDosageForm.FirstOrDefault(o => o.ID == dosageId).DOSAGE_FORM_NAME : null;
                 }
                 else
                 {
@@ -1162,6 +1181,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             {
                 this.materialType.IMP_PRICE = spinImpPrice.Value;
                 this.materialType.BID_NUM_ORDER = txtBidNumOrder.Text;
+                this.materialType.TT_THAU = txtBidInfo.Text;
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.materialType.AMOUNT = spinAmount.Value;
                 this.materialType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
