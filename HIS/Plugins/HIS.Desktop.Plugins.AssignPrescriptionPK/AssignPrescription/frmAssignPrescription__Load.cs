@@ -2432,6 +2432,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.treatmentPrint = listTreatment.FirstOrDefault();
                     }
                 }
+                // qtcode
+                if(this.currentTreatment != null)
+                {
+                    MOS.Filter.HisTreatmentFeeViewFilter filterTreatmentFee = new MOS.Filter.HisTreatmentFeeViewFilter();
+                    filterTreatmentFee.ID = this.currentTreatment.ID;
+                    var listTreatment = new BackendAdapter(null)
+                      .Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumer.ApiConsumers.MosConsumer, filterTreatmentFee, null);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        this.treatmentPrint_2 = listTreatment.FirstOrDefault();
+                    }
+                }
             }
             catch (Exception ex)
             {

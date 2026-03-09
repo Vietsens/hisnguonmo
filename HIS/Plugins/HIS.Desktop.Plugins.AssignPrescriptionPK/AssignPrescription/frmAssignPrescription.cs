@@ -363,6 +363,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private bool IsActionButtonPrintBill = false;
         Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>> dSignedList = new Dictionary<long, List<DocumentSignedUpdateIGSysResultDTO>>();
         V_HIS_TREATMENT_FEE treatmentPrint;
+        V_HIS_TREATMENT_FEE treatmentPrint_2; // lấy ra tretamentFee của bệnh nhân dựa vào mã điều trị
         List<HIS_PATIENT_TYPE> listSourcePatientType = new List<HIS_PATIENT_TYPE>();
         string PrintPrescription = "";
         HIS_MIMS_INTERACTION_LOG mimsInteractionLog;
@@ -1191,8 +1192,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 InitTimerReloadTreatmentFinishTime();
                 this.LoadVHisTreatment();
                 // qtcode
+                VisibleGuarantee();
                 LoadGuaranteeInfo();
-                VisibleGuarantee(); 
                 LogSystem.Debug("frmAssignPrescription_Load. 2");
                 InitMultipleThread();
                 LogSystem.Debug("frmAssignPrescription_Load. 3");
@@ -1243,24 +1244,44 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         }
         private void CalculatorToTalGuaranteeOriginal()
         {
-            if (this.totalGuaranteeOriginal == 0)
-                this.totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
-            this.lblTotalGuarantee.Text = this.totalGuaranteeOriginal.ToString(); 
+            try
+            {
+
+                if (this.totalGuaranteeOriginal == 0)
+                    this.totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
+                this.lblTotalGuarantee.Text = this.totalGuaranteeOriginal.ToString();
+            }
+            catch(Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            
         }
         private void VisibleGuarantee()
         {
-            if (this.currentTreatment != null && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
+            try 
             {
-                lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                //lciTotalGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                gridViewServiceProcess.Columns["IsGuarantee"].Visible = true;
+                lblTotalGuarantee.Visible = false;
+                if (this.currentTreatment != null && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
+                {
+                    lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    //lciTotalGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lblGuarantee.Visible = true;
+                    gridViewServiceProcess.Columns["IsGuarantee"].Visible = true;
+                }
+                else
+                {
+                    lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    //lciTotalGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lblGuarantee.Visible = false;
+                    gridViewServiceProcess.Columns["IsGuarantee"].Visible = false;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                //lciTotalGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                gridViewServiceProcess.Columns["IsGuarantee"].Visible = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+            
         }
         private async Task LoadGuaranteeInfo()
         {
@@ -1275,8 +1296,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 //isLoadingGuaranteeInfo = true;
 
-                //await Task.Run(() =>
-                //{
+                await Task.Run(() =>
+                {
                     try
                     {
                         //ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
@@ -1367,7 +1388,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         Inventec.Common.Logging.LogSystem.Error(ex);
                         //this.guaranteeInfo = null;
                     }
-                //});
+                });
 
                 //UpdateGuaranteeLabel();
                 //UpdateTotalGuaranteePrice();
@@ -3560,17 +3581,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 // Nếu không có thông tin bảo lãnh hoặc không có GUARANTEE_CODE thì bỏ qua
                 if (this.currentTreatment != null && string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE) || this.currentTreatment.TDL_PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                     return true;
-                //CommonParam param = new CommonParam();
-                //HisSereServBillFilter  hisSereServBillFilter = new HisSereServBillFilter();
-                //hisSereServBillFilter.TDL_TREATMENT_ID = this.treatmentId;
-                //this.ssBill = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV_BILL>>("/api/HisSereServBill/Get", ApiConsumers.MosConsumer, hisSereServBillFilter, param);
-                //if(ssBill != null)
-                //{
-                //    this.totalSSBillPrice = ssBill.Sum(o => o.PRICE); 
-                //}
-                //Inventec.Common.Logging.LogSystem.Debug("totalSSBillPrice qtcode: " + Inventec.Common.Logging.LogUtil.TraceData("Data", totalSSBillPrice));
-                //Inventec.Common.Logging.LogSystem.Debug("totalGuaranteeArise qtcode: " + Inventec.Common.Logging.LogUtil.TraceData("Data", totalGuaranteeArise));
-                if ((this.totalGuarantee - this.treatmentPrint.TOTAL_BILL_AMOUNT) > this.guaranteeBalance)
+                if (this.treatmentPrint_2 != null && (this.totalGuarantee - this.treatmentPrint_2.TOTAL_BILL_AMOUNT) > this.guaranteeBalance)
                 {
                     message = "Tổng tiền dịch vụ đã vượt hạn mức, vui lòng kiểm tra lại.";
                     return false;
@@ -3691,15 +3702,16 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                         // qtcode
                         this.isAdding = true; 
                         // Mặc định check bảo lãnh khi thêm thuốc/vật tư
-                        if (currentMedicineTypeADOForEdit != null)
-                        {
-                            // Nếu có bảo lãnh và không phải BHYT, mặc định check
-                            if (this.currentTreatment != null && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
-                            {
-                                currentMedicineTypeADOForEdit.IsGuarantee = true;
-                            }
-                        }
+                        //if (currentMedicineTypeADOForEdit != null)
+                        //{
+                        //    // Nếu có bảo lãnh và không phải BHYT, mặc định check
+                        //    if (this.currentTreatment != null && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
+                        //    {
+                        //        currentMedicineTypeADOForEdit.IsGuarantee = true;
+                        //    }
+                        //}
                         AddMediMatyClickHandler();
+                        this.isWarning = false; // check để tránh cảnh báo nhiều lần 
                         break;
                     case GlobalVariables.ActionEdit:
                         UpdateMediMatyClickHandler();

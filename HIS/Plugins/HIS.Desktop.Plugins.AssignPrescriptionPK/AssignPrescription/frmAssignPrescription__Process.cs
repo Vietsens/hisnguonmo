@@ -4242,7 +4242,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        bool isWarning = false; 
         internal void SetTotalPrice__TrongDon()
         {
             try
@@ -4287,13 +4287,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 this.lblPhatSinh__KhacBHYT.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPriceNotBHYT, ConfigApplications.NumberSeperator);
                 this.lblPhatSinh__MuaNgoai.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPriceOther, ConfigApplications.NumberSeperator);
                 string guaranteeMessage = "";
-                if (!ValidateGuaranteeAmount(ref guaranteeMessage))
+                if (!ValidateGuaranteeAmount(ref guaranteeMessage) && !this.isWarning)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(
                         guaranteeMessage,
                         "Cảnh báo",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
+                    this.isWarning = true; 
                 }
             }
             catch (Exception ex)
