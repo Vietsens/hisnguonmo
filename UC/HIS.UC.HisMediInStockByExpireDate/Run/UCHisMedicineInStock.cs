@@ -145,7 +145,7 @@ namespace HIS.UC.HisMediInStockByExpireDate.Run
                 if (HisMediInStockByExpireDateADO.HisMediInStockByExpireDates != null)
                 {
                     int kIndex = 1;
-                    foreach (var listItem in HisMediInStockByExpireDateADO.HisMediInStockByExpireDates)
+                    foreach (var listItem in HisMediInStockByExpireDateADO.HisMediInStockByExpireDates.Where(x => x != null && x.Count > 0))
                     {
                         //List<HisMediInStockByExpireDateADO> lstADO = new List<ADO.HisMediInStockByExpireDateADO>();
                         // lstADO.AddRange((from r in listItem select new HisMediInStockByExpireDateADO(r)).ToList());

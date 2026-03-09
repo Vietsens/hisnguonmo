@@ -127,7 +127,6 @@
     <Compile Include="HisMediInStockByExpireDateColumn.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Run\UCHisMedicineInStock.resx">
       <DependentUpon>UCHisMedicineInStock.cs</DependentUpon>
     </EmbeddedResource>

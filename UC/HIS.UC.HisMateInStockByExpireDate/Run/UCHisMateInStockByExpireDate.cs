@@ -145,7 +145,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                 if (HisMateInStockByExpireDateADO.HisMateInStockByExpireDates != null)
                 {
                     int kIndex = 1;
-                    foreach (var listItem in HisMateInStockByExpireDateADO.HisMateInStockByExpireDates)
+                    foreach (var listItem in HisMateInStockByExpireDateADO.HisMateInStockByExpireDates.Where(x => x != null && x.Count > 0))
                     {
                         List<HisMateInStockByExpireDateADO> lstADO = new List<ADO.HisMateInStockByExpireDateADO>();
                         var itemExpriedDate = listItem[0].EXPIRED_DATE;

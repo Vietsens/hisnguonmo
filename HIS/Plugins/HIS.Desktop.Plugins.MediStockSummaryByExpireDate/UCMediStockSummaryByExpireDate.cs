@@ -626,14 +626,26 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
 
                         mediFilter.INCLUDE_EMPTY = chkViewLineZero.Checked;
                         mediFilter.MEDI_STOCK_IDs = this.mediStockIds;
-                        mediFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
+                        //mediFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
                         var lstMediInStocks = new BackendAdapter(param).Get<List<List<HisMedicineInStockSDO>>>(HisRequestUriStore.HIS_MEDICINE_GETVIEW_IN_STOCK_MEDICINE_TYPE_TREE_BY_EXPIRED_DATE, ApiConsumers.MosConsumer, mediFilter, param);
+
+                        if (lstMediInStocks == null)
+                            lstMediInStocks = new List<List<HisMedicineInStockSDO>>();
+
                         List<long> _MedicineTypeIds = new List<long>();
                         List<V_HIS_MEDI_STOCK> lstMediStock = new List<V_HIS_MEDI_STOCK>();
+
                         if (chkMediStock.Checked)
                         {
-                            List<long> MediStockIds = lstMediInStocks.SelectMany(x => x).Select(x => x.MEDI_STOCK_ID ?? 0).Distinct().ToList();
-                            lstMediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => MediStockIds.Contains(p.ID)).ToList();
+                            List<long> MediStockIds = lstMediInStocks
+                                .Where(x => x != null)  // ← thêm dòng này
+                                .SelectMany(x => x)
+                                .Select(x => x.MEDI_STOCK_ID ?? 0)
+                                .Distinct()
+                                .ToList();
+
+                            lstMediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>()
+                                .Where(p => MediStockIds.Contains(p.ID)).ToList();
                         }
 
                         if (lstMediInStocks != null && lstMediInStocks.Count > 0 && timeToTal > 0)
@@ -683,16 +695,17 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             }
                         }
 
-                         List<List<HisMedicineInStockSDO>> lstParent = new List<List<HisMedicineInStockSDO>>();
-                        for (int i = 0; i < lstMediInStocks.Count; i++)
-                        {
-                            if (lstMediInStocks[i] != null && lstMediInStocks[i].Count > 0)
-                            {
-                                lstParent.Add(lstMediInStocks[i]);
+                        //List<List<HisMedicineInStockSDO>> lstParent = new List<List<HisMedicineInStockSDO>>();
+                        //for (int i = 0; i < lstMediInStocks.Count; i++)
+                        //{
+                        //    if (lstMediInStocks[i] != null && lstMediInStocks[i].Count > 0)
+                        //    {
+                        //        lstParent.Add(lstMediInStocks[i]);
                                 
-                            }
-                        }
-                        
+                        //    }
+                        //}
+                        List<List<HisMedicineInStockSDO>> lstParent = lstMediInStocks.Where(x => x != null && x.Count > 0).ToList();
+
                         hisMediInStockProcessor.Reload(ucMedicineInfo, lstParent, _MedicineTypeIds, lstMediStock);
                         var list = hisMediInStockProcessor.GetListTreeView(ucMedicineInfo);
                         count =list !=null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count():0;
@@ -722,13 +735,25 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                         mateFilter.INCLUDE_BASE_AMOUNT = isIncludeBaseAmount;
                         var lstMateInStocks = new BackendAdapter(param).Get<List<List<HisMaterialInStockSDO>>>(HisRequestUriStore.HIS_MATERIAL_GETVIEW_IN_STOCK_MATERIAL_TYPE_TREE_EXPRIRED_DATE, ApiConsumers.MosConsumer, mateFilter, param);
 
+                        if (lstMateInStocks == null)
+                            lstMateInStocks = new List<List<HisMaterialInStockSDO>>();
+
                         List<long> _MaterialTypeIds = new List<long>();
                         List<V_HIS_MEDI_STOCK> lstMediStock = new List<V_HIS_MEDI_STOCK>();
+
                         if (chkMediStock.Checked)
                         {
-                            List<long> MediStockIds = lstMateInStocks.SelectMany(x => x).Select(x => x.MEDI_STOCK_ID ?? 0).Distinct().ToList();
-                            lstMediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => MediStockIds.Contains(p.ID)).ToList();
+                            List<long> MediStockIds = lstMateInStocks
+                                .Where(x => x != null)  // ← thêm dòng này
+                                .SelectMany(x => x)
+                                .Select(x => x.MEDI_STOCK_ID ?? 0)
+                                .Distinct()
+                                .ToList();
+
+                            lstMediStock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>()
+                                .Where(p => MediStockIds.Contains(p.ID)).ToList();
                         }
+
                         if (lstMateInStocks != null && lstMateInStocks.Count > 0 && timeToTal > 0)
                         {
                             if (key == 0 || key == 4)
@@ -777,16 +802,18 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                         }
                    
                         
-                        List<List<HisMaterialInStockSDO>> lstParent = new List<List<HisMaterialInStockSDO>>();
-                        for (int i = 0; i < lstMateInStocks.Count; i++)
-                        {
-                            if (lstMateInStocks[i] != null && lstMateInStocks[i].Count > 0)
-                            {
-                                lstParent.Add(lstMateInStocks[i]);
+                        //List<List<HisMaterialInStockSDO>> lstParent = new List<List<HisMaterialInStockSDO>>();
+                        //for (int i = 0; i < lstMateInStocks.Count; i++)
+                        //{
+                        //    if (lstMateInStocks[i] != null && lstMateInStocks[i].Count > 0)
+                        //    {
+                        //        lstParent.Add(lstMateInStocks[i]);
                                 
-                            }
-                        }
-                        
+                        //    }
+                        //}
+
+                        List<List<HisMaterialInStockSDO>> lstParent = lstMateInStocks.Where(x => x != null && x.Count > 0).ToList();
+
                         hisMateInStockProcessor.Reload(ucMaterialInfo, lstParent, _MaterialTypeIds, lstMediStock);
                         var list = hisMateInStockProcessor.GetListTreeView(ucMaterialInfo);
                         count = list != null && list.Count > 0 ? list.Where(o => o.IS_MEDI_MATE).ToList().Count() : 0;
