@@ -87,7 +87,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DateTime\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.FlexCelPrint">
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
@@ -129,8 +130,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\LIB\Inventec.Core\Inventec.Core.dll</HintPath>
+    <Reference Include="Inventec.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -368,7 +370,6 @@
     <EmbeddedResource Include="frmServiceDebateConfirmNew.resx">
       <DependentUpon>frmServiceDebateConfirmNew.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

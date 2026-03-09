@@ -2639,6 +2639,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     expMestMaterialFilter.EXP_MEST_IDs = expMestList.Select(o => o.ID).ToList();
                     ExpMestMaterialList = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MATERIAL>>(ApiConsumer.HisRequestUriStore.HIS_EXP_MEST_MATERIAL_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, expMestMaterialFilter, null);
                 }
+                
+                //Bo sung Do thi luc
+                var paramViex = new CommonParam();
+                var filterViexView = new MOS.Filter.HisSereServViexViewFilter();
+                filterViexView.TDL_PATIENT_ID = patient.ID;
+                //filterViexView.SERVICE_REQ_ID = vServiceReq.ID;
+                var sereServViexViews = new BackendAdapter(paramViex).Get<List<V_HIS_SERE_SERV_VIEX>>
+                    (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filterViexView, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramViex);
+
+                //thời gian đo lớn nhất (VISION_TEST_TIME)
+                V_HIS_SERE_SERV_VIEX latestViex = null;
+                if (sereServViexViews != null && sereServViexViews.Count > 0)
+                {
+                    latestViex = sereServViexViews
+                        .OrderByDescending(x => x.VISION_TEST_TIME)
+                        .FirstOrDefault();
+                }
+
                 MPS.Processor.Mps000007.PDO.Mps000007PDO rdo = new MPS.Processor.Mps000007.PDO.Mps000007PDO(
                     patient,
                     patientTypeAlter,
@@ -2651,7 +2669,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     ExpMestBloodList,
                     ExpMestBltyReqList,
                     ExpMestMedicineList,
-                    ExpMestMaterialList
+                    ExpMestMaterialList,
+                    latestViex
                     );
 
                 MPS.ProcessorBase.PrintConfig.PreviewType PreviewType;

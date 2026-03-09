@@ -71,6 +71,7 @@ namespace HIS.UC.UCOtherServiceReqInfo.ADO
         public string NguonKhachCode { get; set; }
         public string NguonKhachName { get; set; }
         public string NguonKhachCTName { get; set; }
+        public string NguonKhachCT { get; set; }
         public bool isChamSocDa { get; set; }
     }
 }

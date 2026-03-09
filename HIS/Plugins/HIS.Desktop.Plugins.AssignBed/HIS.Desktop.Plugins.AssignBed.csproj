@@ -98,9 +98,6 @@
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.AssignPrescriptionPK">
-      <HintPath>..\HIS.Desktop.Plugins.AssignPrescriptionPK\obj\Debug\HIS.Desktop.Plugins.AssignPrescriptionPK.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.AlertWarningFee">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.AlertWarningFee.dll</HintPath>
     </Reference>
@@ -197,6 +194,9 @@
     <Reference Include="Inventec.Core">
       <HintPath>..\..\..\..\lib\Inventec.Core\Inventec.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Desktop.Common.Controls">
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Controls\Inventec.Desktop.Common.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="Inventec.Desktop.Common.LanguageManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -213,9 +213,11 @@
     <Reference Include="Inventec.Desktop.Common.Modules">
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Desktop.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Inventec.Desktop.Core">
+      <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Desktop.CustomControl">
-      <HintPath>..\..\..\Common\Inventec.Desktop\Inventec.Desktop.CustomControl\obj\Debug\Inventec.Desktop.CustomControl.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

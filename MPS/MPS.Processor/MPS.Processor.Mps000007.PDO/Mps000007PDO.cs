@@ -42,7 +42,8 @@ namespace MPS.Processor.Mps000007.PDO
             List<V_HIS_EXP_MEST_BLOOD> _expMestBloodList,
             List<V_HIS_EXP_MEST_BLTY_REQ> _expMestBltyReqlist,
             List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicineList,
-            List<V_HIS_EXP_MEST_MATERIAL> _expMestMaterialList
+            List<V_HIS_EXP_MEST_MATERIAL> _expMestMaterialList,
+            V_HIS_SERE_SERV_VIEX _sereServViex
            )
         {
             try
@@ -59,6 +60,7 @@ namespace MPS.Processor.Mps000007.PDO
                 this.ExpMestBltyReqList = _expMestBltyReqlist;
                 this.ExpMestMaterialList = _expMestMaterialList;
                 this.ExpMestMedicineList = _expMestMedicineList;
+                this.SereServViex = _sereServViex;
             }
             catch (Exception ex)
             {

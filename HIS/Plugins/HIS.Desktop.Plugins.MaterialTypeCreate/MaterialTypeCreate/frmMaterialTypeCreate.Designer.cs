@@ -1576,6 +1576,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             this.gridViewBlockDepartment.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
             this.gridViewBlockDepartment.Name = "gridViewBlockDepartment";
             this.gridViewBlockDepartment.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewBlockDepartment.OptionsView.ShowAutoFilterRow = true;
+            this.gridViewBlockDepartment.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
             this.gridViewBlockDepartment.OptionsView.ShowGroupPanel = false;
             // 
             // cboBlockRoom

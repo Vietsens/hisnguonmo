@@ -218,7 +218,6 @@ namespace HIS.Desktop.Plugins.MedicalStoreV2.ChooseStore
                 tree.OptionsSelection.EnableAppearanceFocusedCell = false;
                 tree.OptionsView.ShowIndicator = false;
 
-                // QUAN TRỌNG: tắt AutoWidth để mình control tỉ lệ cột
                 tree.OptionsView.AutoWidth = false;
 
                 tree.OptionsBehavior.EnableFiltering = true;

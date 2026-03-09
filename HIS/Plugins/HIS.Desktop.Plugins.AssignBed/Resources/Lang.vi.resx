@@ -132,9 +132,9 @@ toán</value>
   <data name="frmAssignBed.btnQRPay.Text" xml:space="preserve">
     <value>QR tạm thu</value>
   </data>
-  <data name="frmAssignBed.btnSave.Text" xml:space="preserve">
+	<data name="frmAssignBed.btnSave.Text" xml:space="preserve">
     <value>Lưu
-	(Ctrl S)</value>
+(Ctrl S)</value>
   </data>
   <data name="frmAssignBed.btnSaveAndPrint.Text" xml:space="preserve">
     <value>Lưu In
@@ -286,5 +286,8 @@ toán</value>
   </data>
 	<data name="frmAssignBed.gridColumn14.Caption" xml:space="preserve">
     <value>Tên</value>
+  </data>
+	<data name="frmAssignBed.layoutControlItem36.Text" xml:space="preserve">
+    <value>Phòng TN</value>
   </data>
 </root>

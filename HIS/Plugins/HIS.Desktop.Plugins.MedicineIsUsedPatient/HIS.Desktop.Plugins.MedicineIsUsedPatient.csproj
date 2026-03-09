@@ -120,7 +120,8 @@
     <Reference Include="MOS.LibraryHein.Common">
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Common.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO">
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -136,6 +137,7 @@
   <ItemGroup>
     <Compile Include="ADO\ExpMestMediMateADO.cs" />
     <Compile Include="ADO\FilterTypeADO.cs" />
+    <Compile Include="ADO\TimeUsed.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="MedicineIsUsedPatientProcessor.cs" />
     <Compile Include="MedicineIsUsedPatient\MedicineIsUsedPatientBehavior.cs" />
@@ -148,11 +150,21 @@
       <DependentUpon>frmMedicineIsUsedPatient.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MedicineIsUsedPatient\frmMedicineIsUsedPatient.resx">
       <DependentUpon>frmMedicineIsUsedPatient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.en.resx" />
     <EmbeddedResource Include="Resources\Lang.vi.resx">

@@ -132,6 +132,7 @@ namespace HIS.Desktop.Plugins.Register.Run
         string moduleLink = "HIS.Desktop.Plugins.Register";
         public string mpsNationalCode = "";
         public string oldValue = "";
+        public string manualCustomerSourceDetailInput = ""; // nhập tay nguồn khách hàng chi tiết
         #endregion
 
         #region Construct
@@ -3262,6 +3263,8 @@ namespace HIS.Desktop.Plugins.Register.Run
                 this.HospitalizeReason = "";
                 this.HospitalizeReasonCode = "";
                 this.HospitalizeReasonName = "";
+                this.buttonEdit1.Text = "";
+
 
                 ChangeDataSourceAddress();
                 RegisterTimer(currentModule.ModuleLink, "timerNewForm", 500, timerNewForm_Tick);
@@ -4997,6 +5000,21 @@ namespace HIS.Desktop.Plugins.Register.Run
 
                     LoadAllCustomerSourceDetail();
                 }
+                else if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    var moduleData = GlobalVariables.currentModuleRaws
+                        .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.HisCustomerSource");
+                    if (moduleData != null && moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(
+                            PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), null);
+                        if (extenceInstance is Form form)
+                        {
+                            form.ShowDialog();
+                            this.InitComboCustomerSource();
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -5021,5 +5039,6 @@ namespace HIS.Desktop.Plugins.Register.Run
                 LogSystem.Error(ex);
             }
         }
+
     }
 }

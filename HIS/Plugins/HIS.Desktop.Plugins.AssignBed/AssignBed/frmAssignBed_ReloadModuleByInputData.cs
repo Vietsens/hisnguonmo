@@ -294,27 +294,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             }
         }
 
-        //private async Task ReloadUCPatientSelect()
-        //{
-        //    try
-        //    {
-        //        if (workingAssignServiceADO.OpenFromBedRoomPartial)
-        //        {
-        //            layoutControlItem27.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-        //            InitUCPatientSelect();
-
-        //        }
-        //        else
-        //        {
-        //            layoutControlItem27.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Inventec.Common.Logging.LogSystem.Error(ex);
-        //    }
-        //}
-
         private async Task ReloadPatient()
         {
             try

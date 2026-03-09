@@ -362,8 +362,10 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.InitComboRespositoryBloodRH();
                 this.InitMediStock(null);
                 this.InitComboUser();
-                MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK ms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMediStockExport_TabBlood.EditValue ?? "0").ToString()));
-                this.LoadDataToGridBloodType(ms);
+                //MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK ms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboMediStockExport_TabBlood.EditValue ?? "0").ToString()));
+                //this.LoadDataToGridBloodType(ms);
+                this.BeginInvoke(new Action(() => HandleMediStockChanged(doLoad: true)));
+
                 this.LoadDataToTrackingCombo();
                 this.SetEnableButtonControlBlood();
                 this.InitComboRepositoryPatientType(null);

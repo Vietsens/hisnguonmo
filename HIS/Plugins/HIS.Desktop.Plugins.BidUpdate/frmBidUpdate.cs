@@ -639,9 +639,69 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 ////Khoi tao doi tuong resource
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.BidUpdate.Resources.Lang", typeof(HIS.Desktop.Plugins.BidUpdate.frmBidUpdate).Assembly);
 
+                //////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                //this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.cboSupplier.Properties.NullText = Inventec.Common.Resource.Get.Value("frmBidUpdate.cboSupplier.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.BtnDiscard.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.BtnDiscard.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.btnUpdate.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.btnUpdate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.xtraTabPage1.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.xtraTabPage1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.xtraTabPage2.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.xtraTabPage2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.xtraTabPage3.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.xtraTabPage3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem5.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.layoutControlItem8.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.txtBidName.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmBidUpdate.txtBidName.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.cboBidType.Properties.NullText = Inventec.Common.Resource.Get.Value("frmBidUpdate.cboBidType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciBidName.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciBidNumber.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidNumber.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.emptySpaceItem2.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.emptySpaceItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciBidType.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidType.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciFromTime.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidFromTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciToTime.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidToTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+
+                //this.bar2.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.bar2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.barButtonItem1.Caption = Inventec.Common.Resource.Get.Value("frmBidUpdate.barButtonItem1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                ////this.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                ////this.txtBidGroupCode.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.txtBidGroupCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.txtBidPackageCode.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.txtBidPackageCode.Text ", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.BtnImport.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.BtnImport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                //this.LciExpiredDate.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.LciExpiredDate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                //this.lciRegisterNumber.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciRegisterNumber.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciConcentra.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciConcentra.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciNational.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciNational.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                //this.lciManufacturer.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciManufacturer.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bar2.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.bar2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.barButtonItem1.Caption = Inventec.Common.Resource.Get.Value("frmBidUpdate.barButtonItem1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.barButtonItem2.Caption = Inventec.Common.Resource.Get.Value("frmBidUpdate.barButtonItem2.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.barButtonItem3.Caption = Inventec.Common.Resource.Get.Value("frmBidUpdate.barButtonItem3.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboBidForm.Properties.NullText = Inventec.Common.Resource.Get.Value("frmBidUpdate.cboBidForm.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.BtnImport.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.BtnImport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.xtraTabPageMedicine.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.xtraTabPageMedicine.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.xtraTabPageMaterial.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.xtraTabPageMaterial.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.xtraTabPageBlood.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.xtraTabPageBlood.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl5.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControl5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtNOTE.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.txtNOTE.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboMediUseForm.Properties.NullText = Inventec.Common.Resource.Get.Value("frmBidUpdate.cboMediUseForm.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsOnlyShowByBusiness.Properties.Caption = Inventec.Common.Resource.Get.Value("frmBidUpdate.chkIsOnlyShowByBusiness.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsOnlyShowByBusiness.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.chkIsOnlyShowByBusiness.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkClearToAdd.Properties.Caption = Inventec.Common.Resource.Get.Value("frmBidUpdate.chkClearToAdd.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkEditNational.Properties.Caption = Inventec.Common.Resource.Get.Value("frmBidUpdate.chkEditNational.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkEditNational.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.chkEditNational.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboNational.Properties.NullText = Inventec.Common.Resource.Get.Value("frmBidUpdate.cboNational.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboManufacture.Properties.NullText = Inventec.Common.Resource.Get.Value("frmBidUpdate.cboManufacture.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboSupplier.Properties.NullText = Inventec.Common.Resource.Get.Value("frmBidUpdate.cboSupplier.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.BtnDiscard.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.BtnDiscard.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -649,35 +709,65 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.xtraTabPage1.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.xtraTabPage1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.xtraTabPage2.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.xtraTabPage2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.xtraTabPage3.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.xtraTabPage3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboDosageForm.Properties.NullText = Inventec.Common.Resource.Get.Value("frmBidUpdate.cboDosageForm.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem4.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem5.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem6.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem6.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem8.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem8.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciBidPackageCode.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidPackageCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.LciExpiredDate.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.LciExpiredDate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciRegisterNumber.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciRegisterNumber.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciConcentra.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciConcentra.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciConcentra.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciConcentra.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciManufacturer.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciManufacturer.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciManufacturer.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciManufacturer.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciNational.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciNational.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciNational.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciNational.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem23.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem23.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciLifeSpan.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciLifeSpan.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem19.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem19.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem21.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem21.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem18.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem18.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciTenBHYT.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciTenBHYT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciPackingType.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciPackingType.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciPackingType.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciPackingType.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciActiveBhyt.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciActiveBhyt.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciMediUseForm.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciMediUseForm.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciDosageForm.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciDosageForm.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciDosageForm.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciDosageForm.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciMaTT.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciMaTT.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciMaTT.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciMaTT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciTenTT.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciTenTT.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciTenTT.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciTenTT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciMaDT.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciMaDT.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciMaDT.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciMaDT.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem22.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem22.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem22.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem22.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciImpMoreRatio.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciImpMoreRatio.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem26.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem26.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem26.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem26.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem30.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem30.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem30.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem30.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem29.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem29.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem28.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem28.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtBidName.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmBidUpdate.txtBidName.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.cboBidType.Properties.NullText = Inventec.Common.Resource.Get.Value("frmBidUpdate.cboBidType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem12.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem12.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciBidName.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciBidNumber.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidNumber.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.emptySpaceItem2.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.emptySpaceItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciBidType.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidType.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciFromTime.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidFromTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciToTime.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidToTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-
-
-                this.bar2.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.bar2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.barButtonItem1.Caption = Inventec.Common.Resource.Get.Value("frmBidUpdate.barButtonItem1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                //this.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                //this.txtBidGroupCode.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.txtBidGroupCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.txtBidPackageCode.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.txtBidPackageCode.Text ", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.BtnImport.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.BtnImport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-
-                this.LciExpiredDate.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.LciExpiredDate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-
-                this.lciRegisterNumber.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciRegisterNumber.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciConcentra.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciConcentra.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciNational.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciNational.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lciManufacturer.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciManufacturer.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciBidYear.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciBidYear.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciFromTime.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciFromTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciToTime.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.lciToTime.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem24.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem24.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem24.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem24.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem25.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem25.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem25.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem25.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem27.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.layoutControlItem27.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.Text = Inventec.Common.Resource.Get.Value("frmBidUpdate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {
@@ -1030,6 +1120,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 //txtTenTT.Text = data.BID_MEDICINE_TYPE_NAME;
                 //txtMaDT.Text = data.JOIN_BID_MEDICINE_TYPE_CODE;
                 txtBidNumOrder.Text = data.BID_NUM_ORDER;
+                txtTTThau.Text = data.TT_THAU;
                 txtBatchDivisionCode.Text = data.BATCH_DIVISION_CODE;
                 spinGiaTran.EditValue = data.HEIN_LIMIT_PRICE ?? null;
                 if (!string.IsNullOrEmpty(data.BID_GROUP_CODE))
@@ -1096,6 +1187,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 dxValidationProviderLeft.RemoveControlError(spinAmount);
                 dxValidationProviderLeft.RemoveControlError(spinImpVat);
                 dxValidationProviderLeft.RemoveControlError(txtBidNumOrder);
+                dxValidationProviderLeft.RemoveControlError(txtTTThau);
                 dxValidationProviderLeft.RemoveControlError(cboSupplier);
                 dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
             }
@@ -1343,6 +1435,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinImpMoreRatio.Value = 0;
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
+                txtTTThau.Text = "";
                 txtBidGroupCode.Text = "";
                 txtBidPackageCode.Text = "";
                 txtSupplierCode.Text = "";
@@ -1361,6 +1454,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 dxValidationProviderLeft.RemoveControlError(spinAmount);
                 dxValidationProviderLeft.RemoveControlError(spinImpVat);
                 dxValidationProviderLeft.RemoveControlError(txtBidNumOrder);
+                dxValidationProviderLeft.RemoveControlError(txtTTThau);
                 dxValidationProviderLeft.RemoveControlError(cboSupplier);
                 dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
 
@@ -1865,6 +1959,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinImpMoreRatio.Value = 0;
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
+                txtTTThau.Text = "";
                 txtNOTE.Text = null;
                 txtBatchDivisionCode.Text = "";
                 txtMaDT.Text = "";
@@ -2046,6 +2141,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 dxValidationProviderLeft.RemoveControlError(spinAmount);
                 dxValidationProviderLeft.RemoveControlError(spinImpVat);
                 dxValidationProviderLeft.RemoveControlError(txtBidNumOrder);
+                dxValidationProviderLeft.RemoveControlError(txtTTThau);
                 dxValidationProviderLeft.RemoveControlError(cboSupplier);
                 dxValidationProviderLeft.RemoveControlError(txtBidPackageCode);
                 dxValidationProviderLeft.RemoveControlError(txtBidGroupCode);
@@ -2066,6 +2162,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 this.medicineType.AllowDelete = true;
                 this.medicineType.IMP_PRICE = spinImpPrice.Value;
                 this.medicineType.BID_NUM_ORDER = txtBidNumOrder.Text;
+                this.medicineType.TT_THAU = txtTTThau.Text;
                 this.medicineType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.medicineType.ImpVatRatio = spinImpVat.Value;
                 this.medicineType.ImpMoreRatio = spinImpMoreRatio.Value;
@@ -2198,6 +2295,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
             {
                 this.materialType.IMP_PRICE = spinImpPrice.Value;
                 this.materialType.BID_NUM_ORDER = txtBidNumOrder.Text;
+                this.materialType.TT_THAU = txtTTThau.Text;
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.materialType.AMOUNT = spinAmount.Value;
                 this.materialType.REGISTER_NUMBER = txtRegisterNumber.Text.Trim();
@@ -2599,6 +2697,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         spinImpVat.Value = 0;
                         spinImpMoreRatio.Value = 0;
                         txtBidNumOrder.Text = "";
+                        txtTTThau.Text = "";
                         txtMaTT.Text = "";
                         txtTenTT.Text = "";
                         txtMaDT.Text = "";
@@ -2697,6 +2796,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMedicineType.IMP_MORE_RATIO = item.ImpMoreRatio != null ? item.ImpMoreRatio / 100 : null;
                         bidMedicineType.MEDICINE_TYPE_ID = item.ID;
                         bidMedicineType.BID_NUM_ORDER = item.BID_NUM_ORDER;
+                        bidMedicineType.TT_THAU = item.TT_THAU;
                         bidMedicineType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
                         bidMedicineType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE ?? null;
 
@@ -2759,6 +2859,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                             bidMaterialType.MATERIAL_TYPE_ID = item.ID;
                         }
                         bidMaterialType.BID_NUM_ORDER = item.BID_NUM_ORDER;
+                        bidMaterialType.TT_THAU = item.TT_THAU;
                         bidMaterialType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
                         string bid_group_code = null;
                         if (!string.IsNullOrEmpty(item.BID_GROUP_CODE))
@@ -3001,6 +3102,12 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         {
                             result = false;
                             messageErr += " " + Resources.ResourceMessage.SttThauQuaDai;
+                        }
+
+                        if (!String.IsNullOrEmpty(item.TT_THAU) && item.TT_THAU.Length > 50)
+                        {
+                            result = false;
+                            messageErr += " " + Resources.ResourceMessage.TTThauQuaDai;
                         }
 
                         if (!String.IsNullOrWhiteSpace(item.BID_GROUP_CODE) && item.BID_GROUP_CODE.Length > 4)
@@ -3502,7 +3609,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     txtSupplierCode.Focus();
                     txtSupplierCode.SelectAll();
                 }
-            }
+            } 
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);

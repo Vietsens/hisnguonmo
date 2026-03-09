@@ -248,13 +248,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                     var mestMetyDepasNoMediStock__NotAllows = mestMetyDepas
                         .Where(o =>
                             o.DEPARTMENT_ID == currentWorkPlace.DepartmentId
-                            && (o.MEDI_STOCK_ID == null))
+                            && (o.MEDI_STOCK_ID == null)
+                            && (o.ROOM_IDS == null || o.ROOM_IDS.Split(';').Select(long.Parse).ToList().Contains(currentWorkPlace.RoomId)))
                         .Distinct().ToList();
 
                     var mestMetyDepasHasMediStock__NotAllows = mestMetyDepas
                         .Where(o =>
                             o.DEPARTMENT_ID == currentWorkPlace.DepartmentId
-                            && (o.MEDI_STOCK_ID != null && mediStockIds.Contains(o.MEDI_STOCK_ID.Value)))
+                            && (o.MEDI_STOCK_ID != null && mediStockIds.Contains(o.MEDI_STOCK_ID.Value))
+                            && (o.ROOM_IDS == null || o.ROOM_IDS.Split(';').Select(long.Parse).ToList().Contains(currentWorkPlace.RoomId)))
                         .Distinct().ToList();
 
                     if (mestMetyDepasNoMediStock__NotAllows != null && mestMetyDepasNoMediStock__NotAllows.Count > 0)
@@ -291,13 +293,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK
                     var mestMetyDepasNoMediStock__NotAllows = mestMatyDepas
                         .Where(o =>
                             o.DEPARTMENT_ID == currentWorkPlace.DepartmentId
-                            && (o.MEDI_STOCK_ID == null))
+                            && (o.MEDI_STOCK_ID == null)
+                            && (o.ROOM_IDS == null || o.ROOM_IDS.Split(';').Select(long.Parse).ToList().Contains(currentWorkPlace.RoomId)))
                         .Distinct().ToList();
 
                     var mestMetyDepasHasMediStock__NotAllows = mestMatyDepas
                         .Where(o =>
                             o.DEPARTMENT_ID == currentWorkPlace.DepartmentId
-                            && (o.MEDI_STOCK_ID != null && mediStockIds.Contains(o.MEDI_STOCK_ID.Value)))
+                            && (o.MEDI_STOCK_ID != null && mediStockIds.Contains(o.MEDI_STOCK_ID.Value))
+                            && (o.ROOM_IDS == null || o.ROOM_IDS.Split(';').Select(long.Parse).ToList().Contains(currentWorkPlace.RoomId)))
                         .Distinct().ToList();
 
                     if (mestMetyDepasNoMediStock__NotAllows != null && mestMetyDepasNoMediStock__NotAllows.Count > 0)

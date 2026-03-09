@@ -51,6 +51,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -60,6 +61,13 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 {
     public partial class frmEmrPatientCertificateRegister : HIS.Desktop.Utility.FormBase
     {
+        private enum PatientSignImageType
+        {
+            None = 0,
+            Signature = 1,
+            Fingerprint = 2
+        }
+
         private Inventec.Desktop.Common.Modules.Module ModuleData;
         private string LoginName;
         DelegateSelectData dlgGetImageFromModuleCamera;
@@ -67,6 +75,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
         List<AttackADO> ListfileNameAttack = new List<AttackADO>();
         ImageADO currentImageADO;
         public CccdData currentCCCDInfo { get; set; }
+
+        private PatientSignImageType currentSignImageType = PatientSignImageType.None;
         public frmEmrPatientCertificateRegister()
         {
             InitializeComponent();
@@ -116,6 +126,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                         picSignPatient.Image = new Bitmap(img);
 
                         isDefaultImageLoaded = true;
+                        currentSignImageType = PatientSignImageType.None;
                         Inventec.Common.Logging.LogSystem.Info("LoadDefaultImage: set isDefaultImageLoaded = true");
                     }
                 }
@@ -124,6 +135,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     picCCCD.Image = null;
                     picSignPatient.Image = null;
                     isDefaultImageLoaded = true;
+                    currentSignImageType = PatientSignImageType.None;
                 }
             }
             catch (Exception ex)
@@ -210,6 +222,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                             if (fileImage != null && fileImage.Length > 0)
                             {
                                 picSignPatient.Image = Image.FromFile(fileImage[0]);
+                                isDefaultImageLoaded = false;
+                                currentSignImageType = PatientSignImageType.Signature;
                                 Inventec.Common.Logging.LogSystem.Info("btnUploadImageUsingSigDevice_Click.3");
                                 break;
                             }
@@ -287,6 +301,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     Bitmap bImage = ResizeSignImage(openFile.FileName);
                     picSignPatient.Image = bImage;
                     isDefaultImageLoaded = false;
+                    currentSignImageType = PatientSignImageType.Signature;
                 }
             }
             catch (Exception ex)
@@ -305,6 +320,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     Bitmap processed = ProcessSignatureImage(bmp);
                     picSignPatient.Image = processed;
                     picSignPatient.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+                    isDefaultImageLoaded = false;
+                    currentSignImageType = PatientSignImageType.Signature;
 
                     var check = this.ListfileNameAttack.OrderByDescending(o => o.Dem).FirstOrDefault();
                     int dem = (check == null || check.Dem == 0) ? 1 : check.Dem + 1;
@@ -425,6 +442,8 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                     picSignPatient.Properties.NullText = "Chưa có chữ ký";
                 }
                 picSignPatient.Refresh();
+                isDefaultImageLoaded = true;
+                currentSignImageType = PatientSignImageType.None;
             }
             catch (Exception ex)
             {
@@ -490,6 +509,7 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 picSignPatient.Image = finalImage;
 
                 isDefaultImageLoaded = false;
+                currentSignImageType = PatientSignImageType.Signature;
 
                 MessageBox.Show("Lưu ảnh thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -686,13 +706,13 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 if (picSignPatient.Image == null || isDefaultImageLoaded)
                 {
                     Inventec.Common.Logging.LogSystem.Warn("picSignPatient.Image == null");
-                    param.Messages.Add("Vui lòng ký và lưu chữ ký trước khi phát hành chứng thư.");
+                    param.Messages.Add("Vui lòng ký hoặc lấy vân tay trước khi phát hành chứng thư.");
                     MessageManager.Show(this.ParentForm, param, success);
                     return;
                 }
                 string signatureBase64 = "";
                 using (MemoryStream ms = new MemoryStream())
-                {
+                { 
                     picSignPatient.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                     signatureBase64 = Convert.ToBase64String(ms.ToArray());
                 }
@@ -777,6 +797,178 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
             }
         }
 
+        private string FindFingerPrintIntegrationFolder()
+        {
+            try
+            {
+                var candidates = new List<string>
+                {
+                    Path.Combine(Application.StartupPath, "Integrate", "Inventec.FingerPrintManager"),
+                    Path.Combine(Application.StartupPath, "Inventec.FingerPrintManager"),
+                    Application.StartupPath
+                };
+                  
+                foreach (var folder in candidates)
+                {
+                    if (string.IsNullOrWhiteSpace(folder))
+                        continue;
+
+                    string dllPath = Path.Combine(folder, "Inventec.FingerPrint.dll");
+                    if (File.Exists(dllPath))
+                        return folder;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+                return null;
+            }
+        }
+
+        private bool TryCaptureFingerprintBitmap(out Bitmap fingerprintBitmap, out string errorMessage)
+        {
+            fingerprintBitmap = null;
+            errorMessage = null;
+
+            try
+            {
+                string integrationFolder = FindFingerPrintIntegrationFolder();
+                if (string.IsNullOrWhiteSpace(integrationFolder))
+                {
+                    errorMessage = "Không tìm thấy thư viện vân tay (Inventec.FingerPrint.dll).";
+                    return false;
+                }
+
+                string dllPath = Path.Combine(integrationFolder, "Inventec.FingerPrint.dll");
+                if (!File.Exists(dllPath))
+                {
+                    errorMessage = "Không tìm thấy file Inventec.FingerPrint.dll tại: " + integrationFolder;
+                    return false;
+                }
+
+                string oldCurrentDir = Environment.CurrentDirectory;
+                try
+                {
+                    Environment.CurrentDirectory = integrationFolder;
+
+                    Assembly asm = Assembly.LoadFrom(dllPath);
+                    Type inputType = asm.GetType("Inventec.FingerPrint.SignViewInputADO", false);
+                    Type formType = asm.GetType("Inventec.FingerPrint.frmConnectFingerPrint", false);
+
+                    if (inputType == null || formType == null)
+                    {
+                        errorMessage = "Thư viện vân tay không đúng phiên bản (thiếu type SignViewInputADO/frmConnectFingerPrint).";
+                        return false;
+                    }
+
+                    Bitmap captured = null;
+                    Action<Bitmap> actGetImage = (bmp) =>
+                    {
+                        try
+                        {
+                            if (bmp != null)
+                            {
+                                if (captured != null)
+                                {
+                                    captured.Dispose();
+                                    captured = null;
+                                }
+                                captured = (Bitmap)bmp.Clone();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LogSystem.Warn(ex);
+                        }
+                    };
+
+                    Action<string> actSelectDevice = (driverName) =>
+                    {
+                        try
+                        {
+                            LogSystem.Info("Fingerprint device selected: " + driverName);
+                        }
+                        catch (Exception ex)
+                        {
+                            LogSystem.Warn(ex);
+                        }
+                    };
+
+                    object input = Activator.CreateInstance(inputType);
+                    inputType.GetProperty("DriverName")?.SetValue(input, string.Empty, null);
+                    inputType.GetProperty("ActGetSignImageFile")?.SetValue(input, actGetImage, null);
+                    inputType.GetProperty("ActSelectDevice")?.SetValue(input, actSelectDevice, null);
+
+                    using (Form frm = (Form)Activator.CreateInstance(formType, input))
+                    {
+                        frm.StartPosition = FormStartPosition.CenterParent;
+                        frm.ShowInTaskbar = false;
+                        frm.ShowDialog(this);
+                    }
+
+                    if (captured == null)
+                    {
+                        errorMessage = "Không lấy được ảnh vân tay (người dùng hủy hoặc thiết bị chưa sẵn sàng).";
+                        return false;
+                    }
+
+                    fingerprintBitmap = captured;
+                    return true;
+                }
+                finally
+                {
+                    try
+                    {
+                        Environment.CurrentDirectory = oldCurrentDir;
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
+
+        private void btnfingerprintf_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                WaitingManager.Show();
+
+                string error;
+                Bitmap fpBitmap;
+                bool ok = TryCaptureFingerprintBitmap(out fpBitmap, out error);
+                if (!ok)
+                {
+                    XtraMessageBox.Show(error ?? "Không thể lấy vân tay.", "Thông báo");
+                    return;
+                }
+
+                picSignPatient.Image = fpBitmap;
+                picSignPatient.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
+
+                isDefaultImageLoaded = false;
+                currentSignImageType = PatientSignImageType.Fingerprint;
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+                XtraMessageBox.Show("Có lỗi khi lấy vân tay: " + ex.Message, "Thông báo");
+            }
+            finally
+            {
+                WaitingManager.Hide();
+            }
+        }
+
         private void ProcessStore2IDStorage(EMR_PATIENT_CERTIFICATE certificate, EmrPatientCertificateRegisterSDO sdo)
         {
             try
@@ -850,10 +1042,18 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
                 {
                     string signatureBase64 = NormalizeBase64(sdo.signatureImage);
 
-                    handSignatures.Add(signatureBase64);
-
-                    Inventec.Common.Logging.LogSystem.Debug(
-                        "ProcessStore2IDStorage: Added signature base64, length=" + signatureBase64.Length);
+                    if (this.currentSignImageType == PatientSignImageType.Fingerprint)
+                    {
+                        fingerprints.Add(signatureBase64);
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            "ProcessStore2IDStorage: Added fingerprint base64, length=" + signatureBase64.Length);
+                    }
+                    else
+                    {
+                        handSignatures.Add(signatureBase64);
+                        Inventec.Common.Logging.LogSystem.Debug(
+                            "ProcessStore2IDStorage: Added signature base64, length=" + signatureBase64.Length);
+                    }
                 }
 
                 TwoIDStorageIntegrationProcessor processorInput = new TwoIDStorageIntegrationProcessor();

@@ -1081,7 +1081,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                     if (e.Column.FieldName == "IsMachine")
                     {
                         var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == data.ID ).ToList();
-                        e.RepositoryItem = (listMachineInspection?.Count > 0) ? ButtonEditIsMachine : null;
+                        e.RepositoryItem = (listMachineInspection?.Count > 0) ? ButtonEditIsMachine : ButtonEditNonMachine;
                     }
                 }
             }
@@ -1895,10 +1895,14 @@ namespace HIS.Desktop.Plugins.HisMachine
                     xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : "";
                     xmlCLS.MaMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
 
-                    if (machine.HIS_MACHINE_INSPECTION != null && machine.HIS_MACHINE_INSPECTION.Count > 0)
+                    var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == machine.ID).ToList();
+
+                    if (listMachineInspection != null && listMachineInspection.Count > 0)
                     {
-                        long? maxFromTime = machine.HIS_MACHINE_INSPECTION.Max(o => o.FROM_TIME);
-                        long? maxToTime = machine.HIS_MACHINE_INSPECTION.Max(o => o.TO_TIME);
+                        Inventec.Common.Logging.LogSystem.Info("listMachineInspection1: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listMachineInspection), listMachineInspection));
+
+                        long? maxFromTime = listMachineInspection.Max(o => o.FROM_TIME);
+                        long? maxToTime = listMachineInspection.Max(o => o.TO_TIME);
 
                         if (maxFromTime.HasValue)
                         {
@@ -2059,6 +2063,26 @@ namespace HIS.Desktop.Plugins.HisMachine
         }
 
         private void ButtonEditIsMachine_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+
+                var rowData = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                if (rowData == null) return;
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisMachineInspection").FirstOrDefault();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleData), moduleData));
+                List<object> listArgs = new List<object>();
+                listArgs.Add(rowData);
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentModule), currentModule));
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisMachineInspection", 0, 0, listArgs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ButtonEditNonMachine_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
             {

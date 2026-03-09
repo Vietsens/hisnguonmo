@@ -123,11 +123,20 @@
   <data name="frmBidUpdate.barButtonItem1.Caption" xml:space="preserve">
     <value>Save (Ctrl S)</value>
   </data>
+  <data name="frmBidUpdate.barButtonItem2.Caption" xml:space="preserve">
+    <value>Add (Ctrl A)</value>
+  </data>
+  <data name="frmBidUpdate.barButtonItem3.Caption" xml:space="preserve">
+    <value>Update (Ctrl U)</value>
+  </data>
   <data name="frmBidUpdate.btnAdd.Text" xml:space="preserve">
     <value>Additional (Ctrl A)</value>
   </data>
   <data name="frmBidUpdate.BtnDiscard.Text" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="frmBidUpdate.BtnImport.Text" xml:space="preserve">
+    <value>Import</value>
   </data>
   <data name="frmBidUpdate.btnSave.Text" xml:space="preserve">
     <value>Save (Ctrl S)</value>
@@ -135,11 +144,20 @@
   <data name="frmBidUpdate.btnUpdate.Text" xml:space="preserve">
     <value>Update (Ctrl U)</value>
   </data>
-  <data name="frmBidUpdate.cboBidType.Properties.NullText" xml:space="preserve">
-    <value />
+  <data name="frmBidUpdate.chkClearToAdd.Properties.Caption" xml:space="preserve">
+    <value>Whitening after supplementation</value>
   </data>
-  <data name="frmBidUpdate.cboSupplier.Properties.NullText" xml:space="preserve">
-    <value />
+  <data name="frmBidUpdate.chkEditNational.Properties.Caption" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="frmBidUpdate.chkEditNational.ToolTip" xml:space="preserve">
+    <value>Fix</value>
+  </data>
+  <data name="frmBidUpdate.chkIsOnlyShowByBusiness.Properties.Caption" xml:space="preserve">
+    <value>Only displays non-commercial drugs/supplies</value>
+  </data>
+  <data name="frmBidUpdate.chkIsOnlyShowByBusiness.ToolTip" xml:space="preserve">
+    <value>Only display non-commercial drugs/supplies</value>
   </data>
   <data name="frmBidUpdate.emptySpaceItem2.Text" xml:space="preserve">
     <value>emptySpaceItem1</value>
@@ -198,11 +216,74 @@
   <data name="frmBidUpdate.layoutControl2.Text" xml:space="preserve">
     <value>layoutControl2</value>
   </data>
+  <data name="frmBidUpdate.layoutControl3.Text" xml:space="preserve">
+    <value>layoutControl3</value>
+  </data>
+  <data name="frmBidUpdate.layoutControl4.Text" xml:space="preserve">
+    <value>layoutControl4</value>
+  </data>
+  <data name="frmBidUpdate.layoutControl5.Text" xml:space="preserve">
+    <value>layoutControl5</value>
+  </data>
   <data name="frmBidUpdate.layoutControlItem11.Text" xml:space="preserve">
     <value>layoutControlItem1</value>
   </data>
   <data name="frmBidUpdate.layoutControlItem12.Text" xml:space="preserve">
     <value>layoutControlItem2</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem18.Text" xml:space="preserve">
+    <value>Lifespan:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem19.Text" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem21.Text" xml:space="preserve">
+    <value>hour</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem22.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Adjustment notes</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem22.Text" xml:space="preserve">
+    <value>Notes Address:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem23.Text" xml:space="preserve">
+    <value>Contractor group:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bid decision code.</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem24.Text" xml:space="preserve">
+    <value>Bidding code:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem25.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bidding form</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem25.Text" xml:space="preserve">
+    <value>Bidding system:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem26.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bidding information according to dispatch 4750</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem26.Text" xml:space="preserve">
+    <value>TT_Contractor:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem27.Text" xml:space="preserve">
+    <value>Bid code:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem28.Text" xml:space="preserve">
+    <value>Lot code:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem29.Text" xml:space="preserve">
+    <value>Ceiling price of health insurance:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem3.Text" xml:space="preserve">
+    <value>Bid status:</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem30.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bid information serves XML</value>
+  </data>
+  <data name="frmBidUpdate.layoutControlItem30.Text" xml:space="preserve">
+    <value>Bidding center:</value>
   </data>
   <data name="frmBidUpdate.layoutControlItem4.Text" xml:space="preserve">
     <value>Number:</value>
@@ -219,20 +300,116 @@
   <data name="frmBidUpdate.layoutControlItem8.Text" xml:space="preserve">
     <value>VAT%:</value>
   </data>
+  <data name="frmBidUpdate.lciActiveBhyt.Text" xml:space="preserve">
+    <value>Active ingredients:</value>
+  </data>
+  <data name="frmBidUpdate.lciBidFromTime.Text" xml:space="preserve">
+    <value>From time:</value>
+  </data>
   <data name="frmBidUpdate.lciBidName.Text" xml:space="preserve">
     <value>Contractor name:</value>
   </data>
   <data name="frmBidUpdate.lciBidNumber.Text" xml:space="preserve">
     <value>Number of bids:</value>
   </data>
+  <data name="frmBidUpdate.lciBidPackageCode.Text" xml:space="preserve">
+    <value>Bidding package:</value>
+  </data>
+  <data name="frmBidUpdate.lciBidToTime.Text" xml:space="preserve">
+    <value>To time:</value>
+  </data>
   <data name="frmBidUpdate.lciBidType.Text" xml:space="preserve">
     <value>Bid type:</value>
+  </data>
+  <data name="frmBidUpdate.lciBidYear.Text" xml:space="preserve">
+    <value>Year of Decision:</value>
+  </data>
+  <data name="frmBidUpdate.lciConcentra.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Concentration/content</value>
+  </data>
+  <data name="frmBidUpdate.lciConcentra.Text" xml:space="preserve">
+    <value>Concentra:</value>
+  </data>
+  <data name="frmBidUpdate.lciDosageForm.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Dosage form</value>
+  </data>
+  <data name="frmBidUpdate.lciDosageForm.Text" xml:space="preserve">
+    <value>b/c format:</value>
+  </data>
+  <data name="frmBidUpdate.LciExpiredDate.Text" xml:space="preserve">
+    <value>Expired date:</value>
+  </data>
+  <data name="frmBidUpdate.lciFromTime.Text" xml:space="preserve">
+    <value>Valid from:</value>
+  </data>
+  <data name="frmBidUpdate.lciImpMoreRatio.Text" xml:space="preserve">
+    <value>Overbid(%):</value>
+  </data>
+  <data name="frmBidUpdate.lciLifeSpan.Text" xml:space="preserve">
+    <value>month</value>
+  </data>
+  <data name="frmBidUpdate.lciMaDT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bid code</value>
+  </data>
+  <data name="frmBidUpdate.lciMaDT.Text" xml:space="preserve">
+    <value>DT code</value>
+  </data>
+  <data name="frmBidUpdate.lciManufacturer.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Manufacturer</value>
+  </data>
+  <data name="frmBidUpdate.lciManufacturer.Text" xml:space="preserve">
+    <value>Manufacturer:</value>
+  </data>
+  <data name="frmBidUpdate.lciMaTT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Winning code</value>
+  </data>
+  <data name="frmBidUpdate.lciMaTT.Text" xml:space="preserve">
+    <value>TT code:</value>
+  </data>
+  <data name="frmBidUpdate.lciMediUseForm.Text" xml:space="preserve">
+    <value>Route of use:</value>
+  </data>
+  <data name="frmBidUpdate.lciNational.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Manufacturing country</value>
+  </data>
+  <data name="frmBidUpdate.lciNational.Text" xml:space="preserve">
+    <value>National:</value>
+  </data>
+  <data name="frmBidUpdate.lciPackingType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Packaging specifications</value>
+  </data>
+  <data name="frmBidUpdate.lciPackingType.Text" xml:space="preserve">
+    <value>QCDG:</value>
+  </data>
+  <data name="frmBidUpdate.lciRegisterNumber.Text" xml:space="preserve">
+    <value>Register num:</value>
+  </data>
+  <data name="frmBidUpdate.lciTenBHYT.Text" xml:space="preserve">
+    <value>Name of health insurance:</value>
+  </data>
+  <data name="frmBidUpdate.lciTenTT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Bidding name</value>
+  </data>
+  <data name="frmBidUpdate.lciTenTT.Text" xml:space="preserve">
+    <value>Information name:</value>
+  </data>
+  <data name="frmBidUpdate.lciToTime.Text" xml:space="preserve">
+    <value>Valid until:</value>
   </data>
   <data name="frmBidUpdate.Text" xml:space="preserve">
     <value>Edit Package</value>
   </data>
+  <data name="frmBidUpdate.txtBidGroupCode.Text" xml:space="preserve">
+    <value>Bid group:</value>
+  </data>
   <data name="frmBidUpdate.txtBidName.Properties.NullValuePrompt" xml:space="preserve">
     <value>Ctrl 1</value>
+  </data>
+  <data name="frmBidUpdate.txtBidPackageCode.Text" xml:space="preserve">
+    <value>Bid Package:</value>
+  </data>
+  <data name="frmBidUpdate.txtNOTE.ToolTip" xml:space="preserve">
+    <value>Adjustment notes</value>
   </data>
   <data name="frmBidUpdate.xtraTabPage1.Text" xml:space="preserve">
     <value>Drug</value>
@@ -242,6 +419,15 @@
   </data>
   <data name="frmBidUpdate.xtraTabPage3.Text" xml:space="preserve">
     <value>Blood</value>
+  </data>
+  <data name="frmBidUpdate.xtraTabPageBlood.Text" xml:space="preserve">
+    <value>Blood</value>
+  </data>
+  <data name="frmBidUpdate.xtraTabPageMaterial.Text" xml:space="preserve">
+    <value>Supplies</value>
+  </data>
+  <data name="frmBidUpdate.xtraTabPageMedicine.Text" xml:space="preserve">
+    <value>Medicine</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__BLOOD" xml:space="preserve">
     <value>Blood</value>
@@ -285,14 +471,14 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GC_STT" xml:space="preserve">
     <value>STT</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_BLOOD_GC_VOLUME" xml:space="preserve">
-    <value>Capacity</value>
-  </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_BLOOD__GC_BLOOD_TYPE_CODE" xml:space="preserve">
     <value>blood stocks</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_BLOOD__GC_BLOOD_TYPE_NAME" xml:space="preserve">
     <value>Form name</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_BLOOD_GC_VOLUME" xml:space="preserve">
+    <value>Capacity</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_MATERIAL__GC_MATERIAL_TYPE_CODE" xml:space="preserve">
     <value>Material code</value>
@@ -308,12 +494,6 @@
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_MEDICINE__GC_MEDICINE_USE_FROM_NAME" xml:space="preserve">
     <value>route of administration</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_PROCESS_GC_MEDICINE_TYPE_CODE" xml:space="preserve">
-    <value>Ghost</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_PROCESS_GC_MEDICINE_TYPE_NAME" xml:space="preserve">
-    <value>Name</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_PROCESS__GC_AMOUNT" xml:space="preserve">
     <value>Number</value>
@@ -336,6 +516,12 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_PROCESS__GC_TYPE_DISPLAY" xml:space="preserve">
     <value>Species</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_PROCESS_GC_MEDICINE_TYPE_CODE" xml:space="preserve">
+    <value>Ghost</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__GV_PROCESS_GC_MEDICINE_TYPE_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__KEY_WORD_NULL_VALUE" xml:space="preserve">
     <value>Keyword search</value>
   </data>
@@ -348,11 +534,11 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_BID_NAME_NULL_VALUE" xml:space="preserve">
     <value>Ctrl 1</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_BID_NUMBER" xml:space="preserve">
-    <value>Number of bids:</value>
-  </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_BID_NUM_ORDER" xml:space="preserve">
     <value>No Bid</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_BID_NUMBER" xml:space="preserve">
+    <value>Number of bids:</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_BID_TYPE" xml:space="preserve">
     <value>Bid type:</value>
@@ -371,6 +557,12 @@
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_USE_TIME" xml:space="preserve">
     <value>Time to use:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_VALID_FROM_TIME" xml:space="preserve">
+    <value>Valid from:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__LCI_VALID_TO_TIME" xml:space="preserve">
+    <value>Valid until:</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__MATERIAL" xml:space="preserve">
     <value>Supplies</value>
@@ -393,46 +585,118 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__XTRA_TAB_MEDICINE" xml:space="preserve">
     <value>Drug</value>
   </data>
-  <data name="frmBidUpdate.txtBidGroupCode.Text" xml:space="preserve">
-    <value>Bid group:</value>
+  <data name="UC_LoadEdit.gridCol_ActiveBhyt.Caption" xml:space="preserve">
+    <value>Active ingredients</value>
   </data>
-  <data name="frmBidUpdate.txtBidPackageCode.Text" xml:space="preserve">
-    <value>Bid Package:</value>
+  <data name="UC_LoadEdit.gridCol_BidMaterialTypeCode.Caption" xml:space="preserve">
+    <value>TT code</value>
   </data>
-  <data name="frmBidUpdate.BtnImport.Text" xml:space="preserve">
-    <value>Import</value>
+  <data name="UC_LoadEdit.gridCol_BidMaterialTypeCode.ToolTip" xml:space="preserve">
+    <value>Winning code</value>
   </data>
-  <data name="frmBidUpdate.LciExpiredDate.Text" xml:space="preserve">
-    <value>Expired date:</value>
+  <data name="UC_LoadEdit.gridCol_BidMaterialTypeName.Caption" xml:space="preserve">
+    <value>Name of TT</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__VALID_FROM_TIME" xml:space="preserve">
-    <value>Validation From</value>
+  <data name="UC_LoadEdit.gridCol_BidMaterialTypeName.ToolTip" xml:space="preserve">
+    <value>Bidding name</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_HIS_BID_CREATE__VALID_TO_TIME" xml:space="preserve">
-    <value>Validation To</value>
+  <data name="UC_LoadEdit.gridCol_DayLifespan.Caption" xml:space="preserve">
+    <value>Lifespan (days)</value>
   </data>
-  <data name="frmBidUpdate.lciConcentra.Text" xml:space="preserve">
-    <value>Concentra:</value>
-    <comment>Nồng độ/HL:</comment>
+  <data name="UC_LoadEdit.gridCol_DosageForm.Caption" xml:space="preserve">
+    <value>Dosage form</value>
   </data>
-  <data name="frmBidUpdate.lciManufacturer.Text" xml:space="preserve">
-    <value>Manufacturer:</value>
-    <comment>Hãng SX:</comment>
+  <data name="UC_LoadEdit.gridCol_HeinServiceBhytName.Caption" xml:space="preserve">
+    <value>Name of health insurance</value>
   </data>
-  <data name="frmBidUpdate.lciNational.Text" xml:space="preserve">
-    <value>National:</value>
-    <comment>Nước SX:</comment>
+  <data name="UC_LoadEdit.gridCol_HourLifespan.Caption" xml:space="preserve">
+    <value>Lifespan (hours)</value>
   </data>
-  <data name="frmBidUpdate.lciRegisterNumber.Text" xml:space="preserve">
-    <value>Register num:</value>
-    <comment>Số đăng ký:</comment>
+  <data name="UC_LoadEdit.gridCol_JoinBidMaterialTypeCode.Caption" xml:space="preserve">
+    <value>DT code</value>
   </data>
-  <data name="frmBidUpdate.lciBidFromTime.Text" xml:space="preserve">
-    <value>From time:</value>
-    <comment>Hiệu lực từ:</comment>
+  <data name="UC_LoadEdit.gridCol_JoinBidMaterialTypeCode.ToolTip" xml:space="preserve">
+    <value>Bid code</value>
   </data>
-  <data name="frmBidUpdate.lciBidToTime.Text" xml:space="preserve">
-    <value>To time:</value>
-    <comment>Hiệu lực đến:</comment>
+  <data name="UC_LoadEdit.gridCol_MediUseForm.Caption" xml:space="preserve">
+    <value>Route of use</value>
+  </data>
+  <data name="UC_LoadEdit.gridCol_MonthLifespan.Caption" xml:space="preserve">
+    <value>Lifespan (months)</value>
+  </data>
+  <data name="UC_LoadEdit.gridCol_ParkingType.Caption" xml:space="preserve">
+    <value>Packaging specifications</value>
+  </data>
+  <data name="UC_LoadEdit.gridCol_RegisterNumber.Caption" xml:space="preserve">
+    <value>Registration number</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn1.Caption" xml:space="preserve">
+    <value>Erase</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn10.Caption" xml:space="preserve">
+    <value>Nation</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn11.Caption" xml:space="preserve">
+    <value>Manufacturer</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn12.Caption" xml:space="preserve">
+    <value>Active ingredient code</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn13.Caption" xml:space="preserve">
+    <value>Contractor group</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn14.Caption" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn15.Caption" xml:space="preserve">
+    <value>Exceeded bid(%)</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn16.Caption" xml:space="preserve">
+    <value>Import price</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn17.Caption" xml:space="preserve">
+    <value>Regulation</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn17.ToolTip" xml:space="preserve">
+    <value>Enter a positive value to adjust up and a negative value to adjust down</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn18.Caption" xml:space="preserve">
+    <value>Lot part code</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn19.Caption" xml:space="preserve">
+    <value>Ceiling price of health insurance</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn2.Caption" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn20.Caption" xml:space="preserve">
+    <value>TT Contractor</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn3.Caption" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn4.Caption" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn5.Caption" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn6.Caption" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn7.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn8.Caption" xml:space="preserve">
+    <value>Contractor</value>
+  </data>
+  <data name="UC_LoadEdit.gridColumn9.Caption" xml:space="preserve">
+    <value>Bid number</value>
+  </data>
+  <data name="UC_LoadEdit.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
+  </data>
+  <data name="UC_LoadEdit.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Search keywords</value>
   </data>
 </root>

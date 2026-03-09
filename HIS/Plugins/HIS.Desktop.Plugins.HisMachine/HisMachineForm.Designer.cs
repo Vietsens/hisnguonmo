@@ -91,6 +91,10 @@ namespace HIS.Desktop.Plugins.HisMachine
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -104,6 +108,10 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtSourceName = new DevExpress.XtraEditors.TextEdit();
             this.btnExportXml = new DevExpress.XtraEditors.SimpleButton();
@@ -203,13 +211,10 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItemSourceName = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             this.bar1 = new DevExpress.XtraBars.Bar();
+            this.ButtonEditNonMachine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboConfigTimeConflict.Properties)).BeginInit();
@@ -285,6 +290,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonEditNonMachine)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -344,6 +350,10 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnAdd,
@@ -407,6 +417,34 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.barButtonItem1.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E));
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1028, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1028, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 482);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1028, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
             // 
             // gridView3
             // 
@@ -629,7 +667,8 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.ButtonEditIsKidney,
             this.ButtonEditQcNormation,
             this.ButtonEditDisableQcNormation,
-            this.ButtonEditIsMachine});
+            this.ButtonEditIsMachine,
+            this.ButtonEditNonMachine});
             this.gridControl1.Size = new System.Drawing.Size(759, 430);
             this.gridControl1.TabIndex = 5;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1186,7 +1225,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.cboRoom.Properties.AutoComplete = false;
             this.cboRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "", null, null, true)});
             this.cboRoom.Properties.NullText = "";
             this.cboRoom.Properties.View = this.gridView2;
             this.cboRoom.Size = new System.Drawing.Size(139, 20);
@@ -1556,34 +1595,6 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.layoutControlItem28.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem28.TextToControlDistance = 5;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1028, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1028, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 482);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1028, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
-            // 
             // dxValidationProvider1
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
@@ -1600,6 +1611,15 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
             this.bar1.Text = "Tools";
             this.bar1.Visible = false;
+            // 
+            // ButtonEditNonMachine
+            // 
+            this.ButtonEditNonMachine.AutoHeight = false;
+            this.ButtonEditNonMachine.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditNonMachine.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
+            this.ButtonEditNonMachine.Name = "ButtonEditNonMachine";
+            this.ButtonEditNonMachine.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.ButtonEditNonMachine.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEditNonMachine_ButtonClick);
             // 
             // HisMachineForm
             // 
@@ -1695,6 +1715,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem28)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonEditNonMachine)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1817,5 +1838,6 @@ namespace HIS.Desktop.Plugins.HisMachine
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem28;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnIsMachine;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit ButtonEditIsMachine;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit ButtonEditNonMachine;
     }
 }

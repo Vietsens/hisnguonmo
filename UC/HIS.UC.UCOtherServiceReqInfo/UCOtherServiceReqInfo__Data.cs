@@ -190,6 +190,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                     dataServiceReqInfoADO.NguonKhachCTName =
                         string.Join(",", lstOtherDetail.Select(e => e.LOGINNAME));
                 }
+                dataServiceReqInfoADO.NguonKhachCT = string.Join(";", new[] { dataServiceReqInfoADO.NguonKhachCTName, manualCustomerSourceDetailInput }.Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()));
                 if (chkCapMaMS.Checked)
                     dataServiceReqInfoADO.IsCapMaMS = true;
                 else
@@ -592,6 +593,7 @@ namespace HIS.UC.UCOtherServiceReqInfo
                 this.txtNguonKhach.Text = null;
                 this.cboNguonKhach.EditValue = null;
                 this.cboNguonKhachCT.EditValue = null;
+                this.buttonEdit1.Text = "";
                 this.cboEmergencyTime.Enabled = false;
                 this.chkIsHiv.Checked = false;
                 this.cboHosReason.EditValue = null;
