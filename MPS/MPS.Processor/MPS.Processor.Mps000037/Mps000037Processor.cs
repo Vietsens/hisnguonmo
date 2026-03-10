@@ -16,19 +16,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using FlexCel.Report;
+using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Logging;
+using Inventec.Common.QRCoder;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MPS.Processor.Mps000037.PDO;
+using MPS.ProcessorBase;
+using MPS.ProcessorBase.Core;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using MPS.ProcessorBase.Core;
-using MPS.Processor.Mps000037.PDO;
-using Inventec.Core;
-using MPS.ProcessorBase;
-using MOS.EFMODEL.DataModels;
-using System.Text;
 using System.Linq;
-using Inventec.Common.QRCoder;
+using System.Text;
 
 namespace MPS.Processor.Mps000037
 {
@@ -220,6 +222,10 @@ namespace MPS.Processor.Mps000037
                             }
                         }
                     }
+                    var serviceType = BackendDataWorker.Get<HIS_SERVICE_TYPE>().ToList();
+                    var orderMap = serviceType.ToDictionary(x => x.ID, x => x.NUM_ORDER);
+                    var ListAdoOrderByNum = ListAdo.OrderBy(x => orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order)? order : int.MaxValue).ToList();
+                    objectTag.AddObjectData(store, "ListAdoOrderByNum", ListAdoOrderByNum);
 
                     ListAdo = ListAdo.OrderBy(o => o.ID).ThenBy(p => p.SERVICE_NAME).ToList();
                     objectTag.AddObjectData(store, "ServiceReqType", srTypeList.Count > 0 ? srTypeList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ToList() : new List<HIS_SERVICE_REQ_TYPE>());
