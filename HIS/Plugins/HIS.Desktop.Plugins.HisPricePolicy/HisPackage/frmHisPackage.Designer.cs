@@ -768,7 +768,7 @@ namespace HIS.Desktop.Plugins.HisPricePolicy
             this.txtHisPackageCode.EnterMoveNextControl = true;
             this.txtHisPackageCode.Location = new System.Drawing.Point(147, 25);
             this.txtHisPackageCode.Name = "txtHisPackageCode";
-            this.txtHisPackageCode.Properties.MaxLength = 2;
+            this.txtHisPackageCode.Properties.MaxLength = 4;
             this.txtHisPackageCode.Size = new System.Drawing.Size(257, 20);
             this.txtHisPackageCode.StyleController = this.lcEditorInfo;
             this.txtHisPackageCode.TabIndex = 0;
