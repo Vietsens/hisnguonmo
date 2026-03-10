@@ -170,6 +170,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
         bool isAutoCheckIcd;
         string _TextIcdName = "";
         string _TextIcdNameCause = "";
+        bool isInPackage = false;
 
         List<HIS_ICD> currentIcds;
 
@@ -2255,21 +2256,21 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     SereServADO data = (SereServADO)gridViewServiceProcess.GetRow(e.RowHandle);
                     if (e.Column.FieldName == "PATIENT_TYPE_ID")
                     {
-                        if (data != null && data.PackagePriceId.HasValue && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2"))
+                        if (data != null && data.PackagePriceId.HasValue && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2" && HisConfigCFG.ServicePatyForServicePackage != "3"))
                             e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
                         else
                             e.RepositoryItem = this.repositoryItemcboPatientType_TabService;
                     }
                     else if (e.Column.FieldName == "PRIMARY_PATIENT_TYPE_ID")
                     {
-                        if (data != null && (data.PackagePriceId.HasValue || data.IsNotChangePrimaryPaty) && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2"))
+                        if (data != null && (data.PackagePriceId.HasValue || data.IsNotChangePrimaryPaty) && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2" && HisConfigCFG.ServicePatyForServicePackage != "3"))
                             e.RepositoryItem = this.repositoryItemCboPatientTypeReadOnly;
                         else
                             e.RepositoryItem = this.repositoryItemCboPrimaryPatientType;
                     }
                     else if (e.Column.FieldName == "IsChecked")
                     {
-                        if (data != null && data.PackagePriceId.HasValue && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2"))
+                        if (data != null && data.PackagePriceId.HasValue && (HisConfigCFG.ServicePatyForServicePackage != "1" && HisConfigCFG.ServicePatyForServicePackage != "2" && HisConfigCFG.ServicePatyForServicePackage != "3"))
                             e.RepositoryItem = this.repositoryItemchkIsCheckedDisable;
                         else
                             e.RepositoryItem = this.repositoryItemchkIsChecked;
@@ -3073,7 +3074,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             var dataSource = editor.Properties.DataSource;
                             this.FillDataIntoPatientTypeCombo(data, editor, ref patyId);
                             data.IsNotLoadDefaultPatientType = true;
-                            if (cboPackage.EditValue == null && HisConfigCFG.ServicePatyForServicePackage != "2")
+                            if (cboPackage.EditValue == null && (HisConfigCFG.ServicePatyForServicePackage != "2" && HisConfigCFG.ServicePatyForServicePackage != "3"))
                                 editor.EditValue = data.PATIENT_TYPE_ID;
                             //else 
                             //    editor.EditValue = patyId;
@@ -3086,7 +3087,8 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         if (data != null && data.IsChecked && !data.IsNotChangePrimaryPaty)
                         {
                             this.FillDataIntoPrimaryPatientTypeCombo(data, editor);
-                            editor.EditValue = data.PRIMARY_PATIENT_TYPE_ID;
+                            if (cboPackage.EditValue == null && (HisConfigCFG.ServicePatyForServicePackage != "2" && HisConfigCFG.ServicePatyForServicePackage != "3"))
+                                editor.EditValue = data.PRIMARY_PATIENT_TYPE_ID;
                         }
                         else
                         {
@@ -8762,7 +8764,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                     }
 
                     if (notHasServicePatys != null && notHasServicePatys.Count > 0 && (HisConfigCFG.ServicePatyForServicePackage != "1"
-                        && HisConfigCFG.ServicePatyForServicePackage != "2"))
+                        && HisConfigCFG.ServicePatyForServicePackage != "2" && HisConfigCFG.ServicePatyForServicePackage != "3"))
                     {
                         string sJoin = String.Join(", ", notHasServicePatys.Select(s => s.SERVICE_NAME).ToList());
                         strMessage.Append(String.Format(ResourceMessage.CacDichVuTrongGoiChuaDuocThietLapChinhSachGiaHoacPhongThucHien, this.currentHisPatientTypeAlter.PATIENT_TYPE_NAME, sJoin));
