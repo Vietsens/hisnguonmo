@@ -145,7 +145,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                 if (HisMateInStockByExpireDateADO.HisMateInStockByExpireDates != null)
                 {
                     int kIndex = 1;
-                    foreach (var listItem in HisMateInStockByExpireDateADO.HisMateInStockByExpireDates)
+                    foreach (var listItem in HisMateInStockByExpireDateADO.HisMateInStockByExpireDates.Where(x => x != null && x.Count > 0))
                     {
                         List<HisMateInStockByExpireDateADO> lstADO = new List<ADO.HisMateInStockByExpireDateADO>();
                         var itemExpriedDate = listItem[0].EXPIRED_DATE;
@@ -194,7 +194,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                             foreach (var parent in listParent)
                             {
                                 //if (this._MaterialTypeIds != null && this._MaterialTypeIds.Count > 0)
-                                //{   
+                                //{    
                                 //    if (!this._MaterialTypeIds.Contains(parent.MATERIAL_TYPE_ID))
                                 //    {
                                 //        continue;
@@ -225,7 +225,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                 }
                 records = new BindingList<HisMateInStockByExpireDateADO>(HisMateInStockByExpireDateADOs);
                 trvService.DataSource = records;
-                trvService.ExpandToLevel(0);
+                trvService.ExpandAll();
                 if (this.HisMateInStockByExpireDate_CheckAllNode != null)
                     this.HisMateInStockByExpireDate_CheckAllNode(trvService.Nodes);
             }
@@ -440,12 +440,13 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
             }
         }
 
-        public void Reload(List<List<HisMaterialInStockSDO>> HisMateInStockByExpireDates, List<long> MedicineTypeIds)
+        public void Reload(List<List<HisMaterialInStockSDO>> HisMateInStockByExpireDates, List<long> MedicineTypeIds, List<V_HIS_MEDI_STOCK> vHisMediStocks)
         {
             try
             {
                 txtKeyword.Text = "";
                 this.HisMateInStockByExpireDateADO.HisMateInStockByExpireDates = HisMateInStockByExpireDates;
+                this.HisMateInStockByExpireDateADO.MediStocks = vHisMediStocks;
                 if (this.HisMateInStockByExpireDateADO.HisMateInStockByExpireDates == null)
                     records = null;
                 this._MaterialTypeIds = MedicineTypeIds;
