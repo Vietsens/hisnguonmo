@@ -53,6 +53,7 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
         private bool isShowPatientList = false;
         private List<MOS.EFMODEL.DataModels.L_HIS_TREATMENT_BED_ROOM> treatmentBedRoomList;
         HIS_DEPARTMENT department = null;
+        V_HIS_ROOM room = null;
 
         Dictionary<long, HIS_EXP_MEST> dicExpMest = new Dictionary<long, HIS_EXP_MEST>();
         Dictionary<long, HIS_SERVICE_REQ> dicServiceReq = new Dictionary<long, HIS_SERVICE_REQ>();
@@ -147,10 +148,17 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
 
                 var departmentId = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId;
                 this.department = BackendDataWorker.Get<HIS_DEPARTMENT>().FirstOrDefault(o => o.ID == departmentId);
+                this.room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == this.currentModule.RoomId);
                 if (this.department != null)
                 {
                     rdoRequestDepartment__Current.Text = department.DEPARTMENT_NAME;
                     rdoRequestDepartment__Current.CheckState = CheckState.Checked;
+                }
+
+                if (this.room != null)
+                {
+                    rdoRequestRoom__Current.Text = this.room.ROOM_NAME;
+                    rdoRequestRoom__Current.CheckState = CheckState.Checked;
                 }
                 WaitingManager.Hide();
             }
@@ -321,6 +329,10 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 if (rdoRequestDepartment__Current.Checked)
                 {
                     serviceReqFilter.REQUEST_DEPARTMENT_ID = this.department.ID;
+                }
+                if (rdoRequestRoom__Current.Checked)
+                {
+                    serviceReqFilter.REQUEST_ROOM_ID = this.currentModule.RoomId;
                 }
 
                 if (!rdoAllDay.Checked)
@@ -808,6 +820,36 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void rdoRequestRoom__Current_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdoRequestRoom__Current.Checked)
+                {
+                    rdoRequestRoom__All.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void rdoRequestRoom__All_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdoRequestRoom__All.Checked)
+                {
+                    rdoRequestRoom__Current.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }
