@@ -4281,7 +4281,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 }
                 
                 this.totalGuarantee += this.totalGuaranteeOriginal; 
-                this.lblTotalGuarantee.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.totalGuarantee, ConfigApplications.NumberSeperator);
+                //this.lblTotalGuarantee.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.totalGuarantee, ConfigApplications.NumberSeperator);
                 this.lblPhatSinh.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPrice, ConfigApplications.NumberSeperator);
                 this.lblPhatSinh__BHYT.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPriceBHYT, ConfigApplications.NumberSeperator);
                 this.lblPhatSinh__KhacBHYT.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPriceNotBHYT, ConfigApplications.NumberSeperator);
