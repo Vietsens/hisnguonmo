@@ -16,19 +16,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using FlexCel.Report;
+using HIS.Desktop.LocalStorage.BackendData;
 using Inventec.Common.Logging;
+using Inventec.Common.QRCoder;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MPS.Processor.Mps000037.PDO;
+using MPS.ProcessorBase;
+using MPS.ProcessorBase.Core;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using MPS.ProcessorBase.Core;
-using MPS.Processor.Mps000037.PDO;
-using Inventec.Core;
-using MPS.ProcessorBase;
-using MOS.EFMODEL.DataModels;
-using System.Text;
 using System.Linq;
-using Inventec.Common.QRCoder;
+using System.Text;
 
 namespace MPS.Processor.Mps000037
 {
@@ -128,6 +130,7 @@ namespace MPS.Processor.Mps000037
                 }
 
                 var ExecuteRoomGroups = new List<SereServGroupPlusADO>();
+                var ExecuteRoomGroupsServiceType = new List<SereServGroupPlusADO>();
 
                 // minhnq
                 if (rdo.ListServiceReqPrint != null && rdo.ListServiceReqPrint.Count() > 0 && ListAdo != null && ListAdo.Count() > 0)
@@ -139,6 +142,10 @@ namespace MPS.Processor.Mps000037
                     }
                 }
 
+                var serviceType = BackendDataWorker.Get<HIS_SERVICE_TYPE>().ToList();
+                var heinServiceType = BackendDataWorker.Get<HIS_HEIN_SERVICE_TYPE>().ToList();
+                var orderMap = serviceType.ToDictionary(x => x.ID, x => x.NUM_ORDER);
+                var orderMapHein = heinServiceType.ToDictionary(x => x.ID, x => x.NUM_ORDER);
                 if (isBordereau)
                 {
                     var sExecuteRoomGroups = (ListAdo != null && ListAdo.Count > 0) ? ListAdo.GroupBy(o => o.HEIN_SERVICE_TYPE_NAME).ToList() : null;
@@ -146,9 +153,11 @@ namespace MPS.Processor.Mps000037
                     {
                         SereServGroupPlusADO itemSExecuteGroup = sExecuteRoomGroup.First();
                         ExecuteRoomGroups.Add(itemSExecuteGroup);
+                        ExecuteRoomGroupsServiceType.Add(itemSExecuteGroup);
                     }
 
                     ExecuteRoomGroups = (ExecuteRoomGroups != null && ExecuteRoomGroups.Count > 0) ? ExecuteRoomGroups.OrderBy(o => o.EXECUTE_ROOM_NAME).ThenBy(p => p.EXECUTE_DEPARTMENT_NAME).ToList() : ExecuteRoomGroups;
+                    ExecuteRoomGroupsServiceType = (ExecuteRoomGroups != null && ExecuteRoomGroups.Count > 0) ? ExecuteRoomGroupsServiceType.OrderBy(x => orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order) ? order : int.MaxValue).ToList() : ExecuteRoomGroupsServiceType;
                     var grType = ListAdo.GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
 
                     List<HIS_SERVICE_REQ_TYPE> srTypeList = new List<HIS_SERVICE_REQ_TYPE>();
@@ -165,11 +174,19 @@ namespace MPS.Processor.Mps000037
                             srList.AddRange(rdo.ListServiceReqPrint.Where(o => grServiceReq.Exists(p => p.Key == o.ID)));
                         }
                     }
+
+                    var ListAdoOrderByNum = ListAdo.OrderBy(x => orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order) ? order : int.MaxValue).ToList();
+                    objectTag.AddObjectData(store, "ListAdoOrderByNum", ListAdoOrderByNum);
+                    objectTag.AddObjectData(store, "ExecuteRoomGroupsServiceType", ExecuteRoomGroupsServiceType);
+                    objectTag.AddRelationship(store, "ExecuteRoomGroupsServiceType", "ListAdoOrderByNum", "HEIN_SERVICE_TYPE_NAME", "HEIN_SERVICE_TYPE_NAME");
+
                     objectTag.AddObjectData(store, "ServiceReqType", srTypeList.Count > 0 ? srTypeList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ToList() : new List<HIS_SERVICE_REQ_TYPE>());
                     objectTag.AddObjectData(store, "ServiceReq", srList.Count > 0 ? srList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ThenBy(o => o.INTRUCTION_TIME).ToList() : new List<V_HIS_SERVICE_REQ>());
                     objectTag.AddObjectData(store, "Services", ListAdo);
                     objectTag.AddObjectData(store, "ExecuteRoomGroups", ExecuteRoomGroups);
+                    
                     objectTag.AddRelationship(store, "ExecuteRoomGroups", "Services", "HEIN_SERVICE_TYPE_NAME", "HEIN_SERVICE_TYPE_NAME");
+                    
                 }
                 else
                 {
@@ -178,6 +195,7 @@ namespace MPS.Processor.Mps000037
                     {
                         SereServGroupPlusADO itemSExecuteGroup = sExecuteRoomGroup.First();
                         ExecuteRoomGroups.Add(itemSExecuteGroup);
+                        ExecuteRoomGroupsServiceType.Add(itemSExecuteGroup);
                     }
 
                     var serviceTypeGroup = new List<SereServGroupPlusADO>();
@@ -221,6 +239,15 @@ namespace MPS.Processor.Mps000037
                         }
                     }
 
+                    ExecuteRoomGroupsServiceType = ExecuteRoomGroupsServiceType.OrderBy(x => orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order) ? order : int.MaxValue).ToList();
+                    
+                    var ListAdoOrderByNum = ListAdo.OrderBy(x => orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order) ? order : int.MaxValue).ToList();
+
+                    objectTag.AddObjectData(store, "ExecuteRoomGroupsServiceType", ExecuteRoomGroupsServiceType);
+                    objectTag.AddObjectData(store, "ListAdoOrderByNum", ListAdoOrderByNum);
+                    objectTag.AddRelationship(store, "ExecuteRoomGroupsServiceType", "ListAdoOrderByNum", "TDL_EXECUTE_ROOM_ID", "TDL_EXECUTE_ROOM_ID");
+
+
                     ListAdo = ListAdo.OrderBy(o => o.ID).ThenBy(p => p.SERVICE_NAME).ToList();
                     objectTag.AddObjectData(store, "ServiceReqType", srTypeList.Count > 0 ? srTypeList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ToList() : new List<HIS_SERVICE_REQ_TYPE>());
                     objectTag.AddObjectData(store, "ServiceReq", srList.Count > 0 ? srList.OrderBy(o => o.SERVICE_REQ_TYPE_NAME).ThenBy(o => o.INTRUCTION_TIME).ToList() : new List<V_HIS_SERVICE_REQ>());
@@ -229,7 +256,9 @@ namespace MPS.Processor.Mps000037
                     objectTag.AddRelationship(store, "ServiceReqType", "ServiceReq", "ID", "SERVICE_REQ_TYPE_ID");
                     objectTag.AddRelationship(store, "ServiceReq", "Services", "ID", "SERVICE_REQ_ID");
                     objectTag.AddObjectData(store, "ExecuteRoomGroups", ExecuteRoomGroups);
+                    
                     objectTag.AddRelationship(store, "ExecuteRoomGroups", "Services", "TDL_EXECUTE_ROOM_ID", "TDL_EXECUTE_ROOM_ID");
+
 
                     objectTag.AddObjectData(store, "ServicesType", serviceTypeGroup);
                     objectTag.AddObjectData(store, "ServicesParent", servcieParent);
