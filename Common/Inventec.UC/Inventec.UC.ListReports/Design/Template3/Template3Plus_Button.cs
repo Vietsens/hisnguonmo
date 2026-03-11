@@ -17,6 +17,7 @@
  */
 using DevExpress.Spreadsheet;
 using DevExpress.Utils;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
 using Inventec.UC.ListReports.Base;
@@ -28,6 +29,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static DevExpress.XtraPrinting.Native.ExportOptionsPropertiesNames;
 
 namespace Inventec.UC.ListReports.Design.Template3
 {
@@ -265,7 +267,13 @@ namespace Inventec.UC.ListReports.Design.Template3
                     }
                     else
                     {
-                        var print = new Inventec.Common.FlexCelPrint.frmSetupPrintPreview(stream, "");
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = null;
+                        if (row != null)
+                        {
+                            inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADO(row != null ? row.REPORT_TYPE_CODE : "", row != null ? row.REPORT_TYPE_CODE : "", row.REPORT_NAME);
+
+                        }
+                        var print = new Inventec.Common.FlexCelPrint.frmSetupPrintPreview(stream, "", "", 1, false, false, inputADO);
                         //print.Owner = this.ParentForm;
                         print.Show();
                     }

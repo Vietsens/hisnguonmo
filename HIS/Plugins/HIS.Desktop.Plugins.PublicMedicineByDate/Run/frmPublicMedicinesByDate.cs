@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.PublicMedicineByDate.Config;
 using Inventec.Common.Adapter;
@@ -100,6 +101,12 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                     rdoRequestDepatment__Current.Text = department.DEPARTMENT_NAME;
                     rdoRequestDepatment__Current.CheckState = CheckState.Checked;
                 }
+                var currentRoom = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o=>o.ID== this.currentModule.RoomId);
+                if(currentRoom != null)
+                {
+                    rdoRequestRoom.Text = currentRoom.ROOM_NAME;
+                    rdoRequestRoom.CheckState = CheckState.Checked;
+                }
                 //chkSortByName.CheckState = CheckState.Checked;
                 WaitingManager.Hide();
             }
@@ -167,6 +174,11 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                 if (rdoRequestDepatment__Current.Checked)
                 {
                     serviceReqFilter.REQUEST_DEPARTMENT_ID = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId;
+                }
+
+                if (rdoRequestRoom.Checked)
+                {
+                    serviceReqFilter.REQUEST_ROOM_ID = this.currentModule.RoomId;
                 }
 
                 if (dtDatePublic.EditValue != null && dtDatePublic.DateTime != DateTime.MinValue)
@@ -502,6 +514,36 @@ namespace HIS.Desktop.Plugins.PublicMedicineByDate
                 if (chkSortByName.Checked)
                 {
                     chkAccordingToSetting.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void rdoRequestRoom_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdoRequestRoom.Checked)
+                {
+                    rdoRequestAll.Checked = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void rdoRequestAll_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdoRequestRoom.Checked)
+                {
+                    rdoRequestRoom.Checked = false;
                 }
             }
             catch (Exception ex)

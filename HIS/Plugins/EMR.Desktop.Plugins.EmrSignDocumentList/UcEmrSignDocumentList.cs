@@ -713,7 +713,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                                                 inputADO.PaperSizeDefault.RawKind = (int)row.RAW_KIND;
                                             }
                                         }
-                                        inputADO.IsOutsideTreatment = (short)(row.TREATMENT_CODE.ToUpper().Contains("MPS") ? 1 : 0);
+                                        inputADO.IsOutsideTreatment = row.IS_OUTSIDE_TREATMENT;
                                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.PaperSizeDefault), inputADO.PaperSizeDefault));
 
                                         if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))
@@ -1144,7 +1144,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                                     inputADO.PaperSizeDefault.RawKind = (int)document.RAW_KIND;
                                 }
                             }
-                            inputADO.IsOutsideTreatment = (short)(document.TREATMENT_CODE.ToUpper().Contains("MPS") ? 1 : 0);
+                            inputADO.IsOutsideTreatment = document.IS_OUTSIDE_TREATMENT;
                             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.PaperSizeDefault), inputADO.PaperSizeDefault));
 
                             if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))
@@ -1354,7 +1354,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                                             inputADO.PaperSizeDefault.RawKind = (int)item.RAW_KIND;
                                         }
                                     }
-                                    inputADO.IsOutsideTreatment = (short)(item.TREATMENT_CODE.ToUpper().Contains("MPS") ? 1 : 0);
+                                    inputADO.IsOutsideTreatment = item.IS_OUTSIDE_TREATMENT;
                                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.PaperSizeDefault), inputADO.PaperSizeDefault));
 
                                     if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))
