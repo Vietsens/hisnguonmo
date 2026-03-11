@@ -843,7 +843,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                         {
                             foreach (var item in bhyt__Exists)
                             {
-                                tongtienThuocPhatSinh += (item.TotalPrice);
+                                tongtienThuocPhatSinh += (item.TotalPrice ?? 0);
                             }
 
                             //Đối với bệnh nhân đúng tuyến KCB

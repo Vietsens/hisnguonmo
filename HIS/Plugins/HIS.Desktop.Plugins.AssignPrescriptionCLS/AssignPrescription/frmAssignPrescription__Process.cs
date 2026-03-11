@@ -255,7 +255,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             decimal totalPrice = 0;
             try
             {
-                totalPrice = mediMatyTypeADOs.Where(item => item.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT && (item.IsExpend) == false).Sum(o => o.TotalPrice);
+                totalPrice = (decimal)mediMatyTypeADOs.Where(item => item.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT && (item.IsExpend) == false).Sum(o => o.TotalPrice);
             }
             catch (Exception ex)
             {
@@ -1285,21 +1285,35 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             try
             {
                 int datatype = GetDataTypeSelected();
+
+                // Set IsGuarantee cho item hiện tại TRƯỚC KHI thêm vào
+                if (this.currentMedicineTypeADOForEdit != null
+                    && !string.IsNullOrEmpty(this.Histreatment?.GUARANTEE_CODE)
+                    && this.currentHisPatientTypeAlter?.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT)
+                {
+                    this.currentMedicineTypeADOForEdit.IsGuarantee = true;
+                }
+
                 HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.IAdd iAdd = HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.AddFactory.MakeIAdd(
-                param,
-                this,
-                ValidAddRow,
-                ChoosePatientTypeDefaultlService,
-                ChoosePatientTypeDefaultlServiceOther,
-                CalulateUseTimeTo,
-                ExistsAssianInDay,
-                this.currentMedicineTypeADOForEdit,
-                datatype);
+                    param,
+                    this,
+                    ValidAddRow,
+                    ChoosePatientTypeDefaultlService,
+                    ChoosePatientTypeDefaultlServiceOther,
+                    CalulateUseTimeTo,
+                    ExistsAssianInDay,
+                    this.currentMedicineTypeADOForEdit,
+                    datatype);
 
                 if (iAdd != null)
                 {
                     var success = iAdd.Run();
-                    if (!success)
+                    if (success)
+                    {
+                        // Tính lại tổng tiền bảo lãnh
+                        CalculateTotalGuarantee();
+                    }
+                    else
                     {
                         //LogSystem.Debug("Add medicine/ material row error => success fail");
                     }
@@ -3316,7 +3330,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     foreach (var item in medicineTypeADOs)
                     {
-                        totalPrice += item.TotalPrice;
+                        totalPrice += item.TotalPrice ?? 0;
                     }
                 }
                 //if (this.actionType == GlobalVariables.ActionEdit && this.totalHeinByTreatment > 0)

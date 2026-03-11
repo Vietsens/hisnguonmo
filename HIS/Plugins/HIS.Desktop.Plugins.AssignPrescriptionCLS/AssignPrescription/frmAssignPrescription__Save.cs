@@ -217,6 +217,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
 
                 bool valid = true;
                 this.positionHandleControl = -1;
+                string guaranteeMessage = "";
+                if (!ValidateGuaranteeAmount(ref guaranteeMessage))
+                {
+                    MessageBox.Show(guaranteeMessage,
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
 
                 if (this.gridViewServiceProcess.IsEditing)
                     this.gridViewServiceProcess.CloseEditor();

@@ -680,7 +680,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     List<MediMatyTypeADO> mediMatyIsExpends = mediMatyTypeADOs.Where(o => o.IsExpend).ToList();
                     if (mediMatyIsExpends != null && mediMatyIsExpends.Count > 0)
                     {
-                        decimal totalPrice = mediMatyIsExpends.Sum(o => o.TotalPrice);
+                        decimal totalPrice = mediMatyIsExpends.Sum(o => o.TotalPrice ?? 0);
                         V_HIS_SERE_SERV sereServParent = currentSereServInEkip != null ? currentSereServInEkip : currentSereServ;
                         if (sereServParent != null)
                         {
