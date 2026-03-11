@@ -74,9 +74,13 @@ namespace MPS.Processor.Mps000480
 
                 
                 objectTag.AddRelationship(store, "Areas", "ExpMestViews", "AREA_ID", "REQ_AREA_ID");
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("Areas", lstArea));
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("ExpMestViews", rdo.lstExpMestView));
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("MedicineMaterials", lstMedicineMaterials));
 
-                
-                objectTag.AddRelationship(store, "ExpMestViews", "MedicineMaterials", "ID", "EXP_MEST_ID");
+
+                //objectTag.AddRelationship(store, "ExpMestViews", "MedicineMaterials", "ID", "EXP_MEST_ID");
+                objectTag.AddRelationship(store, "ExpMestViews", "MedicineMaterials", "ID", "AGGR_EXP_MEST_ID");
 
 
                 objectTag.AddObjectData(store, "ExpMests", this.lstExpMest);
@@ -145,6 +149,7 @@ namespace MPS.Processor.Mps000480
                         medimate.NOON = item.First().NOON;
                         medimate.AFTERNOON = item.First().AFTERNOON;
                         medimate.EVENING = item.First().EVENING;
+                        medimate.AGGR_EXP_MEST_ID = item.First().AGGR_EXP_MEST_ID; 
                         if (item.First().USE_TIME_TO != null && item.First().TDL_INTRUCTION_TIME != null)
                         {
                             DateTime use_time_to = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)item.First().USE_TIME_TO) ?? DateTime.MinValue;
@@ -178,6 +183,7 @@ namespace MPS.Processor.Mps000480
                         medimate.TUTORIAL = item.First().TUTORIAL;
                         medimate.REQ_LOGINNAME = item.First().REQ_LOGINNAME;
                         medimate.REQ_USERNAME = item.First().REQ_USERNAME;
+                        medimate.AGGR_EXP_MEST_ID = item.First().AGGR_EXP_MEST_ID; 
                         lstMedicineMaterials.Add(medimate);
                     }
                 }

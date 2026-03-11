@@ -1118,7 +1118,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                                             }
                                         }
                                         //qtcode
-                                        inputADO.IsOutsideTreatment = (short)(row.TREATMENT_CODE.ToUpper().Contains("MPS") ? 1 : 0);
+                                        inputADO.IsOutsideTreatment = row.IS_OUTSIDE_TREATMENT;
                                         Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.PaperSizeDefault), inputADO.PaperSizeDefault));
 
                                         if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))

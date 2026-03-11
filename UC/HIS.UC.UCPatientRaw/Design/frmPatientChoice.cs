@@ -315,10 +315,15 @@ namespace HIS.UC.UCPatientRaw
             try
             {
                 var patient = (HisPatientSDO)gridView1.GetFocusedRow();
-                if (patient != null)
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisPatientAdvanceFilter filter = new MOS.Filter.HisPatientAdvanceFilter();
+                filter.PATIENT_CODE__EXACT = patient.PATIENT_CODE;
+                var hisPatient = new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param).SingleOrDefault();
+
+                if (hisPatient != null)
                 {
-                    ProcessSelectedPatientSdo(ref patient);
-                    this.updatePatientInfo(patient);
+                    ProcessSelectedPatientSdo(ref hisPatient);
+                    this.updatePatientInfo(hisPatient);
                     this.Close();
                 }
             }
@@ -335,10 +340,16 @@ namespace HIS.UC.UCPatientRaw
                 if (e.KeyCode == Keys.Enter)
                 {
                     var patient = (HisPatientSDO)gridView1.GetFocusedRow();
-                    if (patient != null)
+
+                    CommonParam param = new CommonParam();
+                    MOS.Filter.HisPatientAdvanceFilter filter = new MOS.Filter.HisPatientAdvanceFilter();
+                    filter.PATIENT_CODE__EXACT = patient.PATIENT_CODE;
+                    var hisPatient = new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param).SingleOrDefault();
+
+                    if (hisPatient != null)
                     {
-                        ProcessSelectedPatientSdo(ref patient);
-                        this.updatePatientInfo(patient);
+                        ProcessSelectedPatientSdo(ref hisPatient);
+                        this.updatePatientInfo(hisPatient);
                         this.Close();
                     }
                 }
@@ -354,12 +365,16 @@ namespace HIS.UC.UCPatientRaw
             try
             {
                 var patient = (HisPatientSDO)gridView1.GetFocusedRow();
-                if (patient != null)
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisPatientAdvanceFilter filter = new MOS.Filter.HisPatientAdvanceFilter();
+                filter.PATIENT_CODE__EXACT = patient.PATIENT_CODE;
+                var hisPatient = new BackendAdapter(param).Get<List<HisPatientSDO>>(RequestUriStore.HIS_PATIENT_GETSDOADVANCE, ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param).SingleOrDefault();
+                if (hisPatient != null)
                 {
-                    ProcessSelectedPatientSdo(ref patient);
+                    ProcessSelectedPatientSdo(ref hisPatient);
 
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patient), patient));
-                    this.updatePatientInfo(patient);
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisPatient), hisPatient));
+                    this.updatePatientInfo(hisPatient);
                     this.Close();
                 }
             }

@@ -894,6 +894,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                         pres.MedicineBeanIds = null;
                     }
                     #region
+                    //qtcode
+                    pres.IsGuaranteed = item.IsGuarantee; 
                     pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
                     pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
                     pres.MedicineTypeId = item.ID;
@@ -999,6 +1001,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 {
                     PresMaterialADO pres = new PresMaterialADO();
                     pres.MaterialId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
+                    pres.IsGuaranteed = item.IsGuarantee; // FE truyền trạng thái bảo lãnh
                     if (item.IS_SUB_PRES != 1)
                     {
                         if (item.MaterialBean1Result != null && item.MaterialBean1Result.Count > 0)
@@ -1092,7 +1095,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     {
                         pres.MaterialBeanIds = null;
                     }
-
+                    pres.IsGuaranteed = item.IsGuarantee; 
                     pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
                     pres.PresAmount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.PRES_AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.PRES_AMOUNT ?? 0);
                     pres.MaterialTypeId = item.ID;
@@ -1178,6 +1181,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                 {
                     PresMedicineSDO pres = new PresMedicineSDO();
+                    // qtcode
+                    pres.IsGuaranteed = item.IsGuarantee; 
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
                     pres.MedicineInfoSdos = new List<MedicineInfoSDO>();
                     if (frmAssignPrescription.IsSaveOverResultReasonTest)
@@ -1308,6 +1313,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
                 {
                     PresMaterialSDO pres = new PresMaterialSDO();
+                    pres.IsGuaranteed = item.IsGuarantee; 
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
                     pres.MaterialId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
                     pres.Amount = new MediMatyTypeADO().CalculateAmount(item, this.ActionType);
@@ -1363,6 +1369,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                 {
                     PresMaterialBySerialNumberSDO pres = new PresMaterialBySerialNumberSDO();
+                    pres.IsGuaranteed = item.IsGuarantee; 
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
                     pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
                     pres.MediStockId = item.MEDI_STOCK_ID ?? 0;

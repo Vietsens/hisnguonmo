@@ -120,6 +120,9 @@ namespace Inventec.Common.FlexCelPrint
         List<string> partialFiles;
         List<MemoryStream> partialStreams;
         PaperSize currentPaperSize;
+        string documentCode;
+
+        public bool IsCallBack { get; private set; }
         #endregion
 
         #region Construction
@@ -186,6 +189,20 @@ namespace Inventec.Common.FlexCelPrint
                 this.isAllowExport = isallowExport;
                 if (this.isPreview) UpdateItemsDisable();
                 Inventec.Common.Logging.LogSystem.Debug("end InitializeComponent");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        public frmSetupPrintPreview(MemoryStream data, string defaultPrintName, string pathFileTemplate, int numCopy, bool isPreview, bool isallowExport, object emrInputADO)
+            :this(data, defaultPrintName, pathFileTemplate, numCopy, isPreview, true)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("2. InitializeComponent InputADO");
+                this.emrInputADO = emrInputADO as Inventec.Common.SignLibrary.ADO.InputADO;
+                Inventec.Common.Logging.LogSystem.Debug("end InitializeComponent InputADO");
             }
             catch (Exception ex)
             {
@@ -1131,6 +1148,13 @@ namespace Inventec.Common.FlexCelPrint
                 {
                     this.emrInputADO.PrintNumberCopies = (short)(numericUpDownCopies.Value);
                     this.emrInputADO.PaperSizeDefault = currentPaperSize;
+                    this.emrInputADO.DocumentCode = this.documentCode;
+                    this.emrInputADO.IsCallBackDocument = this.IsCallBack;
+                    this.emrInputADO.DelegateDocumentCode = (result)=>
+                    {
+                        this.documentCode = result;
+                        this.IsCallBack = true;
+                    };
                     libraryProcessor.ShowPopup(fileTemp, this.emrInputADO);
                     try
                     {

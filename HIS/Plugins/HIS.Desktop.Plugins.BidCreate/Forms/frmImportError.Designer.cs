@@ -82,6 +82,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_MaDT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_ErrorImport_TenBHYT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn_ErrorImport_QCDG = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -93,7 +94,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlErrors)).BeginInit();
@@ -151,6 +152,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_Amount,
             this.gridColumn_ErrorImport_ImpPrice,
             this.gridColumn_ErrorImport_ImpVatRatio,
+            this.gridColumn2,
             this.gridColumn_ErrorImport_BidTypeCode,
             this.gridColumn_ErrorImport_BidPackageCode,
             this.gridColumn_ErrorImport_BidGroupCode,
@@ -334,7 +336,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_BidTypeCode.Name = "gridColumn_ErrorImport_BidTypeCode";
             this.gridColumn_ErrorImport_BidTypeCode.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_BidTypeCode.Visible = true;
-            this.gridColumn_ErrorImport_BidTypeCode.VisibleIndex = 12;
+            this.gridColumn_ErrorImport_BidTypeCode.VisibleIndex = 13;
             // 
             // gridColumn_ErrorImport_BidPackageCode
             // 
@@ -347,7 +349,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_BidPackageCode.Name = "gridColumn_ErrorImport_BidPackageCode";
             this.gridColumn_ErrorImport_BidPackageCode.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_BidPackageCode.Visible = true;
-            this.gridColumn_ErrorImport_BidPackageCode.VisibleIndex = 13;
+            this.gridColumn_ErrorImport_BidPackageCode.VisibleIndex = 14;
             this.gridColumn_ErrorImport_BidPackageCode.Width = 60;
             // 
             // gridColumn_ErrorImport_BidGroupCode
@@ -361,7 +363,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_BidGroupCode.Name = "gridColumn_ErrorImport_BidGroupCode";
             this.gridColumn_ErrorImport_BidGroupCode.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_BidGroupCode.Visible = true;
-            this.gridColumn_ErrorImport_BidGroupCode.VisibleIndex = 14;
+            this.gridColumn_ErrorImport_BidGroupCode.VisibleIndex = 15;
             this.gridColumn_ErrorImport_BidGroupCode.Width = 60;
             // 
             // gridColumn_ErrorImport_BidNumber
@@ -373,7 +375,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_BidNumber.Name = "gridColumn_ErrorImport_BidNumber";
             this.gridColumn_ErrorImport_BidNumber.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_BidNumber.Visible = true;
-            this.gridColumn_ErrorImport_BidNumber.VisibleIndex = 15;
+            this.gridColumn_ErrorImport_BidNumber.VisibleIndex = 16;
             this.gridColumn_ErrorImport_BidNumber.Width = 90;
             // 
             // gridColumn_ErrorImport_BidName
@@ -385,7 +387,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_BidName.Name = "gridColumn_ErrorImport_BidName";
             this.gridColumn_ErrorImport_BidName.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_BidName.Visible = true;
-            this.gridColumn_ErrorImport_BidName.VisibleIndex = 16;
+            this.gridColumn_ErrorImport_BidName.VisibleIndex = 17;
             this.gridColumn_ErrorImport_BidName.Width = 100;
             // 
             // gridColumn_ErrorImport_BidYear
@@ -399,7 +401,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_BidYear.Name = "gridColumn_ErrorImport_BidYear";
             this.gridColumn_ErrorImport_BidYear.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_BidYear.Visible = true;
-            this.gridColumn_ErrorImport_BidYear.VisibleIndex = 17;
+            this.gridColumn_ErrorImport_BidYear.VisibleIndex = 18;
             this.gridColumn_ErrorImport_BidYear.Width = 60;
             // 
             // gridColumn_ErrorImport_TypeName
@@ -411,7 +413,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_TypeName.Name = "gridColumn_ErrorImport_TypeName";
             this.gridColumn_ErrorImport_TypeName.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_TypeName.Visible = true;
-            this.gridColumn_ErrorImport_TypeName.VisibleIndex = 18;
+            this.gridColumn_ErrorImport_TypeName.VisibleIndex = 19;
             this.gridColumn_ErrorImport_TypeName.Width = 150;
             // 
             // gridColumn_ErrorImport_NationalName
@@ -423,7 +425,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_NationalName.Name = "gridColumn_ErrorImport_NationalName";
             this.gridColumn_ErrorImport_NationalName.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_NationalName.Visible = true;
-            this.gridColumn_ErrorImport_NationalName.VisibleIndex = 19;
+            this.gridColumn_ErrorImport_NationalName.VisibleIndex = 20;
             this.gridColumn_ErrorImport_NationalName.Width = 120;
             // 
             // gridColumn_ErrorImport_ManufacturerName
@@ -435,7 +437,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_ManufacturerName.Name = "gridColumn_ErrorImport_ManufacturerName";
             this.gridColumn_ErrorImport_ManufacturerName.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_ManufacturerName.Visible = true;
-            this.gridColumn_ErrorImport_ManufacturerName.VisibleIndex = 20;
+            this.gridColumn_ErrorImport_ManufacturerName.VisibleIndex = 21;
             this.gridColumn_ErrorImport_ManufacturerName.Width = 150;
             // 
             // gridColumn_ErrorImport_ActiveIngrBhytCode
@@ -447,7 +449,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_ActiveIngrBhytCode.Name = "gridColumn_ErrorImport_ActiveIngrBhytCode";
             this.gridColumn_ErrorImport_ActiveIngrBhytCode.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_ActiveIngrBhytCode.Visible = true;
-            this.gridColumn_ErrorImport_ActiveIngrBhytCode.VisibleIndex = 21;
+            this.gridColumn_ErrorImport_ActiveIngrBhytCode.VisibleIndex = 22;
             // 
             // gridColumn_ErrorImport_ActiveIngrBhytName
             // 
@@ -458,7 +460,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_ActiveIngrBhytName.Name = "gridColumn_ErrorImport_ActiveIngrBhytName";
             this.gridColumn_ErrorImport_ActiveIngrBhytName.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_ActiveIngrBhytName.Visible = true;
-            this.gridColumn_ErrorImport_ActiveIngrBhytName.VisibleIndex = 22;
+            this.gridColumn_ErrorImport_ActiveIngrBhytName.VisibleIndex = 23;
             this.gridColumn_ErrorImport_ActiveIngrBhytName.Width = 150;
             // 
             // gridColumn_ErrorImport_Concentra
@@ -470,7 +472,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_Concentra.Name = "gridColumn_ErrorImport_Concentra";
             this.gridColumn_ErrorImport_Concentra.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_Concentra.Visible = true;
-            this.gridColumn_ErrorImport_Concentra.VisibleIndex = 23;
+            this.gridColumn_ErrorImport_Concentra.VisibleIndex = 24;
             // 
             // gridColumn_ErrorImport_REGISTER_NUMBER
             // 
@@ -480,7 +482,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_REGISTER_NUMBER.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_REGISTER_NUMBER.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_ErrorImport_REGISTER_NUMBER.Visible = true;
-            this.gridColumn_ErrorImport_REGISTER_NUMBER.VisibleIndex = 24;
+            this.gridColumn_ErrorImport_REGISTER_NUMBER.VisibleIndex = 25;
             // 
             // gridColumn_ErrorImport_MONTH_LIFESPAN
             // 
@@ -489,7 +491,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_MONTH_LIFESPAN.Name = "gridColumn_ErrorImport_MONTH_LIFESPAN";
             this.gridColumn_ErrorImport_MONTH_LIFESPAN.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_MONTH_LIFESPAN.Visible = true;
-            this.gridColumn_ErrorImport_MONTH_LIFESPAN.VisibleIndex = 25;
+            this.gridColumn_ErrorImport_MONTH_LIFESPAN.VisibleIndex = 26;
             // 
             // gridColumn_ErrorImport_DAY_LIFESPAN
             // 
@@ -498,7 +500,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_DAY_LIFESPAN.Name = "gridColumn_ErrorImport_DAY_LIFESPAN";
             this.gridColumn_ErrorImport_DAY_LIFESPAN.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_DAY_LIFESPAN.Visible = true;
-            this.gridColumn_ErrorImport_DAY_LIFESPAN.VisibleIndex = 26;
+            this.gridColumn_ErrorImport_DAY_LIFESPAN.VisibleIndex = 27;
             // 
             // gridColumn_ErrorImport_HOUR_LIFESPAN
             // 
@@ -507,7 +509,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_HOUR_LIFESPAN.Name = "gridColumn_ErrorImport_HOUR_LIFESPAN";
             this.gridColumn_ErrorImport_HOUR_LIFESPAN.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_HOUR_LIFESPAN.Visible = true;
-            this.gridColumn_ErrorImport_HOUR_LIFESPAN.VisibleIndex = 27;
+            this.gridColumn_ErrorImport_HOUR_LIFESPAN.VisibleIndex = 28;
             // 
             // gridColumn_ErrorImport_MaTT
             // 
@@ -517,7 +519,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_MaTT.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_MaTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_ErrorImport_MaTT.Visible = true;
-            this.gridColumn_ErrorImport_MaTT.VisibleIndex = 30;
+            this.gridColumn_ErrorImport_MaTT.VisibleIndex = 31;
             // 
             // gridColumn_ErrorImport_TenTT
             // 
@@ -527,7 +529,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_TenTT.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_TenTT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_ErrorImport_TenTT.Visible = true;
-            this.gridColumn_ErrorImport_TenTT.VisibleIndex = 31;
+            this.gridColumn_ErrorImport_TenTT.VisibleIndex = 32;
             // 
             // gridColumn_ErrorImport_MaDT
             // 
@@ -537,7 +539,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_MaDT.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_MaDT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_ErrorImport_MaDT.Visible = true;
-            this.gridColumn_ErrorImport_MaDT.VisibleIndex = 32;
+            this.gridColumn_ErrorImport_MaDT.VisibleIndex = 33;
             // 
             // gridColumn_ErrorImport_TenBHYT
             // 
@@ -547,7 +549,7 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_TenBHYT.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_TenBHYT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_ErrorImport_TenBHYT.Visible = true;
-            this.gridColumn_ErrorImport_TenBHYT.VisibleIndex = 28;
+            this.gridColumn_ErrorImport_TenBHYT.VisibleIndex = 29;
             // 
             // gridColumn_ErrorImport_QCDG
             // 
@@ -557,7 +559,15 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.gridColumn_ErrorImport_QCDG.OptionsColumn.ReadOnly = true;
             this.gridColumn_ErrorImport_QCDG.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn_ErrorImport_QCDG.Visible = true;
-            this.gridColumn_ErrorImport_QCDG.VisibleIndex = 29;
+            this.gridColumn_ErrorImport_QCDG.VisibleIndex = 30;
+            // 
+            // gridColumn1
+            // 
+            this.gridColumn1.Caption = "Giá trần BHYT";
+            this.gridColumn1.FieldName = "HEIN_LIMIT_PRICE";
+            this.gridColumn1.Name = "gridColumn1";
+            this.gridColumn1.Visible = true;
+            this.gridColumn1.VisibleIndex = 12;
             // 
             // layoutControlGroup1
             // 
@@ -660,13 +670,17 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
             this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 532);
             // 
-            // gridColumn1
+            // gridColumn2
             // 
-            this.gridColumn1.Caption = "Giá trần BHYT";
-            this.gridColumn1.FieldName = "HEIN_LIMIT_PRICE";
-            this.gridColumn1.Name = "gridColumn1";
-            this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 11;
+            this.gridColumn2.AppearanceHeader.Options.UseTextOptions = true;
+            this.gridColumn2.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumn2.Caption = "Thông tin thầu";
+            this.gridColumn2.FieldName = "TT_THAU";
+            this.gridColumn2.Name = "gridColumn2";
+            this.gridColumn2.OptionsColumn.AllowEdit = false;
+            this.gridColumn2.Visible = true;
+            this.gridColumn2.VisibleIndex = 11;
+            this.gridColumn2.Width = 90;
             // 
             // frmImportError
             // 
@@ -746,5 +760,6 @@ namespace HIS.Desktop.Plugins.BidCreate.Forms
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_ErrorImport_HOUR_LIFESPAN;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_ErrorImport_BatchDivisionCode;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn1;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn2;
     }
 }

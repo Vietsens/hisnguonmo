@@ -28,16 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAssignBed));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView7 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
@@ -57,7 +56,7 @@
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtIcdMainText = new DevExpress.XtraEditors.TextEdit();
             this.pnlUCPanel = new DevExpress.XtraEditors.PanelControl();
-            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer();
             this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
             this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -66,7 +65,7 @@
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer();
             this.customGridControlSubIcdName = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.customGridViewSubIcdName = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -205,12 +204,12 @@
             this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridLookUpEdit1View = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridView();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.customGridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.tooltipService = new DevExpress.Utils.ToolTipController(this.components);
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.tooltipService = new DevExpress.Utils.ToolTipController();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
@@ -1264,6 +1263,7 @@
             this.btnSaveAndPrint.StyleController = this.layoutControl2;
             this.btnSaveAndPrint.TabIndex = 28;
             this.btnSaveAndPrint.Text = "Lưu In\r\n(Ctrl I)";
+            this.btnSaveAndPrint.Click += new System.EventHandler(this.btnSaveAndPrint_Click);
             // 
             // btnConfiguration
             // 
@@ -1361,6 +1361,7 @@
             this.chkPrintDocumentSigned.Size = new System.Drawing.Size(27, 19);
             this.chkPrintDocumentSigned.StyleController = this.layoutControl2;
             this.chkPrintDocumentSigned.TabIndex = 20;
+            this.chkPrintDocumentSigned.CheckedChanged += new System.EventHandler(this.chkPrintDocumentSigned_CheckedChanged);
             // 
             // chkPrint
             // 
@@ -1370,6 +1371,7 @@
             this.chkPrint.Size = new System.Drawing.Size(37, 19);
             this.chkPrint.StyleController = this.layoutControl2;
             this.chkPrint.TabIndex = 19;
+            this.chkPrint.CheckedChanged += new System.EventHandler(this.chkPrint_CheckedChanged);
             // 
             // chkSign
             // 
@@ -1379,6 +1381,7 @@
             this.chkSign.Size = new System.Drawing.Size(29, 19);
             this.chkSign.StyleController = this.layoutControl2;
             this.chkSign.TabIndex = 18;
+            this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
             // 
             // lblConThua
             // 
@@ -2049,6 +2052,8 @@
             this.cboUser.Size = new System.Drawing.Size(395, 20);
             this.cboUser.StyleController = this.layoutControl1;
             this.cboUser.TabIndex = 19;
+            this.cboUser.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboUser_Closed);
+            this.cboUser.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboUser_KeyUp);
             // 
             // txtLoginName
             // 

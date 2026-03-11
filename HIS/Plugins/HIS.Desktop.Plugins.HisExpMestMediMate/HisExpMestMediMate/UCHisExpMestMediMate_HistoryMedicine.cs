@@ -261,6 +261,10 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 {
                     return;
                 }
+                if (!chkIsNotTaken.Checked)
+                {
+                    ExpFilter.IS_NOT_TAKEN = false;
+                }
                 startPage = ((CommonParam)param).Start ?? 0;
                 int limit = ((CommonParam)param).Limit ?? 0;
                 CommonParam paramCommon = new CommonParam(startPage, limit);

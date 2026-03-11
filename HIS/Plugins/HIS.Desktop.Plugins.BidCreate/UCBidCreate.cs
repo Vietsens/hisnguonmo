@@ -563,6 +563,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 spinImpMoreRatio.Value = 0;
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
+                txtBidInfo.Text = "";
                 txtBidGroupCode.Text = "";
                 txtBidPackageCode.Text = "";
                 txtSupplierCode.Text = "";
@@ -1210,6 +1211,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 spinImpMoreRatio.Value = 0;
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
+                txtBidInfo.Text = "";
                 txtBatchDivisionCode.Text = "";
                 this.DtExpiredDate.EditValue = null;
                 spinAmount.Focus();
@@ -3283,6 +3285,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 e.Cancel = true;
             }
         }
+
 
         private bool CheckBatchDivisionCodeAllRules(
             List<MedicineTypeADO> listThuoc,

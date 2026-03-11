@@ -515,6 +515,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 dtHieuLucDen.EditValue = null;
                 cboHangSX.EditValue = null;
                 cboNationals.EditValue = null;
+                txtTtthau.Text = "";
                 txtNationalMainText.Text = "";
                 txtNognDoHL.Text = "";
                 txtSoDangKy.Text = "";

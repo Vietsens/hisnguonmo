@@ -59,7 +59,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                             this.ListMedicineTypeAdoProcess = new List<ADO.MedicineTypeADO>();
                             var listMedicine = ImpMestListProcessor.Where(o => !String.IsNullOrWhiteSpace(o.IS_MEDICINE) && o.IS_MEDICINE.Trim().ToLower() == Base.GlobalConfig.IsMedicine.ToLower()).ToList();
                             var listMaterial = ImpMestListProcessor.Where(o => String.IsNullOrWhiteSpace(o.IS_MEDICINE)&&o.IsNotNullRow).ToList();
-
+                            var listMedicine1 = ImpMestListProcessor.Where(o => !String.IsNullOrWhiteSpace(o.IS_MEDICINE)).ToList(); 
                             this.listErrorImport = ImpMestListProcessor.Where(o => !String.IsNullOrWhiteSpace(o.IS_MEDICINE) && o.IS_MEDICINE.Trim().ToLower() != Base.GlobalConfig.IsMedicine.ToLower()).ToList();
 
                             if (this.listErrorImport != null && this.listErrorImport.Count > 0)
@@ -199,7 +199,10 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                     var medicineType = new ADO.MedicineTypeADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<ADO.MedicineTypeADO>(medicineType, medicineTypeImport);
-
+                    if (!string.IsNullOrWhiteSpace(medicineTypeImport.TT_THAU))
+                    {
+                        medicineType.TT_THAU = medicineTypeImport.TT_THAU;
+                    }
                     if (!string.IsNullOrWhiteSpace(medicineType.VALID_FROM_TIME) &&
                         !DateTime.TryParseExact(medicineType.VALID_FROM_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
                     {
@@ -208,7 +211,11 @@ namespace HIS.Desktop.Plugins.BidCreate
                     else
                     {
                         medicineType.VALID_FROM_TIME = medicineTypeImport.VALID_FROM_TIME;
-                    }     
+                    }
+                    if (Encoding.UTF8.GetByteCount(medicineType.TT_THAU) > 50)
+                    {
+                        medicineType.ErrorDescriptions.Add("Thông tin thầu vượt quá 50 ký tự");
+                    }
 
                     if (!string.IsNullOrWhiteSpace(medicineType.VALID_TO_TIME) &&
                         !DateTime.TryParseExact(medicineType.VALID_TO_TIME, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out _))
@@ -243,6 +250,10 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
                         medicineType.Type = Base.GlobalConfig.THUOC;
                         Inventec.Common.Mapper.DataObjectMapper.Map<ADO.MedicineTypeADO>(medicineType, medicineTypeNotExist);
+                        if (!string.IsNullOrWhiteSpace(medicineTypeImport.TT_THAU))
+                        {
+                            medicineType.TT_THAU = medicineTypeImport.TT_THAU;
+                        }
                         medicineType.EXPIRED_DATE = medicineTypeImport.EXPIRED_DATE;
                         if (!String.IsNullOrWhiteSpace(medicineTypeImport.MEDICINE_USE_FORM_CODE))
                         {
@@ -618,7 +629,10 @@ namespace HIS.Desktop.Plugins.BidCreate
                             medicineType.ErrorDescriptions.Add("Thời gian từ không được lớn hơn thời gian đến");
                         }
                     }
-
+                    if (Encoding.UTF8.GetByteCount(medicineType.TT_THAU) > 50)
+                    {
+                        medicineType.ErrorDescriptions.Add("Thông tin thầu vượt quá 50 ký tự");
+                    }
                     if (!String.IsNullOrWhiteSpace(materialTypeImport.MEDICINE_TYPE_CODE)
                         && !String.IsNullOrWhiteSpace(materialTypeImport.MATERIAL_TYPE_MAP_CODE))
                     {
@@ -634,7 +648,10 @@ namespace HIS.Desktop.Plugins.BidCreate
                         listErrorImport.Add(medicineType);
                         continue;
                     }
-
+                    if (!string.IsNullOrWhiteSpace(materialTypeImport.TT_THAU))
+                    {
+                        medicineType.TT_THAU = materialTypeImport.TT_THAU; 
+                    }
                     if (!String.IsNullOrWhiteSpace(materialTypeImport.MEDICINE_TYPE_CODE))
                     {
                         var materialTypeNotExist = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.MATERIAL_TYPE_CODE == materialTypeImport.MEDICINE_TYPE_CODE);
@@ -650,6 +667,10 @@ namespace HIS.Desktop.Plugins.BidCreate
                             Inventec.Common.Mapper.DataObjectMapper.Map<ADO.MedicineTypeADO>(medicineType, materialTypeNotExist);
                             medicineType.MEDICINE_TYPE_CODE = materialTypeNotExist.MATERIAL_TYPE_CODE;
                             medicineType.MEDICINE_TYPE_NAME = materialTypeNotExist.MATERIAL_TYPE_NAME;
+                            if (!string.IsNullOrWhiteSpace(materialTypeImport.TT_THAU))
+                            {
+                                medicineType.TT_THAU = materialTypeImport.TT_THAU;
+                            }
                             //this.ListMedicineTypeAdoProcess.Insert(0, medicineType);
                         }
                     }
