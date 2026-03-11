@@ -236,20 +236,40 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                 }
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.HisTreatment != null ? this.HisTreatment.TREATMENT_CODE : ""), printTypeCode, this.moduleData != null ? moduleData.RoomId : 0);
-                if (isPrintNow)
+
+                MPS.ProcessorBase.PrintConfig.PreviewType previewType;
+
+                if (chkXemTruoc.Checked)
                 {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
-                    MPS000430();
-                    if (result && chkAutoClose.CheckState == CheckState.Checked)
-                        this.Close();
+                    previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
                 }
                 else
                 {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
-                    MPS000430();
-                    if (result && chkAutoClose.CheckState == CheckState.Checked)
-                        this.Close();
+                    previewType = isPrintNow ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
                 }
+
+                result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, previewType, printerName) { EmrInputADO = inputADO });
+
+                MPS000430();
+
+                // Chỉ tự động đóng form nếu là in thật sự (PrintNow) và có cấu hình tự động đóng
+                if (result && previewType == MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow && chkAutoClose.CheckState == CheckState.Checked)
+                    this.Close();
+
+                //if (isPrintNow)
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                //    MPS000430();
+                //    if (result && chkAutoClose.CheckState == CheckState.Checked)
+                //        this.Close();
+                //}
+                //else
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                //    MPS000430();
+                //    if (result && chkAutoClose.CheckState == CheckState.Checked)
+                //        this.Close();
+                //}
             }
             catch (Exception ex)
             {
@@ -398,15 +418,26 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
 
                     Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((Treatment != null ? Treatment.TREATMENT_CODE : ""), printTypeCode, this.moduleData != null ? moduleData.RoomId : 0);
 
-                    if (isPrintNow)
+                    MPS.ProcessorBase.PrintConfig.PreviewType previewType;
+                    if (chkXemTruoc.Checked)
                     {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo430, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                        previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
                     }
                     else
                     {
-                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo430, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                        previewType = isPrintNow ? MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow : MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
                     }
-                }
+
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo430, previewType, printerName) { EmrInputADO = inputADO });
+                //if (isPrintNow)
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo430, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                //}
+                //else
+                //{
+                //    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo430, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                //}
+            }
                 WaitingManager.Hide();
             }
             catch (Exception ex)

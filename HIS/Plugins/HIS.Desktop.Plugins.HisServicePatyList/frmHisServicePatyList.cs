@@ -1386,6 +1386,11 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                     txtServiceTypeName.ReadOnly = true;
                     txtServiceName.EditValue = data.SERVICE_CODE;
                     txtServiceName.ReadOnly = true;
+
+                    txtBhytCode.Text = data.HEIN_SERVICE_BHYT_CODE;
+                    txtBhytName.Text = data.HEIN_SERVICE_BHYT_NAME;
+                    txtIssueNumber.Text = data.ISSUE_NUMBER;
+
                     if (data.PACKAGE_ID != null)
                     {
                         cboPackageService1.EditValue = data.PACKAGE_ID;
@@ -2027,6 +2032,9 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                 cboServiceCondition.EditValue = null;
                 cboPatientClassify.EditValue = null;
                 cboRationTime.Properties.Buttons[1].Visible = false;
+                txtBhytCode.EditValue = null;
+                txtBhytName.EditValue = null;
+                txtIssueNumber.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -2176,6 +2184,11 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
                 }
                 if (cboPatientClassify.EditValue != null)
                     updateDTO.PATIENT_CLASSIFY_ID = (long)cboPatientClassify.EditValue;
+
+
+                updateDTO.HEIN_SERVICE_BHYT_CODE = string.IsNullOrWhiteSpace(txtBhytCode.Text) ? null : txtBhytCode.Text.Trim();
+                updateDTO.HEIN_SERVICE_BHYT_NAME = string.IsNullOrWhiteSpace(txtBhytName.Text) ? null : txtBhytName.Text.Trim();
+                updateDTO.ISSUE_NUMBER = string.IsNullOrWhiteSpace(txtIssueNumber.Text) ? null : txtIssueNumber.Text.Trim();
             }
             catch (Exception ex)
             {
@@ -4731,6 +4744,54 @@ namespace HIS.Desktop.Plugins.HisServicePatyList
             else
             {
                 e.ErrorText = string.Empty;
+            }
+        }
+
+        private void txtBhytCode_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            try
+            {
+                if (e.NewValue != null && e.NewValue.ToString().Length > 100)
+                {
+                    e.Cancel = true; // Chặn hành động nhập/paste
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Mã DV BHYT không được vượt quá 100 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtBhytName_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            try
+            {
+                if (e.NewValue != null && e.NewValue.ToString().Length > 1500)
+                {
+                    e.Cancel = true;
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Tên DV BHYT không được vượt quá 1500 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtIssueNumber_EditValueChanging(object sender, DevExpress.XtraEditors.Controls.ChangingEventArgs e)
+        {
+            try
+            {
+                if (e.NewValue != null && e.NewValue.ToString().Length > 50)
+                {
+                    e.Cancel = true;
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Số quyết định không được vượt quá 50 ký tự!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

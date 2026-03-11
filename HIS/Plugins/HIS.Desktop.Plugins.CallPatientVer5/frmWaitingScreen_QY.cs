@@ -676,9 +676,101 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                 gridColumnAgeExam.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
                 gridColumnFirstNameExam.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
                 gridColumnSTTExam.AppearanceCell.Font = new Font(new FontFamily("Arial"), (float)_displayConfig.SizeList, FontStyle.Bold);
+
+                // 1. Tạo một RepositoryItemMemoEdit (Hỗ trợ hiển thị text nhiều dòng)
+                DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit memoEditUT = new DevExpress.XtraEditors.Repository.RepositoryItemMemoEdit();
+
+                // 2. Cấu hình căn giữa và cho phép Wrap text
+                memoEditUT.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+                memoEditUT.Appearance.TextOptions.VAlignment = DevExpress.Utils.VertAlignment.Center;
+                memoEditUT.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+
+                // 3. Gắn MemoEdit vào lưới Danh sách chờ khám (gridControlWatingExams)
+                gridControlWatingExams.RepositoryItems.Add(memoEditUT);
+                gridColumnUTExam.ColumnEdit = memoEditUT;
+                gridColumnUTExam.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap; // Đảm bảo cell cũng bật wrap
+
+                // 4. Gắn MemoEdit vào lưới Danh sách chờ kết quả (gridControlWaitingCls) - NẾU CẦN
+                gridControlWaitingCls.RepositoryItems.Add(memoEditUT);
+                gridColumnUT.ColumnEdit = memoEditUT;
+                gridColumnUT.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
+                gridViewWatingExams.OptionsView.RowAutoHeight = true;
+                // Đăng ký sự kiện tự vẽ cho cột lưới Chờ khám
+                this.gridViewWatingExams.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridViewWatingExams_CustomDrawCell);
             }
             catch (Exception ex)
             {
+            }
+        }
+
+        private void gridViewWatingExams_CustomDrawCell(object sender, DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventArgs e)
+        {
+            try
+            {
+                // Chỉ can thiệp vẽ vào cột UT_STR
+                if (e.Column.FieldName == "UT_STR")
+                {
+                    var data = gridViewWatingExams.GetRow(e.RowHandle) as MOS.EFMODEL.DataModels.HIS_SERVICE_REQ;
+                    if (data == null) return;
+
+                    string utStr = (data.PRIORITY ?? 0) > 0 ? "ƯT" : "";
+                    string hkStr = "";
+
+                    // Lấy thông tin Hẹn Khám
+                    if (data.IS_REGISTER_BY_APP == 1 && data.INTRUCTION_TIME > 0)
+                    {
+                        string timeStr = data.INTRUCTION_TIME.ToString();
+                        if (timeStr.Length >= 12)
+                        {
+                            hkStr = string.Format("HK {0}:{1}", timeStr.Substring(8, 2), timeStr.Substring(10, 2));
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(utStr) && string.IsNullOrEmpty(hkStr)) return;
+
+                    // Báo cho DevExpress biết: "Tôi tự vẽ, hệ thống không cần vẽ chữ mặc định nữa"
+                    e.Handled = true;
+
+                    // Nhờ hệ thống vẽ nền (background) của ô lưới trước
+                    e.Appearance.FillRectangle(e.Cache, e.Bounds);
+
+                    // Công cụ căn giữa chữ
+                    StringFormat sf = new StringFormat();
+                    sf.Alignment = StringAlignment.Center; // Căn giữa ngang
+
+                    Font font = e.Appearance.Font;
+                    Brush brushUT = e.Appearance.GetForeBrush(e.Cache); // Giữ nguyên màu cấu hình cho chữ ƯT
+                    Brush brushHK = Brushes.Red; // ÉP MÀU ĐỎ TUYỆT ĐỐI CHO CHỮ HK
+
+                    // Bắt đầu vẽ
+                    if (!string.IsNullOrEmpty(utStr) && !string.IsNullOrEmpty(hkStr))
+                    {
+                        // Nếu có CẢ ƯT VÀ HK -> Chia ô vuông làm 2 nửa trên dưới
+                        Rectangle rectUT = new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height / 2);
+                        sf.LineAlignment = StringAlignment.Far; // Chữ ƯT nằm ở nửa trên
+                        e.Graphics.DrawString(utStr, font, brushUT, rectUT, sf);
+
+                        Rectangle rectHK = new Rectangle(e.Bounds.X, e.Bounds.Y + e.Bounds.Height / 2, e.Bounds.Width, e.Bounds.Height / 2);
+                        sf.LineAlignment = StringAlignment.Near; // Chữ HK nằm ở nửa dưới
+                        e.Graphics.DrawString(hkStr, font, brushHK, rectHK, sf);
+                    }
+                    else if (!string.IsNullOrEmpty(utStr))
+                    {
+                        // Chỉ có ƯT -> Vẽ ra giữa ô
+                        sf.LineAlignment = StringAlignment.Center;
+                        e.Graphics.DrawString(utStr, font, brushUT, e.Bounds, sf);
+                    }
+                    else if (!string.IsNullOrEmpty(hkStr))
+                    {
+                        // Chỉ có HK -> Vẽ ra giữa ô VỚI MÀU ĐỎ
+                        sf.LineAlignment = StringAlignment.Center;
+                        e.Graphics.DrawString(hkStr, font, brushHK, e.Bounds, sf);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -710,14 +802,46 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                         if (e.Column.FieldName == "UT_STR")
                         {
                             long uutien = data.PRIORITY ?? 0;
+                            string utStr = "";
                             if (uutien > 0)
                             {
                                 var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == uutien).ToList();
                                 if (priority != null)
-                                    e.Value = "ƯT";
+                                    utStr = "ƯT";
                             }
 
+                            string hkStr = "";
+                            // Kiểm tra bệnh nhân đăng ký qua App và có thời gian chỉ định hợp lệ
+                            if (data.IS_REGISTER_BY_APP == 1 && data.INTRUCTION_TIME > 0)
+                            {
+                                string timeStr = data.INTRUCTION_TIME.ToString();
+                                // INTRUCTION_TIME có định dạng yyyyMMddHHmmss
+                                if (timeStr.Length >= 12)
+                                {
+                                    //hkStr = string.Format("HK {0}:{1}", timeStr.Substring(8, 2), timeStr.Substring(10, 2));
+                                    hkStr = string.Format("<color=red>HK {0}:{1}</color>", timeStr.Substring(8, 2), timeStr.Substring(10, 2));
+                                }
+                            }
+
+                            // Nối chuỗi hiển thị
+                            if (!string.IsNullOrEmpty(utStr) && !string.IsNullOrEmpty(hkStr))
+                                e.Value = utStr + Environment.NewLine + hkStr;
+                            else if (!string.IsNullOrEmpty(utStr))
+                                e.Value = utStr;
+                            else
+                                e.Value = hkStr;
                         }
+                        //if (e.Column.FieldName == "UT_STR")
+                        //{
+                        //    long uutien = data.PRIORITY ?? 0;
+                        //    if (uutien > 0)
+                        //    {
+                        //        var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == uutien).ToList();
+                        //        if (priority != null)
+                        //            e.Value = "ƯT";
+                        //    }
+
+                        //}
                         if (e.Column.FieldName == "PATIENT_FULL_NAME")
                         {
                             e.Value = data.TDL_PATIENT_LAST_NAME + " " + data.TDL_PATIENT_FIRST_NAME;

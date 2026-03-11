@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.TransactionRepay
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionRepay));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkXemTruoc = new DevExpress.XtraEditors.CheckEdit();
