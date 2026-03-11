@@ -15,28 +15,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.XtraGrid.Views.Base;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.DelegateRegister;
+using HIS.UC.PlusInfo.ADO;
+using HIS.UC.PlusInfo.ShareMethod;
+using Inventec.Common.Adapter;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using HIS.Desktop.DelegateRegister;
-using Inventec.Desktop.Common.LanguageManager;
-using HIS.UC.PlusInfo.ADO;
-using MOS.EFMODEL.DataModels;
-using Inventec.Core;
-using MOS.Filter;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using DevExpress.Data;
-using DevExpress.XtraGrid.Views.Base;
-using System.Collections;
-using HIS.UC.PlusInfo.ShareMethod;
-using System.Resources;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace HIS.UC.PlusInfo.Design
 {
@@ -44,7 +47,10 @@ namespace HIS.UC.PlusInfo.Design
     {
         DelegateNextControl dlgFocusNextUserControl;
         internal List<TreatmentExamADO> TreatmentHistorys { get; set; }
+        internal List<HIS_SERVICE_REQ> ServiceReqs { get; set; }
+        internal List<HIS_EXECUTE_ROOM> executeRooms { get; set; }
         long patientId;
+        internal const string TreatmentHistory = "HIS.Desktop.Plugins.TreatmentHistory";
         public UCExamHistory()
         {
             InitializeComponent();
@@ -58,7 +64,17 @@ namespace HIS.UC.PlusInfo.Design
         private void UCExamHistory_Load(object sender, EventArgs e)
         {
             SetCaptionByLanguageKeyNew();
+            this.executeRooms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXECUTE_ROOM>();
             //LoadTreatmentHistoryTogrid();
+            if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ShowPreviousExamByMedicalOrde == "1")
+            {
+                this.gridView1.Columns["EXECUTE_USERNAME"].Visible = true;
+                this.gridView1.Columns["EXECUTE_USERNAME"].VisibleIndex = gridView1.VisibleColumns.Count;
+            }
+            else
+            {
+                this.gridView1.Columns["EXECUTE_USERNAME"].Visible = false;
+            }
         }
         /// <summary>
         ///Hàm xét ngôn ngữ cho giao diện UCExamHistory
@@ -88,7 +104,15 @@ namespace HIS.UC.PlusInfo.Design
             try
             {
                 this.patientId = _patientId;
-                LoadTreatmentHistoryTogrid();
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ShowPreviousExamByMedicalOrde == "1")
+                {
+                    this.GetServiceReq();
+                }
+                else
+                {
+                    this.LoadTreatmentHistoryTogrid();
+                }
+
             }
             catch (Exception ex)
             {
@@ -119,18 +143,49 @@ namespace HIS.UC.PlusInfo.Design
                     List<L_HIS_TREATMENT_2> treatmentHTs = treatmentByPatients.Where(o => o.TDL_FIRST_EXAM_ROOM_ID.HasValue).OrderByDescending(o => o.IN_TIME).ToList();
                     if (treatmentHTs != null && treatmentHTs.Count > 0)
                     {
-                        List<HIS_EXECUTE_ROOM> executeRooms = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_EXECUTE_ROOM>();
                         foreach (var item in treatmentHTs)
                         {
                             AutoMapper.Mapper.CreateMap<MOS.EFMODEL.DataModels.L_HIS_TREATMENT_2, TreatmentExamADO>();
                             TreatmentExamADO treatmentHistoryADO = AutoMapper.Mapper.Map<L_HIS_TREATMENT_2, TreatmentExamADO>(item);
-                            HIS_EXECUTE_ROOM executeRoom = executeRooms.FirstOrDefault(o => o.ROOM_ID == item.TDL_FIRST_EXAM_ROOM_ID);
+                            HIS_EXECUTE_ROOM executeRoom = this.executeRooms.FirstOrDefault(o => o.ROOM_ID == item.TDL_FIRST_EXAM_ROOM_ID);
                             treatmentHistoryADO.FIRST_EXAM_ROOM_NAME = (executeRoom != null ? executeRoom.EXECUTE_ROOM_NAME : "");
                             this.TreatmentHistorys.Add(treatmentHistoryADO);
                         }
                     }
 
                     gridControl1.DataSource = this.TreatmentHistorys;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void GetServiceReq()
+        {
+            try
+            {
+                gridControl1.DataSource = null;
+                if (this.patientId <= 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Debug("Du lieu dau vao khog hop le____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientId), patientId));
+                    return;
+                }
+
+                CommonParam param = new CommonParam();
+                this.ServiceReqs = new List<HIS_SERVICE_REQ>();
+
+                HisServiceReqFilter filter = new HisServiceReqFilter();
+                filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__KH;
+                filter.TDL_PATIENT_ID = this.patientId;
+                this.ServiceReqs = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("/api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, param);
+
+                if (this.ServiceReqs != null && this.ServiceReqs.Count > 0)
+                {
+                    this.ServiceReqs = this.ServiceReqs.OrderByDescending(o => o.INTRUCTION_TIME).ToList();
+
+                    gridControl1.DataSource = this.ServiceReqs; 
                 }
             }
             catch (Exception ex)
@@ -184,12 +239,33 @@ namespace HIS.UC.PlusInfo.Design
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    TreatmentExamADO data = (TreatmentExamADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                    if (data != null)
+                    if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ShowPreviousExamByMedicalOrde == "1")
                     {
+                        HIS_SERVICE_REQ serviceReq = (HIS_SERVICE_REQ)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                         if (e.Column.FieldName == "HISTORY_TIME_DISPLAY")
                         {
-                            e.Value = HistoryTimeFormat(data.IN_TIME, data.OUT_TIME);
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(serviceReq.INTRUCTION_TIME);
+                        }
+                        else if (e.Column.FieldName == "FIRST_EXAM_ROOM_NAME")
+                        {
+                            string tenPhong = this.executeRooms.FirstOrDefault(o => o.ROOM_ID == serviceReq.EXECUTE_ROOM_ID).EXECUTE_ROOM_NAME;
+                            e.Value = tenPhong;
+                        }
+                        else if (e.Column.FieldName == "EXECUTE_ROOM_NAME")
+                        {
+                            string tenPhong = this.executeRooms.FirstOrDefault(o => o.ROOM_ID == serviceReq.EXECUTE_ROOM_ID).EXECUTE_ROOM_NAME;
+                            e.Value = tenPhong;
+                        }
+                    }
+                    else
+                    {
+                        TreatmentExamADO data = (TreatmentExamADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                        if (data != null)
+                        {
+                            if (e.Column.FieldName == "HISTORY_TIME_DISPLAY")
+                            {
+                                e.Value = HistoryTimeFormat(data.IN_TIME, data.OUT_TIME);
+                            }
                         }
                     }
                 }
@@ -230,8 +306,29 @@ namespace HIS.UC.PlusInfo.Design
 		{
 			try
 			{
-                Popup.frmTreatmentDetail frm = new Popup.frmTreatmentDetail(((TreatmentExamADO)gridView1.GetFocusedRow()).ID);
-                frm.ShowDialog();
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.ShowPreviousExamByMedicalOrde == "1")
+                {
+                    var row = (MOS.EFMODEL.DataModels.HIS_SERVICE_REQ)gridView1.GetFocusedRow();
+                    if (row != null)
+                    {
+                        WaitingManager.Show();
+
+                        List<object> listArgs = new List<object>();
+                        TreatmentHistoryADO currentInput = new TreatmentHistoryADO();
+                        currentInput.patientId = row.TDL_PATIENT_ID;
+                        currentInput.patient_code = row.TDL_PATIENT_CODE;
+                        listArgs.Add(currentInput);
+                        //CallModule callModule = new CallModule(CallModule.TreatmentHistory, this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(TreatmentHistory, 0, 0, listArgs);
+                        WaitingManager.Hide();
+                    }
+                }
+                else
+                {
+                    Popup.frmTreatmentDetail frm = new Popup.frmTreatmentDetail(((TreatmentExamADO)gridView1.GetFocusedRow()).ID);
+                    frm.ShowDialog();
+                }
+                
 			}
 			catch (Exception ex)
 			{

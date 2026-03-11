@@ -47,13 +47,15 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPublicServices_NT));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.chkServiceIsNoExecute = new DevExpress.XtraEditors.CheckEdit();
+            this.rdoRequestRoom__All = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItemTao = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNextPatient = new DevExpress.XtraBars.BarButtonItem();
             this.txtFocusKeyword = new DevExpress.XtraBars.BarButtonItem();
+            this.rdoRequestRoom__Current = new DevExpress.XtraEditors.CheckEdit();
+            this.chkServiceIsNoExecute = new DevExpress.XtraEditors.CheckEdit();
             this.chkLayCaThuocVTNgoaiKho = new DevExpress.XtraEditors.CheckEdit();
             this.rdoFromToDay = new DevExpress.XtraEditors.CheckEdit();
             this.rdoAllDay = new DevExpress.XtraEditors.CheckEdit();
@@ -97,19 +99,21 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.emptySpaceItem6 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkServiceIsNoExecute.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rdoRequestRoom__All.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rdoRequestRoom__Current.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkServiceIsNoExecute.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkLayCaThuocVTNgoaiKho.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoFromToDay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoAllDay.Properties)).BeginInit();
@@ -147,15 +151,17 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.rdoRequestRoom__All);
+            this.layoutControl1.Controls.Add(this.rdoRequestRoom__Current);
             this.layoutControl1.Controls.Add(this.chkServiceIsNoExecute);
             this.layoutControl1.Controls.Add(this.chkLayCaThuocVTNgoaiKho);
             this.layoutControl1.Controls.Add(this.rdoFromToDay);
@@ -178,15 +184,17 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // chkServiceIsNoExecute
+            // rdoRequestRoom__All
             // 
-            this.chkServiceIsNoExecute.Location = new System.Drawing.Point(864, 12);
-            this.chkServiceIsNoExecute.MenuManager = this.barManager1;
-            this.chkServiceIsNoExecute.Name = "chkServiceIsNoExecute";
-            this.chkServiceIsNoExecute.Properties.Caption = "";
-            this.chkServiceIsNoExecute.Size = new System.Drawing.Size(88, 19);
-            this.chkServiceIsNoExecute.StyleController = this.layoutControl1;
-            this.chkServiceIsNoExecute.TabIndex = 17;
+            this.rdoRequestRoom__All.Location = new System.Drawing.Point(868, 94);
+            this.rdoRequestRoom__All.MenuManager = this.barManager1;
+            this.rdoRequestRoom__All.Name = "rdoRequestRoom__All";
+            this.rdoRequestRoom__All.Properties.Caption = "Tất cả";
+            this.rdoRequestRoom__All.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.rdoRequestRoom__All.Size = new System.Drawing.Size(84, 19);
+            this.rdoRequestRoom__All.StyleController = this.layoutControl1;
+            this.rdoRequestRoom__All.TabIndex = 19;
+            this.rdoRequestRoom__All.CheckedChanged += new System.EventHandler(this.rdoRequestRoom__All_CheckedChanged);
             // 
             // barManager1
             // 
@@ -245,6 +253,28 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             this.txtFocusKeyword.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
             this.txtFocusKeyword.Name = "txtFocusKeyword";
             this.txtFocusKeyword.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.txtFocusKeyword_ItemClick);
+            // 
+            // rdoRequestRoom__Current
+            // 
+            this.rdoRequestRoom__Current.Location = new System.Drawing.Point(868, 70);
+            this.rdoRequestRoom__Current.MenuManager = this.barManager1;
+            this.rdoRequestRoom__Current.Name = "rdoRequestRoom__Current";
+            this.rdoRequestRoom__Current.Properties.Caption = "";
+            this.rdoRequestRoom__Current.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.rdoRequestRoom__Current.Size = new System.Drawing.Size(84, 19);
+            this.rdoRequestRoom__Current.StyleController = this.layoutControl1;
+            this.rdoRequestRoom__Current.TabIndex = 18;
+            this.rdoRequestRoom__Current.CheckedChanged += new System.EventHandler(this.rdoRequestRoom__Current_CheckedChanged);
+            // 
+            // chkServiceIsNoExecute
+            // 
+            this.chkServiceIsNoExecute.Location = new System.Drawing.Point(864, 12);
+            this.chkServiceIsNoExecute.MenuManager = this.barManager1;
+            this.chkServiceIsNoExecute.Name = "chkServiceIsNoExecute";
+            this.chkServiceIsNoExecute.Properties.Caption = "";
+            this.chkServiceIsNoExecute.Size = new System.Drawing.Size(88, 19);
+            this.chkServiceIsNoExecute.StyleController = this.layoutControl1;
+            this.chkServiceIsNoExecute.TabIndex = 17;
             // 
             // chkLayCaThuocVTNgoaiKho
             // 
@@ -615,11 +645,11 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             this.layoutControlItem12,
             this.layoutControlItem13,
             this.emptySpaceItem2,
-            this.emptySpaceItem4,
             this.emptySpaceItem5,
-            this.emptySpaceItem6,
             this.layoutControlItem7,
-            this.layoutControlItem8});
+            this.layoutControlItem8,
+            this.layoutControlItem9,
+            this.layoutControlItem10});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -772,29 +802,13 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             this.emptySpaceItem2.Size = new System.Drawing.Size(503, 92);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
-            // emptySpaceItem4
-            // 
-            this.emptySpaceItem4.AllowHotTrack = false;
-            this.emptySpaceItem4.Location = new System.Drawing.Point(761, 91);
-            this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(193, 24);
-            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(761, 115);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(761, 116);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(193, 25);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(193, 24);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
-            // 
-            // emptySpaceItem6
-            // 
-            this.emptySpaceItem6.AllowHotTrack = false;
-            this.emptySpaceItem6.Location = new System.Drawing.Point(761, 68);
-            this.emptySpaceItem6.Name = "emptySpaceItem6";
-            this.emptySpaceItem6.Size = new System.Drawing.Size(193, 23);
-            this.emptySpaceItem6.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem7
             // 
@@ -837,6 +851,30 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem8.TextToControlDistance = 1;
+            // 
+            // layoutControlItem9
+            // 
+            this.layoutControlItem9.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem9.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem9.Control = this.rdoRequestRoom__Current;
+            this.layoutControlItem9.Location = new System.Drawing.Point(761, 68);
+            this.layoutControlItem9.Name = "layoutControlItem9";
+            this.layoutControlItem9.Size = new System.Drawing.Size(193, 24);
+            this.layoutControlItem9.Text = "Phòng chỉ định:";
+            this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem9.TextToControlDistance = 5;
+            // 
+            // layoutControlItem10
+            // 
+            this.layoutControlItem10.Control = this.rdoRequestRoom__All;
+            this.layoutControlItem10.Location = new System.Drawing.Point(761, 92);
+            this.layoutControlItem10.Name = "layoutControlItem10";
+            this.layoutControlItem10.Size = new System.Drawing.Size(193, 24);
+            this.layoutControlItem10.Text = " ";
+            this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutControlItem10.TextToControlDistance = 5;
             // 
             // barDockControlTop
             // 
@@ -888,8 +926,10 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkServiceIsNoExecute.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rdoRequestRoom__All.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rdoRequestRoom__Current.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkServiceIsNoExecute.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkLayCaThuocVTNgoaiKho.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoFromToDay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdoAllDay.Properties)).EndInit();
@@ -927,11 +967,11 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -992,12 +1032,14 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
         private DevExpress.XtraEditors.CheckEdit rdoFromToDay;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
-        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem6;
         private DevExpress.XtraEditors.CheckEdit chkLayCaThuocVTNgoaiKho;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraEditors.CheckEdit chkServiceIsNoExecute;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
+        private DevExpress.XtraEditors.CheckEdit rdoRequestRoom__All;
+        private DevExpress.XtraEditors.CheckEdit rdoRequestRoom__Current;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
     }
 }

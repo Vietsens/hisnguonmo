@@ -290,4 +290,7 @@ toán</value>
 	<data name="frmAssignBed.layoutControlItem36.Text" xml:space="preserve">
     <value>Phòng TN</value>
   </data>
+	<data name="frmAssignBed.Text" xml:space="preserve">
+    <value>Chỉ định dịch vụ giường</value>
+  </data>
 </root>

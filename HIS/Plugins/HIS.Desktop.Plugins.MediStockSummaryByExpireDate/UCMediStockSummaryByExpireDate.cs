@@ -1275,12 +1275,12 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
         {
             try
             {
-                this.mediStockIds = new List<long>();
+                isNotLoadWhileChangeControlStateInFirst = true;
                 chkAlertExpired.Checked = false;
+                isNotLoadWhileChangeControlStateInFirst = false;
+                this.mediStockIds = new List<long>();
                 LoadDataGridMediStock();
-                hisMediInStockProcessor.Reload(ucMedicineInfo, null, null, null);
-                hisMateInStockProcessor.Reload(ucMaterialInfo, null, null, null);
-                hisBloodProcessor.Reload(ucBloodInfo, null);
+                ShowUCControl();
             }
             catch (Exception ex)
             {

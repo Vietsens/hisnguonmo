@@ -91,9 +91,9 @@ namespace HIS.Desktop.Plugins.PublicServices_NT
                 layoutControlItem7 = null;
                 //emptySpaceItem7 = null;
                 chkLayCaThuocVTNgoaiKho = null;
-                emptySpaceItem6 = null;
-                emptySpaceItem5 = null;
-                emptySpaceItem4 = null;
+                //emptySpaceItem6 = null;
+                //emptySpaceItem5 = null;
+                //emptySpaceItem4 = null;
                 emptySpaceItem2 = null;
                 layoutControlItem13 = null;
                 rdoFromToDay = null;
