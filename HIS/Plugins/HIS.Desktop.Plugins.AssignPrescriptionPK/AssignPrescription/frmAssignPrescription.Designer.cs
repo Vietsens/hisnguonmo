@@ -203,7 +203,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl6 = new DevExpress.XtraLayout.LayoutControl();
-            this.lblTotalGuarantee = new System.Windows.Forms.Label();
             this.lblGuarantee = new System.Windows.Forms.Label();
             this.popupContainerHtu = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.layoutControl11 = new DevExpress.XtraLayout.LayoutControl();
@@ -731,7 +730,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControlItem44 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem59 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciGuarantee = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem60 = new DevExpress.XtraLayout.LayoutControlItem();
             this.customGridViewWithFilterMultiColumn3 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.popupControlContainerCondition = new DevExpress.XtraBars.PopupControlContainer(this.components);
@@ -1186,7 +1184,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGuarantee)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerCondition)).BeginInit();
@@ -1231,6 +1228,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.DockManager = this.dockManager1;
             this.barManager1.Form = this;
             this.barManager1.Images = this.imageCollection1;
@@ -1404,8 +1405,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1350, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1350, 29);
             // 
             // barDockControlBottom
             // 
@@ -1430,7 +1431,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // 
             // layoutControl6
             // 
-            this.layoutControl6.Controls.Add(this.lblTotalGuarantee);
             this.layoutControl6.Controls.Add(this.lblGuarantee);
             this.layoutControl6.Controls.Add(this.popupContainerHtu);
             this.layoutControl6.Controls.Add(this.btnQR);
@@ -1515,16 +1515,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.layoutControl6.Size = new System.Drawing.Size(1350, 700);
             this.layoutControl6.TabIndex = 5;
             this.layoutControl6.Text = "layoutControl6";
-            // 
-            // lblTotalGuarantee
-            // 
-            this.lblTotalGuarantee.Enabled = false;
-            this.lblTotalGuarantee.Location = new System.Drawing.Point(377, 573);
-            this.lblTotalGuarantee.Name = "lblTotalGuarantee";
-            this.lblTotalGuarantee.Padding = new System.Windows.Forms.Padding(0, 4, 0, 0);
-            this.lblTotalGuarantee.Size = new System.Drawing.Size(204, 20);
-            this.lblTotalGuarantee.TabIndex = 153;
-            this.lblTotalGuarantee.Visible = false;
             // 
             // lblGuarantee
             // 
@@ -7122,8 +7112,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.emptySpaceItem15,
             this.layoutControlItem44,
             this.layoutControlItem59,
-            this.lciGuarantee,
-            this.layoutControlItem60});
+            this.lciGuarantee});
             this.layoutControlGroup5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup5.Name = "Root";
             this.layoutControlGroup5.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -7654,9 +7643,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(583, 571);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(375, 571);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(415, 24);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(623, 24);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // lciForlblDaDong
@@ -8173,20 +8162,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             this.lciGuarantee.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciGuarantee.TextSize = new System.Drawing.Size(80, 20);
             this.lciGuarantee.TextToControlDistance = 5;
-            // 
-            // layoutControlItem60
-            // 
-            this.layoutControlItem60.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem60.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem60.Control = this.lblTotalGuarantee;
-            this.layoutControlItem60.Location = new System.Drawing.Point(375, 571);
-            this.layoutControlItem60.Name = "layoutControlItem60";
-            this.layoutControlItem60.Size = new System.Drawing.Size(208, 24);
-            this.layoutControlItem60.Text = "Tổng tiền cần bảo lãnh: ";
-            this.layoutControlItem60.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem60.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem60.TextToControlDistance = 0;
-            this.layoutControlItem60.TextVisible = false;
             // 
             // customGridViewWithFilterMultiColumn3
             // 
@@ -8966,7 +8941,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem44)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGuarantee)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem60)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customGridViewWithFilterMultiColumn2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerCondition)).EndInit();
@@ -9599,7 +9573,5 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit2;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckGuarantee;
         private DevExpress.XtraGrid.Columns.GridColumn colIsGuaranteeUnb;
-        private System.Windows.Forms.Label lblTotalGuarantee;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem60;
     }
 }

@@ -157,6 +157,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         HIS_EXP_MEST_MATERIAL materialTypeTutSelected;
         V_HIS_PATIENT patientPrint;
         List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServsInTreatmentRaw = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
+        List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServsInTreatment = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>(); // dùng để tính những ss, từ đó lấy ra ss guarantee
         internal List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServWithTreatment = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         internal List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServWithMultilTreatment = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>();
         internal List<HIS_SERVICE_REQ_METY> serviceReqMetyInDay;
@@ -1183,8 +1184,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             try
             {
                 // qtcode
-                RefeshSereServInTreatmentData();
-                CalculatorToTalGuaranteeOriginal(); 
+                
                 LogSystem.Debug("frmAssignPrescription_Load Starting.... 1");
                 this.SetCaptionByLanguageKeyNew();
                 LogSystem.Debug("frmAssignPrescription_Load. 1");
@@ -1222,7 +1222,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 {
                     this.CheckToDieuTri();
                 }
-
+                RefeshSereServInTreatmentData();
+                CalculatorToTalGuaranteeOriginal();
                 this.timerInitForm.Interval = 500;//Fix
                 this.timerInitForm.Enabled = true;
                 this.timerInitForm.Start();
@@ -1246,10 +1247,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-
+                var a = this.sereServsInTreatmentRaw;
+                var b = this.sereServWithTreatment;
+                var c = this.sereServWithMultilTreatment; 
+                var d = this.sereServsInTreatment; 
                 if (this.totalGuaranteeOriginal == 0)
-                    this.totalGuaranteeOriginal = sereServsInTreatmentRaw != null ? sereServsInTreatmentRaw.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
-                this.lblTotalGuarantee.Text = this.totalGuaranteeOriginal.ToString();
+                    this.totalGuaranteeOriginal = sereServsInTreatment != null ? sereServsInTreatment.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
+                //this.lblTotalGuarantee.Text = this.totalGuaranteeOriginal.ToString();
             }
             catch(Exception ex)
             {
@@ -1261,7 +1265,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try 
             {
-                lblTotalGuarantee.Visible = false;
+                //lblTotalGuarantee.Visible = false;
                 if (this.currentTreatment != null && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
                 {
                     lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -1287,7 +1291,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         {
             try
             {
-                var a = this.sereServsInTreatmentRaw; 
                 if (this.currentTreatment == null || string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE) || string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_REQUEST_CODE))
                 {
                     //HideGuaranteeLabel();
@@ -1375,7 +1378,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             //};
 
                             this.guaranteeBalance = decimal.TryParse(balanceInfoResponse.Data.AvailableBalance, out decimal remain) ? remain : 0;
-                            this.lblGuarantee.Text = this.guaranteeBalance.ToString(); 
+                            this.lblGuarantee.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.guaranteeBalance, ConfigApplications.NumberSeperator); 
                         }
                         else
                         {
@@ -6876,6 +6879,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             finally
             {
                 IsCellChangeAmount = false;
+                this.isWarning = false; 
             }
         }
         private void gridViewMediMaty_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
