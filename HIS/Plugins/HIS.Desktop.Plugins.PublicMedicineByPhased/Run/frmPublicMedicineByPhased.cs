@@ -109,7 +109,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
 
                 LoadDataCboDepartment(null);
                 this.cboDepartment.EditValueChanged += new System.EventHandler(this.cboDepartment_EditValueChanged);
-
+                
                 SetDefaultValue();
                 GetAllData();
 
@@ -118,7 +118,10 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                 {
                     this.Text = this.currentModule.text;
                 }
-                
+                // Đăng ký sự kiện
+                this.cboRoom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboRoom_Closed);
+                this.cboRoom.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboRoom_ButtonClick);
+
             }
             catch (Exception ex)
             {
@@ -137,6 +140,10 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                     this.cboDepartment.EditValue = workplace.DepartmentId;
                     LoadDataCboRoom(workplace.DepartmentId);
                     this.cboRoom.EditValue = this.currentModule.RoomId;
+                    if (this.cboRoom.Properties.Buttons.Count > 1)
+                    {
+                        this.cboRoom.Properties.Buttons[1].Visible = true;
+                    }
                 }
 
             }
@@ -291,6 +298,40 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
             lblPatientCode.Text = this._TreatmentBedRoom.TDL_PATIENT_CODE;
             lblPatientName.Text = this._TreatmentBedRoom.TDL_PATIENT_NAME;
             lblDOB.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(this._TreatmentBedRoom.TDL_PATIENT_DOB);
+        }
+
+        private void cboRoom_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    if (cboRoom.EditValue != null)
+                    {
+                        cboRoom.Properties.Buttons[1].Visible = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboRoom_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboRoom.EditValue = null;
+                    cboRoom.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void btnFind_Click(object sender, EventArgs e)
@@ -457,39 +498,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
             }
         }
 
-        private void cboRoom_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
-        {
-            try
-            {
-                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
-                {
-                    if (cboRoom.EditValue != null)
-                    {
-                        cboRoom.Properties.Buttons[1].Visible = true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
 
-        private void cboRoom_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
-        {
-            try
-            {
-                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
-                {
-                    cboRoom.EditValue = null;
-                    cboRoom.Properties.Buttons[1].Visible = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
 
         private long TimeNumberToDateNumber(long? timeNumber)
         {

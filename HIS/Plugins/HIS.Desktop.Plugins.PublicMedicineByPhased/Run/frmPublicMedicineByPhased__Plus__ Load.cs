@@ -249,6 +249,17 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
 
                 ControlEditorADO controlEditorADO = new ControlEditorADO("ROOM_NAME", "ID", columnInfos, false, 250);
                 ControlEditorLoader.Load(this.cboRoom, Rooms, controlEditorADO);
+
+                // Cho phép cboRoom nh?n giá tr? null và không hi?n th? text khi null
+                cboRoom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cboRoom.Properties.NullText = "";
+
+                // Ki?m tra xem cboRoom ?ã có nút Delete ch?a, n?u ch?a thì thêm vào b?ng code
+                if (cboRoom.Properties.Buttons.Count < 2)
+                {
+                    cboRoom.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));
+                    cboRoom.Properties.Buttons[1].Visible = false; // M?c ??nh ?n nút x khi ch?a ch?n gì
+                }
             } 
             catch (Exception ex)
             {
