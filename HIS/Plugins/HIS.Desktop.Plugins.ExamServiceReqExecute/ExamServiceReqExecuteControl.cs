@@ -6713,6 +6713,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 List<string> oldNames = txtIcdText.Text?
                     .Split(new[] { IcdUtil.seperator }, StringSplitOptions.RemoveEmptyEntries).ToList()
                     ?? new List<string>();
+                if (oldNames.Count > oldCodes.Count)
+                {
+                    oldNames = oldNames.Take(oldCodes.Count).ToList();
+                }
                 // Duyệt qua danh sách hiển thị
                 foreach (var item in icdSubcodeAdoChecks)
                 {

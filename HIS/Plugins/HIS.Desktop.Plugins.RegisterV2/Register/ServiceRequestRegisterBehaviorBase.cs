@@ -267,6 +267,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
         protected string NguonKhachCode { get; set; }
         protected string NguonKhachName { get; set; }
         protected string NguonKhachCTName { get; set; }
+        protected string NguonKhachCT { get; set; }
         protected short? ChamSocDa { get; set; }
 
         internal ServiceRequestRegisterBehaviorBase(CommonParam param, UCRegister ucServiceRequestRegiter)
@@ -373,6 +374,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.NguonKhachCode = this.serviceReqInfoValue.NguonKhachCode;
                 this.NguonKhachName = this.serviceReqInfoValue.NguonKhachName;
                 this.NguonKhachCTName = this.serviceReqInfoValue.NguonKhachCTName;
+                this.NguonKhachCT = this.serviceReqInfoValue.NguonKhachCT;
 
                 this.NOTE = this.serviceReqInfoValue.NOTE;
                 this.IsWarningForNext = this.serviceReqInfoValue.IsWarningForNext;
@@ -926,7 +928,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Register
                 this.patientProfile.HisTreatment.HOSPITALIZATION_REASON = this.HospitalizationReason;
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_CODE = this.NguonKhachCode;
                 this.patientProfile.HisTreatment.CUSTOMER_SOURCE_NAME = this.NguonKhachName;
-                //this.patientProfile.HisTreatment.CUSTOMER_SOURCE_DETAIL = this.NguonKhachCTName;
+                this.patientProfile.HisTreatment.CUSTOMER_SOURCE_DETAIL = this.NguonKhachCT;
                 this.patientProfile.HisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES = this.NguonKhachCTName;
                 this.patientProfile.HisTreatment.GUARANTEE_LOGINNAME = this.GUARANTEE_LOGINNAME;
                 this.patientProfile.HisTreatment.GUARANTEE_USERNAME = this.GUARANTEE_USERNAME;

@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExecuteRoom));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -94,12 +95,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtCallPatientCPA = new DevExpress.XtraEditors.LabelControl();
             this.ckKQCLS = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             this.btnNotEnter = new DevExpress.XtraEditors.SimpleButton();
             this.btnMissCall = new DevExpress.XtraEditors.SimpleButton();
             this.chkScreenSaver = new DevExpress.XtraEditors.CheckEdit();
@@ -244,7 +245,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumnSoPhieu = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnSereServServiceReqBlock = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.toolTipController2 = new DevExpress.Utils.ToolTipController();
+            this.toolTipController2 = new DevExpress.Utils.ToolTipController(this.components);
             this.layoutControlGroup5 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
@@ -363,6 +364,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn23 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemPictureEdit9 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
+            this.gridColumn24 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButton_CallPatient = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItemButton__Send__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -425,15 +427,14 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.layoutControlItem42 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem53 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcCkhCPA = new DevExpress.XtraLayout.LayoutControlItem();
-            this.imageListPriority = new System.Windows.Forms.ImageList();
-            this.imageListIcon = new System.Windows.Forms.ImageList();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
-            this.timerDoubleClick = new System.Windows.Forms.Timer();
-            this.timerAutoReload = new System.Windows.Forms.Timer();
-            this.imageListRefesh = new System.Windows.Forms.ImageList();
-            this.timerReloadMachineCounter = new System.Windows.Forms.Timer();
-            this.gridColumn24 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.imageListPriority = new System.Windows.Forms.ImageList(this.components);
+            this.imageListIcon = new System.Windows.Forms.ImageList(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.timerDoubleClick = new System.Windows.Forms.Timer(this.components);
+            this.timerAutoReload = new System.Windows.Forms.Timer(this.components);
+            this.imageListRefesh = new System.Windows.Forms.ImageList(this.components);
+            this.timerReloadMachineCounter = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ckKQCLS.Properties)).BeginInit();
@@ -3746,6 +3747,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryItemPictureEdit9.Name = "repositoryItemPictureEdit9";
             this.repositoryItemPictureEdit9.NullText = " ";
             // 
+            // gridColumn24
+            // 
+            this.gridColumn24.Caption = "gridColumn24";
+            this.gridColumn24.FieldName = "IS_REGISTER_BY_APP";
+            this.gridColumn24.Name = "gridColumn24";
+            // 
             // repositoryItemButton_CallPatient
             // 
             this.repositoryItemButton_CallPatient.Appearance.BackColor = System.Drawing.Color.Transparent;
@@ -4507,12 +4514,6 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             // timerReloadMachineCounter
             // 
             this.timerReloadMachineCounter.Interval = 180000;
-            // 
-            // gridColumn24
-            // 
-            this.gridColumn24.Caption = "gridColumn24";
-            this.gridColumn24.FieldName = "IS_REGISTER_BY_APP";
-            this.gridColumn24.Name = "gridColumn24";
             // 
             // UCExecuteRoom
             // 

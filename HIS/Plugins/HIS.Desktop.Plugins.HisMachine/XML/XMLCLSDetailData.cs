@@ -57,5 +57,11 @@ namespace HIS.Desktop.Plugins.HisMachine.XML
 
         [XmlElement(Order = 10)]
         public string SO_LUU_HANH { get; set; }
+
+        [XmlElement(Order = 11)]
+        public string TU_NGAY { get; set; }
+
+        [XmlElement(Order = 12)]
+        public string DEN_NGAY { get; set; }
     }
 }

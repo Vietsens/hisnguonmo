@@ -80,7 +80,7 @@ namespace MPS.Processor.Mps000007
         internal const string IS_PART_EXAM_ABNORMAL = "IS_PART_EXAM_ABNORMAL";
         internal const string EXECUTED_SERVICES = "EXECUTED_SERVICES";
         internal const string SPECIALIST_NOTE = "SPECIALIST_NOTE";
-
+        internal const string SERE_SERV_VIEX_INFO = "SERE_SERV_VIEX_INFO";
 
     }
 }

@@ -73,25 +73,56 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT
             {
                 if (mediStockIds == null || mediStockIds.Count == 0) throw new ArgumentNullException("mediStockIds");
 
+                string roomIdStr = currentWorkPlace.RoomId.ToString();
+
+                var matyNotAllowIds = new HashSet<long>();
+                var mestMatyDepas = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEST_MATY_DEPA>();
+                if (mestMatyDepas != null && mestMatyDepas.Count > 0)
+                {
+                    var filtered = mestMatyDepas.Where(o =>
+                        o.DEPARTMENT_ID == currentWorkPlace.DepartmentId &&
+                        o.MEDI_STOCK_ID == null &&
+                        (string.IsNullOrEmpty(o.ROOM_IDS) || o.ROOM_IDS.Split(';').Contains(roomIdStr))
+                    ).Select(o => o.MATERIAL_TYPE_ID);
+
+                    foreach (var id in filtered) matyNotAllowIds.Add(id);
+                }
+
+                var metyNotAllowIds = new HashSet<long>();
                 var mestMetyDepas = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEST_METY_DEPA>();
                 if (mestMetyDepas != null && mestMetyDepas.Count > 0)
                 {
-                    var mestMetyDepas__IdNotAllows = mestMetyDepas
-                        .Where(o =>
-                            o.DEPARTMENT_ID == currentWorkPlace.DepartmentId
-                            && mediStockIds.Contains(o.MEDI_STOCK_ID ?? 0))
-                        .Select(o => o.MEDICINE_TYPE_ID).Distinct().ToList();
-                    if (mestMetyDepas__IdNotAllows != null && mestMetyDepas__IdNotAllows.Count > 0)
-                    {
-                        mediStockD1SDOs = mediStockD1SDOs
-                            .Where(o =>
-                                o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT
-                                || (o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC && !mestMetyDepas__IdNotAllows.Contains(o.ID ?? 0))
-                                ).ToList();
-                    }
+                    var filtered = mestMetyDepas.Where(o =>
+                        o.DEPARTMENT_ID == currentWorkPlace.DepartmentId &&
+                        o.MEDI_STOCK_ID == null &&
+                        (string.IsNullOrEmpty(o.ROOM_IDS) || o.ROOM_IDS.Split(';').Contains(roomIdStr))
+                    ).Select(o => o.MEDICINE_TYPE_ID);
 
-                    LogSystem.Debug("Load du lieu kho theo du lieu theo dieu kien Thuốc trong kho cấu hình chỉ có khoa nao được phep su dung.____ " + "____ket qua tim thay " + (mediStockD1SDOs != null ? mediStockD1SDOs.Count : 0));
+                    foreach (var id in filtered) metyNotAllowIds.Add(id);
                 }
+
+                if (mediStockD1SDOs != null && (matyNotAllowIds.Count > 0 || metyNotAllowIds.Count > 0))
+                {
+                    mediStockD1SDOs = mediStockD1SDOs.Where(o =>
+                    {
+                        long currentId = o.ID ?? 0;
+
+                        // Nếu là Vật tư (VT)
+                        if (o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                        {
+                            return !matyNotAllowIds.Contains(currentId);
+                        }
+
+                        // Nếu là Thuốc (THUOC)
+                        if (o.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                        {
+                            return !metyNotAllowIds.Contains(currentId);
+                        }
+
+                        return true;
+                    }).ToList();
+                }
+
             }
             catch (Exception ex)
             {

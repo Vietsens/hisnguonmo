@@ -2368,7 +2368,14 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
 
                     if (success && isSaveAndPrint)
                     {
-                        this.isPrintNow = true;
+                        if (chkPreviewBeforePrint.Checked)
+                        {
+                            this.isPrintNow = false;
+                        }
+                        else
+                        {
+                            this.isPrintNow = true;
+                        }
                         Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
                         richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, DelegateRunPrinter);
                         if (isShowTransation && !isShowTransationQR) // nếu thanh toán QR không tự động thì ko gọi màn thanh toán ngay, khi tắt QR mới gọi
@@ -2483,14 +2490,25 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             {
                 CommonParam param = new CommonParam();
                 this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
-                var patienttype  = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>();
+                var patienttype = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>();
                 string patientTypeCode = "";
-                if (patienttype != null && this.hisPolicies1 != null)
+                if (patienttype != null && this.hisPolicies1 != null && this.hisPolicies1.Count > 0)
                 {
-                    patientTypeCode = patienttype.FirstOrDefault(o => o.ID == this.hisPolicies1.FirstOrDefault().PATIENT_TYPE_ID).PATIENT_TYPE_CODE;
+                    var firstPolicy = this.hisPolicies1.FirstOrDefault();
+                    if (firstPolicy != null && firstPolicy.PATIENT_TYPE_ID.HasValue)
+                    {
+                        var patientTypeObj = patienttype.FirstOrDefault(o => o.ID == firstPolicy.PATIENT_TYPE_ID.Value);
+                        if (patientTypeObj != null)
+                        {
+                            patientTypeCode = patientTypeObj.PATIENT_TYPE_CODE;
+                        }
+                    }
                 }
 
-                this.hisPolicies1 = this.hisPolicies1.Where(p => p.IS_WARNING_DEPOSIT_SERVICE != 1).ToList();
+                if (this.hisPolicies1 != null)
+                {
+                    this.hisPolicies1 = this.hisPolicies1.Where(p => p.IS_WARNING_DEPOSIT_SERVICE != 1).ToList();
+                }
 
                 if (hisPolicies1 == null || hisPolicies1.Count == 0)
                     return true;
@@ -2512,7 +2530,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 {
                     int currentDayOfWeek = (int)transactionDate.Value.DayOfWeek;
                     int dbDayOfWeek = currentDayOfWeek == 0 ? 1 : currentDayOfWeek + 1;
-                   
+
                     todayPolicies.AddRange(policiesByDayOfWeek.Where(p => p.DAY_OF_WEEK == dbDayOfWeek &&
                             currentHourMinute >= (p.TIME_FROM ?? 0) &&
                             currentHourMinute <= (p.TIME_TO ?? 235959)));
@@ -2524,7 +2542,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 {
                     int currentDay = transactionDate.Value.Day;
                     int currentMonth = transactionDate.Value.Month;
-                    //int currentHourMinute = int.Parse(transactionDate.Value.ToString("HHmmss"));
                     todayPolicies.AddRange(policiesByDayOfYear
                         .Where(p =>
                             p.DAY_OF_YEAR.HasValue &&
@@ -2547,7 +2564,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 }
 
                 // Xử lý cảnh báo cho trường hợp không phải cấp cứu 
-                if (this.hisTreatment != null && this.hisTreatment.IS_EMERGENCY != 1 && 
+                if (this.hisTreatment != null && this.hisTreatment.IS_EMERGENCY != 1 &&
                     this.hisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && todayPolicies.Count > 0)
                 {
                     bool canContinue = ValidateAndShowWarning(todayPolicies, checkedServices);
@@ -3500,6 +3517,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         {
                             IsHidePatientPrice = item.VALUE == "1";
                         }
+                        else if (item.KEY == "chkPreviewBeforePrint")
+                        {
+                            chkPreviewBeforePrint.Checked = item.VALUE == "1";
+                        }
                     }
 
                 }
@@ -3542,6 +3563,39 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkConnectionPOS.Name;
                     csAddOrUpdate.VALUE = (chkConnectionPOS.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkPreviewBeforePrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "chkPreviewBeforePrint" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkPreviewBeforePrint.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = "chkPreviewBeforePrint";
+                    csAddOrUpdate.VALUE = (chkPreviewBeforePrint.Checked ? "1" : "");
                     csAddOrUpdate.MODULE_LINK = moduleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();

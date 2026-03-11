@@ -96,6 +96,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn12 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn7 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GcBid_TtThau = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_BidTypeCode = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_NationalName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GcBid_ManufactureName = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -109,6 +110,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.RepositoryItemButtonError = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -120,7 +122,6 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.LblBtnExportError = new DevExpress.XtraLayout.LayoutControlItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
-            this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -165,6 +166,10 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.BarButtonSave});
@@ -193,35 +198,36 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1327, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1769, 38);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 511);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1327, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 629);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1769, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 482);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 591);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1327, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
+            this.barDockControlRight.Location = new System.Drawing.Point(1769, 38);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 591);
             // 
             // BtnDownload
             // 
-            this.BtnDownload.Location = new System.Drawing.Point(2, 2);
+            this.BtnDownload.Location = new System.Drawing.Point(3, 3);
+            this.BtnDownload.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnDownload.Name = "BtnDownload";
-            this.BtnDownload.Size = new System.Drawing.Size(114, 22);
+            this.BtnDownload.Size = new System.Drawing.Size(151, 27);
             this.BtnDownload.StyleController = this.layoutControl1;
             this.BtnDownload.TabIndex = 0;
             this.BtnDownload.Text = "Tải file mẫu";
@@ -236,19 +242,21 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControl1.Controls.Add(this.GridControlBid);
             this.layoutControl1.Controls.Add(this.BtnDownload);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(2604, 300, 250, 350);
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1327, 482);
+            this.layoutControl1.Size = new System.Drawing.Size(1769, 591);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // BtnExportError
             // 
-            this.BtnExportError.Location = new System.Drawing.Point(474, 2);
+            this.BtnExportError.Location = new System.Drawing.Point(631, 3);
+            this.BtnExportError.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnExportError.Name = "BtnExportError";
-            this.BtnExportError.Size = new System.Drawing.Size(114, 22);
+            this.BtnExportError.Size = new System.Drawing.Size(151, 27);
             this.BtnExportError.StyleController = this.layoutControl1;
             this.BtnExportError.TabIndex = 6;
             this.BtnExportError.Text = "Xuất dữ liệu lỗi";
@@ -256,9 +264,10 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             // BtnSave
             // 
-            this.BtnSave.Location = new System.Drawing.Point(356, 2);
+            this.BtnSave.Location = new System.Drawing.Point(474, 3);
+            this.BtnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnSave.Name = "BtnSave";
-            this.BtnSave.Size = new System.Drawing.Size(114, 22);
+            this.BtnSave.Size = new System.Drawing.Size(151, 27);
             this.BtnSave.StyleController = this.layoutControl1;
             this.BtnSave.TabIndex = 4;
             this.BtnSave.Text = "Lưu(Ctrl S)";
@@ -266,9 +275,10 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             // BtnImport
             // 
-            this.BtnImport.Location = new System.Drawing.Point(120, 2);
+            this.BtnImport.Location = new System.Drawing.Point(160, 3);
+            this.BtnImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnImport.Name = "BtnImport";
-            this.BtnImport.Size = new System.Drawing.Size(114, 22);
+            this.BtnImport.Size = new System.Drawing.Size(151, 27);
             this.BtnImport.StyleController = this.layoutControl1;
             this.BtnImport.TabIndex = 2;
             this.BtnImport.Text = "Nhập khẩu";
@@ -276,9 +286,10 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             // BtnShowLineError
             // 
-            this.BtnShowLineError.Location = new System.Drawing.Point(238, 2);
+            this.BtnShowLineError.Location = new System.Drawing.Point(317, 3);
+            this.BtnShowLineError.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnShowLineError.Name = "BtnShowLineError";
-            this.BtnShowLineError.Size = new System.Drawing.Size(114, 22);
+            this.BtnShowLineError.Size = new System.Drawing.Size(151, 27);
             this.BtnShowLineError.StyleController = this.layoutControl1;
             this.BtnShowLineError.TabIndex = 3;
             this.BtnShowLineError.Text = "Dòng lỗi";
@@ -286,13 +297,15 @@ namespace HIS.Desktop.Plugins.HisImportBid
             // 
             // GridControlBid
             // 
-            this.GridControlBid.Location = new System.Drawing.Point(2, 28);
+            this.GridControlBid.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GridControlBid.Location = new System.Drawing.Point(3, 36);
             this.GridControlBid.MainView = this.GridViewBid;
+            this.GridControlBid.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.GridControlBid.Name = "GridControlBid";
             this.GridControlBid.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.RepositoryItemButtonDelete,
             this.RepositoryItemButtonError});
-            this.GridControlBid.Size = new System.Drawing.Size(1323, 452);
+            this.GridControlBid.Size = new System.Drawing.Size(1763, 552);
             this.GridControlBid.TabIndex = 5;
             this.GridControlBid.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.GridViewBid,
@@ -326,6 +339,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn13,
             this.gridColumn12,
             this.gridColumn7,
+            this.GcBid_TtThau,
             this.GcBid_BidTypeCode,
             this.GcBid_NationalName,
             this.GcBid_ManufactureName,
@@ -616,6 +630,16 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn7.Visible = true;
             this.gridColumn7.VisibleIndex = 25;
             // 
+            // GcBid_TtThau
+            // 
+            this.GcBid_TtThau.Caption = "Thông tin thầu";
+            this.GcBid_TtThau.FieldName = "TT_THAU";
+            this.GcBid_TtThau.Name = "GcBid_TtThau";
+            this.GcBid_TtThau.OptionsColumn.AllowEdit = false;
+            this.GcBid_TtThau.Visible = true;
+            this.GcBid_TtThau.VisibleIndex = 26;
+            this.GcBid_TtThau.Width = 150;
+            // 
             // GcBid_BidTypeCode
             // 
             this.GcBid_BidTypeCode.Caption = "Loại thầu";
@@ -742,6 +766,14 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.gridColumn11.Visible = true;
             this.gridColumn11.VisibleIndex = 38;
             // 
+            // gridColumn14
+            // 
+            this.gridColumn14.Caption = "Giá trần BHYT";
+            this.gridColumn14.FieldName = "HEIN_LIMIT_PRICE";
+            this.gridColumn14.Name = "gridColumn14";
+            this.gridColumn14.Visible = true;
+            this.gridColumn14.VisibleIndex = 11;
+            // 
             // RepositoryItemButtonError
             // 
             this.RepositoryItemButtonError.AutoHeight = false;
@@ -771,7 +803,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1327, 482);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1769, 591);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -779,86 +811,80 @@ namespace HIS.Desktop.Plugins.HisImportBid
             this.layoutControlItem1.Control = this.BtnDownload;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(118, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(157, 33);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.GridControlBid;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 33);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1327, 456);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1769, 558);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(590, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(785, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(737, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(984, 33);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.BtnShowLineError;
-            this.layoutControlItem3.Location = new System.Drawing.Point(236, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(314, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(118, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(157, 33);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.BtnImport;
-            this.layoutControlItem4.Location = new System.Drawing.Point(118, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(157, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(118, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(157, 33);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.BtnSave;
-            this.layoutControlItem5.Location = new System.Drawing.Point(354, 0);
+            this.layoutControlItem5.Location = new System.Drawing.Point(471, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(118, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(157, 33);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // LblBtnExportError
             // 
             this.LblBtnExportError.Control = this.BtnExportError;
-            this.LblBtnExportError.Location = new System.Drawing.Point(472, 0);
+            this.LblBtnExportError.Location = new System.Drawing.Point(628, 0);
             this.LblBtnExportError.Name = "LblBtnExportError";
-            this.LblBtnExportError.Size = new System.Drawing.Size(118, 26);
+            this.LblBtnExportError.Size = new System.Drawing.Size(157, 33);
             this.LblBtnExportError.TextSize = new System.Drawing.Size(0, 0);
             this.LblBtnExportError.TextVisible = false;
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // gridColumn14
-            // 
-            this.gridColumn14.Caption = "Giá trần BHYT";
-            this.gridColumn14.FieldName = "HEIN_LIMIT_PRICE";
-            this.gridColumn14.Name = "gridColumn14";
-            this.gridColumn14.Visible = true;
-            this.gridColumn14.VisibleIndex = 11;
-            // 
             // FormImportBid
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1327, 511);
+            this.ClientSize = new System.Drawing.Size(1769, 629);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormImportBid";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nhập khẩu thầu";
@@ -952,7 +978,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn7;
-
+        private DevExpress.XtraGrid.Columns.GridColumn GcBid_TtThau;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private DevExpress.XtraGrid.Columns.GridColumn GcBid_BatchDivisionCode;
         private DevExpress.XtraBars.BarDockControl barDockControlTop;

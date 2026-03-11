@@ -145,10 +145,13 @@
     <value>Lưu in (Ctrl Shift S)</value>
   </data>
   <data name="frmTransactionRepay.chkAutoClose.Properties.Caption" xml:space="preserve">
-    <value>     :Tự động đóng</value>
+    <value>  :Tự động đóng</value>
   </data>
   <data name="frmTransactionRepay.chkAutoClose.ToolTip" xml:space="preserve">
     <value>Tự động đóng chức năng khi 'Lưu' hoặc 'Lưu in' thành công</value>
+  </data>
+  <data name="frmTransactionRepay.chkXemTruoc.Properties.Caption" xml:space="preserve">
+    <value>  :Xem trước in</value>
   </data>
   <data name="frmTransactionRepay.layoutAccountBook.Text" xml:space="preserve">
     <value>Sổ thu chi:</value>

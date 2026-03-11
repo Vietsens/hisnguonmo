@@ -18,6 +18,7 @@
 using ACS.EFMODEL.DataModels;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -51,6 +52,7 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Markup;
 
 namespace HIS.Desktop.Plugins.TreatmentIcdEdit
 {
@@ -115,6 +117,11 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         internal UserControl ucSecondaryInIcd;
 
         internal List<ACS_USER> AcsUser;
+
+        private bool isUpdatingCustomerDetailValue = false;
+        private string manualCustomerDetailInput = string.Empty;
+        private string customerSourceDetailValue = null;
+        private List<string> loadedSelectedUsernames = new List<string>();
 
         #endregion
 
@@ -960,7 +967,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 this.lblDtKCB.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.lblDtKCB.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.btnSave.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.btnSave.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.layoutControlItem38.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem38.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
-                this.layoutControlItem43.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem43.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
+                //this.layoutControlItem43.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.layoutControlItem43.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.label1.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.label1.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("FormTreatmentIcdEdit.Text", Resources.ResourceLanguageManager.LanguageFormTreatmentIcdEdit, LanguageManager.GetCulture());
             }
@@ -1174,10 +1181,13 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         cboSourceCustomer.EditValue = "";
                     }
 
-                    if (!String.IsNullOrEmpty(currentVHisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES))
+                    string storedDetail = currentVHisTreatment.CUSTOMER_SOURCE_DETAIL ?? currentVHisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES;
+                    if (!string.IsNullOrWhiteSpace(storedDetail))
                     {
-                        CboCustomerDetail.EditValue = currentVHisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES;
-                        
+                        var parts = storedDetail.Split(new[] { ';' }, 2, StringSplitOptions.RemoveEmptyEntries);
+                        manualCustomerDetailInput = parts.Length == 2 ? parts[1].Trim() : string.Empty;
+                        var selectedPart = parts.Length == 2 ? parts[0] : parts[0];
+
                         var gridCheckMark = CboCustomerDetail.Properties.Tag as GridCheckMarksSelection;
                         var view = CboCustomerDetail.Properties.View;
                         CboCustomerDetail.ShowPopup();
@@ -1185,25 +1195,47 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                         if (gridCheckMark != null && view != null)
                         {
                             gridCheckMark.ClearSelection(view);
-                            var loginNames = currentVHisTreatment.CUS_SOURCE_DETAIL_LOGINNAMES
+
+                            var identifiers = (selectedPart ?? string.Empty)
                                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                                .Select(x => x.Trim())
+                                .Select(x => x.Trim().Trim(',', ';', '.', ' '))
+                                .Where(x => !string.IsNullOrEmpty(x))
                                 .ToList();
+
+                            var restoredNames = new List<string>();
 
                             for (int i = 0; i < view.DataRowCount; i++)
                             {
                                 var row = view.GetRow(i) as HIS_CUSTOMER_SOURCE_DT;
-                                if (row != null && loginNames.Contains(row.LOGINNAME))
+                                if (row == null) continue;
+
+                                bool matchUser = !string.IsNullOrEmpty(row.USERNAME) && identifiers.Contains(row.USERNAME.Trim(), StringComparer.OrdinalIgnoreCase);
+                                bool matchLogin = !matchUser && !string.IsNullOrEmpty(row.LOGINNAME) && identifiers.Contains(row.LOGINNAME.Trim(), StringComparer.OrdinalIgnoreCase);
+                                if (matchUser || matchLogin)
                                 {
                                     int rowHandle = view.GetRowHandle(i);
                                     gridCheckMark.SelectRow(view, rowHandle, true);
+
+                                    var display = !string.IsNullOrWhiteSpace(row.USERNAME) ? row.USERNAME.Trim() : row.LOGINNAME?.Trim();
+                                    if (!string.IsNullOrWhiteSpace(display))
+                                        restoredNames.Add(display);
                                 }
                             }
+                            
+                            loadedSelectedUsernames = restoredNames
+                                .Where(s => !string.IsNullOrWhiteSpace(s))
+                                .Distinct(StringComparer.OrdinalIgnoreCase)
+                                .ToList();
                         }
+                        buttonEdit1.Text = storedDetail.Trim();
                     }
                     else
                     {
                         CboCustomerDetail.EditValue = null;
+                        manualCustomerDetailInput = string.Empty;
+                        customerSourceDetailValue = null;
+                        loadedSelectedUsernames = new List<string>();
+                        buttonEdit1.Text = string.Empty;
                     }
 
                     if (!String.IsNullOrEmpty(currentVHisTreatment.GUARANTEE_LOGINNAME))
@@ -2105,6 +2137,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     data.CustomerSourceDetail = null;
                 }
+                data.CustomerSourceDetail = BuildCustomerSourceDetailValueFromControls();
 
                 if (cboGuarantee.EditValue != null)
                 {
@@ -3775,6 +3808,21 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 {
                     cboSourceCustomer.EditValue = null;
                     txtSourceCustomer.EditValue = null;
+                    LoadCboCustomerDetail();
+                    InitCheck(CboCustomerDetail, SelectionGrid__CustomerDetail);
+                    cboSourceCustomer_EditValueChanged(cboSourceCustomer, EventArgs.Empty);
+                }
+                if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    var moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisCustomerSource").FirstOrDefault();
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        var instance = PluginInstance.GetPluginInstance(moduleData, null);
+                        ((Form)instance).ShowDialog();
+                    }
+                    BackendDataWorker.Reset<HIS_CUSTOMER_SOURCE>();
+                    BackendDataWorker.CacheMonitorSyncExecute(typeof(HIS_CUSTOMER_SOURCE), true);
+                    LoadCboSourceCustomer();
                 }
             }
             catch (Exception ex)
@@ -3862,6 +3910,16 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                             if (gridCheckMark == null || gridCheckMark.Selection == null || gridCheckMark.Selection.Count == 0)
                             {
                                 CboCustomerDetail.Text = "";
+                                buttonEdit1.Text = "";
+                            }
+                            else 
+                            { 
+                                var names = gridCheckMark.Selection.OfType<HIS_CUSTOMER_SOURCE_DT>().
+                                    Where(x => x != null && !string.IsNullOrEmpty(x.USERNAME)).
+                                    Select(x => x.USERNAME.Trim()).
+                                    Distinct().
+                                    ToList(); 
+                                buttonEdit1.Text = string.Join(", ", names); 
                             }
                         }
                         else
@@ -3871,6 +3929,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                                 gridCheckMark.ClearSelection(view);
                             }
                             CboCustomerDetail.Text = "";
+                            buttonEdit1.Text = "";
                         }
                     }
                 }
@@ -4127,14 +4186,9 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             try
             {
                 var gridCheckMark = sender as GridCheckMarksSelection;
-                if (gridCheckMark != null)
-                {
-                    var selectedNames = gridCheckMark.Selection
-                        .OfType<HIS_CUSTOMER_SOURCE_DT>()
-                        .Select(x => x.USERNAME)
-                        .ToArray();
-                    CboCustomerDetail.Text = string.Join(",", selectedNames);
-                }
+                
+                loadedSelectedUsernames = GetDisplayNames(gridCheckMark);
+                RefreshCustomerDetailDisplay();
             }
             catch (Exception ex)
             {
@@ -4183,5 +4237,192 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void buttonEdit1_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+                    manualCustomerDetailInput = ExtractManualInput(buttonEdit1.Text);
+                    CboCustomerDetail.ShowPopup();
+                }
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    CboCustomerDetail.EditValue = null;
+                    var gridCheckMark = CboCustomerDetail.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(CboCustomerDetail.Properties.View);
+                    }
+                    buttonEdit1.Text = "";
+                    manualCustomerDetailInput = string.Empty;
+                    customerSourceDetailValue = null;
+                }
+                if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    var moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisCustomerSourceDetail").FirstOrDefault();
+                    if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        var instance = PluginInstance.GetPluginInstance(moduleData, null);
+                        ((Form)instance).ShowDialog();
+                    }
+                    BackendDataWorker.Reset<HIS_CUSTOMER_SOURCE_DT>();
+                    BackendDataWorker.CacheMonitorSyncExecute(typeof(HIS_CUSTOMER_SOURCE_DT), true);
+                    LoadCboCustomerDetail();
+                    InitCheck(CboCustomerDetail, SelectionGrid__CustomerDetail);
+                    cboSourceCustomer_EditValueChanged(cboSourceCustomer, EventArgs.Empty);
+                    FillDataToControl();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void CboCustomerDetail_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                var gridLookUp = sender as GridLookUpEdit;
+                if (gridLookUp == null) return;
+
+                var gridCheckMark = gridLookUp.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark == null || gridCheckMark.Selection == null)
+                {
+                    loadedSelectedUsernames = new List<string>();
+                }
+                else
+                {
+                    loadedSelectedUsernames = GetDisplayNames(gridCheckMark);
+                }
+
+                RefreshCustomerDetailDisplay();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void buttonEdit1_Validated(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isUpdatingCustomerDetailValue)
+                    return;
+
+                isUpdatingCustomerDetailValue = true;
+                var currentManual = ExtractManualInput(buttonEdit1.Text);
+
+                var selectedUsernames = GetSelectedUsernames();
+                var selectedText = selectedUsernames.Any() ? string.Join(", ", selectedUsernames) : string.Empty;
+
+                if (!string.Equals(buttonEdit1.Text.Trim(), selectedText, StringComparison.OrdinalIgnoreCase))
+                {
+                    manualCustomerDetailInput = currentManual;
+                }
+                BuildCustomerSourceDetailValueFromControls();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                isUpdatingCustomerDetailValue = false;
+            }
+        }
+
+        private string BuildCustomerSourceDetailValueFromControls()
+        {
+            try
+            {
+                var selectedUsernames = GetSelectedUsernames();
+                if (!selectedUsernames.Any() && loadedSelectedUsernames.Any())
+                {
+                    selectedUsernames = new List<string>(loadedSelectedUsernames);
+                }
+
+                var selectedText = selectedUsernames.Any()
+                    ? string.Join(", ", selectedUsernames)
+                    : string.Empty;
+
+                var manual = string.IsNullOrWhiteSpace(manualCustomerDetailInput)
+                    ? string.Empty
+                    : manualCustomerDetailInput.Trim();
+
+                if (!string.IsNullOrWhiteSpace(selectedText) && !string.IsNullOrWhiteSpace(manual))
+                    customerSourceDetailValue = $"{selectedText}; {manual}";
+                else if (!string.IsNullOrWhiteSpace(selectedText))
+                    customerSourceDetailValue = selectedText;
+                else if (!string.IsNullOrWhiteSpace(manual))
+                    customerSourceDetailValue = manual;
+                else
+                    customerSourceDetailValue = null;
+
+                buttonEdit1.Text = customerSourceDetailValue ?? string.Empty;
+                CboCustomerDetail.Text = selectedText;
+                return customerSourceDetailValue;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return customerSourceDetailValue;
+            }
+        }
+
+        private List<string> GetSelectedUsernames()
+        {
+            var gridCheckMark = CboCustomerDetail.Properties.Tag as GridCheckMarksSelection;
+            return GetDisplayNames(gridCheckMark);
+        }
+        private List<string> GetDisplayNames(GridCheckMarksSelection gridCheckMark)
+        {
+            if (gridCheckMark == null || gridCheckMark.Selection == null) return new List<string>();
+            return gridCheckMark.Selection
+                .OfType<HIS_CUSTOMER_SOURCE_DT>()
+                .Where(x => x != null)
+                .Select(x => !string.IsNullOrWhiteSpace(x.USERNAME) ? x.USERNAME.Trim() : x.LOGINNAME?.Trim())
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .ToList();
+        }
+
+        private string ExtractManualInput(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return string.Empty;
+
+            var parts = text.Split(new[] { ';' }, 2, StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length == 2)
+                return parts[1].Trim();
+
+            var selectedUsernames = GetSelectedUsernames();
+            if (!selectedUsernames.Any() && loadedSelectedUsernames.Any())
+            {
+                selectedUsernames = new List<string>(loadedSelectedUsernames);
+            }
+            var selectedText = selectedUsernames.Any() ? string.Join(", ", selectedUsernames) : string.Empty;
+
+            if (string.Equals(text.Trim(), selectedText, StringComparison.OrdinalIgnoreCase))
+                return string.Empty;
+
+            return text.Trim();
+
+        }
+        private void RefreshCustomerDetailDisplay()
+        {
+            try
+            {
+                BuildCustomerSourceDetailValueFromControls();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
     }
 }

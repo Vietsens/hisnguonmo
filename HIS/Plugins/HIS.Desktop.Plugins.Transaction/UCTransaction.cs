@@ -140,7 +140,7 @@ namespace HIS.Desktop.Plugins.Transaction
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.InitializeComponent => 5");
                 this.RoomId = roomId;
                 this.RoomTypeId = roomTypeId;
-                
+
             }
             catch (Exception ex)
             {
@@ -293,6 +293,7 @@ namespace HIS.Desktop.Plugins.Transaction
         {
             try
             {
+                
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.InitTotalPriceInfo => 1");
                 this.totalPriceProcessor = new TotalPriceInfoProcessor();
                 UC.TotalPriceInfo.ADO.InitADO data = new UC.TotalPriceInfo.ADO.InitADO();
@@ -395,6 +396,8 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.Load => 6");
                 HisConfigCFG.LoadConfig();
                 // qtcode
+                lciDebtClose.Visibility = HisConfigCFG.ShowBtnTransactionDebt == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lciDebtCollection.Visibility = HisConfigCFG.ShowBtnTransactionDebtCollect == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never; 
                 lciEbill.Visibility = HisConfigCFG.ShowElectronicNumorderCFG == "1" ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 Inventec.Common.Logging.LogSystem.Debug("UCTransaction.Load => 8");
                 InitCheck(cboTreatmentType, SelectionGrid__Status);
@@ -758,7 +761,7 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 {
                     if (this.currentTreatment == null) return;
                     if (HisConfigCFG.ShowElectronicNumorderCFG != "1") return;
-                    
+
                     CommonParam param = new CommonParam();
                     HisTransactionViewFilter filter = new HisTransactionViewFilter();
                     filter.TREATMENT_ID = this.currentTreatment.ID;
@@ -2408,5 +2411,111 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             }
         }
 
+        private void btnDebtClose_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentTreatment == null)
+                    return;
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.TransactionDebt");
+
+                if (moduleData == null)
+                {
+                    throw new NullReferenceException("Không tìm thấy module HIS.Desktop.Plugins.TransactionDebt");
+                }
+
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    moduleData.RoomId = this.RoomId;
+                    moduleData.RoomTypeId = this.RoomTypeId;
+
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.currentTreatment);
+                    listArgs.Add(moduleData);
+
+                    var extenceInstance = PluginInstance.GetPluginInstance(
+                        PluginInstance.GetModuleWithWorkingRoom(moduleData, this.RoomId, this.RoomTypeId),
+                        listArgs);
+
+                    if (extenceInstance == null)
+                    {
+                        throw new ArgumentNullException("extenceInstance is null");
+                    }
+
+                    ((Form)extenceInstance).ShowDialog();
+
+                    FillDataToControlBySelectTreatment(true);
+                    txtFindTreatmentCode.Focus();
+                    txtFindTreatmentCode.SelectAll();
+                }
+                else
+                {
+                    MessageManager.Show(Base.ResourceMessageLang.ChucNangNayChuaDuocHoTroTrongPhienBanNay);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
+        private void btnDebtCollection_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (this.currentTreatment == null)
+                    return;
+
+                Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws
+                    .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.TransactionDebtCollect");
+
+                if (moduleData == null)
+                {
+                    throw new NullReferenceException("Không tìm thấy module HIS.Desktop.Plugins.TransactionDebtCollect");
+                }
+
+                if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                {
+                    moduleData.RoomId = this.RoomId;
+                    moduleData.RoomTypeId = this.RoomTypeId;
+
+                    List<object> listArgs = new List<object>();
+                    listArgs.Add(this.currentTreatment);
+                    listArgs.Add(moduleData);
+
+                    var extenceInstance = PluginInstance.GetPluginInstance(
+                        PluginInstance.GetModuleWithWorkingRoom(moduleData, this.RoomId, this.RoomTypeId),
+                        listArgs);
+
+                    if (extenceInstance == null)
+                    {
+                        throw new ArgumentNullException("extenceInstance is null");
+                    }
+
+                    ((Form)extenceInstance).ShowDialog();
+
+                    // Refresh sau khi thu nợ
+                    FillDataToControlBySelectTreatment(true);
+                    txtFindTreatmentCode.Focus();
+                    txtFindTreatmentCode.SelectAll();
+                }
+                else
+                {
+                    MessageManager.Show(Base.ResourceMessageLang.ChucNangNayChuaDuocHoTroTrongPhienBanNay);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                WaitingManager.Hide();
+            }
+        }
+
+        private void UCTransaction_KeyDown(object sender, KeyEventArgs e)
+        {
+            
+        }
     }
 }

@@ -2086,9 +2086,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             ApproveListError.Add(string.Format("Mẫu XN có mã {0} ký thất bại. {1}", rowSample.BARCODE, errorMessage));
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
                             if (isPrint == 1)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
                             else if (isPrint == 2)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
                             else
                                 return;
                         }
@@ -2119,6 +2119,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         }
 
                         PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
+                        PrintData.EmrInputADO = inputADO;
                         PrintData.eventPrint = CallApiCountPrint;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }
@@ -3195,11 +3196,11 @@ namespace HIS.Desktop.Plugins.ConnectionTest
 
                         if (checkPrintNow.Checked)
                         {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
                         }
                         else
                         {
-                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName);
+                            PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO };
                         }
 
                         if (chkSignProcess.Checked)
@@ -3213,9 +3214,9 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                             txtOldValueIntoPopup.Text = string.Join("\r\n", ApproveListError);
 
                             if (isPrint == 1)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName);
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO };
                             else if (isPrint == 2)
-                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName);
+                                PrintData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, mps000096RDO, MPS.ProcessorBase.PrintConfig.PreviewType.Show, printerName) { EmrInputADO = inputADO };
                             else
                                 continue; // Dùng continue thay vì return để xử lý tiếp các nhóm khác
                         }
@@ -3246,6 +3247,7 @@ namespace HIS.Desktop.Plugins.ConnectionTest
                         }
 
                         PrintData.ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog;
+                        PrintData.EmrInputADO = inputADO;
                         PrintData.eventPrint = CallApiCountPrint;
                         result = MPS.MpsPrinter.Run(PrintData);
                     }

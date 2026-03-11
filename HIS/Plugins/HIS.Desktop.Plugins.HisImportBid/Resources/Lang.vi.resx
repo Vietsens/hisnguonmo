@@ -396,4 +396,10 @@
   <data name="MaQDThauQuaDai" xml:space="preserve">
     <value>Mã quyết định thầu dài hơn 50 ký tự</value>
   </data>
+	<data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__TT_THAU" xml:space="preserve">
+  <value>Thông tin thầu</value>
+</data>
+	<data name="ThongTinThauQuaDai" xml:space="preserve">
+  <value>Thông tin thầu dài hơn 50 ký tự</value>
+</data>
 </root>

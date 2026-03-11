@@ -152,7 +152,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 this.gridColumn9.Caption = GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__MONTH_LIFESPAN");
                 this.gridColumn10.Caption = GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__DAY_LIFESPAN");
                 this.gridColumn11.Caption = GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__HOUR_LIFESPAN");
-
+                this.GcBid_TtThau.Caption = GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BID__TT_THAU");
             }
             catch (Exception ex)
             {
@@ -676,6 +676,11 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     }
                     medicineType.HEIN_LIMIT_PRICE = medicineTypeImport.HEIN_LIMIT_PRICE;
                     medicineType.DOSAGE_FORM = medicineTypeImport.DOSAGE_FORM;
+                    medicineType.TT_THAU = medicineTypeImport.TT_THAU;
+                    if (!string.IsNullOrEmpty(medicineType.TT_THAU) && Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(medicineType.TT_THAU, 50))
+                    {
+                        medicineType.ERROR += "Thông tin thầu vượt quá 50 ký tự. ";
+                    }
                     if (!String.IsNullOrWhiteSpace(medicineType.IS_MEDICINE))
                     {
                         medicineType.BID_MEDICINE_TYPE_CODE = medicineTypeImport.BID_MATERIAL_TYPE_CODE;
@@ -872,6 +877,11 @@ namespace HIS.Desktop.Plugins.HisImportBid
                     medicineType.HOUR_LIFESPAN_STR = materialTypeImport.HOUR_LIFESPAN_STR;
                     medicineType.HEIN_LIMIT_PRICE = materialTypeImport.HEIN_LIMIT_PRICE;
                     medicineType.DOSAGE_FORM = materialTypeImport.DOSAGE_FORM;
+                    medicineType.TT_THAU = materialTypeImport.TT_THAU;
+                    if (!string.IsNullOrEmpty(medicineType.TT_THAU) && Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(medicineType.TT_THAU, 50))
+                    {
+                        medicineType.ERROR += "Thông tin thầu vượt quá 50 ký tự. ";
+                    }
                     long month_lifespan = 0, day_lifespan = 0, hour_lifespan = 0;
 
                     if (long.TryParse(materialTypeImport.MONTH_LIFESPAN_STR, out month_lifespan) && !String.IsNullOrEmpty(materialTypeImport.MONTH_LIFESPAN_STR))
@@ -1220,6 +1230,10 @@ namespace HIS.Desktop.Plugins.HisImportBid
                 {
                     messageErr.Add("Thông tin quyết định thầu có độ dài quá 50");
                 }
+                if (!string.IsNullOrEmpty(item.TT_THAU) && Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(item.TT_THAU, 50))
+                {
+                    messageErr.Add("Thông tin thầu vượt quá 50 ký tự");
+                }
                 int dem = 0;
                 if (item.MONTH_LIFESPAN != null)
                 {
@@ -1394,7 +1408,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidMedicineType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
                                 bidMedicineType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                                 bidMedicineType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE;
-
+                                bidMedicineType.TT_THAU = item.TT_THAU;
                                 bidMedicineType.BID_MEDICINE_TYPE_CODE = item.BID_MEDICINE_TYPE_CODE;
                                 bidMedicineType.BID_MEDICINE_TYPE_NAME = item.BID_MEDICINE_TYPE_NAME;
                                 bidMedicineType.JOIN_BID_MEDICINE_TYPE_CODE = item.JOIN_BID_MEDICINE_TYPE_CODE;
@@ -1432,6 +1446,7 @@ namespace HIS.Desktop.Plugins.HisImportBid
                                 bidMaterialType.HOUR_LIFESPAN = item.HOUR_LIFESPAN;
                                 bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                                 bidMaterialType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE;
+                                bidMaterialType.TT_THAU = item.TT_THAU;
                                 bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                             }
                             else if (item.Type == MAU)

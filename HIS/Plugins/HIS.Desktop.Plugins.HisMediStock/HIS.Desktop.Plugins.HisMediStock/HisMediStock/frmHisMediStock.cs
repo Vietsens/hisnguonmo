@@ -494,6 +494,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                     chkNotAllowMedicine.Checked = (data.DO_NOT_IMP_MEDICINE == 1 ? true : false);
                     chkNotAllowMaterial.Checked = (data.DO_NOT_IMP_MATERIAL == 1 ? true : false);
                     cboCabinetManageOption.SelectedIndex = data.CABINET_MANAGE_OPTION.HasValue ? (data.CABINET_MANAGE_OPTION.Value - 1) : -1;
+                    chkAllowEditAmount.Checked = (data.IS_CHANGE_AMOUNT_APPROVE  == 1 ? true : false);
+                    chkAllowRemoveMediMate.Checked = (data.IS_REMOVE_AMOUNT_APPROVE == 1 ? true : false);
 
                     chkIsExternal.Checked = (data.IS_EXTERNAL == 1 ? true : false);
 
@@ -724,6 +726,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 chkIsShowDrugStore.CheckState = CheckState.Unchecked;
                 chkIsExpend.CheckState = CheckState.Unchecked;
                 chkIsShowAnticipate.CheckState = CheckState.Unchecked;
+                chkAllowEditAmount.CheckState = CheckState.Unchecked;
+                chkAllowRemoveMediMate.CheckState = CheckState.Unchecked;
                 txtTLQR.Properties.Buttons[0].Visible = false;
                 cboRooomTN.Properties.Buttons[1].Visible = false;
 
@@ -993,6 +997,8 @@ namespace HIS.Desktop.Plugins.HisMediStock.HisMediStock
                 mediStock.IS_ODD = (chkOdd.Checked ? (short?)1 : null);
                 mediStock.IS_SHOW_DDT = (chkShowDDT.Checked ? (short?)1 : null);
                 mediStock.IS_PLANNING_TRANS_AS_DEFAULT = (chkIsUsingPlanningTransDF.Checked ? (short?)1 : null);
+                mediStock.IS_CHANGE_AMOUNT_APPROVE = (chkAllowEditAmount.Checked ? (short?)1 : null);
+                mediStock.IS_REMOVE_AMOUNT_APPROVE = (chkAllowRemoveMediMate.Checked ? (short?)1 : null);
                 if (chkIsCabinet.Checked && cboCabinetManageOption.SelectedIndex >= 0)
                 {
                     mediStock.CABINET_MANAGE_OPTION = (short)(cboCabinetManageOption.SelectedIndex + 1);

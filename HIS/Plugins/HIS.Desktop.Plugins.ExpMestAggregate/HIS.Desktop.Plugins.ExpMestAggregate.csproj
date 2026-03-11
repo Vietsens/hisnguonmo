@@ -84,6 +84,9 @@
     <Reference Include="HIS.Desktop.Plugins.Library.PrintAggrExpMest">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintAggrExpMest\HIS.Desktop.Plugins.Library.PrintAggrExpMest.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -215,6 +218,7 @@
     <Compile Include="ADO\MssMedicineTypeSDO.cs" />
     <Compile Include="AppConfigKeys.cs" />
     <Compile Include="Base\ResourceLangManager.cs" />
+    <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="ExpMestAggregateProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -250,6 +254,7 @@
     <Compile Include="ExpMestAggregate\ExpMestAggregateFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -317,10 +322,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.Print\HIS.Desktop.Print.csproj">
       <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
       <Name>HIS.Desktop.Print</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -39,6 +39,7 @@ namespace MPS.Processor.Mps000007
             {
                 patientADO = DataRawProcess.PatientRawToADO(rdo._currentPatient);
                 patyAlter = DataRawProcess.PatyAlterBHYTRawToADO(rdo.PatyAlter);
+                this.SereServViex = rdo.SereServViex;
             }
             catch (Exception ex)
             {

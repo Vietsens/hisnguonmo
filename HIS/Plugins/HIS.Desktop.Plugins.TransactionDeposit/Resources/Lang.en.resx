@@ -234,6 +234,9 @@
   <data name="frmTransactionDeposit.lciPatientName.Text" xml:space="preserve">
     <value>Patient name:</value>
   </data>
+  <data name="frmTransactionDeposit.lciPreviewPrint.Text" xml:space="preserve">
+    <value>Print preview:</value>
+  </data>
   <data name="frmTransactionDeposit.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Transfer amount</value>
   </data>

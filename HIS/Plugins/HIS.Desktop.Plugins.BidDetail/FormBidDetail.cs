@@ -814,22 +814,22 @@ namespace HIS.Desktop.Plugins.BidDetail
                         e.Graphics.FillRectangle(new SolidBrush(e.Appearance.BackColor), e.Bounds);
 
                         // Lấy hình ảnh từ tài nguyên
-                        Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
+                        //Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
 
-                        // Tính toán vị trí và kích thước của hình ảnh
-                        int imageWidth = image.Width;
-                        int imageHeight = image.Height;
-                        int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
-                        int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
+                        //// Tính toán vị trí và kích thước của hình ảnh
+                        //int imageWidth = image.Width;
+                        //int imageHeight = image.Height;
+                        //int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
+                        //int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
 
-                        // Vẽ hình ảnh vào ô trước khi vẽ văn bản
-                        e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
+                        //// Vẽ hình ảnh vào ô trước khi vẽ văn bản
+                        //e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
 
-                        // Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
-                        image.Dispose();
+                        //// Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
+                        //image.Dispose();
 
-                        Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
-                        imageRectangles[e.RowHandle] = imageRect;
+                        //Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
+                        //imageRectangles[e.RowHandle] = imageRect;
 
                         // Vẽ văn bản vào ô hiện tại
                         var adjustAmount = item.ADJUST_AMOUNT;
@@ -944,22 +944,22 @@ namespace HIS.Desktop.Plugins.BidDetail
                         e.Graphics.FillRectangle(new SolidBrush(e.Appearance.BackColor), e.Bounds);
 
                         // Lấy hình ảnh từ tài nguyên
-                        Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
+                        //Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
 
-                        // Tính toán vị trí và kích thước của hình ảnh
-                        int imageWidth = image.Width;
-                        int imageHeight = image.Height;
-                        int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
-                        int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
+                        //// Tính toán vị trí và kích thước của hình ảnh
+                        //int imageWidth = image.Width;
+                        //int imageHeight = image.Height;
+                        //int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
+                        //int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
 
-                        // Vẽ hình ảnh vào ô trước khi vẽ văn bản
-                        e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
+                        //// Vẽ hình ảnh vào ô trước khi vẽ văn bản
+                        //e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
 
-                        // Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
-                        image.Dispose();
+                        //// Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
+                        //image.Dispose();
 
-                        Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
-                        imageRectangles[e.RowHandle] = imageRect;
+                        //Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
+                        //imageRectangles[e.RowHandle] = imageRect;
 
                         // Vẽ văn bản vào ô hiện tại
                         var adjustAmount = item.ADJUST_AMOUNT;

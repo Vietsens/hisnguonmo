@@ -2286,6 +2286,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
         private bool ProcessPrintDeposit(string printTypeCode, string fileName)
         {
+            Inventec.Common.Logging.LogSystem.Info("CheDoIn = " + ConfigApplications.CheDoInChoCacChucNangTrongPhanMem);
+            Inventec.Common.Logging.LogSystem.Info("chkPreviewPrint.Checked = " + chkPreviewPrint.Checked);
             bool result = false;
             try
             {
@@ -2339,13 +2341,15 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultTranDeposit != null ? this.resultTranDeposit.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
 
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (chkPreviewPrint.Checked)
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, null);
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
                     if (isSaveAndSign)
                     {
                         result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
-
                     }
                     else
                     {
@@ -2354,8 +2358,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 }
                 else
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, null);
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
                 }
                 //result = MPS.MpsPrinter.Run(printData);
 
@@ -2443,15 +2446,25 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 }
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultTranDeposit != null ? this.resultTranDeposit.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
-                if (isSaveAndSign)
+                if (chkPreviewPrint.Checked)
                 {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, printerName) { EmrInputADO = inputADO });
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    if (isSaveAndSign)
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, printerName) { EmrInputADO = inputADO });
+                    }
+                    else
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                    }
                 }
                 else
                 {
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
                 }
-                //result = MPS.MpsPrinter.Run(printData);
 
                 if (result && chkAutoClose.CheckState == CheckState.Checked)
                 {
@@ -2575,19 +2588,18 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 MPS.Processor.Mps000171.PDO.Mps000171PDO pdo = new MPS.Processor.Mps000171.PDO.Mps000171PDO(this.resultTranDeposit, currentPatientTypeAlter, departmentTran, ratio, patient);
                 MPS.ProcessorBase.Core.PrintData printData = null;
                 WaitingManager.Hide();
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (chkPreviewPrint.Checked)
                 {
-
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, null);
-
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
                 }
                 else
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, null);
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
                 }
-                //result = MPS.MpsPrinter.Run(printData);
             }
             catch (Exception ex)
             {
@@ -2672,17 +2684,18 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultTranDeposit != null ? this.resultTranDeposit.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
                 WaitingManager.Hide();
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (chkPreviewPrint.Checked)
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, null);
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
                 }
                 else
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, null);
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
                 }
-                //result = MPS.MpsPrinter.Run(printData);
             }
             catch (Exception ex)
             {
@@ -3018,6 +3031,39 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void chkPreviewPrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkPreviewPrint.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkPreviewPrint.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkPreviewPrint.Name;
+                    csAddOrUpdate.VALUE = (chkPreviewPrint.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void InitControlState()
         {
             isNotLoadWhilechkAutoCloseStateInFirst = true;
@@ -3055,6 +3101,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         else if (item.KEY == chkConnectionPOS.Name)
                         {
                             chkConnectionPOS.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == chkPreviewPrint.Name)
+                        {
+                            chkPreviewPrint.Checked = item.VALUE == "1";
                         }
 
                     }

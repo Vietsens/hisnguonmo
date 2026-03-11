@@ -31,6 +31,8 @@ namespace MPS.Processor.Mps000480.PDO
         public List<V_HIS_EXP_MEST_MEDICINE> lstMedicine { get; set; }
         public List<V_HIS_EXP_MEST_MATERIAL> lstMaterial { get; set; }
         public HIS_TREATMENT treatment { get; set; }
+        public List<V_HIS_EXP_MEST> lstExpMestView { get; set; }
+
 
         public Mps000480PDO() { }
 
@@ -65,6 +67,48 @@ namespace MPS.Processor.Mps000480.PDO
                 this.lstMedicine = _lstMedicine;
                 this.lstMaterial = _lstMaterial;
                 this.treatment = _treatment;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public Mps000480PDO(
+            HIS_EXP_MEST _expMest,
+            List<V_HIS_EXP_MEST_MEDICINE> _lstMedicine,
+            List<V_HIS_EXP_MEST_MATERIAL> _lstMaterial, 
+            List<V_HIS_EXP_MEST> _lstExpMest
+            )
+        {
+            try
+            {
+                this.expMest = _expMest;
+                this.lstMedicine = _lstMedicine;
+                this.lstMaterial = _lstMaterial;
+                this.lstExpMestView = _lstExpMest; 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public Mps000480PDO(
+            HIS_EXP_MEST _expMest,
+            List<V_HIS_EXP_MEST_MEDICINE> _lstMedicine,
+            List<V_HIS_EXP_MEST_MATERIAL> _lstMaterial,
+            HIS_TREATMENT _treatment, 
+            List<V_HIS_EXP_MEST> _lstExpMest
+        )
+        {
+            try
+            {
+                this.expMest = _expMest;
+                this.lstMedicine = _lstMedicine;
+                this.lstMaterial = _lstMaterial;
+                this.treatment = _treatment;
+                this.lstExpMestView = _lstExpMest; 
             }
             catch (Exception ex)
             {

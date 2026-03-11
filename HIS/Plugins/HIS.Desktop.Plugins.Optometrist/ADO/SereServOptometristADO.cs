@@ -19,10 +19,8 @@ using MOS.EFMODEL.DataModels;
 
 namespace HIS.Desktop.Plugins.Optometrist.ADO
 {
-    class SereServOptometristADO : HIS_SERE_SERV
+    class SereServOptometristADO : V_HIS_SERE_SERV_VIEX
     {
-        public long? VISION_TEST_TIME { get; set; }
-        public string VISION_TEST_ROOM_NAME { get; set; }
-        public long? VISION_TEST_NUM { get; set; }
+
     }
 }

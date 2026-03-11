@@ -148,10 +148,6 @@ namespace MPS.Processor.Mps000049.PDO
         public long TYPE_ID { get; set; }
         public long MEDI_MATE_TYPE_ID { get; set; }
         public string USED_PART { get; set; }
-
-        public string USED_PART { get; set; }
->>>>>>> Stashed changes
-
         public string MEDICINE_TYPE_NAME { get; set; }
         public string MEDICINE_TYPE_CODE { get; set; }
         public string SERVICE_UNIT_CODE { get; set; }
@@ -202,7 +198,7 @@ namespace MPS.Processor.Mps000049.PDO
         public long? OTHER_PAY_SOURCE_ID { get; set; }
 
         public string OTHER_PAY_SOURCE_NAME { get; set; }
-
+        public long? MEDICINE_LINE_ID { get; set; }
         public Mps000049ADO(
             V_HIS_EXP_MEST _expMest,
             List<V_HIS_EXP_MEST_MEDICINE> _expMestMedicines,
@@ -255,7 +251,7 @@ namespace MPS.Processor.Mps000049.PDO
                     this.MEDICINE_GROUP_ID = _expMestMedicines[0].MEDICINE_GROUP_ID;
                     this.MEDICINE_GROUP_CODE = _expMestMedicines[0].MEDICINE_GROUP_CODE;
                     this.MEDICINE_GROUP_NAME = _expMestMedicines[0].MEDICINE_GROUP_NAME;
-
+                    this.MEDICINE_LINE_ID = _expMestMedicines[0].MEDICINE_LINE_ID;
                     if (vHisMedicineTypes != null && vHisMedicineTypes.Count > 0)
                     {
                         V_HIS_MEDICINE_TYPE MedicineType = vHisMedicineTypes.FirstOrDefault(o => o.ID == _expMestMedicines[0].MEDICINE_TYPE_ID);

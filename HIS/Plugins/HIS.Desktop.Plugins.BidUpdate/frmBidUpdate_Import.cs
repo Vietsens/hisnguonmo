@@ -209,6 +209,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
                     if (!String.IsNullOrWhiteSpace(medicineTypeImport.BID_NUM_ORDER))
                         medicineType.BID_NUM_ORDER = medicineTypeImport.BID_NUM_ORDER;
 
+                    if (!String.IsNullOrWhiteSpace(medicineTypeImport.TT_THAU))
+                        medicineType.TT_THAU = medicineTypeImport.TT_THAU;
+
                     if (!String.IsNullOrWhiteSpace(medicineTypeImport.BID_PACKAGE_CODE))
                         medicineType.BID_PACKAGE_CODE = medicineTypeImport.BID_PACKAGE_CODE;
 
@@ -493,6 +496,9 @@ namespace HIS.Desktop.Plugins.BidUpdate
 
                     if (!String.IsNullOrWhiteSpace(materialTypeImport.BID_NUM_ORDER))
                         medicineType.BID_NUM_ORDER = materialTypeImport.BID_NUM_ORDER;
+
+                    if (!String.IsNullOrWhiteSpace(materialTypeImport.TT_THAU))
+                        medicineType.TT_THAU = materialTypeImport.TT_THAU;
 
                     if (!String.IsNullOrWhiteSpace(materialTypeImport.BID_PACKAGE_CODE))
                         medicineType.BID_PACKAGE_CODE = materialTypeImport.BID_PACKAGE_CODE;

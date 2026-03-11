@@ -41,6 +41,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 ValidAmount();
                 ValidImpPrice();
                 ValidImpVatRatio();
+                ValidTTThau();
                 ValidBidGroupCode();
                 ValidSupplier();
                 //ValidCboDosageForm();
@@ -261,6 +262,22 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 //bidNumOrderValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
                 bidNumOrderValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProviderLeft.SetValidationRule(txtBidNumOrder, bidNumOrderValidationRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidTTThau()
+        {
+            try
+            {
+                TTThauValidationRule tTThauValidationRule = new TTThauValidationRule();
+                tTThauValidationRule.txtTTThau = txtTTThau;
+                //bidNumOrderValidationRule.ErrorText = Resources.ResourceMessage.ThieuTruongDuLieuBatBuoc;
+                tTThauValidationRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                dxValidationProviderLeft.SetValidationRule(txtTTThau, tTThauValidationRule);
             }
             catch (Exception ex)
             {

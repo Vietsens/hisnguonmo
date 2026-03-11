@@ -35,5 +35,7 @@ namespace HIS.Desktop.Plugins.HisMachine.XML
         public int? NamSD { get; set; }
         public string MaMay { get; set; }
         public string SoLuuHanh { get; set; }
+        public int? TuNgay { get; set; }
+        public int? DenNgay { get; set; }
     }
 }

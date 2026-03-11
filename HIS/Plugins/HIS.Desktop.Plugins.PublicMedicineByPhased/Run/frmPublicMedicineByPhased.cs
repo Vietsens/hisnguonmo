@@ -108,6 +108,8 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                 InitCheck(checkedCboHisPatientType, SelectionGrid__ServiceReqFunt);
 
                 LoadDataCboDepartment(null);
+                this.cboDepartment.EditValueChanged += new System.EventHandler(this.cboDepartment_EditValueChanged);
+
                 SetDefaultValue();
                 GetAllData();
 
@@ -129,7 +131,14 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
             try
             {
                 checkedCboHisPatientType.Text = "Tất cả";
-                this.cboDepartment.EditValue = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId;
+                var workplace = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId);
+                if (workplace != null) 
+                {
+                    this.cboDepartment.EditValue = workplace.DepartmentId;
+                    LoadDataCboRoom(workplace.DepartmentId);
+                    this.cboRoom.EditValue = this.currentModule.RoomId;
+                }
+
             }
             catch (Exception ex)
             {
@@ -424,6 +433,61 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDepartment_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboDepartment.EditValue != null && cboDepartment.EditValue.ToString() != "")
+                {
+                    long departmentId = (long)cboDepartment.EditValue;
+                    LoadDataCboRoom(departmentId);
+                }
+                else
+                {
+                    LoadDataCboRoom(null);
+                }
+                cboRoom.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboRoom_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    if (cboRoom.EditValue != null)
+                    {
+                        cboRoom.Properties.Buttons[1].Visible = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboRoom_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboRoom.EditValue = null;
+                    cboRoom.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
