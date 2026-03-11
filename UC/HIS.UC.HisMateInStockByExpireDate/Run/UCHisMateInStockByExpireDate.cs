@@ -187,8 +187,9 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                         }
                         else
                         {
-                            parentAdo.CONCRETE_ID__IN_DATE = "Không xác định";
+                            parentAdo.CONCRETE_ID__IN_DATE = "Không xác định_" + kIndex;
                             parentAdo.MATERIAL_TYPE_CODE = "Không xác định";
+                            kIndex++;
                             HisMateInStockByExpireDateADOs.Add(parentAdo);
                             var listParent = listItem.Where(o => String.IsNullOrEmpty(o.ParentNodeId)).ToList();
                             foreach (var parent in listParent)
@@ -224,8 +225,9 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                     HisMateInStockByExpireDateADOs = HisMateInStockByExpireDateADOs.OrderBy(o => o.NUM_ORDER).ThenBy(o => o.MATERIAL_TYPE_NAME).ToList();
                 }
                 records = new BindingList<HisMateInStockByExpireDateADO>(HisMateInStockByExpireDateADOs);
+                trvService.DataSource = null;
                 trvService.DataSource = records;
-                trvService.ExpandAll();
+                trvService.ExpandToLevel(0);
                 if (this.HisMateInStockByExpireDate_CheckAllNode != null)
                     this.HisMateInStockByExpireDate_CheckAllNode(trvService.Nodes);
             }
@@ -449,7 +451,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                 this.HisMateInStockByExpireDateADO.MediStocks = vHisMediStocks;
                 if (this.HisMateInStockByExpireDateADO.HisMateInStockByExpireDates == null)
                     records = null;
-                this._MaterialTypeIds = MedicineTypeIds;
+                this._MaterialTypeIds = MedicineTypeIds; 
                 BindTreePlus();
             }
             catch (Exception ex)
