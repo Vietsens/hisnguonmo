@@ -15,20 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Utils;
+using HIS.UC.FormType;
+using Inventec.Desktop.Common.Message;
+using MRS.SDO;
+using SAR.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.Utils;
-using Inventec.Desktop.Common.Message;
-using SAR.EFMODEL.DataModels;
-using System.IO;
-using MRS.SDO;
+using static DevExpress.Data.Helpers.ExpressiveSortInfo;
 
 namespace His.UC.CreateReport.Design.CreateReport
 {
@@ -143,7 +145,14 @@ namespace His.UC.CreateReport.Design.CreateReport
                     }
                     else
                     {
-                        var print = new Inventec.Common.FlexCelPrint.frmSetupPrintPreview(stream, "");
+                        var ReportType = BackendDataWorker.Get<SAR_REPORT_TYPE>().FirstOrDefault(o=>o.ID == sarReportResult.REPORT_TYPE_ID);
+
+                        Inventec.Common.SignLibrary.ADO.InputADO inputADO = null;
+                        if (ReportType != null)
+                        {
+                            inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADO(ReportType != null ? ReportType.REPORT_TYPE_CODE : "", ReportType != null ? ReportType.REPORT_TYPE_CODE : "", sarReportResult.REPORT_NAME);
+                        }
+                        var print = new Inventec.Common.FlexCelPrint.frmSetupPrintPreview(stream, "", "", 1, true, false, inputADO);
                         print.ShowDialog();
                     }
                 }
