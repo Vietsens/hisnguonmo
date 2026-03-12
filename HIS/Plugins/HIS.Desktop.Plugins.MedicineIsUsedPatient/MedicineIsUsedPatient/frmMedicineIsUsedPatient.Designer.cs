@@ -85,7 +85,6 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.repDateEna = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn3 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -97,6 +96,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn8 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repAdd = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repDateEna = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.repDateDis = new DevExpress.XtraEditors.Repository.RepositoryItemDateEdit();
             this.repAmountEna = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.repAmountDis = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
@@ -188,10 +188,10 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDateEna)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDateEna.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDelete)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAdd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDateEna)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDateEna.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDateDis)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDateDis.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAmountEna)).BeginInit();
@@ -462,10 +462,10 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.popupControlContainer1.Controls.Add(this.layoutControl2);
             this.popupControlContainer1.Location = new System.Drawing.Point(316, 98);
             this.popupControlContainer1.Manager = this.barManager1;
-            this.popupControlContainer1.MaximumSize = new System.Drawing.Size(717, 200);
-            this.popupControlContainer1.MinimumSize = new System.Drawing.Size(717, 200);
+            this.popupControlContainer1.MaximumSize = new System.Drawing.Size(803, 200);
+            this.popupControlContainer1.MinimumSize = new System.Drawing.Size(750, 200);
             this.popupControlContainer1.Name = "popupControlContainer1";
-            this.popupControlContainer1.Size = new System.Drawing.Size(717, 200);
+            this.popupControlContainer1.Size = new System.Drawing.Size(803, 200);
             this.popupControlContainer1.TabIndex = 1;
             this.popupControlContainer1.Visible = false;
             // 
@@ -481,15 +481,15 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.layoutControl2.Location = new System.Drawing.Point(0, 0);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.layoutControlGroup2;
-            this.layoutControl2.Size = new System.Drawing.Size(717, 200);
+            this.layoutControl2.Size = new System.Drawing.Size(803, 200);
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(587, 176);
+            this.btnOk.Location = new System.Drawing.Point(657, 176);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(128, 22);
+            this.btnOk.Size = new System.Drawing.Size(144, 22);
             this.btnOk.StyleController = this.layoutControl2;
             this.btnOk.TabIndex = 9;
             this.btnOk.Text = "Xác nhận";
@@ -498,9 +498,9 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             // label4
             // 
             this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label4.Location = new System.Drawing.Point(498, 0);
+            this.label4.Location = new System.Drawing.Point(558, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(166, 27);
+            this.label4.Size = new System.Drawing.Size(186, 27);
             this.label4.TabIndex = 8;
             this.label4.Text = "Tối";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -508,9 +508,9 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             // label3
             // 
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label3.Location = new System.Drawing.Point(333, 0);
+            this.label3.Location = new System.Drawing.Point(373, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(165, 27);
+            this.label3.Size = new System.Drawing.Size(185, 27);
             this.label3.TabIndex = 7;
             this.label3.Text = "Chiều";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -518,9 +518,9 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             // label2
             // 
             this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Location = new System.Drawing.Point(167, 0);
+            this.label2.Location = new System.Drawing.Point(187, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(166, 27);
+            this.label2.Size = new System.Drawing.Size(186, 27);
             this.label2.TabIndex = 6;
             this.label2.Text = "Trưa";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -530,7 +530,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label1.Location = new System.Drawing.Point(2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(165, 27);
+            this.label1.Size = new System.Drawing.Size(185, 27);
             this.label1.TabIndex = 5;
             this.label1.Text = "Sáng";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -548,7 +548,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repDateDis,
             this.repAmountEna,
             this.repAmountDis});
-            this.gridControl1.Size = new System.Drawing.Size(713, 145);
+            this.gridControl1.Size = new System.Drawing.Size(799, 145);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -580,6 +580,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn1.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn1.Caption = "TG";
+            this.gridColumn1.ColumnEdit = this.repDateEna;
             this.gridColumn1.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.gridColumn1.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.gridColumn1.FieldName = "TG_MORNING_STR";
@@ -593,23 +594,6 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn1.VisibleIndex = 0;
             this.gridColumn1.Width = 125;
             // 
-            // repDateEna
-            // 
-            this.repDateEna.AutoHeight = false;
-            this.repDateEna.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.repDateEna.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.repDateEna.CalendarView = DevExpress.XtraEditors.Repository.CalendarView.Vista;
-            this.repDateEna.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
-            this.repDateEna.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.repDateEna.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
-            this.repDateEna.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.repDateEna.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.repDateEna.Name = "repDateEna";
-            this.repDateEna.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
-            this.repDateEna.EditValueChanged += new System.EventHandler(this.repDateEna_EditValueChanged);
-            // 
             // gridColumn2
             // 
             this.gridColumn2.AppearanceCell.Options.UseTextOptions = true;
@@ -618,14 +602,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn2.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn2.Caption = "SL";
             this.gridColumn2.FieldName = "SL_MORNING";
-            this.gridColumn2.MaxWidth = 40;
-            this.gridColumn2.MinWidth = 40;
+            this.gridColumn2.MaxWidth = 60;
+            this.gridColumn2.MinWidth = 60;
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowMove = false;
             this.gridColumn2.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn2.Visible = true;
             this.gridColumn2.VisibleIndex = 1;
-            this.gridColumn2.Width = 40;
+            this.gridColumn2.Width = 60;
             // 
             // gridColumn3
             // 
@@ -634,6 +618,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn3.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn3.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn3.Caption = "TG";
+            this.gridColumn3.ColumnEdit = this.repDateEna;
             this.gridColumn3.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.gridColumn3.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.gridColumn3.FieldName = "TG_NOON_STR";
@@ -655,14 +640,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn4.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn4.Caption = "SL";
             this.gridColumn4.FieldName = "SL_NOON";
-            this.gridColumn4.MaxWidth = 40;
-            this.gridColumn4.MinWidth = 40;
+            this.gridColumn4.MaxWidth = 60;
+            this.gridColumn4.MinWidth = 60;
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowMove = false;
             this.gridColumn4.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn4.Visible = true;
             this.gridColumn4.VisibleIndex = 3;
-            this.gridColumn4.Width = 40;
+            this.gridColumn4.Width = 60;
             // 
             // gridColumn5
             // 
@@ -671,6 +656,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn5.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn5.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn5.Caption = "TG";
+            this.gridColumn5.ColumnEdit = this.repDateEna;
             this.gridColumn5.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.gridColumn5.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.gridColumn5.FieldName = "TG_AFTERNOON_STR";
@@ -692,14 +678,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn6.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn6.Caption = "SL";
             this.gridColumn6.FieldName = "SL_AFTERNOON";
-            this.gridColumn6.MaxWidth = 40;
-            this.gridColumn6.MinWidth = 40;
+            this.gridColumn6.MaxWidth = 60;
+            this.gridColumn6.MinWidth = 60;
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowMove = false;
             this.gridColumn6.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn6.Visible = true;
             this.gridColumn6.VisibleIndex = 5;
-            this.gridColumn6.Width = 40;
+            this.gridColumn6.Width = 60;
             // 
             // gridColumn9
             // 
@@ -708,6 +694,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn9.AppearanceHeader.Options.UseTextOptions = true;
             this.gridColumn9.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn9.Caption = "TG";
+            this.gridColumn9.ColumnEdit = this.repDateEna;
             this.gridColumn9.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.gridColumn9.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.gridColumn9.FieldName = "TG_EVENING_STR";
@@ -729,14 +716,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.gridColumn10.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gridColumn10.Caption = "SL";
             this.gridColumn10.FieldName = "SL_EVENING";
-            this.gridColumn10.MaxWidth = 40;
-            this.gridColumn10.MinWidth = 40;
+            this.gridColumn10.MaxWidth = 60;
+            this.gridColumn10.MinWidth = 60;
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.AllowMove = false;
             this.gridColumn10.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn10.Visible = true;
             this.gridColumn10.VisibleIndex = 7;
-            this.gridColumn10.Width = 40;
+            this.gridColumn10.Width = 60;
             // 
             // gridColumn7
             // 
@@ -784,6 +771,23 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.repAdd.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repAdd.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repAdd_ButtonClick);
             // 
+            // repDateEna
+            // 
+            this.repDateEna.AutoHeight = false;
+            this.repDateEna.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repDateEna.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repDateEna.CalendarView = DevExpress.XtraEditors.Repository.CalendarView.Vista;
+            this.repDateEna.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.repDateEna.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repDateEna.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.repDateEna.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repDateEna.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.repDateEna.Name = "repDateEna";
+            this.repDateEna.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
+            this.repDateEna.EditValueChanged += new System.EventHandler(this.repDateEna_EditValueChanged);
+            // 
             // repDateDis
             // 
             this.repDateDis.AutoHeight = false;
@@ -829,7 +833,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.emptySpaceItem4});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
-            this.layoutControlGroup2.Size = new System.Drawing.Size(717, 200);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(803, 200);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // layoutControlItem20
@@ -838,7 +842,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.layoutControlItem20.Location = new System.Drawing.Point(0, 27);
             this.layoutControlItem20.Name = "layoutControlItem20";
             this.layoutControlItem20.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 0, 2);
-            this.layoutControlItem20.Size = new System.Drawing.Size(717, 147);
+            this.layoutControlItem20.Size = new System.Drawing.Size(803, 147);
             this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem20.TextVisible = false;
             // 
@@ -848,54 +852,54 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.layoutControlItem21.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem21.Name = "layoutControlItem21";
             this.layoutControlItem21.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 0, 0);
-            this.layoutControlItem21.Size = new System.Drawing.Size(167, 27);
+            this.layoutControlItem21.Size = new System.Drawing.Size(187, 27);
             this.layoutControlItem21.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem21.TextVisible = false;
             // 
             // layoutControlItem22
             // 
             this.layoutControlItem22.Control = this.label2;
-            this.layoutControlItem22.Location = new System.Drawing.Point(167, 0);
+            this.layoutControlItem22.Location = new System.Drawing.Point(187, 0);
             this.layoutControlItem22.Name = "layoutControlItem22";
             this.layoutControlItem22.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem22.Size = new System.Drawing.Size(166, 27);
+            this.layoutControlItem22.Size = new System.Drawing.Size(186, 27);
             this.layoutControlItem22.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem22.TextVisible = false;
             // 
             // layoutControlItem23
             // 
             this.layoutControlItem23.Control = this.label3;
-            this.layoutControlItem23.Location = new System.Drawing.Point(333, 0);
+            this.layoutControlItem23.Location = new System.Drawing.Point(373, 0);
             this.layoutControlItem23.Name = "layoutControlItem23";
             this.layoutControlItem23.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem23.Size = new System.Drawing.Size(165, 27);
+            this.layoutControlItem23.Size = new System.Drawing.Size(185, 27);
             this.layoutControlItem23.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem23.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(664, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(744, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(53, 27);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(59, 27);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem24
             // 
             this.layoutControlItem24.Control = this.label4;
-            this.layoutControlItem24.Location = new System.Drawing.Point(498, 0);
+            this.layoutControlItem24.Location = new System.Drawing.Point(558, 0);
             this.layoutControlItem24.Name = "layoutControlItem24";
             this.layoutControlItem24.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem24.Size = new System.Drawing.Size(166, 27);
+            this.layoutControlItem24.Size = new System.Drawing.Size(186, 27);
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
             // layoutControlItem25
             // 
             this.layoutControlItem25.Control = this.btnOk;
-            this.layoutControlItem25.Location = new System.Drawing.Point(585, 174);
+            this.layoutControlItem25.Location = new System.Drawing.Point(655, 174);
             this.layoutControlItem25.Name = "layoutControlItem25";
-            this.layoutControlItem25.Size = new System.Drawing.Size(132, 26);
+            this.layoutControlItem25.Size = new System.Drawing.Size(148, 26);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
             // 
@@ -904,7 +908,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.emptySpaceItem4.AllowHotTrack = false;
             this.emptySpaceItem4.Location = new System.Drawing.Point(0, 174);
             this.emptySpaceItem4.Name = "emptySpaceItem4";
-            this.emptySpaceItem4.Size = new System.Drawing.Size(585, 26);
+            this.emptySpaceItem4.Size = new System.Drawing.Size(655, 26);
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             // 
             // treeMedicineIsUsePt
@@ -1773,10 +1777,10 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDateEna.CalendarTimeProperties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repDateEna)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDelete)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAdd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDateEna.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repDateEna)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDateDis.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repDateDis)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repAmountEna)).EndInit();

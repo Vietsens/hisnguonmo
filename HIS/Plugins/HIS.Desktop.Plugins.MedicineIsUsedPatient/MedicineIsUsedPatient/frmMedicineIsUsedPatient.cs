@@ -939,6 +939,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                             }
                             sdo.ExpMedicineIds = new List<long>();
                             sdo.ExpMaterialIds = new List<long>();
+                            List<string> mess = new List<string>();
                             foreach (var item in listResultCheck)
                             {
                                 if (item.IS_MEDICINE)
@@ -949,6 +950,19 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                                 {
                                     sdo.ExpMaterialIds.Add(item.EXP_MEST_MEDI_MATE_ID);
                                 }
+                                if(item.INTRUCTION_TIME > sdo.UsedTime)
+                                {
+                                    mess.Add("Thời gian dùng của " + item.MEDIMATE_TYPE_NAME+" không được nhỏ hơn thời gian y lệnh ("
+                            +
+                            Inventec.Common.DateTime.Convert.TimeNumberToTimeString(item.INTRUCTION_TIME)
+                            + ")");
+                                }    
+                            }
+                            if (mess != null && mess.Count > 0)
+                            {
+                                WaitingManager.Hide();
+                                XtraMessageBox.Show(string.Join("\r\n",mess.Distinct().ToList()),"Cảnh báo");
+                                return;
                             }
                             Inventec.Common.Logging.LogSystem.Debug("LoadSearch: " + Inventec.Common.Logging.LogUtil.TraceData("HisExpMestUsedSDO__", sdo));
                             if (isUsed)
@@ -1626,19 +1640,19 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                     if (e.Column.FieldName == "TG_MORNING_STR")
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(dataRow.TG_MORNING ?? 0);
+                        e.Value = dataRow.TG_MORNING.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataRow.TG_MORNING.Value) : (DateTime?)null;
                     }
                     else if (e.Column.FieldName == "TG_NOON_STR")
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(dataRow.TG_NOON ?? 0);
+                        e.Value = dataRow.TG_NOON.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataRow.TG_NOON.Value) : (DateTime?)null;
                     }
                     else if (e.Column.FieldName == "TG_AFTERNOON_STR")
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(dataRow.TG_AFTERNOON ?? 0);
+                        e.Value = dataRow.TG_AFTERNOON.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataRow.TG_AFTERNOON.Value) : (DateTime?)null;
                     }
                     else if (e.Column.FieldName == "TG_EVENING_STR")
                     {
-                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeStringWithoutSecond(dataRow.TG_EVENING ?? 0);
+                        e.Value = dataRow.TG_EVENING.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataRow.TG_EVENING.Value) : (DateTime?)null;
                     }
                 }
             }
@@ -1844,14 +1858,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     }
 
                     // Sáng
-                    if (item.TG_MORNING.HasValue && item.SL_MORNING.HasValue)
+                    if (item.TG_MORNING.HasValue || item.SL_MORNING.HasValue)
                     {
                         var used = new HIS_EXP_MEDIMATE_USED
                         {
                             ID = item.ID,
                             TDL_TREATMENT_ID = currentTreatment != null ? currentTreatment.ID : 0,
-                            USE_TIME = item.TG_MORNING.Value,
-                            AMOUNT = item.SL_MORNING.Value,
+                            USE_TIME = item.TG_MORNING,
+                            AMOUNT = item.SL_MORNING,
                             MEDICATION_SESSION = 1
                         };
                         if (rowData.IS_MEDICINE)
@@ -1867,14 +1881,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     }
 
                     // Trưa
-                    if (item.TG_NOON.HasValue && item.SL_NOON.HasValue)
+                    if (item.TG_NOON.HasValue || item.SL_NOON.HasValue)
                     {
                         var used = new HIS_EXP_MEDIMATE_USED
                         {
                             ID = item.ID,
                             TDL_TREATMENT_ID = currentTreatment != null ? currentTreatment.ID : 0,
-                            USE_TIME = item.TG_NOON.Value,
-                            AMOUNT = item.SL_NOON.Value,
+                            USE_TIME = item.TG_NOON,
+                            AMOUNT = item.SL_NOON,
                             MEDICATION_SESSION = 2
                         };
                         if (rowData.IS_MEDICINE)
@@ -1890,14 +1904,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     }
 
                     // Chiều
-                    if (item.TG_AFTERNOON.HasValue && item.SL_AFTERNOON.HasValue)
+                    if (item.TG_AFTERNOON.HasValue || item.SL_AFTERNOON.HasValue)
                     {
                         var used = new HIS_EXP_MEDIMATE_USED
                         {
                             ID = item.ID,
                             TDL_TREATMENT_ID = currentTreatment != null ? currentTreatment.ID : 0,
-                            USE_TIME = item.TG_AFTERNOON.Value,
-                            AMOUNT = item.SL_AFTERNOON.Value,
+                            USE_TIME = item.TG_AFTERNOON,
+                            AMOUNT = item.SL_AFTERNOON,
                             MEDICATION_SESSION = 3
                         };
                         if (rowData.IS_MEDICINE)
@@ -1913,14 +1927,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     }
 
                     // Tối
-                    if (item.TG_EVENING.HasValue && item.SL_EVENING.HasValue)
+                    if (item.TG_EVENING.HasValue || item.SL_EVENING.HasValue)
                     {
                         var used = new HIS_EXP_MEDIMATE_USED
                         {
                             ID = item.ID,
                             TDL_TREATMENT_ID = currentTreatment != null ? currentTreatment.ID : 0,
-                            USE_TIME = item.TG_EVENING.Value,
-                            AMOUNT = item.SL_EVENING.Value,
+                            USE_TIME = item.TG_EVENING,
+                            AMOUNT = item.SL_EVENING,
                             MEDICATION_SESSION = 4
                         };
                         if (rowData.IS_MEDICINE)
@@ -1938,11 +1952,18 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
 
 
                 var notify = usedEntities.Where(o => o.USE_TIME < rowData.INTRUCTION_TIME).ToList();
-                if (notify.Any())
+                if (notify != null && notify.Count > 0)
                 {
                    
                     XtraMessageBox.Show("Có thời gian dùng thuốc nhỏ hơn thời gian y lệnh (" + Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowData.INTRUCTION_TIME) + "). Vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+                var checkUsed = usedEntities.Where(o => o.USE_TIME == null || o.AMOUNT == null).ToList();
+                if (checkUsed != null && checkUsed.Count > 0)
+                {
+                    XtraMessageBox.Show("Thời gian hoặc số lượng chưa được nhập. Vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }    
 
                 // Gắn lại danh sách vào node đang focus
                 rowData.EXP_MEDIMATE_USEDs = usedEntities;
