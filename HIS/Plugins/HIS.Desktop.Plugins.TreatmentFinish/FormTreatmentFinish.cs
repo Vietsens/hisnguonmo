@@ -2890,6 +2890,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     return;
                 }
 
+                if (!this.CheckUsedDrugQuantityMismatch_ForSave(ValidationDataType.PopupMessage, ref warningADONew))
+                {
+                    return;
+                }
+
                 HIS.Desktop.Plugins.Library.CheckIcd.CheckIcdManager check = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(null, currentHisTreatment);
                 string message = null;
                 if (CheckIcdWhenSave == "1" || CheckIcdWhenSave == "2")
@@ -5426,6 +5431,11 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 }
 
                 if (!this.CheckPrescriptionForSave(ValidationDataType.GetListMessage, ref this.warningADOs))
+                {
+                    return;
+                }
+
+                if (!this.CheckUsedDrugQuantityMismatch_ForSave(ValidationDataType.GetListMessage, ref this.warningADOs))
                 {
                     return;
                 }
