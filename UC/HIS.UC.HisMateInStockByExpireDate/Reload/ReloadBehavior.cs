@@ -51,7 +51,7 @@ namespace HIS.UC.HisMateInStockByExpireDate.Reload
         {
             try
             {
-                ((HIS.UC.HisMateInStockByExpireDate.Run.UCHisMateInStockByExpireDate)this.control).Reload(HisMateInStockByExpireDates, this._MedicineTypeIds);                
+                ((HIS.UC.HisMateInStockByExpireDate.Run.UCHisMateInStockByExpireDate)this.control).Reload(HisMateInStockByExpireDates, this._MedicineTypeIds, this.lstMediStock);
             }
             catch (Exception ex)
             {

@@ -69,6 +69,9 @@
     <Reference Include="HIS.Desktop.LocalStorage.LocalData">
       <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.ModuleExt">
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
@@ -80,7 +83,7 @@
       <HintPath>..\..\..\lib\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.WorkPlace">
-      <HintPath>..\..\..\lib\HIS\HIS.UC.WorkPlace\HIS.UC.WorkPlace.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.WorkPlace.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -218,6 +221,12 @@
     <Compile Include="ClassGlobal\ResourceMessage.cs" />
     <Compile Include="Config\UCPlusInfoConfig.cs" />
     <Compile Include="ClassGlobal\GlobalStore.cs" />
+    <Compile Include="Design\UCBudRelUnitCode.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Design\UCBudRelUnitCode.Designer.cs">
+      <DependentUpon>UCBudRelUnitCode.cs</DependentUpon>
+    </Compile>
     <Compile Include="Design\UCCheckBoxCCCD.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -460,6 +469,10 @@
     <Compile Include="Validate\ValidControl.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
+      <Project>{808C25CD-0925-417F-BBF9-CAF9604DA879}</Project>
+      <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

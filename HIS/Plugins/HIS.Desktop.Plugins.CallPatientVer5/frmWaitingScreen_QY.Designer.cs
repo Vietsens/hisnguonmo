@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl13 = new DevExpress.XtraLayout.LayoutControl();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
@@ -114,14 +115,14 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer();
-            this.timerForScrollTextBottom = new System.Windows.Forms.Timer();
-            this.timerForScrollListPatient = new System.Windows.Forms.Timer();
-            this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer();
-            this.imageList1 = new System.Windows.Forms.ImageList();
-            this.Timer = new System.Windows.Forms.Timer();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip();
+            this.timerForHightLightCallPatientLayout = new System.Windows.Forms.Timer(this.components);
+            this.timerForScrollTextBottom = new System.Windows.Forms.Timer(this.components);
+            this.timerForScrollListPatient = new System.Windows.Forms.Timer(this.components);
+            this.timerAutoLoadDataPatient = new System.Windows.Forms.Timer(this.components);
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.Timer = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cmsConfig = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -725,6 +726,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             this.gridColumnUTExam.AppearanceCell.Options.UseForeColor = true;
             this.gridColumnUTExam.AppearanceCell.Options.UseTextOptions = true;
             this.gridColumnUTExam.AppearanceCell.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gridColumnUTExam.AppearanceCell.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.gridColumnUTExam.AppearanceHeader.Font = new System.Drawing.Font("Arial", 22F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gridColumnUTExam.AppearanceHeader.Options.UseFont = true;
             this.gridColumnUTExam.AppearanceHeader.Options.UseTextOptions = true;
@@ -736,7 +738,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             this.gridColumnUTExam.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnUTExam.Visible = true;
             this.gridColumnUTExam.VisibleIndex = 3;
-            this.gridColumnUTExam.Width = 66;
+            this.gridColumnUTExam.Width = 120; //cu 66
             // 
             // gridColumn5
             // 
@@ -1034,7 +1036,7 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
             this.gridColumnUT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnUT.Visible = true;
             this.gridColumnUT.VisibleIndex = 3;
-            this.gridColumnUT.Width = 76;
+            this.gridColumnUT.Width = 120; //cu 76
             // 
             // gridColumnServiceReqStt
             // 

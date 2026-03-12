@@ -86,6 +86,8 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
         internal object AccountInfo;
         internal object defaultAccount;
 
+        private static bool _isXemNgay = false;
+
         SendResultToOtherForm sendResultToOtherForm;
         #endregion
 
@@ -178,6 +180,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
                 CommonParam param = new CommonParam();
+                chkXemTruoc.Checked = _isXemNgay;
                 if (this.treatment != null)
                 {
                     AutoMapper.Mapper.CreateMap<V_HIS_TREATMENT_FEE, V_HIS_TREATMENT_1>();
@@ -1621,6 +1624,11 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void chkXemTruoc_CheckedChanged(object sender, EventArgs e)
+        {
+            _isXemNgay = chkXemTruoc.Checked;
         }
         #endregion
 

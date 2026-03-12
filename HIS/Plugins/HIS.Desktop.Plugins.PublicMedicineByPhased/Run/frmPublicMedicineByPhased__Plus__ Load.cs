@@ -141,6 +141,14 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                 {
                     serviceReqFilter.REQUEST_DEPARTMENT_ID = null;
                 }
+                if (cboRoom.EditValue != null && cboRoom.EditValue.ToString() != "")
+                {
+                    serviceReqFilter.REQUEST_ROOM_ID = (long)cboRoom.EditValue;
+                }
+                else
+                {
+                    serviceReqFilter.REQUEST_ROOM_ID = null;
+                }
                 //WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId; // filter theo khoa yeu cau(khoa cua nguoi dung dang dang nhap)
                 //this.cboDepartment.Enabled = false;
 
@@ -214,6 +222,45 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                 ControlEditorLoader.Load(this.cboDepartment, Departmnets, controlEditorADO);
                 //this.cboDepartment.EditValue = WorkPlace.WorkPlaceSDO.FirstOrDefault(p => p.RoomId == this.currentModule.RoomId).DepartmentId;
             }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadDataCboRoom(long? departmentId)
+        {
+            try
+            {
+                List<V_HIS_ROOM> Rooms = new List<V_HIS_ROOM>();
+
+                if (departmentId.HasValue)
+                {
+                    Rooms = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.IS_ACTIVE == 1 && p.DEPARTMENT_ID == departmentId.Value).ToList();
+                }
+                else
+                {
+                    Rooms = BackendDataWorker.Get<V_HIS_ROOM>().Where(p => p.IS_ACTIVE == 1).ToList();
+                }
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("ROOM_CODE", "Mã phòng", 100, 1));
+                columnInfos.Add(new ColumnInfo("ROOM_NAME", "Tên phòng", 250, 2));
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO("ROOM_NAME", "ID", columnInfos, false, 250);
+                ControlEditorLoader.Load(this.cboRoom, Rooms, controlEditorADO);
+
+                // Cho phép cboRoom nh?n giá tr? null và không hi?n th? text khi null
+                cboRoom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+                cboRoom.Properties.NullText = "";
+
+                // Ki?m tra xem cboRoom ?ã có nút Delete ch?a, n?u ch?a thì thêm vào b?ng code
+                if (cboRoom.Properties.Buttons.Count < 2)
+                {
+                    cboRoom.Properties.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));
+                    cboRoom.Properties.Buttons[1].Visible = false; // M?c ??nh ?n nút x khi ch?a ch?n gì
+                }
+            } 
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);

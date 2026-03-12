@@ -8473,7 +8473,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 this.gridViewServiceProcess.ClearColumnsFilter();
                 this.RefeshSereServInTreatmentData();
                 this.SetEnableButtonControl(this.actionType);
-                this.CheckAssignServiceSimultaneityOption();
+                //this.CheckAssignServiceSimultaneityOption();
                 WaitingManager.Hide();
             }
             catch (Exception ex)

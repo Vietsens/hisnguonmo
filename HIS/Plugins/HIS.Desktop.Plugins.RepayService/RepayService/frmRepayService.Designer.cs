@@ -48,8 +48,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             this.components = new System.ComponentModel.Container();
             this.spinTongTuDen = new DevExpress.XtraEditors.SpinEdit();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.labelAccountInfo = new System.Windows.Forms.Label();
-            this.chkAutoClose = new DevExpress.XtraEditors.CheckEdit();
+            this.chkXemTruoc = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSave = new DevExpress.XtraBars.BarButtonItem();
@@ -59,6 +58,9 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.btnBankAccount = new DevExpress.XtraEditors.SimpleButton();
+            this.labelAccountInfo = new System.Windows.Forms.Label();
+            this.chkAutoClose = new DevExpress.XtraEditors.CheckEdit();
             this.spinTransferAmount = new DevExpress.XtraEditors.SpinEdit();
             this.spinAmount = new DevExpress.XtraEditors.TextEdit();
             this.txtRepayReason = new DevExpress.XtraEditors.TextEdit();
@@ -114,20 +116,21 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.timerInitForm = new System.Windows.Forms.Timer(this.components);
-            this.btnBankAccount = new DevExpress.XtraEditors.SimpleButton();
-            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.spinTongTuDen.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chkAutoClose.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkXemTruoc.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoClose.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinTransferAmount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinAmount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtRepayReason.Properties)).BeginInit();
@@ -170,13 +173,14 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             this.SuspendLayout();
             // 
             // spinTongTuDen
@@ -201,6 +205,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.chkXemTruoc);
             this.layoutControl1.Controls.Add(this.btnBankAccount);
             this.layoutControl1.Controls.Add(this.labelAccountInfo);
             this.layoutControl1.Controls.Add(this.chkAutoClose);
@@ -229,26 +234,18 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             this.layoutControl1.TabIndex = 22;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // labelAccountInfo
+            // chkXemTruoc
             // 
-            this.labelAccountInfo.Location = new System.Drawing.Point(132, 432);
-            this.labelAccountInfo.Name = "labelAccountInfo";
-            this.labelAccountInfo.Size = new System.Drawing.Size(526, 22);
-            this.labelAccountInfo.TabIndex = 20;
-            this.labelAccountInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // chkAutoClose
-            // 
-            this.chkAutoClose.Location = new System.Drawing.Point(222, 458);
-            this.chkAutoClose.MenuManager = this.barManager1;
-            this.chkAutoClose.Name = "chkAutoClose";
-            this.chkAutoClose.Properties.Caption = "     :Tự động đóng";
-            this.chkAutoClose.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkAutoClose.Size = new System.Drawing.Size(436, 19);
-            this.chkAutoClose.StyleController = this.layoutControl1;
-            this.chkAutoClose.TabIndex = 18;
-            this.chkAutoClose.ToolTip = "Tự động đóng chức năng khi \'Lưu\' hoặc \'Lưu in\' thành công";
-            this.chkAutoClose.CheckedChanged += new System.EventHandler(this.chkAutoClose_CheckedChanged);
+            this.chkXemTruoc.Location = new System.Drawing.Point(422, 458);
+            this.chkXemTruoc.MenuManager = this.barManager1;
+            this.chkXemTruoc.Name = "chkXemTruoc";
+            this.chkXemTruoc.Properties.Caption = "";
+            this.chkXemTruoc.Properties.GlyphAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.chkXemTruoc.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.chkXemTruoc.Size = new System.Drawing.Size(19, 19);
+            this.chkXemTruoc.StyleController = this.layoutControl1;
+            this.chkXemTruoc.TabIndex = 8;
+            this.chkXemTruoc.CheckedChanged += new System.EventHandler(this.chkXemTruoc_CheckedChanged);
             // 
             // barManager1
             // 
@@ -329,6 +326,39 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(1100, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 482);
+            // 
+            // btnBankAccount
+            // 
+            this.btnBankAccount.Enabled = false;
+            this.btnBankAccount.Image = global::HIS.Desktop.Plugins.RepayService.Properties.Resources.the1;
+            this.btnBankAccount.Location = new System.Drawing.Point(99, 432);
+            this.btnBankAccount.Name = "btnBankAccount";
+            this.btnBankAccount.Size = new System.Drawing.Size(29, 22);
+            this.btnBankAccount.StyleController = this.layoutControl1;
+            this.btnBankAccount.TabIndex = 21;
+            this.btnBankAccount.ToolTip = "Chọn thông tin tài khoản thụ hưởng";
+            this.btnBankAccount.Click += new System.EventHandler(this.btnBankAccount_Click);
+            // 
+            // labelAccountInfo
+            // 
+            this.labelAccountInfo.Location = new System.Drawing.Point(132, 432);
+            this.labelAccountInfo.Name = "labelAccountInfo";
+            this.labelAccountInfo.Size = new System.Drawing.Size(526, 22);
+            this.labelAccountInfo.TabIndex = 20;
+            this.labelAccountInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // chkAutoClose
+            // 
+            this.chkAutoClose.Location = new System.Drawing.Point(445, 458);
+            this.chkAutoClose.MenuManager = this.barManager1;
+            this.chkAutoClose.Name = "chkAutoClose";
+            this.chkAutoClose.Properties.Caption = "     :Tự động đóng";
+            this.chkAutoClose.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkAutoClose.Size = new System.Drawing.Size(213, 19);
+            this.chkAutoClose.StyleController = this.layoutControl1;
+            this.chkAutoClose.TabIndex = 18;
+            this.chkAutoClose.ToolTip = "Tự động đóng chức năng khi \'Lưu\' hoặc \'Lưu in\' thành công";
+            this.chkAutoClose.CheckedChanged += new System.EventHandler(this.chkAutoClose_CheckedChanged);
             // 
             // spinTransferAmount
             // 
@@ -789,7 +819,8 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             this.emptySpaceItem3,
             this.layoutControlItem7,
             this.layoutControlItem5,
-            this.emptySpaceItem2});
+            this.emptySpaceItem2,
+            this.layoutControlItem9});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -822,7 +853,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 456);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(220, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(340, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem2
@@ -1027,9 +1058,9 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.chkAutoClose;
-            this.layoutControlItem4.Location = new System.Drawing.Point(220, 456);
+            this.layoutControlItem4.Location = new System.Drawing.Point(443, 456);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(440, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(217, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -1049,6 +1080,34 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             this.layoutControlItem7.Size = new System.Drawing.Size(530, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
+            // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.Control = this.btnBankAccount;
+            this.layoutControlItem5.Location = new System.Drawing.Point(97, 430);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Size = new System.Drawing.Size(33, 26);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem5.TextVisible = false;
+            // 
+            // emptySpaceItem2
+            // 
+            this.emptySpaceItem2.AllowHotTrack = false;
+            this.emptySpaceItem2.Location = new System.Drawing.Point(660, 430);
+            this.emptySpaceItem2.Name = "emptySpaceItem2";
+            this.emptySpaceItem2.Size = new System.Drawing.Size(440, 26);
+            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem9
+            // 
+            this.layoutControlItem9.Control = this.chkXemTruoc;
+            this.layoutControlItem9.Location = new System.Drawing.Point(340, 456);
+            this.layoutControlItem9.Name = "layoutControlItem9";
+            this.layoutControlItem9.Size = new System.Drawing.Size(103, 26);
+            this.layoutControlItem9.Text = "Xem trước in:";
+            this.layoutControlItem9.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem9.TextSize = new System.Drawing.Size(75, 13);
+            this.layoutControlItem9.TextToControlDistance = 5;
             // 
             // panelControl2
             // 
@@ -1085,35 +1144,6 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             // 
             this.timerInitForm.Tick += new System.EventHandler(this.timerInitForm_Tick);
             // 
-            // btnBankAccount
-            // 
-            this.btnBankAccount.Enabled = false;
-            this.btnBankAccount.Image = global::HIS.Desktop.Plugins.RepayService.Properties.Resources.the;
-            this.btnBankAccount.Location = new System.Drawing.Point(99, 432);
-            this.btnBankAccount.Name = "btnBankAccount";
-            this.btnBankAccount.Size = new System.Drawing.Size(29, 22);
-            this.btnBankAccount.StyleController = this.layoutControl1;
-            this.btnBankAccount.TabIndex = 21;
-            this.btnBankAccount.ToolTip = "Chọn thông tin tài khoản thụ hưởng";
-            this.btnBankAccount.Click += new System.EventHandler(this.btnBankAccount_Click);
-            // 
-            // layoutControlItem5
-            // 
-            this.layoutControlItem5.Control = this.btnBankAccount;
-            this.layoutControlItem5.Location = new System.Drawing.Point(97, 430);
-            this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(33, 26);
-            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem5.TextVisible = false;
-            // 
-            // emptySpaceItem2
-            // 
-            this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(660, 430);
-            this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(440, 26);
-            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
-            // 
             // frmRepayService
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1136,8 +1166,9 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             ((System.ComponentModel.ISupportInitialize)(this.spinTongTuDen.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chkAutoClose.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkXemTruoc.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkAutoClose.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinTransferAmount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinAmount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtRepayReason.Properties)).EndInit();
@@ -1180,13 +1211,14 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1275,5 +1307,7 @@ namespace HIS.Desktop.Plugins.RepayService.RepayService
         private DevExpress.XtraBars.BarDockControl barDockControlRight;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraEditors.CheckEdit chkXemTruoc;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem9;
     }
 }
