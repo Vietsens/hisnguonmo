@@ -785,16 +785,47 @@ namespace HIS.UC.SereServTree.Run
 
                     if (e.Node.Checked == false)
                     {
-                        data.IsGuaranteed = false;
-                        data.IS_GUARANTEED = 0; 
-
-                        this.updateSingleRow?.Invoke(data);
-
-                        var colGuaranteed = trvService.Columns["IsGuaranteed"];
-                        if (colGuaranteed != null)
+                        if (data.IsLeaf.HasValue && data.IsLeaf.Value)
                         {
-                            var args = new DevExpress.XtraTreeList.CellValueChangedEventArgs(colGuaranteed, e.Node, false);
-                            this.SereServTreeADO.treeSereServ_CellValueChanged?.Invoke(data, args);
+                            // For leaf nodes, set IsGuaranteed = false
+                            data.IsGuaranteed = false;
+                            data.IS_GUARANTEED = 0; 
+
+                            this.updateSingleRow?.Invoke(data);
+
+                            var colGuaranteed = trvService.Columns["IsGuaranteed"];
+                            if (colGuaranteed != null)
+                            {
+                                var args = new DevExpress.XtraTreeList.CellValueChangedEventArgs(colGuaranteed, e.Node, false);
+                                this.SereServTreeADO.treeSereServ_CellValueChanged?.Invoke(data, args);
+                            }
+                        }
+                        else
+                        {
+                            // For parent nodes, set IsGuaranteed = false for all leaf children only
+                            var childNodes = GetChild(records, data);
+                            if (childNodes != null && childNodes.Count > 0)
+                            {
+                                // Filter only leaf children
+                                var leafChildNodes = childNodes.Where(c => c.IsLeaf.HasValue && c.IsLeaf.Value).ToList();
+                                foreach (var child in leafChildNodes)
+                                {
+                                    child.IsGuaranteed = false;
+                                    child.IS_GUARANTEED = 0;
+                                    this.updateSingleRow?.Invoke(child);
+
+                                    var colGuaranteed = trvService.Columns["IsGuaranteed"];
+                                    if (colGuaranteed != null)
+                                    {
+                                        var childNode = trvService.FindNodeByKeyID(child.CONCRETE_ID__IN_SETY);
+                                        if (childNode != null)
+                                        {
+                                            var args = new DevExpress.XtraTreeList.CellValueChangedEventArgs(colGuaranteed, childNode, false);
+                                            this.SereServTreeADO.treeSereServ_CellValueChanged?.Invoke(child, args);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     //e.Node.Checked = !e.Node.Checked;
