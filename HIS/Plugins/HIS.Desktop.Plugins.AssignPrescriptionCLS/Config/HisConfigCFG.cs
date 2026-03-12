@@ -28,6 +28,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
 {
     class HisConfigCFG
     {
+        public const string MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
         private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
         private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__MOS_HIS_SERVICE_REQ_MANY_DAYS_PRESCRIPTION_OPTION = "MOS.HIS_SERVICE_REQ.MANY_DAYS_PRESCRIPTION_OPTION";
@@ -142,6 +143,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
         internal static long TutorialFormat;
         internal static string MedicineHasPaymentLimitBHYT;
         internal static string AtcCodeOverlarWarningOption;
+        internal static string GuaranteeConnectionInfo;
 
         /// <summary>
         /// "Cấu hình ưu tiên lây thời gian hẹn khám (kiểu số):
@@ -308,6 +310,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Config
                 IsReasonRequired = (GetValue(CONFIG_KEY__IS_REASON_REQUIRED) == "1");
 
                 AtcCodeOverlarWarningOption = GetValue(CONFIG_KEY__PRESCRIPTION_ATC_CODE_OVERLAP_WARNING_OPTION);
+                GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
             }
             catch (Exception ex)
             {

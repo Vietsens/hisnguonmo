@@ -160,6 +160,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                 if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                 {
                     PresMedicineSDO pres = new PresMedicineSDO();
+                    if(item.IsGuarantee)
+                    {
+                        pres.IsGuaranteed = true;
+                    }    
                     pres.UseOriginalUnitForPres = (item.IsUseOrginalUnitForPres ?? false);
                     pres.MedicineId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
                     if (item.MedicineBean1Result != null && item.MedicineBean1Result.Count > 0)
@@ -221,6 +225,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                     {
                         pres.MaterialBeanIds = item.BeanIds;
                     }
+                    if (item.IsGuarantee)
+                    {
+                        pres.IsGuaranteed = true;
+                    }
                     pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
                     pres.FailedAmount = item.FilmNumber.HasValue ? ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.FilmNumber) / (item.CONVERT_RATIO ?? 1) : (item.FilmNumber) : null;
                     pres.MaterialTypeId = item.ID;
@@ -272,6 +280,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                     else if (item.BeanIds != null && item.BeanIds.Count > 0)
                     {
                         pres.MaterialBeanIds = item.BeanIds;
+                    }
+                    if (item.IsGuarantee)
+                    {
+                        pres.IsGuaranteed = true;
                     }
                     pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
                     pres.FailedAmount = item.FilmNumber.HasValue ? ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.FilmNumber) / (item.CONVERT_RATIO ?? 1) : (item.FilmNumber) : null;
@@ -399,6 +411,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                 {
                     PresMedicineSDO pres = new PresMedicineSDO();
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
+                    if (item.IsGuarantee)
+                    {
+                        pres.IsGuaranteed = true;
+                    }
                     pres.UseOriginalUnitForPres = (item.IsUseOrginalUnitForPres ?? false);
                     pres.MedicineId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
                     pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
@@ -460,6 +476,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                 {
                     PresMaterialSDO pres = new PresMaterialSDO();
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
+                    if (item.IsGuarantee)
+                    {
+                        pres.IsGuaranteed = true;
+                    }
                     pres.MaterialId = ((item.IsAssignPackage.HasValue && item.IsAssignPackage.Value) ? item.MAME_ID : null);
                     pres.Amount = ((item.IsUseOrginalUnitForPres ?? false) == false && (item.CONVERT_RATIO ?? 0) > 0) ? (item.AMOUNT ?? 0) / (item.CONVERT_RATIO ?? 1) : (item.AMOUNT ?? 0);
                     pres.MaterialTypeId = item.ID;
@@ -504,6 +524,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                 {
                     PresMaterialBySerialNumberSDO pres = new PresMaterialBySerialNumberSDO();
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
+                    if (item.IsGuarantee)
+                    {
+                        pres.IsGuaranteed = true;
+                    }
                     pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
                     pres.MediStockId = item.MEDI_STOCK_ID ?? 0;
                     pres.IsExpend = item.IsExpend;
@@ -843,7 +867,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Save
                         {
                             foreach (var item in bhyt__Exists)
                             {
-                                tongtienThuocPhatSinh += (item.TotalPrice);
+                                tongtienThuocPhatSinh += (item.TotalPrice ?? 0);
                             }
 
                             //Đối với bệnh nhân đúng tuyến KCB

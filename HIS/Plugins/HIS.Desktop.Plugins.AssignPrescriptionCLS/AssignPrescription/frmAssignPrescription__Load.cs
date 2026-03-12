@@ -23,6 +23,8 @@ using HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Config;
 using HIS.Desktop.Plugins.AssignPrescriptionCLS.Resources;
 using HIS.Desktop.Plugins.Library.AlertWarningFee;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
 using HIS.UC.Icd.ADO;
 using HIS.UC.SecondaryIcd.ADO;
 using Inventec.Common.Adapter;
@@ -520,7 +522,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+       
         private void LoadDataToPatientInfo()
         {
             try
