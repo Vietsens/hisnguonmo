@@ -294,9 +294,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             // 13. Tính tổng tiền trong đơn
                             this.SetTotalPrice__TrongDon();
 
-                            // 14. Tính tổng tiền bảo lãnh
-                            this.CalculateTotalGuarantee();
-
                             // 15. Set idRow cho việc thêm mới
                             this.idRow = (int)((this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
                                 ? (this.mediMatyTypeADOs.Max(o => o.NUM_ORDER ?? 0) + stepRow)

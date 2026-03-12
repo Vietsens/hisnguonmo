@@ -100,8 +100,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         internal bool limitHeinMedicinePrice = false;
         internal V_HIS_SERE_SERV currentSereServ { get; set; }
         internal V_HIS_SERE_SERV currentSereServInEkip { get; set; }
+        public decimal totalGuaranteeOriginal { get; set; }
         V_HIS_SERVICE Service__Main;
         decimal currentExpendInServicePackage;
+        List<MOS.EFMODEL.DataModels.HIS_SERE_SERV> sereServsInTreatment = new List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>(); // dùng để tính những ss, từ đó lấy ra ss guarantee
         HIS.Desktop.ADO.AssignPrescriptionADO.DelegateProcessDataResult processDataResult;
         HIS.Desktop.ADO.AssignPrescriptionADO.DelegateProcessRefeshIcd processRefeshIcd;
         HIS.Desktop.ADO.AssignPrescriptionADO.DelegateProcessWhileAutoTreatmentEnd processWhileAutoTreatmentEnd;
@@ -393,6 +395,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 InitRadioGroupOption();
                 LoadDataForPrint();
                 LoadGuaranteeInfo();
+                RefeshSereServInTreatmentData();
+                CalculatorToTalGuaranteeOriginal();
 
                 this.InitComboPhieuDieuTri();
 #if DEBUG
@@ -461,121 +465,132 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void CalculatorToTalGuaranteeOriginal()
+        {
+            try
+            {
+                if (this.totalGuaranteeOriginal == 0)
+                    this.totalGuaranteeOriginal = sereServsInTreatment != null ? sereServsInTreatment.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
+                //this.lblTotalGuarantee.Text = this.totalGuaranteeOriginal.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
         private async Task LoadGuaranteeInfo()
         {
             try
             {
-                var a = this.sereServsInTreatmentRaw;
-                if (this.Histreatment == null || string.IsNullOrEmpty(this.Histreatment.GUARANTEE_CODE) || string.IsNullOrEmpty(this.Histreatment.GUARANTEE_REQUEST_CODE))
+                if (this.Histreatment == null || string.IsNullOrEmpty(this.Histreatment.GUARANTEE_CODE) ||
+                    string.IsNullOrEmpty(this.Histreatment.GUARANTEE_REQUEST_CODE))
                 {
-                    //HideGuaranteeLabel();
                     return;
                 }
 
-                //isLoadingGuaranteeInfo = true;
+                // Biến local để lưu kết quả từ background thread
+                decimal balanceResult = 0;
 
                 await Task.Run(() =>
                 {
                     try
                     {
-                        //ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
                         var guaranteeConnection = Config.HisConfigCFG.GuaranteeConnectionInfo;
 
                         if (string.IsNullOrEmpty(guaranteeConnection))
                         {
                             Inventec.Common.Logging.LogSystem.Warn("Chưa cấu hình thông tin kết nối hệ thống bảo lãnh");
-                            //this.guaranteeInfo = null;
-                            //return;
+                            return;
                         }
+
                         string[] parts = guaranteeConnection.Split('|');
                         if (parts.Length < 3)
                         {
                             Inventec.Common.Logging.LogSystem.Warn("Cấu hình kết nối bảo lãnh không đúng định dạng");
-                            //this.guaranteeInfo = null;
                             return;
                         }
 
-                        //  Địa chỉ
                         string[] fullGuaranteeAddress = parts[0].Trim().Split(';');
                         string guaranteeAddressHasUri = fullGuaranteeAddress.Length > 0 ? fullGuaranteeAddress[0] : "";
                         string guaranteeAddressAcsUri = fullGuaranteeAddress.Length > 1 ? fullGuaranteeAddress[1] : "";
 
-                        // Mã ứng dụng:Tài khoản:Mật khẩu
                         string[] credentials = parts[1].Split(':');
                         string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
                         string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
                         string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
 
-                        // Hạn mức đăng ký mặc định
                         string guaranteeDefaultLimit = parts[2].Trim();
-
                         string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
 
                         MedicalExpenseGuaranteeProcessor medicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
-                        DataInput dataInput = new DataInput();
-                        dataInput.hasUri = guaranteeAddressHasUri;
-                        dataInput.acsUri = guaranteeAddressAcsUri;
-                        dataInput.applicationCode = guaranteeAppCode;
-                        dataInput.limet = guaranteeDefaultLimit;
-                        dataInput.cskcbbd = branchHeinMediOrgCode;
-                        dataInput.username = guaranteeUsername;
-                        dataInput.password = guaranteePassword;
-                        dataInput.registerUseRequest = new RegisterUseRequest
+                        DataInput dataInput = new DataInput
                         {
-                            PatientFullName = this.Histreatment.TDL_PATIENT_NAME.Trim(),
-                            PatientDateOfBirth = this.Histreatment.TDL_PATIENT_DOB != 0 ? this.Histreatment.TDL_PATIENT_DOB.ToString() : "",
-                            PatientCccd = this.Histreatment.TDL_PATIENT_CCCD_NUMBER ?? this.Histreatment.TDL_PATIENT_CMND_NUMBER,
-                            RequestAmount = guaranteeDefaultLimit,
-                            ApplicationCode = guaranteeAppCode,
-                            Remark = "Tra cứu hạn mức bảo lãnh",
-                            Signature = ""
+                            hasUri = guaranteeAddressHasUri,
+                            acsUri = guaranteeAddressAcsUri,
+                            applicationCode = guaranteeAppCode,
+                            limet = guaranteeDefaultLimit,
+                            cskcbbd = branchHeinMediOrgCode,
+                            username = guaranteeUsername,
+                            password = guaranteePassword,
+                            registerUseRequest = new RegisterUseRequest
+                            {
+                                PatientFullName = this.Histreatment.TDL_PATIENT_NAME.Trim(),
+                                PatientDateOfBirth = this.Histreatment.TDL_PATIENT_DOB != 0 ? this.Histreatment.TDL_PATIENT_DOB.ToString() : "",
+                                PatientCccd = this.Histreatment.TDL_PATIENT_CCCD_NUMBER ?? this.Histreatment.TDL_PATIENT_CMND_NUMBER,
+                                RequestAmount = guaranteeDefaultLimit,
+                                ApplicationCode = guaranteeAppCode,
+                                Remark = "Tra cứu hạn mức bảo lãnh",
+                                Signature = ""
+                            },
+                            availableBalanceInfoRequest = new AvailableBalanceInfoRequest
+                            {
+                                RequestId = this.Histreatment.GUARANTEE_REQUEST_CODE,
+                                PatientFullName = this.Histreatment.TDL_PATIENT_NAME.Trim(),
+                                PatientDateOfBirth = this.Histreatment.TDL_PATIENT_DOB.ToString(),
+                                PatientCccd = this.Histreatment.TDL_PATIENT_CCCD_NUMBER ?? this.Histreatment.TDL_PATIENT_CMND_NUMBER,
+                                ApplicationCode = guaranteeAppCode,
+                                Remark = "Tra cứu hạn mức bảo lãnh"
+                            }
                         };
 
-                        dataInput.availableBalanceInfoRequest = new AvailableBalanceInfoRequest
-                        {
-                            RequestId = this.Histreatment.GUARANTEE_REQUEST_CODE,
-                            PatientFullName = this.Histreatment.TDL_PATIENT_NAME.Trim(),
-                            PatientDateOfBirth = this.Histreatment.TDL_PATIENT_DOB.ToString(),
-                            PatientCccd = this.Histreatment.TDL_PATIENT_CCCD_NUMBER ?? this.Histreatment.TDL_PATIENT_CMND_NUMBER,
-                            ApplicationCode = guaranteeAppCode,
-                            Remark = "Tra cứu hạn mức bảo lãnh"
-                        };
-                        AvailableBalanceInfoResponse balanceInfoResponse = new AvailableBalanceInfoResponse();
-                        balanceInfoResponse = medicalExpenseGuarantee.GuaranteeAvailableBalanceInfoResponse(dataInput);
+                        var balanceInfoResponse = medicalExpenseGuarantee.GuaranteeAvailableBalanceInfoResponse(dataInput);
+
                         if (balanceInfoResponse != null && balanceInfoResponse.Success == true)
                         {
-                            //this.guaranteeInfo = new GuaranteeInfoADO
-                            //{
-                            //    GUARANTEE_CODE = this.currentHisTreatment.GUARANTEE_CODE,
-                            //    GUARANTEE_REGISTER = decimal.TryParse(balanceInfoResponse.Data.RegisteredAmount, out decimal limit) ? limit : 0,
-                            //    GUARANTEE_USED = decimal.TryParse(balanceInfoResponse.Data.UsedAmount, out decimal used) ? used : 0,
-                            //    GUARANTEE_BALANCE = decimal.TryParse(balanceInfoResponse.Data.AvailableBalance, out decimal remain) ? remain : 0
-                            //};
-
-                            this.guaranteeBalance = decimal.TryParse(balanceInfoResponse.Data.AvailableBalance, out decimal remain) ? remain : 0;
-                            this.lblGuarantee.Text = this.guaranteeBalance.ToString();
+                            balanceResult = decimal.TryParse(balanceInfoResponse.Data.AvailableBalance, out decimal remain) ? remain : 0;
                         }
                         else
                         {
                             Inventec.Common.Logging.LogSystem.Warn("Tra cứu bảo lãnh thất bại");
-                            //this.guaranteeInfo = null;
                         }
                     }
                     catch (Exception ex)
                     {
                         Inventec.Common.Logging.LogSystem.Error(ex);
-                        //this.guaranteeInfo = null;
                     }
                 });
 
-                //UpdateGuaranteeLabel();
-                //UpdateTotalGuaranteePrice();
-                //isLoadingGuaranteeInfo = false;
+                // Cập nhật UI từ UI thread
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        this.guaranteeBalance = balanceResult;
+                        this.lblGuarantee.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(
+                            this.guaranteeBalance, ConfigApplications.NumberSeperator);
+                    }));
+                }
+                else
+                {
+                    this.guaranteeBalance = balanceResult;
+                    this.lblGuarantee.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(
+                        this.guaranteeBalance, ConfigApplications.NumberSeperator);
+                }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                //isLoadingGuaranteeInfo = false;
             }
         }
         private bool ValidateGuaranteeAmount(ref string message)
@@ -586,9 +601,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 if (string.IsNullOrEmpty(this.Histreatment?.GUARANTEE_CODE)
                     || this.currentHisPatientTypeAlter?.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT)
                     return true;
-
-                // Tính lại tổng tiền bảo lãnh
-                CalculateTotalGuarantee();
 
                 decimal totalBilled = this.treatmentPrint_2?.TOTAL_BILL_AMOUNT ?? 0;
                 decimal remainingBalance = this.guaranteeBalance - (this.totalGuarantee - totalBilled);
@@ -997,6 +1009,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+            finally
+            {
+                this.isWarning = false;
+                this.totalGuarantee = 0;
+                this.totalGuaranteeOriginal = 0;
+            }
         }
 
         private void btnShowDetail_Click(object sender, EventArgs e)
@@ -1146,6 +1164,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     case GlobalVariables.ActionAdd:
                         AddMediMatyClickHandler();
+                        this.isWarning = false;
                         break;
                     case GlobalVariables.ActionEdit:
                         UpdateMediMatyClickHandler();
@@ -3473,6 +3492,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         this.gridViewServiceProcess.EndUpdate();
 
                         this.mediMatyTypeADOs.Remove(mediMatyTypeADO);
+                        // N?u không còn thu?c nào thì set isWarning = true d? có th? c?nh báo l?i khi thêm m?i
+                        if (this.mediMatyTypeADOs == null || this.mediMatyTypeADOs.Count == 0)
+                        {
+                            this.isWarning = true;
+                        }
+                        else
+                        {
+                            this.isWarning = false;
+                        }
                         if (isReloadAvaible)
                             this.ReloadDataAvaiableMediBeanInCombo();
 
@@ -3497,8 +3525,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             {
                 LogSystem.Warn(ex);
             }
+            finally
+            {
+                isWarning = false;
+            }
         }
-
         private void gridViewMediMaty_KeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -5130,8 +5161,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                         currentRow.IsGuarantee = chk.Checked;
                         currentRow.IsEdit = false;
 
-                        // Tính lại tổng tiền bảo lãnh
-                        CalculateTotalGuarantee();
                     }
                 }
             }

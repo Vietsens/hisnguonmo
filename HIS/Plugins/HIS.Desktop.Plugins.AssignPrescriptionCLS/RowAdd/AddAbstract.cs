@@ -242,9 +242,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
 
         protected void SaveDataAndRefesh(MediMatyTypeADO mediMatyADO)
         {
+            mediMatyADO.IsGuarantee = true;
             frmAssignPrescription.mediMatyTypeADOs.Add(mediMatyADO);
             frmAssignPrescription.idRow += frmAssignPrescription.stepRow;
-
+            
             frmAssignPrescription.gridViewServiceProcess.BeginUpdate();
             frmAssignPrescription.gridViewServiceProcess.GridControl.DataSource = frmAssignPrescription.mediMatyTypeADOs.OrderBy(o => o.NUM_ORDER).ToList();
             frmAssignPrescription.gridViewServiceProcess.EndUpdate();
