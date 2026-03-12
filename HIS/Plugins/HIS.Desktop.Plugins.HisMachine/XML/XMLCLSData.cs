@@ -30,4 +30,13 @@ namespace HIS.Desktop.Plugins.HisMachine.XML
         [XmlElement("MayCls")]
         public List<XMLCLSDetailData> MayCls { get; set; }
     }
+    [XmlRoot("DSACH_TBYTTHDV")]
+    public class XMLTT12Data
+    {
+        [XmlElement("DM_TBYTTHDV", Order = 1)]
+        public List<XMLTT12DetailData> DanhMuc { get; set; }
+
+        [XmlElement("CHUKYDONVI", Order = 2)]
+        public string ChuKyDonVi { get; set; }
+    }
 }

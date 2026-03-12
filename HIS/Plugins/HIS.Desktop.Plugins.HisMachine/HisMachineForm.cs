@@ -15,47 +15,55 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraGrid.Views.Base;
+using EMR.WCF.DCO;
+using HIS.Desktop.ADO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.HisMachine.ADO;
+using HIS.Desktop.Plugins.HisMachine.Properties;
+using HIS.Desktop.Plugins.HisMachine.Validation;
+using HIS.Desktop.Plugins.HisMachine.XML;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using HIS.UC.SettingSignInfo;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ServiceSign;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.Desktop.CustomControl;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
-using System.Text;
+using System.IO;
 using System.Linq;
+using System.Resources;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors;
-using HIS.Desktop.Common;
-using Inventec.Common.Logging;
-using HIS.Desktop.Utility;
-using HIS.Desktop.LocalStorage.LocalData;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using Inventec.Core;
-using HIS.Desktop.Controls.Session;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using HIS.Desktop.LibraryMessage;
-using DevExpress.XtraEditors.DXErrorProvider;
-using DevExpress.Data;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraEditors.ViewInfo;
-using MOS.Filter;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using HIS.Desktop.Plugins.HisMachine.Properties;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using Inventec.Common.Controls.EditorLoader;
-using DevExpress.XtraEditors.Controls;
-using Inventec.Desktop.CustomControl;
-using HIS.Desktop.Utilities.Extensions;
-using DevExpress.XtraEditors.Repository;
-using HIS.Desktop.Plugins.HisMachine.Validation;
-using System.IO;
-using HIS.Desktop.Plugins.HisMachine.XML;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -68,11 +76,13 @@ namespace HIS.Desktop.Plugins.HisMachine
         int dataTotal = 0;
         int startPage = 0;
         int ActionType = -1;
-        MOS.EFMODEL.DataModels.HIS_MACHINE currentData;
-        MOS.EFMODEL.DataModels.HIS_MACHINE resultData;
+        MachineADO currentData;
         DelegateSelectData delegateSelect = null;
         Inventec.Desktop.Common.Modules.Module currentModule;
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
+
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         int positionHandle = -1;
         List<V_HIS_ROOM> listRoom;
         List<V_HIS_ROOM> listRoomSelecteds;
@@ -136,6 +146,7 @@ namespace HIS.Desktop.Plugins.HisMachine
         private void MeShow()
         {
             InitComboDepartment();
+            InitControlState();
             InitComboConfigTimeConflict();
             InitCheck(cboRoom, SelectionGrid__ROOM_NAME);
             InitComboRoom(cboRoom, BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1 && o.BRANCH_ID == BranchDataWorker.GetCurrentBranchId() && o.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__XL).ToList(), "ROOM_NAME", "ID");
@@ -153,7 +164,32 @@ namespace HIS.Desktop.Plugins.HisMachine
 
             SetDefaultFocus();
         }
-
+        private void InitControlState()
+        {
+            try
+            {
+                isNotLoadWhileChangeControlStateInFirst = true;
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == chkSign.Name)
+                        {
+                            SettingSignADO = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingSignADO>(item.VALUE);
+                            chkSign.Checked = SettingSignADO != null && !string.IsNullOrEmpty(SettingSignADO.SerialNumber);
+                        }
+                    }
+                }
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                chkSign.Checked = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void InitComboDepartment()
         {
             try
@@ -501,8 +537,10 @@ namespace HIS.Desktop.Plugins.HisMachine
                     var data = (List<MOS.EFMODEL.DataModels.HIS_MACHINE>)apiResult.Data;
                     if (data != null)
                     {
-                        gridView1.GridControl.DataSource = data;
-                        rowCount = (data == null ? 0 : data.Count);
+                        AutoMapper.Mapper.CreateMap<HIS_MACHINE, MachineADO>();
+                        var machines = AutoMapper.Mapper.Map<List<MachineADO>>(data);
+                        gridView1.GridControl.DataSource = machines;
+                        rowCount = (machines == null ? 0 : machines.Count);
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                     }
                 }
@@ -632,6 +670,8 @@ namespace HIS.Desktop.Plugins.HisMachine
                 }
 
                 UpdateDTOFromDataForm(ref updateDTO);
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => updateDTO), updateDTO));
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
                     updateDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
@@ -728,8 +768,11 @@ namespace HIS.Desktop.Plugins.HisMachine
                 txtUsedYear.Text = "";
                 txtCirculationNumber.Text = "";
                 cboDepartment.EditValue = null;
-
-
+                dteContractTo.EditValue = null;
+                dteFromTime.EditValue = null;
+                dteToTime.EditValue = null;
+                dteContractFrom.EditValue = null;
+                txtSourceName.Text = "";
             }
             catch (Exception ex)
             {
@@ -906,7 +949,14 @@ namespace HIS.Desktop.Plugins.HisMachine
                 List<long> Rooms = listRoomSelecteds.Select(o => o.ID).ToList();
                 currentDTO.ROOM_IDS = string.Join(",", Rooms);
 
-
+                if (dteContractFrom != null && dteContractFrom.DateTime != DateTime.MinValue)
+                    currentDTO.CONTRACT_FROM = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteContractFrom.DateTime);
+                if (dteContractTo != null && dteContractTo.DateTime != DateTime.MinValue)
+                    currentDTO.CONTRACT_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteContractTo.DateTime);
+                if (dteFromTime != null && dteFromTime.DateTime != DateTime.MinValue)
+                    currentDTO.FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteFromTime.DateTime);
+                if (dteToTime != null && dteToTime.DateTime != DateTime.MinValue)
+                    currentDTO.TO_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteToTime.DateTime);
             }
             catch (Exception ex)
             {
@@ -961,7 +1011,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    MOS.EFMODEL.DataModels.HIS_MACHINE pData = (MOS.EFMODEL.DataModels.HIS_MACHINE)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    MachineADO pData = (MachineADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
                     if (e.Column.FieldName == "STT")
                     {
@@ -1055,10 +1105,10 @@ namespace HIS.Desktop.Plugins.HisMachine
         {
             try
             {
-                MOS.EFMODEL.DataModels.HIS_MACHINE data = null;
+                MachineADO data = null;
                 if (e.RowHandle > -1)
                 {
-                    data = (MOS.EFMODEL.DataModels.HIS_MACHINE)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    data = (MachineADO)((IList)((BaseView)sender).DataSource)[e.RowHandle];
                 }
                 if (e.RowHandle >= 0)
                 {
@@ -1080,7 +1130,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                     }
                     if (e.Column.FieldName == "IsMachine")
                     {
-                        var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == data.ID ).ToList();
+                        var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == data.ID).ToList();
                         e.RepositoryItem = (listMachineInspection?.Count > 0) ? ButtonEditIsMachine : ButtonEditNonMachine;
                     }
                 }
@@ -1095,10 +1145,11 @@ namespace HIS.Desktop.Plugins.HisMachine
         {
             try
             {
-                var rowData = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                var rowData = (MachineADO)gridView1.GetFocusedRow();
                 if (rowData != null)
                 {
                     currentData = rowData;
+                    ResetFormData();
                     ChangedDataRow(rowData);
                     if (cboDepartment.EditValue != null)
                     {
@@ -1117,7 +1168,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             }
         }
 
-        private void ChangedDataRow(MOS.EFMODEL.DataModels.HIS_MACHINE data)
+        private void ChangedDataRow(MachineADO data)
         {
             try
             {
@@ -1312,8 +1363,15 @@ namespace HIS.Desktop.Plugins.HisMachine
                     txtCirculationNumber.Text = data.CIRCULATION_NUMBER;
                     txtSourceName.Text = data.SOURCE_NAME;
                     cboDepartment.EditValue = data.DEPARTMENT_ID;
-                    cboConfigTimeConflict.EditValue = (short?)(data.CONFIG_TIME_CONFLICT); 
-
+                    cboConfigTimeConflict.EditValue = (short?)(data.CONFIG_TIME_CONFLICT);
+                    if (data.TO_TIME.HasValue)
+                        dteToTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.TO_TIME ?? 0) ?? DateTime.Now;
+                    if (data.FROM_TIME.HasValue)
+                        dteFromTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.FROM_TIME ?? 0) ?? DateTime.Now;
+                    if (data.CONTRACT_TO.HasValue)
+                        dteContractTo.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.CONTRACT_TO ?? 0) ?? DateTime.Now;
+                    if (data.CONTRACT_FROM.HasValue)
+                        dteContractFrom.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.CONTRACT_FROM ?? 0) ?? DateTime.Now;
                 }
             }
             catch (Exception ex)
@@ -1331,7 +1389,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             try
             {
 
-                MOS.EFMODEL.DataModels.HIS_MACHINE data = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                MachineADO data = (MachineADO)gridView1.GetFocusedRow();
                 if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     MOS.EFMODEL.DataModels.HIS_MACHINE data1 = new MOS.EFMODEL.DataModels.HIS_MACHINE();
@@ -1373,7 +1431,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             try
             {
 
-                MOS.EFMODEL.DataModels.HIS_MACHINE data = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                MachineADO data = (MachineADO)gridView1.GetFocusedRow();
                 if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     WaitingManager.Show();
@@ -1410,7 +1468,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             {
                 if (MessageBox.Show(LibraryMessage.MessageUtil.GetMessage(LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonHuyDuLieuKhong), "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    var rowData = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                    var rowData = (MachineADO)gridView1.GetFocusedRow();
                     if (rowData != null)
                     {
 
@@ -1424,7 +1482,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                             txtCode.Text = "";
                             EnableControlChanged(this.ActionType);
                             FillDatagctFormList();
-                            currentData = ((List<MOS.EFMODEL.DataModels.HIS_MACHINE>)gridControl1.DataSource).FirstOrDefault();
+                            currentData = ((List<MachineADO>)gridControl1.DataSource).FirstOrDefault();
                             BackendDataWorker.Reset<HIS_MACHINE>();
                         }
                         MessageManager.Show(this, param, success);
@@ -1582,7 +1640,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                 if (cboSource.EditValue != null)
                 {
                     cboSource.Properties.Buttons[1].Visible = true;
-                    
+
                 }
                 else
                 {
@@ -1602,7 +1660,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             {
                 this.layoutControlItemSourceName.AppearanceItemCaption.ForeColor = value == 2 ? Color.Maroon : Color.Black;
                 IsRequiredSourceName = value == 2;
-                
+
             }
             catch (Exception ex)
             {
@@ -1630,7 +1688,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
             if (e.RowHandle >= 0)
             {
-                HIS_MACHINE data = (HIS_MACHINE)gridView1.GetRow(e.RowHandle);
+                MachineADO data = (MachineADO)gridView1.GetRow(e.RowHandle);
                 if (e.Column.FieldName == "IS_ACTIVE_STR")
                 {
                     if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
@@ -1638,6 +1696,58 @@ namespace HIS.Desktop.Plugins.HisMachine
                     else
                         e.Appearance.ForeColor = Color.Green;
                 }
+            }
+        }
+
+        private void gridView1_CustomDrawColumnHeader(object sender, DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column != null && e.Column.FieldName == "IsChecked")
+                {
+                    e.Info.InnerElements.Clear();
+                    e.Painter.DrawObject(e.Info);
+                    DrawCheckBox(e.Graphics, e.Bounds, isCheckAll);
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void DrawCheckBox(Graphics graphics, Rectangle bounds, bool isChecked)
+        {
+            int checkBoxSize = 14;
+            int x = bounds.X + (bounds.Width - checkBoxSize) / 2;
+            int y = bounds.Y + (bounds.Height - checkBoxSize) / 2;
+            Rectangle checkBoxRect = new Rectangle(x, y, checkBoxSize, checkBoxSize);
+            ControlPaint.DrawCheckBox(graphics, checkBoxRect, isChecked ? ButtonState.Checked | ButtonState.Flat : ButtonState.Normal | ButtonState.Flat);
+        }
+
+        private void gridView1_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                DevExpress.XtraGrid.Views.Grid.ViewInfo.GridHitInfo hitInfo = gridView1.CalcHitInfo(e.Location);
+                if (hitInfo.InColumnPanel && hitInfo.Column != null && hitInfo.Column.FieldName == "IsChecked")
+                {
+                    isCheckAll = !isCheckAll;
+                    var dataSource = gridControl1.DataSource as List<MachineADO>;
+                    if (dataSource != null)
+                    {
+                        foreach (var item in dataSource)
+                        {
+                            item.IsChecked = isCheckAll;
+                        }
+                    }
+                    gridView1.RefreshData();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1665,13 +1775,15 @@ namespace HIS.Desktop.Plugins.HisMachine
         {
             try
             {
-                var rowData = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                var rowData = (MachineADO)gridView1.GetFocusedRow();
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisQcNormation").FirstOrDefault();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleData), moduleData));
                 //if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                 //{
                 List<object> listArgs = new List<object>();
-                listArgs.Add(rowData);
+                HIS_MACHINE data = new HIS_MACHINE();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MACHINE>(data, rowData);
+                listArgs.Add(data);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentModule), currentModule));
                 //var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, 0, 0), listArgs);
                 //if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
@@ -1832,11 +1944,14 @@ namespace HIS.Desktop.Plugins.HisMachine
                 HisMachineFilter filter = new HisMachineFilter();
                 filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
                 var listMachines = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_MACHINE>>(HIS.Desktop.Plugins.HisMachine.HisRequestUriStore.MOSHIS_HIS_MACHINE_GET, ApiConsumers.MosConsumer, filter, param);
+                var selectedMachines = ((List<MachineADO>)gridControl1.DataSource);
+                listMachines = listMachines.Where(o => selectedMachines.Any(s => s.ID == o.ID && s.IsChecked)).ToList();
                 if (listMachines == null || listMachines.Count == 0)
                 {
                     WaitingManager.Hide();
                     return;
                 }
+
                 string fullFileName = String.Format("MayCLS_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
                 string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
                 List<CLSAdo> listXmlAdos = new List<CLSAdo>();
@@ -1853,6 +1968,10 @@ namespace HIS.Desktop.Plugins.HisMachine
                     file.Close();
                     rs.Close();
                     success = true;
+                }
+                if (chkSign.Checked)
+                {
+                    SignFile(fullFileName, saveFilePath);
                 }
                 WaitingManager.Hide();
                 MessageManager.Show(this, param, success);
@@ -1884,7 +2003,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                             if (branch != null)
                                 maCSKCB = branch.HEIN_MEDI_ORG_CODE;
                         }
-                    }                  
+                    }
                     xmlCLS.MaCoSoKCB = maCSKCB;
                     xmlCLS.TenThietBi = machine.MACHINE_NAME;
                     xmlCLS.KyHieu = !String.IsNullOrEmpty(machine.SYMBOL) ? machine.SYMBOL : "";
@@ -1925,6 +2044,74 @@ namespace HIS.Desktop.Plugins.HisMachine
             }
             return result;
         }
+
+        private List<XmlTT12Ado> GenerateXmlTT12Ado(List<HIS_MACHINE> listMachines)
+        {
+            List<XmlTT12Ado> result = new List<XmlTT12Ado>();
+            try
+            {
+                int count = 1;
+                foreach (var machine in listMachines)
+                {
+                    XmlTT12Ado xmlCLS = new XmlTT12Ado();
+                    xmlCLS.Stt = count;
+                    string maCSKCB = "";
+                    if (!String.IsNullOrEmpty(machine.ROOM_IDS))
+                    {
+                        var roomId = machine.ROOM_IDS.Split(',')[0];
+                        var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(roomId));
+                        if (room != null)
+                        {
+                            var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == room.BRANCH_ID);
+                            if (branch != null)
+                                maCSKCB = branch.HEIN_MEDI_ORG_CODE;
+                        }
+                    }
+                    xmlCLS.MaCoSoKCB = maCSKCB;
+                    xmlCLS.TenThietBi = machine.MACHINE_NAME;
+                    xmlCLS.KyHieu = !String.IsNullOrEmpty(machine.SYMBOL) ? machine.SYMBOL : "";
+                    xmlCLS.CongTySX = !String.IsNullOrEmpty(machine.MANUFACTURER_NAME) ? machine.MANUFACTURER_NAME : "";
+                    xmlCLS.NuocSX = !String.IsNullOrEmpty(machine.NATIONAL_NAME) ? machine.NATIONAL_NAME : "";
+                    xmlCLS.NamSX = machine.MANUFACTURED_YEAR;
+                    xmlCLS.NamSD = machine.USED_YEAR;
+                    xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : "";
+                    xmlCLS.MaMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
+
+                    var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == machine.ID).ToList();
+
+                    if (listMachineInspection != null && listMachineInspection.Count > 0)
+                    {
+                        long? maxFromTime = listMachineInspection.Max(o => o.FROM_TIME);
+                        long? maxToTime = listMachineInspection.Max(o => o.TO_TIME);
+
+                        if (maxFromTime.HasValue)
+                        {
+                            xmlCLS.TuNgay = (int)(maxFromTime.Value / 1000000);
+                        }
+
+                        if (maxToTime.HasValue)
+                        {
+                            xmlCLS.DenNgay = (int)(maxToTime.Value / 1000000);
+                        }
+                    }
+                    else
+                    {
+                        xmlCLS.TuNgay = (int)((machine.FROM_TIME ?? 0) / 1000000);
+                        xmlCLS.DenNgay = (int)((machine.TO_TIME ?? 0) / 1000000);
+                    }
+                    xmlCLS.TuNgay = (int)((machine.CONTRACT_FROM ?? 0) / 1000000);
+                    xmlCLS.DenNgay = (int)((machine.CONTRACT_TO ?? 0) / 1000000);
+                    result.Add(xmlCLS);
+                    count++;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
         public void MapADOToXml(List<CLSAdo> listAdo, ref List<XMLCLSDetailData> datas)
         {
             try
@@ -1948,6 +2135,40 @@ namespace HIS.Desktop.Plugins.HisMachine
                         detail.SO_LUU_HANH = ado.SoLuuHanh;
                         detail.TU_NGAY = ado.TuNgay != null ? ado.TuNgay.ToString() : "";
                         detail.DEN_NGAY = ado.DenNgay != null ? ado.DenNgay.ToString() : "";
+                        datas.Add(detail);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public void MapADOToXmlTT12(List<XmlTT12Ado> listAdo, ref List<XMLTT12DetailData> datas)
+        {
+            try
+            {
+                if (datas == null)
+                    datas = new List<XMLTT12DetailData>();
+                if (listAdo != null || listAdo.Count > 0)
+                {
+                    foreach (var ado in listAdo)
+                    {
+                        XMLTT12DetailData detail = new XMLTT12DetailData();
+                        detail.STT = ado.Stt;
+                        detail.MA_CSKCB = ado.MaCoSoKCB;
+                        detail.TEN_TB = this.ConvertStringToXmlDocument(ado.TenThietBi);
+                        detail.KY_HIEU = ado.KyHieu;
+                        detail.CONGTY_SX = this.ConvertStringToXmlDocument(ado.CongTySX);
+                        detail.NUOC_SX = this.ConvertStringToXmlDocument(ado.NuocSX);
+                        detail.NAM_SX = ado.NamSX != null ? ado.NamSX.ToString() : "";
+                        detail.NAM_SD = ado.NamSD != null ? ado.NamSD.ToString() : "";
+                        detail.MA_MAY = ado.MaMay;
+                        detail.SO_LUU_HANH = ado.SoLuuHanh;
+                        detail.TU_NGAY = ado.TuNgay != null ? ado.TuNgay.ToString() : "";
+                        detail.DEN_NGAY = ado.DenNgay != null ? ado.DenNgay.ToString() : "";
+                        detail.HD_TU = ado.HdTu != null ? ado.HdTu.ToString() : "";
+                        detail.HD_DEN = ado.HdDen != null ? ado.HdDen.ToString() : "";
                         datas.Add(detail);
                     }
                 }
@@ -2021,6 +2242,38 @@ namespace HIS.Desktop.Plugins.HisMachine
             }
             return stream;
         }
+        private static MemoryStream CreatedXmlFileTT12Plus<XMLTT12Data>(XMLTT12Data input)
+        {
+            MemoryStream stream = null;
+            try
+            {
+                var enc = Encoding.UTF8;
+                stream = new MemoryStream();
+                var xmlNamespaces = new XmlSerializerNamespaces();
+                xmlNamespaces.Add("xsd", "http://www.w3.org/2001/XMLSchema");
+                xmlNamespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
+
+                var xmlWriterSettings = new XmlWriterSettings
+                {
+                    CloseOutput = false,
+                    Encoding = enc,
+                    OmitXmlDeclaration = false,
+                    Indent = true
+                };
+                using (var xw = XmlWriter.Create(stream, xmlWriterSettings))
+                {
+                    var s = new XmlSerializer(typeof(XMLTT12Data));
+                    s.Serialize(xw, input, xmlNamespaces);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                stream = null;
+            }
+            return stream;
+        }
 
         private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
@@ -2054,7 +2307,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                 else
                 {
                     cboConfigTimeConflict.Properties.Buttons[1].Visible = false;
-                }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                }
             }
             catch (Exception ex)
             {
@@ -2067,12 +2320,15 @@ namespace HIS.Desktop.Plugins.HisMachine
             try
             {
 
-                var rowData = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                var rowData = (MachineADO)gridView1.GetFocusedRow();
                 if (rowData == null) return;
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisMachineInspection").FirstOrDefault();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleData), moduleData));
                 List<object> listArgs = new List<object>();
-                listArgs.Add(rowData);
+
+                HIS_MACHINE data = new HIS_MACHINE();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MACHINE>(data, rowData);
+                listArgs.Add(data);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentModule), currentModule));
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisMachineInspection", 0, 0, listArgs);
             }
@@ -2086,13 +2342,15 @@ namespace HIS.Desktop.Plugins.HisMachine
         {
             try
             {
-
-                var rowData = (MOS.EFMODEL.DataModels.HIS_MACHINE)gridView1.GetFocusedRow();
+                var rowData = (MachineADO)gridView1.GetFocusedRow();
                 if (rowData == null) return;
                 Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.HisMachineInspection").FirstOrDefault();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => moduleData), moduleData));
                 List<object> listArgs = new List<object>();
-                listArgs.Add(rowData);
+
+                HIS_MACHINE data = new HIS_MACHINE();
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MACHINE>(data, rowData);
+                listArgs.Add(data);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentModule), currentModule));
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.HisMachineInspection", 0, 0, listArgs);
             }
@@ -2100,6 +2358,336 @@ namespace HIS.Desktop.Plugins.HisMachine
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void chkSign_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                    return;
+
+                isChkSignFileCertUtil();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        SettingSignADO SettingSignADO;
+        private bool isNotLoadWhileChangeControlStateInFirst;
+        private bool isCheckAll = false;
+
+        private void isChkSignFileCertUtil()
+        {
+            try
+            {
+                if (chkSign.Checked == true)
+                {
+                    frmSetting frm = new frmSetting(SettingSignADO, (result) =>
+                    {
+                        SettingSignADO = (SettingSignADO)result;
+                    });
+                    frm.ShowDialog();
+                    if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+                        chkSign.Checked = false;
+                }
+                else
+                {
+                    SettingSignADO = null;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSign.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkSign.Name;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
+                    csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnExportXmlTT12_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool success = false;
+                string savePath = "";
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    savePath = fbd.SelectedPath;
+                }
+                if (String.IsNullOrEmpty(savePath))
+                    return;
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                HisMachineFilter filter = new HisMachineFilter();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                var listMachines = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_MACHINE>>(HIS.Desktop.Plugins.HisMachine.HisRequestUriStore.MOSHIS_HIS_MACHINE_GET, ApiConsumers.MosConsumer, filter, param);
+                var selectedMachines = ((List<MachineADO>)gridControl1.DataSource);
+                listMachines = listMachines.Where(o => selectedMachines.Any(s => s.ID == o.ID && s.IsChecked)).ToList();
+                if (listMachines == null || listMachines.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    return;
+                }
+
+                string fullFileName = String.Format("MayCLSTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+                string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
+                List<XmlTT12Ado> listXmlAdos = new List<XmlTT12Ado>();
+                List<XMLTT12DetailData> listXmlDetails = new List<XMLTT12DetailData>();
+                listXmlAdos = GenerateXmlTT12Ado(listMachines);
+                MapADOToXmlTT12(listXmlAdos, ref listXmlDetails);
+                XMLTT12Data xmlData = new XMLTT12Data();
+                xmlData.DanhMuc = listXmlDetails;
+                xmlData.ChuKyDonVi = "";
+                var rs = CreatedXmlFileTT12Plus(xmlData);
+                if (rs != null)
+                {
+                    FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
+                    rs.WriteTo(file);
+                    file.Close();
+                    rs.Close();
+                    success = true;
+                }
+                if (chkSign.Checked)
+                {
+                    SignFile(fullFileName, saveFilePath);
+                }
+                WaitingManager.Hide();
+                MessageManager.Show(this, param, success);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        public bool SignFile(string fullFileName,string saveFilePath)
+        {
+            try
+            {
+                if (SettingSignADO == null || (SettingSignADO != null && string.IsNullOrEmpty(SettingSignADO.SerialNumber)))
+                {
+                    MessageBox.Show("Không có thông tin Usb Token ký số");
+                    return false;
+                }
+                else
+                {
+                    string currentDirectory = Directory.GetCurrentDirectory();
+                    string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+                    Directory.CreateDirectory(tempFolderPath);
+                    string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
+                    File.Create(tempFilePath).Close();
+                    string pathAfterFileSign = null;
+                    WcfSignDCO wcfSignDCO = null;
+                    if (SettingSignADO.IsHsm)
+                    {
+                        var xmlBase64 = SourceFileSignApi(ReadFileContent(saveFilePath));
+                        if (string.IsNullOrEmpty(xmlBase64))
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Ký HSM thất bại");
+                            return false;
+                        }
+                        var xmlBytes = Convert.FromBase64String(xmlBase64);
+                        File.WriteAllBytes(tempFilePath, xmlBytes);
+                        pathAfterFileSign = tempFilePath;
+                    }
+                    else
+                    {
+                        wcfSignDCO = new WcfSignDCO
+                        {
+                            SerialNumber = SettingSignADO.SerialNumber,
+                            OutputFile = tempFilePath,
+                            PIN = "",
+                            SourceFile = saveFilePath,
+                            fieldSigned = "CHUKYDONVI"
+                        };
+                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                        SignProcessorClient signProcessorClient = new SignProcessorClient();
+                        if (!VerifyServiceSignProcessorIsRunning())
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Service ký số không chạy");
+                        }
+                        var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                        if (wcfSignResultDCO == null || !wcfSignResultDCO.Success)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Ký file thất bại: " + (wcfSignResultDCO != null ? wcfSignResultDCO.Message : ""));
+                            return false;
+                        }
+                        pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                    }
+                    if (!string.IsNullOrEmpty(pathAfterFileSign) && File.Exists(pathAfterFileSign))
+                    {
+                        File.Copy(pathAfterFileSign, saveFilePath, true);
+                    }
+                    if (File.Exists(tempFilePath))
+                    {
+                        File.Delete(tempFilePath);
+                    }
+                    if (Directory.Exists(tempFolderPath) && Directory.GetFiles(tempFolderPath).Length == 0 && Directory.GetDirectories(tempFolderPath).Length == 0)
+                    {
+                        Directory.Delete(tempFolderPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+
+        public string AppFilePathSignService()
+        {
+            try
+            {
+                string pathFolderTemp = Path.Combine(Path.Combine(Path.Combine(Application.StartupPath, "Integrate"), "EMR.SignProcessor"), "EMR.SignProcessor.exe");
+                return pathFolderTemp;
+            }
+            catch (IOException exception)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Error create temp file: " + exception.Message);
+                return "";
+            }
+        }
+        private bool IsProcessOpen(string name)
+        {
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                if (clsProcess.ProcessName == name || clsProcess.ProcessName == String.Format("{0}.exe", name) || clsProcess.ProcessName == String.Format("{0} (32 bit)", name) || clsProcess.ProcessName == String.Format("{0}.exe (32 bit)", name))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        internal bool VerifyServiceSignProcessorIsRunning()
+        {
+            bool valid = false;
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.1");
+                string exeSignPath = AppFilePathSignService();
+                if (File.Exists(exeSignPath))
+                {
+                    if (IsProcessOpen("EMR.SignProcessor"))
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.2");
+                        valid = true;
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.3");
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exeSignPath), exeSignPath));
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = exeSignPath;
+                        try
+                        {
+
+                            Process.Start(startInfo);
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.4");
+                            Thread.Sleep(500);
+                            valid = true;
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.5");
+                        }
+                        catch (Exception exx)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exx);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+        private string SourceFileSignApi(string xmlBase64Source)
+        {
+            string result = null;
+            try
+            {
+                CommonParam param = new CommonParam();
+                EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
+                signXmlBhytSDO.XmlBase64 = xmlBase64Source;
+                signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
+                signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                {
+                    string message = string.Join(Environment.NewLine, param.Messages);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Inventec.Common.Logging.LogSystem.Warn(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private string ReadFileContent(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    byte[] fileBytes = File.ReadAllBytes(filePath);
+                    XmlDocument xmlDocument = new XmlDocument();
+                    try
+                    {
+                        xmlDocument.LoadXml(RemoveByteOrderMark(Encoding.UTF8.GetString(File.ReadAllBytes(filePath))));
+                        return Convert.ToBase64String(StringToBytes(RemoveByteOrderMark(Encoding.UTF8.GetString(fileBytes))));
+                    }
+                    catch (Exception)
+                    {
+                        xmlDocument.LoadXml(Encoding.UTF8.GetString(File.ReadAllBytes(filePath)));
+                        return Convert.ToBase64String(StringToBytes(Encoding.UTF8.GetString(fileBytes)));
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+        private string RemoveByteOrderMark(string XML)
+        {
+            string byteOrderMark = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+            if (XML.StartsWith(byteOrderMark))
+            {
+                XML = XML.Remove(0, byteOrderMark.Length);
+            }
+            return XML;
+        }
+        public byte[] StringToBytes(string input)
+        {
+            if (input == null) return null;
+            return Encoding.UTF8.GetBytes(input);
         }
     }
 }
