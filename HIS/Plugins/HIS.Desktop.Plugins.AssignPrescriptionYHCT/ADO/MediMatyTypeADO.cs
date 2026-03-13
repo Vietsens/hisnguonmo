@@ -31,9 +31,44 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
 {
     public class MediMatyTypeADO : MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE
     {
+        private short? isGuaranteed = 1;
+
+        public short? IS_GUARANTEED
+        {
+            get { return isGuaranteed; }
+            set { isGuaranteed = value; }
+        }
+
         public MediMatyTypeADO()
         {
 
+        }
+
+        private void TryCopyIsGuaranteedFrom(object source)
+        {
+            try
+            {
+                if (source == null) return;
+
+                var prop = source.GetType().GetProperty("IS_GUARANTEED");
+                if (prop == null) return;
+
+                object raw = prop.GetValue(source, null);
+                if (raw == null) return;
+
+                if (raw is bool)
+                {
+                    this.IS_GUARANTEED = (short?)(((bool)raw) ? 1 : 0);
+                    return;
+                }
+
+                short mapped = Convert.ToInt16(raw);
+                this.IS_GUARANTEED = (short?)mapped;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         public MediMatyTypeADO(MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE midicineType)
@@ -139,6 +174,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                         AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setDefaultMediStockForData(this);
                     }
                     this.PrimaryKey = ((inputData.SERVICE_ID ?? 0) + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
+
+                    // Đơn mẫu: mặc định tích bảo lãnh
+                    this.IS_GUARANTEED = 1;
+
                     AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
                 }
                 else
@@ -218,6 +257,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     }
 
                     this.PrimaryKey = ((inputData.SERVICE_ID ?? 0) + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
+
+                    // Đơn mẫu: mặc định tích bảo lãnh
+                    this.IS_GUARANTEED = 1;
+
                     AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
                 }
                 else
@@ -293,6 +336,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
             {
                 this.IsEdit = isEdit;
                 Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, inputData);
+                if (isEdit) TryCopyIsGuaranteedFrom(inputData);
                 this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                 this.PATIENT_TYPE_ID = inputData.PATIENT_TYPE_ID;
                 this.PATIENT_TYPE_CODE = inputData.PATIENT_TYPE_CODE;
@@ -396,6 +440,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
 
                 this.PrimaryKey = (inputData.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
 
+                if (!isEdit)
+                {
+                    // Thêm mới / load đơn cũ: mặc định tích bảo lãnh
+                    this.IS_GUARANTEED = 1;
+                }
+
                 AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
             }
             catch (Exception ex)
@@ -415,6 +465,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
             try
             {
                 Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, inputData);
+                TryCopyIsGuaranteedFrom(inputData);
                 this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                 this.PATIENT_TYPE_ID = inputData.PATIENT_TYPE_ID;
                 this.PATIENT_TYPE_CODE = inputData.PATIENT_TYPE_CODE;
@@ -517,6 +568,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
 
                 this.PrimaryKey = (inputData.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
 
+                // Đơn cũ: mặc định tích bảo lãnh
+                this.IS_GUARANTEED = 1;
+
                 AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
             }
             catch (Exception ex)
@@ -531,6 +585,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
             {
                 this.IsEdit = isEdit;
                 Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this, inputData);
+                if (isEdit) TryCopyIsGuaranteedFrom(inputData);
 
                 this.SERVICE_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT;
 
@@ -624,6 +679,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.IsKHBHYT = false;
 
                 this.PrimaryKey = (inputData.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
+
+                if (!isEdit)
+                {
+                    // Thêm mới / load đơn cũ: mặc định tích bảo lãnh
+                    this.IS_GUARANTEED = 1;
+                }
                 AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
             }
             catch (Exception ex)
@@ -637,6 +698,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
             try
             {
                 this.IsEdit = isEdit;
+                if (isEdit) TryCopyIsGuaranteedFrom(inputData);
                 var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == inputData.MEDICINE_TYPE_ID);
                 if (mety != null)
                 {
@@ -694,6 +756,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.PrimaryKey = (mety.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
                     AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
                 }
+
+                if (!isEdit)
+                {
+                    // Thêm mới / load đơn cũ: mặc định tích bảo lãnh
+                    this.IS_GUARANTEED = 1;
+                }
             }
             catch (Exception ex)
             {
@@ -706,6 +774,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
             try
             {
                 this.IsEdit = isEdit;
+                if (isEdit) TryCopyIsGuaranteedFrom(inputData);
                 var maty = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.ID == inputData.MATERIAL_TYPE_ID);
                 if (maty != null)
                 {
@@ -784,6 +853,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                     this.PrimaryKey = (maty.SERVICE_ID + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid());
                     AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
                 }
+
+                if (!isEdit)
+                {
+                    // Thêm mới / load đơn cũ: mặc định tích bảo lãnh
+                    this.IS_GUARANTEED = 1;
+                }
             }
             catch (Exception ex)
             {
@@ -796,6 +871,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
             try
             {
                 this.IsEdit = isEdit;
+                if (isEdit) TryCopyIsGuaranteedFrom(inputData);
                 var mety = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == (inputData.MEDICINE_TYPE_ID ?? 0));
                 if (mety != null)
                 {
@@ -833,6 +909,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
 
                 this.PrimaryKey = ((mety != null ? mety.SERVICE_ID : 0) + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
                 AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
+
+                if (!isEdit)
+                {
+                    // Thêm mới / load đơn cũ: mặc định tích bảo lãnh
+                    this.IS_GUARANTEED = 1;
+                }
             }
             catch (Exception ex)
             {
@@ -900,6 +982,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
                 this.NUM_ORDER = AssignPrescriptionWorker.Instance.MediMatyCreateWorker.getNumRow();
 
                 this.PrimaryKey = ((mety != null ? mety.SERVICE_ID : 0) + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
+
+                // Đơn cũ: mặc định tích bảo lãnh
+                this.IS_GUARANTEED = 1;
+
                 AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
             }
             catch (Exception ex)
@@ -913,6 +999,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
             try
             {
                 this.IsEdit = isEdit;
+                if (isEdit) TryCopyIsGuaranteedFrom(inputData);
                 var maty = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(o => o.ID == inputData.MATERIAL_TYPE_ID);
                 if (maty != null)
                 {
@@ -963,6 +1050,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.ADO
 
                 this.PrimaryKey = ((maty != null ? maty.SERVICE_ID : 0) + "__" + Inventec.Common.DateTime.Get.Now() + "__" + Guid.NewGuid().ToString());
                 AssignPrescriptionWorker.Instance.MediMatyCreateWorker.setNumRow();
+
+                if (!isEdit)
+                {
+                    // Thêm mới / load đơn cũ: mặc định tích bảo lãnh
+                    this.IS_GUARANTEED = 1;
+                }
             }
             catch (Exception ex)
             {
