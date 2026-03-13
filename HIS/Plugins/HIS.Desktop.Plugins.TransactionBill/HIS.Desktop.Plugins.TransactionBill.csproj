@@ -69,7 +69,7 @@
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
@@ -90,9 +90,8 @@
     <Reference Include="HIS.UC.MenuPrint">
       <HintPath>..\..\..\..\LIB\HIS\HIS.UC.MenuPrint\HIS.UC.MenuPrint.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.SereServTree, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC.SereServTree\bin\Debug\HIS.UC.SereServTree.dll</HintPath>
+    <Reference Include="HIS.UC.SereServTree">
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.SereServTree.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -358,6 +357,7 @@
     <Compile Include="Validtion\spinNumOrderRepayValidationRule.cs" />
     <Compile Include="Validtion\SpinNumOrderRule.cs" />
     <Compile Include="Validtion\SpinTranferAmountValidationRule.cs" />
+    <Compile Include="Validtion\SpinTransferAndSwipeAmountNewValidationRule.cs" />
     <Compile Include="Validtion\SpinVATValidationRule.cs" />
     <Compile Include="Validtion\PayFormValidationRule.cs" />
     <Compile Include="Validtion\TransactionTimeValidationRule.cs" />
@@ -368,7 +368,6 @@
     <EmbeddedResource Include="frmTransactionBill.resx">
       <DependentUpon>frmTransactionBill.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
