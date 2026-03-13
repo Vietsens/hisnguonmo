@@ -145,7 +145,7 @@
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
-            this.layoutControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
             this.layoutControl1.Size = new System.Drawing.Size(892, 596);
@@ -156,7 +156,7 @@
             // 
             this.labelControl12.Appearance.Font = new System.Drawing.Font("Tahoma", 8.2F, System.Drawing.FontStyle.Bold);
             this.labelControl12.Location = new System.Drawing.Point(2, 2);
-            this.labelControl12.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.labelControl12.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl12.Name = "labelControl12";
             this.labelControl12.Size = new System.Drawing.Size(85, 13);
             this.labelControl12.StyleController = this.layoutControl1;
@@ -166,7 +166,7 @@
             // lblExpiredDate
             // 
             this.lblExpiredDate.Location = new System.Drawing.Point(455, 97);
-            this.lblExpiredDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblExpiredDate.Margin = new System.Windows.Forms.Padding(2);
             this.lblExpiredDate.Name = "lblExpiredDate";
             this.lblExpiredDate.Size = new System.Drawing.Size(435, 24);
             this.lblExpiredDate.StyleController = this.layoutControl1;
@@ -175,7 +175,7 @@
             // lblMatch
             // 
             this.lblMatch.Location = new System.Drawing.Point(646, 19);
-            this.lblMatch.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblMatch.Margin = new System.Windows.Forms.Padding(2);
             this.lblMatch.Name = "lblMatch";
             this.lblMatch.Size = new System.Drawing.Size(244, 13);
             this.lblMatch.StyleController = this.layoutControl1;
@@ -184,7 +184,7 @@
             // lblPatientName
             // 
             this.lblPatientName.Location = new System.Drawing.Point(455, 45);
-            this.lblPatientName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblPatientName.Margin = new System.Windows.Forms.Padding(2);
             this.lblPatientName.Name = "lblPatientName";
             this.lblPatientName.Size = new System.Drawing.Size(122, 22);
             this.lblPatientName.StyleController = this.layoutControl1;
@@ -193,7 +193,7 @@
             // lblDOB
             // 
             this.lblDOB.Location = new System.Drawing.Point(654, 45);
-            this.lblDOB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblDOB.Margin = new System.Windows.Forms.Padding(2);
             this.lblDOB.Name = "lblDOB";
             this.lblDOB.Size = new System.Drawing.Size(85, 22);
             this.lblDOB.StyleController = this.layoutControl1;
@@ -202,7 +202,7 @@
             // lblGender
             // 
             this.lblGender.Location = new System.Drawing.Point(816, 45);
-            this.lblGender.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblGender.Margin = new System.Windows.Forms.Padding(2);
             this.lblGender.Name = "lblGender";
             this.lblGender.Size = new System.Drawing.Size(74, 22);
             this.lblGender.StyleController = this.layoutControl1;
@@ -211,7 +211,7 @@
             // btnReadCCCD
             // 
             this.btnReadCCCD.Location = new System.Drawing.Point(197, 19);
-            this.btnReadCCCD.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnReadCCCD.Margin = new System.Windows.Forms.Padding(2);
             this.btnReadCCCD.Name = "btnReadCCCD";
             this.btnReadCCCD.Size = new System.Drawing.Size(72, 22);
             this.btnReadCCCD.StyleController = this.layoutControl1;
@@ -222,7 +222,7 @@
             // lblStatus
             // 
             this.lblStatus.Location = new System.Drawing.Point(346, 19);
-            this.lblStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblStatus.Margin = new System.Windows.Forms.Padding(2);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(223, 18);
             this.lblStatus.StyleController = this.layoutControl1;
@@ -231,7 +231,7 @@
             // lblPlaceIssue
             // 
             this.lblPlaceIssue.Location = new System.Drawing.Point(272, 125);
-            this.lblPlaceIssue.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblPlaceIssue.Margin = new System.Windows.Forms.Padding(2);
             this.lblPlaceIssue.Name = "lblPlaceIssue";
             this.lblPlaceIssue.Size = new System.Drawing.Size(618, 24);
             this.lblPlaceIssue.StyleController = this.layoutControl1;
@@ -240,7 +240,7 @@
             // lblIssueDate
             // 
             this.lblIssueDate.Location = new System.Drawing.Point(272, 97);
-            this.lblIssueDate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblIssueDate.Margin = new System.Windows.Forms.Padding(2);
             this.lblIssueDate.Name = "lblIssueDate";
             this.lblIssueDate.Size = new System.Drawing.Size(106, 24);
             this.lblIssueDate.StyleController = this.layoutControl1;
@@ -249,7 +249,7 @@
             // lblAdress
             // 
             this.lblAdress.Location = new System.Drawing.Point(272, 71);
-            this.lblAdress.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblAdress.Margin = new System.Windows.Forms.Padding(2);
             this.lblAdress.Name = "lblAdress";
             this.lblAdress.Size = new System.Drawing.Size(618, 22);
             this.lblAdress.StyleController = this.layoutControl1;
@@ -258,7 +258,7 @@
             // lblCCCD
             // 
             this.lblCCCD.Location = new System.Drawing.Point(272, 45);
-            this.lblCCCD.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lblCCCD.Margin = new System.Windows.Forms.Padding(2);
             this.lblCCCD.Name = "lblCCCD";
             this.lblCCCD.Size = new System.Drawing.Size(106, 22);
             this.lblCCCD.StyleController = this.layoutControl1;
@@ -267,7 +267,7 @@
             // picCCCD
             // 
             this.picCCCD.Location = new System.Drawing.Point(2, 19);
-            this.picCCCD.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.picCCCD.Margin = new System.Windows.Forms.Padding(2);
             this.picCCCD.Name = "picCCCD";
             this.picCCCD.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.picCCCD.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
@@ -288,7 +288,7 @@
             this.layoutControl2.Controls.Add(this.labelControl1);
             this.layoutControl2.Controls.Add(this.picSignPatient);
             this.layoutControl2.Location = new System.Drawing.Point(2, 219);
-            this.layoutControl2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
             this.layoutControl2.Size = new System.Drawing.Size(888, 375);
@@ -299,7 +299,7 @@
             // 
             this.pictureEdit1.EditValue = ((object)(resources.GetObject("pictureEdit1.EditValue")));
             this.pictureEdit1.Location = new System.Drawing.Point(754, 71);
-            this.pictureEdit1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureEdit1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureEdit1.Name = "pictureEdit1";
             this.pictureEdit1.Properties.Appearance.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pictureEdit1.Properties.Appearance.Options.UseBackColor = true;
@@ -313,7 +313,7 @@
             // 
             this.btnDeleteSignPatient.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteSignPatient.Image")));
             this.btnDeleteSignPatient.Location = new System.Drawing.Point(755, 73);
-            this.btnDeleteSignPatient.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDeleteSignPatient.Margin = new System.Windows.Forms.Padding(2);
             this.btnDeleteSignPatient.Name = "btnDeleteSignPatient";
             this.btnDeleteSignPatient.Size = new System.Drawing.Size(0, 29);
             this.btnDeleteSignPatient.StyleController = this.layoutControl2;
@@ -322,7 +322,7 @@
             // btnDraw
             // 
             this.btnDraw.Location = new System.Drawing.Point(349, 19);
-            this.btnDraw.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDraw.Margin = new System.Windows.Forms.Padding(2);
             this.btnDraw.Name = "btnDraw";
             this.btnDraw.Size = new System.Drawing.Size(110, 22);
             this.btnDraw.StyleController = this.layoutControl2;
@@ -333,7 +333,7 @@
             // btnfingerprintf
             // 
             this.btnfingerprintf.Location = new System.Drawing.Point(463, 19);
-            this.btnfingerprintf.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnfingerprintf.Margin = new System.Windows.Forms.Padding(2);
             this.btnfingerprintf.Name = "btnfingerprintf";
             this.btnfingerprintf.Size = new System.Drawing.Size(120, 22);
             this.btnfingerprintf.StyleController = this.layoutControl2;
@@ -344,7 +344,7 @@
             // btnTakePicture
             // 
             this.btnTakePicture.Location = new System.Drawing.Point(225, 19);
-            this.btnTakePicture.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnTakePicture.Margin = new System.Windows.Forms.Padding(2);
             this.btnTakePicture.Name = "btnTakePicture";
             this.btnTakePicture.Size = new System.Drawing.Size(120, 22);
             this.btnTakePicture.StyleController = this.layoutControl2;
@@ -355,7 +355,7 @@
             // btnChoosePicture
             // 
             this.btnChoosePicture.Location = new System.Drawing.Point(112, 19);
-            this.btnChoosePicture.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnChoosePicture.Margin = new System.Windows.Forms.Padding(2);
             this.btnChoosePicture.Name = "btnChoosePicture";
             this.btnChoosePicture.Size = new System.Drawing.Size(109, 22);
             this.btnChoosePicture.StyleController = this.layoutControl2;
@@ -366,7 +366,7 @@
             // btnSigningSheet
             // 
             this.btnSigningSheet.Location = new System.Drawing.Point(2, 19);
-            this.btnSigningSheet.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnSigningSheet.Margin = new System.Windows.Forms.Padding(2);
             this.btnSigningSheet.Name = "btnSigningSheet";
             this.btnSigningSheet.Size = new System.Drawing.Size(106, 22);
             this.btnSigningSheet.StyleController = this.layoutControl2;
@@ -377,7 +377,7 @@
             // btnRelease
             // 
             this.btnRelease.Location = new System.Drawing.Point(755, 351);
-            this.btnRelease.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRelease.Margin = new System.Windows.Forms.Padding(2);
             this.btnRelease.Name = "btnRelease";
             this.btnRelease.Size = new System.Drawing.Size(131, 22);
             this.btnRelease.StyleController = this.layoutControl2;
@@ -389,7 +389,7 @@
             // 
             this.labelControl1.Appearance.Font = new System.Drawing.Font("Tahoma", 8.2F, System.Drawing.FontStyle.Bold);
             this.labelControl1.Location = new System.Drawing.Point(2, 2);
-            this.labelControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.labelControl1.Margin = new System.Windows.Forms.Padding(2);
             this.labelControl1.Name = "labelControl1";
             this.labelControl1.Size = new System.Drawing.Size(101, 13);
             this.labelControl1.StyleController = this.layoutControl2;
@@ -399,7 +399,7 @@
             // picSignPatient
             // 
             this.picSignPatient.Location = new System.Drawing.Point(150, 73);
-            this.picSignPatient.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.picSignPatient.Margin = new System.Windows.Forms.Padding(2);
             this.picSignPatient.Name = "picSignPatient";
             this.picSignPatient.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.picSignPatient.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
@@ -778,11 +778,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 596);
             this.Controls.Add(this.layoutControl1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmEmrPatientCertificateRegister";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Phát hành chứng thư số";
             this.Load += new System.EventHandler(this.frmEmrPatientCertificateRegister_Load);
+            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picCCCD.Properties)).EndInit();
