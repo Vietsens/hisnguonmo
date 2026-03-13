@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.AssignBed
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.spinPrice = new DevExpress.XtraEditors.SpinEdit();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnOK = new DevExpress.XtraEditors.SimpleButton();
@@ -53,7 +54,7 @@ namespace HIS.Desktop.Plugins.AssignBed
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barbtnOK = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();

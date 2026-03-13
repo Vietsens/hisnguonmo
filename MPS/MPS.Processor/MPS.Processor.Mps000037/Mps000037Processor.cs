@@ -157,7 +157,14 @@ namespace MPS.Processor.Mps000037
                     }
 
                     ExecuteRoomGroups = (ExecuteRoomGroups != null && ExecuteRoomGroups.Count > 0) ? ExecuteRoomGroups.OrderBy(o => o.EXECUTE_ROOM_NAME).ThenBy(p => p.EXECUTE_DEPARTMENT_NAME).ToList() : ExecuteRoomGroups;
-                    ExecuteRoomGroupsServiceType = (ExecuteRoomGroups != null && ExecuteRoomGroups.Count > 0) ? ExecuteRoomGroupsServiceType.OrderBy(x => orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order) ? order : int.MaxValue).ToList() : ExecuteRoomGroupsServiceType;
+
+                    ExecuteRoomGroupsServiceType.ForEach(x =>
+                    {
+                        if (orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order))
+                            x.NUM_ORDER_SERVICE_TYPE = order;
+                    });
+
+                    ExecuteRoomGroupsServiceType = (ExecuteRoomGroupsServiceType != null && ExecuteRoomGroupsServiceType.Count > 0) ? ExecuteRoomGroupsServiceType.OrderBy(x => orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order) ? order : int.MaxValue).ToList() : ExecuteRoomGroupsServiceType;
                     var grType = ListAdo.GroupBy(o => o.TDL_SERVICE_TYPE_ID).ToList();
 
                     List<HIS_SERVICE_REQ_TYPE> srTypeList = new List<HIS_SERVICE_REQ_TYPE>();
@@ -238,6 +245,12 @@ namespace MPS.Processor.Mps000037
                             }
                         }
                     }
+
+                    ExecuteRoomGroupsServiceType.ForEach(x =>
+                    {
+                        if (orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order))
+                            x.NUM_ORDER_SERVICE_TYPE = order;
+                    });
 
                     ExecuteRoomGroupsServiceType = ExecuteRoomGroupsServiceType.OrderBy(x => orderMap.TryGetValue(x.TDL_SERVICE_TYPE_ID, out var order) ? order : int.MaxValue).ToList();
                     

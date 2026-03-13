@@ -293,4 +293,10 @@ toán</value>
 	<data name="frmAssignBed.Text" xml:space="preserve">
     <value>Chỉ định dịch vụ giường</value>
   </data>
+	<data name="frmPriceEdit.btnOK.Text" xml:space="preserve">
+    <value>Đồng ý (Ctrl S)</value>
+  </data>
+	<data name="frmPriceEdit.layoutControlItem1.Text" xml:space="preserve">
+    <value>Giá:</value>
+  </data>
 </root>

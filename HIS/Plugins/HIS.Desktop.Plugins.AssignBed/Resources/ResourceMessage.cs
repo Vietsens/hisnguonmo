@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.AssignBed.Resources
 {
-    class ResourceMessage
+    class ResourceMessage 
     {
-        static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.Desktop.Plugins.AssignService.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
+        static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.Desktop.Plugins.AssignBed.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
 
         internal static string SereServOtherpaySourceAlert__DVChuaDuocNhapNguonChiTra
         {

@@ -28,15 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAssignBed));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
             this.gridView7 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
@@ -56,7 +57,7 @@
             this.customGridViewWithFilterMultiColumn2 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtIcdMainText = new DevExpress.XtraEditors.TextEdit();
             this.pnlUCPanel = new DevExpress.XtraEditors.PanelControl();
-            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerOtherPaySource = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlOtherPaySource = new DevExpress.XtraGrid.GridControl();
             this.gridViewOtherPaySource = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -65,7 +66,7 @@
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn18 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemCheckEdit3 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerSubIcdName = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.customGridControlSubIcdName = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.customGridViewSubIcdName = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.gridColumn1 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -204,12 +205,12 @@
             this.customGridViewWithFilterMultiColumn1 = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.customGridLookUpEdit1View = new Inventec.Desktop.CustomControl.CustomGrid.CustomGridView();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.customGridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.tooltipService = new DevExpress.Utils.ToolTipController();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+            this.tooltipService = new DevExpress.Utils.ToolTipController(this.components);
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainer1)).BeginInit();
@@ -975,8 +976,16 @@
             // gridColumn10
             // 
             this.gridColumn10.Caption = "Đơn giá";
+            this.gridColumn10.DisplayFormat.FormatString = "#,###";
+            this.gridColumn10.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.gridColumn10.FieldName = "PRICE_DISPLAY";
             this.gridColumn10.Name = "gridColumn10";
+            this.gridColumn10.OptionsColumn.AllowEdit = false;
+            this.gridColumn10.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumn10.OptionsFilter.AllowFilter = false;
+            this.gridColumn10.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumn10.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
             this.gridColumn10.VisibleIndex = 10;
             this.gridColumn10.Width = 100;
@@ -1068,8 +1077,13 @@
             // 
             this.repositoryItembtnEditDonGia_TextDisable.AutoHeight = false;
             this.repositoryItembtnEditDonGia_TextDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton()});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
+            this.repositoryItembtnEditDonGia_TextDisable.DisplayFormat.FormatString = "#,##0.00";
+            this.repositoryItembtnEditDonGia_TextDisable.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItembtnEditDonGia_TextDisable.EditFormat.FormatString = "#,##0.00";
+            this.repositoryItembtnEditDonGia_TextDisable.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.repositoryItembtnEditDonGia_TextDisable.Name = "repositoryItembtnEditDonGia_TextDisable";
+            this.repositoryItembtnEditDonGia_TextDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
             this.repositoryItembtnEditDonGia_TextDisable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItembtnEditDonGia_TextDisable_ButtonClick);
             // 
             // repositoryItemTxtReadOnly

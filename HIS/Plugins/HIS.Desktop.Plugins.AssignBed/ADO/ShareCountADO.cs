@@ -15,31 +15,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MPS.Processor.Mps000037
+namespace HIS.Desktop.Plugins.AssignBed.ADO
 {
-    class SereServGroupPlusADO : V_HIS_SERE_SERV
+    internal class ShareCountADO
     {
-        public string SERVICE_CODE { get; set; }
-        public string SERVICE_NAME { get; set; }
-        public string SERVICE_REQ_CODE { get; set; }
-        public string VIR_TOTAL_PRICE_OTHER { get; set; } //them moi
-
-        public long? BEGIN_TIME { get; set; }
-        public long? END_TIME { get; set; }
-        public string INSTRUCTION_NOTE { get; set; }
-        public string NOTE { get; set; }
-        public string CONCLUDE { get; set; }
-        public string DESCRIPTION { get; set; }
-
-        public long SERVICE_PARENT_ID { get; set; }
-        public long? NUM_ORDER { get; set; }
-        public long? NUM_ORDER_SERVICE_TYPE { get; set; }
+        internal ShareCountADO()
+        {
+        }
+        internal ShareCountADO(long? shareCount)
+        {
+            this.ShareCount = shareCount;
+        }
+        public long? ShareCount { get; set; }
     }
 }

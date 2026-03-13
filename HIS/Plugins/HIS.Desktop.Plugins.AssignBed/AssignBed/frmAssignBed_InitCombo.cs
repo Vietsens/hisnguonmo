@@ -506,6 +506,32 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void LoadShareCount()
+        {
+            try
+            {
+                List<ShareCountADO> shareCounts = new List<ShareCountADO>();
+                shareCounts.Add(new ShareCountADO(2));
+                shareCounts.Add(new ShareCountADO(3));
+                shareCounts.Add(new ShareCountADO(4));
+                shareCounts.Add(new ShareCountADO(5));
+                shareCounts.Add(new ShareCountADO(6));
+                shareCounts.Add(new ShareCountADO(7));
+                shareCounts.Add(new ShareCountADO(8));
+                shareCounts.Add(new ShareCountADO(9));
+                shareCounts.Add(new ShareCountADO(10));
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("ShareCount", "", 100, 1));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("ShareCount", "ShareCount", columnInfos, false, 100);
+                ControlEditorLoader.Load(this.repositoryItemcboShareCount, shareCounts, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 
 
