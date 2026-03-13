@@ -83,7 +83,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool isNotLoadWhileChangeControlStateInFirst;
-
+        bool isCheckPayForm = false;
         public frmTransactionBillOther(Module moduleData)
             : base(moduleData)
         {
@@ -450,6 +450,12 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 ValidControlBuyerOrganization();
                 ValidControlBuyerTaxCode();
                 ValidControlSoTienCk();
+                if (isCheckPayForm)
+                {
+                    ValidControlSoTienCkNew();
+                    ValidControlSoTienQT();
+                }
+                
             }
             catch (Exception ex)
             {
@@ -730,6 +736,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 spinExemption.Value = 0;
                 spinExemptionRation.Value = 0;
                 spinTotalAmount.Value = 0;
+                spinTransfer.Value = 0;
+                spinSwipe.Value = 0;
                 repositoryItemButtonDelete.Buttons[0].Enabled = true;
                 txtExemptionReason.Text = "";
                 printNow = false;
@@ -1254,6 +1262,37 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void ValidControlSoTienCkNew()
+        {
+            try
+            {
+                SpinToTalAmountValidationRule rule = new SpinToTalAmountValidationRule();
+                rule.spinTotalAmount = spinTotalAmount;
+                rule.cboPayForm = cboPayForm;
+                dxValidationProvider2.SetValidationRule(spinTransfer, rule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlSoTienQT()
+        {
+            try
+            {
+                SpinToTalAmountValidationRule rule = new SpinToTalAmountValidationRule();
+                rule.spinTotalAmount = spinTotalAmount;
+                rule.cboPayForm = cboPayForm;
+                dxValidationProvider2.SetValidationRule(spinSwipe, rule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void UpdateCanThu()
         {
             try
@@ -1473,6 +1512,24 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 tranSdo.HisTransaction.BUYER_NAME = txtPatientName.Text;
                 tranSdo.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text;
                 tranSdo.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
+                if (payFormId == 9)
+                {
+                    tranSdo.HisTransaction.TRANSFER_AMOUNT = spinTransfer.Value;
+                    tranSdo.HisTransaction.SWIPE_AMOUNT = spinSwipe.Value;
+                    decimal CountTransferAndSwipe = (tranSdo.HisTransaction.SWIPE_AMOUNT ?? 0) + (tranSdo.HisTransaction.TRANSFER_AMOUNT ?? 0);
+
+                    if (CountTransferAndSwipe > tranSdo.HisTransaction.AMOUNT)
+                    {
+                        XtraMessageBox.Show(String.Format("Tổng tiền chuyển khoản/quẹt thẻ {0} lớn hơn số tiền cần thanh toán của bệnh nhân {1}", CountTransferAndSwipe, tranSdo.HisTransaction.AMOUNT), "Thông báo");
+                        return false;
+                    }
+                    else if (CountTransferAndSwipe == 0)
+                    {
+                        XtraMessageBox.Show("Tổng tiền chuyển khoản/quẹt thẻ của bệnh nhân phải lớn hơn 0", "Thông báo");
+                        return false;
+                    }
+                }
+                
 
                 var rs = new Inventec.Common.Adapter.BackendAdapter(param)
                     .Post<V_HIS_TRANSACTION>("api/HisTransaction/CreateOtherBill", ApiConsumers.MosConsumer, tranSdo, param);
@@ -1612,6 +1669,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 txtDescription.Text = "";
                 chkCheckXD.Checked = false;
                 spinSoTienCK.Value = 0;
+                spinTransfer.Value = 0;
+                spinSwipe.Value = 0;
                 btnQR.Enabled = false;
                 this.LoadDataToComboAccountBook();
                 this.treatment = null;
@@ -3105,6 +3164,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             try
             {
                 long payFormId = Convert.ToInt64(cboPayForm.EditValue);
+
                 if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
                 {
                     spinSoTienCK.Enabled = true;
@@ -3129,6 +3189,25 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     btnQR.Enabled = false;
                 }
                 ValidControlSoTienCk();
+                if (payFormId == 9)
+                {
+                    isCheckPayForm = true;
+                    this.lciSoTienCK.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                    this.layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                    ValidControlSoTienCkNew();
+                    ValidControlSoTienQT();
+                }
+                else
+                {
+                    isCheckPayForm = false;
+                    this.lciSoTienCK.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+                
                 UpdateCanThu();
             }
             catch (Exception ex)
@@ -3163,6 +3242,22 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             if (spinSoTienCK.Value < 0)
             {
                 spinSoTienCK.Value = 0;
+            }
+        }
+
+        private void spinTransfer_Validating(object sender, CancelEventArgs e)
+        {
+            if (spinTransfer.Value < 0)
+            {
+                spinTransfer.Value = 0;
+            }
+        }
+
+        private void spinSwipe_Validating(object sender, CancelEventArgs e)
+        {
+            if (spinSwipe.Value < 0)
+            {
+                spinSwipe.Value = 0;
             }
         }
     }
