@@ -48,10 +48,10 @@ namespace HIS.Desktop.Plugins.BidCreate
                 if (!btnAdd.Enabled && this.ActionType == GlobalVariables.ActionEdit)
                     return;
                 btnAdd.Focus();
-                if(Encoding.UTF8.GetByteCount(txtBidInfo.Text) > 50)
+                if (Encoding.UTF8.GetByteCount(txtBidInfo.Text) > 50)
                 {
                     dxErrorProvider1.SetError(txtBidInfo, "Thông tin thầu tối đa 50 ký tự", ErrorType.Warning);
-                    return; 
+                    return;
                 }
                 dxErrorProvider1.SetError(txtBidInfo, null);
 
@@ -366,7 +366,7 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                         var bidMedicineType = new MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE();
                         // qtcode
-                        bidMedicineType.TT_THAU = item.TT_THAU; 
+                        bidMedicineType.TT_THAU = item.TT_THAU;
                         bidMedicineType.AMOUNT = (decimal)(item.AMOUNT ?? 0);
                         bidMedicineType.IMP_PRICE = (decimal)(item.IMP_PRICE ?? 0);
                         bidMedicineType.IMP_VAT_RATIO = item.IMP_VAT_RATIO;
@@ -399,6 +399,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMedicineType.BID_MEDICINE_TYPE_CODE = item.BID_MEDICINE_TYPE_CODE;
                         bidMedicineType.BID_MEDICINE_TYPE_NAME = item.BID_MEDICINE_TYPE_NAME;
                         bidMedicineType.JOIN_BID_MEDICINE_TYPE_CODE = item.JOIN_BID_MEDICINE_TYPE_CODE;
+                        bidMedicineType.FROM_TIME = item.FROM_TIME;
+                        bidMedicineType.TO_TIME = item.TO_TIME;
 
                         this.bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
 
@@ -407,7 +409,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
                         var bidMaterialType = new MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE();
                         // qtcode
-                        bidMaterialType.TT_THAU = item.TT_THAU; 
+                        bidMaterialType.TT_THAU = item.TT_THAU;
                         bidMaterialType.AMOUNT = (decimal)(item.AMOUNT ?? 0);
                         bidMaterialType.IMP_PRICE = (decimal)(item.IMP_PRICE ?? 0);
                         bidMaterialType.IMP_VAT_RATIO = item.IMP_VAT_RATIO;
@@ -442,6 +444,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMaterialType.INFORMATION_BID = item.INFORMATION_BID;
                         bidMaterialType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                         bidMaterialType.HEIN_LIMIT_PRICE = item.HEIN_LIMIT_PRICE ?? null;
+                        bidMaterialType.FROM_TIME = item.FROM_TIME;
+                        bidMaterialType.TO_TIME = item.TO_TIME;
 
                         this.bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                     }
@@ -455,6 +459,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidBloodType.BID_NUM_ORDER = item.BID_NUM_ORDER;
                         bidBloodType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                         bidBloodType.SUPPLIER_ID = (long)(item.SUPPLIER_ID ?? 0);
+                        bidBloodType.FROM_TIME = item.FROM_TIME;
+                        bidBloodType.TO_TIME = item.TO_TIME;
 
                         this.bidModel.HIS_BID_BLOOD_TYPE.Add(bidBloodType);
                     }
@@ -811,6 +817,14 @@ namespace HIS.Desktop.Plugins.BidCreate
                     dxValidationProviderLeft.RemoveControlError(cboNational);
                     dxValidationProviderLeft.RemoveControlError(cboManufacture);
                     dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
+                    if (row.FROM_TIME.HasValue)
+                        dtItemFromTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(row.FROM_TIME.Value);
+                    else
+                        dtItemFromTime.EditValue = null;
+                    if (row.TO_TIME.HasValue)
+                        dtItemToTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(row.TO_TIME.Value);
+                    else
+                        dtItemToTime.EditValue = null;
                 }
             }
             catch (Exception ex)
@@ -893,6 +907,36 @@ namespace HIS.Desktop.Plugins.BidCreate
                 {
                     txtSupplierCode.Focus();
                     txtSupplierCode.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dtItemFromTime_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    dtItemToTime.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dtItemToTime_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    spinGiaTran.Focus();
                 }
             }
             catch (Exception ex)
@@ -1053,7 +1097,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.medicineType.PACKING_TYPE_NAME = txtQCĐG.Text.Trim();
                 this.medicineType.ACTIVE_INGR_BHYT_NAME = txtActiveBhyt.Text.Trim();
                 this.medicineType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text.Trim();
-                if(spinGiaTran.EditValue != null)
+                if (spinGiaTran.EditValue != null)
                 {
                     this.medicineType.HEIN_LIMIT_PRICE = spinGiaTran.Value;
                 }
@@ -1104,6 +1148,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                     this.medicineType.EXPIRED_DATE = null;
                 }
 
+                this.medicineType.FROM_TIME = dtItemFromTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemFromTime.DateTime) : (long?)null;
+                this.medicineType.TO_TIME = dtItemToTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemToTime.DateTime) + 235959 : (long?)null;
                 this.medicineType.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 if (cboSupplier.EditValue != null)
                 {
@@ -1206,6 +1252,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 aMedicineSdo.BID_MATERIAL_TYPE_CODE = txtMaTT.Text.Trim();
                 aMedicineSdo.BID_MATERIAL_TYPE_NAME = txtTenTT.Text.Trim();
                 aMedicineSdo.JOIN_BID_MATERIAL_TYPE_CODE = txtMaDT.Text.Trim();
+                aMedicineSdo.FROM_TIME = dtItemFromTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemFromTime.DateTime) : (long?)null;
+                aMedicineSdo.TO_TIME = dtItemToTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemToTime.DateTime) + 235959 : (long?)null;
                 aMedicineSdo.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 aMedicineSdo.INFORMATION_BID = this.cboInformationBid.SelectedIndex != -1 ? (long?)(this.cboInformationBid.SelectedIndex + 1) : null;
 
@@ -1298,6 +1346,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 aMedicineSdo.MEDICINE_TYPE_NAME = this.bloodType.BLOOD_TYPE_NAME;
                 aMedicineSdo.BID_GROUP_CODE = txtBidGroupCode.Text;
                 aMedicineSdo.BID_PACKAGE_CODE = txtBidPackageCode.Text;
+                aMedicineSdo.FROM_TIME = dtItemFromTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemFromTime.DateTime) : (long?)null;
+                aMedicineSdo.TO_TIME = dtItemToTime.EditValue != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtItemToTime.DateTime) + 235959 : (long?)null;
                 aMedicineSdo.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
                 if (cboSupplier.EditValue != null)
                 {
