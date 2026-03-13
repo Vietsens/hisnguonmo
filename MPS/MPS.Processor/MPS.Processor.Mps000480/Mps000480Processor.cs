@@ -207,6 +207,14 @@ namespace MPS.Processor.Mps000480
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.NUM_ORDER, rdo.expMest.NUM_ORDER));
                     
                 }
+                else if(rdo.lstExpMestView != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_TREATMENT_CODE, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_CODE));
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_NAME, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_NAME));
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_DOB, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_DOB));
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_GENDER_NAME, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_GENDER_NAME));
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.NUM_ORDER, rdo.lstExpMestView.FirstOrDefault().NUM_ORDER));
+                }
                 if (rdo.treatment != null)
                 {
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.ICD_CODE, rdo.treatment.ICD_CODE));
@@ -228,6 +236,20 @@ namespace MPS.Processor.Mps000480
                 if (rdo.expMest != null && !String.IsNullOrEmpty(rdo.expMest.TDL_TREATMENT_CODE))
                 {
                     Inventec.Common.BarcodeLib.Barcode barcodePatientCode = new Inventec.Common.BarcodeLib.Barcode(rdo.expMest.TDL_TREATMENT_CODE);
+                    barcodePatientCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+                    barcodePatientCode.IncludeLabel = false;
+                    barcodePatientCode.Width = 120;
+                    barcodePatientCode.Height = 40;
+                    barcodePatientCode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+                    barcodePatientCode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+                    barcodePatientCode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+                    barcodePatientCode.IncludeLabel = true;
+
+                    dicImage.Add(Mps000480ExtendSingleKey.TREATMENT_CODE_BAR, barcodePatientCode);
+                }
+                else if (rdo.lstExpMestView != null && !String.IsNullOrEmpty(rdo.lstExpMestView.FirstOrDefault().TDL_TREATMENT_CODE))
+                {
+                    Inventec.Common.BarcodeLib.Barcode barcodePatientCode = new Inventec.Common.BarcodeLib.Barcode(rdo.lstExpMestView.FirstOrDefault().TDL_TREATMENT_CODE);
                     barcodePatientCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
                     barcodePatientCode.IncludeLabel = false;
                     barcodePatientCode.Width = 120;

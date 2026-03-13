@@ -4279,8 +4279,13 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         {
                             // Không tính dịch vụ hao phí
                             //if (item.PATIENT_TYPE_ID != 0 && (item.IsExpend ?? false) == false)
+//item.PATIENT_TYPE_ID = this.currentHisTreatment.TDL_PATIENT_TYPE_ID != null ? this.currentHisTreatment.TDL_PATIENT_TYPE_ID.Value : 0;
+                            long patientTypeForCalculation = item.PATIENT_TYPE_ID;
+                            if (patientTypeForCalculation == 0 && this.currentHisTreatment.TDL_PATIENT_TYPE_ID.HasValue)
+                            {
+                                patientTypeForCalculation = this.currentHisTreatment.TDL_PATIENT_TYPE_ID.Value;
+                            }
 
-                            item.PATIENT_TYPE_ID = this.currentHisTreatment.TDL_PATIENT_TYPE_ID != null ? this.currentHisTreatment.TDL_PATIENT_TYPE_ID.Value : 0;
                             if ((item.IsExpend ?? false) == false)
                             {
                                 var servicePaties = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.ServicePatyWithListPatientType(item.SERVICE_ID, this.patientTypeIdAls);
