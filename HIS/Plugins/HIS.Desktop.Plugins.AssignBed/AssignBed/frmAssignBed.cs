@@ -121,7 +121,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         private List<HIS_CO_TREATMENT> ListCoTreatmentCheckTime = null;
         private bool _isBedCodeClickOnCheckedRow = false;
         // Lưu SERVICE_ID của các row mà người dùng chủ động xóa ĐTTT bằng nút Delete.
-        // Dùng để ngăn CellValueChanged tự động restore lại ĐTTT khi chạy cho các cột khác (TIME_FROM, QUANTITY…).
+        // Dùng để ngăn CellValueChanged tự động restore lại ĐTTT khi chạy cho các cột khác (TIME_FROM, QUANTITY…). 
         private HashSet<long> _manuallyPatientTypeClearedServiceIds = new HashSet<long>();
 
         DateTime timeSelested;
@@ -268,7 +268,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     this.processRefeshIcd = dataADO.DgProcessRefeshIcd;
                     this.serviceReqParentId = dataADO.ServiceReqId;
                     this.isInKip = dataADO.IsInKip;
-                    //this.isAssignInPttt = dataADO.IsAssignInPttt;
+                    //this.isAssignInPttt = dataADO.IsAssignInPttt; 
                     if (this.isInKip)
                         this.currentSereServInEkip = dataADO.SereServ;
                     else
@@ -320,7 +320,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     this.LoadTreatmentInfo__PatientType();
                     this.LoadDataDhst();
                     this.LoadDataToGridParticipants();
-                }
+                }   
 
                 this.InitComboUser();
                 this.currentTreatment = this.GetTreatment(this.treatmentId);
@@ -333,6 +333,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 this.BindTree();
                 IsFirstLoad = true;
                 this.InitComboRepositoryPatientType(this.currentPatientTypeWithPatientTypeAlter);
+                this.LoadShareCount();
                 //this.InitGridLookUpEditBed();
                 CheckEnableBtnQR();
                 InitGridLookUpEditBed();
@@ -516,19 +517,26 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         //Lưu ý: chỉ cho sửa 1 trong 2 trường ("giá" hoặc "giá gói"), chứ ko cho phép sửa cả 2. Ưu tiên "giá gói"
                         //Lưu ý: Ko cho sửa nếu ĐTTT hoặc đối tượng phụ thu là BHYT 
 
-                        if (data.PATIENT_TYPE_CODE == HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK"))
-                        {
-                            e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
-                        }
+                        bool isEditCtrol = data.IS_ENABLE_ASSIGN_PRICE == 1;
+                        isEditCtrol = isEditCtrol && IsAllowShowEditPrice(e.RowHandle);
+                        if (data != null && !isEditCtrol)
+                            e.RepositoryItem = repositoryItemTxtReadOnly;
                         else
-                        {
-                            bool isEditCtrol = data.IS_ENABLE_ASSIGN_PRICE == 1;
-                            isEditCtrol = isEditCtrol && IsAllowShowEditPrice(e.RowHandle);
-                            if (data != null && !isEditCtrol)
-                                e.RepositoryItem = repositoryItemTxtReadOnly;
-                            else
-                                e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
-                        }
+                            e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
+
+                        //if (data.PATIENT_TYPE_CODE == HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK"))
+                        //{
+                        //    e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
+                        //}
+                        //else
+                        //{
+                        //    bool isEditCtrol = data.IS_ENABLE_ASSIGN_PRICE == 1;
+                        //    isEditCtrol = isEditCtrol && IsAllowShowEditPrice(e.RowHandle);
+                        //    if (data != null && !isEditCtrol)
+                        //        e.RepositoryItem = repositoryItemTxtReadOnly;
+                        //    else
+                        //        e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
+                        //}
                     }
                     else if (e.Column.FieldName == "TIME_FROM")
                     {
@@ -695,7 +703,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     else if (e.Column.FieldName == "ShareCount")
                     {
                         long serviceReqTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewServiceProcess.GetRowCellValue(e.RowHandle, "TDL_SERVICE_TYPE_ID") ?? "").ToString());
-                        e.RepositoryItem = (serviceReqTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G ? this.repositoryItemcboShareCount : this.repositoryItemTxtReadOnly);
+                        e.RepositoryItem = this.repositoryItemcboShareCount;
                         //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqTypeId), serviceReqTypeId) + "____" + Inventec.Common.Logging.LogUtil.TraceData("IMSys.DbConfig.HIS_RS.TDL_SERVICE_TYPE_ID.ID__G", IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G));
                     }
                 }
@@ -933,11 +941,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                             && item.HEIN_LIMIT_RATIO.Value > 0
                                             && data_ServicePrice != null)
                                         {
-                                            totalPrimaryPatientType += (item.AMOUNT * data_ServicePrice.PRICE * (1 + data_ServicePrice.VAT_RATIO) * item.HEIN_LIMIT_RATIO.Value);
+                                            totalPrimaryPatientType += (decimal.Parse(item.QUANTITY_STR) * data_ServicePrice.PRICE * (1 + data_ServicePrice.VAT_RATIO) * item.HEIN_LIMIT_RATIO.Value);
                                         }
                                         else if (data_ServicePrice != null)
                                         {
-                                            totalPrimaryPatientType += (item.AMOUNT * data_ServicePrice.PRICE * (1 + data_ServicePrice.VAT_RATIO));
+                                            totalPrimaryPatientType += (decimal.Parse(item.QUANTITY_STR) * data_ServicePrice.PRICE * (1 + data_ServicePrice.VAT_RATIO));
                                         }
                                     }
                                     else
@@ -1045,7 +1053,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         assignMulti = true;
                     }
                 }
-                CheckAssignServiceSimultaneityOption();
+                //CheckAssignServiceSimultaneityOption();
             }
             catch (Exception ex)
             {
@@ -2237,106 +2245,117 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             }
         }
 
-        private void CheckAssignServiceSimultaneityOption()
+        private bool CheckAssignServiceSimultaneityOption(List<DataGridAdo> dataSereServModel)
         {
+            bool check = false;
             try
             {
                 isCheckAssignServiceSimultaneityOption = false;
                 if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") ||
             cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
-                    return;
+                    return check;
 
 
                 bool hasError = false;
-
-                if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                if (dataSereServModel != null && dataSereServModel.Count > 0)
                 {
-                    CommonParam param = new CommonParam();
-                    HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
-                    sdo.TreatmentId = treatmentId;
-                    sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
-                    sdo.SereTimes = intructionTimeSelecteds;
-
-                    var checkSereTimes = new BackendAdapter(param)
-                        .Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
-
-                    if (!checkSereTimes)
+                    List<long> lstTimeFrom = dataSereServModel.Select(o => Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(o.TIME_FROM) ?? 0).ToList();
+                    if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
                     {
-                        hasError = true;
-                        if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
+                        CommonParam param = new CommonParam();
+                        HisServiceReqCheckSereTimesSDO sdo = new HisServiceReqCheckSereTimesSDO();
+                        sdo.TreatmentId = treatmentId;
+                        sdo.Loginnames = new List<string> { cboUser.EditValue.ToString() };
+                        sdo.SereTimes = lstTimeFrom;
+
+                        var checkSereTimes = new BackendAdapter(param)
+                            .Post<bool>("api/HisServiceReq/CheckSereTimes", ApiConsumers.MosConsumer, sdo, ProcessLostToken, param);
+
+                        if (!checkSereTimes)
                         {
-                            isCheckAssignServiceSimultaneityOption = true;
-                            btnSave.Enabled = btnSaveAndPrint.Enabled = false;
-                            MessageManager.Show(this, param, false);
-                            Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA1 key ban đầu", param));
-                            return; // Dừng lại nếu option 1 bị chặn
-                        }
-                        else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
-                        {
-                            if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            hasError = true;
+                            if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "1")
                             {
                                 isCheckAssignServiceSimultaneityOption = true;
                                 btnSave.Enabled = btnSaveAndPrint.Enabled = false;
-                                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA2 key ban đầu", param));
+                                MessageManager.Show(this, param, false);
+                                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA1 key ban đầu", param));
+                                return check; // Dừng lại nếu option 1 bị chặn
+                            }
+                            else if (HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION == "2")
+                            {
+                                if (XtraMessageBox.Show(param.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                {
+                                    isCheckAssignServiceSimultaneityOption = true;
+                                    btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                                    Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA2 key ban đầu", param));
+                                    return check;
+                                }
                             }
                         }
                     }
-                }
 
-                if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
-                {
-                    CommonParam param2 = new CommonParam();
-                    var assignSdo = new HisServiceReqCheckAssignSimultaneitySDO();
-                    assignSdo.TreatmentId = treatmentId;
-                    assignSdo.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
+                    if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1" || HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
+                    {
+                        CommonParam param2 = new CommonParam();
+                        var assignSdo = new HisServiceReqCheckAssignSimultaneitySDO();
+                        assignSdo.TreatmentId = treatmentId;
+                        assignSdo.CheckInfos = new List<HisServiceReqCheckAssignSimultaneityCheckInfosSDO>
                                         {
                                             new HisServiceReqCheckAssignSimultaneityCheckInfosSDO
                                             {
                                                 LoginName = cboUser.EditValue.ToString(),
-                                                CheckTimes = intructionTimeSelecteds
+                                                CheckTimes = lstTimeFrom
                                             }
                                         };
-                    Inventec.Common.Logging.LogSystem.Debug("Input api: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", assignSdo));
-                    var checkAssignResult = new BackendAdapter(param2)
-                        .Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, assignSdo, ProcessLostToken, param2);
-                    Inventec.Common.Logging.LogSystem.Debug("Kết quả gọi api: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", checkAssignResult));
-                    if (!checkAssignResult)
-                    {
-                        hasError = true;
-                        if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1")
+                        Inventec.Common.Logging.LogSystem.Debug("Input api: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", assignSdo));
+                        var checkAssignResult = new BackendAdapter(param2)
+                            .Post<bool>("api/HisServiceReq/CheckAssignSimultaneity", ApiConsumers.MosConsumer, assignSdo, ProcessLostToken, param2);
+                        Inventec.Common.Logging.LogSystem.Debug("Kết quả gọi api: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", checkAssignResult));
+                        if (!checkAssignResult)
                         {
-                            isCheckAssignServiceSimultaneityOption = true;
-                            btnSave.Enabled = btnSaveAndPrint.Enabled = false;
-                            XtraMessageBox.Show(param2.GetMessage(), "Thông báo");
-                            Inventec.Common.Logging.LogSystem.Debug("param: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", param2));
-                        }
-                        else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
-                        {
-                            if (XtraMessageBox.Show(param2.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            hasError = true;
+                            if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "1")
                             {
                                 isCheckAssignServiceSimultaneityOption = true;
                                 btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                                XtraMessageBox.Show(param2.GetMessage(), "Thông báo");
+                                Inventec.Common.Logging.LogSystem.Debug("param: " + Inventec.Common.Logging.LogUtil.TraceData("Data:", param2));
+                                return check;
                             }
-                            else
+                            else if (HisConfigCFG.ASSIGN_SIMULTANEITY_OPTION == "2")
                             {
-                                isCheckAssignServiceSimultaneityOption = false;
-                                btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                                if (XtraMessageBox.Show(param2.GetMessage() + " Bạn có muốn tiếp tục?", "Thông báo", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                                {
+                                    isCheckAssignServiceSimultaneityOption = true;
+                                    btnSave.Enabled = btnSaveAndPrint.Enabled = false;
+                                    return check;
+                                }
+                                else
+                                {
+                                    isCheckAssignServiceSimultaneityOption = false;
+                                    btnSave.Enabled = btnSaveAndPrint.Enabled = true;
+                                }
                             }
                         }
                     }
                 }
+                    
 
                 if (!hasError)
                 {
                     isCheckAssignServiceSimultaneityOption = false;
                     btnSave.Enabled = btnSaveAndPrint.Enabled = true;
                 }
+
+                check = true;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
-
+            return check;
         }
 
         private void RefeshSereServInTreatmentData()
@@ -7532,6 +7551,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 Inventec.Common.Logging.LogSystem.Debug("Valid14__ValidFeeForExamTreatment:" + isValid);
                 //isValid = isValid && CheckMaxAmount(serviceCheckeds__Send);
                 isValid = isValid && ValidICD();
+                
                 Inventec.Common.Logging.LogSystem.Debug("Valid15__CheckMaxAmount:" + isValid);
                 if (this.USE_TIME != null && this.USE_TIME.Count > 0)
                 {
@@ -7553,7 +7573,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 isValid = isValid && this.checkBed(serviceCheckeds__Send);
 
                 ValidConsultationReqiured(serviceCheckeds__Send, this.treatmentId);
-
+                isValid = isValid && this.CheckAssignServiceSimultaneityOption(serviceCheckeds__Send);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceCheckeds__Send), serviceCheckeds__Send));
                 if (isValid)
                 {
@@ -9319,7 +9339,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         {
                             this.txtLoginName.Text = data.LOGINNAME;
 
-                            CheckAssignServiceSimultaneityOption();
+                            //CheckAssignServiceSimultaneityOption();
                         }
                     }
                     this.FocusWhileSelectedUser();
@@ -9344,7 +9364,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         {
                             this.FocusWhileSelectedUser();
                             this.txtLoginName.Text = data.LOGINNAME;
-                            CheckAssignServiceSimultaneityOption();
+                           // CheckAssignServiceSimultaneityOption();
                         }
                     }
                 }
