@@ -31,6 +31,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
 {
     class HisConfigCFG
     {
+        public const string MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
+
         private const string CONFIG_KEY__CONNECT_DRUG_INTERVENTION_INFO = "HIS.Desktop.Plugins.AssignPrescription.ConnectDrugInterventionInfo";
         private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         internal const string TUTORIAL_FORMAT = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormat";
@@ -109,6 +111,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
         internal static string AtcCodeOverlarWarningOption;
         internal static bool IsServiceReqIcdOption;
         internal static bool IsDefaultTracking;
+
+        internal static string GuaranteeConnectionInfo;
 
         internal static bool IsTrackingRequired;
 
@@ -248,6 +252,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Config
                 WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE);
                 //dangth
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
+                GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
                 AllowSignaturePrintModules = GetValue(IS_ALLOW_SIGN_NATURE_PRINT);
                 IsCheckSubIcdExceedLimit = GetValue(KEY_IsCheckSubIcdExceedLimit);
                 ASSIGN_SERVICE_SIMULTANEITY_OPTION = GetValue(KEY_ASSIGN_SERVICE_SIMULTANEITY_OPTION);

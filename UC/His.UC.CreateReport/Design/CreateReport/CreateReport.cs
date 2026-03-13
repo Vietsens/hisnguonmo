@@ -145,14 +145,12 @@ namespace His.UC.CreateReport.Design.CreateReport
                     }
                     else
                     {
-                        var ReportType = BackendDataWorker.Get<SAR_REPORT_TYPE>().FirstOrDefault(o=>o.ID == sarReportResult.REPORT_TYPE_ID);
-
                         Inventec.Common.SignLibrary.ADO.InputADO inputADO = null;
-                        if (ReportType != null)
+                        if (reportType != null)
                         {
-                            inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADO(ReportType != null ? ReportType.REPORT_TYPE_CODE : "", ReportType != null ? ReportType.REPORT_TYPE_CODE : "", sarReportResult.REPORT_NAME);
+                            inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADO(reportType != null ? reportType.REPORT_TYPE_CODE : "", reportType != null ? reportType.REPORT_TYPE_CODE : "", sarReportResult.REPORT_NAME);
                         }
-                        var print = new Inventec.Common.FlexCelPrint.frmSetupPrintPreview(stream, "", "", 1, true, false, inputADO);
+                        var print = new Inventec.Common.FlexCelPrint.frmSetupPrintPreview(stream, "", "", 1, false, false, inputADO);
                         print.ShowDialog();
                     }
                 }

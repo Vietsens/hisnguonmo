@@ -638,6 +638,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 
                 
                 valid = valid &&CheckICDPreSave() ;
+
                 if (valid)
                 {
                     foreach (var item in this.mediMatyTypeADOs)
@@ -875,6 +876,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 }                
 
                 if (!valid)
+                    return;
+
+                // Đảm bảo lấy dữ liệu mới nhất trên grid trước khi kiểm tra hạn mức bảo lãnh
+                if (this.gridViewServiceProcess.IsEditing)
+                    this.gridViewServiceProcess.CloseEditor();
+                if (this.gridViewServiceProcess.FocusedRowModified)
+                    this.gridViewServiceProcess.UpdateCurrentRow();
+                var latestList = this.gridViewServiceProcess.DataSource as List<MediMatyTypeADO>;
+                if (latestList != null)
+                    this.mediMatyTypeADOs = latestList;
+
+                if (!ValidateGuaranteeBeforeSave())
                     return;
 
                 //Tạm khóa các button lưu && lưu in lại khi đang xử lý

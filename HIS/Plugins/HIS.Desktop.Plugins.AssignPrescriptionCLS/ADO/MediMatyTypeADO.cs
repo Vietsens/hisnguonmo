@@ -1218,7 +1218,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
         public long? HTU_ID { get; set; }
         public long? UseTimeTo { get; set; }
         public decimal? UseDays { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal? TotalPrice { get; set; }
         public long? MEDI_STOCK_ID { get; set; }
         public string MEDI_STOCK_CODE { get; set; }
         public string MEDI_STOCK_NAME { get; set; }
@@ -1236,6 +1236,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.ADO
         public decimal? AMOUNT_BHYT { get; set; }
         public decimal EXPEND_AMOUNT { get; set; }
         public bool IsDisableExpend { get; set; }
+        public bool IsGuarantee { get; set; }
 
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeAmountHasRound { get; set; }
         public string ErrorMessageAmountHasRound { get; set; }

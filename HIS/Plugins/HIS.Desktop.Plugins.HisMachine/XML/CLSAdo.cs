@@ -38,4 +38,9 @@ namespace HIS.Desktop.Plugins.HisMachine.XML
         public int? TuNgay { get; set; }
         public int? DenNgay { get; set; }
     }
+    public class XmlTT12Ado : CLSAdo
+    {
+        public string HdTu { get; set; }
+        public string HdDen { get; set; }
+    }
 }

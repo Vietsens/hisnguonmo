@@ -878,6 +878,94 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             return valid;
         }
 
+        private bool CheckUsedDrugQuantityMismatch_ForSave(ValidationDataType validationDataType, ref List<WarningADO> listWarningADO)
+        {
+            bool valid = true;
+            try
+            {
+                if (validationDataType == ValidationDataType.PopupMessage && this._isSkipWarningForSave == true)
+                {
+                    return valid;
+                }
+                if (ConfigKey.CheckUsedDrugQuantityMismatch == "2")
+                {
+                    HisSereServFilter ssFilter = new HisSereServFilter();
+                    ssFilter.TREATMENT_ID = treatmentId;
+                    ssFilter.TDL_SERVICE_TYPE_IDs = new List<long>() { IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC };
+                    var sereServs = new BackendAdapter(new CommonParam()).Get<List<HIS_SERE_SERV>>("api/HisSereServ/Get", ApiConsumers.MosConsumer, ssFilter, null);
+
+                    if (sereServs != null && sereServs.Count > 0)
+                    {
+                        var validSereServs = sereServs.Where(s => s.IS_DELETE != 1 && s.EXP_MEST_MEDICINE_ID.HasValue).ToList();
+
+                        if (validSereServs.Count > 0)
+                        {
+                            List<long> expMestMedicineIds = validSereServs.Select(s => s.EXP_MEST_MEDICINE_ID.Value).Distinct().ToList();
+
+                            HisExpMedimateUsedFilter usedFilter = new HisExpMedimateUsedFilter();
+                            usedFilter.TDL_TREATMENT_ID = treatmentId;
+                            usedFilter.EXP_MEST_MEDICINE_IDs = expMestMedicineIds;
+                            var expUsedList = new BackendAdapter(new CommonParam()).Get<List<HIS_EXP_MEDIMATE_USED>>("api/HisExpMedimateUsed/Get", ApiConsumers.MosConsumer, usedFilter, null);
+
+                            if (expUsedList != null && expUsedList.Count > 0)
+                            {
+                                var usedGrouped = expUsedList
+                                    .Where(u => u.EXP_MEST_MEDICINE_ID.HasValue)
+                                    .GroupBy(u => u.EXP_MEST_MEDICINE_ID.Value)
+                                    .ToDictionary(g => g.Key, g => g.Sum(u => u.AMOUNT) ?? 0);
+
+                                List<string> warningMessages = new List<string>();
+                                foreach (var sereServ in validSereServs)
+                                {
+                                    decimal usedAmount = 0;
+                                    if (usedGrouped.ContainsKey(sereServ.EXP_MEST_MEDICINE_ID.Value))
+                                    {
+                                        usedAmount = usedGrouped[sereServ.EXP_MEST_MEDICINE_ID.Value];
+                                    }
+
+                                    if (usedAmount < sereServ.AMOUNT)
+                                    {
+                                        string msg = String.Format("Tổng số lượng thuốc bệnh nhân đã dùng {0} nhỏ hơn tổng số lượng thuốc đã kê {1} của y lệnh {2}",
+                                            usedAmount,
+                                            sereServ.AMOUNT,
+                                            sereServ.TDL_SERVICE_REQ_CODE);
+                                        warningMessages.Add(msg);
+                                    }
+                                }
+
+                                if (warningMessages.Count > 0)
+                                {
+                                    string fullMessage = string.Join(Environment.NewLine, warningMessages) + Environment.NewLine + "Bạn có muốn tiếp tục không?";
+
+                                    if (validationDataType == ValidationDataType.PopupMessage)
+                                    {
+                                        var result = DevExpress.XtraEditors.XtraMessageBox.Show(fullMessage, "Cảnh báo", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                                        if (result != DialogResult.Yes)
+                                        {
+                                            return false;
+                                        }
+                                    }
+                                    else if (validationDataType == ValidationDataType.GetListMessage && listWarningADO != null)
+                                    {
+                                        WarningADO warning = new WarningADO();
+                                        warning.IsSkippable = true;
+                                        warning.Description = fullMessage;
+                                        listWarningADO.Add(warning);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                valid = false;
+            }
+            return valid;
+        }
+
         private bool Check_IsAllowTreatmentFinishDepartmentIsActiveFee_ForSave()
         {
             bool valid = true;

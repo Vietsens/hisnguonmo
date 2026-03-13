@@ -142,108 +142,210 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
         {
             try
             {
-                //Trường hợp sửa đơn thuốc, truyền dữ liệu đầu vào => Get dữ liệu đơn thuốc cũ => fill dữ liệu vào form kê đơn
+                // Trường hợp sửa đơn thuốc, truyền dữ liệu đầu vào => Get dữ liệu đơn thuốc cũ => fill dữ liệu vào form kê đơn
                 if (this.assignPrescriptionEditADO != null)
                 {
-                    if (this.oldServiceReq == null) throw new ArgumentNullException("ServiceReq");
-                    if (this.oldServiceReq.ID == 0) throw new ArgumentNullException("ServiceReq.ID");
-                    //if (this.assignPrescriptionEditADO.ExpMest == null) throw new ArgumentNullException("ExpMest");
+                    // Validate dữ liệu đầu vào
+                    if (this.oldServiceReq == null)
+                        throw new ArgumentNullException("ServiceReq");
+                    if (this.oldServiceReq.ID == 0)
+                        throw new ArgumentNullException("ServiceReq.ID");
+
                     WaitingManager.Show();
-                    this.InitWorker();
-                    this.idRow = 1;
-                    this.gridControlServiceProcess.DataSource = null;
-                    this.mediMatyTypeADOs = new List<MediMatyTypeADO>();
-                    this.actionType = GlobalVariables.ActionEdit;
-                    if (this.oldServiceReq != null)
+
+                    try
                     {
-                        this.FillPrescriptionDataToControl();
-                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentMediStock), currentMediStock));
-                        this.OpionGroupSelectedChanged();
-                        Inventec.Common.Logging.LogSystem.Debug("Sua don thuoc__ Kho thuoc:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.currentMediStock), this.currentMediStock));
-                        paramCommon = new CommonParam();
-                        if (oldExpMestId > 0)
-                        {
-                            this.expMestMedicineEditPrints = this.GetExpMestMedicineByExpMestId(oldExpMestId);
-                            this.ProcessGetExpMestMedicine(this.expMestMedicineEditPrints, true);
-                            this.expMestMaterialEditPrints = this.GetExpMestMaterialByExpMestId(oldExpMestId);
-                            this.ProcessGetExpMestMaterial(this.expMestMaterialEditPrints, true);
+                        // Khởi tạo worker
+                        this.InitWorker();
 
-                            this.currentSereServ = new V_HIS_SERE_SERV();
-                            if (this.expMestMedicineEditPrints != null && this.expMestMedicineEditPrints.Count > 0)
+                        // Reset dữ liệu
+                        this.idRow = 1;
+                        this.gridControlServiceProcess.DataSource = null;
+                        this.mediMatyTypeADOs = new List<MediMatyTypeADO>();
+                        this.actionType = GlobalVariables.ActionEdit;
+
+                        if (this.oldServiceReq != null)
+                        {
+                            // 1. Fill dữ liệu cơ bản vào control
+                            this.FillPrescriptionDataToControl();
+
+                            Inventec.Common.Logging.LogSystem.Debug("LoadPrescriptionForEdit - currentMediStock: " +
+                                Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => currentMediStock), currentMediStock));
+
+                            // 2. Xử lý option group
+                            this.OpionGroupSelectedChanged();
+
+                            Inventec.Common.Logging.LogSystem.Debug("Sua don thuoc - Kho thuoc: " +
+                                Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.currentMediStock), this.currentMediStock));
+
+                            paramCommon = new CommonParam();
+
+                            // 3. Load dữ liệu thuốc/vật tư từ đơn cũ
+                            if (oldExpMestId > 0)
                             {
-                                this.currentSereServ.ID = this.expMestMedicineEditPrints.First().SERE_SERV_PARENT_ID ?? 0;
-                                this.currentSereServ.PATIENT_TYPE_ID = this.expMestMedicineEditPrints.First().PATIENT_TYPE_ID ?? 0;
+                                // Load thuốc trong kho
+                                this.expMestMedicineEditPrints = this.GetExpMestMedicineByExpMestId(oldExpMestId);
+                                if (this.expMestMedicineEditPrints != null && this.expMestMedicineEditPrints.Count > 0)
+                                {
+                                    this.ProcessGetExpMestMedicine(this.expMestMedicineEditPrints, true);
+
+                                    // Set thông tin currentSereServ
+                                    if (this.currentSereServ == null)
+                                        this.currentSereServ = new V_HIS_SERE_SERV();
+
+                                    this.currentSereServ.ID = this.expMestMedicineEditPrints.First().SERE_SERV_PARENT_ID ?? 0;
+                                    this.currentSereServ.PATIENT_TYPE_ID = this.expMestMedicineEditPrints.First().PATIENT_TYPE_ID ?? 0;
+                                }
+
+                                // Load vật tư trong kho
+                                this.expMestMaterialEditPrints = this.GetExpMestMaterialByExpMestId(oldExpMestId);
+                                if (this.expMestMaterialEditPrints != null && this.expMestMaterialEditPrints.Count > 0)
+                                {
+                                    this.ProcessGetExpMestMaterial(this.expMestMaterialEditPrints, true);
+
+                                    // Set thông tin currentSereServ nếu chưa có từ medicine
+                                    if (this.currentSereServ == null || this.currentSereServ.ID == 0)
+                                    {
+                                        if (this.currentSereServ == null)
+                                            this.currentSereServ = new V_HIS_SERE_SERV();
+
+                                        this.currentSereServ.ID = this.expMestMaterialEditPrints.First().SERE_SERV_PARENT_ID ?? 0;
+                                        this.currentSereServ.PATIENT_TYPE_ID = this.expMestMaterialEditPrints.First().PATIENT_TYPE_ID ?? 0;
+                                    }
+                                }
+
+                                Inventec.Common.Logging.LogSystem.Debug("LoadPrescriptionForEdit - currentSereServ: " +
+                                    Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.currentSereServ), this.currentSereServ));
                             }
-                            else if (this.expMestMaterialEditPrints != null && this.expMestMaterialEditPrints.Count > 0)
+
+                            // 4. Set thông tin IsGuarantee cho các item đã load
+                            // PHƯƠNG ÁN 2: Mặc định check dựa trên logic
+                            if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
                             {
-                                this.currentSereServ.ID = this.expMestMaterialEditPrints.First().SERE_SERV_PARENT_ID ?? 0;
-                                this.currentSereServ.PATIENT_TYPE_ID = this.expMestMaterialEditPrints.First().PATIENT_TYPE_ID ?? 0;
+                                // Kiểm tra điều kiện để auto check IsGuarantee
+                                bool shouldCheckGuarantee = !string.IsNullOrEmpty(this.Histreatment?.GUARANTEE_CODE)
+                                    && this.currentHisPatientTypeAlter?.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
+
+                                if (shouldCheckGuarantee)
+                                {
+                                    Inventec.Common.Logging.LogSystem.Debug("LoadPrescriptionForEdit - Auto check IsGuarantee for all items (no IS_GUARANTEE field in model)");
+
+                                    foreach (var ado in this.mediMatyTypeADOs)
+                                    {
+                                        // Chỉ auto check cho thuốc/vật tư trong kho
+                                        if (ado.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
+                                            || ado.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU
+                                            || ado.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
+                                        {
+                                            // Mặc định check = true khi sửa đơn
+                                            ado.IsGuarantee = true;
+                                        }
+                                    }
+                                }
                             }
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.currentSereServ), this.currentSereServ));
-                        }
-                        //else
-                        //{
-                        //    //Trường hợp sửa đơn mà đơn chỉ có thuốc - vật tư ngoài kho - mua ngoài => mặc định check chọn thuốc ngoài kho
-                        //    if (rdOpionGroup.Properties.Items.Count > 1 && rdOpionGroup.Properties.Items[1].Enabled)
-                        //    {
-                        //        if (rdOpionGroup.SelectedIndex != 1)
-                        //        {
-                        //            rdOpionGroup.SelectedIndex = 1;
-                        //            this.OpionGroupSelectedChanged();
-                        //        }
-                        //    }
-                        //}
 
-                        //this.serviceReqMetys = this.GetServiceReqMetyByServiceReqId(this.oldServiceReq.ID);
-                        //this.ProcessGetServiceReqMety(this.serviceReqMetys, true);
-                        //this.serviceReqMatys = this.GetServiceReqMatyByServiceReqId(this.oldServiceReq.ID);
-                        //this.ProcessGetServiceReqMaty(this.serviceReqMatys, true);
+                            // 5. Kiểm tra xem tất cả thuốc vật tư có phải ngoài kho không
+                            isMediMatyIsOutStock = CheckAllMediMatyIsOutStock();
+                            if (isMediMatyIsOutStock)
+                            {
+                                cboMediStockExport.Enabled = true;
+                                cboMediStockExport.Properties.Tag = null;
+                                cboMediStockExport.Properties.View.OptionsSelection.MultiSelect = false;
 
-                        //Nếu tất cả thuốc vật tư kê trước đấy là ngoài kho thì enabled kho
-                        isMediMatyIsOutStock = CheckAllMediMatyIsOutStock();
-                        if (isMediMatyIsOutStock)
-                        {
-                            cboMediStockExport.Enabled = true;
-                            cboMediStockExport.Properties.Tag = null;
-                            cboMediStockExport.Properties.View.OptionsSelection.MultiSelect = false;
-                            GridColumn columnCheck = cboMediStockExport.Properties.View.Columns.First(o => o.FieldName == "CheckMarkSelection");
-                            if (columnCheck != null)
-                                cboMediStockExport.Properties.View.Columns.Remove(columnCheck);
-                        }
-                        else
-                            cboMediStockExport.Enabled = false;
-                        this.ProcessInstructionTimeMediForEdit();
-                        this.mediMatyTypeADOBKs = new List<MediMatyTypeADO>();
-                        this.mediMatyTypeADOBKs.AddRange(this.mediMatyTypeADOs);
-                        this.ProcessMergeDuplicateRowForListProcessing();
-                        this.ValidDataMediMaty();
-                        this.SetUseDayToPrescriptionEdit();
-                        this.RefeshResourceGridMedicine();
-                        this.SetEnableButtonControl(this.actionType);
-                        this.SetTotalPrice__TrongDon();
-                        this.idRow = (int)((this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0) ? (this.mediMatyTypeADOs.Max(o => o.NUM_ORDER ?? 0) + stepRow) : 0 + stepRow);
-                        this.InstructionTime = this.oldServiceReq.INTRUCTION_TIME;
-                        this.SetDefaultComboPhieuDieuTri(this.oldServiceReq);
-                        bool isExistsExpend = this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Any(o => o.SereServParentId > 0) ? true : false;
-                        if (HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && isExistsExpend)
-                        {
-                            this.grcExpend__TabMedicine.Visible = true;
-                            this.grcIsExpendType.Visible = true;
-                        }
-                        if (HisConfigCFG.IsAutoTickExpendWithAssignPresPTTT && isExistsExpend)
-                        {
-                            this.isAutoCheckExpend = true;
+                                GridColumn columnCheck = cboMediStockExport.Properties.View.Columns.FirstOrDefault(o => o.FieldName == "CheckMarkSelection");
+                                if (columnCheck != null)
+                                    cboMediStockExport.Properties.View.Columns.Remove(columnCheck);
+                            }
+                            else
+                            {
+                                cboMediStockExport.Enabled = false;
+                            }
+
+                            // 6. Xử lý instruction time
+                            this.ProcessInstructionTimeMediForEdit();
+
+                            // 7. Backup dữ liệu
+                            this.mediMatyTypeADOBKs = new List<MediMatyTypeADO>();
+                            if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
+                            {
+                                foreach (var item in this.mediMatyTypeADOs)
+                                {
+                                    MediMatyTypeADO ado = new MediMatyTypeADO();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(ado, item);
+                                    this.mediMatyTypeADOBKs.Add(ado);
+                                }
+                            }
+
+                            // 8. Merge các dòng trùng
+                            this.ProcessMergeDuplicateRowForListProcessing();
+
+                            // 9. Validate dữ liệu
+                            this.ValidDataMediMaty();
+
+                            // 10. Set số ngày dùng
+                            this.SetUseDayToPrescriptionEdit();
+
+                            // 11. Refresh grid
+                            this.RefeshResourceGridMedicine();
+
+                            // 12. Enable/disable các nút
+                            this.SetEnableButtonControl(this.actionType);
+
+                            // 13. Tính tổng tiền trong đơn
+                            this.SetTotalPrice__TrongDon();
+
+                            // 15. Set idRow cho việc thêm mới
+                            this.idRow = (int)((this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
+                                ? (this.mediMatyTypeADOs.Max(o => o.NUM_ORDER ?? 0) + stepRow)
+                                : stepRow);
+
+                            // 16. Set instruction time
+                            this.InstructionTime = this.oldServiceReq.INTRUCTION_TIME;
+
+                            // 17. Set combo phiếu điều trị
+                            this.SetDefaultComboPhieuDieuTri(this.oldServiceReq);
+
+                            // 18. Xử lý hiển thị cột chi phí
+                            bool isExistsExpend = this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Any(o => o.SereServParentId > 0);
+                            if (HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && isExistsExpend)
+                            {
+                                this.grcExpend__TabMedicine.Visible = true;
+                                this.grcIsExpendType.Visible = true;
+                            }
+
+                            if (HisConfigCFG.IsAutoTickExpendWithAssignPresPTTT && isExistsExpend)
+                            {
+                                this.isAutoCheckExpend = true;
+                            }
+
+                            // 19. Log thông tin debug
+                            Inventec.Common.Logging.LogSystem.Info("LoadPrescriptionForEdit completed successfully - " +
+                                "Medicine count: " + (this.expMestMedicineEditPrints != null ? this.expMestMedicineEditPrints.Count : 0) +
+                                ", Material count: " + (this.expMestMaterialEditPrints != null ? this.expMestMaterialEditPrints.Count : 0) +
+                                ", Total ADO count: " + (this.mediMatyTypeADOs != null ? this.mediMatyTypeADOs.Count : 0) +
+                                ", Total Guarantee: " + this.totalGuarantee);
                         }
 
                         WaitingManager.Hide();
                     }
+                    catch (Exception ex)
+                    {
+                        WaitingManager.Hide();
+                        throw;
+                    }
                 }
+            }
+            catch (ArgumentNullException ex)
+            {
+                WaitingManager.Hide();
+                MessageManager.Show(ResourceMessage.SuaDonThuocDuLieuTruyenVaoKhongHopLe);
+                Inventec.Common.Logging.LogSystem.Error("LoadPrescriptionForEdit - ArgumentNullException: " + ex.Message);
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 MessageManager.Show(ResourceMessage.SuaDonThuocDuLieuTruyenVaoKhongHopLe);
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error("LoadPrescriptionForEdit - Exception: ", ex);
             }
         }
 
