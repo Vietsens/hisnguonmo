@@ -3587,7 +3587,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     if (row != null)
                     {
 
-                        if (Base.GlobalStore.IsPrimaryPatientType == "2" && this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID > 0 && row.PRIMARY_PATIENT_TYPE_ID == this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID)
+                        if ((Base.GlobalStore.IsPrimaryPatientType == "2" && Base.GlobalStore.IsServicePatyForServicePackage != "3" )&& this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID > 0 && row.PRIMARY_PATIENT_TYPE_ID == this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID)
                         {
                             row.PRIMARY_PATIENT_TYPE_ID = this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID;
                             var billPaty = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == row.PRIMARY_PATIENT_TYPE_ID);
@@ -3633,7 +3633,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                             MessageManager.Show(String.Format(ResourceMessage.DichVuCoDTTTBatBuocKhongChoPhepSua, row.BED_NAME, patyName));
                             row.PRIMARY_PATIENT_TYPE_ID = row.BILL_PATIENT_TYPE_ID;
                         }
-                        else if (Base.GlobalStore.IsPrimaryPatientType == "2" && this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID > 0)
+                        else if ((Base.GlobalStore.IsPrimaryPatientType == "2" && Base.GlobalStore.IsServicePatyForServicePackage != "3") && this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID > 0)
                         {
                             row.PRIMARY_PATIENT_TYPE_ID = this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID;
                             var billPaty = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == row.PRIMARY_PATIENT_TYPE_ID);
