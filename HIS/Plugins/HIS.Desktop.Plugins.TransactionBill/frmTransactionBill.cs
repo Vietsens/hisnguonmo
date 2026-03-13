@@ -1715,6 +1715,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 }
                 panelMenuPrintBill.Enabled = false;
                 spinTransferAmount.EditValue = null;
+                spinTransferAmountNew.EditValue = null;
+                spinSwipeAmountNew.EditValue = null;
                 dtTransactionTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.Now() ?? 0);
                 lciCoKetChuyen.Enabled = true;
                 if (Config.HisConfigCFG.IsketChuyenCFG != null && Config.HisConfigCFG.IsketChuyenCFG.Equals("1")
@@ -1991,10 +1993,18 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     totalFund = listFund.Sum(o => o.AMOUNT);
                 }
 
-                //var discount = txtDiscount.Value;
                 // nếu checkbox "có kết chuyển" bỏ check thì không tính số tiền hiện dư vào 
                 decimal SoTienChuyenKhoan = 0;
-                if (spinTransferAmount.EditValue != null)
+
+                // NEW: ưu tiên CK/QT mới cho PAY_FORM_ID = 9
+                var payFormId = GetSelectedPayFormId();
+                if (payFormId == PayFormCashTransferSwipeId)
+                {
+                    decimal ck = ConvertToDecimal(spinTransferAmountNew.EditValue);
+                    decimal qt = ConvertToDecimal(spinSwipeAmountNew.EditValue);
+                    SoTienChuyenKhoan = ck + qt;
+                }
+                else if (spinTransferAmount.EditValue != null)
                 {
                     SoTienChuyenKhoan = spinTransferAmount.Value;
                 }
@@ -2067,13 +2077,30 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 ValidControlTransactionTime();
                 ValidControlSpinVAT();
                 ValidControlDescription();
+                ValidControlTransferAndSwipeAmountNew();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void ValidControlTransferAndSwipeAmountNew()
+        {
+            try
+            {
+                var rule = new HIS.Desktop.Plugins.TransactionBill.Validtion.SpinTransferAndSwipeAmountNewValidationRule();
+                rule.SpinTransferAmountNew = spinTransferAmountNew;
+                rule.SpinSwipeAmountNew = spinSwipeAmountNew;
+                rule.GetPayFormId = GetSelectedPayFormId; // dùng hàm sẵn có
 
+                dxValidationProvider1.SetValidationRule(spinTransferAmountNew, rule);
+                dxValidationProvider1.SetValidationRule(spinSwipeAmountNew, rule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void ValidControlDescription()
         {
             try
@@ -4270,7 +4297,7 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        private const long PayFormCashTransferSwipeId = 9;
         private void cboPayForm_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -4306,11 +4333,92 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     cboBank.Enabled = true;
                     cboBank.ReadOnly = false;
                 }
+                ToggleTransferAndSwipeControls();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void ToggleTransferAndSwipeControls()
+        {
+            var payFormId = GetSelectedPayFormId();
+            var isMixCashTransferSwipe = payFormId == PayFormCashTransferSwipeId;
+
+            lciTranferAmount.Visibility = isMixCashTransferSwipe
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Never
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+            lciTransferAmountNew.Visibility = isMixCashTransferSwipe
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+            lciSwipeAmountNew.Visibility = isMixCashTransferSwipe
+                ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+            if (!isMixCashTransferSwipe)
+            {
+                spinTransferAmountNew.EditValue = 0m;
+                spinSwipeAmountNew.EditValue = 0m;
+            }
+        }
+
+        private long GetSelectedPayFormId()
+        {
+            if (cboPayForm.EditValue == null)
+                return 0;
+
+            long id;
+            return long.TryParse(cboPayForm.EditValue.ToString(), out id) ? id : 0;
+        }
+        private bool ValidateTransferAndSwipeAmount()
+        {
+            var payFormId = GetSelectedPayFormId();
+            if (payFormId != PayFormCashTransferSwipeId)
+                return true;
+
+            decimal ck = ConvertToDecimal(spinTransferAmountNew.EditValue);
+            decimal qt = ConvertToDecimal(spinSwipeAmountNew.EditValue);
+            decimal total = ConvertToDecimal(txtTotalAmount.EditValue); // AMOUNT hiển thị
+
+            var sum = ck + qt;
+            if (sum > total)
+            {
+                string msg = string.Format(
+                    "Tổng tiền chuyển khoản/quẹt thẻ [{0:#,##0.##}] lớn hơn số tiền cần thanh toán của bệnh nhân [{1:#,##0.##}]",
+                    sum,
+                    total);
+
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    msg,
+                    "Cảnh báo",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (ck <= 0 && qt <= 0)
+            {
+                DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Vui lòng nhập số tiền chuyển khoản hoặc số tiền quẹt thẻ.",
+                    "Thông báo",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private decimal ConvertToDecimal(object value)
+        {
+            if (value == null || value == DBNull.Value)
+                return 0m;
+
+            decimal result;
+            return decimal.TryParse(value.ToString(), out result) ? result : 0m;
         }
         private void ApplyBankByPayForm(PayFormADO payForm)
         {
@@ -4651,6 +4759,32 @@ namespace HIS.Desktop.Plugins.TransactionBill
                     }
                 });
 
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinTransferAmountNew_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                FormatControl(ConfigApplications.NumberSeperator, spinTransferAmountNew);
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinSwipeAmountNew_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                FormatControl(ConfigApplications.NumberSeperator, spinSwipeAmountNew);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
