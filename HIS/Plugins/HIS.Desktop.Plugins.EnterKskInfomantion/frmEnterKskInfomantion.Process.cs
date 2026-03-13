@@ -235,8 +235,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 kskGeneral.ExamNutrionRank = cboExamNutrionRank.EditValue != null ? (long?)cboExamNutrionRank.EditValue : null;
                 kskGeneral.HeinMediOrgCode = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId()).HEIN_MEDI_ORG_CODE;
                 //Tab Benh nghe nghiep
-                MOS.SDO.HisKskOccupationalSDO kskOccupational = new MOS.SDO.HisKskOccupationalSDO();
-                HIS_DHST dhstOccupational = new HIS_DHST();
+                // MOS.SDO.HisKskOccupationalSDO kskOccupational = new MOS.SDO.HisKskOccupationalSDO();
+                var kskOccupational = currentDTO.KskOccupational ?? new MOS.SDO.HisKskOccupationalSDO();
+                currentDTO.KskOccupational = kskOccupational;
+                //HIS_DHST dhstOccupational = new HIS_DHST();
+                var dhstOccupational = kskOccupational.HisDhst ?? new HIS_DHST();
+                kskOccupational.HisDhst = dhstOccupational;
                 if (txtHeightTab3.EditValue != null)
                     dhstOccupational.HEIGHT = txtHeightTab3.Value;
                 if (txtWeightTab3.EditValue != null)
@@ -547,7 +551,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     kskGeneral.ConcluderLoginName = userTab5.LOGINNAME;
                     kskGeneral.ConcluderUserName = userTab5.USERNAME;
                 }
-                currentDTO.KskOccupational = kskOccupational;
+                try
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "UpdateDTOFromDataForm - Tab3(KskOccupational) payload: "
+                        + Inventec.Common.Logging.LogUtil.TraceData("dhstOccupational", kskOccupational.HisDhst)
+                        + Inventec.Common.Logging.LogUtil.TraceData("kskOccupational", kskOccupational)
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+
                 if (kskGeneral.HisDhst != null)
                 {
                     var d = kskGeneral.HisDhst;
