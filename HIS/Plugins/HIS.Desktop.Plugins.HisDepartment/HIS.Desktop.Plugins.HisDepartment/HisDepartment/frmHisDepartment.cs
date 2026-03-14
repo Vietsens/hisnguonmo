@@ -2958,201 +2958,190 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         {
             try
             {
+                bool success = false;
                 var listAll = gridviewFormList.GridControl.DataSource as List<HisDepartmentADO>;
-
-                // Lọc ra các khoa đã checkbox (IS_CHECK_DEPT = true)
-                List<HisDepartmentADO> selectedDepts = listAll.Where(o => o.IS_CHECK_DEPT).ToList();
-
+                var selectedDepts = listAll.Where(o => o.IS_CHECK_DEPT).ToList();
                 if (selectedDepts.Count == 0)
                 {
                     XtraMessageBox.Show("Vui lòng checkbox ít nhất một khoa để xuất XML TT12", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (selectedDepts.Count == 0)
-                {
-                    XtraMessageBox.Show("Không có khoa nào được chọn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                // Mở dialog chọn thư mục lưu file
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
                 if (fbd.ShowDialog() != DialogResult.OK)
                     return;
-
                 string savePath = fbd.SelectedPath;
                 if (String.IsNullOrEmpty(savePath))
                     return;
 
                 WaitingManager.Show();
 
-                // Tạo file XML
                 string fullFileName = String.Format("DepartmentTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
                 string saveFilePath = System.IO.Path.Combine(savePath, fullFileName);
 
-                // Tạo và xuất XML  
-                var xmlStream = SerializeToXml(selectedDepts);
+                List<XML.DepartmentXmlAdo> listAdos = GenerateXmlTT12Ado(selectedDepts);
+                List<XML.XMLDepartmentDetailData> listDetails = new List<XML.XMLDepartmentDetailData>();
+                MapADOToXml(listAdos, ref listDetails);
 
-                if (xmlStream != null)
+                string listId = "Id-" + Guid.NewGuid().ToString();
+                XML.XMLDepartmentData xmlData = new XML.XMLDepartmentData();
+                xmlData.DanhSach = new XML.XMLDepartmentList { Id = listId, Items = listDetails };
+                xmlData.ChuKyDonVi = "";
+
+                var rs = CreatedXmlFileTT12Plus(xmlData);
+                if (rs != null)
                 {
-                    // Ký số nếu được chọn
-                    if (chkSignXml.Checked && SettingSignADO != null && !string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+                    if (chkSignXml.Checked)
                     {
-                        xmlStream = SignXmlTT12(xmlStream, SettingSignADO, fullFileName, saveFilePath);
-                        if (xmlStream == null)
-                        {
-                            WaitingManager.Hide();
-                            XtraMessageBox.Show("Ký số thất bại", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
+                        rs = SignXmlTT12(rs, SettingSignADO, fullFileName, saveFilePath);
                     }
-
-                    // Ghi file
-                    if (xmlStream != null)
-                    {
-                        using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write))
-                        {
-                            xmlStream.WriteTo(fileStream);
-                        }
-                        xmlStream.Close();
-                    }
-
-                    WaitingManager.Hide();
-                    //MessageBox.Show(String.Format("Xuất XML thành công!\nĐường dẫn: {0}", saveFilePath), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
+                    rs.WriteTo(file);
+                    file.Close();
+                    rs.Close();
+                    success = true;
                 }
-                else
-                {
-                    WaitingManager.Hide();
-                    MessageBox.Show("Lỗi khi tạo file XML", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+
+                WaitingManager.Hide();
+                MessageManager.Show(this, new CommonParam(), success);
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void AddXmlElement(XmlDocument doc, XmlElement parent, string elementName, string elementValue)
+        private List<XML.DepartmentXmlAdo> GenerateXmlTT12Ado(List<HisDepartmentADO> listDepts)
         {
+            var result = new List<XML.DepartmentXmlAdo>();
             try
             {
-                if (elementValue != null)
+                int count = 1;
+                foreach (var dept in listDepts)
                 {
-                    XmlElement element = doc.CreateElement(elementName);
-                    element.InnerText = elementValue;
-                    parent.AppendChild(element);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-        private MemoryStream SerializeToXml(List<HisDepartmentADO> input)
-        {
-            try
-            {
-                
-                XmlDocument doc = new XmlDocument();
-                // Tạo phần tử gốc
-                XmlElement rootElement = doc.CreateElement("DanhSachKhoa");
-                rootElement.SetAttribute("ThoiGian", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                doc.AppendChild(rootElement);
-
-                // Thêm thông tin từng khoa
-                int stt = 1;
-                foreach (var dept in input)
-                {
-                    XmlElement departmentElement = doc.CreateElement("Khoa");
-
-                    // STT - Số thứ tự tự tăng dần từ 1
-                    AddXmlElement(doc, departmentElement, "STT", stt.ToString());
-
-                    // MA_KHOA - Mã khám bệnh/mã khoa (dùng BHYT_CODE)
-                    AddXmlElement(doc, departmentElement, "MA_KHOA", dept.BHYT_CODE ?? "");
-
-                    // TEN_KHOA - Tên khoa
-                    AddXmlElement(doc, departmentElement, "TEN_KHOA", dept.DEPARTMENT_NAME ?? "");
-
-                    // BAN_KHAM - Số lượng bàn khám (EXAM_DESK_COUNT nếu có)
-                    AddXmlElement(doc, departmentElement, "BAN_KHAM",
-                dept.EXAM_DESK_COUNT.HasValue ? dept.EXAM_DESK_COUNT.Value.ToString() : "");
-
-                    // GIUONG_PD - Số giường phê duyệt (kế hoạch)
-                    AddXmlElement(doc, departmentElement, "GIUONG_PD",
-                dept.THEORY_PATIENT_COUNT.HasValue ? dept.THEORY_PATIENT_COUNT.Value.ToString() : "");
-                    // GIUONG_TK - Số giường thực tế
-                    AddXmlElement(doc, departmentElement, "GIUONG_TK",
-                dept.REALITY_PATIENT_COUNT.HasValue ? dept.REALITY_PATIENT_COUNT.Value.ToString() : "");
-
-                    // GIUONG_HSTC - luôn xuất hiện (theo code gốc bạn ghi "0" mặc định)
-                    string hstcValue = "";
-                    if (dept.ICU_BED_COUNT != null)
-                    {
-                        hstcValue = dept.ICU_BED_COUNT.Value.ToString();
-                    }
-                    AddXmlElement(doc, departmentElement, "GIUONG_HSTC", hstcValue);
-
-                    // GIUONG_HSCC
-                    AddXmlElement(doc, departmentElement, "GIUONG_HSCC",
-                        dept.ER_RESUS_BED_COUNT != null
-                            ? dept.ER_RESUS_BED_COUNT.Value.ToString()
-                            : "");
-
-                    // TU_NGAY - Thời gian hiệu lực từ (định dạng YYYYMMDD từ FROM_TIME)
-                    string tuNgay = "";
-                    if (dept.FROM_TIME != null)
-                    {
-                        tuNgay = FormatTimeToYYYYMMDD(dept.FROM_TIME.Value) ?? "";
-                    }
-                    AddXmlElement(doc, departmentElement, "TU_NGAY", tuNgay);
-
-                    // DEN_NGAY - chỉ có khi khoa ngừng hoạt động, còn lại để rỗng
-                    string denNgay = "";
-                    if (dept.TO_TIME != null)
-                    {
-                        denNgay = FormatTimeToYYYYMMDD(dept.TO_TIME.Value) ?? "";
-                    }
-                    AddXmlElement(doc, departmentElement, "DEN_NGAY", denNgay);
-
-                    // MA_CSKCB
                     string maCSKCB = "";
                     if (dept.BRANCH_ID > 0)
                     {
                         var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == dept.BRANCH_ID);
-                        if (branch != null && !string.IsNullOrEmpty(branch.HEIN_MEDI_ORG_CODE))
-                        {
-                            maCSKCB = branch.HEIN_MEDI_ORG_CODE;
-                        }
+                        if (branch != null)
+                            maCSKCB = branch.HEIN_MEDI_ORG_CODE ?? "";
                     }
-                    AddXmlElement(doc, departmentElement, "MA_CSKCB", maCSKCB);
 
-                    rootElement.AppendChild(departmentElement);
-                    stt++;
+                    var ado = new XML.DepartmentXmlAdo();
+                    ado.Stt        = count;
+                    ado.MaKhoa     = dept.BHYT_CODE ?? "";
+                    ado.TenKhoa    = dept.DEPARTMENT_NAME ?? "";
+                    ado.BanKham    = dept.EXAM_DESK_COUNT.HasValue ? dept.EXAM_DESK_COUNT.Value.ToString() : "";
+                    ado.GiuongPD   = dept.THEORY_PATIENT_COUNT.HasValue ? dept.THEORY_PATIENT_COUNT.Value.ToString() : "";
+                    ado.GiuongTK   = dept.REALITY_PATIENT_COUNT.HasValue ? dept.REALITY_PATIENT_COUNT.Value.ToString() : "";
+                    ado.GiuongHSTC = dept.ICU_BED_COUNT.HasValue ? dept.ICU_BED_COUNT.Value.ToString() : "";
+                    ado.GiuongHSCC = dept.ER_RESUS_BED_COUNT.HasValue ? dept.ER_RESUS_BED_COUNT.Value.ToString() : "";
+                    ado.TuNgay     = dept.FROM_TIME.HasValue ? FormatTimeToYYYYMMDD(dept.FROM_TIME.Value) : "";
+                    ado.DenNgay    = dept.TO_TIME.HasValue ? FormatTimeToYYYYMMDD(dept.TO_TIME.Value) : "";
+                    ado.MaCSKCB    = maCSKCB;
+
+                    result.Add(ado);
+                    count++;
                 }
-
-                MemoryStream stream = new MemoryStream();
-                var xmlSettings = new XmlWriterSettings
-                {
-                    Encoding = Encoding.UTF8,
-                    Indent = true,
-                    OmitXmlDeclaration = false
-                };
-
-                using (XmlWriter writer = XmlWriter.Create(stream, xmlSettings))
-                {
-                    doc.WriteTo(writer);
-                }
-                stream.Position = 0;
-                return stream;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
             }
+            return result;
+        }
+
+        private void MapADOToXml(List<XML.DepartmentXmlAdo> listAdos, ref List<XML.XMLDepartmentDetailData> datas)
+        {
+            try
+            {
+                if (datas == null)
+                    datas = new List<XML.XMLDepartmentDetailData>();
+                if (listAdos == null || listAdos.Count == 0)
+                    return;
+                foreach (var ado in listAdos)
+                {
+                    var detail = new XML.XMLDepartmentDetailData();
+                    detail.STT         = ado.Stt;
+                    detail.MA_KHOA     = ado.MaKhoa;
+                    detail.TEN_KHOA    = ConvertStringToXmlDocument(ado.TenKhoa);
+                    detail.BAN_KHAM    = ado.BanKham;
+                    detail.GIUONG_PD   = ado.GiuongPD;
+                    detail.GIUONG_TK   = ado.GiuongTK;
+                    detail.GIUONG_HSTC = ado.GiuongHSTC;
+                    detail.GIUONG_HSCC = ado.GiuongHSCC;
+                    detail.TU_NGAY     = ado.TuNgay;
+                    detail.DEN_NGAY    = ado.DenNgay;
+                    detail.MA_CSKCB    = ado.MaCSKCB;
+                    datas.Add(detail);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private MemoryStream CreatedXmlFileTT12Plus(XML.XMLDepartmentData xmlData)
+        {
+            MemoryStream stream = null;
+            try
+            {
+                var enc = new System.Text.UTF8Encoding(false);
+                stream = new MemoryStream();
+                var xmlNamespaces = new System.Xml.Serialization.XmlSerializerNamespaces();
+                xmlNamespaces.Add("xsd", "http://www.w3.org/2001/XMLSchema");
+                xmlNamespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                var xmlWriterSettings = new XmlWriterSettings
+                {
+                    CloseOutput = false,
+                    Encoding = enc,
+                    OmitXmlDeclaration = false,
+                    Indent = true
+                };
+                using (var xw = XmlWriter.Create(stream, xmlWriterSettings))
+                {
+                    var s = new System.Xml.Serialization.XmlSerializer(typeof(XML.XMLDepartmentData));
+                    s.Serialize(xw, xmlData, xmlNamespaces);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                stream = null;
+            }
+            return stream;
+        }
+
+        internal XmlCDataSection ConvertStringToXmlDocument(string data)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml("<book genre='novel' ISBN='1-861001-57-5'><title>Pride And Prejudice</title></book>");
+            return doc.CreateCDataSection(RemoveXmlCharError(data));
+        }
+
+        internal string RemoveXmlCharError(string data)
+        {
+            string result = "";
+            try
+            {
+                var s = new System.Text.StringBuilder();
+                if (!string.IsNullOrWhiteSpace(data))
+                {
+                    foreach (char c in data)
+                    {
+                        if (!System.Xml.XmlConvert.IsXmlChar(c)) continue;
+                        s.Append(c);
+                    }
+                }
+                result = s.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private string FormatTimeToYYYYMMDD(long timeValue)

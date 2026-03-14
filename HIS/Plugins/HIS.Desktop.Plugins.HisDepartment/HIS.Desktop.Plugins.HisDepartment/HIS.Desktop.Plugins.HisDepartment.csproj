@@ -259,6 +259,10 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Validation\ValidMaxlengthtxtDepartmentCode.cs" />
+    <Compile Include="XML\DepartmentXmlAdo.cs" />
+    <Compile Include="XML\XMLDepartmentData.cs" />
+    <Compile Include="XML\XMLDepartmentDetailData.cs" />
+    <Compile Include="XML\XMLDepartmentList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
@@ -312,6 +316,7 @@
   <ItemGroup>
     <None Include="Resources\Lock-Unlock-icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
