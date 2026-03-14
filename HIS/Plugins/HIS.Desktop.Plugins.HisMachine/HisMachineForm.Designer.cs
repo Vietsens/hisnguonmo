@@ -750,9 +750,9 @@ namespace HIS.Desktop.Plugins.HisMachine
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete, "", -1, true, false, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.cboSource.Properties.Items.AddRange(new object[] {
-            "Ngân sách",
-            "Xã hội hóa",
-            "Khác"});
+            "Ngân sách nhà nước",
+            "Tài trợ, viện trợ, hỗ trợ",
+            "Nguồn khác"});
             this.cboSource.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboSource_Properties_ButtonClick);
             this.cboSource.Size = new System.Drawing.Size(139, 20);
             this.cboSource.StyleController = this.layoutControl1;

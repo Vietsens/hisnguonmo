@@ -41,6 +41,7 @@ using HIS.UC.SettingSignInfo;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Common.SignLibrary.ServiceSign;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
@@ -950,13 +951,21 @@ namespace HIS.Desktop.Plugins.HisMachine
                 currentDTO.ROOM_IDS = string.Join(",", Rooms);
 
                 if (dteContractFrom != null && dteContractFrom.DateTime != DateTime.MinValue)
-                    currentDTO.CONTRACT_FROM = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteContractFrom.DateTime);
+                    currentDTO.CONTRACT_FROM = Int64.Parse((dteContractFrom.DateTime).ToString("yyyyMMdd000000"));
+                else
+                    currentDTO.CONTRACT_FROM = null;
                 if (dteContractTo != null && dteContractTo.DateTime != DateTime.MinValue)
-                    currentDTO.CONTRACT_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteContractTo.DateTime);
+                    currentDTO.CONTRACT_TO = Int64.Parse(dteContractTo.DateTime.ToString("yyyyMMdd000000"));
+                else
+                    currentDTO.CONTRACT_TO = null;
                 if (dteFromTime != null && dteFromTime.DateTime != DateTime.MinValue)
-                    currentDTO.FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteFromTime.DateTime);
+                    currentDTO.FROM_TIME = Int64.Parse(dteFromTime.DateTime.ToString("yyyyMMdd000000"));
+                else
+                    currentDTO.FROM_TIME = null;
                 if (dteToTime != null && dteToTime.DateTime != DateTime.MinValue)
-                    currentDTO.TO_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteToTime.DateTime);
+                    currentDTO.TO_TIME = Int64.Parse(dteToTime.DateTime.ToString("yyyyMMdd000000"));
+                else
+                    currentDTO.TO_TIME = null;
             }
             catch (Exception ex)
             {
@@ -1021,15 +1030,15 @@ namespace HIS.Desktop.Plugins.HisMachine
                     {
                         if (pData.SOURCE_CODE == "1")
                         {
-                            e.Value = "Ngân sách";
+                            e.Value = "Ngân sách nhà nước";
                         }
                         else if (pData.SOURCE_CODE == "2")
                         {
-                            e.Value = "Xã hội hóa";
+                            e.Value = "Tài trợ, viện trợ, hỗ trợ";
                         }
                         else if (pData.SOURCE_CODE == "3")
                         {
-                            e.Value = "Khác";
+                            e.Value = "Nguồn khác";
                         }
                     }
                     else if (e.Column.FieldName == "ROOM_CODES")
@@ -1960,6 +1969,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                 MapADOToXml(listXmlAdos, ref listXmlDetails);
                 XMLCLSData xmlData = new XMLCLSData();
                 xmlData.MayCls = listXmlDetails;
+                xmlData.ChuKyDonVi = "";
                 var rs = CreatedXmlFilePlus(xmlData);
                 if (rs != null)
                 {
@@ -1987,6 +1997,8 @@ namespace HIS.Desktop.Plugins.HisMachine
             List<CLSAdo> result = new List<CLSAdo>();
             try
             {
+                string option = "HIS.QD_130_BYT.XML3.MA_MAY.HIEN_THI_NGUON_CU_THE";
+                var key = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(option);
                 int count = 1;
                 foreach (var machine in listMachines)
                 {
@@ -2011,8 +2023,21 @@ namespace HIS.Desktop.Plugins.HisMachine
                     xmlCLS.NuocSX = !String.IsNullOrEmpty(machine.NATIONAL_NAME) ? machine.NATIONAL_NAME : "";
                     xmlCLS.NamSX = machine.MANUFACTURED_YEAR;
                     xmlCLS.NamSD = machine.USED_YEAR;
-                    xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : "";
-                    xmlCLS.MaMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
+                    xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : ""; string maMay = "";
+                    if (key == "1")
+                    {
+                        string sourceNamePart =
+                        !string.IsNullOrEmpty(machine.SOURCE_NAME)
+                            ? "[" + machine.SOURCE_NAME + "]"
+                            : string.Empty;
+
+                        maMay = String.Format("{0}.{1}{4}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER, sourceNamePart);
+                    }
+                    else
+                    {
+                        maMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
+                    }
+                    xmlCLS.MaMay = maMay;
 
                     var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == machine.ID).ToList();
 
@@ -2047,6 +2072,8 @@ namespace HIS.Desktop.Plugins.HisMachine
 
         private List<XmlTT12Ado> GenerateXmlTT12Ado(List<HIS_MACHINE> listMachines)
         {
+            string option = "HIS.QD_130_BYT.XML3.MA_MAY.HIEN_THI_NGUON_CU_THE";
+            var key = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(option);
             List<XmlTT12Ado> result = new List<XmlTT12Ado>();
             try
             {
@@ -2075,7 +2102,21 @@ namespace HIS.Desktop.Plugins.HisMachine
                     xmlCLS.NamSX = machine.MANUFACTURED_YEAR;
                     xmlCLS.NamSD = machine.USED_YEAR;
                     xmlCLS.SoLuuHanh = !String.IsNullOrEmpty(machine.CIRCULATION_NUMBER) ? machine.CIRCULATION_NUMBER : "";
-                    xmlCLS.MaMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
+                    string maMay = "";
+                    if (key == "1")
+                    {
+                        string sourceNamePart =
+                        !string.IsNullOrEmpty(machine.SOURCE_NAME)
+                            ? "[" + machine.SOURCE_NAME + "]"
+                            : string.Empty;
+
+                        maMay = String.Format("{0}.{1}{4}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER, sourceNamePart);
+                    }
+                    else
+                    {
+                        maMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
+                    }
+                    xmlCLS.MaMay = maMay;
 
                     var listMachineInspection = BackendDataWorker.Get<HIS_MACHINE_INSPECTION>().Where(o => o.MACHINE_ID == machine.ID).ToList();
 
@@ -2096,11 +2137,15 @@ namespace HIS.Desktop.Plugins.HisMachine
                     }
                     else
                     {
-                        xmlCLS.TuNgay = (int)((machine.FROM_TIME ?? 0) / 1000000);
-                        xmlCLS.DenNgay = (int)((machine.TO_TIME ?? 0) / 1000000);
+                        if (machine.FROM_TIME.HasValue)
+                            xmlCLS.TuNgay = (int)((machine.FROM_TIME ?? 0) / 1000000);
+                        if (machine.TO_TIME.HasValue)
+                            xmlCLS.DenNgay = (int)((machine.TO_TIME ?? 0) / 1000000);
                     }
-                    xmlCLS.TuNgay = (int)((machine.CONTRACT_FROM ?? 0) / 1000000);
-                    xmlCLS.DenNgay = (int)((machine.CONTRACT_TO ?? 0) / 1000000);
+                    if (machine.CONTRACT_FROM.HasValue)
+                        xmlCLS.HdTu = (int)((machine.CONTRACT_FROM ?? 0) / 1000000);
+                    if (machine.CONTRACT_TO.HasValue)
+                        xmlCLS.HdDen = (int)((machine.CONTRACT_TO ?? 0) / 1000000);
                     result.Add(xmlCLS);
                     count++;
 
@@ -2478,7 +2523,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        public bool SignFile(string fullFileName,string saveFilePath)
+        public bool SignFile(string fullFileName, string saveFilePath)
         {
             try
             {
