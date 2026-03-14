@@ -40,7 +40,7 @@ namespace HIS.Desktop.Plugins.HisMachine.XML
     }
     public class XmlTT12Ado : CLSAdo
     {
-        public string HdTu { get; set; }
-        public string HdDen { get; set; }
+        public int? HdTu { get; set; }
+        public int? HdDen { get; set; }
     }
 }
