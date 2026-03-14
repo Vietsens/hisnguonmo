@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -79,7 +80,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
             this.btnExportXmlTT12 = new DevExpress.XtraEditors.SimpleButton();
             this.chkSignXml = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
@@ -221,9 +222,9 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController();
+            this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.toolTipControllerGrid = new DevExpress.Utils.ToolTipController(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
             this.layoutControl4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl7)).BeginInit();
@@ -552,7 +553,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.gridviewFormList.OptionsView.ShowIndicator = false;
             this.gridviewFormList.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridviewFormList_CustomDrawColumnHeader);
             this.gridviewFormList.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridviewFormList_CustomRowCellEdit);
-            this.gridviewFormList.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridviewFormList_CellValueChanged);
+            this.gridviewFormList.CellValueChanging += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridviewFormList_CellValueChanging);
             this.gridviewFormList.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridviewFormList_CustomUnboundColumnData);
             this.gridviewFormList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridviewFormList_KeyDown);
             this.gridviewFormList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridviewFormList_MouseDown);
@@ -563,10 +564,11 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.gridColumnCheckDept.Caption = "gridColumn5";
             this.gridColumnCheckDept.ColumnEdit = this.repositoryItemCheckEditDept;
             this.gridColumnCheckDept.FieldName = "IS_CHECK_DEPT";
+            this.gridColumnCheckDept.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumnCheckDept.Name = "gridColumnCheckDept";
             this.gridColumnCheckDept.OptionsColumn.ShowCaption = false;
             this.gridColumnCheckDept.Visible = true;
-            this.gridColumnCheckDept.VisibleIndex = 5;
+            this.gridColumnCheckDept.VisibleIndex = 0;
             this.gridColumnCheckDept.Width = 40;
             // 
             // repositoryItemCheckEditDept
@@ -590,7 +592,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.STT.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.STT.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.STT.Visible = true;
-            this.STT.VisibleIndex = 0;
+            this.STT.VisibleIndex = 1;
             this.STT.Width = 30;
             // 
             // gridColumn1
@@ -602,7 +604,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.gridColumn1.OptionsColumn.ShowCaption = false;
             this.gridColumn1.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 1;
+            this.gridColumn1.VisibleIndex = 2;
             this.gridColumn1.Width = 30;
             // 
             // gridColumnEdit
@@ -619,7 +621,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.gridColumnEdit.ToolTip = "Sửa";
             this.gridColumnEdit.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnEdit.Visible = true;
-            this.gridColumnEdit.VisibleIndex = 2;
+            this.gridColumnEdit.VisibleIndex = 3;
             this.gridColumnEdit.Width = 20;
             // 
             // grdColDepartmentCode
@@ -631,7 +633,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.grdColDepartmentCode.OptionsColumn.AllowEdit = false;
             this.grdColDepartmentCode.ToolTip = "DEPARTMENT_CODE";
             this.grdColDepartmentCode.Visible = true;
-            this.grdColDepartmentCode.VisibleIndex = 3;
+            this.grdColDepartmentCode.VisibleIndex = 4;
             // 
             // grdColDepartmentName
             // 
@@ -642,7 +644,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.grdColDepartmentName.OptionsColumn.AllowEdit = false;
             this.grdColDepartmentName.ToolTip = "DEPARTMENT_NAME";
             this.grdColDepartmentName.Visible = true;
-            this.grdColDepartmentName.VisibleIndex = 4;
+            this.grdColDepartmentName.VisibleIndex = 5;
             this.grdColDepartmentName.Width = 200;
             // 
             // grdColGCode
@@ -1103,6 +1105,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.spErResusBedCount.Location = new System.Drawing.Point(137, 252);
             this.spErResusBedCount.MenuManager = this.barManager1;
             this.spErResusBedCount.Name = "spErResusBedCount";
+            this.spErResusBedCount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spErResusBedCount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spErResusBedCount.Size = new System.Drawing.Size(291, 20);
@@ -1119,6 +1122,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.spIcuBedCount.Location = new System.Drawing.Point(137, 228);
             this.spIcuBedCount.MenuManager = this.barManager1;
             this.spIcuBedCount.Name = "spIcuBedCount";
+            this.spIcuBedCount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spIcuBedCount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spIcuBedCount.Size = new System.Drawing.Size(291, 20);
@@ -1135,6 +1139,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.spExamDeskCount.Location = new System.Drawing.Point(137, 204);
             this.spExamDeskCount.MenuManager = this.barManager1;
             this.spExamDeskCount.Name = "spExamDeskCount";
+            this.spExamDeskCount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.spExamDeskCount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.spExamDeskCount.Size = new System.Drawing.Size(291, 20);
@@ -2106,7 +2111,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             this.layoutControlItem28.Control = this.spErResusBedCount;
             this.layoutControlItem28.Location = new System.Drawing.Point(0, 250);
             this.layoutControlItem28.Name = "layoutControlItem28";
-            this.layoutControlItem28.OptionsToolTip.ToolTip = "Số giường hồi sức cấp cực";
+            this.layoutControlItem28.OptionsToolTip.ToolTip = "Số giường hồi sức cấp cứu";
             this.layoutControlItem28.Size = new System.Drawing.Size(430, 24);
             this.layoutControlItem28.Text = "Số giường HSCC:";
             this.layoutControlItem28.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
