@@ -676,6 +676,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 if (!string.IsNullOrEmpty(_Treatment.ICD_TEXT))
                 {
                     _ThongTinDieuTri.BenhKemTheo = _Treatment.ICD_TEXT;
+                    _ThongTinDieuTri.MaICD_BenhKemTheo = _Treatment.ICD_SUB_CODE;
                 }
 
                 _ThongTinDieuTri.ChanDoan_KKB_CapCuu = Ten_KKB_CapCuu;
@@ -685,6 +686,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 _ThongTinDieuTri.LyDoVaoVien = _Treatment.HOSPITALIZATION_REASON;
 
                 _ThongTinDieuTri.ChanDoanVaoVien = _Treatment.IN_ICD_NAME;
+                _ThongTinDieuTri.MaICD_ChanDoanVaoVien = _Treatment.IN_ICD_CODE;
                 _ThongTinDieuTri.DienDieuTri = int.Parse((_Treatment.TDL_TREATMENT_TYPE_ID ?? 0).ToString());
 
                 #endregion
