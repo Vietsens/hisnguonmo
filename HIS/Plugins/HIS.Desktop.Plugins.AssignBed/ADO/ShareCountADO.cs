@@ -20,26 +20,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
-namespace HIS.Desktop.Plugins.HisMachine.XML
+namespace HIS.Desktop.Plugins.AssignBed.ADO
 {
-    [XmlRoot("DanhSachMayCls")]
-    public class XMLCLSData
+    internal class ShareCountADO
     {
-        [XmlElement("MayCls")]
-        public List<XMLCLSDetailData> MayCls { get; set; }
-
-        [XmlElement("CHUKYDONVI", Order = 2)]
-        public string ChuKyDonVi { get; set; }
-    }
-    [XmlRoot("DSACH_TBYTTHDV")]
-    public class XMLTT12Data
-    {
-        [XmlElement("DM_TBYTTHDV", Order = 1)]
-        public List<XMLTT12DetailData> DanhMuc { get; set; }
-
-        [XmlElement("CHUKYDONVI", Order = 2)]
-        public string ChuKyDonVi { get; set; }
+        internal ShareCountADO()
+        {
+        }
+        internal ShareCountADO(long? shareCount)
+        {
+            this.ShareCount = shareCount;
+        }
+        public long? ShareCount { get; set; }
     }
 }

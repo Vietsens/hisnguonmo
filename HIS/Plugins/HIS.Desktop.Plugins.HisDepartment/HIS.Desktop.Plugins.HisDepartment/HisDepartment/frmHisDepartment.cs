@@ -62,6 +62,11 @@ using HIS.UC.SettingSignInfo;
 using HIS.Desktop.ADO;
 using Newtonsoft.Json;
 using HIS.Desktop.Plugins.HisDepartment.ADO;
+using EMR.WCF.DCO;
+using EMR.SDO;
+using Inventec.Common.SignLibrary.ServiceSign;
+using System.Threading;
+using System.Diagnostics;
 
 namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
 {
@@ -102,7 +107,6 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             try
             {
                 InitializeComponent();
-
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
                 gridControlFormList.ToolTipController = toolTipControllerGrid;
@@ -246,6 +250,9 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 spNumOrder.EditValue = null;
                 spTheoryPatientCount.EditValue = null;
                 spRealityPatientCount.EditValue = null;
+                spExamDeskCount.EditValue = null;
+                spIcuBedCount.EditValue = null;
+                spErResusBedCount.EditValue = null;
                 chkWarningWhenIsNoSurg.Checked = false;
             }
             catch (Exception ex)
@@ -2854,9 +2861,14 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Debug("isNotLoadWhileChangeControlStateInFirst: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", isNotLoadWhileChangeControlStateInFirst));
+                Inventec.Common.Logging.LogSystem.Debug("SettingSignADO: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", SettingSignADO));
+
+
                 if (isNotLoadWhileChangeControlStateInFirst) return;
 
-                if (chkSignXml.Checked && (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber)))
+                //if (chkSignXml.Checked && (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber)))
+                if (chkSignXml.Checked)
                 {
                     // Mở form thiết lập ký (giống popup XML130)
                     frmSetting frm = new frmSetting(SettingSignADO, (result) =>
@@ -2883,8 +2895,19 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
 
         private void SaveControlState(string key, object value)
         {
-            string json = value != null ? JsonConvert.SerializeObject(value) : null;
+            string json = null;
 
+            if (value != null)
+            {
+                if (value is string)
+                {
+                    json = value.ToString();   // không serialize
+                }
+                else
+                {
+                    json = JsonConvert.SerializeObject(value);
+                }
+            }
             var cs = currentControlStateRDO?.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == this.currentModuleBase.ModuleLink);
 
             if (cs != null)
@@ -2935,222 +2958,190 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         {
             try
             {
-                //var selectedRows = gridviewFormList.GetSelectedRows();
-                //if (selectedRows == null || selectedRows.Length == 0)
-                //{
-                //    XtraMessageBox.Show("Vui lòng chọn ít nhất một khoa để xuất XML TT12", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    return;
-                //}
-
-                //List<HIS_DEPARTMENT> selectedDepts = new List<HIS_DEPARTMENT>();
-                //foreach (int rowHandle in selectedRows)
-                //{
-                //    if (rowHandle >= 0)
-                //    {
-                //        var dept = gridviewFormList.GetRow(rowHandle) as HIS_DEPARTMENT;
-                //        if (dept != null) selectedDepts.Add(dept);
-                //    }
-                //}
+                bool success = false;
                 var listAll = gridviewFormList.GridControl.DataSource as List<HisDepartmentADO>;
-                //if (listAll == null || listAll.Count == 0)
-                //{
-                //    XtraMessageBox.Show("Không có dữ liệu khoa nào trong lưới", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    return;
-                //}
-
-                // Lọc ra các khoa đã checkbox (IS_CHECK_DEPT = true)
-                List<HisDepartmentADO> selectedDepts = listAll.Where(o => o.IS_CHECK_DEPT).ToList();
-
+                var selectedDepts = listAll.Where(o => o.IS_CHECK_DEPT).ToList();
                 if (selectedDepts.Count == 0)
                 {
                     XtraMessageBox.Show("Vui lòng checkbox ít nhất một khoa để xuất XML TT12", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (selectedDepts.Count == 0)
-                {
-                    XtraMessageBox.Show("Không có khoa nào được chọn", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                // Mở dialog chọn thư mục lưu file
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
                 if (fbd.ShowDialog() != DialogResult.OK)
                     return;
-
                 string savePath = fbd.SelectedPath;
                 if (String.IsNullOrEmpty(savePath))
                     return;
 
                 WaitingManager.Show();
 
-                // Tạo file XML
                 string fullFileName = String.Format("DepartmentTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
                 string saveFilePath = System.IO.Path.Combine(savePath, fullFileName);
 
-                // Tạo và xuất XML  
-                var xmlStream = SerializeToXml(selectedDepts);
+                List<XML.DepartmentXmlAdo> listAdos = GenerateXmlTT12Ado(selectedDepts);
+                List<XML.XMLDepartmentDetailData> listDetails = new List<XML.XMLDepartmentDetailData>();
+                MapADOToXml(listAdos, ref listDetails);
 
-                if (xmlStream != null)
+                string listId = "Id-" + Guid.NewGuid().ToString();
+                XML.XMLDepartmentData xmlData = new XML.XMLDepartmentData();
+                xmlData.DanhSach = new XML.XMLDepartmentList { Id = listId, Items = listDetails };
+                xmlData.ChuKyDonVi = "";
+
+                var rs = CreatedXmlFileTT12Plus(xmlData);
+                if (rs != null)
                 {
-                    // Ký số nếu được chọn
-                    if (chkSignXml.Checked && SettingSignADO != null && !string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+                    if (chkSignXml.Checked)
                     {
-                        xmlStream = SignXmlDocument(xmlStream, SettingSignADO);
+                        rs = SignXmlTT12(rs, SettingSignADO, fullFileName, saveFilePath);
                     }
-
-                    // Ghi file
-                    if (xmlStream != null)
-                    {
-                        using (FileStream fileStream = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write))
-                        {
-                            xmlStream.WriteTo(fileStream);
-                        }
-                        xmlStream.Close();
-                    }
-
-                    WaitingManager.Hide();
-                    //MessageBox.Show(String.Format("Xuất XML thành công!\nĐường dẫn: {0}", saveFilePath), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
+                    rs.WriteTo(file);
+                    file.Close();
+                    rs.Close();
+                    success = true;
                 }
-                else
-                {
-                    WaitingManager.Hide();
-                    MessageBox.Show("Lỗi khi tạo file XML", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+
+                WaitingManager.Hide();
+                MessageManager.Show(this, new CommonParam(), success);
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                MessageBox.Show("Lỗi: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void AddXmlElement(XmlDocument doc, XmlElement parent, string elementName, string elementValue)
+        private List<XML.DepartmentXmlAdo> GenerateXmlTT12Ado(List<HisDepartmentADO> listDepts)
         {
+            var result = new List<XML.DepartmentXmlAdo>();
             try
             {
-                if (!String.IsNullOrEmpty(elementValue))
+                int count = 1;
+                foreach (var dept in listDepts)
                 {
-                    XmlElement element = doc.CreateElement(elementName);
-                    element.InnerText = elementValue;
-                    parent.AppendChild(element);
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-        private MemoryStream SerializeToXml(List<HisDepartmentADO> input)
-        {
-            try
-            {
-                XmlDocument doc = new XmlDocument();
-                //var depts = gridviewFormList.GridControl.DataSource as List<HIS_DEPARTMENT>;
-                //var selectedRows = gridviewFormList.GetSelectedRows();
-
-                //List<HIS_DEPARTMENT> selectedDepts = new List<HIS_DEPARTMENT>();
-                //foreach (int rowHandle in selectedRows)
-                //{
-                //    if (rowHandle >= 0)
-                //    {
-                //        var dept = gridviewFormList.GetRow(rowHandle) as HIS_DEPARTMENT;
-                //        if (dept != null) selectedDepts.Add(dept);
-                //    }
-                //}
-
-                // Tạo phần tử gốc
-                XmlElement rootElement = doc.CreateElement("DanhSachKhoa");
-                rootElement.SetAttribute("ThoiGian", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-                doc.AppendChild(rootElement);
-
-                // Thêm thông tin từng khoa
-                int stt = 1;
-                foreach (var dept in input)
-                {
-                    XmlElement departmentElement = doc.CreateElement("Khoa");
-
-                    // STT - Số thứ tự tự tăng dần từ 1
-                    AddXmlElement(doc, departmentElement, "STT", stt.ToString());
-
-                    // MA_KHOA - Mã khám bệnh/mã khoa (dùng BHYT_CODE)
-                    AddXmlElement(doc, departmentElement, "MA_KHOA", dept.BHYT_CODE ?? "");
-
-                    // TEN_KHOA - Tên khoa
-                    AddXmlElement(doc, departmentElement, "TEN_KHOA", dept.DEPARTMENT_NAME ?? "");
-
-                    // BAN_KHAM - Số lượng bàn khám (EXAM_DESK_COUNT nếu có)
-                    if (dept.NUM_ORDER.HasValue && dept.NUM_ORDER.Value > 0)
-                        AddXmlElement(doc, departmentElement, "BAN_KHAM", dept.NUM_ORDER.Value.ToString());
-
-                    // GIUONG_PD - Số giường phê duyệt (kế hoạch)
-                    if (dept.THEORY_PATIENT_COUNT.HasValue && dept.THEORY_PATIENT_COUNT.Value > 0)
-                        AddXmlElement(doc, departmentElement, "GIUONG_PD", dept.THEORY_PATIENT_COUNT.Value.ToString());
-
-                    // GIUONG_TK - Số giường thực tế
-                    if (dept.REALITY_PATIENT_COUNT.HasValue && dept.REALITY_PATIENT_COUNT.Value > 0)
-                        AddXmlElement(doc, departmentElement, "GIUONG_TK", dept.REALITY_PATIENT_COUNT.Value.ToString());
-
-                    // GIUONG_HSTC - Số giường hồi sức tích cực (nếu có trường này)
-                    if (dept.ICU_BED_COUNT != null && dept.ICU_BED_COUNT > 0)
-                        AddXmlElement(doc, departmentElement, "GIUONG_HSTC", dept.ICU_BED_COUNT.Value.ToString());
-                    AddXmlElement(doc, departmentElement, "GIUONG_HSTC", "0");
-
-                    // GIUONG_HSCC - Số giường hồi sức cấp cứu (nếu có trường này)
-                    if (dept.ER_RESUS_BED_COUNT != null && dept.ER_RESUS_BED_COUNT > 0)
-                        AddXmlElement(doc, departmentElement, "GIUONG_HSCC", dept.ER_RESUS_BED_COUNT.Value.ToString());
-
-                    // TU_NGAY - Thời gian hiệu lực từ (định dạng YYYYMMDD từ FROM_TIME)
-                    if (dept.FROM_TIME != null)
-                    {
-                        long fromTime = dept.FROM_TIME.Value;
-                        string formattedFromTime = FormatTimeToYYYYMMDD(fromTime);
-                        if (!String.IsNullOrEmpty(formattedFromTime))
-                            AddXmlElement(doc, departmentElement, "TU_NGAY", formattedFromTime);
-                    }
-
-                    // DEN_NGAY - Thời gian hiệu lực đến (định dạng YYYYMMDD từ MODIFY_TIME, chỉ ghi nếu khoa ngừng hoạt động)
-                    if ((dept.IS_ACTIVE == 0 || dept.IS_ACTIVE == null) && dept.TO_TIME != null)
-                    {
-                        long toTime = dept.TO_TIME.Value;
-                        string formattedToTime = FormatTimeToYYYYMMDD(toTime);
-                        if (!String.IsNullOrEmpty(formattedToTime))
-                            AddXmlElement(doc, departmentElement, "DEN_NGAY", formattedToTime);
-                    }
-
-                    // MA_CSKCB - Mã cơ sở khám bệnh, chữa bệnh (từ HIS_BRANCH)
-                    if (dept.BRANCH_ID != null && dept.BRANCH_ID > 0)
+                    string maCSKCB = "";
+                    if (dept.BRANCH_ID > 0)
                     {
                         var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == dept.BRANCH_ID);
-                        if (branch != null && !String.IsNullOrEmpty(branch.HEIN_MEDI_ORG_CODE))
-                            AddXmlElement(doc, departmentElement, "MA_CSKCB", branch.HEIN_MEDI_ORG_CODE);
+                        if (branch != null)
+                            maCSKCB = branch.HEIN_MEDI_ORG_CODE ?? "";
                     }
 
-                    rootElement.AppendChild(departmentElement);
-                    stt++;
-                }
+                    var ado = new XML.DepartmentXmlAdo();
+                    ado.Stt        = count;
+                    ado.MaKhoa     = dept.BHYT_CODE ?? "";
+                    ado.TenKhoa    = dept.DEPARTMENT_NAME ?? "";
+                    ado.BanKham    = dept.EXAM_DESK_COUNT.HasValue ? dept.EXAM_DESK_COUNT.Value.ToString() : "";
+                    ado.GiuongPD   = dept.THEORY_PATIENT_COUNT.HasValue ? dept.THEORY_PATIENT_COUNT.Value.ToString() : "";
+                    ado.GiuongTK   = dept.REALITY_PATIENT_COUNT.HasValue ? dept.REALITY_PATIENT_COUNT.Value.ToString() : "";
+                    ado.GiuongHSTC = dept.ICU_BED_COUNT.HasValue ? dept.ICU_BED_COUNT.Value.ToString() : "";
+                    ado.GiuongHSCC = dept.ER_RESUS_BED_COUNT.HasValue ? dept.ER_RESUS_BED_COUNT.Value.ToString() : "";
+                    ado.TuNgay     = dept.FROM_TIME.HasValue ? FormatTimeToYYYYMMDD(dept.FROM_TIME.Value) : "";
+                    ado.DenNgay    = dept.TO_TIME.HasValue ? FormatTimeToYYYYMMDD(dept.TO_TIME.Value) : "";
+                    ado.MaCSKCB    = maCSKCB;
 
-                MemoryStream stream = new MemoryStream();
-                var xmlSettings = new XmlWriterSettings
-                {
-                    Encoding = Encoding.UTF8,
-                    Indent = true,
-                    OmitXmlDeclaration = false
-                };
-
-                using (XmlWriter writer = XmlWriter.Create(stream, xmlSettings))
-                {
-                    doc.WriteTo(writer);
+                    result.Add(ado);
+                    count++;
                 }
-                stream.Position = 0;
-                return stream;
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
-                return null;
             }
+            return result;
+        }
+
+        private void MapADOToXml(List<XML.DepartmentXmlAdo> listAdos, ref List<XML.XMLDepartmentDetailData> datas)
+        {
+            try
+            {
+                if (datas == null)
+                    datas = new List<XML.XMLDepartmentDetailData>();
+                if (listAdos == null || listAdos.Count == 0)
+                    return;
+                foreach (var ado in listAdos)
+                {
+                    var detail = new XML.XMLDepartmentDetailData();
+                    detail.STT         = ado.Stt;
+                    detail.MA_KHOA     = ado.MaKhoa;
+                    detail.TEN_KHOA    = ConvertStringToXmlDocument(ado.TenKhoa);
+                    detail.BAN_KHAM    = ado.BanKham;
+                    detail.GIUONG_PD   = ado.GiuongPD;
+                    detail.GIUONG_TK   = ado.GiuongTK;
+                    detail.GIUONG_HSTC = ado.GiuongHSTC;
+                    detail.GIUONG_HSCC = ado.GiuongHSCC;
+                    detail.TU_NGAY     = ado.TuNgay;
+                    detail.DEN_NGAY    = ado.DenNgay;
+                    detail.MA_CSKCB    = ado.MaCSKCB;
+                    datas.Add(detail);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private MemoryStream CreatedXmlFileTT12Plus(XML.XMLDepartmentData xmlData)
+        {
+            MemoryStream stream = null;
+            try
+            {
+                var enc = new System.Text.UTF8Encoding(false);
+                stream = new MemoryStream();
+                var xmlNamespaces = new System.Xml.Serialization.XmlSerializerNamespaces();
+                xmlNamespaces.Add("xsd", "http://www.w3.org/2001/XMLSchema");
+                xmlNamespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                var xmlWriterSettings = new XmlWriterSettings
+                {
+                    CloseOutput = false,
+                    Encoding = enc,
+                    OmitXmlDeclaration = false,
+                    Indent = true
+                };
+                using (var xw = XmlWriter.Create(stream, xmlWriterSettings))
+                {
+                    var s = new System.Xml.Serialization.XmlSerializer(typeof(XML.XMLDepartmentData));
+                    s.Serialize(xw, xmlData, xmlNamespaces);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                stream = null;
+            }
+            return stream;
+        }
+
+        internal XmlCDataSection ConvertStringToXmlDocument(string data)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml("<book genre='novel' ISBN='1-861001-57-5'><title>Pride And Prejudice</title></book>");
+            return doc.CreateCDataSection(RemoveXmlCharError(data));
+        }
+
+        internal string RemoveXmlCharError(string data)
+        {
+            string result = "";
+            try
+            {
+                var s = new System.Text.StringBuilder();
+                if (!string.IsNullOrWhiteSpace(data))
+                {
+                    foreach (char c in data)
+                    {
+                        if (!System.Xml.XmlConvert.IsXmlChar(c)) continue;
+                        s.Append(c);
+                    }
+                }
+                result = s.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
 
         private string FormatTimeToYYYYMMDD(long timeValue)
@@ -3262,24 +3253,236 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             }
         }
 
-        private void gridviewFormList_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+
+
+
+        private void gridviewFormList_CellValueChanging(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
         {
             if (e.Column.FieldName == "IS_CHECK_DEPT")
             {
-                List<HisDepartmentADO> list = gridviewFormList.DataSource as List<HisDepartmentADO>;
-                if (list != null && list.Count > 0)
+                bool allActiveChecked = true;
+
+                for (int i = 0; i < gridviewFormList.RowCount; i++)
                 {
-                    // Kiểm tra xem tất cả các dòng active có được check hết không
-                    bool allActiveChecked = list.Where(o => o.IS_ACTIVE == 1).All(o => o.IS_CHECK_DEPT);
+                    var row = gridviewFormList.GetRow(i) as HisDepartmentADO;
 
-                    // Nếu tất cả active đều checked → header checked
-                    // Nếu có ít nhất 1 active không checked → header unchecked
-                    isHeaderChecked = allActiveChecked;
+                    if (row != null && row.IS_ACTIVE == 1)
+                    {
+                        bool isChecked;
 
-                    // Buộc vẽ lại header
-                    gridviewFormList.InvalidateColumnHeader(gridviewFormList.Columns["IS_CHECK_DEPT"]);
+                        if (i == e.RowHandle)
+                        {
+                            // dùng giá trị mới
+                            isChecked = Convert.ToBoolean(e.Value);
+                        }
+                        else
+                        {
+                            // dùng giá trị hiện tại
+                            isChecked = Convert.ToBoolean(gridviewFormList.GetRowCellValue(i, "IS_CHECK_DEPT"));
+                        }
+
+                        if (!isChecked)
+                        {
+                            allActiveChecked = false;
+                            break;
+                        }
+                    }
+                }
+
+                isHeaderChecked = allActiveChecked;
+
+                gridviewFormList.InvalidateColumnHeader(gridviewFormList.Columns["IS_CHECK_DEPT"]);
+            }
+        }
+        private MemoryStream SignXmlTT12(MemoryStream xmlStream, SettingSignADO signInfo, string fullFileName, string saveFilePath)
+        {
+            try
+            {
+                if (signInfo == null || string.IsNullOrEmpty(signInfo.SerialNumber))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Không có thông tin USB Token để ký");
+                    return xmlStream; // trả về file gốc nếu không ký được
+                }
+
+                string currentDirectory = Directory.GetCurrentDirectory();
+                string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+                Directory.CreateDirectory(tempFolderPath);
+                string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
+
+                // Lưu tạm file XML gốc để ký
+                using (FileStream tempFile = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    xmlStream.WriteTo(tempFile);
+                }
+                xmlStream.Position = 0;
+
+                string pathAfterSign = null;
+                WcfSignDCO wcfSignDCO = null;
+
+                if (signInfo.IsHsm)
+                {
+                    // Ký HSM (nếu dùng HSM)
+                    var xmlBase64 = SourceFileSignApi(ConvertStreamToBase64(xmlStream));
+                    if (string.IsNullOrEmpty(xmlBase64))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Ký HSM thất bại");
+                        return xmlStream;
+                    }
+
+                    var xmlBytes = Convert.FromBase64String(xmlBase64);
+                    File.WriteAllBytes(tempFilePath, xmlBytes);
+                    pathAfterSign = tempFilePath;
+                }
+                else
+                {
+                    // Ký USB Token qua service
+                    wcfSignDCO = new WcfSignDCO
+                    {
+                        SerialNumber = signInfo.SerialNumber,
+                        OutputFile = tempFilePath,
+                        PIN = "", // nếu cần PIN thì truyền vào đây
+                        SourceFile = tempFilePath,
+                        fieldSigned = "CHUKYDONVI" // giống XML130
+                    };
+
+                    string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                    SignProcessorClient signProcessorClient = new SignProcessorClient();
+
+                    if (!VerifyServiceSignProcessorIsRunning())
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Service ký số không chạy");
+                        return xmlStream;
+                    }
+
+                    var wcfSignResult = signProcessorClient.SignXml130(jsonData);
+                    if (wcfSignResult == null || !wcfSignResult.Success)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Ký file thất bại: " + (wcfSignResult?.Message ?? ""));
+                        return xmlStream;
+                    }
+
+                    pathAfterSign = wcfSignResult.OutputFile;
+                }
+
+                // Đọc file đã ký và trả về stream
+                if (!string.IsNullOrEmpty(pathAfterSign) && File.Exists(pathAfterSign))
+                {
+                    byte[] signedBytes = File.ReadAllBytes(pathAfterSign);
+                    MemoryStream signedStream = new MemoryStream(signedBytes);
+                    signedStream.Position = 0;
+                    return signedStream;
+                }
+
+                // Xóa file temp
+                if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
+                if (Directory.Exists(tempFolderPath) && Directory.GetFiles(tempFolderPath).Length == 0)
+                    Directory.Delete(tempFolderPath);
+
+                return xmlStream; // nếu ký thất bại, trả về file gốc
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return xmlStream;
+            }
+        }
+        private string SourceFileSignApi(string xmlBase64Source)
+        {
+            string result = null;
+            try
+            {
+                CommonParam param = new CommonParam();
+                EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
+                signXmlBhytSDO.XmlBase64 = xmlBase64Source;
+                signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
+                signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                {
+                    string message = string.Join(Environment.NewLine, param.Messages);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Inventec.Common.Logging.LogSystem.Warn(message);
                 }
             }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        internal bool VerifyServiceSignProcessorIsRunning()
+        {
+            bool valid = false;
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.1");
+                string exeSignPath = AppFilePathSignService();
+                if (File.Exists(exeSignPath))
+                {
+                    if (IsProcessOpen("EMR.SignProcessor"))
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.2");
+                        valid = true;
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.3");
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exeSignPath), exeSignPath));
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = exeSignPath;
+                        try
+                        {
+
+                            Process.Start(startInfo);
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.4");
+                            Thread.Sleep(500);
+                            valid = true;
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.5");
+                        }
+                        catch (Exception exx)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exx);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+        public string AppFilePathSignService()
+        {
+            try
+            {
+                string pathFolderTemp = Path.Combine(Path.Combine(Path.Combine(Application.StartupPath, "Integrate"), "EMR.SignProcessor"), "EMR.SignProcessor.exe");
+                return pathFolderTemp;
+            }
+            catch (IOException exception)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Error create temp file: " + exception.Message);
+                return "";
+            }
+        }
+        private bool IsProcessOpen(string name)
+        {
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                if (clsProcess.ProcessName == name || clsProcess.ProcessName == String.Format("{0}.exe", name) || clsProcess.ProcessName == String.Format("{0} (32 bit)", name) || clsProcess.ProcessName == String.Format("{0}.exe (32 bit)", name))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        // Hàm hỗ trợ convert stream sang base64 (dùng cho HSM)
+        private string ConvertStreamToBase64(MemoryStream stream)
+        {
+            stream.Position = 0;
+            byte[] buffer = stream.ToArray();
+            return Convert.ToBase64String(buffer);
         }
     }
 }

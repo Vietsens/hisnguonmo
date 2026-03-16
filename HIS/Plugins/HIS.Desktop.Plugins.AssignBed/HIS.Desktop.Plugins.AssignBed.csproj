@@ -122,7 +122,8 @@
     <Reference Include="HIS.Desktop.Print">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Print\HIS.Desktop.Print.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility">
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.DateEditor">
@@ -290,6 +291,7 @@
     <Compile Include="ADO\ICDADO.cs" />
     <Compile Include="ADO\LoaiPhieuInADO.cs" />
     <Compile Include="ADO\MissingIcdADO.cs" />
+    <Compile Include="ADO\ShareCountADO.cs" />
     <Compile Include="AssignBed\AcsUserADO.cs" />
     <Compile Include="AssignBed\AssignBedBehavior.cs" />
     <Compile Include="AssignBed\AssignBedFactory.cs" />
@@ -400,7 +402,6 @@
     <EmbeddedResource Include="frmServiceDebateConfirm.resx">
       <DependentUpon>frmServiceDebateConfirm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

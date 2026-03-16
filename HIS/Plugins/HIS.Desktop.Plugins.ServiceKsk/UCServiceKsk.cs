@@ -1428,12 +1428,12 @@ namespace HIS.Desktop.Plugins.ServiceKsk
             try
             {
                 List<V_HIS_KSK_CONTRACT> datas = BackendDataWorker.Get<V_HIS_KSK_CONTRACT>();
-
+                var ksk = datas.Where(o => o.IS_ACTIVE == 1).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("KSK_CONTRACT_CODE", "Mã hợp đồng", 100, 0));
                 columnInfos.Add(new ColumnInfo("WORK_PLACE_NAME", "Tên công ty", 250, 1));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("WORK_PLACE_NAME", "ID", columnInfos, true, 350);
-                ControlEditorLoader.Load(cboKSKContract, datas, controlEditorADO);
+                ControlEditorLoader.Load(cboKSKContract, ksk, controlEditorADO);
 
                 if (cboKSKContract.EditValue == null)
                     cboKSKContract.Properties.Buttons[1].Visible = false;

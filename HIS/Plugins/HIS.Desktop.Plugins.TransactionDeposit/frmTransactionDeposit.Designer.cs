@@ -117,6 +117,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.layoutTransactionCode = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutDescription = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -124,6 +125,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciBank = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPreviewPrint = new DevExpress.XtraLayout.LayoutControlItem();
+            this.spinSwipeAmount = new DevExpress.XtraEditors.SpinEdit();
+            this.lciSwipeAmount = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.timerInitForm = new System.Windows.Forms.Timer(this.components);
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
@@ -173,6 +176,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.layoutTransactionCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDescription)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
@@ -180,6 +184,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBank)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPreviewPrint)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinSwipeAmount.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSwipeAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             this.SuspendLayout();
@@ -193,6 +199,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.layoutControl1.Controls.Add(this.chkConnectionPOS);
             this.layoutControl1.Controls.Add(this.chkAutoClose);
             this.layoutControl1.Controls.Add(this.spinTransferAmount);
+            this.layoutControl1.Controls.Add(this.spinSwipeAmount);
             this.layoutControl1.Controls.Add(this.btnSearch);
             this.layoutControl1.Controls.Add(this.txtTreatmenCode);
             this.layoutControl1.Controls.Add(this.txtDepositReqCode);
@@ -428,6 +435,25 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.spinTransferAmount.StyleController = this.layoutControl1;
             this.spinTransferAmount.TabIndex = 30;
             this.spinTransferAmount.EditValueChanged += new System.EventHandler(this.spinTransferAmount_EditValueChanged);
+            // 
+            // spinSwipeAmount
+            // 
+            this.spinSwipeAmount.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinSwipeAmount.Location = new System.Drawing.Point(98, 172);
+            this.spinSwipeAmount.Margin = new System.Windows.Forms.Padding(4);
+            this.spinSwipeAmount.MenuManager = this.barManager1;
+            this.spinSwipeAmount.Name = "spinSwipeAmount";
+            this.spinSwipeAmount.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.spinSwipeAmount.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinSwipeAmount.Size = new System.Drawing.Size(334, 22);
+            this.spinSwipeAmount.StyleController = this.layoutControl1;
+            this.spinSwipeAmount.TabIndex = 39;
+            this.spinSwipeAmount.EditValueChanged += new System.EventHandler(this.spinSwipeAmount_EditValueChanged);
             // 
             // btnSearch
             // 
@@ -758,13 +784,15 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.layoutTransactionCode,
             this.layoutControlItem5,
             this.emptySpaceItem3,
+            this.emptySpaceItem4,
             this.layoutDescription,
             this.emptySpaceItem5,
             this.layoutControlItem8,
             this.layoutControlItem2,
             this.layoutControlItem9,
             this.lciBank,
-            this.lciPreviewPrint});
+            this.lciPreviewPrint,
+            this.lciSwipeAmount});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1073,14 +1101,23 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.emptySpaceItem3.Size = new System.Drawing.Size(326, 28);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
+            // emptySpaceItem4
+            // 
+            this.emptySpaceItem4.AllowHotTrack = false;
+            this.emptySpaceItem4.Location = new System.Drawing.Point(435, 169);
+            this.emptySpaceItem4.Name = "emptySpaceItem4";
+            this.emptySpaceItem4.Size = new System.Drawing.Size(781, 28);
+            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
+            this.emptySpaceItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
             // layoutDescription
             // 
             this.layoutDescription.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutDescription.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutDescription.Control = this.txtDescription;
-            this.layoutDescription.Location = new System.Drawing.Point(0, 169);
+            this.layoutDescription.Location = new System.Drawing.Point(0, 197);
             this.layoutDescription.Name = "layoutDescription";
-            this.layoutDescription.Size = new System.Drawing.Size(890, 130);
+            this.layoutDescription.Size = new System.Drawing.Size(890, 102);
             this.layoutDescription.Text = "Lý do tạm ứng:";
             this.layoutDescription.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutDescription.TextSize = new System.Drawing.Size(90, 20);
@@ -1089,9 +1126,9 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             // emptySpaceItem5
             // 
             this.emptySpaceItem5.AllowHotTrack = false;
-            this.emptySpaceItem5.Location = new System.Drawing.Point(890, 169);
+            this.emptySpaceItem5.Location = new System.Drawing.Point(890, 197);
             this.emptySpaceItem5.Name = "emptySpaceItem5";
-            this.emptySpaceItem5.Size = new System.Drawing.Size(326, 130);
+            this.emptySpaceItem5.Size = new System.Drawing.Size(326, 102);
             this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem8
@@ -1135,6 +1172,21 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             this.lciBank.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBank.TextSize = new System.Drawing.Size(90, 20);
             this.lciBank.TextToControlDistance = 5;
+            // 
+            // lciSwipeAmount
+            // 
+            this.lciSwipeAmount.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciSwipeAmount.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciSwipeAmount.Control = this.spinSwipeAmount;
+            this.lciSwipeAmount.Location = new System.Drawing.Point(0, 169);
+            this.lciSwipeAmount.Name = "lciSwipeAmount";
+            this.lciSwipeAmount.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+            this.lciSwipeAmount.Size = new System.Drawing.Size(435, 28);
+            this.lciSwipeAmount.Text = "Số tiền QT:";
+            this.lciSwipeAmount.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciSwipeAmount.TextSize = new System.Drawing.Size(90, 20);
+            this.lciSwipeAmount.TextToControlDistance = 5;
+            this.lciSwipeAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // lciPreviewPrint
             // 
@@ -1228,6 +1280,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.layoutTransactionCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDescription)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
@@ -1235,6 +1288,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciBank)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPreviewPrint)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinSwipeAmount.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciSwipeAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             this.ResumeLayout(false);
@@ -1310,6 +1365,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         private DevExpress.XtraEditors.SimpleButton btnConfigPos;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem3;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
         private DevExpress.XtraEditors.MemoEdit txtDescription;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
         private System.Windows.Forms.LinkLabel linkLabel1;
@@ -1324,5 +1380,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraEditors.CheckEdit chkPreviewPrint;
         private DevExpress.XtraLayout.LayoutControlItem lciPreviewPrint;
+        private DevExpress.XtraEditors.SpinEdit spinSwipeAmount;
+        private DevExpress.XtraLayout.LayoutControlItem lciSwipeAmount;
     }
 }
