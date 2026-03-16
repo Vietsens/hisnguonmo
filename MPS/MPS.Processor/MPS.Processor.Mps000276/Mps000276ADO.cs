@@ -32,6 +32,7 @@ namespace MPS.Processor.Mps000276
         public string CashierRoomName { get; set; }
         public string CashierRoomAddress { get; set; }
 
+        public long? ParentServiceNumOrder { get; set; }
         public long? ParentServiceId { get; set; }
         public string ParentServiceCode { get; set; }
         public string ParentServiceName { get; set; }
