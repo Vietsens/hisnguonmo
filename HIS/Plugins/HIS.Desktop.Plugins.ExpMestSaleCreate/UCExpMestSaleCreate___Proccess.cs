@@ -108,6 +108,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             {
                 bool sucPOS = true;
                 success = false;
+                var soTienCKQT = spinSwipeAmountNew.Value + spinTransferAmountNew.Value;
                 if (dicMediMateAdo != null)
                 {
                     if (ExistServiceNotInStock() || ExistServiceExceedsAvailable() || !CheckValiDiscount() || !CheckPatientDob())
@@ -126,6 +127,14 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         XtraMessageBox.Show(String.Format("Số tiền chuyển khoản [{0}] lớn hơn số tiền cần thanh toán của phiếu xuất [{1}]", Inventec.Common.Number.Convert.NumberToStringRoundAuto(spinTransferAmount.Value, 2), Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.totalPayPrice ?? 0, 2)));
                         spinTransferAmount.Focus();
                         spinTransferAmount.SelectAll();
+                        return;
+                    }
+                }
+                else if(payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT)                 
+                { 
+                    if (soTienCKQT > this.totalPayPrice)
+                    {
+                        XtraMessageBox.Show(String.Format("Tổng tiền chuyển khoản/quẹt thẻ [{0}] lớn hơn số tiền cần thanh toán của phiếu xuất [{1}]", Inventec.Common.Number.Convert.NumberToStringRoundAuto(soTienCKQT, 2), Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.totalPayPrice ?? 0, 2)));
                         return;
                     }
                 }
@@ -1142,7 +1151,19 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             saleSDO.TransferAmount = tranferAmountSum;
                         }
-
+                        else if (payform_ != null && (payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT))
+                        {
+                            saleSDO.SwipeAmount = tranferAmountSum;
+                        }
+                    }
+                    if (spinTransferAmountNew.EditValue != null && spinTransferAmountNew.Value > 0 && spinSwipeAmountNew.EditValue != null && spinSwipeAmountNew.Value > 0)
+                    {
+                        var payform_ = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == (long)cboPayForm.EditValue);
+                        if (payform_ != null && payform_.ID  == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT)
+                        {
+                            saleSDO.TransferAmount = spinTransferAmountNew.Value;
+                            saleSDO.SwipeAmount = spinSwipeAmountNew.Value;
+                        }
                     }
                 }
                 if (cboPayForm.EditValue != null)
@@ -1382,6 +1403,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                         listSale.Add(adoNew);
                         saleSDO.SaleData = listSale;
+                        var payform_ = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == (long)cboPayForm.EditValue);
                         if (chkCreateBill.Checked)
                         {
                             if (cboBillCashierRoom.EditValue != null)
@@ -1402,12 +1424,19 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             }
                             if (tranferAmountSum.HasValue && tranferAmountSum.Value > 0)
                             {
-                                var payform_ = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == (long)cboPayForm.EditValue);
                                 if (payform_ != null && (payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK || payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK))
                                 {
                                     saleSDO.TransferAmount = tranferAmountSum;
                                 }
-
+                                else if (payform_ != null && (payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)) 
+                                {
+                                    saleSDO.SwipeAmount = tranferAmountSum;
+                                }
+                            }
+                            else if(spinTransferAmountNew.EditValue != null && spinSwipeAmountNew.Value > 0 && spinSwipeAmountNew.EditValue != null && spinSwipeAmountNew.Value > 0 && payform_ != null && payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT) 
+                            { 
+                                saleSDO.TransferAmount = spinTransferAmountNew.Value;
+                                saleSDO.SwipeAmount = spinSwipeAmountNew.Value;
                             }
                         }
                         if (cboPayForm.EditValue != null)
@@ -1584,9 +1613,15 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             try
             {
                 UpdateSpinTransferAmountControl(false);
+                var idTmCk = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
                 if (payForm != null && (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK || payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK))
                 {
                     ValidControlTransferAmount(true);
+
+                    ValidControlTransferAmountNew(false);
+                    ValidControlSwipeAmount(false);
+                    lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     //UpdateSpinTransferAmountControl(true);
                     dxValidationProvider_Save.RemoveControlError(spinTransferAmount);
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -1598,12 +1633,31 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     //UpdateSpinTransferAmountControl(true);
                     dxValidationProvider_Save.RemoveControlError(spinTransferAmount);
                     ValidControlTransferAmount(true);
+                    ValidControlTransferAmountNew(false);
+                    ValidControlSwipeAmount(false);
+                    lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
                     lciTranferAmount.Enabled = true;
                     lciTranferAmount.Text = "Số tiền quẹt thẻ:";
                 }
+                else if (payForm != null && payForm.ID == idTmCk.ID)
+                {
+                    dxValidationProvider_Save.RemoveControlError(spinTransferAmount);
+                    ValidControlTransferAmount(false);
+                    ValidControlTransferAmountNew(true);
+                    ValidControlSwipeAmount(true);
+                    lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lcQuetthe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
                 else
                 {
+                    ValidControlTransferAmountNew(false);
+                    ValidControlSwipeAmount(false);
+                    lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
                     lciTranferAmount.Enabled = false;
                 }
@@ -1666,6 +1720,36 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 TranferAmountValidate.spinTranferAmount = spinTransferAmount;
                 TranferAmountValidate.isRequiredPin = IsRequiredField;
                 dxValidationProvider_Save.SetValidationRule(spinTransferAmount, TranferAmountValidate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlTransferAmountNew(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule TranferAmountValidate = new SpinTranferAmountValidationRule();
+                TranferAmountValidate.spinTranferAmount = spinTransferAmountNew;
+                TranferAmountValidate.isRequiredPin = IsRequiredField;
+                dxValidationProvider_Save.SetValidationRule(spinTransferAmountNew, TranferAmountValidate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlSwipeAmount(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule TranferAmountValidate = new SpinTranferAmountValidationRule();
+                TranferAmountValidate.spinTranferAmount = spinSwipeAmountNew;
+                TranferAmountValidate.isRequiredPin = IsRequiredField;
+                dxValidationProvider_Save.SetValidationRule(spinSwipeAmountNew, TranferAmountValidate);
             }
             catch (Exception ex)
             {

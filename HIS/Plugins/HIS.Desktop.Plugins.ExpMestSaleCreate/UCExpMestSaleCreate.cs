@@ -1120,6 +1120,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 if (cboPayForm.EditValue == null)
                     cboPayForm.EditValue = IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TM;
                 spinTransferAmount.EditValue = null;
+                spinTransferAmountNew.EditValue = null;
 
                 EnableByCheckIsVisitor();
                 if (!checkIsVisitor.Checked)
@@ -3787,6 +3788,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 LoadMediMateFromMediStock();
                 spinDiscount.EditValue = null;
                 spinTransferAmount.EditValue = null;
+                spinTransferAmountNew.EditValue = null;
                 spinDiscountRatio.EditValue = null;
                 checkImpExpPrice.Enabled = this.currentMediMate != null ? true : false;
                 dtIntructionTime.DateTime = DateTime.Now;
