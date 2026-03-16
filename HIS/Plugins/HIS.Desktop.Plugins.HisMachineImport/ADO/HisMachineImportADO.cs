@@ -27,9 +27,38 @@ namespace HIS.Desktop.Plugins.HisMachineImport.ADO
 {
     class MachineImportADO : HIS_MACHINE
     {
+        private static string ToDdMmYyyy(long? hisTime)
+        {
+            try
+            {
+                if (!hisTime.HasValue || hisTime.Value <= 0)
+                    return "";
+
+                var str = hisTime.Value.ToString();
+                if (str.Length != 8 && str.Length != 14)
+                    return "";
+
+                // HIS time number: yyyyMMdd or yyyyMMddHHmmss
+                int year = int.Parse(str.Substring(0, 4));
+                int month = int.Parse(str.Substring(4, 2));
+                int day = int.Parse(str.Substring(6, 2));
+                var dt = new DateTime(year, month, day);
+                return dt.ToString("dd/MM/yyyy");
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
         public string ROOM_CODE { get; set; }
         public long ROOM_TYPE_ID { get; set; }
         //public string ROOM_TYPE_CODE { get; set; }
         public string ERROR { get; set; }
+
+        public string CONTRACT_FROM_DMY { get { return ToDdMmYyyy(this.CONTRACT_FROM); } }
+        public string CONTRACT_TO_DMY { get { return ToDdMmYyyy(this.CONTRACT_TO); } }
+        public string FROM_TIME_DMY { get { return ToDdMmYyyy(this.FROM_TIME); } }
+        public string TO_TIME_DMY { get { return ToDdMmYyyy(this.TO_TIME); } }
     }
 }
