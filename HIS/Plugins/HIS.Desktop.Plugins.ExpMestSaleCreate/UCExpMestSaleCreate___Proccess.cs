@@ -1622,6 +1622,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     ValidControlSwipeAmount(false);
                     lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     //UpdateSpinTransferAmountControl(true);
                     dxValidationProvider_Save.RemoveControlError(spinTransferAmount);
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -1637,6 +1638,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     ValidControlSwipeAmount(false);
                     lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
                     lciTranferAmount.Enabled = true;
                     lciTranferAmount.Text = "Số tiền quẹt thẻ:";
@@ -1650,7 +1652,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    lcQuetthe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    //lcQuetthe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 }
                 else
                 {
@@ -1658,6 +1660,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     ValidControlSwipeAmount(false);
                     lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
                     lciTranferAmount.Enabled = false;
                 }
