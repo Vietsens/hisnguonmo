@@ -72,15 +72,16 @@ namespace MPS.Processor.Mps000480
                 objectTag.AddObjectData(store, "ExpMestViews", rdo.lstExpMestView);
                 objectTag.AddObjectData(store, "MedicineMaterials", lstMedicineMaterials);
 
-                
-                objectTag.AddRelationship(store, "Areas", "ExpMestViews", "AREA_ID", "REQ_AREA_ID");
+                if (rdo.lstExpMestView != null && lstArea != null)
+                    objectTag.AddRelationship(store, "Areas", "ExpMestViews", "AREA_ID", "REQ_AREA_ID");
                 Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("Areas", lstArea));
                 Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("ExpMestViews", rdo.lstExpMestView));
                 Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("MedicineMaterials", lstMedicineMaterials));
 
 
                 //objectTag.AddRelationship(store, "ExpMestViews", "MedicineMaterials", "ID", "EXP_MEST_ID");
-                objectTag.AddRelationship(store, "ExpMestViews", "MedicineMaterials", "ID", "AGGR_EXP_MEST_ID");
+                if (rdo.lstExpMestView != null && MedicineMaterials != null)
+                    objectTag.AddRelationship(store, "ExpMestViews", "MedicineMaterials", "ID", "AGGR_EXP_MEST_ID");
 
 
                 objectTag.AddObjectData(store, "ExpMests", this.lstExpMest);
@@ -149,7 +150,7 @@ namespace MPS.Processor.Mps000480
                         medimate.NOON = item.First().NOON;
                         medimate.AFTERNOON = item.First().AFTERNOON;
                         medimate.EVENING = item.First().EVENING;
-                        medimate.AGGR_EXP_MEST_ID = item.First().AGGR_EXP_MEST_ID; 
+                        medimate.AGGR_EXP_MEST_ID = item.First().AGGR_EXP_MEST_ID;
                         if (item.First().USE_TIME_TO != null && item.First().TDL_INTRUCTION_TIME != null)
                         {
                             DateTime use_time_to = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)item.First().USE_TIME_TO) ?? DateTime.MinValue;
@@ -183,7 +184,7 @@ namespace MPS.Processor.Mps000480
                         medimate.TUTORIAL = item.First().TUTORIAL;
                         medimate.REQ_LOGINNAME = item.First().REQ_LOGINNAME;
                         medimate.REQ_USERNAME = item.First().REQ_USERNAME;
-                        medimate.AGGR_EXP_MEST_ID = item.First().AGGR_EXP_MEST_ID; 
+                        medimate.AGGR_EXP_MEST_ID = item.First().AGGR_EXP_MEST_ID;
                         lstMedicineMaterials.Add(medimate);
                     }
                 }
@@ -205,9 +206,9 @@ namespace MPS.Processor.Mps000480
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_DOB, rdo.expMest.TDL_PATIENT_DOB));
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_GENDER_NAME, rdo.expMest.TDL_PATIENT_GENDER_NAME));
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.NUM_ORDER, rdo.expMest.NUM_ORDER));
-                    
+
                 }
-                else if(rdo.lstExpMestView != null)
+                else if (rdo.lstExpMestView != null)
                 {
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_TREATMENT_CODE, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_CODE));
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_NAME, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_NAME));
