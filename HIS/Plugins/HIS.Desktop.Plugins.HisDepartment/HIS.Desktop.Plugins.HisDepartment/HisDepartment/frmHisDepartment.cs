@@ -3065,7 +3065,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                     var detail = new XML.XMLDepartmentDetailData();
                     detail.STT         = ado.Stt;
                     detail.MA_KHOA     = ado.MaKhoa;
-                    detail.TEN_KHOA    = ConvertStringToXmlDocument(ado.TenKhoa);
+                    detail.TEN_KHOA    = ado.TenKhoa;
                     detail.BAN_KHAM    = ado.BanKham;
                     detail.GIUONG_PD   = ado.GiuongPD;
                     detail.GIUONG_TK   = ado.GiuongTK;

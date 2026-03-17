@@ -23,7 +23,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.XML
         public string MA_KHOA { get; set; }
 
         [XmlElement(Order = 3)]
-        public XmlCDataSection TEN_KHOA { get; set; }
+        public string TEN_KHOA { get; set; }
 
         [XmlElement(Order = 4)]
         public string BAN_KHAM { get; set; }
