@@ -575,11 +575,28 @@ namespace EMR.Desktop.Plugins.EmrPatientCertificateRegister
 
                 using (var client = new HttpClient())
                 {
+                    Inventec.Common.Logging.LogSystem.Info("Gửi yêu cầu đọc CCCD đến thiết bị qua API http://localhost:7000/api/v1/verify");
+
                     var response = await client.GetAsync("http://localhost:7000/api/v1/verify");
+
                     if (!response.IsSuccessStatusCode)
                     {
-                        XtraMessageBox.Show("Không kết nối được thiết bị CCCD.", "Thông báo");
+                        var errorContent = await response.Content.ReadAsStringAsync();
+                        Inventec.Common.Logging.LogSystem.Info("API lỗi: " + errorContent);
+
+                        XtraMessageBox.Show(errorContent, "Thông báo");
                         return;
+                    }
+
+                    try
+                    {
+                        var content = await response.Content.ReadAsStringAsync();
+                        Inventec.Common.Logging.LogSystem.Info("Đọc CCCD thành công. Response: " + content);
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Info("Đọc CCCD lỗi: " + ex.ToString());
+                        throw;
                     }
 
                     var json = await response.Content.ReadAsStringAsync();
