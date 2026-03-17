@@ -66,6 +66,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAggrExpMestDetail));
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
@@ -81,6 +85,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.bbtnExport = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnYLenhThuocBN = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnFind = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.chkTheoLo = new DevExpress.XtraEditors.CheckEdit();
             this.chkHaoPhi = new DevExpress.XtraEditors.CheckEdit();
@@ -92,6 +100,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.dtInstructionDateFrom = new DevExpress.XtraEditors.DateEdit();
             this.gridControlMedicineMaterialDetail = new DevExpress.XtraGrid.GridControl();
             this.gridViewMedicineMaterialDetail = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColumnGroupHeader = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnDeleteMediMate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnMedicineStt = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn6 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ButtonEdit_HightLightPatient = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -111,6 +121,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnDetailPrice = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnDetailTotalPrice = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn17 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.ButtonEdit_DeleteMediMate = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemSpinEdit_Amount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.CheckEdit_IsExpend = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.ButtonEdit__IsExpend = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridControlExpMestChild = new DevExpress.XtraGrid.GridControl();
@@ -118,6 +130,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridControlPrescriptionColumnDetail = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ButtonEdit__YLenhThuocTheoBN = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridControlPrescriptionColumnRemove = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.ButtonEditRemoveDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridControlPrescriptionColumnSTT = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnAntibioticRequestSTT_ICON = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemPictureEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
@@ -138,10 +151,23 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn14 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn15 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.ButtonEditRemoveEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.ButtonEditRemoveDisable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repReasonRequired = new Inventec.Desktop.CustomControl.RepositoryItemCustomGridLookUpEdit();
             this.repositoryItemCustomGridLookUpEdit1View = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.repTextDisable = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
+            this.btnGDisableDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.btnGDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridViewExpMestChildDetail = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.gridColDetail_GroupHeader = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_Delete = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_Stt = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_Code = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_Name = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_Unit = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_Amount = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_Lot = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_ConvertUnit = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_ConvertRatio = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColDetail_ConvertAmount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -153,6 +179,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btnSave = new DevExpress.XtraEditors.SimpleButton();
             this.btnApproval = new DevExpress.XtraEditors.SimpleButton();
             this.btnExport = new DevExpress.XtraEditors.SimpleButton();
             this.cboPrint = new DevExpress.XtraEditors.SimpleButton();
@@ -163,6 +190,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem_Save = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.groupControlCommonInfomation = new DevExpress.XtraEditors.GroupControl();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
@@ -191,10 +220,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
@@ -224,17 +249,22 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMedicineMaterialDetail)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit_HightLightPatient)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit_DeleteMediMate)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CheckEdit_IsExpend)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit__IsExpend)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExpMestChild)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewExpMestChild)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit__YLenhThuocTheoBN)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonEditRemoveDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditRemoveEnable)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ButtonEditRemoveDisable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repReasonRequired)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repTextDisable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnGDisableDelete)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnGDelete)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewExpMestChildDetail)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
@@ -253,6 +283,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem_Save)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.groupControlCommonInfomation)).BeginInit();
@@ -299,9 +331,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControl1.Controls.Add(this.layoutControl1);
             this.panelControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelControl1.Location = new System.Drawing.Point(0, 29);
+            this.panelControl1.Location = new System.Drawing.Point(0, 38);
+            this.panelControl1.Margin = new System.Windows.Forms.Padding(4);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(1284, 633);
+            this.panelControl1.Size = new System.Drawing.Size(1712, 777);
             this.panelControl1.TabIndex = 2;
             // 
             // layoutControl1
@@ -310,9 +343,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1284, 633);
+            this.layoutControl1.Size = new System.Drawing.Size(1712, 777);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -320,25 +354,28 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             this.layoutControl3.Controls.Add(this.chkPrint);
             this.layoutControl3.Controls.Add(this.layoutControl4);
+            this.layoutControl3.Controls.Add(this.btnSave);
             this.layoutControl3.Controls.Add(this.btnApproval);
             this.layoutControl3.Controls.Add(this.btnExport);
             this.layoutControl3.Controls.Add(this.cboPrint);
-            this.layoutControl3.Location = new System.Drawing.Point(2, 106);
+            this.layoutControl3.Location = new System.Drawing.Point(3, 131);
+            this.layoutControl3.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(270, 247, 250, 350);
             this.layoutControl3.Root = this.layoutControlGroup2;
-            this.layoutControl3.Size = new System.Drawing.Size(1280, 525);
+            this.layoutControl3.Size = new System.Drawing.Size(1706, 643);
             this.layoutControl3.TabIndex = 5;
             this.layoutControl3.Text = "layoutControl3";
             // 
             // chkPrint
             // 
-            this.chkPrint.Location = new System.Drawing.Point(962, 501);
+            this.chkPrint.Location = new System.Drawing.Point(1159, 613);
+            this.chkPrint.Margin = new System.Windows.Forms.Padding(4);
             this.chkPrint.MenuManager = this.barManager1;
             this.chkPrint.Name = "chkPrint";
             this.chkPrint.Properties.Caption = "";
             this.chkPrint.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.chkPrint.Size = new System.Drawing.Size(19, 19);
+            this.chkPrint.Size = new System.Drawing.Size(26, 19);
             this.chkPrint.StyleController = this.layoutControl3;
             this.chkPrint.TabIndex = 11;
             this.chkPrint.CheckedChanged += new System.EventHandler(this.chkPrint_CheckedChanged);
@@ -347,6 +384,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSave,
@@ -419,6 +460,34 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.bbtnFind.Name = "bbtnFind";
             this.bbtnFind.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFind_ItemClick);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1712, 38);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 815);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1712, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 777);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1712, 38);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 777);
+            // 
             // layoutControl4
             // 
             this.layoutControl4.Controls.Add(this.chkTheoLo);
@@ -431,34 +500,37 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControl4.Controls.Add(this.dtInstructionDateFrom);
             this.layoutControl4.Controls.Add(this.gridControlMedicineMaterialDetail);
             this.layoutControl4.Controls.Add(this.gridControlExpMestChild);
-            this.layoutControl4.Location = new System.Drawing.Point(2, 2);
+            this.layoutControl4.Location = new System.Drawing.Point(3, 3);
+            this.layoutControl4.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(274, 333, 250, 350);
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(1276, 495);
+            this.layoutControl4.Size = new System.Drawing.Size(1700, 604);
             this.layoutControl4.TabIndex = 10;
             this.layoutControl4.Text = "layoutControl4";
             // 
             // chkTheoLo
             // 
-            this.chkTheoLo.Location = new System.Drawing.Point(1134, 2);
+            this.chkTheoLo.Location = new System.Drawing.Point(1511, 3);
+            this.chkTheoLo.Margin = new System.Windows.Forms.Padding(4);
             this.chkTheoLo.MenuManager = this.barManager1;
             this.chkTheoLo.Name = "chkTheoLo";
             this.chkTheoLo.Properties.Caption = ":Tách theo lô";
             this.chkTheoLo.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkTheoLo.Size = new System.Drawing.Size(140, 19);
+            this.chkTheoLo.Size = new System.Drawing.Size(186, 20);
             this.chkTheoLo.StyleController = this.layoutControl4;
             this.chkTheoLo.TabIndex = 27;
             this.chkTheoLo.CheckedChanged += new System.EventHandler(this.chkTheoLo_CheckedChanged);
             // 
             // chkHaoPhi
             // 
-            this.chkHaoPhi.Location = new System.Drawing.Point(924, 2);
+            this.chkHaoPhi.Location = new System.Drawing.Point(1232, 3);
+            this.chkHaoPhi.Margin = new System.Windows.Forms.Padding(4);
             this.chkHaoPhi.MenuManager = this.barManager1;
             this.chkHaoPhi.Name = "chkHaoPhi";
             this.chkHaoPhi.Properties.Caption = ":Hiện TT hao phí";
             this.chkHaoPhi.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkHaoPhi.Size = new System.Drawing.Size(206, 19);
+            this.chkHaoPhi.Size = new System.Drawing.Size(273, 20);
             this.chkHaoPhi.StyleController = this.layoutControl4;
             this.chkHaoPhi.TabIndex = 26;
             this.chkHaoPhi.ToolTip = "Hiển thị thông tin hao phí";
@@ -466,12 +538,13 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             // chkPatientType
             // 
-            this.chkPatientType.Location = new System.Drawing.Point(655, 2);
+            this.chkPatientType.Location = new System.Drawing.Point(873, 3);
+            this.chkPatientType.Margin = new System.Windows.Forms.Padding(4);
             this.chkPatientType.MenuManager = this.barManager1;
             this.chkPatientType.Name = "chkPatientType";
             this.chkPatientType.Properties.Caption = ":Hiện ĐTTT";
             this.chkPatientType.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkPatientType.Size = new System.Drawing.Size(76, 19);
+            this.chkPatientType.Size = new System.Drawing.Size(101, 20);
             this.chkPatientType.StyleController = this.layoutControl4;
             this.chkPatientType.TabIndex = 25;
             this.chkPatientType.ToolTip = "Hiển thị thông tin đối tượng thanh toán";
@@ -479,12 +552,13 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             // chkOtherPaySource
             // 
-            this.chkOtherPaySource.Location = new System.Drawing.Point(735, 2);
+            this.chkOtherPaySource.Location = new System.Drawing.Point(980, 3);
+            this.chkOtherPaySource.Margin = new System.Windows.Forms.Padding(4);
             this.chkOtherPaySource.MenuManager = this.barManager1;
             this.chkOtherPaySource.Name = "chkOtherPaySource";
             this.chkOtherPaySource.Properties.Caption = ":Hiện nguồn khác";
             this.chkOtherPaySource.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkOtherPaySource.Size = new System.Drawing.Size(185, 19);
+            this.chkOtherPaySource.Size = new System.Drawing.Size(246, 20);
             this.chkOtherPaySource.StyleController = this.layoutControl4;
             this.chkOtherPaySource.TabIndex = 24;
             this.chkOtherPaySource.ToolTip = "Hiển thị thông tin nguồn chi trả khác";
@@ -492,9 +566,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(482, 2);
+            this.btnSearch.Location = new System.Drawing.Point(642, 3);
+            this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(169, 22);
+            this.btnSearch.Size = new System.Drawing.Size(225, 27);
             this.btnSearch.StyleController = this.layoutControl4;
             this.btnSearch.TabIndex = 23;
             this.btnSearch.Text = "Tìm (Ctrl F)";
@@ -502,10 +577,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             // txtPatientName
             // 
-            this.txtPatientName.Location = new System.Drawing.Point(389, 2);
+            this.txtPatientName.Location = new System.Drawing.Point(487, 3);
+            this.txtPatientName.Margin = new System.Windows.Forms.Padding(4);
             this.txtPatientName.MenuManager = this.barManager1;
             this.txtPatientName.Name = "txtPatientName";
-            this.txtPatientName.Size = new System.Drawing.Size(89, 20);
+            this.txtPatientName.Size = new System.Drawing.Size(149, 22);
             this.txtPatientName.StyleController = this.layoutControl4;
             this.txtPatientName.TabIndex = 22;
             this.txtPatientName.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPatientName_PreviewKeyDown);
@@ -513,42 +589,48 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // dtInstructionDateTo
             // 
             this.dtInstructionDateTo.EditValue = null;
-            this.dtInstructionDateTo.Location = new System.Drawing.Point(206, 2);
+            this.dtInstructionDateTo.Location = new System.Drawing.Point(263, 3);
+            this.dtInstructionDateTo.Margin = new System.Windows.Forms.Padding(4);
             this.dtInstructionDateTo.MenuManager = this.barManager1;
             this.dtInstructionDateTo.Name = "dtInstructionDateTo";
             this.dtInstructionDateTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtInstructionDateTo.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtInstructionDateTo.Size = new System.Drawing.Size(84, 20);
+            this.dtInstructionDateTo.Size = new System.Drawing.Size(123, 22);
             this.dtInstructionDateTo.StyleController = this.layoutControl4;
             this.dtInstructionDateTo.TabIndex = 21;
             // 
             // dtInstructionDateFrom
             // 
             this.dtInstructionDateFrom.EditValue = null;
-            this.dtInstructionDateFrom.Location = new System.Drawing.Point(97, 2);
+            this.dtInstructionDateFrom.Location = new System.Drawing.Point(98, 3);
+            this.dtInstructionDateFrom.Margin = new System.Windows.Forms.Padding(4);
             this.dtInstructionDateFrom.MenuManager = this.barManager1;
             this.dtInstructionDateFrom.Name = "dtInstructionDateFrom";
             this.dtInstructionDateFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.dtInstructionDateFrom.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.dtInstructionDateFrom.Size = new System.Drawing.Size(70, 20);
+            this.dtInstructionDateFrom.Size = new System.Drawing.Size(124, 22);
             this.dtInstructionDateFrom.StyleController = this.layoutControl4;
             this.dtInstructionDateFrom.TabIndex = 20;
             // 
             // gridControlMedicineMaterialDetail
             // 
-            this.gridControlMedicineMaterialDetail.Location = new System.Drawing.Point(655, 28);
+            this.gridControlMedicineMaterialDetail.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            this.gridControlMedicineMaterialDetail.Location = new System.Drawing.Point(873, 36);
             this.gridControlMedicineMaterialDetail.MainView = this.gridViewMedicineMaterialDetail;
+            this.gridControlMedicineMaterialDetail.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlMedicineMaterialDetail.Name = "gridControlMedicineMaterialDetail";
             this.gridControlMedicineMaterialDetail.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
+            this.ButtonEdit_DeleteMediMate,
+            this.repositoryItemSpinEdit_Amount,
             this.CheckEdit_IsExpend,
             this.repositoryItemPictureEdit1,
             this.ButtonEdit__IsExpend,
             this.ButtonEdit_HightLightPatient});
-            this.gridControlMedicineMaterialDetail.Size = new System.Drawing.Size(619, 465);
+            this.gridControlMedicineMaterialDetail.Size = new System.Drawing.Size(824, 565);
             this.gridControlMedicineMaterialDetail.TabIndex = 16;
             this.gridControlMedicineMaterialDetail.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewMedicineMaterialDetail});
@@ -556,6 +638,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // gridViewMedicineMaterialDetail
             // 
             this.gridViewMedicineMaterialDetail.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColumnGroupHeader,
+            this.gridColumnDeleteMediMate,
             this.gridColumnMedicineStt,
             this.gridColumn6,
             this.gridColumnMedicineMedicineTypeCode,
@@ -579,8 +663,31 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridViewMedicineMaterialDetail.OptionsView.ShowGroupPanel = false;
             this.gridViewMedicineMaterialDetail.OptionsView.ShowIndicator = false;
             this.gridViewMedicineMaterialDetail.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewMedicineMaterialDetail_RowCellStyle);
+            this.gridViewMedicineMaterialDetail.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewMedicineMaterialDetail_CustomRowCellEdit);
+            this.gridViewMedicineMaterialDetail.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewMedicineMaterialDetail_AmountCellValueChanged);
             this.gridViewMedicineMaterialDetail.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewMedicineMaterialDetail_CustomUnboundColumnData);
             this.gridViewMedicineMaterialDetail.Click += new System.EventHandler(this.gridViewMedicineMaterialDetail_Click);
+            // 
+            // gridColumnGroupHeader
+            // 
+            this.gridColumnGroupHeader.Caption = "Y lệnh";
+            this.gridColumnGroupHeader.FieldName = "GROUP_HEADER_DISPLAY";
+            this.gridColumnGroupHeader.Name = "gridColumnGroupHeader";
+            this.gridColumnGroupHeader.OptionsColumn.AllowEdit = false;
+            this.gridColumnGroupHeader.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColumnGroupHeader.Width = 400;
+            // 
+            // gridColumnDeleteMediMate
+            // 
+            this.gridColumnDeleteMediMate.Caption = " ";
+            this.gridColumnDeleteMediMate.FieldName = "DELETE_ITEM_MEDI";
+            this.gridColumnDeleteMediMate.Name = "gridColumnDeleteMediMate";
+            this.gridColumnDeleteMediMate.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnDeleteMediMate.ToolTip = "Xóa thuốc/vật tư khỏi y lệnh";
+            this.gridColumnDeleteMediMate.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumnDeleteMediMate.Visible = true;
+            this.gridColumnDeleteMediMate.VisibleIndex = 1;
+            this.gridColumnDeleteMediMate.Width = 24;
             // 
             // gridColumnMedicineStt
             // 
@@ -604,7 +711,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.ShowCaption = false;
             this.gridColumn6.Visible = true;
-            this.gridColumn6.VisibleIndex = 1;
+            this.gridColumn6.VisibleIndex = 2;
             this.gridColumn6.Width = 20;
             // 
             // ButtonEdit_HightLightPatient
@@ -623,7 +730,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnMedicineMedicineTypeCode.Name = "gridColumnMedicineMedicineTypeCode";
             this.gridColumnMedicineMedicineTypeCode.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicineMedicineTypeCode.Visible = true;
-            this.gridColumnMedicineMedicineTypeCode.VisibleIndex = 2;
+            this.gridColumnMedicineMedicineTypeCode.VisibleIndex = 3;
             this.gridColumnMedicineMedicineTypeCode.Width = 54;
             // 
             // gridColumnMedicineMedicineTypeName
@@ -633,7 +740,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnMedicineMedicineTypeName.Name = "gridColumnMedicineMedicineTypeName";
             this.gridColumnMedicineMedicineTypeName.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicineMedicineTypeName.Visible = true;
-            this.gridColumnMedicineMedicineTypeName.VisibleIndex = 3;
+            this.gridColumnMedicineMedicineTypeName.VisibleIndex = 4;
             this.gridColumnMedicineMedicineTypeName.Width = 166;
             // 
             // gridColumnMedicineServiceUnitName
@@ -644,7 +751,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnMedicineServiceUnitName.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicineServiceUnitName.ToolTip = "Đơn vị tính";
             this.gridColumnMedicineServiceUnitName.Visible = true;
-            this.gridColumnMedicineServiceUnitName.VisibleIndex = 4;
+            this.gridColumnMedicineServiceUnitName.VisibleIndex = 5;
             this.gridColumnMedicineServiceUnitName.Width = 50;
             // 
             // gridColumnMedicineAmount
@@ -660,7 +767,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnMedicineAmount.Name = "gridColumnMedicineAmount";
             this.gridColumnMedicineAmount.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicineAmount.Visible = true;
-            this.gridColumnMedicineAmount.VisibleIndex = 5;
+            this.gridColumnMedicineAmount.VisibleIndex = 6;
             this.gridColumnMedicineAmount.Width = 60;
             // 
             // gridColumn2
@@ -670,7 +777,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn2.Name = "gridColumn2";
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 6;
+            this.gridColumn2.VisibleIndex = 7;
             // 
             // gridColumn16
             // 
@@ -688,7 +795,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 7;
+            this.gridColumn9.VisibleIndex = 8;
             this.gridColumn9.Width = 85;
             // 
             // gridColumn8
@@ -698,7 +805,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 8;
+            this.gridColumn8.VisibleIndex = 9;
             // 
             // gridColumn7
             // 
@@ -708,7 +815,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 10;
+            this.gridColumn7.VisibleIndex = 11;
             // 
             // gridColumnMedicineIsExpend
             // 
@@ -723,7 +830,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnMedicineIsExpend.OptionsColumn.AllowEdit = false;
             this.gridColumnMedicineIsExpend.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnMedicineIsExpend.Visible = true;
-            this.gridColumnMedicineIsExpend.VisibleIndex = 9;
+            this.gridColumnMedicineIsExpend.VisibleIndex = 10;
             this.gridColumnMedicineIsExpend.Width = 60;
             // 
             // repositoryItemPictureEdit1
@@ -743,7 +850,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn3.OptionsColumn.AllowEdit = false;
             this.gridColumn3.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn3.Visible = true;
-            this.gridColumn3.VisibleIndex = 11;
+            this.gridColumn3.VisibleIndex = 12;
             this.gridColumn3.Width = 120;
             // 
             // gridColumn4
@@ -753,7 +860,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 12;
+            this.gridColumn4.VisibleIndex = 13;
             this.gridColumn4.Width = 80;
             // 
             // gridColumnDetailPrice
@@ -768,7 +875,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnDetailPrice.OptionsColumn.AllowEdit = false;
             this.gridColumnDetailPrice.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnDetailPrice.Visible = true;
-            this.gridColumnDetailPrice.VisibleIndex = 13;
+            this.gridColumnDetailPrice.VisibleIndex = 14;
             this.gridColumnDetailPrice.Width = 150;
             // 
             // gridColumnDetailTotalPrice
@@ -783,7 +890,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumnDetailTotalPrice.OptionsColumn.AllowEdit = false;
             this.gridColumnDetailTotalPrice.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumnDetailTotalPrice.Visible = true;
-            this.gridColumnDetailTotalPrice.VisibleIndex = 14;
+            this.gridColumnDetailTotalPrice.VisibleIndex = 15;
             this.gridColumnDetailTotalPrice.Width = 150;
             // 
             // gridColumn17
@@ -792,6 +899,33 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridColumn17.FieldName = "OTHER_PAY_SOURCE_NAME";
             this.gridColumn17.Name = "gridColumn17";
             this.gridColumn17.OptionsColumn.AllowEdit = false;
+            // 
+            // ButtonEdit_DeleteMediMate
+            // 
+            this.ButtonEdit_DeleteMediMate.AutoHeight = false;
+            this.ButtonEdit_DeleteMediMate.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.ButtonEdit_DeleteMediMate.Name = "ButtonEdit_DeleteMediMate";
+            this.ButtonEdit_DeleteMediMate.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.ButtonEdit_DeleteMediMate.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEdit_DeleteMediMate_ButtonClick);
+            // 
+            // repositoryItemSpinEdit_Amount
+            // 
+            this.repositoryItemSpinEdit_Amount.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemSpinEdit_Amount.Mask.EditMask = "f2";
+            this.repositoryItemSpinEdit_Amount.MaxValue = new decimal(new int[] {
+            9999999,
+            0,
+            0,
+            0});
+            this.repositoryItemSpinEdit_Amount.MinValue = new decimal(new int[] {
+            1,
+            0,
+            0,
+            131072});
+            this.repositoryItemSpinEdit_Amount.Name = "repositoryItemSpinEdit_Amount";
             // 
             // CheckEdit_IsExpend
             // 
@@ -808,8 +942,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             // gridControlExpMestChild
             // 
-            this.gridControlExpMestChild.Location = new System.Drawing.Point(2, 28);
+            this.gridControlExpMestChild.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
+            this.gridControlExpMestChild.Location = new System.Drawing.Point(3, 36);
             this.gridControlExpMestChild.MainView = this.gridViewExpMestChild;
+            this.gridControlExpMestChild.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlExpMestChild.MenuManager = this.barManager1;
             this.gridControlExpMestChild.Name = "gridControlExpMestChild";
             this.gridControlExpMestChild.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
@@ -818,11 +954,14 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.ButtonEdit__YLenhThuocTheoBN,
             this.repositoryItemPictureEdit2,
             this.repReasonRequired,
-            this.repTextDisable});
-            this.gridControlExpMestChild.Size = new System.Drawing.Size(649, 465);
+            this.repTextDisable,
+            this.btnGDisableDelete,
+            this.btnGDelete});
+            this.gridControlExpMestChild.Size = new System.Drawing.Size(864, 565);
             this.gridControlExpMestChild.TabIndex = 5;
             this.gridControlExpMestChild.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
-            this.gridViewExpMestChild});
+            this.gridViewExpMestChild,
+            this.gridViewExpMestChildDetail});
             // 
             // gridViewExpMestChild
             // 
@@ -890,6 +1029,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // gridControlPrescriptionColumnRemove
             // 
             this.gridControlPrescriptionColumnRemove.Caption = "Loại bỏ";
+            this.gridControlPrescriptionColumnRemove.ColumnEdit = this.ButtonEditRemoveDisable;
             this.gridControlPrescriptionColumnRemove.FieldName = "DELETE_ITEM";
             this.gridControlPrescriptionColumnRemove.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridControlPrescriptionColumnRemove.Name = "gridControlPrescriptionColumnRemove";
@@ -897,6 +1037,14 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.gridControlPrescriptionColumnRemove.Visible = true;
             this.gridControlPrescriptionColumnRemove.VisibleIndex = 2;
             this.gridControlPrescriptionColumnRemove.Width = 20;
+            // 
+            // ButtonEditRemoveDisable
+            // 
+            this.ButtonEditRemoveDisable.AutoHeight = false;
+            this.ButtonEditRemoveDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditRemoveDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Loại bỏ", null, null, true)});
+            this.ButtonEditRemoveDisable.Name = "ButtonEditRemoveDisable";
+            this.ButtonEditRemoveDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // gridControlPrescriptionColumnSTT
             // 
@@ -1125,18 +1273,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             this.ButtonEditRemoveEnable.AutoHeight = false;
             this.ButtonEditRemoveEnable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditRemoveEnable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Loại bỏ", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditRemoveEnable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Loại bỏ", null, null, true)});
             this.ButtonEditRemoveEnable.Name = "ButtonEditRemoveEnable";
             this.ButtonEditRemoveEnable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.ButtonEditRemoveEnable.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ButtonEditRemoveEnable_ButtonClick);
-            // 
-            // ButtonEditRemoveDisable
-            // 
-            this.ButtonEditRemoveDisable.AutoHeight = false;
-            this.ButtonEditRemoveDisable.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("ButtonEditRemoveDisable.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Loại bỏ", null, null, true)});
-            this.ButtonEditRemoveDisable.Name = "ButtonEditRemoveDisable";
-            this.ButtonEditRemoveDisable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
             // repReasonRequired
             // 
@@ -1164,6 +1304,161 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.repTextDisable.Name = "repTextDisable";
             this.repTextDisable.ReadOnly = true;
             // 
+            // btnGDisableDelete
+            // 
+            this.btnGDisableDelete.AutoHeight = false;
+            this.btnGDisableDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.btnGDisableDelete.Name = "btnGDisableDelete";
+            this.btnGDisableDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // btnGDelete
+            // 
+            this.btnGDelete.AutoHeight = false;
+            this.btnGDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("btnGDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
+            this.btnGDelete.Name = "btnGDelete";
+            this.btnGDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            // 
+            // gridViewExpMestChildDetail
+            // 
+            this.gridViewExpMestChildDetail.Columns.AddRange(new DevExpress.XtraGrid.Columns.GridColumn[] {
+            this.gridColDetail_GroupHeader,
+            this.gridColDetail_Delete,
+            this.gridColDetail_Stt,
+            this.gridColDetail_Code,
+            this.gridColDetail_Name,
+            this.gridColDetail_Unit,
+            this.gridColDetail_Amount,
+            this.gridColDetail_Lot,
+            this.gridColDetail_ConvertUnit,
+            this.gridColDetail_ConvertRatio,
+            this.gridColDetail_ConvertAmount});
+            this.gridViewExpMestChildDetail.GridControl = this.gridControlExpMestChild;
+            this.gridViewExpMestChildDetail.Name = "gridViewExpMestChildDetail";
+            this.gridViewExpMestChildDetail.OptionsView.ColumnAutoWidth = false;
+            this.gridViewExpMestChildDetail.OptionsView.ShowGroupPanel = false;
+            this.gridViewExpMestChildDetail.OptionsView.ShowIndicator = false;
+            this.gridViewExpMestChildDetail.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewMedicineMaterialDetail_RowCellStyle);
+            this.gridViewExpMestChildDetail.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewMedicineMaterialDetail_CustomRowCellEdit);
+            this.gridViewExpMestChildDetail.CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(this.gridViewMedicineMaterialDetail_AmountCellValueChanged);
+            this.gridViewExpMestChildDetail.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewMedicineMaterialDetail_CustomUnboundColumnData);
+            // 
+            // gridColDetail_GroupHeader
+            // 
+            this.gridColDetail_GroupHeader.Caption = "Y lệnh";
+            this.gridColDetail_GroupHeader.FieldName = "GROUP_HEADER_DISPLAY";
+            this.gridColDetail_GroupHeader.Name = "gridColDetail_GroupHeader";
+            this.gridColDetail_GroupHeader.OptionsColumn.AllowEdit = false;
+            this.gridColDetail_GroupHeader.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.True;
+            this.gridColDetail_GroupHeader.Width = 400;
+            // 
+            // gridColDetail_Delete
+            // 
+            this.gridColDetail_Delete.Caption = " ";
+            this.gridColDetail_Delete.ColumnEdit = this.ButtonEdit_DeleteMediMate;
+            this.gridColDetail_Delete.FieldName = "DELETE_ITEM_MEDI";
+            this.gridColDetail_Delete.Name = "gridColDetail_Delete";
+            this.gridColDetail_Delete.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColDetail_Delete.ToolTip = "Xóa thuốc/vật tư khỏi y lệnh";
+            this.gridColDetail_Delete.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColDetail_Delete.Visible = true;
+            this.gridColDetail_Delete.VisibleIndex = 1;
+            this.gridColDetail_Delete.Width = 24;
+            // 
+            // gridColDetail_Stt
+            // 
+            this.gridColDetail_Stt.Caption = "STT";
+            this.gridColDetail_Stt.FieldName = "STT";
+            this.gridColDetail_Stt.Name = "gridColDetail_Stt";
+            this.gridColDetail_Stt.OptionsColumn.AllowEdit = false;
+            this.gridColDetail_Stt.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColDetail_Stt.Visible = true;
+            this.gridColDetail_Stt.VisibleIndex = 0;
+            this.gridColDetail_Stt.Width = 40;
+            // 
+            // gridColDetail_Code
+            // 
+            this.gridColDetail_Code.Caption = "Mã";
+            this.gridColDetail_Code.FieldName = "MEDICINE_TYPE_CODE";
+            this.gridColDetail_Code.Name = "gridColDetail_Code";
+            this.gridColDetail_Code.OptionsColumn.AllowEdit = false;
+            this.gridColDetail_Code.Visible = true;
+            this.gridColDetail_Code.VisibleIndex = 2;
+            this.gridColDetail_Code.Width = 90;
+            // 
+            // gridColDetail_Name
+            // 
+            this.gridColDetail_Name.Caption = "Tên";
+            this.gridColDetail_Name.FieldName = "MEDICINE_TYPE_NAME";
+            this.gridColDetail_Name.Name = "gridColDetail_Name";
+            this.gridColDetail_Name.OptionsColumn.AllowEdit = false;
+            this.gridColDetail_Name.Visible = true;
+            this.gridColDetail_Name.VisibleIndex = 3;
+            this.gridColDetail_Name.Width = 335;
+            // 
+            // gridColDetail_Unit
+            // 
+            this.gridColDetail_Unit.Caption = "Đơn vị tính";
+            this.gridColDetail_Unit.FieldName = "SERVICE_UNIT_NAME";
+            this.gridColDetail_Unit.Name = "gridColDetail_Unit";
+            this.gridColDetail_Unit.OptionsColumn.AllowEdit = false;
+            this.gridColDetail_Unit.Visible = true;
+            this.gridColDetail_Unit.VisibleIndex = 4;
+            this.gridColDetail_Unit.Width = 85;
+            // 
+            // gridColDetail_Amount
+            // 
+            this.gridColDetail_Amount.Caption = "Số lượng";
+            this.gridColDetail_Amount.DisplayFormat.FormatString = "#,##0.00";
+            this.gridColDetail_Amount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.gridColDetail_Amount.FieldName = "AMOUNT";
+            this.gridColDetail_Amount.Name = "gridColDetail_Amount";
+            this.gridColDetail_Amount.Visible = true;
+            this.gridColDetail_Amount.VisibleIndex = 5;
+            this.gridColDetail_Amount.Width = 70;
+            // 
+            // gridColDetail_Lot
+            // 
+            this.gridColDetail_Lot.Caption = "Số lô";
+            this.gridColDetail_Lot.FieldName = "PACKAGE_NUMBER";
+            this.gridColDetail_Lot.Name = "gridColDetail_Lot";
+            this.gridColDetail_Lot.OptionsColumn.AllowEdit = false;
+            this.gridColDetail_Lot.Visible = true;
+            this.gridColDetail_Lot.VisibleIndex = 6;
+            this.gridColDetail_Lot.Width = 80;
+            // 
+            // gridColDetail_ConvertUnit
+            // 
+            this.gridColDetail_ConvertUnit.Caption = "Đơn vị quy đổi";
+            this.gridColDetail_ConvertUnit.FieldName = "CONVERT_UNIT_NAME";
+            this.gridColDetail_ConvertUnit.Name = "gridColDetail_ConvertUnit";
+            this.gridColDetail_ConvertUnit.OptionsColumn.AllowEdit = false;
+            this.gridColDetail_ConvertUnit.Visible = true;
+            this.gridColDetail_ConvertUnit.VisibleIndex = 7;
+            this.gridColDetail_ConvertUnit.Width = 100;
+            // 
+            // gridColDetail_ConvertRatio
+            // 
+            this.gridColDetail_ConvertRatio.Caption = "Tỷ lệ quy đổi";
+            this.gridColDetail_ConvertRatio.FieldName = "CONVERT_RATIO";
+            this.gridColDetail_ConvertRatio.Name = "gridColDetail_ConvertRatio";
+            this.gridColDetail_ConvertRatio.OptionsColumn.AllowEdit = false;
+            this.gridColDetail_ConvertRatio.Visible = true;
+            this.gridColDetail_ConvertRatio.VisibleIndex = 8;
+            this.gridColDetail_ConvertRatio.Width = 80;
+            // 
+            // gridColDetail_ConvertAmount
+            // 
+            this.gridColDetail_ConvertAmount.Caption = "Số lượng quy đổi";
+            this.gridColDetail_ConvertAmount.FieldName = "CONVERT_AMOUNT";
+            this.gridColDetail_ConvertAmount.Name = "gridColDetail_ConvertAmount";
+            this.gridColDetail_ConvertAmount.OptionsColumn.AllowEdit = false;
+            this.gridColDetail_ConvertAmount.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColDetail_ConvertAmount.Visible = true;
+            this.gridColDetail_ConvertAmount.VisibleIndex = 9;
+            this.gridColDetail_ConvertAmount.Width = 100;
+            // 
             // layoutControlGroup3
             // 
             this.layoutControlGroup3.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -1182,24 +1477,24 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "Root";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1276, 495);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1700, 604);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.gridControlExpMestChild;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 33);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(653, 469);
+            this.layoutControlItem4.Size = new System.Drawing.Size(870, 571);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.gridControlMedicineMaterialDetail;
-            this.layoutControlItem5.Location = new System.Drawing.Point(653, 26);
+            this.layoutControlItem5.Location = new System.Drawing.Point(870, 33);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(623, 469);
+            this.layoutControlItem5.Size = new System.Drawing.Size(830, 571);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -1210,7 +1505,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem12.Control = this.dtInstructionDateFrom;
             this.layoutControlItem12.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(169, 26);
+            this.layoutControlItem12.Size = new System.Drawing.Size(225, 33);
             this.layoutControlItem12.Text = "Ngày y lệnh từ:";
             this.layoutControlItem12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem12.TextSize = new System.Drawing.Size(90, 20);
@@ -1221,9 +1516,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem13.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem13.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem13.Control = this.dtInstructionDateTo;
-            this.layoutControlItem13.Location = new System.Drawing.Point(169, 0);
+            this.layoutControlItem13.Location = new System.Drawing.Point(225, 0);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(123, 26);
+            this.layoutControlItem13.Size = new System.Drawing.Size(164, 33);
             this.layoutControlItem13.Text = "Đến:";
             this.layoutControlItem13.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem13.TextSize = new System.Drawing.Size(30, 20);
@@ -1234,9 +1529,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem14.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem14.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem14.Control = this.txtPatientName;
-            this.layoutControlItem14.Location = new System.Drawing.Point(292, 0);
+            this.layoutControlItem14.Location = new System.Drawing.Point(389, 0);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(188, 26);
+            this.layoutControlItem14.Size = new System.Drawing.Size(250, 33);
             this.layoutControlItem14.Text = "Tên bệnh nhân:";
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(90, 20);
@@ -1245,53 +1540,65 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.btnSearch;
-            this.layoutControlItem15.Location = new System.Drawing.Point(480, 0);
+            this.layoutControlItem15.Location = new System.Drawing.Point(639, 0);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(173, 26);
+            this.layoutControlItem15.Size = new System.Drawing.Size(231, 33);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
             // 
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.chkOtherPaySource;
-            this.layoutControlItem19.Location = new System.Drawing.Point(733, 0);
+            this.layoutControlItem19.Location = new System.Drawing.Point(977, 0);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(189, 26);
+            this.layoutControlItem19.Size = new System.Drawing.Size(252, 33);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
             // layoutControlItem20
             // 
             this.layoutControlItem20.Control = this.chkPatientType;
-            this.layoutControlItem20.Location = new System.Drawing.Point(653, 0);
+            this.layoutControlItem20.Location = new System.Drawing.Point(870, 0);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(80, 26);
+            this.layoutControlItem20.Size = new System.Drawing.Size(107, 33);
             this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem20.TextVisible = false;
             // 
             // layoutControlItem21
             // 
             this.layoutControlItem21.Control = this.chkHaoPhi;
-            this.layoutControlItem21.Location = new System.Drawing.Point(922, 0);
+            this.layoutControlItem21.Location = new System.Drawing.Point(1229, 0);
             this.layoutControlItem21.Name = "layoutControlItem21";
-            this.layoutControlItem21.Size = new System.Drawing.Size(210, 26);
+            this.layoutControlItem21.Size = new System.Drawing.Size(279, 33);
             this.layoutControlItem21.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem21.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.chkTheoLo;
-            this.layoutControlItem6.Location = new System.Drawing.Point(1132, 0);
+            this.layoutControlItem6.Location = new System.Drawing.Point(1508, 0);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(144, 26);
+            this.layoutControlItem6.Size = new System.Drawing.Size(192, 33);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(755, 613);
+            this.btnSave.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(111, 27);
+            this.btnSave.StyleController = this.layoutControl3;
+            this.btnSave.TabIndex = 12;
+            this.btnSave.Text = "Lưu (Ctrl S)";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // btnApproval
             // 
-            this.btnApproval.Location = new System.Drawing.Point(985, 501);
+            this.btnApproval.Location = new System.Drawing.Point(1191, 613);
+            this.btnApproval.Margin = new System.Windows.Forms.Padding(4);
             this.btnApproval.Name = "btnApproval";
-            this.btnApproval.Size = new System.Drawing.Size(100, 22);
+            this.btnApproval.Size = new System.Drawing.Size(259, 27);
             this.btnApproval.StyleController = this.layoutControl3;
             this.btnApproval.TabIndex = 9;
             this.btnApproval.Text = "Duyệt (Ctrl A)";
@@ -1299,9 +1606,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(1089, 501);
+            this.btnExport.Location = new System.Drawing.Point(1456, 613);
+            this.btnExport.Margin = new System.Windows.Forms.Padding(4);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(103, 22);
+            this.btnExport.Size = new System.Drawing.Size(134, 27);
             this.btnExport.StyleController = this.layoutControl3;
             this.btnExport.TabIndex = 8;
             this.btnExport.Text = "Thực xuất (Ctrl E)";
@@ -1309,9 +1617,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             // cboPrint
             // 
-            this.cboPrint.Location = new System.Drawing.Point(1196, 501);
+            this.cboPrint.Location = new System.Drawing.Point(1596, 613);
+            this.cboPrint.Margin = new System.Windows.Forms.Padding(4);
             this.cboPrint.Name = "cboPrint";
-            this.cboPrint.Size = new System.Drawing.Size(82, 22);
+            this.cboPrint.Size = new System.Drawing.Size(107, 27);
             this.cboPrint.StyleController = this.layoutControl3;
             this.cboPrint.TabIndex = 7;
             this.cboPrint.Text = "In ấn";
@@ -1327,45 +1636,47 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem7,
             this.layoutControlItem11,
             this.layoutControlItem3,
-            this.layoutControlItem16});
+            this.layoutControlItem16,
+            this.layoutControlItem_Save,
+            this.emptySpaceItem2});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "Root";
             this.layoutControlGroup2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup2.Size = new System.Drawing.Size(1280, 525);
+            this.layoutControlGroup2.Size = new System.Drawing.Size(1706, 643);
             this.layoutControlGroup2.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 499);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 610);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(943, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(752, 33);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.cboPrint;
-            this.layoutControlItem9.Location = new System.Drawing.Point(1194, 499);
+            this.layoutControlItem9.Location = new System.Drawing.Point(1593, 610);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(86, 26);
+            this.layoutControlItem9.Size = new System.Drawing.Size(113, 33);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnExport;
-            this.layoutControlItem7.Location = new System.Drawing.Point(1087, 499);
+            this.layoutControlItem7.Location = new System.Drawing.Point(1453, 610);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(107, 26);
+            this.layoutControlItem7.Size = new System.Drawing.Size(140, 33);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnApproval;
-            this.layoutControlItem11.Location = new System.Drawing.Point(983, 499);
+            this.layoutControlItem11.Location = new System.Drawing.Point(1188, 610);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(104, 26);
+            this.layoutControlItem11.Size = new System.Drawing.Size(265, 33);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -1374,35 +1685,54 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem3.Control = this.layoutControl4;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(1280, 499);
+            this.layoutControlItem3.Size = new System.Drawing.Size(1706, 610);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem16
             // 
             this.layoutControlItem16.Control = this.chkPrint;
-            this.layoutControlItem16.Location = new System.Drawing.Point(943, 499);
+            this.layoutControlItem16.Location = new System.Drawing.Point(1137, 610);
             this.layoutControlItem16.Name = "layoutControlItem16";
-            this.layoutControlItem16.Size = new System.Drawing.Size(40, 26);
+            this.layoutControlItem16.Size = new System.Drawing.Size(51, 33);
             this.layoutControlItem16.Text = "In:";
-            this.layoutControlItem16.TextSize = new System.Drawing.Size(14, 13);
+            this.layoutControlItem16.TextSize = new System.Drawing.Size(16, 16);
+            // 
+            // layoutControlItem_Save
+            // 
+            this.layoutControlItem_Save.Control = this.btnSave;
+            this.layoutControlItem_Save.Location = new System.Drawing.Point(752, 610);
+            this.layoutControlItem_Save.Name = "layoutControlItem_Save";
+            this.layoutControlItem_Save.Size = new System.Drawing.Size(117, 33);
+            this.layoutControlItem_Save.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem_Save.TextVisible = false;
+            // 
+            // emptySpaceItem2
+            // 
+            this.emptySpaceItem2.AllowHotTrack = false;
+            this.emptySpaceItem2.Location = new System.Drawing.Point(869, 610);
+            this.emptySpaceItem2.Name = "emptySpaceItem2";
+            this.emptySpaceItem2.Size = new System.Drawing.Size(268, 33);
+            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControl2
             // 
             this.layoutControl2.Controls.Add(this.groupControlCommonInfomation);
             this.layoutControl2.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl2.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
-            this.layoutControl2.Size = new System.Drawing.Size(1284, 104);
+            this.layoutControl2.Size = new System.Drawing.Size(1712, 128);
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             // 
             // groupControlCommonInfomation
             // 
             this.groupControlCommonInfomation.Controls.Add(this.layoutControl7);
-            this.groupControlCommonInfomation.Location = new System.Drawing.Point(2, 2);
+            this.groupControlCommonInfomation.Location = new System.Drawing.Point(3, 3);
+            this.groupControlCommonInfomation.Margin = new System.Windows.Forms.Padding(4);
             this.groupControlCommonInfomation.Name = "groupControlCommonInfomation";
-            this.groupControlCommonInfomation.Size = new System.Drawing.Size(1280, 100);
+            this.groupControlCommonInfomation.Size = new System.Drawing.Size(1706, 122);
             this.groupControlCommonInfomation.TabIndex = 4;
             this.groupControlCommonInfomation.Text = "Thông tin chung";
             // 
@@ -1418,10 +1748,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControl7.Controls.Add(this.lblCreateTime);
             this.layoutControl7.Controls.Add(this.lblCreator);
             this.layoutControl7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl7.Location = new System.Drawing.Point(2, 20);
+            this.layoutControl7.Location = new System.Drawing.Point(2, 25);
+            this.layoutControl7.Margin = new System.Windows.Forms.Padding(4);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroup6;
-            this.layoutControl7.Size = new System.Drawing.Size(1276, 78);
+            this.layoutControl7.Size = new System.Drawing.Size(1702, 95);
             this.layoutControl7.TabIndex = 0;
             this.layoutControl7.Text = "layoutControl7";
             // 
@@ -1429,11 +1760,11 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             this.lblReqAreaName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblReqAreaName.ImageAlignToText = DevExpress.XtraEditors.ImageAlignToText.LeftCenter;
-            this.lblReqAreaName.Location = new System.Drawing.Point(1060, 4);
-            this.lblReqAreaName.Margin = new System.Windows.Forms.Padding(8);
+            this.lblReqAreaName.Location = new System.Drawing.Point(1414, 5);
+            this.lblReqAreaName.Margin = new System.Windows.Forms.Padding(11, 10, 11, 10);
             this.lblReqAreaName.Name = "lblReqAreaName";
             this.lblReqAreaName.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
-            this.lblReqAreaName.Size = new System.Drawing.Size(214, 15);
+            this.lblReqAreaName.Size = new System.Drawing.Size(285, 18);
             this.lblReqAreaName.StyleController = this.layoutControl7;
             this.lblReqAreaName.TabIndex = 14;
             this.lblReqAreaName.Click += new System.EventHandler(this.lblReqAreaName_Click);
@@ -1443,11 +1774,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.btnIconSave.Enabled = false;
             this.btnIconSave.Image = ((System.Drawing.Image)(resources.GetObject("btnIconSave.Image")));
             this.btnIconSave.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnIconSave.Location = new System.Drawing.Point(339, 50);
-            this.btnIconSave.MaximumSize = new System.Drawing.Size(24, 24);
-            this.btnIconSave.MinimumSize = new System.Drawing.Size(24, 24);
+            this.btnIconSave.Location = new System.Drawing.Point(452, 55);
+            this.btnIconSave.Margin = new System.Windows.Forms.Padding(4);
+            this.btnIconSave.MaximumSize = new System.Drawing.Size(32, 30);
+            this.btnIconSave.MinimumSize = new System.Drawing.Size(32, 30);
             this.btnIconSave.Name = "btnIconSave";
-            this.btnIconSave.Size = new System.Drawing.Size(24, 24);
+            this.btnIconSave.Size = new System.Drawing.Size(32, 30);
             this.btnIconSave.StyleController = this.layoutControl7;
             this.btnIconSave.TabIndex = 13;
             this.btnIconSave.Click += new System.EventHandler(this.btnIconSave_Click);
@@ -1455,7 +1787,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // cboExpMestReason
             // 
             this.cboExpMestReason.EditValue = "";
-            this.cboExpMestReason.Location = new System.Drawing.Point(97, 50);
+            this.cboExpMestReason.Location = new System.Drawing.Point(98, 55);
+            this.cboExpMestReason.Margin = new System.Windows.Forms.Padding(4);
             this.cboExpMestReason.MenuManager = this.barManager1;
             this.cboExpMestReason.Name = "cboExpMestReason";
             this.cboExpMestReason.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1464,7 +1797,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboExpMestReason.Properties.NullText = "";
             this.cboExpMestReason.Properties.View = this.gridLookUpEdit1View;
-            this.cboExpMestReason.Size = new System.Drawing.Size(238, 20);
+            this.cboExpMestReason.Size = new System.Drawing.Size(348, 22);
             this.cboExpMestReason.StyleController = this.layoutControl7;
             this.cboExpMestReason.TabIndex = 12;
             this.cboExpMestReason.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboExpMestReason_ButtonClick);
@@ -1479,18 +1812,20 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // lblReqName
             // 
             this.lblReqName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblReqName.Location = new System.Drawing.Point(97, 26);
+            this.lblReqName.Location = new System.Drawing.Point(98, 29);
+            this.lblReqName.Margin = new System.Windows.Forms.Padding(4);
             this.lblReqName.Name = "lblReqName";
-            this.lblReqName.Size = new System.Drawing.Size(266, 20);
+            this.lblReqName.Size = new System.Drawing.Size(386, 20);
             this.lblReqName.StyleController = this.layoutControl7;
             this.lblReqName.TabIndex = 11;
             // 
             // lblReqDepartment
             // 
             this.lblReqDepartment.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblReqDepartment.Location = new System.Drawing.Point(783, 2);
+            this.lblReqDepartment.Location = new System.Drawing.Point(1013, 3);
+            this.lblReqDepartment.Margin = new System.Windows.Forms.Padding(4);
             this.lblReqDepartment.Name = "lblReqDepartment";
-            this.lblReqDepartment.Size = new System.Drawing.Size(273, 20);
+            this.lblReqDepartment.Size = new System.Drawing.Size(395, 20);
             this.lblReqDepartment.StyleController = this.layoutControl7;
             this.lblReqDepartment.TabIndex = 10;
             this.lblReqDepartment.Text = " ";
@@ -1498,9 +1833,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // lblExpMestCode
             // 
             this.lblExpMestCode.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblExpMestCode.Location = new System.Drawing.Point(97, 2);
+            this.lblExpMestCode.Location = new System.Drawing.Point(98, 3);
+            this.lblExpMestCode.Margin = new System.Windows.Forms.Padding(4);
             this.lblExpMestCode.Name = "lblExpMestCode";
-            this.lblExpMestCode.Size = new System.Drawing.Size(266, 20);
+            this.lblExpMestCode.Size = new System.Drawing.Size(386, 20);
             this.lblExpMestCode.StyleController = this.layoutControl7;
             this.lblExpMestCode.TabIndex = 9;
             this.lblExpMestCode.Text = " ";
@@ -1508,9 +1844,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // lblMedistock
             // 
             this.lblMedistock.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblMedistock.Location = new System.Drawing.Point(462, 2);
+            this.lblMedistock.Location = new System.Drawing.Point(585, 3);
+            this.lblMedistock.Margin = new System.Windows.Forms.Padding(4);
             this.lblMedistock.Name = "lblMedistock";
-            this.lblMedistock.Size = new System.Drawing.Size(222, 20);
+            this.lblMedistock.Size = new System.Drawing.Size(327, 20);
             this.lblMedistock.StyleController = this.layoutControl7;
             this.lblMedistock.TabIndex = 8;
             this.lblMedistock.Text = " ";
@@ -1518,18 +1855,20 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // lblCreateTime
             // 
             this.lblCreateTime.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblCreateTime.Location = new System.Drawing.Point(783, 26);
+            this.lblCreateTime.Location = new System.Drawing.Point(1013, 29);
+            this.lblCreateTime.Margin = new System.Windows.Forms.Padding(4);
             this.lblCreateTime.Name = "lblCreateTime";
-            this.lblCreateTime.Size = new System.Drawing.Size(273, 20);
+            this.lblCreateTime.Size = new System.Drawing.Size(395, 20);
             this.lblCreateTime.StyleController = this.layoutControl7;
             this.lblCreateTime.TabIndex = 6;
             // 
             // lblCreator
             // 
             this.lblCreator.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblCreator.Location = new System.Drawing.Point(462, 26);
+            this.lblCreator.Location = new System.Drawing.Point(585, 29);
+            this.lblCreator.Margin = new System.Windows.Forms.Padding(4);
             this.lblCreator.Name = "lblCreator";
-            this.lblCreator.Size = new System.Drawing.Size(222, 20);
+            this.lblCreator.Size = new System.Drawing.Size(327, 20);
             this.lblCreator.StyleController = this.layoutControl7;
             this.lblCreator.TabIndex = 5;
             // 
@@ -1550,7 +1889,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "layoutControlGroup6";
             this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup6.Size = new System.Drawing.Size(1276, 78);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(1702, 95);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // lciCreator
@@ -1558,9 +1897,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.lciCreator.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciCreator.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCreator.Control = this.lblCreator;
-            this.lciCreator.Location = new System.Drawing.Point(365, 24);
+            this.lciCreator.Location = new System.Drawing.Point(487, 26);
             this.lciCreator.Name = "lciCreator";
-            this.lciCreator.Size = new System.Drawing.Size(321, 54);
+            this.lciCreator.Size = new System.Drawing.Size(428, 69);
             this.lciCreator.Text = "Người tạo:";
             this.lciCreator.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciCreator.TextSize = new System.Drawing.Size(90, 20);
@@ -1571,9 +1910,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.lciCreateTime.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciCreateTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCreateTime.Control = this.lblCreateTime;
-            this.lciCreateTime.Location = new System.Drawing.Point(686, 24);
+            this.lciCreateTime.Location = new System.Drawing.Point(915, 26);
             this.lciCreateTime.Name = "lciCreateTime";
-            this.lciCreateTime.Size = new System.Drawing.Size(372, 54);
+            this.lciCreateTime.Size = new System.Drawing.Size(496, 69);
             this.lciCreateTime.Text = "Thời gian tạo:";
             this.lciCreateTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciCreateTime.TextSize = new System.Drawing.Size(90, 20);
@@ -1584,9 +1923,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.lciMedistock.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciMedistock.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciMedistock.Control = this.lblMedistock;
-            this.lciMedistock.Location = new System.Drawing.Point(365, 0);
+            this.lciMedistock.Location = new System.Drawing.Point(487, 0);
             this.lciMedistock.Name = "lciMedistock";
-            this.lciMedistock.Size = new System.Drawing.Size(321, 24);
+            this.lciMedistock.Size = new System.Drawing.Size(428, 26);
             this.lciMedistock.Text = "Kho xuất:";
             this.lciMedistock.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciMedistock.TextSize = new System.Drawing.Size(90, 20);
@@ -1599,7 +1938,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.lciExpMestCode.Control = this.lblExpMestCode;
             this.lciExpMestCode.Location = new System.Drawing.Point(0, 0);
             this.lciExpMestCode.Name = "lciExpMestCode";
-            this.lciExpMestCode.Size = new System.Drawing.Size(365, 24);
+            this.lciExpMestCode.Size = new System.Drawing.Size(487, 26);
             this.lciExpMestCode.Text = "Mã phiếu:";
             this.lciExpMestCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciExpMestCode.TextSize = new System.Drawing.Size(90, 20);
@@ -1610,9 +1949,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.lciReqDepartment.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciReqDepartment.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciReqDepartment.Control = this.lblReqDepartment;
-            this.lciReqDepartment.Location = new System.Drawing.Point(686, 0);
+            this.lciReqDepartment.Location = new System.Drawing.Point(915, 0);
             this.lciReqDepartment.Name = "lciReqDepartment";
-            this.lciReqDepartment.Size = new System.Drawing.Size(372, 24);
+            this.lciReqDepartment.Size = new System.Drawing.Size(496, 26);
             this.lciReqDepartment.Text = "Khoa yêu cầu:";
             this.lciReqDepartment.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciReqDepartment.TextSize = new System.Drawing.Size(90, 20);
@@ -1623,9 +1962,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.lciLblReqName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciLblReqName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciLblReqName.Control = this.lblReqName;
-            this.lciLblReqName.Location = new System.Drawing.Point(0, 24);
+            this.lciLblReqName.Location = new System.Drawing.Point(0, 26);
             this.lciLblReqName.Name = "lciLblReqName";
-            this.lciLblReqName.Size = new System.Drawing.Size(365, 24);
+            this.lciLblReqName.Size = new System.Drawing.Size(487, 26);
             this.lciLblReqName.Text = "Người yêu cầu:";
             this.lciLblReqName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciLblReqName.TextSize = new System.Drawing.Size(90, 20);
@@ -1636,9 +1975,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem17.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem17.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem17.Control = this.cboExpMestReason;
-            this.layoutControlItem17.Location = new System.Drawing.Point(0, 48);
+            this.layoutControlItem17.Location = new System.Drawing.Point(0, 52);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(337, 30);
+            this.layoutControlItem17.Size = new System.Drawing.Size(449, 43);
             this.layoutControlItem17.Text = "Lý do xuất:";
             this.layoutControlItem17.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem17.TextSize = new System.Drawing.Size(90, 20);
@@ -1647,9 +1986,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // layoutControlItem18
             // 
             this.layoutControlItem18.Control = this.btnIconSave;
-            this.layoutControlItem18.Location = new System.Drawing.Point(337, 48);
+            this.layoutControlItem18.Location = new System.Drawing.Point(449, 52);
             this.layoutControlItem18.Name = "layoutControlItem18";
-            this.layoutControlItem18.Size = new System.Drawing.Size(28, 30);
+            this.layoutControlItem18.Size = new System.Drawing.Size(38, 43);
             this.layoutControlItem18.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem18.TextVisible = false;
             // 
@@ -1659,9 +1998,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.lblReqAreaName;
             this.layoutControlItem10.ControlAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.layoutControlItem10.Location = new System.Drawing.Point(1058, 0);
+            this.layoutControlItem10.Location = new System.Drawing.Point(1411, 0);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(218, 78);
+            this.layoutControlItem10.Size = new System.Drawing.Size(291, 95);
             this.layoutControlItem10.Spacing = new DevExpress.XtraLayout.Utils.Padding(0, 0, 2, 0);
             this.layoutControlItem10.Text = "Khu vực: ";
             this.layoutControlItem10.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
@@ -1678,7 +2017,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.Root.Size = new System.Drawing.Size(1284, 104);
+            this.Root.Size = new System.Drawing.Size(1712, 128);
             this.Root.TextVisible = false;
             // 
             // layoutControlItem8
@@ -1686,7 +2025,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem8.Control = this.groupControlCommonInfomation;
             this.layoutControlItem8.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(1284, 104);
+            this.layoutControlItem8.Size = new System.Drawing.Size(1712, 128);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
@@ -1700,7 +2039,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1284, 633);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1712, 777);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -1709,46 +2048,18 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem1.Size = new System.Drawing.Size(1284, 104);
+            this.layoutControlItem1.Size = new System.Drawing.Size(1712, 128);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.layoutControl3;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 104);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 128);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(1284, 529);
+            this.layoutControlItem2.Size = new System.Drawing.Size(1712, 649);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
-            // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1284, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 662);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1284, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 633);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1284, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 633);
             // 
             // dxErrorProvider1
             // 
@@ -1782,15 +2093,16 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             // 
             // frmAggrExpMestDetail
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1284, 662);
+            this.ClientSize = new System.Drawing.Size(1712, 815);
             this.Controls.Add(this.panelControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmAggrExpMestDetail";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Chi tiết phiếu lĩnh";
@@ -1824,17 +2136,22 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.gridViewMedicineMaterialDetail)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit_HightLightPatient)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit_DeleteMediMate)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Amount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CheckEdit_IsExpend)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit__IsExpend)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExpMestChild)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewExpMestChild)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEdit__YLenhThuocTheoBN)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonEditRemoveDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ButtonEditRemoveEnable)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ButtonEditRemoveDisable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repReasonRequired)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repTextDisable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnGDisableDelete)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.btnGDelete)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewExpMestChildDetail)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
@@ -1853,6 +2170,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem_Save)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.groupControlCommonInfomation)).EndInit();
@@ -1932,8 +2251,24 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
         private DevExpress.XtraGrid.GridControl gridControlExpMestChild;
         private DevExpress.XtraGrid.Views.Grid.GridView gridViewExpMestChild;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewExpMestChildDetail;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_GroupHeader;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_Delete;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_Stt;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_Code;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_Name;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_Unit;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_Amount;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_Lot;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_ConvertUnit;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_ConvertRatio;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColDetail_ConvertAmount;
         private DevExpress.XtraGrid.Columns.GridColumn gridControlPrescriptionColumnRemove;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit ButtonEditRemoveEnable;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit ButtonEdit_DeleteMediMate;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit_Amount;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnDeleteMediMate;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnGroupHeader;
         private DevExpress.XtraGrid.Columns.GridColumn gridControlPrescriptionExpMestCode;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnPrescriptionVirPatientName;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnPrescriptionDob;
@@ -2001,27 +2336,32 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn14;
-		private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
-		private Inventec.Desktop.CustomControl.RepositoryItemCustomGridLookUpEdit repReasonRequired;
-		private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn repositoryItemCustomGridLookUpEdit1View;
-		private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repTextDisable;
-		private DevExpress.XtraEditors.SimpleButton btnIconSave;
-		private DevExpress.XtraEditors.GridLookUpEdit cboExpMestReason;
-		private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
-		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
-		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
-		private DevExpress.XtraEditors.CheckEdit chkOtherPaySource;
-		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
-		private DevExpress.XtraEditors.CheckEdit chkTheoLo;
-		private DevExpress.XtraEditors.CheckEdit chkHaoPhi;
-		private DevExpress.XtraEditors.CheckEdit chkPatientType;
-		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
-		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
-		private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
-		private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
-		private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn15;
+        private Inventec.Desktop.CustomControl.RepositoryItemCustomGridLookUpEdit repReasonRequired;
+        private Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn repositoryItemCustomGridLookUpEdit1View;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repTextDisable;
+        private DevExpress.XtraEditors.SimpleButton btnIconSave;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExpMestReason;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem17;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
+        private DevExpress.XtraEditors.CheckEdit chkOtherPaySource;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
+        private DevExpress.XtraEditors.CheckEdit chkTheoLo;
+        private DevExpress.XtraEditors.CheckEdit chkHaoPhi;
+        private DevExpress.XtraEditors.CheckEdit chkPatientType;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn16;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn17;
         private DevExpress.XtraEditors.LabelControl lblReqAreaName;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn18;
+        private DevExpress.XtraEditors.SimpleButton btnSave;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem_Save;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnGDisableDelete;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnGDelete;
     }
 }
