@@ -412,6 +412,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     checkIsKC.Checked = !this.isDirectlyBilling.Value;
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBillTwoInOne_Load. 3");
                 this.GeneratePopupMenu();
+                // Gắn sự kiện thay đổi giá trị để tính tiền Cần Thu realtime
+                this.spinSoTienReceipt.EditValueChanged += (s, args) => { CalcuCanThu(true); };
+                this.spinSoTienQTReceipt.EditValueChanged += (s, args) => { CalcuCanThu(true); };
+
+                this.spinInvoiceCK.EditValueChanged += (s, args) => { CalcuCanThu(true); };
+                this.spinInvoiceQT.EditValueChanged += (s, args) => { CalcuCanThu(true); };
                 if (this.treatment.TREATMENT_CODE != null)
                 {
                     this.txtSearch.Text = this.treatment.TREATMENT_CODE;
@@ -1740,35 +1746,51 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 if (isUpdateLbl)
                 {
-                    if(HisConfig.SelectPayForm == "1")
+                    // TÍNH TỔNG TIỀN KHÁCH ĐÃ NHẬP Ở CẢ 2 BÊN (Viện phí + Dịch vụ)
+                    decimal soTienCqQtReceipt = spinSoTienReceipt.Value;
+                    if (cboPayformReceipt.EditValue != null && Convert.ToInt64(cboPayformReceipt.EditValue) == 9)
                     {
-                        lblCanThu.Text = (
-                            totalInvoice
-                            + totalReciept
-                            - spinInvoiceCK.Value
-                            - spinSoTienReceipt.Value
-                        ).ToString();
+                        soTienCqQtReceipt += spinSoTienQTReceipt.Value; // Ô QT Viện phí mới
                     }
-                    else
+
+                    decimal soTienCqQtInvoice = spinInvoiceCK.Value;
+                    if (cboPayFormInvoice.EditValue != null && Convert.ToInt64(cboPayFormInvoice.EditValue) == 9)
                     {
+                        soTienCqQtInvoice += spinInvoiceQT.Value; // Ô QT Dịch vụ mới
+                    }
+
+                    decimal tongTienDaNhap = soTienCqQtReceipt + soTienCqQtInvoice;
+
+                    if (HisConfig.SelectPayForm == "1")
+                    {
+                        lblCanThu.Text = (totalInvoice + totalReciept - tongTienDaNhap).ToString();
+                    }
+                    else // <--- ĐÂY LÀ NHÁNH CHẠY CHO CẤU HÌNH == 2 CỦA BẠN
+                    {
+                        // Tính tiền Cần thu cơ bản
+                        decimal tienCanThu = totalPatientPrice - totalFund - discount;
+
+                        // Trừ đi tiền Hiện dư (Tạm ứng) nếu có
                         if (checkIsKC.CheckState == CheckState.Checked)
                         {
-                            if (totalHienDu >= (totalPatientPrice - totalFund - discount))
+                            if (totalHienDu >= tienCanThu)
                             {
-                                lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString(0);
+                                tienCanThu = 0;
                             }
                             else
                             {
-                                lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount) - totalHienDu, ConfigApplications.NumberSeperator);
+                                tienCanThu = tienCanThu - totalHienDu;
                             }
                         }
-                        else
-                        {
-                            lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount), ConfigApplications.NumberSeperator);
-                        }
-                    }
 
+                        // CUỐI CÙNG: Trừ đi số tiền khách gõ. Nếu nhập vượt quá thì tienCanThu sẽ < 0 (Âm)
+                        tienCanThu = tienCanThu - tongTienDaNhap;
+
+                        // Gán hiển thị lên màn hình (tự động có dấu trừ phía trước nếu âm)
+                        lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString(tienCanThu, ConfigApplications.NumberSeperator);
+                    }
                 }
+
                 if (this.treatment != null && this.treatment.GUARANTEE_CODE != null && chkGuarantee.Checked)
                 {
                     UpdateCanThu();
@@ -1779,6 +1801,68 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        //private void CalcuCanThu(bool isUpdateLbl)
+        //{
+        //    try
+        //    {
+        //        var listRecieptFund = bindingSource1.DataSource as List<VHisBillFundADO>;
+        //        decimal totalFund = 0;
+        //        decimal discount = 0;
+        //        if (!checkNotReciept.Checked)
+        //        {
+        //            if (listRecieptFund != null && listRecieptFund.Count > 0)
+        //            {
+        //                totalFund += listRecieptFund.Sum(o => o.AMOUNT);
+        //            }
+        //            discount += spinRecieptDiscountPrice.Value;
+        //        }
+        //        if (!checkNotInvoice.Checked)
+        //        {
+        //            discount += spinInvoiceDiscountPrice.Value;
+        //        }
+
+        //        if (isUpdateLbl)
+        //        {
+        //            if(HisConfig.SelectPayForm == "1")
+        //            {
+        //                lblCanThu.Text = (
+        //                    totalInvoice
+        //                    + totalReciept
+        //                    - spinInvoiceCK.Value
+        //                    - spinSoTienReceipt.Value
+        //                ).ToString();
+        //            }
+        //            else
+        //            {
+        //                if (checkIsKC.CheckState == CheckState.Checked)
+        //                {
+        //                    if (totalHienDu >= (totalPatientPrice - totalFund - discount))
+        //                    {
+        //                        lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString(0);
+        //                    }
+        //                    else
+        //                    {
+        //                        lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount) - totalHienDu, ConfigApplications.NumberSeperator);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount), ConfigApplications.NumberSeperator);
+        //                }
+        //            }
+
+        //        }
+        //        if (this.treatment != null && this.treatment.GUARANTEE_CODE != null && chkGuarantee.Checked)
+        //        {
+        //            UpdateCanThu();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
 
         private void LoadConfigPrinter()
         {
@@ -3339,6 +3423,62 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
+        //private void cboPayformReceipt_EditValueChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (cboPayformReceipt.EditValue != null)
+        //        {
+        //            var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
+        //            if (payFormL != null)
+        //            {
+        //                var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayformReceipt.Text);
+        //                if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+        //                {
+        //                    layoutControlItem80.Text = "Số tiền CK:";
+        //                    layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+        //                    spinSoTienReceipt.Enabled = true;
+        //                }
+        //                else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+        //                {
+        //                    layoutControlItem80.Text = "Số tiền QT:";
+        //                    layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+        //                    spinSoTienReceipt.Enabled = true;
+        //                }
+        //                else
+        //                {
+        //                    layoutControlItem80.Text = "Số tiền CK:";
+        //                    layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+        //                    spinSoTienReceipt.Enabled = false;
+        //                    dxValidationProvider1.SetValidationRule(cboPayformReceipt, null);
+        //                }
+        //                if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+        //                {
+        //                    cboBankReceipt.EditValue = payForm.BANK_ID;
+        //                    cboBankReceipt.Enabled = false;
+        //                }
+        //                else
+        //                {
+        //                    cboBankReceipt.EditValue = null;
+        //                    cboBankReceipt.Enabled = true;
+        //                }
+        //                if (payForm.IS_REQUIRED_BANK == 1)
+        //                {
+        //                    layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Maroon;
+        //                }
+        //                else
+        //                {
+        //                    layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Black;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+
         private void cboPayformReceipt_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -3346,10 +3486,26 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (cboPayformReceipt.EditValue != null)
                 {
                     var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
-                    if (payFormL != null)
+                    if (payFormL != null && payFormL.Any())
                     {
                         var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayformReceipt.Text);
-                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+
+                        spinSoTienReceipt.Value = 0;
+                        spinSoTienQTReceipt.Value = 0;
+                        // Mặc định ẩn ô Quẹt thẻ (ô mới)
+                        lciSoTienQTReceipt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        spinSoTienQTReceipt.Enabled = false;
+
+                        if (payForm.ID == 9) // 9: Hình thức Tiền mặt/Chuyển khoản/Quẹt thẻ
+                        {
+                            layoutControlItem80.Text = "Số tiền CK:";
+                            layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                            spinSoTienReceipt.Enabled = true;
+
+                            lciSoTienQTReceipt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Hiện ô QT
+                            spinSoTienQTReceipt.Enabled = true;
+                        }
+                        else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
                         {
                             layoutControlItem80.Text = "Số tiền CK:";
                             layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
@@ -3368,7 +3524,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             spinSoTienReceipt.Enabled = false;
                             dxValidationProvider1.SetValidationRule(cboPayformReceipt, null);
                         }
-                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+
+                        // Xử lý ẩn/hiện Ngân hàng
+                        if ((payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payForm.ID == 9) && payForm.BANK_ID != null)
                         {
                             cboBankReceipt.EditValue = payForm.BANK_ID;
                             cboBankReceipt.Enabled = false;
@@ -3378,14 +3536,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             cboBankReceipt.EditValue = null;
                             cboBankReceipt.Enabled = true;
                         }
+
                         if (payForm.IS_REQUIRED_BANK == 1)
-                        {
                             layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Maroon;
-                        }
                         else
-                        {
                             layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Black;
-                        }
                     }
                 }
             }
@@ -3395,38 +3550,117 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
+        //private void cboPayFormInvoice_EditValueChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (cboPayFormInvoice.EditValue != null)
+        //        {
+        //            var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
+        //            if (payFormL != null)
+        //            {
+        //                var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayFormInvoice.Text);
+        //                if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+        //                {
+        //                    layoutControlItem77.Text = "Số tiền CK:";
+        //                    layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+        //                    spinInvoiceCK.Enabled = true;
+        //                    //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
+        //                }
+        //                else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+        //                {
+        //                    layoutControlItem77.Text = "Số tiền QT:";
+        //                    layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+        //                    spinInvoiceCK.Enabled = true;
+        //                    //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
+        //                }
+        //                else
+        //                {
+        //                    dxValidationProvider1.RemoveControlError(spinInvoiceCK);
+        //                    layoutControlItem77.Text = "Số tiền CK:";
+        //                    layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+        //                    spinInvoiceCK.Enabled = false;
+        //                }
+        //                if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+        //                {
+        //                    cboBankInvoice.EditValue = payForm.BANK_ID;
+        //                    cboBankInvoice.Enabled = false;
+        //                }
+        //                else
+        //                {
+        //                    cboBankInvoice.EditValue = null;
+        //                    cboBankInvoice.Enabled = true;
+        //                }
+        //                if (payForm.IS_REQUIRED_BANK == 1)
+        //                {
+        //                    layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Maroon;
+        //                }
+        //                else
+        //                {
+        //                    layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Black;
+        //                }
+        //            }
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+
         private void cboPayFormInvoice_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
+                // 1. SỬA cboPayformReceipt THÀNH cboPayFormInvoice
                 if (cboPayFormInvoice.EditValue != null)
                 {
                     var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
-                    if (payFormL != null)
+                    if (payFormL != null && payFormL.Any())
                     {
                         var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayFormInvoice.Text);
-                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+
+                        spinInvoiceCK.Value = 0;
+                        spinInvoiceQT.Value = 0;
+                        // Mặc định ẩn ô Quẹt thẻ dịch vụ
+                        lciInvoiceQT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        spinInvoiceQT.Enabled = false;
+
+                        // 2. SỬA layoutControlItem80 THÀNH layoutControlItem77 (Ô bọc spinInvoiceCK)
+                        if (payForm.ID == 9) // 9: Hình thức Tiền mặt/Chuyển khoản/Quẹt thẻ
                         {
                             layoutControlItem77.Text = "Số tiền CK:";
                             layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
                             spinInvoiceCK.Enabled = true;
-                            //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
+
+                            lciInvoiceQT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Hiện ô QT
+                            spinInvoiceQT.Enabled = true;
+                        }
+                        else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                        {
+                            layoutControlItem77.Text = "Số tiền CK:";
+                            layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                            spinInvoiceCK.Enabled = true;
                         }
                         else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
                         {
                             layoutControlItem77.Text = "Số tiền QT:";
                             layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
                             spinInvoiceCK.Enabled = true;
-                            //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
                         }
                         else
                         {
-                            dxValidationProvider1.RemoveControlError(spinInvoiceCK);
                             layoutControlItem77.Text = "Số tiền CK:";
                             layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
                             spinInvoiceCK.Enabled = false;
+
+                            // 3. Đổi rule validation
+                            dxValidationProvider1.SetValidationRule(cboPayFormInvoice, null);
                         }
-                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+
+                        // 4. SỬA cboBankReceipt THÀNH cboBankInvoice
+                        if ((payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payForm.ID == 9) && payForm.BANK_ID != null)
                         {
                             cboBankInvoice.EditValue = payForm.BANK_ID;
                             cboBankInvoice.Enabled = false;
@@ -3436,17 +3670,42 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             cboBankInvoice.EditValue = null;
                             cboBankInvoice.Enabled = true;
                         }
-                        if (payForm.IS_REQUIRED_BANK == 1)
-                        {
-                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Maroon;
-                        }
-                        else
-                        {
-                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Black;
-                        }
-                    }
 
+                        // 5. SỬA layoutControlItem81 THÀNH layoutControlItem82 (Ô bọc Ngân hàng dịch vụ)
+                        if (payForm.IS_REQUIRED_BANK == 1)
+                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        else
+                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Black;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinSoTienQTReceipt_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CalcuCanThu(true);
+                //if (spinSoTienQTReceipt.Value < 0)
+                //    spinSoTienQTReceipt.Value = 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinInvoiceQT_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CalcuCanThu(true);
+                //if (spinInvoiceQT.Value < 0)
+                //    spinInvoiceQT.Value = 0;
             }
             catch (Exception ex)
             {
@@ -3459,8 +3718,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 CalcuCanThu(true);
-                if (spinSoTienReceipt.Value < 0)
-                    spinSoTienReceipt.Value = 0;
+                //if (spinSoTienReceipt.Value < 0)
+                //    spinSoTienReceipt.Value = 0;
             }
             catch (Exception ex)
             {
@@ -3474,8 +3733,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 CalcuCanThu(true);
-                if (spinInvoiceCK.Value < 0)
-                    spinInvoiceCK.Value = 0;
+                //if (spinInvoiceCK.Value < 0)
+                //    spinInvoiceCK.Value = 0;
             }
             catch (Exception ex)
             {
