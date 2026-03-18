@@ -1069,6 +1069,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         {
             try
             {
+                var tmCkQtId = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
                 if (e.ListSourceRowIndex >= 0 && e.IsGetData && e.Column.UnboundType != DevExpress.Data.UnboundColumnType.Bound)
                 {
                     var data = (HisTransactionADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
@@ -1261,7 +1262,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         {
                             try
                             {
-                                if (data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                                if (data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT || data.PAY_FORM_ID == tmCkQtId.ID)
                                 {
                                     e.Value = Inventec.Common.Number.Convert.NumberToString(data.SWIPE_AMOUNT ?? 0, ConfigApplications.NumberSeperator);
                                 }
@@ -1279,7 +1280,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         {
                             try
                             {
-                                if (data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                                if (data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK || data.PAY_FORM_ID == tmCkQtId.ID)
                                 {
                                     e.Value = Inventec.Common.Number.Convert.NumberToString(data.TRANSFER_AMOUNT ?? 0, ConfigApplications.NumberSeperator);
                                 }

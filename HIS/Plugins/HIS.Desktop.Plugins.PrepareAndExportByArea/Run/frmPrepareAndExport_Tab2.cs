@@ -65,16 +65,15 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                                 o.IS_CONFIRM,
                                 o.NUM_ORDER
                             })
-                            .OrderBy(g => g.Key.TDL_TREATMENT_CODE)
+                            .OrderBy(g => g.Key.NUM_ORDER)
                             .ThenBy(g => g.Key.IS_CONFIRM)
-                            .ThenBy(g => g.Key.NUM_ORDER);
+                            .ThenBy(g => g.Key.TDL_TREATMENT_CODE);
 
                         lstTab2 = groupedData
                         .Select(group =>
                         {
                             var orderedItems = group
-                                .OrderByDescending(o => o.PRIORITY > 0 ? 1 : 0)
-                                .ThenByDescending(o => o.PRIORITY)
+                                .OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
                                 .ThenBy(o => o.NUM_ORDER)
                                 .ToList();
 
@@ -95,7 +94,8 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                                 TDL_PATIENT_ADDRESS = first.TDL_PATIENT_ADDRESS,
                                 TDL_TREATMENT_ID = first.TDL_TREATMENT_ID
                             };
-                        })
+                        }).OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
+                                .ThenBy(o => o.NUM_ORDER)
                         .ToList();
                     };
                 }
@@ -116,9 +116,9 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                                 o.IS_CONFIRM,
                                 o.NUM_ORDER
                             })
-                            .OrderBy(g => g.Key.TDL_TREATMENT_CODE)
+                            .OrderBy(g => g.Key.NUM_ORDER)
                             .ThenBy(g => g.Key.IS_CONFIRM)
-                            .ThenBy(g => g.Key.NUM_ORDER);
+                            .ThenBy(g => g.Key.TDL_TREATMENT_CODE);
 
                         lstTab2 = groupedData
                             .Select(group =>

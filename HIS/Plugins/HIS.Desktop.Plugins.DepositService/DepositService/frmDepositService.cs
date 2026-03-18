@@ -296,10 +296,18 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         {
             try
             {
+                var tmCkQtId = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
                 if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
                 {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
                     ValidControlTransferAmount(true);
+                    ValidControlTransferNewAmount(false);
+                    ValidControlSwipeNewAmount(false);
 
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
@@ -309,9 +317,16 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 }
                 else if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
                 {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
-                    ValidControlTransferAmount(true);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
 
+                    ValidControlTransferAmount(true);
+                    ValidControlTransferNewAmount(false);
+                    ValidControlSwipeNewAmount(false);
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_SWIPE_AMOUNT_TEXT", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_SWIPE_AMOUNT_TOOLTIP", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -320,17 +335,43 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 }
                 else if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
                 {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
                     ValidControlTransferAmount(false);
+                    ValidControlTransferNewAmount(false);
+                    ValidControlSwipeNewAmount(false);
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
                     lciTranferAmount.Enabled = false;
                 }
+                else if(payForm != null && tmCkQtId != null && payForm.ID == tmCkQtId.ID)
+                {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
+                    ValidControlTransferAmount(false);
+                    ValidControlTransferNewAmount(true);
+                    ValidControlSwipeNewAmount(true);
+                }
                 else
                 {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
                     ValidControlTransferAmount(false);
+                    ValidControlTransferNewAmount(false);
+                    ValidControlSwipeNewAmount(false);
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
@@ -352,6 +393,36 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 PINRule.spinTranferAmount = spinTransferAmount;
                 PINRule.isRequiredPin = IsRequiredField;
                 dxValidationProvider1.SetValidationRule(spinTransferAmount, PINRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlTransferNewAmount(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule PINRule = new SpinTranferAmountValidationRule();
+                PINRule.spinTranferAmount = spinTransferNew;
+                PINRule.isRequiredPin = IsRequiredField;
+                dxValidationProvider1.SetValidationRule(spinTransferNew, PINRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlSwipeNewAmount(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule PINRule = new SpinTranferAmountValidationRule();
+                PINRule.spinTranferAmount = spinSwipeNew;
+                PINRule.isRequiredPin = IsRequiredField;
+                dxValidationProvider1.SetValidationRule(spinSwipeNew, PINRule);
             }
             catch (Exception ex)
             {
@@ -1121,6 +1192,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 long payFormId = 0;
                 var payForm = this.payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue);
                 payFormId = payForm.ID;
+                var tmCkQtId = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
                 if (transactionData == null)
                 {
                     transactionData = new HisTransactionDepositSDO();
@@ -1186,6 +1258,11 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 else if (transactionData.Transaction != null && transactionData.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT && spinTransferAmount.EditValue != null)
                 {
                     transactionData.Transaction.SWIPE_AMOUNT = spinTransferAmount.Value;
+                }
+                else if(transactionData.Transaction != null && transactionData.Transaction.PAY_FORM_ID == tmCkQtId.ID && spinTransferNew.EditValue != null && spinSwipeNew.EditValue != null)
+                {
+                    transactionData.Transaction.TRANSFER_AMOUNT = spinTransferNew.Value;
+                    transactionData.Transaction.SWIPE_AMOUNT = spinSwipeNew.Value;
                 }
             }
             catch (Exception ex)
@@ -1738,6 +1815,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     txtDescription.Text = "";
                     txtTransactionCode.Text = "";
                     spinTransferAmount.EditValue = null;
+                    spinSwipeNew.EditValue = null;
+                    spinTransferNew.EditValue = null;
                 }
             }
             catch (Exception ex)
@@ -3344,6 +3423,38 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             catch (Exception ex)
             {
 
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinTransferNew_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (spinTransferNew.Value < 0)
+                {
+                    spinTransferNew.Value = 0;
+                }
+                FormatSpint(spinTransferNew);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinSwipeNew_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (spinSwipeNew.Value < 0)
+                {
+                    spinSwipeNew.Value = 0;
+                }
+                FormatSpint(spinSwipeNew);
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }

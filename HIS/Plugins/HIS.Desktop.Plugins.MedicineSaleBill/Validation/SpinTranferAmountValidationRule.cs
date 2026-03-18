@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Validtion
+namespace HIS.Desktop.Plugins.MedicineSaleBill.Validation
 {
     class SpinTranferAmountValidationRule : DevExpress.XtraEditors.DXErrorProvider.ValidationRule
     {
@@ -39,7 +39,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Validtion
 
                 if (isRequiredPin && spinTranferAmount.EditValue == null)
                 {
-                    ErrorText = Base.ResourceMessageLang.TruongDuLieuBatBuoc;
+                    ErrorText = "Trường dữ liệu bắt buộc";
                     ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Validtion
                     ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
+
                 valid = true;
             }
             catch (Exception ex)

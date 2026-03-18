@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -47,6 +47,13 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService.Validtion
                 if (isRequiredPin && spinTranferAmount.Value < 0)
                 {
                     ErrorText = HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuKhongNhanGiaTriAm);
+                    ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    return valid;
+                }
+
+                if (isRequiredPin && spinTranferAmount.Value == 0)
+                {
+                    ErrorText = "Số tiền phải lớn hơn 0";
                     ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                     return valid;
                 }
