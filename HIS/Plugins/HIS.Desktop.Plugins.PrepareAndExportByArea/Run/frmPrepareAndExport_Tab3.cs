@@ -36,40 +36,78 @@ using DevExpress.XtraGrid.Views.Base;
 using System.Collections;
 using DevExpress.Data;
 using DevExpress.XtraBars.Utils;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 {
     public partial class frmPrepareAndExportByArea
     {
         //Danh sách đã soạn thuốc
-        private async Task LoadTab3()
+        private void LoadTab3()
         {
             try
             {
-                Action myaction = () =>
-                {
-                    lstTab3 = new List<HIS_EXP_MEST>();
-                    
-                    // Lọc dữ liệu theo điều kiện
-                    var filteredData = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE && o.IS_ABSENT != 1).ToList();
-                    
-                    // Gom nhóm theo TDL_TREATMENT_CODE, IS_CONFIRM, EXP_MEST_STT_ID
-                    var groupedData = filteredData
-                        .GroupBy(o => new 
-                        { 
-                            o.TDL_TREATMENT_CODE, 
-                            o.IS_CONFIRM, 
-                            o.NUM_ORDER
-                        })
-                        .OrderBy(g => g.Key.TDL_TREATMENT_CODE)
-                        .ThenBy(g => g.Key.IS_CONFIRM)
-                        .ThenBy(g => g.Key.NUM_ORDER);
+                lstTab3 = new List<HIS_EXP_MEST>();
 
+                // Lọc dữ liệu theo điều kiện
+                var filteredData = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE && o.IS_ABSENT != 1).ToList();
+
+                // Gom nhóm theo TDL_TREATMENT_CODE, IS_CONFIRM, EXP_MEST_STT_ID
+                var groupedData = filteredData
+                    .GroupBy(o => new
+                    {
+                        o.TDL_TREATMENT_CODE,
+                        o.IS_CONFIRM,
+                        o.NUM_ORDER
+                    })
+                    .OrderBy(g => g.Key.NUM_ORDER)
+                    .ThenBy(g => g.Key.IS_CONFIRM)
+                    .ThenBy(g => g.Key.TDL_TREATMENT_CODE);
+
+                if (chkCallAll.Checked)
+                {
+                    lstTab3 = groupedData
+                        .Select(group =>
+                        {
+                            // Trong mỗi nhóm, sắp xếp theo PRIORITY và NUM_ORDER
+                            var orderedItems = group.OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
+                                //.ThenByDescending(o => o.PRIORITY)
+                                .ThenBy(o => o.NUM_ORDER)
+                                .ToList();
+
+                            var first = orderedItems.First();
+
+                            return new HIS_EXP_MEST
+                            {
+                                ID = first.ID,
+                                TDL_TREATMENT_CODE = first.TDL_TREATMENT_CODE,
+                                IS_CONFIRM = first.IS_CONFIRM,
+                                EXP_MEST_STT_ID = first.EXP_MEST_STT_ID,
+                                EXP_MEST_CODE = string.Join(",", orderedItems.Select(x => x.EXP_MEST_CODE)),
+                                PRIORITY = first.PRIORITY,
+                                NUM_ORDER = first.NUM_ORDER,
+                                TDL_PATIENT_NAME = first.TDL_PATIENT_NAME,
+                                TDL_PATIENT_GENDER_NAME = first.TDL_PATIENT_GENDER_NAME,
+                                TDL_PATIENT_DOB = first.TDL_PATIENT_DOB,
+                                TDL_PATIENT_ADDRESS = first.TDL_PATIENT_ADDRESS,
+                                GATE_CODE = first.GATE_CODE,
+                                EXP_MEST_TYPE_ID = first.EXP_MEST_TYPE_ID
+                            };
+                        })
+                        .OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
+                        .ThenBy(o => o.NUM_ORDER)
+                        .ToList();
+                }
+                else
+                {
                     lstTab3 = groupedData
                     .Select(group =>
                     {
                         // Trong mỗi nhóm, sắp xếp theo PRIORITY và NUM_ORDER
-                        var orderedItems = group.OrderBy(o => o.LAST_APPROVAL_TIME).ToList();
+                        var orderedItems = group.OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
+                            //.ThenByDescending(o => o.PRIORITY)
+                            .ThenBy(o => o.NUM_ORDER)
+                            .ToList();
 
                         var first = orderedItems.First();
 
@@ -90,11 +128,9 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                             EXP_MEST_TYPE_ID = first.EXP_MEST_TYPE_ID
                         };
                     })
+                    .OrderBy(o => o.NUM_ORDER)
                     .ToList();
-                };
-                Task task = new Task(myaction);
-                task.Start();
-                await task;
+                }
                 gcPrepareMedicine.DataSource = null;
                 if (lstTab3 != null && lstTab3.Count > 0)
                 {
@@ -369,19 +405,23 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
                 if (this.clienttManager == null)
                     this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
-
+                LoadListDataSource();
+                LoadTab3();
                 var target = GetTargetFromPrepareGrid();
-
-                if (currentCall != null)
+                if (target == null) return;
+                if (currentCall != null && currentCall.GATE_CODE == txtGateCodeString)
                 {
-                    if (target != null && target.ID != currentCall.ID)
-                    {
-                        return;
-                    }
+                   //if (currentCall.GATE_CODE != txtGateCodeString)
+                   //     currentCall = target; 
+                    //if (target != null && target.ID != currentCall.ID)
+                    //{
+                    //    return;
+                    //}
                     bool recallRs = this.clienttManager.RecallOrderDataClientBool(
                         currentCall.NUM_ORDER.ToString(),
                         txtGateCodeString
                     );
+
                     Inventec.Common.Logging.LogSystem.Error("GỌI LẠI ___ " + recallRs);
                     return;
                 }
@@ -495,6 +535,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                     currentControlStateRDO.Add(csAddOrUpdate);
                 }
                 controlStateWorker.SetData(currentControlStateRDO);
+                LoadTab3();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -695,12 +736,26 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
         {
             try
             {
+
+                //lấy thông tin quày hiện tại
+                //nếu có danh sách, thì lấy ưu tiên phiếu đã gọi nhưng chưa cấp phát sau đó thì đén chưa có quầy
                 if (gvPrepareMedicine.FocusedRowHandle >= 0)
                     return gvPrepareMedicine.GetFocusedRow() as HIS_EXP_MEST;
                 else
                 {
-                    return lstTab3.First();
+                    if (lstTab3 == null)
+                        return null;
+
+                    var a = lstTab3.FirstOrDefault(o => o.GATE_CODE == txtGateCodeString && (!chkCallAll.Checked ? (o.PRIORITY == null || o.PRIORITY == 0) : true) && (o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__DONE || (o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE && o.IS_ABSENT == 1)));
+                    if (a != null)
+                    {
+                        return a;
+                    }
+
+                    var b = lstTab3.FirstOrDefault(o => string.IsNullOrWhiteSpace(o.GATE_CODE) && (!chkCallAll.Checked ? (o.PRIORITY == null || o.PRIORITY == 0) : true));
+                    return b;
                 }
+
                 //if (gvPrepareMedicine.FocusedRowHandle == DevExpress.XtraGrid.GridControl.AutoFilterRowHandle && gvPrepareMedicine.RowCount == 1)
                 //{
                 //    int rowHandle = gvPrepareMedicine.GetVisibleRowHandle(0);

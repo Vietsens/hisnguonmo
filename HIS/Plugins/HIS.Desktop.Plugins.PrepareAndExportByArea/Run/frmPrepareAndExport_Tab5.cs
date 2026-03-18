@@ -58,15 +58,18 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                             o.IS_CONFIRM, 
                             o.NUM_ORDER 
                         })
-                        .OrderBy(g => g.Key.TDL_TREATMENT_CODE)
+                        .OrderBy(g => g.Key.NUM_ORDER)
                         .ThenBy(g => g.Key.IS_CONFIRM)
-                        .ThenBy(g => g.Key.NUM_ORDER);
+                        .ThenBy(g => g.Key.TDL_TREATMENT_CODE);
 
                     lstTab5 = groupedData
                     .Select(group =>
                     {
                         // Trong mỗi nhóm, sắp xếp theo PRIORITY và NUM_ORDER
-                        var orderedItems = group.OrderBy(o => o.FINISH_TIME).ToList();
+                        var orderedItems = group.OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
+                            .ThenByDescending(o => o.PRIORITY)
+                            .ThenBy(o => o.NUM_ORDER)
+                            .ToList(); ;
 
                         var first = orderedItems.First();
 
@@ -89,6 +92,8 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                             IS_HTX = first.IS_HTX,
                         };
                     })
+                    .OrderByDescending(o => o.PRIORITY != null && o.PRIORITY == 1 ? 1 : 0)
+                    .ThenBy(o => o.NUM_ORDER)
                     .ToList();
                 };
 				Task task = new Task(myaction);
