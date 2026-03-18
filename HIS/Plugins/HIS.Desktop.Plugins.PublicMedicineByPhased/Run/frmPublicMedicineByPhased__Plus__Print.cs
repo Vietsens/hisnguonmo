@@ -789,25 +789,38 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                                 PropertyInfo info2 = pp.FirstOrDefault(o => o.Name == string.Format("MORNING_Day{0}", j + 1));
                                 if (info2 != null)
                                 {
-                                    string text2 = group.ToList().Sum(s => FormatSessionOfDay(s.MORNING)).ToString();
+                                    var firstItem = group.FirstOrDefault();
+                                    string text2 = (firstItem != null && firstItem.MORNING != null)
+                                        ? firstItem.MORNING.ToString()
+                                        : null;
                                     info2.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? text2 : "");
                                 }
                                 PropertyInfo info3 = pp.FirstOrDefault(o => o.Name == string.Format("NOON_Day{0}", j + 1));
                                 if (info3 != null)
                                 {
-                                    string text3 = group.ToList().Sum(s => FormatSessionOfDay(s.NOON)).ToString();
+                                    var firstItem = group.FirstOrDefault();
+                                    string text3 = (firstItem != null && firstItem.NOON != null)
+                                        ? firstItem.NOON.ToString()
+                                        : null;
                                     info3.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? text3 : "");
                                 }
                                 PropertyInfo info4 = pp.FirstOrDefault(o => o.Name == string.Format("AFTERNOON_Day{0}", j + 1));
                                 if (info4 != null)
                                 {
-                                    string text4 = group.ToList().Sum(s => FormatSessionOfDay(s.AFTERNOON)).ToString();
+                                    var firstItem = group.FirstOrDefault();
+                                    string text4 = (firstItem != null && firstItem.AFTERNOON != null)
+                                        ? firstItem.AFTERNOON.ToString()
+                                        : null;
+                                    
                                     info4.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? text4 : "");
                                 }
                                 PropertyInfo info5 = pp.FirstOrDefault(o => o.Name == string.Format("EVENING_Day{0}", j + 1));
                                 if (info5 != null)
                                 {
-                                    string text5 = group.ToList().Sum(s => FormatSessionOfDay(s.EVENING)).ToString();
+                                    var firstItem = group.FirstOrDefault();
+                                    string text5 = (firstItem != null && firstItem.EVENING != null)
+                                        ? firstItem.EVENING.ToString()
+                                        : null;
                                     info5.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? text5 : "");
                                 }
 
