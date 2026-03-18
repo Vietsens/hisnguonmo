@@ -106,7 +106,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             InitializeComponent();
         }
 
-        
+
 
         public frmMedicineSaleBill(Inventec.Desktop.Common.Modules.Module module,
             List<long> expMestIds, DelegateSelectData _delegateSelectData, V_HIS_TRANSACTION _OriginalTransaction)
@@ -208,6 +208,35 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void ValidControlTransferAmount(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule PINRule = new SpinTranferAmountValidationRule();
+                PINRule.spinTranferAmount = spinTransAmountNew;
+                PINRule.isRequiredPin = IsRequiredField;
+                dxValidationProviderEditorInfo.SetValidationRule(spinTransAmountNew, PINRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlSwipeAmount(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule PINRule = new SpinTranferAmountValidationRule();
+                PINRule.spinTranferAmount = spinSwipeAmountNew;
+                PINRule.isRequiredPin = IsRequiredField;
+                dxValidationProviderEditorInfo.SetValidationRule(spinSwipeAmountNew, PINRule);
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -1092,7 +1121,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     if (currentTreatment?.TDL_PATIENT_BUD_REL_UNIT_CODE != null || patient?.BUD_REL_UNIT_CODE != null)
                     {
                         txtBudRelUnitCode.Text = currentTreatment.TDL_PATIENT_BUD_REL_UNIT_CODE ?? patient.BUD_REL_UNIT_CODE;
-                    }    
+                    }
                     txtBuyerPhone.Text = patient?.PHONE ?? expMest.TDL_PATIENT_PHONE ?? "";
                     txtAddress.Text = expMest.TDL_PATIENT_ADDRESS ?? "";
 
@@ -1332,7 +1361,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 {
                     long payFormId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPayFrom.EditValue.ToString());
                     HIS_PAY_FORM payForm = BackendDataWorker.Get<HIS_PAY_FORM>().SingleOrDefault(o => o.ID == payFormId);
-                    if (payForm != null && (payForm.PAY_FORM_CODE == "03" || payForm.PAY_FORM_CODE == "06"))
+                    if (payForm != null && (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT || payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK))
                     {
                         decimal value = 0;
                         if (spinTransferAmount.EditValue != null &&
@@ -1341,20 +1370,20 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             transferAmount = value;
                         }
                         else
-                        {   
+                        {
                             transferAmount = 0;
                         }
 
                         if (transferAmount > totalPrice)
                         {
                             string msg = string.Empty;
-                            if (payForm.PAY_FORM_CODE == "03")
-                            { 
-                                 msg = "Số tiền chuyển khoản lớn hơn số tiền thanh toán của bệnh nhân";
-                            }
-                            else if (payForm.PAY_FORM_CODE == "06")
+                            if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
                             {
-                                 msg = "Số tiền quẹt thẻ lớn hơn số tiền thanh toán của bệnh nhân";
+                                msg = "Số tiền chuyển khoản lớn hơn số tiền thanh toán của bệnh nhân";
+                            }
+                            else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                            {
+                                msg = "Số tiền quẹt thẻ lớn hơn số tiền thanh toán của bệnh nhân";
                             }
 
                             dxErrorProvider.SetError(spinTransferAmount, msg, ErrorType.Warning);
@@ -1368,342 +1397,358 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                             dxErrorProvider.SetError(spinTransferAmount, string.Empty);
                         }
                     }
+                    else if(payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT)
+                    {
+                        var priceTmCk = spinTransAmountNew.Value + spinSwipeAmountNew.Value;
+                        if(priceTmCk > totalPrice)
+                        {
+                            string msg = string.Empty;
+                            msg = string.Format("Tổng số tiền chuyển khoản và quẹt thẻ {0} lớn hơn số tiền thanh toán của bệnh nhân {1}", priceTmCk, totalPrice);
+                            XtraMessageBox.Show(msg, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return false;
+                        }
+                    }
                 }
 
-                        WaitingManager.Show();
-                        bool success = false;
-                        CommonParam param = new CommonParam();
-                        HisTransactionBillGoodsSDO data = new HisTransactionBillGoodsSDO();
-                        data.HisBillGoods = new List<HIS_BILL_GOODS>();
-                        data.HisTransaction = new HIS_TRANSACTION();
-                        data.ExpMestIds = seleteds.Select(s => s.EXP_MEST_ID).Distinct().ToList();
-                        if (txtDescription.Text != null)
+                WaitingManager.Show();
+                bool success = false;
+                CommonParam param = new CommonParam();
+                HisTransactionBillGoodsSDO data = new HisTransactionBillGoodsSDO();
+                data.HisBillGoods = new List<HIS_BILL_GOODS>();
+                data.HisTransaction = new HIS_TRANSACTION();
+                data.ExpMestIds = seleteds.Select(s => s.EXP_MEST_ID).Distinct().ToList();
+                if (txtDescription.Text != null)
+                {
+                    data.HisTransaction.DESCRIPTION = txtDescription.Text;
+                }
+
+                if (rdoCaNhan.Checked) // Trường hợp người mua là cá nhân
+                {
+                    data.HisTransaction.BUYER_TYPE = 1; // Cá nhân
+                    if (!string.IsNullOrEmpty(txtName.Text))
+                    {
+                        data.HisTransaction.BUYER_NAME = txtName.Text;
+                    }
+                    if (!string.IsNullOrWhiteSpace(txtIdentityType.Text))
+                    {
+
+                        data.HisTransaction.BUYER_IDENTITY_NUMBER = txtIdentityType.Text;
+                        if (cboIdentityType.EditValue != null && long.TryParse(cboIdentityType.EditValue.ToString(), out long identityType))
                         {
-                            data.HisTransaction.DESCRIPTION = txtDescription.Text;
-                        }
 
-                        if (rdoCaNhan.Checked) // Trường hợp người mua là cá nhân
-                        {
-                            data.HisTransaction.BUYER_TYPE = 1; // Cá nhân
-                            if (!string.IsNullOrEmpty(txtName.Text))
-                            {
-                                data.HisTransaction.BUYER_NAME = txtName.Text;
-                            }
-                            if (!string.IsNullOrWhiteSpace(txtIdentityType.Text))
-                            {
-
-                                data.HisTransaction.BUYER_IDENTITY_NUMBER = txtIdentityType.Text;
-                                if (cboIdentityType.EditValue != null && long.TryParse(cboIdentityType.EditValue.ToString(), out long identityType))
-                                {
-
-                                    data.HisTransaction.BUYER_IDENTITY_TYPE = (short?)identityType;
-                                }
-                                else
-                                {
-                                    data.HisTransaction.BUYER_IDENTITY_TYPE = null;
-                                }
-                            }
-                            if (cboBuyerOrganization.EditValue != null && long.TryParse(cboBuyerOrganization.EditValue.ToString(), out long workPlaceId))
-                            {
-                                data.HisTransaction.BUYER_WORK_PLACE_ID = workPlaceId;
-                                data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization.Text;
-                            }
-                            else
-                            {
-                                data.HisTransaction.BUYER_WORK_PLACE_ID = null;
-                                data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization.Text;
-                            }
-                            data.HisTransaction.BUYER_SOCIAL_RELATIONS_CODE = txtBudRelUnitCode.Text;
-                            data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode1.Text;
-                            data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
-                            data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
-                            data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
-                            if (cboPayFrom.EditValue != null)
-                            {
-                                MOS.EFMODEL.DataModels.HIS_PAY_FORM gt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PAY_FORM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboPayFrom.EditValue.ToString()));
-                                if (gt != null)
-                                {
-                                    data.HisTransaction.PAY_FORM_ID = gt.ID;
-
-                                    // NEW: Gán số tiền CK / QT theo cấu hình
-                                    decimal value = 0;
-                                    if (spinTransferAmount.EditValue != null &&
-                                        decimal.TryParse(spinTransferAmount.EditValue.ToString(), out value))
-                                    {
-                                        transferAmount = value;
-                                    }
-                                    else
-                                    {
-                                        transferAmount = 0;
-                                    }
-
-                                    if (gt.PAY_FORM_CODE == "03") // Tiền mặt/Chuyển khoản
-                                    {
-                                        data.HisTransaction.TRANSFER_AMOUNT = transferAmount;
-                                        data.HisTransaction.SWIPE_AMOUNT = null;
-                                    }
-                                    else if (gt.PAY_FORM_CODE == "06") // Tiền mặt/Quẹt thẻ
-                                    {
-                                        data.HisTransaction.SWIPE_AMOUNT = transferAmount;
-                                        data.HisTransaction.TRANSFER_AMOUNT = null;
-                                    }
-                                    else
-                                    {
-                                        data.HisTransaction.TRANSFER_AMOUNT = null;
-                                        data.HisTransaction.SWIPE_AMOUNT = null;
-                                    }
-                                }
-                            }
-
-                        }
-                        else if (rdoCoQuan.Checked) // Trường hợp người mua là cơ quan
-                        {
-                            data.HisTransaction.BUYER_TYPE = 2; // Cơ quan
-                            if (!string.IsNullOrEmpty(txtName.Text))
-                            {
-                                data.HisTransaction.BUYER_NAME = txtName.Text;
-                            }
-                            if (chkKhac1.Checked)
-                            {
-                                if (txtBuyerOrganization1.Text != null)
-                                {
-                                    data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization1.Text;
-                                    data.HisTransaction.BUYER_WORK_PLACE_ID = null;
-                                }
-                            }
-                            else
-                            {
-                                if (cboBuyerOrganization1.EditValue != null
-                                    && long.TryParse(cboBuyerOrganization1.EditValue.ToString(), out long workPlaceId))
-                                {
-                                    data.HisTransaction.BUYER_WORK_PLACE_ID = workPlaceId;
-                                    data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization1.Text;
-                                }
-                                else
-                                {
-                                    data.HisTransaction.BUYER_WORK_PLACE_ID = null;
-                                    data.HisTransaction.BUYER_ORGANIZATION = null;
-                                }
-                            }
-                            data.HisTransaction.BUYER_SOCIAL_RELATIONS_CODE = txtBudRelUnitCode1.Text;
-                            data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
-                            data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
-                            data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
-                            data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
-                            if (cboPayFrom.EditValue != null)
-                            {
-                                MOS.EFMODEL.DataModels.HIS_PAY_FORM gt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PAY_FORM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboPayFrom.EditValue.ToString()));
-                                if (gt != null)
-                                {
-                                    data.HisTransaction.PAY_FORM_ID = gt.ID;
-
-                                    // NEW: Gán số tiền CK / QT theo cấu hình
-                                    decimal value = 0;
-                                    if (spinTransferAmount.EditValue != null &&
-                                        decimal.TryParse(spinTransferAmount.EditValue.ToString(), out value))
-                                    {
-                                        transferAmount = value;
-                                    }
-                                    else
-                                    {
-                                        transferAmount = 0;
-                                    }
-
-                                    if (gt.PAY_FORM_CODE == "03") // Tiền mặt/Chuyển khoản
-                                    {
-                                        data.HisTransaction.TRANSFER_AMOUNT = transferAmount;
-                                        data.HisTransaction.SWIPE_AMOUNT = null;
-                                    }
-                                    else if (gt.PAY_FORM_CODE == "06") // Tiền mặt/Quẹt thẻ
-                                    {
-                                        data.HisTransaction.SWIPE_AMOUNT = transferAmount;
-                                        data.HisTransaction.TRANSFER_AMOUNT = null;
-                                    }
-                                    else
-                                    {
-                                        data.HisTransaction.TRANSFER_AMOUNT = null;
-                                        data.HisTransaction.SWIPE_AMOUNT = null;
-                                    }
-                                }
-                            }
-                        }
-                        else // Trường hợp mặc định (không chọn cá nhân hoặc cơ quan)
-                        {
-                            if (!string.IsNullOrEmpty(txtName.Text))
-                            {
-                                data.HisTransaction.BUYER_NAME = txtName.Text;
-                            }
-                            data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
-                            data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
-                            //data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOgranization.Text;
-                            data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
-                            data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
-                        }
-
-                        if (cboPayFrom.EditValue != null)
-                        {
-                            MOS.EFMODEL.DataModels.HIS_PAY_FORM gt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PAY_FORM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboPayFrom.EditValue.ToString()));
-                            if (gt != null)
-                            {
-                                data.HisTransaction.PAY_FORM_ID = gt.ID;
-                            }
-                        }
-                        if (cboAccountBook.EditValue != null)
-                        {
-                            V_HIS_ACCOUNT_BOOK gt = this.ListAccountBook.SingleOrDefault(o => o.ID == Convert.ToInt64(cboAccountBook.EditValue));
-                            if (gt != null)
-                            {
-                                data.HisTransaction.ACCOUNT_BOOK_ID = gt.ID;
-                                if (gt.IS_NOT_GEN_TRANSACTION_ORDER == 1)
-                                {
-                                    data.HisTransaction.NUM_ORDER = (long)spinNumOrder.Value;
-                                }
-                            }
-                        }
-
-                        data.HisTransaction.TRANSACTION_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT;
-                        if (cboCashierRoom.EditValue != null)
-                        {
-                            MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM gt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboCashierRoom.EditValue.ToString()));
-                            if (gt != null)
-                            {
-                                data.HisTransaction.CASHIER_ROOM_ID = gt.ID;
-                            }
-                        }
-
-                        if (dtTransactionTime.DateTime != null)
-                        {
-                            data.HisTransaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmm") + "00");
-                        }
-
-                        if (this.currentTreatment != null)
-                        {
-                            data.HisTransaction.TREATMENT_ID = this.currentTreatment.ID;
-                        }
-                        if (checkOverTime.Checked)
-                        {
-                            data.HisTransaction.IS_NOT_IN_WORKING_TIME = 1;
+                            data.HisTransaction.BUYER_IDENTITY_TYPE = (short?)identityType;
                         }
                         else
                         {
-                            data.HisTransaction.IS_NOT_IN_WORKING_TIME = null;
+                            data.HisTransaction.BUYER_IDENTITY_TYPE = null;
                         }
-
-                        List<HIS_BILL_GOODS> billGooDs = new List<HIS_BILL_GOODS>();
-
-                        if (seleteds != null && seleteds.Count > 0)
+                    }
+                    if (cboBuyerOrganization.EditValue != null && long.TryParse(cboBuyerOrganization.EditValue.ToString(), out long workPlaceId))
+                    {
+                        data.HisTransaction.BUYER_WORK_PLACE_ID = workPlaceId;
+                        data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization.Text;
+                    }
+                    else
+                    {
+                        data.HisTransaction.BUYER_WORK_PLACE_ID = null;
+                        data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization.Text;
+                    }
+                    data.HisTransaction.BUYER_SOCIAL_RELATIONS_CODE = txtBudRelUnitCode.Text;
+                    data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode1.Text;
+                    data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
+                    data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
+                    data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
+                    if (cboPayFrom.EditValue != null)
+                    {
+                        MOS.EFMODEL.DataModels.HIS_PAY_FORM gt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PAY_FORM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboPayFrom.EditValue.ToString()));
+                        if (gt != null)
                         {
-                            foreach (var expMedicineGroup in seleteds)
+                            data.HisTransaction.PAY_FORM_ID = gt.ID;
+
+                            // NEW: Gán số tiền CK / QT theo cấu hình
+                            decimal value = 0;
+                            if (spinTransferAmount.EditValue != null &&
+                                decimal.TryParse(spinTransferAmount.EditValue.ToString(), out value))
                             {
-                                HIS_BILL_GOODS billGoood = new HIS_BILL_GOODS();
-                                billGoood.AMOUNT = expMedicineGroup.EXP_AMOUNT;
-                                billGoood.PRICE = (expMedicineGroup.ADVISORY_PRICE ?? 0) * (1 + expMedicineGroup.EXP_VAT_RATIO ?? 0); ;
-                                billGoood.GOODS_NAME = expMedicineGroup.MEDI_MATE_TYPE_NAME;
-                                billGoood.DESCRIPTION = expMedicineGroup.DESCRIPTION;
-                                billGoood.GOODS_UNIT_NAME = expMedicineGroup.SERVICE_UNIT_NAME;
-                                billGoood.DISCOUNT = expMedicineGroup.DISCOUNT;
-                                billGooDs.Add(billGoood);
+                                transferAmount = value;
+                            }
+                            else
+                            {
+                                transferAmount = 0;
                             }
 
-                            data.HisBillGoods = billGooDs;
-                        }
-
-                        if (lciOriginalTransaction.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
-                            && cboOriginalTransaction.EditValue != null)
-                        {
-                            if (String.IsNullOrWhiteSpace(txtReplaceReason.Text))
+                            if (gt.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK) // Tiền mặt/Chuyển khoản
                             {
-                                MessageBox.Show("Vui lòng nhập lý do thay thế");
-                                txtReplaceReason.Focus();
-                                return false;
+                                data.HisTransaction.TRANSFER_AMOUNT = transferAmount;
+                                data.HisTransaction.SWIPE_AMOUNT = null;
                             }
-                            data.OriginalTransactionId = Inventec.Common.TypeConvert.Parse.ToInt64(cboOriginalTransaction.EditValue.ToString());
-                            data.ReplaceReason = txtReplaceReason.Text;
+                            else if (gt.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT) // Tiền mặt/Quẹt thẻ
+                            {
+                                data.HisTransaction.SWIPE_AMOUNT = transferAmount;
+                                data.HisTransaction.TRANSFER_AMOUNT = null;
+                            }
+                            else if(gt.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT)
+                            {
+                                data.HisTransaction.SWIPE_AMOUNT = spinSwipeAmountNew.Value;
+                                data.HisTransaction.TRANSFER_AMOUNT = spinTransAmountNew.Value;
+                            }
+                            else
+                            {
+                                data.HisTransaction.TRANSFER_AMOUNT = null;
+                                data.HisTransaction.SWIPE_AMOUNT = null;
+                            }
                         }
+                    }
+
+                }
+                else if (rdoCoQuan.Checked) // Trường hợp người mua là cơ quan
+                {
+                    data.HisTransaction.BUYER_TYPE = 2; // Cơ quan
+                    if (!string.IsNullOrEmpty(txtName.Text))
+                    {
+                        data.HisTransaction.BUYER_NAME = txtName.Text;
+                    }
+                    if (chkKhac1.Checked)
+                    {
+                        if (txtBuyerOrganization1.Text != null)
+                        {
+                            data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization1.Text;
+                            data.HisTransaction.BUYER_WORK_PLACE_ID = null;
+                        }
+                    }
+                    else
+                    {
+                        if (cboBuyerOrganization1.EditValue != null
+                            && long.TryParse(cboBuyerOrganization1.EditValue.ToString(), out long workPlaceId))
+                        {
+                            data.HisTransaction.BUYER_WORK_PLACE_ID = workPlaceId;
+                            data.HisTransaction.BUYER_ORGANIZATION = cboBuyerOrganization1.Text;
+                        }
+                        else
+                        {
+                            data.HisTransaction.BUYER_WORK_PLACE_ID = null;
+                            data.HisTransaction.BUYER_ORGANIZATION = null;
+                        }
+                    }
+                    data.HisTransaction.BUYER_SOCIAL_RELATIONS_CODE = txtBudRelUnitCode1.Text;
+                    data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
+                    data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
+                    data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
+                    data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
+                    if (cboPayFrom.EditValue != null)
+                    {
+                        MOS.EFMODEL.DataModels.HIS_PAY_FORM gt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PAY_FORM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboPayFrom.EditValue.ToString()));
+                        if (gt != null)
+                        {
+                            data.HisTransaction.PAY_FORM_ID = gt.ID;
+
+                            // NEW: Gán số tiền CK / QT theo cấu hình
+                            decimal value = 0;
+                            if (spinTransferAmount.EditValue != null &&
+                                decimal.TryParse(spinTransferAmount.EditValue.ToString(), out value))
+                            {
+                                transferAmount = value;
+                            }
+                            else
+                            {
+                                transferAmount = 0;
+                            }
+
+                            if (gt.PAY_FORM_CODE == "03") // Tiền mặt/Chuyển khoản
+                            {
+                                data.HisTransaction.TRANSFER_AMOUNT = transferAmount;
+                                data.HisTransaction.SWIPE_AMOUNT = null;
+                            }
+                            else if (gt.PAY_FORM_CODE == "06") // Tiền mặt/Quẹt thẻ
+                            {
+                                data.HisTransaction.SWIPE_AMOUNT = transferAmount;
+                                data.HisTransaction.TRANSFER_AMOUNT = null;
+                            }
+                            else
+                            {
+                                data.HisTransaction.TRANSFER_AMOUNT = null;
+                                data.HisTransaction.SWIPE_AMOUNT = null;
+                            }
+                        }
+                    }
+                }
+                else // Trường hợp mặc định (không chọn cá nhân hoặc cơ quan)
+                {
+                    if (!string.IsNullOrEmpty(txtName.Text))
+                    {
+                        data.HisTransaction.BUYER_NAME = txtName.Text;
+                    }
+                    data.HisTransaction.BUYER_ADDRESS = txtAddress.Text;
+                    data.HisTransaction.BUYER_EMAIL = txtEmail.Text;
+                    //data.HisTransaction.BUYER_ORGANIZATION = txtBuyerOgranization.Text;
+                    data.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
+                    data.HisTransaction.BUYER_PHONE = txtBuyerPhone.Text;
+                }
+
+                if (cboPayFrom.EditValue != null)
+                {
+                    MOS.EFMODEL.DataModels.HIS_PAY_FORM gt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PAY_FORM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboPayFrom.EditValue.ToString()));
+                    if (gt != null)
+                    {
+                        data.HisTransaction.PAY_FORM_ID = gt.ID;
+                    }
+                }
+                if (cboAccountBook.EditValue != null)
+                {
+                    V_HIS_ACCOUNT_BOOK gt = this.ListAccountBook.SingleOrDefault(o => o.ID == Convert.ToInt64(cboAccountBook.EditValue));
+                    if (gt != null)
+                    {
+                        data.HisTransaction.ACCOUNT_BOOK_ID = gt.ID;
+                        if (gt.IS_NOT_GEN_TRANSACTION_ORDER == 1)
+                        {
+                            data.HisTransaction.NUM_ORDER = (long)spinNumOrder.Value;
+                        }
+                    }
+                }
+
+                data.HisTransaction.TRANSACTION_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT;
+                if (cboCashierRoom.EditValue != null)
+                {
+                    MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM gt = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_CASHIER_ROOM>().SingleOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboCashierRoom.EditValue.ToString()));
+                    if (gt != null)
+                    {
+                        data.HisTransaction.CASHIER_ROOM_ID = gt.ID;
+                    }
+                }
+
+                if (dtTransactionTime.DateTime != null)
+                {
+                    data.HisTransaction.TRANSACTION_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dtTransactionTime.DateTime.ToString("yyyyMMddHHmm") + "00");
+                }
+
+                if (this.currentTreatment != null)
+                {
+                    data.HisTransaction.TREATMENT_ID = this.currentTreatment.ID;
+                }
+                if (checkOverTime.Checked)
+                {
+                    data.HisTransaction.IS_NOT_IN_WORKING_TIME = 1;
+                }
+                else
+                {
+                    data.HisTransaction.IS_NOT_IN_WORKING_TIME = null;
+                }
+
+                List<HIS_BILL_GOODS> billGooDs = new List<HIS_BILL_GOODS>();
+
+                if (seleteds != null && seleteds.Count > 0)
+                {
+                    foreach (var expMedicineGroup in seleteds)
+                    {
+                        HIS_BILL_GOODS billGoood = new HIS_BILL_GOODS();
+                        billGoood.AMOUNT = expMedicineGroup.EXP_AMOUNT;
+                        billGoood.PRICE = (expMedicineGroup.ADVISORY_PRICE ?? 0) * (1 + expMedicineGroup.EXP_VAT_RATIO ?? 0); ;
+                        billGoood.GOODS_NAME = expMedicineGroup.MEDI_MATE_TYPE_NAME;
+                        billGoood.DESCRIPTION = expMedicineGroup.DESCRIPTION;
+                        billGoood.GOODS_UNIT_NAME = expMedicineGroup.SERVICE_UNIT_NAME;
+                        billGoood.DISCOUNT = expMedicineGroup.DISCOUNT;
+                        billGooDs.Add(billGoood);
+                    }
+
+                    data.HisBillGoods = billGooDs;
+                }
+
+                if (lciOriginalTransaction.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    && cboOriginalTransaction.EditValue != null)
+                {
+                    if (String.IsNullOrWhiteSpace(txtReplaceReason.Text))
+                    {
+                        MessageBox.Show("Vui lòng nhập lý do thay thế");
+                        txtReplaceReason.Focus();
+                        return false;
+                    }
+                    data.OriginalTransactionId = Inventec.Common.TypeConvert.Parse.ToInt64(cboOriginalTransaction.EditValue.ToString());
+                    data.ReplaceReason = txtReplaceReason.Text;
+                }
                 Inventec.Common.Logging.LogSystem.Info("Call API api/HisTransaction/CreateBillWithBillGood | InputData=" + Inventec.Common.Logging.LogUtil.TraceData("data", data));
 
                 this.transactionBillResult = new BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/CreateBillWithBillGood", ApiConsumers.MosConsumer, data, param);
 
-                        if (this.transactionBillResult != null)
+                if (this.transactionBillResult != null)
+                {
+                    result = true;
+                    success = true;
+                    btnSave.Enabled = false;
+                    btnSavePrint.Enabled = false;
+                    BtnSaveSign.Enabled = false;
+                    ddBtnPrint.Enabled = true;
+
+                    if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
+                    {
+                        btnQR.Enabled = true;
+                    }
+                    if (delegateSelectData != null)
+                    {
+                        delegateSelectData(this.transactionBillResult);
+                    }
+
+                    if (isLuuKy && InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt && Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
+                    {
+                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                        //Tao hoa don dien thu ben thu3 
+                        ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(tran, seleteds);
+                        if (electronicBillResult == null || !electronicBillResult.Success)
                         {
-                            result = true;
-                            success = true;
-                            btnSave.Enabled = false;
-                            btnSavePrint.Enabled = false;
-                            BtnSaveSign.Enabled = false;
-                            ddBtnPrint.Enabled = true;
-
-                            if (cboPayFrom.EditValue != null && Convert.ToInt64(cboPayFrom.EditValue.ToString()) == 8)
+                            param.Messages.Add("Tạo hóa đơn điện tử thất bại");
+                            if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
                             {
-                                btnQR.Enabled = true;
-                            }
-                            if (delegateSelectData != null)
-                            {
-                                delegateSelectData(this.transactionBillResult);
+                                param.Messages.AddRange(electronicBillResult.Messages);
                             }
 
-                            if (isLuuKy && InvoiceTypeCreate == invoiceTypeCreate__CreateInvoiceVnpt && Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
+                            param.Messages = param.Messages.Distinct().ToList();
+                        }
+                        else
+                        {
+                            //goi api update
+                            CommonParam paramUpdate = new CommonParam();
+                            HisTransactionInvoiceInfoSDO sdo = new HisTransactionInvoiceInfoSDO();
+                            sdo.EinvoiceLoginname = electronicBillResult.InvoiceLoginname;
+                            sdo.InvoiceCode = electronicBillResult.InvoiceCode;
+                            sdo.InvoiceSys = electronicBillResult.InvoiceSys;
+                            sdo.EinvoiceNumOrder = electronicBillResult.InvoiceNumOrder;
+                            sdo.EInvoiceTime = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
+                            sdo.Id = transactionBillResult.ID;
+                            sdo.InvoiceLookupCode = electronicBillResult.InvoiceLookupCode;
+                            var apiResult = new BackendAdapter(paramUpdate).Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, sdo, paramUpdate);
                             {
-                                HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
-                                //Tao hoa don dien thu ben thu3 
-                                ElectronicBillResult electronicBillResult = TaoHoaDonDienTuBenThu3CungCap(tran, seleteds);
-                                if (electronicBillResult == null || !electronicBillResult.Success)
+                                transactionBillResult.INVOICE_CODE = electronicBillResult.InvoiceCode;
+                                transactionBillResult.INVOICE_SYS = electronicBillResult.InvoiceSys;
+                                transactionBillResult.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
+                                transactionBillResult.EINVOICE_TIME = electronicBillResult.InvoiceTime;
+                                transactionBillResult.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
+                                transactionBillResult.EINVOICE_TIME = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
+                                transactionBillResult.INVOICE_LOOKUP_CODE = electronicBillResult.InvoiceLookupCode;
+                                result = true;
+                                success = true;
+                                btnSave.Enabled = false;
+                                btnSavePrint.Enabled = false;
+                                BtnSaveSign.Enabled = false;
+                                ddBtnPrint.Enabled = true;
+                                //btnQR.Enabled = true;
+                                if (delegateSelectData != null)
                                 {
-                                    param.Messages.Add("Tạo hóa đơn điện tử thất bại");
-                                    if (electronicBillResult.Messages != null && electronicBillResult.Messages.Count > 0)
-                                    {
-                                        param.Messages.AddRange(electronicBillResult.Messages);
-                                    }
-
-                                    param.Messages = param.Messages.Distinct().ToList();
-                                }
-                                else
-                                {
-                                    //goi api update
-                                    CommonParam paramUpdate = new CommonParam();
-                                    HisTransactionInvoiceInfoSDO sdo = new HisTransactionInvoiceInfoSDO();
-                                    sdo.EinvoiceLoginname = electronicBillResult.InvoiceLoginname;
-                                    sdo.InvoiceCode = electronicBillResult.InvoiceCode;
-                                    sdo.InvoiceSys = electronicBillResult.InvoiceSys;
-                                    sdo.EinvoiceNumOrder = electronicBillResult.InvoiceNumOrder;
-                                    sdo.EInvoiceTime = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
-                                    sdo.Id = transactionBillResult.ID;
-                                    sdo.InvoiceLookupCode = electronicBillResult.InvoiceLookupCode;
-                                    var apiResult = new BackendAdapter(paramUpdate).Post<bool>("api/HisTransaction/UpdateInvoiceInfo", ApiConsumers.MosConsumer, sdo, paramUpdate);
-                                    {
-                                        transactionBillResult.INVOICE_CODE = electronicBillResult.InvoiceCode;
-                                        transactionBillResult.INVOICE_SYS = electronicBillResult.InvoiceSys;
-                                        transactionBillResult.EINVOICE_NUM_ORDER = electronicBillResult.InvoiceNumOrder;
-                                        transactionBillResult.EINVOICE_TIME = electronicBillResult.InvoiceTime;
-                                        transactionBillResult.EINVOICE_LOGINNAME = electronicBillResult.InvoiceLoginname;
-                                        transactionBillResult.EINVOICE_TIME = electronicBillResult.InvoiceTime ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
-                                        transactionBillResult.INVOICE_LOOKUP_CODE = electronicBillResult.InvoiceLookupCode;
-                                        result = true;
-                                        success = true;
-                                        btnSave.Enabled = false;
-                                        btnSavePrint.Enabled = false;
-                                        BtnSaveSign.Enabled = false;
-                                        ddBtnPrint.Enabled = true;
-                                        //btnQR.Enabled = true;
-                                        if (delegateSelectData != null)
-                                        {
-                                            delegateSelectData(this.transactionBillResult);
-                                        }
-                                    }
+                                    delegateSelectData(this.transactionBillResult);
                                 }
                             }
                         }
-                        txtTreatmentCode.Focus();
-                        txtTreatmentCode.SelectAll();
-                        WaitingManager.Hide();
-                        if (success)
-                        {
-                            MessageManager.Show(this.ParentForm, param, success);
-                        }
-                        SessionManager.ProcessTokenLost(param);
-                    
-                
+                    }
+                }
+                txtTreatmentCode.Focus();
+                txtTreatmentCode.SelectAll();
+                WaitingManager.Hide();
+                if (success)
+                {
+                    MessageManager.Show(this.ParentForm, param, success);
+                }
+                SessionManager.ProcessTokenLost(param);
+
+
             }
             catch (Exception ex)
             {
@@ -2268,7 +2313,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 totalPrice = 0;
                 transferAmount = 0;
                 spinTransferAmount.EditValue = null;
+                spinTransAmountNew.EditValue = null;
+                spinSwipeAmountNew.EditValue = null;
                 dxErrorProvider.SetError(spinTransferAmount, string.Empty);
+                dxErrorProvider.SetError(spinTransAmountNew, string.Empty);
+                dxErrorProvider.SetError(spinSwipeAmountNew, string.Empty);
 
             }
             catch (Exception ex)
@@ -2740,11 +2789,11 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 {
                     if (!chkHideHddt.Checked)
                     {
-                        if(Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
+                        if (Convert.ToInt64(cboPayFrom.EditValue.ToString()) != 8)
                         {
                             System.Threading.Thread.Sleep(2000);
                             this.onClickInHoaDonDienTu(null, null);
-                        }    
+                        }
                         System.Threading.Thread.Sleep(2000);
                         //this.onClickInHoaDonDienTu(null, null);
                     }
@@ -2934,75 +2983,75 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                 }
                 else
                     if (listConfig != null)
-                {
-                    if (listConfig.Count > 1)
                     {
-                        popupMenu1.ClearLinks();
-                        foreach (var item in listConfig)
+                        if (listConfig.Count > 1)
                         {
-                            string key = "";
-                            string value = item.KEY;
-                            int index = value.IndexOf("Info");
-                            if (index > 0)
+                            popupMenu1.ClearLinks();
+                            foreach (var item in listConfig)
                             {
-                                var shotkey = value.Substring(0, index);
-                                string[] parts = shotkey.Split('.');
-                                if (parts.Length > 0)
+                                string key = "";
+                                string value = item.KEY;
+                                int index = value.IndexOf("Info");
+                                if (index > 0)
                                 {
-                                    key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                    var shotkey = value.Substring(0, index);
+                                    string[] parts = shotkey.Split('.');
+                                    if (parts.Length > 0)
+                                    {
+                                        key = parts[parts.Length - 1]; // Lấy phần cuối cùng sau khi tách
+                                    }
                                 }
+                                else
+                                {
+                                    key = item.KEY;
+                                }
+
+
+                                BarButtonItem btnOption = new BarButtonItem(null, key);
+                                btnOption.ItemClick += (s, args) =>
+                                {
+
+                                    selectedConfig = item;
+                                    List<object> listArgs = new List<object>();
+                                    HIS.Desktop.ADO.TransReqQRADO adoqr = new TransReqQRADO();
+                                    adoqr.TreatmentId = 0;
+                                    adoqr.ConfigValue = selectedConfig;
+                                    adoqr.IssueInvoice = true;
+                                    adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
+                                    adoqr.TransReqId = CreateReqType.Transaction;
+                                    HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                                    adoqr.Transaction = tran;
+                                    listArgs.Add(adoqr);
+                                    LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
+
+                                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+
+                                };
+                                popupMenu1.AddItem(btnOption);
                             }
-                            else
-                            {
-                                key = item.KEY;
-                            }
-
-
-                            BarButtonItem btnOption = new BarButtonItem(null, key);
-                            btnOption.ItemClick += (s, args) =>
-                            {
-
-                                selectedConfig = item;
-                                List<object> listArgs = new List<object>();
-                                HIS.Desktop.ADO.TransReqQRADO adoqr = new TransReqQRADO();
-                                adoqr.TreatmentId = 0;
-                                adoqr.ConfigValue = selectedConfig;
-                                adoqr.IssueInvoice = true;
-                                adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
-                                adoqr.TransReqId = CreateReqType.Transaction;
-                                HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
-                                adoqr.Transaction = tran;
-                                listArgs.Add(adoqr);
-                                LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR ; KEY: " + selectedConfig.KEY);
-
-                                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
-
-                            };
-                            popupMenu1.AddItem(btnOption);
+                            popupMenu1.Manager = barManager1;
+                            popupMenu1.ShowPopup(Control.MousePosition);
                         }
-                        popupMenu1.Manager = barManager1;
-                        popupMenu1.ShowPopup(Control.MousePosition);
-                    }
-                    else
-                    {
-                        selectedConfig = listConfig[0];
-                        List<object> listArgs = new List<object>();
-                        TransReqQRADO adoqr = new TransReqQRADO();
-                        adoqr.TreatmentId = 0;
-                        adoqr.ConfigValue = selectedConfig;
-                        HIS_TRANSACTION tran = new HIS_TRANSACTION();
-                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
-                        adoqr.Transaction = tran;
-                        adoqr.IssueInvoice = true;
-                        adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
-                        adoqr.TransReqId = CreateReqType.Transaction;
-                        listArgs.Add(adoqr);
-                        LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
-                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
+                        else
+                        {
+                            selectedConfig = listConfig[0];
+                            List<object> listArgs = new List<object>();
+                            TransReqQRADO adoqr = new TransReqQRADO();
+                            adoqr.TreatmentId = 0;
+                            adoqr.ConfigValue = selectedConfig;
+                            HIS_TRANSACTION tran = new HIS_TRANSACTION();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionBillResult);
+                            adoqr.Transaction = tran;
+                            adoqr.IssueInvoice = true;
+                            adoqr.NotDisplayedInvoice = (chkHideHddt != null && chkHideHddt.Checked);
+                            adoqr.TransReqId = CreateReqType.Transaction;
+                            listArgs.Add(adoqr);
+                            LogSystem.Debug("_____Load module : HIS.Desktop.Plugins.CreateTransReqQR " + selectedConfig.KEY);
+                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.CreateTransReqQR", roomId, roomTypeId, listArgs);
 
+                        }
                     }
-                }
             }
             catch (Exception ex)
             {
@@ -3193,7 +3242,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
                     }
                 }
             }
-            catch (Exception ex)    
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
@@ -3268,7 +3317,7 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
         private void cboPayFrom_EditValueChanged(object sender, EventArgs e)
         {
             layoutControlItem27.Enabled = false;
-            
+
             spinTransferAmount.Enabled = false;
 
             // Mặc định text/tooltip cho CK
@@ -3292,6 +3341,13 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             // PAY_FROM_CODE = "06" : Tiền mặt/Quẹt thẻ
             if (gt.PAY_FORM_CODE == "03")
             {
+                dxErrorProvider.SetError(spinTransAmountNew, string.Empty);
+                dxErrorProvider.SetError(spinSwipeAmountNew, string.Empty);
+                ValidControlTransferAmount(false);
+                ValidControlSwipeAmount(false);
+                lcTransAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem27.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 layoutControlItem27.Enabled = true;
                 spinTransferAmount.Enabled = true;
                 layoutControlItem27.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -3300,11 +3356,28 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             }
             else if (gt.PAY_FORM_CODE == "06")
             {
+                dxErrorProvider.SetError(spinTransAmountNew, string.Empty);
+                dxErrorProvider.SetError(spinSwipeAmountNew, string.Empty);
+                ValidControlTransferAmount(false);
+                ValidControlSwipeAmount(false);
+                lcTransAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                layoutControlItem27.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                 layoutControlItem27.Enabled = true;
                 spinTransferAmount.Enabled = true;
                 layoutControlItem27.AppearanceItemCaption.ForeColor = Color.Maroon;
                 layoutControlItem27.Text = "Số tiền QT:";
                 layoutControlItem27.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+            }
+            else if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT)
+            {
+                dxErrorProvider.SetError(spinTransAmountNew, string.Empty);
+                dxErrorProvider.SetError(spinSwipeAmountNew, string.Empty);
+                lcTransAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                layoutControlItem27.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                ValidControlTransferAmount(true);
+                ValidControlSwipeAmount(true);
             }
 
             // Sau khi đổi hình thức thanh toán thì Cần thu = Số tiền - CK/QT (hiện tại CK/QT = 0)
@@ -3316,6 +3389,17 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
             try
             {
                 decimal canThu = totalPrice - transferAmount;
+                if (cboPayFrom.EditValue != null && (Inventec.Common.TypeConvert.Parse.ToInt64(cboPayFrom.EditValue.ToString()) == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT))
+                {
+                    if (spinSwipeAmountNew.EditValue != null && spinTransAmountNew.EditValue != null)
+                    {
+                        canThu = totalPrice - spinSwipeAmountNew.Value - spinTransAmountNew.Value;
+                    }
+                }
+                else
+                {
+
+                }
                 if (canThu < 0)
                     canThu = 0;
 
@@ -3347,6 +3431,33 @@ namespace HIS.Desktop.Plugins.MedicineSaleBill
 
                 // Xóa cảnh báo cũ nếu người dùng đang sửa lại số tiền
                 dxErrorProvider.SetError(spinTransferAmount, string.Empty);
+                UpdateCanThuLabel();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinTransAmountNew_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+
+                dxErrorProvider.SetError(spinTransAmountNew, string.Empty);
+                UpdateCanThuLabel();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinSwipeAmountNew_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                dxErrorProvider.SetError(spinSwipeAmountNew, string.Empty);
                 UpdateCanThuLabel();
             }
             catch (Exception ex)

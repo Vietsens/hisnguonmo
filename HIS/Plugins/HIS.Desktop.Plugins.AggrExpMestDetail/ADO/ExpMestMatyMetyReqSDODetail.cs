@@ -30,6 +30,15 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.ADO
         public bool IS_MEDICINE { get; set; }
         public long MEDI_MATE_TYPE_ID { get; set; }
         public long MEDI_MATE_ID { get; set; }
+        public long? TDL_SERVICE_REQ_ID_DETAIL { get; set; }
+        public bool IS_DELETED_IN_APPROVE { get; set; }
+        public bool IsHighLightInDetail { get; set; }
+        public string GROUP_HEADER_DISPLAY { get; set; }
+        public string TDL_SERVICE_REQ_CODE_DETAIL { get; set; }
+        public string TDL_PATIENT_NAME_DETAIL { get; set; }
+        public string TDL_TREATMENT_CODE_DETAIL { get; set; }
+        public string INTRUCTION_DATE_DETAIL { get; set; }
+        public string ICD_DISPLAY_DETAIL { get; set; }
 
         public ExpMestMatyMetyReqSDODetail()
         {

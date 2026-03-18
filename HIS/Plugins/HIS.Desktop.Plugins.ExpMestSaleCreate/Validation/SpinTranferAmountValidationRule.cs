@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -51,6 +51,12 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.Validtion
                     return valid;
                 }
 
+                if (isRequiredPin && spinTranferAmount.Value == 0)
+                {
+                    ErrorText = "Số tiền phải lớn hơn 0";
+                    ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                    return valid;
+                }
                 valid = true;
             }
             catch (Exception ex)

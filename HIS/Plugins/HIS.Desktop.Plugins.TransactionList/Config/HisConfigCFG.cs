@@ -95,6 +95,7 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
         internal static string AllowWhenRequest;
         internal static string TransactionQrPaymentStatusOption;
         internal static string ElectronicBillExportOption;
+        internal static List<HIS_CONFIG> RefundConfig;
 
         internal static void LoadConfig()
         {
@@ -120,6 +121,8 @@ namespace HIS.Desktop.Plugins.TransactionList.Config
                 AllowWhenRequest = HisConfigs.Get<string>(ALLOW_WHEN_REQUEST);
                 TransactionQrPaymentStatusOption = GetValue(CFG__TRANSACTION_QR_PAYMENT_STATUS_OPTION);
                 ElectronicBillExportOption = GetValue(ELECTRONIC_BILL__EXPORT_OPTION);
+
+                RefundConfig = BackendDataWorker.Get<HIS_CONFIG>().Where(o => o.KEY.StartsWith("HIS.Desktop.Plugins.RefundByTransfer") && !string.IsNullOrEmpty(o.VALUE)).ToList();
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

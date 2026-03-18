@@ -40,7 +40,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
-{
+{  
     public partial class frmHisMachineImport : FormBase
     {
         #region Declare
@@ -194,6 +194,10 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                                 bool checkNull =
         string.IsNullOrEmpty(item.MACHINE_CODE)
         && string.IsNullOrEmpty(item.MACHINE_NAME)
+        && item.CONTRACT_FROM == null
+        && item.CONTRACT_TO == null
+        && item.FROM_TIME == null
+        && item.TO_TIME == null
         && string.IsNullOrEmpty(item.SERIAL_NUMBER)
         && string.IsNullOrEmpty(item.SOURCE_CODE)
         && string.IsNullOrEmpty(item.ROOM_IDS)
@@ -269,7 +273,11 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                     if (!string.IsNullOrEmpty(item.MACHINE_CODE) && item.MACHINE_CODE != "")
                     {
                         var count = _CurrentAdosAdd.Where(o => o.MACHINE_CODE == item.MACHINE_CODE && 
-                                                            o.MACHINE_NAME == item.MACHINE_NAME && 
+                                                            o.MACHINE_NAME == item.MACHINE_NAME &&
+                                                            o.CONTRACT_FROM == item.CONTRACT_FROM &&
+                                                            o.CONTRACT_TO == item.CONTRACT_TO &&
+                                                            o.FROM_TIME == item.FROM_TIME &&
+                                                            o.TO_TIME == item.TO_TIME &&
                                                             o.SERIAL_NUMBER == item.SERIAL_NUMBER && 
                                                             o.SOURCE_CODE == item.SOURCE_CODE && 
                                                             o.ROOM_IDS == item.ROOM_IDS && 
@@ -349,6 +357,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                             error += string.Format(Message.MessageImport.Maxlength, "Tên máy CLS", 200);
                         }
                     }
+                    
                     if (!string.IsNullOrEmpty(item.SERIAL_NUMBER))
                     {
                         if (item.SERIAL_NUMBER.Length > 200)
@@ -472,7 +481,23 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        public static long? ConvertDateToHisTime(long? date)
+        {
+            if (!date.HasValue || date.Value <= 0)
+                return null;
 
+            var str = date.Value.ToString();
+
+           
+            if (str.Length == 14)
+                return date;
+
+           
+            if (str.Length == 8)
+                return long.Parse(str + "000000");
+
+            return null;
+        }
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -492,6 +517,10 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                             ado.ID = result.ID;
                         ado.MACHINE_CODE = item.MACHINE_CODE;
                         ado.MACHINE_NAME = item.MACHINE_NAME;
+                        ado.CONTRACT_FROM = ConvertDateToHisTime(item.CONTRACT_FROM);
+                        ado.CONTRACT_TO = ConvertDateToHisTime(item.CONTRACT_TO);
+                        ado.FROM_TIME = ConvertDateToHisTime(item.FROM_TIME);
+                        ado.TO_TIME = ConvertDateToHisTime(item.TO_TIME);
                         ado.SERIAL_NUMBER = item.SERIAL_NUMBER;
                         ado.SOURCE_CODE = item.SOURCE_CODE;
                         ado.ROOM_IDS = item.ROOM_IDS;

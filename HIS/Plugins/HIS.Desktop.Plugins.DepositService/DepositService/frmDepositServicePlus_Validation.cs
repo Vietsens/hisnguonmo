@@ -18,6 +18,7 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.DepositService.DepositService.Validtion;
@@ -25,7 +26,9 @@ using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.Message;
+using MOS.EFMODEL.DataModels;
 using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace HIS.Desktop.Plugins.DepositService.DepositService
@@ -190,11 +193,13 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
 
         }
 
-
+        
         bool CheckValidForSave(CommonParam param)
         {
             bool valid = true;
             this.positionHandle = -1;
+            var sumSwipeTransfer = spinSwipeNew.Value + spinTransferNew.Value;
+            var tmCkQtId = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
             try
             {
                 valid = valid && (dxValidationProvider1.Validate());
@@ -221,6 +226,13 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 {
                     WaitingManager.Hide();
                     param.Messages.Add(String.Format("Số tiền quẹt thẻ [{0}] lớn hơn số tiền tạm ứng của bệnh nhân [{1}]", Inventec.Common.Number.Convert.NumberToStringRoundAuto(spinTransferAmount.Value, ConfigApplications.NumberSeperator), Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.hisDepositSDO.Transaction.AMOUNT, ConfigApplications.NumberSeperator)));
+                    MessageManager.Show(param, false);
+                    valid = false;
+                }
+                else if (this.hisDepositSDO.Transaction != null && this.hisDepositSDO.Transaction.PAY_FORM_ID == tmCkQtId.ID && spinTransferNew.EditValue != null && spinSwipeNew.EditValue != null && sumSwipeTransfer > this.hisDepositSDO.Transaction.AMOUNT)
+                {
+                    WaitingManager.Hide();
+                    param.Messages.Add(String.Format("Tổng tiền chuyển khoản/quẹt thẻ [{0}] lớn hơn số tiền tạm ứng của bệnh nhân [{1}]", Inventec.Common.Number.Convert.NumberToStringRoundAuto(sumSwipeTransfer, ConfigApplications.NumberSeperator), Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.hisDepositSDO.Transaction.AMOUNT, ConfigApplications.NumberSeperator)));
                     MessageManager.Show(param, false);
                     valid = false;
                 }
