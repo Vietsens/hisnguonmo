@@ -19,7 +19,6 @@ namespace HIS.Desktop.Plugins.Library.BankHub
     ///           Khi URL chứa redirect_uri + ?code= → gọi <see cref="ExchangeCodeForToken"/>
     ///   Bước 3: Lưu <see cref="TokenResponse"/>, dùng access_token cho BankHubApiClient
     ///   Bước 4: Khi token sắp hết hạn → gọi <see cref="RefreshAccessToken"/>
-    ///   Bước 5: Khi kết thúc phiên → gọi <see cref="Logout"/>
     /// </summary>
     public class BankHubAuthService
     {
@@ -231,49 +230,6 @@ namespace HIS.Desktop.Plugins.Library.BankHub
 
             var refreshed = RefreshAccessToken();
             return refreshed.access_token;
-        }
-
-        // =============================================
-        // BƯỚC 5: LOGOUT
-        // =============================================
-
-        /// <summary>
-        /// Đăng xuất khỏi BankHub Keycloak.
-        /// Keycloak sẽ trả về HTTP 204 No Content nếu thành công.
-        /// </summary>
-        /// <param name="accessToken">Access token (null → dùng CurrentToken)</param>
-        /// <param name="refreshToken">Refresh token (null → dùng CurrentToken)</param>
-        /// <returns>true nếu logout thành công (HTTP 204), false nếu thất bại</returns>
-        public bool Logout(string accessToken = null, string refreshToken = null)
-        {
-            string at = accessToken ?? (CurrentToken != null ? CurrentToken.access_token : null);
-            string rt = refreshToken ?? (CurrentToken != null ? CurrentToken.refresh_token : null);
-
-            if (string.IsNullOrEmpty(at) || string.IsNullOrEmpty(rt))
-                throw new BankHubException("Cần access_token và refresh_token để logout.");
-
-            var formData = new Dictionary<string, string>
-            {
-                { "client_id",     _config.ClientId },
-                { "refresh_token", rt }
-            };
-
-            try
-            {
-                PostFormUrlEncoded(_config.LogoutUrl, formData, accessToken: at, expectNoContent: true);
-                CurrentToken = null;
-                return true;
-            }
-            catch (BankHubException ex)
-            {
-                // HTTP 204 = No Content = thành công (không có body)
-                if (ex.Message.Contains("204"))
-                {
-                    CurrentToken = null;
-                    return true;
-                }
-                return false;
-            }
         }
 
         // =============================================

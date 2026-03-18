@@ -33,9 +33,6 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Models
         /// <summary>URL lấy Access Token</summary>
         public string TokenUrl { get; set; }
 
-        /// <summary>URL Logout</summary>
-        public string LogoutUrl { get; set; }
-
         /// <summary>Client ID do MB cấp cho đối tác (VD: "fast", "sse")</summary>
         public string ClientId { get; set; }
 
@@ -67,13 +64,12 @@ namespace HIS.Desktop.Plugins.Library.BankHub.Models
         //}
 
         /// <summary>Tạo cấu hình Production</summary>
-        public static BankHubAuthConfig Production(string authUrl, string tokenUrl, string logoutUrl, string clientId, string redirectUri)
+        public static BankHubAuthConfig Production(string authUrl, string tokenUrl, string clientId, string redirectUri)
         {
             return new BankHubAuthConfig
             {
                 AuthUrl = authUrl,
                 TokenUrl = tokenUrl,
-                LogoutUrl = logoutUrl,
                 ClientId = clientId,
                 RedirectUri = redirectUri,
                 Scope = "openid",
