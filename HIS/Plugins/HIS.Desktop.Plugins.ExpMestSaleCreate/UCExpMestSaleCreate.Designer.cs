@@ -49,6 +49,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExpMestSaleCreate));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -60,7 +61,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.chkSign = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.btnCtrlA = new DevExpress.XtraBars.BarButtonItem();
             this.btnCtrlI = new DevExpress.XtraBars.BarButtonItem();
@@ -93,6 +94,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.chkAutoShow = new DevExpress.XtraEditors.CheckEdit();
             this.btnDebt = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
+            this.spinSwipeAmountNew = new DevExpress.XtraEditors.SpinEdit();
+            this.spinTransferAmountNew = new DevExpress.XtraEditors.SpinEdit();
             this.labelControl5 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
             this.spinQuetThe = new DevExpress.XtraEditors.SpinEdit();
@@ -149,14 +152,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.lcQuetthe = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem48 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcTransferAmountNew = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcSwipeAmountNew = new DevExpress.XtraLayout.LayoutControlItem();
             this.chkPrintNow = new DevExpress.XtraEditors.CheckEdit();
             this.btnNewExpMest = new DevExpress.XtraEditors.SimpleButton();
             this.btnCancelExport = new DevExpress.XtraEditors.SimpleButton();
-            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainerMediMaty = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlMediMaty = new Inventec.Desktop.CustomControl.CustomGridControlWithFilterMultiColumn();
             this.gridViewMediMaty = new Inventec.Desktop.CustomControl.CustomGridViewWithFilterMultiColumn();
             this.txtMediMatyForPrescription = new DevExpress.XtraEditors.ButtonEdit();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
             this.gridControlPopupUser = new DevExpress.XtraGrid.GridControl();
             this.gridViewPopupUser = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboAge = new DevExpress.XtraEditors.LookUpEdit();
@@ -209,7 +214,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn11 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItemSpinEdit__Amount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.repositoryItemBtnView = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
             this.cboGender = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtTreatmentCode = new DevExpress.XtraEditors.TextEdit();
@@ -279,9 +284,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem55 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
-            this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
+            this.dxValidationProvider_Save = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider_Add = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).BeginInit();
@@ -301,6 +306,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoShow.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spinSwipeAmountNew.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinTransferAmountNew.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinQuetThe.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkKetNoiPOS.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinBaseValue.Properties)).BeginInit();
@@ -340,6 +347,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.lcQuetthe)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcTransferAmountNew)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcSwipeAmountNew)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintNow.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).BeginInit();
             this.popupControlContainerMediMaty.SuspendLayout();
@@ -870,6 +879,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.spinSwipeAmountNew);
+            this.layoutControl2.Controls.Add(this.spinTransferAmountNew);
             this.layoutControl2.Controls.Add(this.labelControl5);
             this.layoutControl2.Controls.Add(this.labelControl4);
             this.layoutControl2.Controls.Add(this.spinQuetThe);
@@ -899,6 +910,46 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControl2.Size = new System.Drawing.Size(357, 615);
             this.layoutControl2.TabIndex = 75;
             this.layoutControl2.Text = "layoutControl2";
+            // 
+            // spinSwipeAmountNew
+            // 
+            this.spinSwipeAmountNew.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinSwipeAmountNew.Location = new System.Drawing.Point(147, 348);
+            this.spinSwipeAmountNew.MenuManager = this.barManager1;
+            this.spinSwipeAmountNew.Name = "spinSwipeAmountNew";
+            this.spinSwipeAmountNew.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinSwipeAmountNew.Properties.DisplayFormat.FormatString = "#,##0";
+            this.spinSwipeAmountNew.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.spinSwipeAmountNew.Properties.EditFormat.FormatString = "#,##0";
+            this.spinSwipeAmountNew.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.spinSwipeAmountNew.Size = new System.Drawing.Size(208, 20);
+            this.spinSwipeAmountNew.StyleController = this.layoutControl2;
+            this.spinSwipeAmountNew.TabIndex = 89;
+            // 
+            // spinTransferAmountNew
+            // 
+            this.spinTransferAmountNew.EditValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.spinTransferAmountNew.Location = new System.Drawing.Point(147, 324);
+            this.spinTransferAmountNew.MenuManager = this.barManager1;
+            this.spinTransferAmountNew.Name = "spinTransferAmountNew";
+            this.spinTransferAmountNew.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.spinTransferAmountNew.Properties.DisplayFormat.FormatString = "#,##0";
+            this.spinTransferAmountNew.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.spinTransferAmountNew.Properties.EditFormat.FormatString = "#,##0";
+            this.spinTransferAmountNew.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.spinTransferAmountNew.Size = new System.Drawing.Size(208, 20);
+            this.spinTransferAmountNew.StyleController = this.layoutControl2;
+            this.spinTransferAmountNew.TabIndex = 88;
             // 
             // labelControl5
             // 
@@ -1088,7 +1139,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // 
             // lblPresNumber
             // 
-            this.lblPresNumber.Location = new System.Drawing.Point(147, 324);
+            this.lblPresNumber.Location = new System.Drawing.Point(147, 372);
             this.lblPresNumber.Name = "lblPresNumber";
             this.lblPresNumber.Size = new System.Drawing.Size(208, 20);
             this.lblPresNumber.StyleController = this.layoutControl2;
@@ -1181,11 +1232,11 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.treeListColumn_Result_Concentra,
             this.treeListColumn_Result_NationalName});
             this.treeListResult.Cursor = System.Windows.Forms.Cursors.Default;
-            this.treeListResult.Location = new System.Drawing.Point(2, 348);
+            this.treeListResult.Location = new System.Drawing.Point(2, 396);
             this.treeListResult.Name = "treeListResult";
             this.treeListResult.OptionsView.AutoWidth = false;
             this.treeListResult.OptionsView.ShowIndicator = false;
-            this.treeListResult.Size = new System.Drawing.Size(353, 265);
+            this.treeListResult.Size = new System.Drawing.Size(353, 217);
             this.treeListResult.TabIndex = 67;
             this.treeListResult.NodeCellStyle += new DevExpress.XtraTreeList.GetCustomNodeCellStyleEventHandler(this.treeListResult_NodeCellStyle);
             this.treeListResult.CustomUnboundColumnData += new DevExpress.XtraTreeList.CustomColumnDataEventHandler(this.treeListResult_CustomUnboundColumnData);
@@ -1337,7 +1388,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.emptySpaceItem3,
             this.lcQuetthe,
             this.layoutControlItem47,
-            this.layoutControlItem48});
+            this.layoutControlItem48,
+            this.lcTransferAmountNew,
+            this.lcSwipeAmountNew});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1388,9 +1441,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.treeListResult;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 346);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 394);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(357, 269);
+            this.layoutControlItem8.Size = new System.Drawing.Size(357, 221);
             this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextToControlDistance = 0;
@@ -1449,7 +1502,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem32.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem32.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem32.Control = this.lblPresNumber;
-            this.layoutControlItem32.Location = new System.Drawing.Point(0, 322);
+            this.layoutControlItem32.Location = new System.Drawing.Point(0, 370);
             this.layoutControlItem32.Name = "layoutControlItem32";
             this.layoutControlItem32.Size = new System.Drawing.Size(357, 24);
             this.layoutControlItem32.Text = "Số toa:";
@@ -1661,6 +1714,38 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             this.layoutControlItem48.TextToControlDistance = 5;
             this.layoutControlItem48.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             this.layoutControlItem48.Click += new System.EventHandler(this.layoutControlItem48_Click);
+            // 
+            // lcTransferAmountNew
+            // 
+            this.lcTransferAmountNew.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lcTransferAmountNew.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lcTransferAmountNew.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lcTransferAmountNew.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lcTransferAmountNew.Control = this.spinTransferAmountNew;
+            this.lcTransferAmountNew.Location = new System.Drawing.Point(0, 322);
+            this.lcTransferAmountNew.Name = "lcTransferAmountNew";
+            this.lcTransferAmountNew.Size = new System.Drawing.Size(357, 24);
+            this.lcTransferAmountNew.Text = "Số tiền chuyển khoản:";
+            this.lcTransferAmountNew.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lcTransferAmountNew.TextSize = new System.Drawing.Size(140, 13);
+            this.lcTransferAmountNew.TextToControlDistance = 5;
+            this.lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
+            // lcSwipeAmountNew
+            // 
+            this.lcSwipeAmountNew.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lcSwipeAmountNew.AppearanceItemCaption.Options.UseForeColor = true;
+            this.lcSwipeAmountNew.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lcSwipeAmountNew.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lcSwipeAmountNew.Control = this.spinSwipeAmountNew;
+            this.lcSwipeAmountNew.Location = new System.Drawing.Point(0, 346);
+            this.lcSwipeAmountNew.Name = "lcSwipeAmountNew";
+            this.lcSwipeAmountNew.Size = new System.Drawing.Size(357, 24);
+            this.lcSwipeAmountNew.Text = "Số tiền quẹt thẻ:";
+            this.lcSwipeAmountNew.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lcSwipeAmountNew.TextSize = new System.Drawing.Size(140, 13);
+            this.lcSwipeAmountNew.TextToControlDistance = 5;
+            this.lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
             // 
             // chkPrintNow
             // 
@@ -3401,6 +3486,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.chkAutoShow.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spinSwipeAmountNew.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spinTransferAmountNew.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinQuetThe.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ChkKetNoiPOS.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spinBaseValue.Properties)).EndInit();
@@ -3440,6 +3527,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             ((System.ComponentModel.ISupportInitialize)(this.lcQuetthe)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem48)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcTransferAmountNew)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcSwipeAmountNew)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintNow.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupControlContainerMediMaty)).EndInit();
             this.popupControlContainerMediMaty.ResumeLayout(false);
@@ -3785,5 +3874,9 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem55;
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem1;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn11;
+        private DevExpress.XtraEditors.SpinEdit spinSwipeAmountNew;
+        private DevExpress.XtraEditors.SpinEdit spinTransferAmountNew;
+        private DevExpress.XtraLayout.LayoutControlItem lcTransferAmountNew;
+        private DevExpress.XtraLayout.LayoutControlItem lcSwipeAmountNew;
     }
 }

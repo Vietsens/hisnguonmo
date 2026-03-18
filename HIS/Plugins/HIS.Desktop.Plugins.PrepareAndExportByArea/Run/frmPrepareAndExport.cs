@@ -283,7 +283,6 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 (currentControlStateRDO != null && currentControlStateRDO.Count > 0)
                 ? currentControlStateRDO.Where(o => o.KEY == chkNotPrint.Name && o.MODULE_LINK == moduleLink).FirstOrDefault()
                 : null;
-
                 if (csNotPrint != null)
                 {
                     csNotPrint.VALUE = chkNotPrint.Checked ? "1" : "0";
@@ -1108,6 +1107,17 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
                         LoadTab3();
                     }
+                    //else
+                    //{
+                    //    LoadTab3();
+                        
+                    //    var newTarget = GetTargetFromPrepareGrid();
+                    //    if (newTarget != null)
+                    //    {
+                    //        // Gọi lại với target mới
+                    //        CallSpecific(newTarget);
+                    //    }
+                    //}    
                     MessageManager.Show(this.ParentForm, param, success);
                 }
             }

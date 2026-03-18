@@ -3787,6 +3787,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 LoadMediMateFromMediStock();
                 spinDiscount.EditValue = null;
                 spinTransferAmount.EditValue = null;
+                spinTransferAmountNew.EditValue = null;
                 spinDiscountRatio.EditValue = null;
                 checkImpExpPrice.Enabled = this.currentMediMate != null ? true : false;
                 dtIntructionTime.DateTime = DateTime.Now;

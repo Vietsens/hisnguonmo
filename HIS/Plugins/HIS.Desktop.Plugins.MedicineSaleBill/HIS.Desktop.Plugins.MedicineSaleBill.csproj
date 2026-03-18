@@ -213,6 +213,7 @@
     <Compile Include="Validation\BuyerTaxCodeValidationRule.cs" />
     <Compile Include="Validation\GridLookupEditValidationRule.cs" />
     <Compile Include="Validation\IdentityTypeValidationRule.cs" />
+    <Compile Include="Validation\SpinTranferAmountValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMedicineSaleBill.resx">
