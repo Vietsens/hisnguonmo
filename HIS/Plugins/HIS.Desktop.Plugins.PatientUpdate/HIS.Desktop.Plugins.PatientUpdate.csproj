@@ -32,6 +32,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="ACS.EFMODEL">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\ACS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="ACS.SDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\ACS.SDO.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Sparkline.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -48,6 +54,9 @@
     <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\EMR\EMR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Common">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Common.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.ModuleExt.dll</HintPath>
@@ -176,9 +185,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
       <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
@@ -292,7 +300,6 @@
       <DependentUpon>frmPatientUpdate.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -313,10 +320,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Common\HIS.Desktop.Common.csproj">
-      <Project>{59fdcba7-0f9f-4257-b95a-e37a1ccfe107}</Project>
-      <Name>HIS.Desktop.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.Control.Session\HIS.Desktop.Controls.Session.csproj">
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>

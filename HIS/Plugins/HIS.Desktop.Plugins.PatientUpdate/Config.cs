@@ -25,6 +25,14 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 {
 	class Config
 	{
+        private const string AllowEditBloodGroupRhOption = "HIS.Desktop.Plugins.PatientUpdate.AllowEditBloodGroupRh";
+        public static bool AllowEditBloodGroupRh
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(AllowEditBloodGroupRhOption) == "1";
+            }
+        }
         private const string IsPatientClassifyOption = "HIS.Desktop.Plugins.PatientClassifyOption";
         public static bool IsPatientClassify
         {

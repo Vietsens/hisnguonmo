@@ -216,7 +216,7 @@ namespace HIS.Desktop.Plugins.PatientUpdate
 
                 //#2173
                 SetEditInfo();
-
+                SetBloodGroupRhEnabled();
                 LoadConfigHisAcc();
                 ValidationClassify();
                 ValidationBHXH(txtBhxhFather, 10, 10);
@@ -403,6 +403,59 @@ namespace HIS.Desktop.Plugins.PatientUpdate
             }
         }
 
+        private bool CanEditBloodGroupRh()
+        {
+            try
+            {
+                // Check admin
+                string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore
+                    .ClientTokenManager.GetLoginName();
+                if (!string.IsNullOrEmpty(loginName))
+                {
+                    var employee = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker
+                        .Get<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>()
+                        .FirstOrDefault(p => p.LOGINNAME == loginName.Trim());
+                    if (employee != null && employee.IS_ADMIN == (short)1)
+                        return true;
+                }
+                // Check quyền nút HIS000051
+                if (GlobalVariables.AcsAuthorizeSDO != null)
+                {
+                    var controlAcs = GlobalVariables.AcsAuthorizeSDO.ControlInRoles;
+                    if (controlAcs != null && controlAcs.Any(o => o.CONTROL_CODE == "HIS000051"))
+                        return true;
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return false;
+            }
+        }
+
+        private void SetBloodGroupRhEnabled()
+        {
+            try
+            {
+                if (Config.AllowEditBloodGroupRh)
+                {
+                    bool canEdit = CanEditBloodGroupRh();
+                    cboBloodABOCode.Enabled = canEdit;
+                    cboBloodRHCode.Enabled = canEdit;
+                }
+                else
+                {
+                    cboBloodABOCode.Enabled = true;
+                    cboBloodRHCode.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void SetCaptionByLanguageKey()
         {
             try
