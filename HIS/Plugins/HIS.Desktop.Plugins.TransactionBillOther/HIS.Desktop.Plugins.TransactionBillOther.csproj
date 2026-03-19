@@ -217,7 +217,9 @@
     <Compile Include="Validation\GoodUnitNameValidationRule.cs" />
     <Compile Include="Validation\GoodNameValidationRule.cs" />
     <Compile Include="Validation\PayFormValidationRule.cs" />
+    <Compile Include="Validation\SpinSwipeAmountValidationRule.cs" />
     <Compile Include="Validation\SpinToTalAmountValidationRule.cs" />
+    <Compile Include="Validation\SpinTransferAmountValidationRule.cs" />
     <Compile Include="Validation\TransactionTimeValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
