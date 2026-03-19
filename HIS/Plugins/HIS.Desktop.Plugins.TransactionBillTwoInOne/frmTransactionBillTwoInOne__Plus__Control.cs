@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -601,6 +602,66 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool CheckValidTienCkQt()
+        {
+            decimal tongTienCKQT = 0;
+            decimal tongTienGiaoDich = 0;
+
+            // 1. Tính TỔNG TIỀN GIAO DỊCH (AMOUNT) của cả 2 bên (Bỏ qua nếu bị tích "Không thu")
+            if (!checkNotReciept.Checked)
+            {
+                tongTienGiaoDich += totalReciept;
+            }
+            if (!checkNotInvoice.Checked)
+            {
+                tongTienGiaoDich += totalInvoice;
+            }
+
+            // 2. KIỂM TRA BẮT BUỘC NHẬP TIỀN > 0 VÀ TÍNH TỔNG TIỀN CK + QT ĐÃ NHẬP
+
+            // --- Đối với Hóa đơn Viện phí ---
+            if (cboPayformReceipt.EditValue != null && Convert.ToInt64(cboPayformReceipt.EditValue) == 9)
+            {
+                if (spinSoTienReceipt.Value <= 0 || spinSoTienQTReceipt.Value <= 0)
+                {
+                    XtraMessageBox.Show(
+                        "Với hình thức 'Tiền mặt/Chuyển khoản/Quẹt thẻ' của Hóa đơn viện phí, bạn phải nhập số tiền CK và số tiền QT lớn hơn 0.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                tongTienCKQT += spinSoTienReceipt.Value + spinSoTienQTReceipt.Value;
+            }
+
+            // --- Đối với Hóa đơn Dịch vụ ---
+            if (cboPayFormInvoice.EditValue != null && Convert.ToInt64(cboPayFormInvoice.EditValue) == 9)
+            {
+                if (spinInvoiceCK.Value <= 0 || spinInvoiceQT.Value <= 0)
+                {
+                    XtraMessageBox.Show(
+                        "Với hình thức 'Tiền mặt/Chuyển khoản/Quẹt thẻ' của Hóa đơn dịch vụ, bạn phải nhập số tiền CK và số tiền QT lớn hơn 0.",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                tongTienCKQT += spinInvoiceCK.Value + spinInvoiceQT.Value;
+            }
+
+            // 3. SO SÁNH GỘP VÀ HIỂN THỊ CẢNH BÁO NẾU NHẬP QUÁ TIỀN
+            if (tongTienCKQT > tongTienGiaoDich)
+            {
+                XtraMessageBox.Show(
+                    string.Format("Tổng tiền chuyển khoản/quẹt thẻ [{0}] lớn hơn số tiền cần thanh toán của bệnh nhân [{1}]",
+                        Inventec.Common.Number.Convert.NumberToString(tongTienCKQT),
+                        Inventec.Common.Number.Convert.NumberToString(tongTienGiaoDich)),
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
         }
 
         private void cboInvoiceAccountBook_EditValueChanged(object sender, EventArgs e)
