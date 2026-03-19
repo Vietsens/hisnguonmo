@@ -86,9 +86,8 @@
     <Reference Include="Inventec.Common.EHoaDon">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.EHoaDon\Inventec.Common.EHoaDon.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.ElectronicBill, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Common\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBill\bin\Debug\Inventec.Common.ElectronicBill.dll</HintPath>
+    <Reference Include="Inventec.Common.ElectronicBill">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.ElectronicBill.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.ElectronicBill.Misa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -98,9 +97,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.ElectronicBillMoit\Inventec.Common.ElectronicBillMoit.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.ElectronicBillViettel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Common\Inventec.Common\Inventec.Common.ElectronicBill\Inventec.Common.ElectronicBillViettel\bin\Debug\Inventec.Common.ElectronicBillViettel.dll</HintPath>
+    <Reference Include="Inventec.Common.ElectronicBillViettel">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.ElectronicBillViettel.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
@@ -179,9 +177,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.SDO">
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
