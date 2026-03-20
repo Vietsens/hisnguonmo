@@ -662,7 +662,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 txtPackingTypeCode.Text = hIS_MEDICINE_TYPE.PACKING_TYPE_NAME;
                 txtMaterialGroupBHYT.Text = hIS_MEDICINE_TYPE.MATERIAL_GROUP_BHYT;
                 txtModel.Text = hIS_MEDICINE_TYPE.MODEL_CODE;
-
+                if (this.txtTechnicalSpec != null)
+                {
+                    txtTechnicalSpec.Text = hIS_MEDICINE_TYPE.TECHNICAL_SPEC;
+                }
                 if (hIS_MEDICINE_TYPE.IS_STOP_IMP == 1)
                 {
                     chkIsStopImp.CheckState = CheckState.Checked;
@@ -1249,6 +1252,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 materialType.MODEL_CODE = txtModel.Text.Trim();
                 materialType.RECORDING_TRANSACTION = txtRecordTransation.Text.Trim();
                 materialType.REGISTER_NUMBER = txtRegisterNumber.Text.Trim();
+
+                if (this.txtTechnicalSpec != null)
+                {
+                    materialType.TECHNICAL_SPEC = txtTechnicalSpec.Text.Trim();
+                }
 
                 if (spinNumOrder.EditValue != null)
                 {

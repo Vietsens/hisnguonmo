@@ -32,6 +32,7 @@ using HIS.Desktop.Plugins.ExecuteRoom.ADO;
 using HIS.Desktop.Plugins.ExecuteRoom.Base;
 using HIS.Desktop.Plugins.ExecuteRoom.Resources;
 using HIS.Desktop.Plugins.Library.CheckHeinGOV;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using HIS.UC.TreeSereServ7V2;
 using Inventec.Common.Adapter;
@@ -127,7 +128,264 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
 
         }
+        private long? ParseTimeString(string timeString)
+        {
+            if (string.IsNullOrWhiteSpace(timeString))
+                return null;
 
+            // 1. Parse số giây (format cũ: "28800")
+            long result;
+            if (long.TryParse(timeString, out result))
+                return result;
+
+            // 2. Parse TimeSpan chuẩn ("HH:mm:ss" hoặc "HH:mm")
+            TimeSpan timeSpan;
+            if (TimeSpan.TryParse(timeString, out timeSpan))
+                return (long)timeSpan.TotalSeconds;
+
+            // 3. Parse format tùy chỉnh "H:mm"
+            string[] parts = timeString.Split(':');
+            if (parts.Length >= 2)
+            {
+                int hours, minutes;
+                if (int.TryParse(parts[0], out hours) && int.TryParse(parts[1], out minutes))
+                {
+                    int seconds = 0;
+                    if (parts.Length > 2)
+                        int.TryParse(parts[2], out seconds);
+
+                    if (hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60 && seconds >= 0 && seconds < 60)
+                        return hours * 3600 + minutes * 60 + seconds;
+                }
+            }
+
+            Inventec.Common.Logging.LogSystem.Warn("ParseTimeString failed: " + timeString);
+            return null;
+        }
+        private void ApplyWorkingShiftFilter(
+    ref HisServiceReqLViewFilter filter,
+    long baseDateFrom,
+    long baseDateTo,
+    List<HIS_WORKING_SHIFT> selectedShifts)
+        {
+            try
+            {
+                if (selectedShifts == null || selectedShifts.Count == 0)
+                {
+                    // Không chọn ca nào = chọn tất cả
+                    filter.INTRUCTION_TIME_FROM = baseDateFrom;
+                    filter.INTRUCTION_TIME_TO = baseDateTo;
+                    return;
+                }
+
+                // Lấy MIN FROM_TIME và MAX TO_TIME của các ca đã chọn
+                long minFromSeconds = long.MaxValue;
+                long maxToSeconds = long.MinValue;
+
+                foreach (var shift in selectedShifts)
+                {
+                    long? fromSeconds = ParseTimeString(shift.FROM_TIME);
+                    long? toSeconds = ParseTimeString(shift.TO_TIME);
+
+                    if (fromSeconds.HasValue && toSeconds.HasValue)
+                    {
+                        minFromSeconds = Math.Min(minFromSeconds, fromSeconds.Value);
+                        maxToSeconds = Math.Max(maxToSeconds, toSeconds.Value);
+                    }
+                }
+
+                if (minFromSeconds == long.MaxValue || maxToSeconds == long.MinValue)
+                {
+                    // Không parse được ca nào
+                    filter.INTRUCTION_TIME_FROM = baseDateFrom;
+                    filter.INTRUCTION_TIME_TO = baseDateTo;
+                    return;
+                }
+
+                // Tính khoảng rộng nhất để Backend query
+                // VD: Ca 12:01-18:00, ngày 18-22 → Query 18/03 12:01 - 22/03 18:00
+                DateTime startDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(baseDateFrom).Value.Date;
+                DateTime endDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(baseDateTo).Value.Date;
+
+                DateTime filterStart = startDate.AddSeconds(minFromSeconds);
+                DateTime filterEnd = endDate.AddSeconds(maxToSeconds);
+
+                filter.INTRUCTION_TIME_FROM = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(filterStart).Value;
+                filter.INTRUCTION_TIME_TO = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(filterEnd).Value;
+
+                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                    "ApplyWorkingShiftFilter: FROM={0}, TO={1}",
+                    filter.INTRUCTION_TIME_FROM, filter.INTRUCTION_TIME_TO));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private List<ServiceReqADO> FilterByWorkingShifts(
+    List<ServiceReqADO> serviceReqs,
+    List<HIS_WORKING_SHIFT> selectedShifts,
+    long baseDateFrom,
+    long baseDateTo)
+        {
+            try
+            {
+                if (serviceReqs == null || serviceReqs.Count == 0)
+                    return serviceReqs;
+
+                if (selectedShifts == null || selectedShifts.Count == 0)
+                    return serviceReqs;
+
+                // Tạo danh sách các khoảng thời gian hợp lệ
+                List<TimePeriodADO> validPeriods = new List<TimePeriodADO>();
+
+                DateTime startDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(baseDateFrom).Value.Date;
+                DateTime endDate = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(baseDateTo).Value.Date;
+
+                // Duyệt qua từng ca đã chọn
+                foreach (var shift in selectedShifts)
+                {
+                    long? fromSeconds = ParseTimeString(shift.FROM_TIME);
+                    long? toSeconds = ParseTimeString(shift.TO_TIME);
+
+                    if (!fromSeconds.HasValue || !toSeconds.HasValue)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "Skip ca không hợp lệ: " + shift.WORKING_SHIFT_NAME);
+                        continue;
+                    }
+
+                    // Áp dụng khung giờ ca cho TỪNG NGÀY trong khoảng
+                    DateTime currentDate = startDate;
+                    while (currentDate <= endDate)
+                    {
+                        DateTime shiftStart = currentDate.AddSeconds(fromSeconds.Value);
+                        DateTime shiftEnd = currentDate.AddSeconds(toSeconds.Value);
+
+                        long periodFrom = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(shiftStart).Value;
+                        long periodTo = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(shiftEnd).Value;
+
+                        validPeriods.Add(new TimePeriodADO
+                        {
+                            From = periodFrom,
+                            To = periodTo
+                        });
+
+                        currentDate = currentDate.AddDays(1);
+                    }
+                }
+
+                // Gộp các khoảng trùng lặp hoặc liền kề
+                var mergedPeriods = MergeTimePeriods(validPeriods);
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "FilterByWorkingShifts: " + mergedPeriods.Count + " periods. " +
+                    Inventec.Common.Logging.LogUtil.TraceData("Periods", mergedPeriods));
+
+                // Lọc serviceReqs nằm trong các khoảng hợp lệ
+                return serviceReqs.Where(sr =>
+                {
+                    long instructionTime = sr.INTRUCTION_TIME;
+                    return mergedPeriods.Any(p => instructionTime >= p.From && instructionTime <= p.To);
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return serviceReqs;
+            }
+        }
+        private List<TimePeriodADO> MergeTimePeriods(List<TimePeriodADO> periods)
+        {
+            if (periods == null || periods.Count == 0)
+                return new List<TimePeriodADO>();
+
+            var sorted = periods.OrderBy(p => p.From).ToList();
+            var merged = new List<TimePeriodADO>();
+
+            TimePeriodADO current = sorted[0];
+
+            for (int i = 1; i < sorted.Count; i++)
+            {
+                // ✅ CHỈ merge nếu cùng ngày VÀ liền kề
+                // Extract ngày từ From/To (chia cho 1000000 để lấy phần yyyyMMdd)
+                long currentDay = current.To / 1000000;
+                long nextDay = sorted[i].From / 1000000;
+
+                // Chỉ merge nếu cùng ngày VÀ thời gian liền kề (hoặc overlap)
+                if (currentDay == nextDay && sorted[i].From <= current.To + 1)
+                {
+                    current.To = Math.Max(current.To, sorted[i].To);
+                }
+                else
+                {
+                    // Khác ngày hoặc không liền kề → lưu và bắt đầu period mới
+                    merged.Add(current);
+                    current = sorted[i];
+                }
+            }
+
+            merged.Add(current);
+            return merged;
+        }
+        private void GetBaseDateRange(out long baseDateFrom, out long baseDateTo)
+        {
+            baseDateFrom = 0;
+            baseDateTo = 0;
+
+            try
+            {
+                if (this.typeCodeFind__KeyWork_InDate == this.typeCodeFind_InDate
+                    && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue)
+                {
+                    // Lọc theo ngày
+                    baseDateFrom = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000");
+                    baseDateTo = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "235959");
+                }
+                else if (this.typeCodeFind__KeyWork_InDate == typeCodeFind_RangeDate
+                    && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue
+                    && dtIntructionDateTo.EditValue != null && dtIntructionDateTo.DateTime != DateTime.MinValue)
+                {
+                    // Lọc theo khoảng ngày
+                    baseDateFrom = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDate.EditValue).ToString("yyyyMMdd") + "000000");
+                    baseDateTo = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        Convert.ToDateTime(dtIntructionDateTo.EditValue).ToString("yyyyMMdd") + "235959");
+                }
+                else if (this.typeCodeFind__KeyWork_InDate == typeCodeFind__InMonth
+                    && dtIntructionDate.EditValue != null && dtIntructionDate.DateTime != DateTime.MinValue)
+                {
+                    // Lọc theo tháng
+                    DateTime monthDate = Convert.ToDateTime(dtIntructionDate.EditValue);
+                    DateTime firstDay = new DateTime(monthDate.Year, monthDate.Month, 1);
+                    DateTime lastDay = firstDay.AddMonths(1).AddDays(-1);
+
+                    baseDateFrom = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        firstDay.ToString("yyyyMMdd") + "000000");
+                    baseDateTo = Inventec.Common.TypeConvert.Parse.ToInt64(
+                        lastDay.ToString("yyyyMMdd") + "235959");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void cboWorkShift_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isInit) return;
+
+                cboWorkShift.Refresh();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         internal void FillDataToGridServiceReq(object param)
         {
             try
@@ -219,7 +477,21 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         Convert.ToDateTime(dtIntructionDateTo.EditValue).ToString("yyyyMMdd") + "235959");
                     }
                 }
+                if (!isSearchByPatientCode)
+                {
+                    List<HIS_WORKING_SHIFT> selectedShifts = GetSelectedWorkingShifts();
 
+                    if (selectedShifts != null && selectedShifts.Count > 0)
+                    {
+                        long baseDateFrom, baseDateTo;
+                        GetBaseDateRange(out baseDateFrom, out baseDateTo);
+
+                        if (baseDateFrom > 0 && baseDateTo > 0)
+                        {
+                            ApplyWorkingShiftFilter(ref hisServiceReqFilter, baseDateFrom, baseDateTo, selectedShifts);
+                        }
+                    }
+                }
                 List<long> lstServiceReqSTT = new List<long>();
                 //Chưa kết thúc 0
                 //Tất cả 1
@@ -432,6 +704,24 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
 
 
                     serviceReqs = (from r in apiResult.Data select new ServiceReqADO(r)).ToList();// (List<L_HIS_SERVICE_REQ>)apiResult.Data;
+                    if (!isSearchByPatientCode)
+                    {
+                        List<HIS_WORKING_SHIFT> selectedShifts = GetSelectedWorkingShifts();
+
+                        if (selectedShifts != null && selectedShifts.Count > 0)
+                        {
+                            long baseDateFrom, baseDateTo;
+                            GetBaseDateRange(out baseDateFrom, out baseDateTo);
+
+                            if (baseDateFrom > 0 && baseDateTo > 0)
+                            {
+                                int beforeCount = serviceReqs.Count;
+                                serviceReqs = FilterByWorkingShifts(serviceReqs, selectedShifts, baseDateFrom, baseDateTo);
+                                Inventec.Common.Logging.LogSystem.Debug(string.Format(
+                                    "Client-side filter: {0} → {1} records", beforeCount, serviceReqs.Count));
+                            }
+                        }
+                    }
                     rowCount = (serviceReqs == null ? 0 : serviceReqs.Count);
                     dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                     if (rowCount > 0)
@@ -493,7 +783,111 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 LogSystem.Error(ex);
             }
         }
+        /// <summary>
+        /// Lấy danh sách ca làm việc đã chọn từ cboWorkShift
+        /// </summary>
+        private List<HIS_WORKING_SHIFT> GetSelectedWorkingShifts()
+        {
+            List<HIS_WORKING_SHIFT> result = new List<HIS_WORKING_SHIFT>();
+            try
+            {
+                if (cboWorkShift.EditValue != null)
+                {
+                    var gridView = cboWorkShift.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                    if (gridView != null)
+                    {
+                        var selectedRows = gridView.GetSelectedRows();
+                        foreach (var rowHandle in selectedRows)
+                        {
+                            var shiftADO = gridView.GetRow(rowHandle) as WorkingShiftADO;
+                            if (shiftADO != null)
+                            {
+                                // Tạo HIS_WORKING_SHIFT từ ADO
+                                var shift = new HIS_WORKING_SHIFT();
+                                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_WORKING_SHIFT>(shift, shiftADO);
+                                result.Add(shift);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        private void InitComboWorkShift()
+        {
+            try
+            {
+                // Lấy danh sách ca làm việc từ backend
+                var workingShifts = BackendDataWorker.Get<HIS_WORKING_SHIFT>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .OrderBy(o => ParseTimeString(o.FROM_TIME) ?? 0)  // ✅ SỬA: Parse string trước khi sort
+                    .ToList();
 
+                // Tạo list hiển thị với format thời gian
+                List<WorkingShiftADO> displayList = new List<WorkingShiftADO>();
+                foreach (var shift in workingShifts)
+                {
+                    displayList.Add(new WorkingShiftADO(shift));
+                }
+
+                // Cấu hình GridLookUpEdit
+                cboWorkShift.Properties.DataSource = displayList;
+                cboWorkShift.Properties.DisplayMember = "WORKING_SHIFT_NAME";
+                cboWorkShift.Properties.ValueMember = "ID";
+                cboWorkShift.Properties.NullText = "Tất cả";
+
+                // Cấu hình GridView của GridLookUpEdit
+                var gridView = cboWorkShift.Properties.View as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (gridView != null)
+                {
+                    gridView.OptionsView.ShowColumnHeaders = true;
+                    gridView.OptionsView.ShowIndicator = false;
+                    gridView.OptionsSelection.MultiSelect = true;
+                    gridView.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
+
+                    // Xóa tất cả columns cũ
+                    gridView.Columns.Clear();
+
+                    // Column checkbox
+                    DevExpress.XtraGrid.Columns.GridColumn colCheck = new DevExpress.XtraGrid.Columns.GridColumn();
+                    colCheck.FieldName = "check1";
+                    colCheck.Caption = "";
+                    colCheck.Width = 30;
+                    colCheck.UnboundType = DevExpress.Data.UnboundColumnType.Boolean;
+                    colCheck.OptionsColumn.AllowEdit = false;
+                    colCheck.OptionsColumn.ShowCaption = false;
+                    gridView.Columns.Add(colCheck);
+
+                    // Column tên ca
+                    DevExpress.XtraGrid.Columns.GridColumn colName = new DevExpress.XtraGrid.Columns.GridColumn();
+                    colName.FieldName = "WORKING_SHIFT_NAME";
+                    colName.Caption = "Tên ca";
+                    colName.Width = 150;
+                    colName.OptionsColumn.AllowEdit = false;
+                    colName.Visible = true;
+                    gridView.Columns.Add(colName);
+
+                    // Column thời gian
+                    DevExpress.XtraGrid.Columns.GridColumn colTime = new DevExpress.XtraGrid.Columns.GridColumn();
+                    colTime.FieldName = "TIME_DISPLAY";
+                    colTime.Caption = "Thời gian";
+                    colTime.Width = 100;
+                    colTime.OptionsColumn.AllowEdit = false;
+                    colTime.Visible = true;
+                    gridView.Columns.Add(colTime);
+
+                    gridView.BestFitColumns();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private TreeSereServ7ADO InitTreeSereServ(bool IsNotGroup, bool STT_)
         {
             TreeSereServ7ADO ado = new TreeSereServ7ADO();

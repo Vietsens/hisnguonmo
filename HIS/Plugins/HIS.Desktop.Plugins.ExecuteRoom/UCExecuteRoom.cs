@@ -17,21 +17,35 @@
  */
 using DevExpress.Data;
 using DevExpress.Utils;
+using DevExpress.Utils.Menu;
 using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using EMR.EFMODEL.DataModels;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.ExecuteRoom.ADO;
 using HIS.Desktop.Plugins.ExecuteRoom.Base;
 using HIS.Desktop.Plugins.ExecuteRoom.Resources;
+using HIS.Desktop.Plugins.Library.FormMedicalRecord;
+using HIS.Desktop.Plugins.Library.OtherTreatmentHistory;
+using HIS.Desktop.Plugins.Library.OtherTreatmentHistory.Base;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using HIS.UC.TreeSereServ7V2;
 using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ADO;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
@@ -39,30 +53,17 @@ using Inventec.Desktop.Plugins.ExecuteRoom;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using MPS;
+using MPS.ProcessorBase.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
-using Inventec.Common.Controls.EditorLoader;
-using System.Text;
-using HIS.Desktop.Utilities.Extensions;
-using DevExpress.XtraEditors.Repository;
-using Inventec.Common.Logging;
-using HIS.Desktop.Plugins.Library.OtherTreatmentHistory.Base;
-using HIS.Desktop.Plugins.Library.OtherTreatmentHistory;
-using DevExpress.Utils.Menu;
-using HIS.Desktop.LocalStorage.BackendData;
-using System.Threading;
-using HIS.Desktop.Plugins.Library.FormMedicalRecord;
 using System.Resources;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using MPS.ProcessorBase.Core;
-using MPS;
-using Inventec.Common.SignLibrary.ADO;
-using HIS.Desktop.ApiConsumer;
-using EMR.EFMODEL.DataModels;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 
 
 namespace HIS.Desktop.Plugins.ExecuteRoom
@@ -196,6 +197,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.3");
                 InitTypeFind();
                 InitComboSucKhoe();
+                InitComboWorkShift();
                 LoadActionButtonRefesh(true);
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.4");
                 this.InitControlState();
@@ -588,7 +590,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-        }
+        }      
         private void InitComboSucKhoe()
         {
             try
@@ -3440,6 +3442,54 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 {
                     Inventec.Common.Logging.LogSystem.Error(ex);
                 }
+            }
+        }
+
+        private void cboWorkShift_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                var gridView = cboWorkShift.Properties.View as GridView;
+                if (gridView == null) return;
+
+                int[] selectedRows = gridView.GetSelectedRows();
+
+                // Không chọn gì → "Tất cả"
+                if (selectedRows == null || selectedRows.Length == 0)
+                {
+                    e.DisplayText = "Tất cả";
+                    return;
+                }
+
+                var dataSource = cboWorkShift.Properties.DataSource as List<WorkingShiftADO>;
+                if (dataSource == null) return;
+
+                // Chọn tất cả → "Tất cả"
+                if (selectedRows.Length == dataSource.Count)
+                {
+                    e.DisplayText = "Tất cả";
+                    return;
+                }
+
+                // Hiển thị danh sách ca đã chọn
+                StringBuilder sb = new StringBuilder();
+                foreach (int rowHandle in selectedRows)
+                {
+                    if (rowHandle < 0) continue; // Skip group rows
+
+                    var shift = gridView.GetRow(rowHandle) as WorkingShiftADO;
+                    if (shift != null)
+                    {
+                        if (sb.Length > 0) sb.Append(", ");
+                        sb.Append(shift.WORKING_SHIFT_NAME);
+                    }
+                }
+
+                e.DisplayText = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

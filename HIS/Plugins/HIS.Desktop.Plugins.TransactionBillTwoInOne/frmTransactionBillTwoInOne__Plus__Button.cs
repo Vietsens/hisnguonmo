@@ -76,6 +76,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                if (!CheckValidTienCkQt())
+                {
+                    return;
+                }
                 if (!btnSave.Enabled)
                     return;
                 SetEnableButtonSave(false);

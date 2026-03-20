@@ -176,6 +176,10 @@
     <Reference Include="Inventec.Common.QrCodeBHYT ">
       <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.QrCodeBHYT\Inventec.Common.QrCodeBHYT .dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.Repository, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\Integrate\EMR\Inventec.Common.Repository.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
     </Reference>
@@ -312,6 +316,8 @@
     <Compile Include="ADO\SereServ6ADO.cs" />
     <Compile Include="ADO\ServiceReqADO.cs" />
     <Compile Include="ADO\SwapSereServADO.cs" />
+    <Compile Include="ADO\TimePeriodADO.cs" />
+    <Compile Include="ADO\WorkingShiftADO.cs" />
     <Compile Include="Base\EnumUtil.cs" />
     <Compile Include="Base\ModuleLink.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />

@@ -234,6 +234,9 @@
   <metadata name="dxValidationProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>142, 17</value>
   </metadata>
+  <data name="resource.ToolTip" xml:space="preserve">
+    <value>Thời gian làm việc ghi theo thời gian đăng ký hành nghề, Định dạng: HHMM-HHMM (HН là giờ, MM là phút). Có thể có nhiều khoảng thời gian hoặc nhiều ngày trong tuần (ví dụ: T20800-1500;T30700-1100;T40800-1100;T41400-1700)</value>
+  </data>
   <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>456, 17</value>
   </metadata>
