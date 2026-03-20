@@ -57,6 +57,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Resources;
@@ -4823,6 +4824,323 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
         }
 
+        private string ProcessExportXmlTT12Detail(ref bool isSuccess, List<V_HIS_TREATMENT_12> hisTreatments, List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters, List<V_HIS_SERE_SERV_2> listSereServ, List<V_HIS_SERE_SERV_PTTT> hisSereServPttts)
+        {
+            string result = "";
+            Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
+            try
+            {
+                Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
+                Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
+                Dictionary<long, List<V_HIS_SERE_SERV_PTTT>> dicSereServPttt = new Dictionary<long, List<V_HIS_SERE_SERV_PTTT>>();
+
+                if (hisPatientTypeAlters != null)
+                {
+                    foreach (var item in hisPatientTypeAlters)
+                    {
+                        if (!dicPatientTypeAlter.ContainsKey(item.TREATMENT_ID)) dicPatientTypeAlter[item.TREATMENT_ID] = new List<V_HIS_PATIENT_TYPE_ALTER>();
+                        dicPatientTypeAlter[item.TREATMENT_ID].Add(item);
+                    }
+                }
+
+                if (listSereServ != null)
+                {
+                    foreach (var sereServ in listSereServ)
+                    {
+                        if (sereServ.TDL_TREATMENT_ID.HasValue)
+                        {
+                            if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value)) dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
+                            dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
+                        }
+                    }
+                }
+
+                if (hisSereServPttts != null)
+                {
+                    foreach (var ssPttt in hisSereServPttts)
+                    {
+                        if (ssPttt.TDL_TREATMENT_ID.HasValue)
+                        {
+                            if (!dicSereServPttt.ContainsKey(ssPttt.TDL_TREATMENT_ID.Value)) dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_PTTT>();
+                            dicSereServPttt[ssPttt.TDL_TREATMENT_ID.Value].Add(ssPttt);
+                        }
+                    }
+                }
+
+                List<HIS_PATIENT_TYPE> hisPatientTypes = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
+
+                // Lấy mã CS KCB (Nếu không có sẽ để rỗng)
+                var branch = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_BRANCH>().FirstOrDefault();
+                string maCskcb = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
+
+                // Khởi tạo đối tượng gom dữ liệu C79
+                HSTHC79 hsthc79 = new HSTHC79();
+                hsthc79.DS_CHITIET = new DS_CHITIET();
+                hsthc79.DS_CHITIET.Id = "Id-" + Guid.NewGuid().ToString();
+                hsthc79.DS_CHITIET.DanhSachChiTiet = new List<C79_CHITIET>();
+                hsthc79.CHUKYDONVI = "";
+
+                int stt = 1;
+
+                // Vòng lặp tính toán từng hồ sơ và đẩy vào list chung
+                foreach (var treatment in hisTreatments)
+                {
+                    try
+                    {
+                        // Prepare Input
+                        His.Bhyt.ExportXml.XMLTT12.XML01BH.InputXML01BHADO inputAdo = new His.Bhyt.ExportXml.XMLTT12.XML01BH.InputXML01BHADO();
+                        inputAdo.HisConfig = this.NewConfig;
+                        inputAdo.HisPatientTypes = hisPatientTypes;
+                        inputAdo.vTreatment12 = new List<V_HIS_TREATMENT_12> { treatment };
+
+                        if (dicPatientTypeAlter.ContainsKey(treatment.ID)) inputAdo.PatientTypeAlter = dicPatientTypeAlter[treatment.ID];
+                        else inputAdo.PatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
+
+                        if (dicSereServ.ContainsKey(treatment.ID)) inputAdo.vSereServ2 = dicSereServ[treatment.ID];
+                        else inputAdo.vSereServ2 = new List<V_HIS_SERE_SERV_2>();
+
+                        if (dicSereServPttt.ContainsKey(treatment.ID)) inputAdo.vHisSereServPttt = dicSereServPttt[treatment.ID];
+                        else inputAdo.vHisSereServPttt = new List<V_HIS_SERE_SERV_PTTT>();
+
+                        // Processor
+                        His.Bhyt.ExportXml.XMLTT12.XML01BH.Xml01BHProcessor xmlProcessor = new His.Bhyt.ExportXml.XMLTT12.XML01BH.Xml01BHProcessor(inputAdo);
+                        var ado = xmlProcessor.GenerateXml01BhADOData();
+
+                        if (ado != null)
+                        {
+                            C79_CHITIET itemC79 = new C79_CHITIET();
+                            itemC79.STT = stt.ToString();
+                            itemC79.HO_TEN = ado.hoTen;
+                            itemC79.NGAY_SINH = ado.ngaySinh;
+                            itemC79.GIOI_TINH = ado.gioiTinh;
+                            itemC79.MA_THE_BHYT = ado.maTheBhyt;
+                            itemC79.MA_BENH_CHINH = ado.maBenhChinh;
+                            itemC79.NGAY_VAO = ado.ngayVao;
+                            itemC79.NGAY_VAO_NOI_TRU = ado.ngayVaoNoiTru;
+                            itemC79.NGAY_RA = ado.ngayRa;
+                            itemC79.SO_NGAY_DTRI = ado.soNgayDieuTri.ToString();
+                            itemC79.MA_LOAI_KCB = ado.maLoaiKcb;
+                            itemC79.T_TONGCHI_BV = ado.tTongChiBv.HasValue ? ado.tTongChiBv.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
+                            itemC79.T_TONGCHI_BH = ado.tTongChiBh.HasValue ? ado.tTongChiBh.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
+                            itemC79.T_BHTT = ado.tBhtt.HasValue ? ado.tBhtt.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
+                            itemC79.T_BNCCT = ado.tBncct.HasValue ? ado.tBncct.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
+                            itemC79.T_BNTT = ado.tBntt.HasValue ? ado.tBntt.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
+                            itemC79.T_NGUONKHAC = ado.tNguonKhac.HasValue ? ado.tNguonKhac.Value.ToString("0.##", CultureInfo.InvariantCulture) : "0";
+                            itemC79.MA_CSKCB = maCskcb;
+
+                            // Tính năm tháng quyết toán dựa trên ngày ra
+                            if (!string.IsNullOrEmpty(ado.ngayRa) && ado.ngayRa.Length >= 8)
+                            {
+                                itemC79.NAM_QT = ado.ngayRa.Substring(0, 4);
+                                itemC79.THANG_QT = int.Parse(ado.ngayRa.Substring(4, 2)).ToString();
+                            }
+                            else
+                            {
+                                itemC79.NAM_QT = DateTime.Now.Year.ToString();
+                                itemC79.THANG_QT = DateTime.Now.Month.ToString();
+                            }
+
+                            hsthc79.DS_CHITIET.DanhSachChiTiet.Add(itemC79);
+                            stt++;
+                        }
+                        else
+                        {
+                            if (!DicErrorMess.ContainsKey("Lỗi sinh dữ liệu tính toán C79")) DicErrorMess["Lỗi sinh dữ liệu tính toán C79"] = new List<string>();
+                            DicErrorMess["Lỗi sinh dữ liệu tính toán C79"].Add(treatment.TREATMENT_CODE);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                        if (!DicErrorMess.ContainsKey(ex.Message)) DicErrorMess[ex.Message] = new List<string>();
+                        DicErrorMess[ex.Message].Add(treatment.TREATMENT_CODE);
+                    }
+                }
+
+                // Xuất XML sau khi đã gom đủ dữ liệu vào list
+                if (hsthc79.DS_CHITIET.DanhSachChiTiet.Count > 0)
+                {
+                    string fullFileName = string.Format("C79_{0}.xml", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+                    string saveFilePath = Path.Combine(this.savePathADO.pathXmlTT12, fullFileName);
+
+                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(HSTHC79));
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        System.Xml.XmlWriterSettings settings = new System.Xml.XmlWriterSettings();
+                        settings.Encoding = new UTF8Encoding(false); // Loại bỏ BOM UTF-8
+                        settings.Indent = false;
+                        settings.OmitXmlDeclaration = false;
+
+                        using (System.Xml.XmlWriter writer = System.Xml.XmlWriter.Create(ms, settings))
+                        {
+                            System.Xml.Serialization.XmlSerializerNamespaces ns = new System.Xml.Serialization.XmlSerializerNamespaces();
+                            ns.Add("", ""); // Bỏ namespace rác
+                            serializer.Serialize(writer, hsthc79, ns);
+                        }
+
+                        File.WriteAllBytes(saveFilePath, ms.ToArray());
+                    }
+
+                    // Gọi Ký số cho file C79
+                    if (chkSignFileCertUtil.Checked)
+                    {
+                        if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Không có thông tin HSM server/Usb Token ký số");
+                        }
+                        else
+                        {
+                            bool signSuccess = SignXmlFileTT12(saveFilePath);
+                            if (!signSuccess)
+                            {
+                                if (!DicErrorMess.ContainsKey("Lỗi ký số XML C79")) DicErrorMess["Lỗi ký số XML C79"] = new List<string>();
+                                DicErrorMess["Lỗi ký số XML C79"].Add(fullFileName);
+
+                                if (File.Exists(saveFilePath)) File.Delete(saveFilePath); // Xóa file nếu ký tạch
+                            }
+                        }
+                    }
+
+                    isSuccess = true;
+                }
+
+                if (DicErrorMess.Count > 0)
+                {
+                    foreach (var item in DicErrorMess)
+                    {
+                        result += String.Format("{0}:{1}. ", item.Key, String.Join(",", item.Value));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result += "Lỗi xử lý dữ liệu xuất XML C79.";
+            }
+            return result;
+        }
+
+        private bool GenerateXmlTT12(ref CommonParam paramExport, List<V_HIS_TREATMENT_1> listSelection)
+        {
+            bool result = false;
+            try
+            {
+                if (listSelection.Count > 0)
+                {
+                    listSelection = listSelection.GroupBy(o => o.TREATMENT_CODE).Select(s => s.First()).ToList();
+                    this.NewConfig = GetNewConfig();
+                    int skip = 0;
+
+                    while (listSelection.Count - skip > 0)
+                    {
+                        var limit = listSelection.Skip(skip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
+                        skip = skip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
+
+                        // Khởi tạo lại list để Thread fill data vào
+                        ListPatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
+                        ListSereServ = new List<V_HIS_SERE_SERV_2>();
+                        HisTreatments = new List<V_HIS_TREATMENT_12>();
+                        HisSereServPttts = new List<V_HIS_SERE_SERV_PTTT>();
+
+                        isExportXml = true;
+                        CreateThreadGetData(limit); // Gọi Thread lấy Data song song
+                        isExportXml = false;
+
+                        // Pass Data xuống hàm xử lý chi tiết
+                        string message = ProcessExportXmlTT12Detail(ref result, HisTreatments, ListPatientTypeAlter, ListSereServ, HisSereServPttts);
+
+                        if (!String.IsNullOrEmpty(message))
+                        {
+                            paramExport.Messages.Add(message);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        private bool SignXmlFileTT12(string sourceFile)
+        {
+            try
+            {
+                if (SettingSignADO == null) return false;
+                if (string.IsNullOrEmpty(sourceFile) || !File.Exists(sourceFile)) return false;
+
+                string currentDirectory = Directory.GetCurrentDirectory();
+                string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+                Directory.CreateDirectory(tempFolderPath);
+
+                string fullFileName = Path.GetFileName(sourceFile);
+                string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
+                File.Create(tempFilePath).Close();
+
+                string pathAfterFileSign = null;
+                WcfSignDCO wcfSignDCO = null;
+
+                if (SettingSignADO.IsHsm)
+                {
+                    var xmlBase64 = SourceFileSignApi(ReadFileContent(sourceFile));
+                    if (string.IsNullOrEmpty(xmlBase64)) return false;
+
+                    var xmlBytes = Convert.FromBase64String(xmlBase64);
+                    File.WriteAllBytes(tempFilePath, xmlBytes);
+                    pathAfterFileSign = tempFilePath;
+                }
+                else
+                {
+                    wcfSignDCO = new WcfSignDCO
+                    {
+                        SerialNumber = SettingSignADO.SerialNumber,
+                        OutputFile = tempFilePath,
+                        PIN = "",
+                        SourceFile = sourceFile,
+                        fieldSigned = "CHUKYDONVI"
+                    };
+
+                    string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                    SignProcessorClient signProcessorClient = new SignProcessorClient();
+
+                    if (!VerifyServiceSignProcessorIsRunning()) return false;
+
+                    var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                    if (wcfSignResultDCO == null || !wcfSignResultDCO.Success) return false;
+
+                    pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                }
+
+                // Chép lại file đã ký đè lên thư mục Output
+                if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXmlTT12))
+                {
+                    if (wcfSignDCO != null)
+                    {
+                        File.Copy(pathAfterFileSign, wcfSignDCO.SourceFile, true);
+                    }
+                    else if (SettingSignADO.IsHsm)
+                    {
+                        File.Copy(pathAfterFileSign, sourceFile, true);
+                    }
+                }
+
+                // Dọn dẹp thư mục Temp
+                foreach (string file in Directory.GetFiles(tempFolderPath))
+                {
+                    File.Delete(file);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
+            }
+        }
+
         private void gridViewTreatment_PopupMenuShowing(object sender, PopupMenuShowingEventArgs e)
         {
             try
@@ -5722,6 +6040,51 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             }
             catch (Exception ex)
             {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnExportXml12_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!btnExportXml12.Enabled || listSelection == null || listSelection.Count == 0) return;
+                CommonParam param = new CommonParam();
+                bool success = false;
+
+                if (this.savePathADO == null || string.IsNullOrEmpty(this.savePathADO.pathXmlTT12))
+                {
+                    XtraMessageBox.Show("Vui lòng thiết lập thư mục lưu trữ trước khi xuất dữ liệu.", Resources.ResourceMessageLang.ThongBao);
+                    btnSavePath_Click(null, null);
+                    return;
+                }
+
+                if (this.savePathADO != null && !string.IsNullOrEmpty(this.savePathADO.pathXmlTT12))
+                {
+                    WaitingManager.Show();
+                    Inventec.Common.Logging.LogSystem.Info("btnExportXml12_Click Begin");
+
+                    success = this.GenerateXmlTT12(ref param, listSelection);
+
+                    Inventec.Common.Logging.LogSystem.Info("btnExportXml12_Click End");
+                    WaitingManager.Hide();
+
+                    if (success && param.Messages.Count == 0)
+                    {
+                        MessageManager.Show(this.ParentForm, param, success);
+                    }
+                    else if (param.Messages.Count > 0)
+                    {
+                        MessageManager.Show(param, success);
+                    }
+
+                    this.gridControlTreatment.RefreshDataSource();
+                }
+                SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
