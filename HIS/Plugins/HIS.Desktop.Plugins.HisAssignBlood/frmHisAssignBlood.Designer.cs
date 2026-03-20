@@ -45,7 +45,6 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -76,16 +75,16 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.colRh = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colMl = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colStockValue = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnCtrlK = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnCtrlS = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnSaveAndPrint = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
-            this.imageCollection1 = new DevExpress.Utils.ImageCollection(this.components);
+            this.imageCollection1 = new DevExpress.Utils.ImageCollection();
             this.cboBloodLevel = new DevExpress.XtraEditors.ComboBoxEdit();
             this.chkShowGroupBlood = new DevExpress.XtraEditors.CheckEdit();
-            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer(this.components);
+            this.popupControlContainer1 = new DevExpress.XtraBars.PopupControlContainer();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnClose = new DevExpress.XtraEditors.SimpleButton();
             this.memoEdit1 = new DevExpress.XtraEditors.MemoEdit();
@@ -219,9 +218,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.dxValidProviderBoXung__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxValidationProviderControl__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidProviderBoXung__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProviderControl__MedicinePage = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlExternalBlood)).BeginInit();
@@ -402,7 +401,7 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
             // colAbo
             // 
             this.colAbo.Caption = "ABO";
-            this.colAbo.FieldName = "Abo";
+            this.colAbo.FieldName = "ABO";
             this.colAbo.Name = "colAbo";
             this.colAbo.OptionsColumn.AllowEdit = false;
             this.colAbo.Visible = true;

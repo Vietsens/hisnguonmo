@@ -905,11 +905,11 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                 this.lstSerivce = BackendDataWorker.Get<HIS_SERVICE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 this.allDataExecuteRooms = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_EXECUTE_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 this.requestRoom = GetRequestRoom(this.currentModule.RoomId);
-                if (this._ServiceReqEdit != null && this._ServiceReqEdit.ID > 0)
-                {
+                    if (this._ServiceReqEdit != null && this._ServiceReqEdit.ID > 0)
+                    {
                     this.actionType = GlobalVariables.ActionEdit;
                     this.LoadServiceReqOld(this._ServiceReqEdit.ID);
-                }
+                    }
                 this.isInitForm = false;
                 WaitingManager.Hide();
             }
@@ -3932,20 +3932,34 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
                     .Get<MOS.EFMODEL.DataModels.V_HIS_MEDI_STOCK>()
                     .FirstOrDefault(o => o.ID == mediStockId);
 
-                _isExternalMinhTamMode = IsExternalMinhTamStock(ms);
+                bool isEditOld = (_ServiceReqEdit != null && _ServiceReqEdit.ID > 0 && actionType == GlobalVariables.ActionEdit);
 
                 chkShowGroupBlood.Checked = false;
+                _isExternalMinhTamMode = IsExternalMinhTamStock(ms);
+
+                if (_isExternalMinhTamMode && isEditOld)
+                    EnableAboRhEditOnOldServiceReq();
+                else
+                    ApplyAboRhReadOnly();
+
                 chkShowGroupBlood.Visible = !_isExternalMinhTamMode;
                 chkShowGroupBlood.Enabled = !_isExternalMinhTamMode;
-                ApplyAboRhReadOnly();
 
                 // Nếu chỉ đổi UI mà không load thì dừng ở đây
                 if (!doLoad) return;
 
-                // Clear các datasource dễ “đè”
-                gridControlExternalBlood.DataSource = null;
-                gridControlServiceProcess__TabBlood.DataSource = null;
+                bool isOldOrder = (_ServiceReqEdit != null && _ServiceReqEdit.ID > 0);
+                bool isLockedStock = !cboMediStockExport_TabBlood.Enabled;
 
+                // luôn clear tồn Minh Tâm để tránh nhìn nhầm
+                gridControlExternalBlood.DataSource = null;
+
+                // chỉ clear đơn khi là kê mới và user đổi kho
+                if (!(isOldOrder || isLockedStock))
+                {
+                    gridControlServiceProcess__TabBlood.DataSource = null;
+                    ListBloodTypeADOProcess = new List<BloodTypeADO>();
+                }
                 // Reset cột group
                 //gridColumn1.VisibleIndex = -1;
                 //gridColumn2.VisibleIndex = -1;
@@ -4278,6 +4292,9 @@ namespace HIS.Desktop.Plugins.HisAssignBlood
         private void ApplyAboRhReadOnly()
         {
             bool isReadOnly = _isExternalMinhTamMode;
+
+            gridColumn1.Visible = !isReadOnly;
+            gridColumn2.Visible = !isReadOnly;
 
             grcBloodABO__TabBlood.OptionsColumn.AllowEdit = !isReadOnly;
             grcBloodRH__TabBlood.OptionsColumn.AllowEdit = !isReadOnly;
