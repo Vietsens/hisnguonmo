@@ -54,10 +54,14 @@ namespace HIS.UC.Medicine
             this.repositoryItemRadio_Disable = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemSpinEdit_Amount = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
             this.repositoryItemSpinEdit_Price = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
-            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
-            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.repositoryItemCheck__Expend = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemSpinEdit__Amount_Bhyt = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.repositoryItemSpinEdit_Dm_Nsx_Cdd = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.repositoryItemSpinEdit_Dm_Thucte_Cdd = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.repositoryItemSpinEdit_Lieu_Bq_Px = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px = new DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit();
+            this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
+            this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlMedicine)).BeginInit();
@@ -68,10 +72,14 @@ namespace HIS.UC.Medicine
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRadio_Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Amount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Price)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheck__Expend)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit__Amount_Bhyt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Dm_Nsx_Cdd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Dm_Thucte_Cdd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Lieu_Bq_Px)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -101,7 +109,11 @@ namespace HIS.UC.Medicine
             this.repositoryItemSpinEdit_Amount,
             this.repositoryItemSpinEdit_Price,
             this.repositoryItemCheck__Expend,
-            this.repositoryItemSpinEdit__Amount_Bhyt});
+            this.repositoryItemSpinEdit__Amount_Bhyt,
+            this.repositoryItemSpinEdit_Dm_Nsx_Cdd,
+            this.repositoryItemSpinEdit_Dm_Thucte_Cdd,
+            this.repositoryItemSpinEdit_Lieu_Bq_Px,
+            this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px});
             this.gridControlMedicine.Size = new System.Drawing.Size(685, 449);
             this.gridControlMedicine.TabIndex = 4;
             this.gridControlMedicine.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -178,6 +190,86 @@ namespace HIS.UC.Medicine
             0});
             this.repositoryItemSpinEdit_Price.Name = "repositoryItemSpinEdit_Price";
             // 
+            // repositoryItemCheck__Expend
+            // 
+            this.repositoryItemCheck__Expend.AutoHeight = false;
+            this.repositoryItemCheck__Expend.Name = "repositoryItemCheck__Expend";
+            // 
+            // repositoryItemSpinEdit__Amount_Bhyt
+            // 
+            this.repositoryItemSpinEdit__Amount_Bhyt.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.repositoryItemSpinEdit__Amount_Bhyt.AutoHeight = false;
+            this.repositoryItemSpinEdit__Amount_Bhyt.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemSpinEdit__Amount_Bhyt.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit__Amount_Bhyt.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit__Amount_Bhyt.MaxValue = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.repositoryItemSpinEdit__Amount_Bhyt.Name = "repositoryItemSpinEdit__Amount_Bhyt";
+            // 
+            // repositoryItemSpinEdit_Dm_Nsx_Cdd
+            // 
+            this.repositoryItemSpinEdit_Dm_Nsx_Cdd.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.repositoryItemSpinEdit_Dm_Nsx_Cdd.AutoHeight = false;
+            this.repositoryItemSpinEdit_Dm_Nsx_Cdd.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemSpinEdit_Dm_Nsx_Cdd.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit_Dm_Nsx_Cdd.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit_Dm_Nsx_Cdd.MaxValue = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.repositoryItemSpinEdit_Dm_Nsx_Cdd.Name = "repositoryItemSpinEdit_Dm_Nsx_Cdd";
+            // 
+            // repositoryItemSpinEdit_Dm_Thucte_Cdd
+            // 
+            this.repositoryItemSpinEdit_Dm_Thucte_Cdd.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.repositoryItemSpinEdit_Dm_Thucte_Cdd.AutoHeight = false;
+            this.repositoryItemSpinEdit_Dm_Thucte_Cdd.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemSpinEdit_Dm_Thucte_Cdd.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit_Dm_Thucte_Cdd.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit_Dm_Thucte_Cdd.MaxValue = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.repositoryItemSpinEdit_Dm_Thucte_Cdd.Name = "repositoryItemSpinEdit_Dm_Thucte_Cdd";
+            // 
+            // repositoryItemSpinEdit_Lieu_Bq_Px
+            // 
+            this.repositoryItemSpinEdit_Lieu_Bq_Px.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.repositoryItemSpinEdit_Lieu_Bq_Px.AutoHeight = false;
+            this.repositoryItemSpinEdit_Lieu_Bq_Px.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemSpinEdit_Lieu_Bq_Px.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit_Lieu_Bq_Px.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit_Lieu_Bq_Px.MaxValue = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.repositoryItemSpinEdit_Lieu_Bq_Px.Name = "repositoryItemSpinEdit_Lieu_Bq_Px";
+            // 
+            // repositoryItemSpinEdit_Tl_Thucte_Bq_Px
+            // 
+            this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px.AutoHeight = false;
+            this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px.MaxValue = new decimal(new int[] {
+            1410065407,
+            2,
+            0,
+            0});
+            this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px.Name = "repositoryItemSpinEdit_Tl_Thucte_Bq_Px";
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -200,26 +292,6 @@ namespace HIS.UC.Medicine
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // repositoryItemCheck__Expend
-            // 
-            this.repositoryItemCheck__Expend.AutoHeight = false;
-            this.repositoryItemCheck__Expend.Name = "repositoryItemCheck__Expend";
-            // 
-            // repositoryItemSpinEdit__Amount_Bhyt
-            // 
-            this.repositoryItemSpinEdit__Amount_Bhyt.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.repositoryItemSpinEdit__Amount_Bhyt.AutoHeight = false;
-            this.repositoryItemSpinEdit__Amount_Bhyt.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
-            this.repositoryItemSpinEdit__Amount_Bhyt.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.repositoryItemSpinEdit__Amount_Bhyt.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.repositoryItemSpinEdit__Amount_Bhyt.MaxValue = new decimal(new int[] {
-            1410065407,
-            2,
-            0,
-            0});
-            this.repositoryItemSpinEdit__Amount_Bhyt.Name = "repositoryItemSpinEdit__Amount_Bhyt";
-            // 
             // UCMedicine
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -239,10 +311,14 @@ namespace HIS.UC.Medicine
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemRadio_Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Amount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Price)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheck__Expend)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit__Amount_Bhyt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Dm_Nsx_Cdd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Dm_Thucte_Cdd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Lieu_Bq_Px)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEdit_Tl_Thucte_Bq_Px)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -262,5 +338,10 @@ namespace HIS.UC.Medicine
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit_Price;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheck__Expend;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit__Amount_Bhyt;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit_Dm_Nsx_Cdd;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit_Dm_Thucte_Cdd;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit_Lieu_Bq_Px;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit_Tl_Thucte_Bq_Px;
+        private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinEdit__Dm_Nsx;
     }
 }

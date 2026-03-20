@@ -41,5 +41,10 @@ namespace HIS.UC.Medicine
         public decimal? EXPEND_PRICE_STR { get; set; }
         public decimal EXPEND_AMOUNT_STR { get; set; }
         public decimal? AMOUNT_BHYT_STR { get; set; }
+        public string TT_THAU { get; set; }
+        public decimal? DM_NSX_CDD { get; set; }
+        public decimal? DM_THUCTE_CDD { get; set; }
+        public decimal? LIEU_BQ_PX { get; set; }
+        public decimal? TL_THUCTE_BQ_PX { get; set; }
     }
 }

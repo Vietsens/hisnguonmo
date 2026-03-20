@@ -245,6 +245,11 @@ namespace HIS.Desktop.Plugins.ServiceMety
                             check.AMOUNT_BHYT_STR = itemUsername.AMOUNT_BHYT;
                             check.EXPEND_AMOUNT_STR = itemUsername.EXPEND_AMOUNT;
                             check.EXPEND_PRICE_STR = itemUsername.EXPEND_PRICE;
+                            //check.TT_THAU = itemUsername.TT_THAU;
+                            check.DM_NSX_CDD = itemUsername.DM_NSX_CDD;
+                            check.DM_THUCTE_CDD = itemUsername.DM_THUCTE_CDD;
+                            check.LIEU_BQ_PX = itemUsername.LIEU_BQ_PX;
+                            check.TL_THUCTE_BQ_PX = itemUsername.TL_THUCTE_BQ_PX;
                         }
                     }
                 }
@@ -272,6 +277,11 @@ namespace HIS.Desktop.Plugins.ServiceMety
                             lstMedicineADOs.FirstOrDefault(o => o.ID == item.ID).checkExpend = item.checkExpend;
                             lstMedicineADOs.FirstOrDefault(o => o.ID == item.ID).EXPEND_AMOUNT_STR = item.EXPEND_AMOUNT_STR;
                             lstMedicineADOs.FirstOrDefault(o => o.ID == item.ID).EXPEND_PRICE_STR = item.EXPEND_PRICE_STR;
+                            //lstMedicineADOs.FirstOrDefault(o => o.ID == item.ID).TT_THAU = item.TT_THAU;
+                            lstMedicineADOs.FirstOrDefault(o => o.ID == item.ID).DM_NSX_CDD = item.DM_NSX_CDD;
+                            lstMedicineADOs.FirstOrDefault(o => o.ID == item.ID).DM_THUCTE_CDD = item.DM_THUCTE_CDD;
+                            lstMedicineADOs.FirstOrDefault(o => o.ID == item.ID).LIEU_BQ_PX = item.LIEU_BQ_PX;
+                            lstMedicineADOs.FirstOrDefault(o => o.ID == item.ID).TL_THUCTE_BQ_PX = item.TL_THUCTE_BQ_PX;
                         }
                     }
                 }
@@ -426,13 +436,13 @@ namespace HIS.Desktop.Plugins.ServiceMety
 
                 MedicineColumn colRadio2 = new MedicineColumn("   ", "radioMedi", 30, true);
                 colRadio2.VisibleIndex = 0;
-                colRadio2.Visible = false;
+                colRadio2.Visible = true;
                 colRadio2.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
                 ado.ListMedicineColumn.Add(colRadio2);
 
                 MedicineColumn colCheck2 = new MedicineColumn("   ", "checkMedi", 30, true);
                 colCheck2.VisibleIndex = 1;
-                colCheck2.Visible = false;
+                colCheck2.Visible = true;
                 colCheck2.image = imageCollectionMedicineType.Images[0];
                 colCheck2.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
                 ado.ListMedicineColumn.Add(colCheck2);
@@ -447,27 +457,57 @@ namespace HIS.Desktop.Plugins.ServiceMety
 
                 MedicineColumn colSoLuong = new MedicineColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_SERVICE_MATY__COLUMN_EXPEND_AMOUNT_STR", langManager, culture), "EXPEND_AMOUNT_STR", 100, true);
                 colSoLuong.VisibleIndex = 4;
-                colSoLuong.Visible = false;
+                colSoLuong.Visible = true;
                 colSoLuong.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
                 ado.ListMedicineColumn.Add(colSoLuong);
 
                 MedicineColumn colSoLuongToiDa = new MedicineColumn("Số lượng tối đa BHYT chi trả", "AMOUNT_BHYT_STR", 100, true);
                 colSoLuongToiDa.VisibleIndex = 5;
-                colSoLuongToiDa.Visible = false;
+                colSoLuongToiDa.Visible = true;
                 colSoLuongToiDa.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
                 ado.ListMedicineColumn.Add(colSoLuongToiDa);
 
                 MedicineColumn colKhongHaoPhi = new MedicineColumn("Không hao phí", "checkExpend", 100, true);
                 colKhongHaoPhi.VisibleIndex = 6;
-                colKhongHaoPhi.Visible = false;
+                colKhongHaoPhi.Visible = true;
                 colKhongHaoPhi.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
                 ado.ListMedicineColumn.Add(colKhongHaoPhi);
 
                 MedicineColumn colGiaTien = new MedicineColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_SERVICE_MATY__COLUMN_EXPEND_PRICE_STR", langManager, culture), "EXPEND_PRICE_STR", 100, true);
                 colGiaTien.VisibleIndex = 7;
-                colGiaTien.Visible = false;
+                colGiaTien.Visible = true;
                 colGiaTien.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
                 ado.ListMedicineColumn.Add(colGiaTien);
+
+                //MedicineColumn colTtThau = new MedicineColumn("Thông tin thầu", "TT_THAU", 150, true);
+                //colTtThau.VisibleIndex = 8;
+                //colTtThau.Visible = false;
+                //colTtThau.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
+                //ado.ListMedicineColumn.Add(colTtThau);
+
+                MedicineColumn colDmNsx = new MedicineColumn("Định mức NSX", "DM_NSX_CDD", 100, true);
+                colDmNsx.VisibleIndex = 9;
+                colDmNsx.Visible = true;
+                colDmNsx.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
+                ado.ListMedicineColumn.Add(colDmNsx);
+
+                MedicineColumn colDmTt = new MedicineColumn("Định mức TT", "DM_THUCTE_CDD", 100, true);
+                colDmTt.VisibleIndex = 10;
+                colDmTt.Visible = true;
+                colDmTt.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
+                ado.ListMedicineColumn.Add(colDmTt);
+
+                MedicineColumn colLieuBq = new MedicineColumn("Liều bình quân", "LIEU_BQ_PX", 100, true);
+                colLieuBq.VisibleIndex = 11;
+                colLieuBq.Visible = true;
+                colLieuBq.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
+                ado.ListMedicineColumn.Add(colLieuBq);
+
+                MedicineColumn colTlThucTe = new MedicineColumn("Tỷ lệ thực tế", "TL_THUCTE_BQ_PX", 100, true);
+                colTlThucTe.VisibleIndex = 12;
+                colTlThucTe.Visible = true;
+                colTlThucTe.UnboundColumnType = DevExpress.Data.UnboundColumnType.Object;
+                ado.ListMedicineColumn.Add(colTlThucTe);
 
                 this.ucGridControlMedicine = (UserControl)MedicineProcessor.Run(ado);
 
@@ -857,6 +897,11 @@ namespace HIS.Desktop.Plugins.ServiceMety
                             check.AMOUNT_BHYT_STR = itemUsername.AMOUNT_BHYT;
                             check.EXPEND_PRICE_STR = itemUsername.EXPEND_PRICE;
                             check.EXPEND_AMOUNT_STR = itemUsername.EXPEND_AMOUNT;
+                            //check.TT_THAU = itemUsername.TT_THAU;
+                            check.DM_NSX_CDD = itemUsername.DM_NSX_CDD;
+                            check.DM_THUCTE_CDD = itemUsername.DM_THUCTE_CDD;
+                            check.LIEU_BQ_PX = itemUsername.LIEU_BQ_PX;
+                            check.TL_THUCTE_BQ_PX = itemUsername.TL_THUCTE_BQ_PX;
                         }
                     }
                 }
@@ -1126,6 +1171,11 @@ namespace HIS.Desktop.Plugins.ServiceMety
                     mestService.EXPEND_AMOUNT = MedicineType.EXPEND_AMOUNT_STR;
                     mestService.EXPEND_PRICE = MedicineType.EXPEND_PRICE_STR;
                     mestService.SERVICE_UNIT_ID = item.SERVICE_UNIT_ID;
+                    //mestService.TT_THAU = MedicineType.TT_THAU;
+                    mestService.DM_NSX_CDD = MedicineType.DM_NSX_CDD;
+                    mestService.DM_THUCTE_CDD = MedicineType.DM_THUCTE_CDD;
+                    mestService.LIEU_BQ_PX = MedicineType.LIEU_BQ_PX;
+                    mestService.TL_THUCTE_BQ_PX = MedicineType.TL_THUCTE_BQ_PX;
                     mestServiceCreate.Add(mestService);
                 }
 
@@ -1183,6 +1233,11 @@ namespace HIS.Desktop.Plugins.ServiceMety
                         MedicineMaty.EXPEND_PRICE = MedicineType.EXPEND_PRICE_STR;
                         MedicineMaty.AMOUNT_BHYT = MedicineType.AMOUNT_BHYT_STR;
                         MedicineMaty.IS_NOT_EXPEND = MedicineType.checkExpend == true ? (short?)1 : 0;
+                        //MedicineMaty.TT_THAU = MedicineType.TT_THAU;
+                        MedicineMaty.DM_NSX_CDD = MedicineType.DM_NSX_CDD;
+                        MedicineMaty.DM_THUCTE_CDD = MedicineType.DM_THUCTE_CDD;
+                        MedicineMaty.LIEU_BQ_PX = MedicineType.LIEU_BQ_PX;
+                        MedicineMaty.TL_THUCTE_BQ_PX = MedicineType.TL_THUCTE_BQ_PX;
                         //MedicineMety.SERVICE_UNIT_ID = item.SERVICE_UNIT_ID;
                         //MedicineMety.MEDICINE_TYPE_ID = MedicineIdCheck;
                         MedicineMetyUpdates.Add(MedicineMaty);
@@ -1222,6 +1277,11 @@ namespace HIS.Desktop.Plugins.ServiceMety
                     mestService.IS_NOT_EXPEND = item.checkExpend == true ? (short?)1 : 0;
                     mestService.EXPEND_AMOUNT = item.EXPEND_AMOUNT_STR;
                     mestService.EXPEND_PRICE = item.EXPEND_PRICE_STR;
+                    //mestService.TT_THAU = item.TT_THAU;
+                    mestService.DM_NSX_CDD = item.DM_NSX_CDD;
+                    mestService.DM_THUCTE_CDD = item.DM_THUCTE_CDD;
+                    mestService.LIEU_BQ_PX = item.LIEU_BQ_PX;
+                    mestService.TL_THUCTE_BQ_PX = item.TL_THUCTE_BQ_PX;
                     MestServiceCreates.Add(mestService);
                 }
 
@@ -1276,6 +1336,11 @@ namespace HIS.Desktop.Plugins.ServiceMety
                 {
                     ServiceMety.EXPEND_AMOUNT = item.EXPEND_AMOUNT_STR;
                     ServiceMety.EXPEND_PRICE = item.EXPEND_PRICE_STR;
+                    //ServiceMety.TT_THAU = item.TT_THAU;
+                    ServiceMety.DM_NSX_CDD = item.DM_NSX_CDD;
+                    ServiceMety.DM_THUCTE_CDD = item.DM_THUCTE_CDD;
+                    ServiceMety.LIEU_BQ_PX = item.LIEU_BQ_PX;
+                    ServiceMety.TL_THUCTE_BQ_PX = item.TL_THUCTE_BQ_PX;
                     ServiceMetyUpdates.Add(ServiceMety);
                 }
             }
