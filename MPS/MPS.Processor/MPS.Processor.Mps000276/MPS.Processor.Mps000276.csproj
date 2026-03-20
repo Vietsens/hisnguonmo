@@ -36,6 +36,10 @@
     <Reference Include="HIS.Desktop.Common.BankQrCode">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Common.BankQrCode\HIS.Desktop.Common.BankQrCode.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\bin\Debug\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>

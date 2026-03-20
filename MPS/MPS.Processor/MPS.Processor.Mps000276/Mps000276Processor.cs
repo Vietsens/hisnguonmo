@@ -173,7 +173,7 @@ namespace MPS.Processor.Mps000276
                     return;
                 }
                 var Groups = rdo._vServiceReqs.GroupBy(g => g.CASHIER_ROOM_ID ?? 0).ToList();
-
+                var ServiceTypeS = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_TYPE>();
                 long maxStt = (rdo._ServiceNumOrder != null && rdo._ServiceNumOrder.Count > 0) ? rdo._ServiceNumOrder.Max(m => m.NUM_ORDER) : 0;
                 foreach (var group in Groups)
                 {
@@ -242,6 +242,12 @@ namespace MPS.Processor.Mps000276
                         ado.SampleRoomName = sr.SAMPLE_ROOM_NAME;
                         ado.ASSIGN_TURN_CODE = sr.ASSIGN_TURN_CODE;
                         ado.Note = !string.IsNullOrWhiteSpace(ext?.INSTRUCTION_NOTE) ? ext.INSTRUCTION_NOTE : "";
+
+                        var serviceType = ServiceTypeS.FirstOrDefault(o => o.ID == ss.TDL_SERVICE_TYPE_ID);
+                        if (serviceType != null)
+                        {
+                            ado.ServiceTypeNumOrder = serviceType.NUM_ORDER;
+                        }
                         if (parent != null)
                         {
 
@@ -264,7 +270,7 @@ namespace MPS.Processor.Mps000276
                         {
                             if (service != null)
                             {
-                                ado.ParentServiceNumOrder = service.NUM_ORDER;
+                                ado.ParentServiceNumOrder = ado.ServiceTypeNumOrder;
                                 ado.ParentServiceCode = service.SERVICE_TYPE_CODE;
                                 ado.ParentServiceName = service.SERVICE_TYPE_NAME;
                             }
@@ -512,7 +518,7 @@ namespace MPS.Processor.Mps000276
                 }
 
                 // Sắp xếp lại theo thứ tự
-                result = result.OrderBy(t => t.ExecuteNumOrder).ThenBy(t => t.ServiceNumOrder).ToList();
+                result = result.OrderBy(t => t.ParentServiceNumOrder).ThenBy(t => t.ServiceNumOrder).ToList();
 
                 // Cập nhật lại RowNum
                 int currStt = 0;

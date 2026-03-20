@@ -67,6 +67,7 @@ namespace MPS.Processor.Mps000276
          
         public long ServiceReqNumOrder { get; set; }        
         public long? ServiceNumOrder { get; set; }
+        public long? ServiceTypeNumOrder { get; set; }
         public long? ExecuteNumOrder { get; set; }
 
         public long InstructionTime { get; set; }

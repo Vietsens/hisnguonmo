@@ -340,7 +340,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                                 .FirstOrDefault();
                 var lastWeight = lastDhst?.WEIGHT;
 
-                var req = _ServiceReqs.FirstOrDefault();
+                var req = _ServiceReqs?.FirstOrDefault();
                 ServiceReqADO serviceReqADO = null;
 
                 if (req != null)
