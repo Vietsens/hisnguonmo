@@ -54,9 +54,20 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
                 Action myaction = () =>
                 {
                     lstTab1 = new List<HIS_EXP_MEST>();
+                    // L?y danh sách treatment code có ít nh?t 1 phi?u không ph?i EXECUTE
+                    var treatmentCodesWithNonExecute = lstAll
+                        .Where(o => o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE)
+                        .Select(o => o.TDL_TREATMENT_CODE)
+                        .Distinct()
+                        .ToList();
 
+                    var filteredData = lstAll.Where(o =>
+                        o.IS_CONFIRM != 1 &&
+                        (o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST ||
+                         (treatmentCodesWithNonExecute != null && treatmentCodesWithNonExecute.Contains(o.TDL_TREATMENT_CODE)))
+                    ).ToList();
                     // Lọc dữ liệu theo điều kiện ban đầu
-                    var filteredData = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM != 1).ToList();
+                    //var filteredData = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST && o.IS_CONFIRM != 1).ToList();
 
                     // Gom nhóm theo TDL_TREATMENT_CODE, IS_CONFIRM, EXP_MEST_STT_ID
                     var groupedData = filteredData
