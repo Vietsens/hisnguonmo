@@ -148,6 +148,7 @@ namespace MPS.Processor.Mps000088
                     AddObjectKeyIntoListkey<V_HIS_BED_LOG>(rdo._vHisBedLog);
                 }
 
+                
                 rdo.mps000088ByMediEndMate = GroupByService(rdo.mps000088ByMediEndMate);
                 if (rdo.mps000088ByMediEndMate != null && rdo.mps000088ByMediEndMate.Count > 0 && rdo._SingleKeys.IsOderMedicine == 1)
                 {
@@ -167,7 +168,7 @@ namespace MPS.Processor.Mps000088
             {
                 if (rdo._SingleKeys.IsTachHDSD)
                 {
-                    var rsGroup = _Mps000225BySereServs.GroupBy(p => new { p.SERVICE_ID, p.TUTORIAL, p.PRICE, p.Service_Type_Id, p.CONCENTRA, p.VAT_RATIO }).ToList();
+                    var rsGroup = _Mps000225BySereServs.GroupBy(p => new { p.SERVICE_ID, p.TUTORIAL, p.PRICE, p.Service_Type_Id, p.CONCENTRA, p.VAT_RATIO, p.MORNING_Day1, p.AFTERNOON_Day1, p.NOON_Day1, p.EVENING_Day1 }).ToList();
                     foreach (var itemGroup in rsGroup)
                     {
                         MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate ado = new MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate();
@@ -190,7 +191,7 @@ namespace MPS.Processor.Mps000088
                                 {
                                     itemValue = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(item) ?? "0").ToString());
                                     if (item != itemGroup.First())
-                                        itemValue += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(ado) ?? "0").ToString());
+                                        itemValue = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue > 0)
                                     {
@@ -202,7 +203,7 @@ namespace MPS.Processor.Mps000088
                                 {
                                     itemValue2 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(item) ?? "0").ToString());
                                     if (item != itemGroup.First())
-                                        itemValue2 += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(ado) ?? "0").ToString());
+                                        itemValue2 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue2 > 0)
                                     {
@@ -214,7 +215,7 @@ namespace MPS.Processor.Mps000088
                                 {
                                     itemValue3 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(item) ?? "0").ToString());
                                     if (item != itemGroup.First())
-                                        itemValue3 += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(ado) ?? "0").ToString());
+                                        itemValue3 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue3 > 0)
                                     {
@@ -227,7 +228,7 @@ namespace MPS.Processor.Mps000088
                                     itemValue4 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(item) ?? "0").ToString());
 
                                     if (item != itemGroup.First())
-                                        itemValue4 += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(ado) ?? "0").ToString());
+                                        itemValue4 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue4 > 0)
                                     {
@@ -240,7 +241,7 @@ namespace MPS.Processor.Mps000088
                                     itemValue5 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(item) ?? "0").ToString());
 
                                     if (item != itemGroup.First())
-                                        itemValue5 += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(ado) ?? "0").ToString());
+                                        itemValue5 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue5 > 0)
                                     {
@@ -264,7 +265,8 @@ namespace MPS.Processor.Mps000088
                 }
                 else
                 {
-                    var rsGroup = _Mps000225BySereServs.GroupBy(p => new { p.SERVICE_ID, p.PRICE, p.Service_Type_Id, p.CONCENTRA, p.VAT_RATIO }).ToList();
+                    var rsGroup = _Mps000225BySereServs.GroupBy(p => new { p.SERVICE_ID, p.PRICE, p.Service_Type_Id, p.CONCENTRA, p.VAT_RATIO, p.MORNING_Day1, p.AFTERNOON_Day1, p.NOON_Day1, p.EVENING_Day1 }).ToList();
+                    
                     foreach (var itemGroup in rsGroup)
                     {
                         MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate ado = new MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate();
@@ -287,7 +289,7 @@ namespace MPS.Processor.Mps000088
                                 {
                                     itemValue = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(item) ?? "0").ToString());
                                     if (item != itemGroup.First())
-                                        itemValue += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(ado) ?? "0").ToString());
+                                        itemValue = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue > 0)
                                     {
@@ -299,7 +301,7 @@ namespace MPS.Processor.Mps000088
                                 {
                                     itemValue2 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(item) ?? "0").ToString());
                                     if (item != itemGroup.First())
-                                        itemValue2 += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(ado) ?? "0").ToString());
+                                        itemValue2 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo2.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue2 > 0)
                                     {
@@ -311,7 +313,7 @@ namespace MPS.Processor.Mps000088
                                 {
                                     itemValue3 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(item) ?? "0").ToString());
                                     if (item != itemGroup.First())
-                                        itemValue3 += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(ado) ?? "0").ToString());
+                                        itemValue3 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo3.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue3 > 0)
                                     {
@@ -324,7 +326,7 @@ namespace MPS.Processor.Mps000088
                                     itemValue4 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(item) ?? "0").ToString());
 
                                     if (item != itemGroup.First())
-                                        itemValue4 += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(ado) ?? "0").ToString());
+                                        itemValue4 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo4.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue4 > 0)
                                     {
@@ -337,7 +339,7 @@ namespace MPS.Processor.Mps000088
                                     itemValue5 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(item) ?? "0").ToString());
 
                                     if (item != itemGroup.First())
-                                        itemValue5 += Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(ado) ?? "0").ToString());
+                                        itemValue5 = Inventec.Common.TypeConvert.Parse.ToDecimal((propertyInfo5.GetValue(ado) ?? "0").ToString());
 
                                     if (itemValue5 > 0)
                                     {
