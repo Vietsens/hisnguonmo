@@ -280,6 +280,10 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciAntiGlobulinTwo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciScangelGelcard = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciCoombs = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dtDefrostTime = new DevExpress.XtraEditors.DateEdit();
+            this.txtNote = new DevExpress.XtraEditors.TextEdit();
+            this.lciDefrostTime = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciNote = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPuc = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem70 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -805,6 +809,11 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             ((System.ComponentModel.ISupportInitialize)(this.lciAntiGlobulinTwo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciScangelGelcard)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCoombs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDefrostTime.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDefrostTime.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNote.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciDefrostTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPuc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
@@ -1168,17 +1177,19 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.layoutControl1.Controls.Add(this.cboAntiGlobulinTwo);
             this.layoutControl1.Controls.Add(this.cboAC);
             this.layoutControl1.Controls.Add(this.cboAC2);
+            this.layoutControl1.Controls.Add(this.dtDefrostTime);
+            this.layoutControl1.Controls.Add(this.txtNote);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(953, 511);
+            this.layoutControl1.Size = new System.Drawing.Size(953, 535);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(830, 487);
+            this.btnPrint.Location = new System.Drawing.Point(830, 511);
             this.btnPrint.MenuManager = this.barManager1;
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(121, 22);
@@ -1407,7 +1418,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(710, 487);
+            this.btnAdd.Location = new System.Drawing.Point(710, 511);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(116, 22);
             this.btnAdd.StyleController = this.layoutControl1;
@@ -1441,6 +1452,36 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.txtCoombs.StyleController = this.layoutControl1;
             this.txtCoombs.TabIndex = 15;
             this.txtCoombs.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtCoombs_PreviewKeyDown);
+            //  
+            // dtDefrostTime
+            // 
+            this.dtDefrostTime.EditValue = null;
+            this.dtDefrostTime.Location = new System.Drawing.Point(97, 487);
+            this.dtDefrostTime.Name = "dtDefrostTime";
+            this.dtDefrostTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtDefrostTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtDefrostTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtDefrostTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtDefrostTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtDefrostTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtDefrostTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.dtDefrostTime.Properties.VistaEditTime = DevExpress.Utils.DefaultBoolean.True;
+            this.dtDefrostTime.Properties.VistaTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.dtDefrostTime.Size = new System.Drawing.Size(326, 20);
+            this.dtDefrostTime.StyleController = this.layoutControl1;
+            this.dtDefrostTime.TabIndex = 21;
+            // 
+            // txtNote
+            // 
+            this.txtNote.Location = new System.Drawing.Point(522, 487);
+            this.txtNote.Name = "txtNote";
+            this.txtNote.Properties.MaxLength = 1000;
+            this.txtNote.Size = new System.Drawing.Size(429, 20);
+            this.txtNote.StyleController = this.layoutControl1;
+            this.txtNote.TabIndex = 22;
             // 
             // cboNewAbo
             // 
@@ -1678,6 +1719,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciAntiGlobulinTwo,
             this.lciScangelGelcard,
             this.lciCoombs,
+            this.lciDefrostTime,
+            this.lciNote,
             this.lciPuc,
             this.layoutControlItem70,
             this.layoutControlItem10,
@@ -1689,7 +1732,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(953, 511);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(953, 535);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // lciTestTube
@@ -1704,13 +1747,13 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciTestTube.Size = new System.Drawing.Size(213, 24);
             this.lciTestTube.Text = "Ống nghiệm 1:";
             this.lciTestTube.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciTestTube.TextSize = new System.Drawing.Size(90, 13);
+            this.lciTestTube.TextSize = new System.Drawing.Size(100, 13);
             this.lciTestTube.TextToControlDistance = 5;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnAdd;
-            this.layoutControlItem4.Location = new System.Drawing.Point(708, 485);
+            this.layoutControlItem4.Location = new System.Drawing.Point(708, 509);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(120, 26);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
@@ -1727,7 +1770,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciNewAbo.Size = new System.Drawing.Size(212, 24);
             this.lciNewAbo.Text = "Nhóm máu BN:";
             this.lciNewAbo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciNewAbo.TextSize = new System.Drawing.Size(90, 20);
+            this.lciNewAbo.TextSize = new System.Drawing.Size(100, 20);
             this.lciNewAbo.TextToControlDistance = 5;
             // 
             // lciNewRH
@@ -1807,7 +1850,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciTestTubeTwo.Size = new System.Drawing.Size(213, 24);
             this.lciTestTubeTwo.Text = "Ống nghiệm 2:";
             this.lciTestTubeTwo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciTestTubeTwo.TextSize = new System.Drawing.Size(90, 20);
+            this.lciTestTubeTwo.TextSize = new System.Drawing.Size(100, 20);
             this.lciTestTubeTwo.TextToControlDistance = 5;
             // 
             // lciSaltEnviTwo
@@ -1850,7 +1893,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciScangelGelcard.Size = new System.Drawing.Size(425, 24);
             this.lciScangelGelcard.Text = "Scangel/Gelcard:";
             this.lciScangelGelcard.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciScangelGelcard.TextSize = new System.Drawing.Size(90, 13);
+            this.lciScangelGelcard.TextSize = new System.Drawing.Size(100, 13);
             this.lciScangelGelcard.TextToControlDistance = 5;
             // 
             // lciCoombs
@@ -1868,6 +1911,34 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciCoombs.TextSize = new System.Drawing.Size(90, 13);
             this.lciCoombs.TextToControlDistance = 5;
             // 
+            // lciDefrostTime
+            // 
+            this.lciDefrostTime.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciDefrostTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciDefrostTime.Control = this.dtDefrostTime;
+            this.lciDefrostTime.Location = new System.Drawing.Point(0, 485);
+            this.lciDefrostTime.Name = "lciDefrostTime";
+            this.lciDefrostTime.OptionsToolTip.ToolTip = "Thời gian rã đông";
+            this.lciDefrostTime.Size = new System.Drawing.Size(425, 24);
+            this.lciDefrostTime.Text = "Thời gian rã đông:";
+            this.lciDefrostTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciDefrostTime.TextSize = new System.Drawing.Size(100, 13);
+            this.lciDefrostTime.TextToControlDistance = 5;
+            // 
+            // lciNote
+            // 
+            this.lciNote.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciNote.Control = this.txtNote;
+            this.lciNote.Location = new System.Drawing.Point(425, 485);
+            this.lciNote.Name = "lciNote";
+            this.lciNote.OptionsToolTip.ToolTip = "Ghi chú";
+            this.lciNote.Size = new System.Drawing.Size(528, 24);
+            this.lciNote.Text = "Ghi chú:";
+            this.lciNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciNote.TextSize = new System.Drawing.Size(90, 13);
+            this.lciNote.TextToControlDistance = 5;
+            // 
             // lciPuc
             // 
             this.lciPuc.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -1879,7 +1950,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciPuc.Size = new System.Drawing.Size(638, 24);
             this.lciPuc.Text = "Phản ứng chéo:";
             this.lciPuc.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciPuc.TextSize = new System.Drawing.Size(90, 13);
+            this.lciPuc.TextSize = new System.Drawing.Size(100, 13);
             this.lciPuc.TextToControlDistance = 5;
             // 
             // layoutControlItem70
@@ -1920,7 +1991,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // layoutControlItem71
             // 
             this.layoutControlItem71.Control = this.btnPrint;
-            this.layoutControlItem71.Location = new System.Drawing.Point(828, 485);
+            this.layoutControlItem71.Location = new System.Drawing.Point(828, 509);
             this.layoutControlItem71.Name = "layoutControlItem71";
             this.layoutControlItem71.Size = new System.Drawing.Size(125, 26);
             this.layoutControlItem71.TextSize = new System.Drawing.Size(0, 0);
@@ -1929,7 +2000,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 485);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 509);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
             this.emptySpaceItem1.Size = new System.Drawing.Size(708, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
@@ -7376,7 +7447,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(953, 511);
+            this.ClientSize = new System.Drawing.Size(953, 535);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -7431,6 +7502,11 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             ((System.ComponentModel.ISupportInitialize)(this.lciAntiGlobulinTwo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciScangelGelcard)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCoombs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDefrostTime.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDefrostTime.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNote.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciDefrostTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPuc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
@@ -8049,6 +8125,10 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
         private DevExpress.XtraLayout.LayoutControlItem lciTestTube;
         private DevExpress.XtraLayout.LayoutControlItem lciScangelGelcard;
         private DevExpress.XtraLayout.LayoutControlItem lciCoombs;
+        private DevExpress.XtraEditors.DateEdit dtDefrostTime;
+        private DevExpress.XtraEditors.TextEdit txtNote;
+        private DevExpress.XtraLayout.LayoutControlItem lciDefrostTime;
+        private DevExpress.XtraLayout.LayoutControlItem lciNote;
         private DevExpress.XtraLayout.LayoutControl layoutControl24;
         private DevExpress.XtraLayout.LayoutControl layoutControl25;
         private DevExpress.XtraLayout.LayoutControl layoutControl26;
