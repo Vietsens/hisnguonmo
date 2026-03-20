@@ -2202,10 +2202,10 @@ namespace HIS.Desktop.Plugins.HisMachine
                         XMLTT12DetailData detail = new XMLTT12DetailData();
                         detail.STT = ado.Stt;
                         detail.MA_CSKCB = ado.MaCoSoKCB;
-                        detail.TEN_TB = this.ConvertStringToXmlDocument(ado.TenThietBi);
+                        detail.TEN_TB = this.RemoveXmlCharError(ado.TenThietBi);
                         detail.KY_HIEU = ado.KyHieu;
-                        detail.CONGTY_SX = this.ConvertStringToXmlDocument(ado.CongTySX);
-                        detail.NUOC_SX = this.ConvertStringToXmlDocument(ado.NuocSX);
+                        detail.CONGTY_SX = this.RemoveXmlCharError(ado.CongTySX);
+                        detail.NUOC_SX = this.RemoveXmlCharError(ado.NuocSX);
                         detail.NAM_SX = ado.NamSX != null ? ado.NamSX.ToString() : "";
                         detail.NAM_SD = ado.NamSD != null ? ado.NamSD.ToString() : "";
                         detail.MA_MAY = ado.MaMay;
@@ -2492,14 +2492,15 @@ namespace HIS.Desktop.Plugins.HisMachine
                     return;
                 }
 
-                string fullFileName = String.Format("MayCLSTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+                string fullFileName = String.Format("HSDANHMUC_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
                 string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
                 List<XmlTT12Ado> listXmlAdos = new List<XmlTT12Ado>();
                 List<XMLTT12DetailData> listXmlDetails = new List<XMLTT12DetailData>();
                 listXmlAdos = GenerateXmlTT12Ado(listMachines);
                 MapADOToXmlTT12(listXmlAdos, ref listXmlDetails);
                 XMLTT12Data xmlData = new XMLTT12Data();
-                xmlData.DanhMuc = listXmlDetails;
+                string listId = "Id-" + Guid.NewGuid().ToString();
+                xmlData.DanhSach = new XML.XMLTT12DanhSach { Id = listId, DanhMuc = listXmlDetails };
                 xmlData.ChuKyDonVi = "";
                 var rs = CreatedXmlFileTT12Plus(xmlData);
                 if (rs != null)

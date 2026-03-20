@@ -72,16 +72,16 @@ namespace HIS.Desktop.Plugins.HisMachine.XML
         public int STT { get; set; }
 
         [XmlElement(Order = 2)]
-        public XmlCDataSection TEN_TB { get; set; }
+        public string TEN_TB { get; set; }
 
         [XmlElement(Order = 3)]
         public string KY_HIEU { get; set; }
-
+        //XmlCDataSection de tranh co ky tu dac biet trong ten thiet bi, cong ty sx, nuoc sx
         [XmlElement(Order = 4)]
-        public XmlCDataSection CONGTY_SX { get; set; }
+        public string CONGTY_SX { get; set; }
 
         [XmlElement(Order = 5)]
-        public XmlCDataSection NUOC_SX { get; set; }
+        public string NUOC_SX { get; set; }
 
         [XmlElement(Order = 6)]
         public string NAM_SX { get; set; }

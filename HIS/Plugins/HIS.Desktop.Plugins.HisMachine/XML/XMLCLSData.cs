@@ -33,13 +33,22 @@ namespace HIS.Desktop.Plugins.HisMachine.XML
         [XmlElement("CHUKYDONVI", Order = 2)]
         public string ChuKyDonVi { get; set; }
     }
-    [XmlRoot("DSACH_TBYTTHDV")]
+    [XmlRoot("HSDANHMUC")]
     public class XMLTT12Data
     {
-        [XmlElement("DM_TBYTTHDV", Order = 1)]
-        public List<XMLTT12DetailData> DanhMuc { get; set; }
+        [XmlElement("DSACH_TBYTTHDV", Order = 1)]
+        public XMLTT12DanhSach DanhSach { get; set; }
 
         [XmlElement("CHUKYDONVI", Order = 2)]
         public string ChuKyDonVi { get; set; }
+    }
+
+    public class XMLTT12DanhSach
+    {
+        [XmlAttribute("Id")]
+        public string Id { get; set; }
+
+        [XmlElement("DM_TBYTTHDV")]
+        public List<XMLTT12DetailData> DanhMuc { get; set; }
     }
 }

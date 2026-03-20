@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.HisMachine
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -101,17 +102,13 @@ namespace HIS.Desktop.Plugins.HisMachine
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.dteToTime = new DevExpress.XtraEditors.DateEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem3 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem4 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dteFromTime = new DevExpress.XtraEditors.DateEdit();
             this.dteContractTo = new DevExpress.XtraEditors.DateEdit();
             this.dteContractFrom = new DevExpress.XtraEditors.DateEdit();
@@ -226,8 +223,12 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -368,7 +369,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // dteToTime
             // 
             this.dteToTime.EditValue = null;
-            this.dteToTime.Location = new System.Drawing.Point(870, 372);
+            this.dteToTime.Location = new System.Drawing.Point(870, 388);
             this.dteToTime.MenuManager = this.barManager1;
             this.dteToTime.Name = "dteToTime";
             this.dteToTime.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -389,10 +390,6 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnAdd,
@@ -457,38 +454,10 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1028, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 593);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1028, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 564);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1028, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 564);
-            // 
             // dteFromTime
             // 
             this.dteFromTime.EditValue = null;
-            this.dteFromTime.Location = new System.Drawing.Point(870, 348);
+            this.dteFromTime.Location = new System.Drawing.Point(870, 364);
             this.dteFromTime.MenuManager = this.barManager1;
             this.dteFromTime.Name = "dteFromTime";
             this.dteFromTime.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -508,7 +477,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // dteContractTo
             // 
             this.dteContractTo.EditValue = null;
-            this.dteContractTo.Location = new System.Drawing.Point(870, 324);
+            this.dteContractTo.Location = new System.Drawing.Point(870, 340);
             this.dteContractTo.MenuManager = this.barManager1;
             this.dteContractTo.Name = "dteContractTo";
             this.dteContractTo.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -528,7 +497,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // dteContractFrom
             // 
             this.dteContractFrom.EditValue = null;
-            this.dteContractFrom.Location = new System.Drawing.Point(870, 300);
+            this.dteContractFrom.Location = new System.Drawing.Point(870, 316);
             this.dteContractFrom.MenuManager = this.barManager1;
             this.dteContractFrom.Name = "dteContractFrom";
             this.dteContractFrom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -547,7 +516,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // chkSign
             // 
-            this.chkSign.Location = new System.Drawing.Point(702, -14);
+            this.chkSign.Location = new System.Drawing.Point(702, 2);
             this.chkSign.MenuManager = this.barManager1;
             this.chkSign.Name = "chkSign";
             this.chkSign.Properties.Caption = "Ký số";
@@ -558,7 +527,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // btnExportXmlTT12
             // 
-            this.btnExportXmlTT12.Location = new System.Drawing.Point(621, -14);
+            this.btnExportXmlTT12.Location = new System.Drawing.Point(621, 2);
             this.btnExportXmlTT12.Name = "btnExportXmlTT12";
             this.btnExportXmlTT12.Size = new System.Drawing.Size(77, 22);
             this.btnExportXmlTT12.StyleController = this.layoutControl1;
@@ -568,7 +537,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // cboConfigTimeConflict
             // 
-            this.cboConfigTimeConflict.Location = new System.Drawing.Point(870, 492);
+            this.cboConfigTimeConflict.Location = new System.Drawing.Point(870, 508);
             this.cboConfigTimeConflict.MenuManager = this.barManager1;
             this.cboConfigTimeConflict.Name = "cboConfigTimeConflict";
             this.cboConfigTimeConflict.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -592,7 +561,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtSourceName
             // 
-            this.txtSourceName.Location = new System.Drawing.Point(870, 108);
+            this.txtSourceName.Location = new System.Drawing.Point(870, 124);
             this.txtSourceName.MenuManager = this.barManager1;
             this.txtSourceName.Name = "txtSourceName";
             this.txtSourceName.Size = new System.Drawing.Size(139, 20);
@@ -601,7 +570,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // btnExportXml
             // 
-            this.btnExportXml.Location = new System.Drawing.Point(530, -14);
+            this.btnExportXml.Location = new System.Drawing.Point(530, 2);
             this.btnExportXml.Name = "btnExportXml";
             this.btnExportXml.Size = new System.Drawing.Size(87, 22);
             this.btnExportXml.StyleController = this.layoutControl1;
@@ -612,7 +581,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // cboDepartment
             // 
-            this.cboDepartment.Location = new System.Drawing.Point(870, 444);
+            this.cboDepartment.Location = new System.Drawing.Point(870, 460);
             this.cboDepartment.MenuManager = this.barManager1;
             this.cboDepartment.Name = "cboDepartment";
             this.cboDepartment.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -637,7 +606,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtCirculationNumber
             // 
-            this.txtCirculationNumber.Location = new System.Drawing.Point(870, 276);
+            this.txtCirculationNumber.Location = new System.Drawing.Point(870, 292);
             this.txtCirculationNumber.MenuManager = this.barManager1;
             this.txtCirculationNumber.Name = "txtCirculationNumber";
             this.txtCirculationNumber.Size = new System.Drawing.Size(139, 20);
@@ -647,7 +616,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtUsedYear
             // 
-            this.txtUsedYear.Location = new System.Drawing.Point(870, 252);
+            this.txtUsedYear.Location = new System.Drawing.Point(870, 268);
             this.txtUsedYear.MenuManager = this.barManager1;
             this.txtUsedYear.Name = "txtUsedYear";
             this.txtUsedYear.Size = new System.Drawing.Size(139, 20);
@@ -658,7 +627,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtManufacturedYear
             // 
-            this.txtManufacturedYear.Location = new System.Drawing.Point(870, 228);
+            this.txtManufacturedYear.Location = new System.Drawing.Point(870, 244);
             this.txtManufacturedYear.MenuManager = this.barManager1;
             this.txtManufacturedYear.Name = "txtManufacturedYear";
             this.txtManufacturedYear.Size = new System.Drawing.Size(139, 20);
@@ -669,7 +638,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtNationalName
             // 
-            this.txtNationalName.Location = new System.Drawing.Point(870, 204);
+            this.txtNationalName.Location = new System.Drawing.Point(870, 220);
             this.txtNationalName.MenuManager = this.barManager1;
             this.txtNationalName.Name = "txtNationalName";
             this.txtNationalName.Size = new System.Drawing.Size(139, 20);
@@ -679,7 +648,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtManufacturerName
             // 
-            this.txtManufacturerName.Location = new System.Drawing.Point(870, 180);
+            this.txtManufacturerName.Location = new System.Drawing.Point(870, 196);
             this.txtManufacturerName.MenuManager = this.barManager1;
             this.txtManufacturerName.Name = "txtManufacturerName";
             this.txtManufacturerName.Size = new System.Drawing.Size(139, 20);
@@ -689,7 +658,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtSymbol
             // 
-            this.txtSymbol.Location = new System.Drawing.Point(870, 156);
+            this.txtSymbol.Location = new System.Drawing.Point(870, 172);
             this.txtSymbol.MenuManager = this.barManager1;
             this.txtSymbol.Name = "txtSymbol";
             this.txtSymbol.Size = new System.Drawing.Size(139, 20);
@@ -699,7 +668,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtServiceOnDay
             // 
-            this.txtServiceOnDay.Location = new System.Drawing.Point(870, 420);
+            this.txtServiceOnDay.Location = new System.Drawing.Point(870, 436);
             this.txtServiceOnDay.MenuManager = this.barManager1;
             this.txtServiceOnDay.Name = "txtServiceOnDay";
             this.txtServiceOnDay.Size = new System.Drawing.Size(139, 20);
@@ -709,7 +678,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // chkIsKidney
             // 
-            this.chkIsKidney.Location = new System.Drawing.Point(870, 516);
+            this.chkIsKidney.Location = new System.Drawing.Point(870, 532);
             this.chkIsKidney.MenuManager = this.barManager1;
             this.chkIsKidney.Name = "chkIsKidney";
             this.chkIsKidney.Properties.Caption = "";
@@ -720,7 +689,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtIntegrateAddress
             // 
-            this.txtIntegrateAddress.Location = new System.Drawing.Point(870, 396);
+            this.txtIntegrateAddress.Location = new System.Drawing.Point(870, 412);
             this.txtIntegrateAddress.MenuManager = this.barManager1;
             this.txtIntegrateAddress.Name = "txtIntegrateAddress";
             this.txtIntegrateAddress.Size = new System.Drawing.Size(139, 20);
@@ -730,7 +699,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtMachineGroupCode
             // 
-            this.txtMachineGroupCode.Location = new System.Drawing.Point(870, 132);
+            this.txtMachineGroupCode.Location = new System.Drawing.Point(870, 148);
             this.txtMachineGroupCode.MenuManager = this.barManager1;
             this.txtMachineGroupCode.Name = "txtMachineGroupCode";
             this.txtMachineGroupCode.Properties.MaxLength = 5;
@@ -741,7 +710,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // cboSource
             // 
-            this.cboSource.Location = new System.Drawing.Point(870, 84);
+            this.cboSource.Location = new System.Drawing.Point(870, 100);
             this.cboSource.MenuManager = this.barManager1;
             this.cboSource.Name = "cboSource";
             this.cboSource.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -762,7 +731,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtSeri
             // 
-            this.txtSeri.Location = new System.Drawing.Point(870, 60);
+            this.txtSeri.Location = new System.Drawing.Point(870, 76);
             this.txtSeri.MenuManager = this.barManager1;
             this.txtSeri.Name = "txtSeri";
             this.txtSeri.Size = new System.Drawing.Size(139, 20);
@@ -774,7 +743,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             this.layoutControl3.Controls.Add(this.layoutControl4);
             this.layoutControl3.Controls.Add(this.ucPaging);
-            this.layoutControl3.Location = new System.Drawing.Point(0, 10);
+            this.layoutControl3.Location = new System.Drawing.Point(0, 26);
             this.layoutControl3.Name = "layoutControl3";
             this.layoutControl3.Root = this.layoutControlGroup2;
             this.layoutControl3.Size = new System.Drawing.Size(763, 554);
@@ -853,10 +822,10 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.gridView1.OptionsView.ColumnAutoWidth = false;
             this.gridView1.OptionsView.ShowGroupPanel = false;
             this.gridView1.OptionsView.ShowIndicator = false;
+            this.gridView1.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridView1_CustomDrawColumnHeader);
             this.gridView1.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridView1_RowCellStyle);
             this.gridView1.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridView1_CustomRowCellEdit);
             this.gridView1.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridView1_CustomUnboundColumnData);
-            this.gridView1.CustomDrawColumnHeader += new DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventHandler(this.gridView1_CustomDrawColumnHeader);
             this.gridView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridView1_MouseDown);
             // 
             // gridColumn12
@@ -1305,7 +1274,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(853, 540);
+            this.btnEdit.Location = new System.Drawing.Point(853, 556);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(70, 22);
             this.btnEdit.StyleController = this.layoutControl1;
@@ -1315,7 +1284,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(927, 540);
+            this.btnReset.Location = new System.Drawing.Point(927, 556);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(82, 22);
             this.btnReset.StyleController = this.layoutControl1;
@@ -1325,7 +1294,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(765, 540);
+            this.btnAdd.Location = new System.Drawing.Point(765, 556);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(84, 22);
             this.btnAdd.StyleController = this.layoutControl1;
@@ -1335,7 +1304,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // layoutControl2
             // 
-            this.layoutControl2.Location = new System.Drawing.Point(765, -14);
+            this.layoutControl2.Location = new System.Drawing.Point(765, 2);
             this.layoutControl2.Name = "layoutControl2";
             this.layoutControl2.Root = this.Root;
             this.layoutControl2.Size = new System.Drawing.Size(244, 22);
@@ -1353,7 +1322,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // btnFind
             // 
-            this.btnFind.Location = new System.Drawing.Point(434, -14);
+            this.btnFind.Location = new System.Drawing.Point(434, 2);
             this.btnFind.Name = "btnFind";
             this.btnFind.Size = new System.Drawing.Size(92, 22);
             this.btnFind.StyleController = this.layoutControl1;
@@ -1363,7 +1332,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtFind
             // 
-            this.txtFind.Location = new System.Drawing.Point(2, -14);
+            this.txtFind.Location = new System.Drawing.Point(2, 2);
             this.txtFind.Name = "txtFind";
             this.txtFind.Size = new System.Drawing.Size(428, 20);
             this.txtFind.StyleController = this.layoutControl1;
@@ -1372,7 +1341,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(870, 36);
+            this.txtName.Location = new System.Drawing.Point(870, 52);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(139, 20);
             this.txtName.StyleController = this.layoutControl1;
@@ -1381,7 +1350,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // txtCode
             // 
-            this.txtCode.Location = new System.Drawing.Point(870, 12);
+            this.txtCode.Location = new System.Drawing.Point(870, 28);
             this.txtCode.Name = "txtCode";
             this.txtCode.Size = new System.Drawing.Size(139, 20);
             this.txtCode.StyleController = this.layoutControl1;
@@ -1390,7 +1359,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             // 
             // cboRoom
             // 
-            this.cboRoom.Location = new System.Drawing.Point(870, 468);
+            this.cboRoom.Location = new System.Drawing.Point(870, 484);
             this.cboRoom.Name = "cboRoom";
             this.cboRoom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboRoom.Properties.AutoComplete = false;
@@ -1448,7 +1417,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.layoutControlItem32,
             this.layoutControlItem33,
             this.layoutControlItem34});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -16);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup1.Size = new System.Drawing.Size(1011, 580);
@@ -1841,6 +1810,34 @@ namespace HIS.Desktop.Plugins.HisMachine
             this.layoutControlItem34.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem34.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem34.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1028, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 593);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1028, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 564);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1028, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 564);
             // 
             // dxValidationProvider1
             // 
