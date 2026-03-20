@@ -25,6 +25,7 @@ namespace HIS.Desktop.Plugins.EmpUser
 {
     class HisRequestUriStore
     {
+        internal const string MOSHIS_HIS_MACHINE_GET = "api/HisMachine/Get";
         internal const string HIS_EMPLOYEE_GET_VIEW = "api/HisEmployee/GetView";
         internal const string HIS_EMPLOYEE_DELETE = "api/HisEmployee/Delete";
         internal const string HIS_EMPLOYEE_CREATE = "api/HisEmployee/Create";

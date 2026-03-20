@@ -15,45 +15,55 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using ACS.EFMODEL.DataModels;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraExport;
+using EMR.WCF.DCO;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.EmpUser.ADO;
+using HIS.Desktop.Utilities.Extensions;
+using HIS.Desktop.Utility;
+using HIS.UC.SettingSignInfo;
 using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary.ServiceSign;
 using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.Controls.Session;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using DevExpress.XtraEditors;
-using Inventec.Common.Logging;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using HIS.Desktop.LibraryMessage;
-using DevExpress.XtraEditors.DXErrorProvider;
-using Inventec.Common.Controls.EditorLoader;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using DevExpress.XtraEditors.Controls;
-using ACS.EFMODEL.DataModels;
-using HIS.Desktop.Utility;
-using HIS.Desktop.LocalStorage.BackendData;
-using HIS.Desktop.Utilities.Extensions;
+using Newtonsoft.Json;
 using SDA.EFMODEL.DataModels;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
-using System.Xml.Serialization;
+using System.Linq;
+using System.Resources;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
-using DevExpress.XtraExport;
+using System.Xml.Serialization;
 
 namespace HIS.Desktop.Plugins.EmpUser
 {
@@ -68,6 +78,9 @@ namespace HIS.Desktop.Plugins.EmpUser
             SetIcon();
         }
         #region global list
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckIsSelectedDisabled;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         MOS.EFMODEL.DataModels.HIS_EMPLOYEE currentDataEmployee = null;
         MOS.EFMODEL.DataModels.HIS_EMPLOYEE resultDataEmployee = null;
         ACS.EFMODEL.DataModels.ACS_USER currentDataUser = null;
@@ -83,6 +96,8 @@ namespace HIS.Desktop.Plugins.EmpUser
         int ActionType = -1;
         int startPage;
         int limit;
+        private Dictionary<long, bool> selectedEmployees = new Dictionary<long, bool>();
+        private bool isCheckAllEmployee = false;
         #endregion
         List<HIS_MEDI_STOCK> mediStockSeleteds;
         string[] mediStockNew;
@@ -124,23 +139,23 @@ namespace HIS.Desktop.Plugins.EmpUser
                 updateDTOEmployee.VCONG_LOGINNAME = txtVCong.Text.Trim();
             }
             else
-            {     
+            {
                 updateDTOEmployee.VCONG_LOGINNAME = null;
             }
-            if(!string.IsNullOrEmpty(txtEmployeeCode.Text.Trim()))
+            if (!string.IsNullOrEmpty(txtEmployeeCode.Text.Trim()))
             {
-                updateDTOEmployee.EMPLOYEE_CODE = txtEmployeeCode.Text.Trim(); 
+                updateDTOEmployee.EMPLOYEE_CODE = txtEmployeeCode.Text.Trim();
             }
             else
             {
                 updateDTOEmployee.EMPLOYEE_CODE = null;
-            } 
+            }
 
             if (txtEmail.Text.Length > 0)
                 updateDTOEmployee.TDL_EMAIL = txtEmail.Text.Trim();
             else
                 updateDTOEmployee.TDL_EMAIL = null;
-                   
+
             if (txtMobile.Text.Length > 0)
                 updateDTOEmployee.TDL_MOBILE = txtMobile.Text.Trim();
             else
@@ -149,7 +164,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             if (dtDOB.EditValue != null && dtDOB.DateTime != DateTime.MinValue)
             {
                 updateDTOEmployee.DOB = Inventec.Common.TypeConvert.Parse.ToInt64(dtDOB.DateTime.ToString("yyyyMMdd") + "000000");
-            }   
+            }
             else
             {
                 updateDTOEmployee.DOB = null;
@@ -274,7 +289,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 updateDTOEmployee.DIPLOMA_DATE = Inventec.Common.TypeConvert.Parse.ToInt64(dteDiploma.DateTime.ToString("yyyyMMdd") + "000000");
             else
                 updateDTOEmployee.DIPLOMA_DATE = null;
-            if(!string.IsNullOrEmpty(txtDiplomaPlace.Text.Trim()))
+            if (!string.IsNullOrEmpty(txtDiplomaPlace.Text.Trim()))
                 updateDTOEmployee.DIPLOMA_PLACE = txtDiplomaPlace.Text.Trim();
             else
                 updateDTOEmployee.DIPLOMA_PLACE = null;
@@ -292,7 +307,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 updateDTOEmployee.POSITION = null;
 
             if (specialitySeleteds != null && specialitySeleteds.Count > 0)
-                updateDTOEmployee.SPECIALITY_CODES = string.Join(";", specialitySeleteds.Select(o=>o.SPECIALITY_CODE).ToList());
+                updateDTOEmployee.SPECIALITY_CODES = string.Join(";", specialitySeleteds.Select(o => o.SPECIALITY_CODE).ToList());
             else
                 updateDTOEmployee.SPECIALITY_CODES = null;
 
@@ -319,6 +334,85 @@ namespace HIS.Desktop.Plugins.EmpUser
             {
                 updateDTOEmployee.IS_NEED_SIGN_INSTEAD = null;
             }
+            // Phạm vi CMBS
+            if (!string.IsNullOrWhiteSpace(txtCMBS.Text))
+                updateDTOEmployee.PRACTICE_SCOPE_DECISION = txtCMBS.Text.Trim();
+            else
+                updateDTOEmployee.PRACTICE_SCOPE_DECISION = null;
+
+            // Dịch vụ khác: OTHER_SERVICE_CODES = list SERVICE_CODE, phân cách ';'
+            if (cboOtherService.EditValue != null)
+            {
+                // giả định EditValue là list ID hoặc SERVICE_CODE, bạn chọn kiểu phù hợp.
+                // Ở đây dùng DataSource là List<HIS_SERVICE> và multi-select bằng GridCheckMarksSelection,
+                // nên ta đọc từ selection, không dùng EditValue.
+                var repo = cboOtherService.Properties;
+                var gridCheckMarks = repo.Tag as GridCheckMarksSelection;
+                if (gridCheckMarks != null)
+                {
+                    var selectedServices = gridCheckMarks.Selection.Cast<HIS_SERVICE>().ToList();
+                    if (selectedServices.Any())
+                        updateDTOEmployee.OTHER_SERVICE_CODES = string.Join(";", selectedServices.Select(s => s.SERVICE_CODE));
+                    else
+                        updateDTOEmployee.OTHER_SERVICE_CODES = null;
+                }
+                else
+                {
+                    updateDTOEmployee.OTHER_SERVICE_CODES = null;
+                }
+            }
+            else
+            {
+                updateDTOEmployee.OTHER_SERVICE_CODES = null;
+            }
+
+            // Văn bản phân công
+            if (!string.IsNullOrWhiteSpace(txtVBPC.Text))
+                updateDTOEmployee.ASSIGNMENT_DOCUMENT = txtVBPC.Text.Trim();
+            else
+                updateDTOEmployee.ASSIGNMENT_DOCUMENT = null;
+
+            // TG ĐK theo ngày
+            if (!string.IsNullOrWhiteSpace(txtTGDKDate.Text))
+                updateDTOEmployee.WORKING_SCHEDULE = txtTGDKDate.Text.Trim();
+            else
+                updateDTOEmployee.WORKING_SCHEDULE = null;
+
+            // TG ĐK theo tuần
+            if (!string.IsNullOrWhiteSpace(txtTGDKWeek.Text))
+                updateDTOEmployee.WEEK_WORK_DAYS = txtTGDKWeek.Text.Trim();
+            else
+                updateDTOEmployee.WEEK_WORK_DAYS = null;
+
+            // Cơ sở KCB CGKT: TRANSFER_MEDI_ORG_CODE = MEDI_ORG_CODE (HIS_MEDI_ORG)
+            if (cboCGKT.EditValue != null)
+            {
+                var mediOrgId = Inventec.Common.TypeConvert.Parse.ToInt64(cboCGKT.EditValue.ToString());
+                var mediOrg = BackendDataWorker.Get<HIS_MEDI_ORG>().FirstOrDefault(o => o.ID == mediOrgId);
+                updateDTOEmployee.TRANSFER_MEDI_ORG_CODE = mediOrg != null ? mediOrg.MEDI_ORG_CODE : null;
+            }
+            else
+            {
+                updateDTOEmployee.TRANSFER_MEDI_ORG_CODE = null;
+            }
+
+            // Quyết định CGKT
+            if (!string.IsNullOrWhiteSpace(txtDecisionCGKT.Text))
+                updateDTOEmployee.TECH_TRANSFER_DECISIONS = txtDecisionCGKT.Text.Trim();
+            else
+                updateDTOEmployee.TECH_TRANSFER_DECISIONS = null;
+
+            // TG hiệu lực từ (FROM_TIME) - nếu chọn ngày thì disable 'đến' (xử lý UI ở event riêng)
+            if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
+                updateDTOEmployee.FROM_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dtTimeFrom.DateTime.ToString("yyyyMMdd") + "000000");
+            else
+                updateDTOEmployee.FROM_TIME = null;
+
+            // TG hiệu lực đến (TO_TIME)
+            if (dtTimeTo.EditValue != null && dtTimeTo.DateTime != DateTime.MinValue)
+                updateDTOEmployee.TO_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(dtTimeTo.DateTime.ToString("yyyyMMdd") + "000000");
+            else
+                updateDTOEmployee.TO_TIME = null;
         }
 
         private void filldatatocboMediStock(HIS_EMPLOYEE data)
@@ -384,7 +478,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                     string mediStockIds = data.SPECIALITY_CODES;
                     specialityNew = mediStockIds.Split(';');
 
-                    List<string> displayText= new List<string>();
+                    List<string> displayText = new List<string>();
                     for (int i = 0; i < specialityNew.Count(); i++)
                     {
                         string m = (specialityNew[i]);
@@ -667,6 +761,41 @@ namespace HIS.Desktop.Plugins.EmpUser
             }
             return rs;
         }
+        private void SetOtherServiceForEmployee(string otherServiceCodes)
+        {
+            try
+            {
+                GridCheckMarksSelection gridCheckMark = cboOtherService.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark == null)
+                    return;
+
+                gridCheckMark.Selection.Clear();
+
+                if (string.IsNullOrWhiteSpace(otherServiceCodes))
+                {
+                    cboOtherService.Text = string.Empty;
+                    return;
+                }
+
+                var allServices = BackendDataWorker.Get<HIS_SERVICE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                cboOtherService.Properties.DataSource = allServices;
+
+                var codes = otherServiceCodes
+                    .Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim())
+                    .ToList();
+
+                var selected = allServices.Where(s => codes.Contains(s.SERVICE_CODE)).ToList();
+                gridCheckMark.Selection.AddRange(selected);
+
+                // Hiển thị SERVICE_CODE ngăn cách ';'
+                cboOtherService.Text = string.Join(";", selected.Select(s => s.SERVICE_CODE));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void ChangedDataRow(HIS_EMPLOYEE currentDataEmp)
         {
             try
@@ -679,9 +808,9 @@ namespace HIS.Desktop.Plugins.EmpUser
                     txtLoginName.Text = currentDataEmp.LOGINNAME;
                     txtUserName.Text = currentDataEmp.TDL_USERNAME;
                     txtMobile.Text = currentDataEmp.TDL_MOBILE;
-         
+
                     txtEmployeeCode.Text = currentDataEmp.EMPLOYEE_CODE;
-       
+
                     if (currentDataEmp.DOB != null)
                     {
                         dtDOB.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentDataEmp.DOB ?? 0) ?? DateTime.MinValue;
@@ -701,7 +830,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                         checkDoctor.Checked = false;
                     if (currentDataEmp.IS_SERVICE_REQ_EXAM != null && currentDataEmp.IS_SERVICE_REQ_EXAM == 1)
                     {
-                        chkWorkOnly.Checked = true;   
+                        chkWorkOnly.Checked = true;
                     }
                     else
                         chkWorkOnly.Checked = false;
@@ -737,7 +866,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                     {
                         chkIsNeedSignInstead.Checked = true;
                     }
-                    else 
+                    else
                     {
                         chkIsNeedSignInstead.Checked = false;
                     }
@@ -763,6 +892,47 @@ namespace HIS.Desktop.Plugins.EmpUser
                     txtIdentificationNumber.Text = currentDataEmp.IDENTIFICATION_NUMBER;
                     cboCareerTitle.EditValue = currentDataEmp.CAREER_TITLE_ID;
                     cboPostion.EditValue = currentDataEmp.POSITION;
+                    // Phạm vi CMBS
+                    txtCMBS.Text = currentDataEmp.PRACTICE_SCOPE_DECISION;
+
+                    // Dịch vụ khác: OTHER_SERVICE_CODES -> chọn trong cboOtherService
+                    SetOtherServiceForEmployee(currentDataEmp.OTHER_SERVICE_CODES);
+
+                    // Văn bản phân công
+                    txtVBPC.Text = currentDataEmp.ASSIGNMENT_DOCUMENT;
+
+                    // TG ĐK theo ngày
+                    txtTGDKDate.Text = currentDataEmp.WORKING_SCHEDULE;
+
+                    // TG ĐK theo tuần
+                    txtTGDKWeek.Text = currentDataEmp.WEEK_WORK_DAYS;
+
+                    // Cơ sở KCB CGKT
+                    if (!string.IsNullOrEmpty(currentDataEmp.TRANSFER_MEDI_ORG_CODE))
+                    {
+                        var mediOrg = BackendDataWorker.Get<HIS_MEDI_ORG>()
+                            .FirstOrDefault(o => o.MEDI_ORG_CODE == currentDataEmp.TRANSFER_MEDI_ORG_CODE);
+                        cboCGKT.EditValue = mediOrg != null ? (object)mediOrg.ID : null;
+                    }
+                    else
+                    {
+                        cboCGKT.EditValue = null;
+                    }
+
+                    // Quyết định CGKT
+                    txtDecisionCGKT.Text = currentDataEmp.TECH_TRANSFER_DECISIONS;
+
+                    // TG hiệu lực từ
+                    if (currentDataEmp.FROM_TIME.HasValue && currentDataEmp.FROM_TIME.Value > 0)
+                        dtTimeFrom.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentDataEmp.FROM_TIME.Value) ?? DateTime.MinValue;
+                    else
+                        dtTimeFrom.EditValue = null;
+
+                    // TG hiệu lực đến
+                    if (currentDataEmp.TO_TIME.HasValue && currentDataEmp.TO_TIME.Value > 0)
+                        dtTimeTo.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentDataEmp.TO_TIME.Value) ?? DateTime.MinValue;
+                    else
+                        dtTimeTo.EditValue = null;
                     SetValueSpeciality(this.cboSpecialityCodes, this.specialitySeleteds, BackendDataWorker.Get<HIS_SPECIALITY>());
                     filldatatocboSpeciality(currentDataEmp);
                     cboTypeOfTime.EditValue = currentDataEmp.TYPE_OF_TIME;
@@ -778,7 +948,31 @@ namespace HIS.Desktop.Plugins.EmpUser
                 Inventec.Common.Logging.LogSystem.Warn(e);
             }
         }
-
+        private void SelectionGrid__OtherService(object sender, EventArgs e)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    foreach (HIS_SERVICE s in gridCheckMark.Selection)
+                    {
+                        if (s != null)
+                        {
+                            if (sb.Length > 0)
+                                sb.Append(";");
+                            sb.Append(s.SERVICE_CODE);
+                        }
+                    }
+                }
+                cboOtherService.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void EnableControlChanged(int action)
         {
             btnAdd.Enabled = (action == GlobalVariables.ActionAdd);
@@ -815,9 +1009,9 @@ namespace HIS.Desktop.Plugins.EmpUser
                         formatFrm.EditValue = null;
                     }
                 }
-          
-                txtEmployeeCode.Text = null; 
-              
+
+                txtEmployeeCode.Text = null;
+
 
                 txtVCong.Text = "";
                 txtLoginName.Text = "";
@@ -898,8 +1092,8 @@ namespace HIS.Desktop.Plugins.EmpUser
                 validMalength(this.txtDiplomaPlace, 50);
                 validMalength(this.txtIdentificationNumber, 15);
                 ValidationBhxh(this.txtSocialInsuranceNumber);
-           
-                validMalength(this.txtEmployeeCode, 20); 
+
+                validMalength(this.txtEmployeeCode, 20);
 
                 WaitingManager.Hide();
             }
@@ -956,33 +1150,49 @@ namespace HIS.Desktop.Plugins.EmpUser
 
                 CommonParam paramCommon = new CommonParam(startPage, limit);
 
-                //HIS_EMPLOYEE data
-                MOS.Filter.HisEmployeeFilter filter = new HisEmployeeFilter();
+                HisEmployeeFilter filter = new HisEmployeeFilter();
                 filter.KEY_WORD = txtSearch.Text.Trim();
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 filter.ORDER_DIRECTION = "DESC";
-                Inventec.Core.ApiResultObject<List<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>> apiResultEmployee = null;
+                ApiResultObject<List<HIS_EMPLOYEE>> apiResultEmployee = null;
 
-                apiResultEmployee = new BackendAdapter(paramCommon).GetRO<List<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>>
+                apiResultEmployee = new BackendAdapter(paramCommon).GetRO<List<HIS_EMPLOYEE>>
                       (HisRequestUriStore.HIS_EMPLOYEE_GET, HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, paramCommon);
+
                 gridViewFormList.GridControl.DataSource = null;
                 if (apiResultEmployee != null)
                 {
-                    var dataEmployee = (List<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>)apiResultEmployee.Data;
-                    //gan du lieu len gridview
-                    gridViewFormList.GridControl.DataSource = dataEmployee;
+                    var dataEmployee = apiResultEmployee.Data ?? new List<HIS_EMPLOYEE>();
 
-                    rowCount = (dataEmployee == null ? 0 : dataEmployee.Count);
+                    // Map sang EmployeeADO và giữ trạng thái IsSelected nếu đã chọn trước đó
+                    var adoList = new List<EmployeeADO>();
+                    foreach (var emp in dataEmployee)
+                    {
+                        if (emp == null) continue;
+
+                        var ado = new EmployeeADO();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<EmployeeADO>(ado, emp);
+
+                        bool IsSelected;
+                        if (selectedEmployees != null && selectedEmployees.TryGetValue(emp.ID, out IsSelected))
+                            ado.IsSelected = IsSelected;
+                        else
+                            ado.IsSelected = false;
+
+                        adoList.Add(ado);
+                    }
+
+                    gridViewFormList.GridControl.DataSource = adoList;
+
+                    rowCount = adoList.Count;
                     dataTotal = (apiResultEmployee.Param == null ? 0 : apiResultEmployee.Param.Count ?? 0);
                 }
-                #region Process has exception
+
                 SessionManager.ProcessTokenLost(paramCommon);
-                #endregion
             }
             catch (Exception ex)
             {
-
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                LogSystem.Error(ex);
             }
         }
 
@@ -1189,6 +1399,11 @@ namespace HIS.Desktop.Plugins.EmpUser
             try
             {
                 WaitingManager.Show();
+                repositoryItemCheckIsSelectedDisabled = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+                repositoryItemCheckIsSelectedDisabled.Enabled = false;
+                repositoryItemCheckIsSelectedDisabled.ReadOnly = true;
+                repositoryItemCheckIsSelectedDisabled.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Style1;
+
                 LoadComboEdit();
                 InitComboRank();
                 InitComboDepartment();
@@ -1199,6 +1414,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 SetCaptionByLanguageKey();
                 ValidateForm();
                 SetDefaultValue();
+                InitControlState();
                 WaitingManager.Hide();
 
             }
@@ -1230,6 +1446,19 @@ namespace HIS.Desktop.Plugins.EmpUser
 
                 InitComboMediStock(cboMediOrgCodes, BackendDataWorker.Get<HIS_MEDI_ORG>().ToList(), "MEDI_ORG_CODE", "MEDI_ORG_NAME", "ID");
                 InitCheck(cboMediOrgCodes, SelectionGrid__MediOrgCodes);
+                // Dịch vụ khác
+                var services = BackendDataWorker.Get<HIS_SERVICE>().Where(o => o.IS_ACTIVE == 1).ToList();
+                InitComboMediStock(cboOtherService, services, "SERVICE_CODE", "SERVICE_NAME", "ID");
+                InitCheck(cboOtherService, SelectionGrid__OtherService);
+
+                // Cơ sở KCB CGKT (single-select)
+                var mediOrgs = BackendDataWorker.Get<HIS_MEDI_ORG>().Where(o => o.IS_ACTIVE == 1).ToList();
+                List<ColumnInfo> cgktCols = new List<ColumnInfo>();
+                cgktCols.Add(new ColumnInfo("MEDI_ORG_CODE", "Mã", 100, 1));
+                cgktCols.Add(new ColumnInfo("MEDI_ORG_NAME", "Tên", 250, 2));
+                ControlEditorADO cgktEditor = new ControlEditorADO("MEDI_ORG_NAME", "ID", cgktCols, false, 350);
+                ControlEditorLoader.Load(cboCGKT, mediOrgs, cgktEditor);
+                cboCGKT.Properties.ImmediatePopup = true;
             }
             catch (Exception ex)
             {
@@ -1237,7 +1466,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             }
 
         }
-      
+
         private void SelectionGrid__MediOrgCodes(object sender, EventArgs e)
         {
             try
@@ -1377,17 +1606,17 @@ namespace HIS.Desktop.Plugins.EmpUser
         {
             try
             {
-                lstCareer = BackendDataWorker.Get<HIS_CAREER_TITLE>().Where(o=>o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                lstCareer = BackendDataWorker.Get<HIS_CAREER_TITLE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => lstCareer), lstCareer));
-                List <ColumnInfo> columnInfos = new List<ColumnInfo>();
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("CAREER_TITLE_CODE", "Mã", 100, 1));
                 columnInfos.Add(new ColumnInfo("CAREER_TITLE_NAME", "Tên", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("CAREER_TITLE_NAME", "ID", columnInfos, false, 350);
                 ControlEditorLoader.Load(cboCareerTitle, lstCareer, controlEditorADO);
                 cboCareerTitle.Properties.ImmediatePopup = true;
                 cboCareerTitle.Properties.PopupFormSize = new Size(350, cboCareerTitle.Properties.PopupFormSize.Height);
-                if(cboCareerTitle.EditValue != null && (lstCareer == null || lstCareer.FirstOrDefault(o=>o.ID == Int64.Parse(cboCareerTitle.EditValue.ToString())) == null))
+                if (cboCareerTitle.EditValue != null && (lstCareer == null || lstCareer.FirstOrDefault(o => o.ID == Int64.Parse(cboCareerTitle.EditValue.ToString())) == null))
                 {
                     cboCareerTitle.EditValue = null;
                 }
@@ -1861,8 +2090,23 @@ namespace HIS.Desktop.Plugins.EmpUser
                 if (e.RowHandle >= 0)
                 {
                     HIS_EMPLOYEE data = (HIS_EMPLOYEE)gridViewFormList.GetRow(e.RowHandle);
+
+                    // Cột LOCK
                     if (e.Column.FieldName == "LOCK")
                         e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE) ? btnUnlock : btnLock;
+
+                    // Cột IsSelected: checkbox mờ nếu dòng bị khóa
+                    if (e.Column.FieldName == "IsSelected")
+                    {
+                        if (data.IS_ACTIVE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        {
+                            e.RepositoryItem = repositoryItemCheckIsSelectedDisabled; // Checkbox mờ
+                        }
+                        else
+                        {
+                            e.RepositoryItem = repositoryItemCheckIsSelected; // Checkbox bình thường
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1875,10 +2119,24 @@ namespace HIS.Desktop.Plugins.EmpUser
         {
             try
             {
-                HIS_EMPLOYEE data = (HIS_EMPLOYEE)gridViewFormList.GetRow(e.ListSourceRowIndex);
-                DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
-
-
+                var data = gridViewFormList.GetRow(e.ListSourceRowIndex) as EmployeeADO;
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (e.Column.FieldName == "IsSelected" && e.IsGetData)
+                {
+                    if (data == null)
+                    {
+                        e.Value = false;
+                    }
+                    else if (data.IS_ACTIVE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    {
+                        e.Value = false;
+                    }
+                    else
+                    {
+                        e.Value = data.IsSelected;
+                    }
+                    return;
+                }
                 if (e.Column.FieldName == "STT")
                     e.Value = e.ListSourceRowIndex + 1 + startPage;
                 if (e.Column.FieldName == "STATUS")
@@ -1916,20 +2174,77 @@ namespace HIS.Desktop.Plugins.EmpUser
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void SelectAllEmployees(bool IsSelected)
+        {
+            try
+            {
+                var data = gridControl2.DataSource as List<EmployeeADO>;
+                if (data == null || data.Count == 0)
+                    return;
 
+                foreach (var emp in data)
+                {
+                    if (emp == null) continue;
+
+                    if (emp.IS_ACTIVE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    {
+                        emp.IsSelected = false;
+                        selectedEmployees[emp.ID] = false;
+                        continue;
+                    }
+
+                    emp.IsSelected = IsSelected;
+                    selectedEmployees[emp.ID] = IsSelected;
+                }
+
+                gridViewFormList.RefreshData();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+        }
         private void gridViewFormList_Click(object sender, EventArgs e)
         {
             try
             {
+                var hitInfo = gridViewFormList.CalcHitInfo(gridControl2.PointToClient(Control.MousePosition));
+                if (hitInfo.InRowCell && hitInfo.Column != null && hitInfo.Column.FieldName == "IsSelected")
+                {
+                    var rowData = gridViewFormList.GetRow(hitInfo.RowHandle) as EmployeeADO;
+                    if (rowData != null && rowData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    {
+                        rowData.IsSelected = !rowData.IsSelected;
+                        selectedEmployees[rowData.ID] = rowData.IsSelected;
+                        gridViewFormList.RefreshRow(hitInfo.RowHandle);
+
+                        var data = gridControl2.DataSource as List<EmployeeADO>;
+                        if (data != null && data.Any(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE))
+                        {
+                            isCheckAllEmployee = data
+                                .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                                .All(o => o.IsSelected);
+                        }
+                        else
+                        {
+                            isCheckAllEmployee = false;
+                        }
+                        gridViewFormList.InvalidateColumnHeader(hitInfo.Column);
+                    }
+                    return;
+                }
                 if (backgroundWorker1.IsBusy)
                 {
                     WaitingManager.Show();
                 }
                 else
                 {
-                    var rowData = (HIS_EMPLOYEE)gridViewFormList.GetFocusedRow();
-                    if (rowData != null)
+                    var empAdo = gridViewFormList.GetFocusedRow() as EmployeeADO;
+                    //var rowData = (HIS_EMPLOYEE)gridViewFormList.GetFocusedRow();
+                    if (empAdo != null)
                     {
+                        var rowData = new HIS_EMPLOYEE();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<HIS_EMPLOYEE>(rowData, empAdo);
                         CommonParam param = new CommonParam();
                         ACS.Filter.AcsUserFilter acsFilter = new ACS.Filter.AcsUserFilter();
                         acsFilter.LOGINNAME = rowData.LOGINNAME;
@@ -2968,7 +3283,7 @@ namespace HIS.Desktop.Plugins.EmpUser
 
             try
             {
-                if(e.Button.Kind == ButtonPredefines.Delete)
+                if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboBranch.EditValue = null;
                 }
@@ -2985,6 +3300,14 @@ namespace HIS.Desktop.Plugins.EmpUser
 
             try
             {
+                string savePath = "";
+                FolderBrowserDialog fbd1 = new FolderBrowserDialog();
+                if (fbd1.ShowDialog() == DialogResult.OK)
+                {
+                    savePath = fbd1.SelectedPath;
+                }
+                if (String.IsNullOrEmpty(savePath))
+                    return;
 
                 FolderBrowserDialog fbd = new FolderBrowserDialog();
                 string folderPath = null;
@@ -2998,17 +3321,37 @@ namespace HIS.Desktop.Plugins.EmpUser
                 MOS.Filter.HisEmployeeFilter filter = new HisEmployeeFilter();
                 filter.ORDER_FIELD = "MODIFY_TIME";
                 filter.ORDER_DIRECTION = "DESC";
-                var apiResultEmployee = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>>
-                      (HisRequestUriStore.HIS_EMPLOYEE_GET, HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
-                if(apiResultEmployee != null && apiResultEmployee.Count > 0)
+                //var apiResultEmployee = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_EMPLOYEE>>
+                //      (HisRequestUriStore.HIS_EMPLOYEE_GET, HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                //if(apiResultEmployee != null && apiResultEmployee.Count > 0)
+                //{
+                //    apiResultEmployee = apiResultEmployee.Where(o => !string.IsNullOrEmpty(o.DIPLOMA)).ToList();
+                //}
+                //if (apiResultEmployee == null || apiResultEmployee.Count == 0)
+                //    return;
+                //List<XML> lstXml = new List<XML>();
+                //int count = 1;
+
+                var adoList = gridControl2.DataSource as List<EmployeeADO>;
+                if (adoList == null || adoList.Count == 0)
                 {
-                    apiResultEmployee = apiResultEmployee.Where(o => !string.IsNullOrEmpty(o.DIPLOMA)).ToList();
-                }
-                if (apiResultEmployee == null || apiResultEmployee.Count == 0)
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show("Không có dữ liệu để xuất XML.", "Thông báo");
                     return;
+                }
+
+                var selected = adoList.Where(x => x.IsSelected && x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+                if (selected.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show("Không có nhân viên nào được chọn để xuất XML.", "Thông báo");
+                    return;
+                }
+
                 List<XML> lstXml = new List<XML>();
                 int count = 1;
-                foreach (var currentData in apiResultEmployee)
+
+                foreach (var currentData in selected)
                 {
                     var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == currentData.BRANCH_ID);
 
@@ -3016,13 +3359,14 @@ namespace HIS.Desktop.Plugins.EmpUser
                     xml.STT = count++;
                     xml.MA_CSKCB = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
                     xml.HO_TEN = this.ConvertStringToXmlDocument(currentData.TDL_USERNAME ?? "");
-                    xml.GIOI_TINH = currentData.GENDER_ID == 1 ? "2" : (currentData.GENDER_ID == 2 ? "1" : "3");
+                    //xml.GIOI_TINH = currentData.GENDER_ID == 1 ? "2" : (currentData.GENDER_ID == 2 ? "1" : "3");
+                    xml.GIOI_TINH = currentData.GENDER_ID == 1 ? "1" : (currentData.GENDER_ID == 2 ? "2" : "3");
                     xml.MA_DANTOC = currentData.ETHNIC_CODE;
                     xml.NGAY_SINH = currentData.DOB != null ? (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentData.DOB ?? 0) ?? DateTime.MinValue).ToString("yyyyMMdd") : "";
                     xml.SO_CCCD = currentData.IDENTIFICATION_NUMBER ?? currentData.SOCIAL_INSURANCE_NUMBER ?? "";
                     xml.CHUCDANH_NN = "";
                     if (lstCareer != null && lstCareer.Count > 0)
-                        xml.CHUCDANH_NN = currentData.CAREER_TITLE_ID != null ? (lstCareer.FirstOrDefault(o=> o.ID == currentData.CAREER_TITLE_ID.Value) != null ? lstCareer.FirstOrDefault(o => o.ID == currentData.CAREER_TITLE_ID.Value).CAREER_TITLE_CODE : "") : "";
+                        xml.CHUCDANH_NN = currentData.CAREER_TITLE_ID != null ? (lstCareer.FirstOrDefault(o => o.ID == currentData.CAREER_TITLE_ID.Value) != null ? lstCareer.FirstOrDefault(o => o.ID == currentData.CAREER_TITLE_ID.Value).CAREER_TITLE_CODE : "") : "";
                     xml.VI_TRI = currentData.POSITION != null ? currentData.POSITION.Value.ToString() : "";
                     xml.MA_CCHN = this.ConvertStringToXmlDocument(currentData.DIPLOMA ?? "");
                     xml.NGAYCAP_CCHN = currentData.DIPLOMA_DATE != null ? (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(currentData.DIPLOMA_DATE ?? 0) ?? DateTime.MinValue).ToString("yyyyMMdd") : "";
@@ -3032,11 +3376,18 @@ namespace HIS.Desktop.Plugins.EmpUser
                     xml.CSKCB_KHAC = currentData.MEDI_ORG_CODES ?? "";
                     lstXml.Add(xml);
                 }
-               
+
 
                 var fileName = string.Format("XML_{0}", new string[] { DateTime.Now.ToString("dd.MM.yyyy_HH.mm.ss") });
                 var path = string.Format("{0}/{1}.xml", folderPath, fileName);
+
+                string fullFileName = String.Format("MayCLS_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+                string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
                 bool Sucess = CreatedXmlFile(lstXml, false, true, path);
+                if (chkSign.Checked)
+                {
+                    SignFile(fullFileName, saveFilePath);
+                }
                 WaitingManager.Hide();
                 if (Sucess)
                 {
@@ -3057,6 +3408,215 @@ namespace HIS.Desktop.Plugins.EmpUser
             {
                 WaitingManager.Hide();
             }
+        }
+        private string SourceFileSignApi(string xmlBase64Source)
+        {
+            string result = null;
+            try
+            {
+                CommonParam param = new CommonParam();
+                EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
+                signXmlBhytSDO.XmlBase64 = xmlBase64Source;
+                signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
+                signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                {
+                    string message = string.Join(Environment.NewLine, param.Messages);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Inventec.Common.Logging.LogSystem.Warn(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        private string RemoveByteOrderMark(string XML)
+        {
+            string byteOrderMark = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+            if (XML.StartsWith(byteOrderMark))
+            {
+                XML = XML.Remove(0, byteOrderMark.Length);
+            }
+            return XML;
+        }
+        public byte[] StringToBytes(string input)
+        {
+            if (input == null) return null;
+            return Encoding.UTF8.GetBytes(input);
+        }
+        private string ReadFileContent(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    byte[] fileBytes = File.ReadAllBytes(filePath);
+                    XmlDocument xmlDocument = new XmlDocument();
+                    try
+                    {
+                        xmlDocument.LoadXml(RemoveByteOrderMark(Encoding.UTF8.GetString(File.ReadAllBytes(filePath))));
+                        return Convert.ToBase64String(StringToBytes(RemoveByteOrderMark(Encoding.UTF8.GetString(fileBytes))));
+                    }
+                    catch (Exception)
+                    {
+                        xmlDocument.LoadXml(Encoding.UTF8.GetString(File.ReadAllBytes(filePath)));
+                        return Convert.ToBase64String(StringToBytes(Encoding.UTF8.GetString(fileBytes)));
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+        public string AppFilePathSignService()
+        {
+            try
+            {
+                string pathFolderTemp = Path.Combine(Path.Combine(Path.Combine(Application.StartupPath, "Integrate"), "EMR.SignProcessor"), "EMR.SignProcessor.exe");
+                return pathFolderTemp;
+            }
+            catch (IOException exception)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Error create temp file: " + exception.Message);
+                return "";
+            }
+        }
+        private bool IsProcessOpen(string name)
+        {
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                if (clsProcess.ProcessName == name || clsProcess.ProcessName == String.Format("{0}.exe", name) || clsProcess.ProcessName == String.Format("{0} (32 bit)", name) || clsProcess.ProcessName == String.Format("{0}.exe (32 bit)", name))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        internal bool VerifyServiceSignProcessorIsRunning()
+        {
+            bool valid = false;
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.1");
+                string exeSignPath = AppFilePathSignService();
+                if (File.Exists(exeSignPath))
+                {
+                    if (IsProcessOpen("EMR.SignProcessor"))
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.2");
+                        valid = true;
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.3");
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exeSignPath), exeSignPath));
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = exeSignPath;
+                        try
+                        {
+
+                            Process.Start(startInfo);
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.4");
+                            Thread.Sleep(500);
+                            valid = true;
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.5");
+                        }
+                        catch (Exception exx)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exx);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+        public bool SignFile(string fullFileName, string saveFilePath)
+        {
+            try
+            {
+                if (SettingSignADO == null || (SettingSignADO != null && string.IsNullOrEmpty(SettingSignADO.SerialNumber)))
+                {
+                    MessageBox.Show("Không có thông tin Usb Token ký số");
+                    return false;
+                }
+                else
+                {
+                    string currentDirectory = Directory.GetCurrentDirectory();
+                    string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+                    Directory.CreateDirectory(tempFolderPath);
+                    string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
+                    File.Create(tempFilePath).Close();
+                    string pathAfterFileSign = null;
+                    WcfSignDCO wcfSignDCO = null;
+                    if (SettingSignADO.IsHsm)
+                    {
+                        var xmlBase64 = SourceFileSignApi(ReadFileContent(saveFilePath));
+                        if (string.IsNullOrEmpty(xmlBase64))
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Ký HSM thất bại");
+                            return false;
+                        }
+                        var xmlBytes = Convert.FromBase64String(xmlBase64);
+                        File.WriteAllBytes(tempFilePath, xmlBytes);
+                        pathAfterFileSign = tempFilePath;
+                    }
+                    else
+                    {
+                        wcfSignDCO = new WcfSignDCO
+                        {
+                            SerialNumber = SettingSignADO.SerialNumber,
+                            OutputFile = tempFilePath,
+                            PIN = "",
+                            SourceFile = saveFilePath,
+                            fieldSigned = "CHUKYDONVI"
+                        };
+                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                        SignProcessorClient signProcessorClient = new SignProcessorClient();
+                        if (!VerifyServiceSignProcessorIsRunning())
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Service ký số không chạy");
+                        }
+                        var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                        if (wcfSignResultDCO == null || !wcfSignResultDCO.Success)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Ký file thất bại: " + (wcfSignResultDCO != null ? wcfSignResultDCO.Message : ""));
+                            return false;
+                        }
+                        pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                    }
+                    if (!string.IsNullOrEmpty(pathAfterFileSign) && File.Exists(pathAfterFileSign))
+                    {
+                        File.Copy(pathAfterFileSign, saveFilePath, true);
+                    }
+                    if (File.Exists(tempFilePath))
+                    {
+                        File.Delete(tempFilePath);
+                    }
+                    if (Directory.Exists(tempFolderPath) && Directory.GetFiles(tempFolderPath).Length == 0 && Directory.GetDirectories(tempFolderPath).Length == 0)
+                    {
+                        Directory.Delete(tempFolderPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
         }
         public bool CreatedXmlFile<T>(T input, bool displayNamspacess, bool saveFile, string path)
         {
@@ -3138,6 +3698,664 @@ namespace HIS.Desktop.Plugins.EmpUser
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+        SettingSignADO SettingSignADO;
+        private bool isNotLoadWhileChangeControlStateInFirst;
+        //private bool isCheckAll = false;
+        private void isChkSignFileCertUtil()
+        {
+            try
+            {
+                if (chkSign.Checked == true)
+                {
+                    frmSetting frm = new frmSetting(SettingSignADO, (result) =>
+                    {
+                        SettingSignADO = (SettingSignADO)result;
+                    });
+                    frm.ShowDialog();
+                    if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+                        chkSign.Checked = false;
+                }
+                else
+                {
+                    SettingSignADO = null;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSign.Name && o.MODULE_LINK == this.moduleData.ModuleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkSign.Name;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
+                    csAddOrUpdate.MODULE_LINK = this.moduleData.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void chkSign_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                    return;
+
+                isChkSignFileCertUtil();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitControlState()
+        {
+            try
+            {
+                isNotLoadWhileChangeControlStateInFirst = true;
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == chkSign.Name)
+                        {
+                            SettingSignADO = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingSignADO>(item.VALUE);
+                            chkSign.Checked = SettingSignADO != null && !string.IsNullOrEmpty(SettingSignADO.SerialNumber);
+                        }
+                    }
+                }
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                chkSign.Checked = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnExportXmlTT12_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool success = false;
+
+                // Chọn thư mục lưu XML TT12
+                string folderPath = null;
+                using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+                {
+                    if (fbd.ShowDialog() == DialogResult.OK)
+                    {
+                        folderPath = fbd.SelectedPath;
+                    }
+                }
+                if (string.IsNullOrEmpty(folderPath))
+                    return;
+
+                WaitingManager.Show();
+
+                // Lấy danh sách trên lưới (EmployeeADO)
+                var adoList = gridControl2.DataSource as List<EmployeeADO>;
+                if (adoList == null || adoList.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show("Không có dữ liệu nhân viên để xuất XML TT12.", "Thông báo");
+                    return;
+                }
+
+                // Chỉ lấy các bản ghi đã tick chọn và đang hoạt động
+                var selected = adoList
+                    .Where(x => x.IsSelected && x.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .Cast<HIS_EMPLOYEE>() // EmployeeADO kế thừa HIS_EMPLOYEE
+                    .ToList();
+
+                if (selected == null || selected.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show("Không có bản ghi nào được chọn để xuất XML TT12.", "Thông báo");
+                    return;
+                }
+
+                // Sinh ADO TT12 dựa trên HIS_EMPLOYEE và thiết kế 24 chỉ tiêu
+                List<XMLData.EmployeeTT12Ado> listXmlAdos = GenerateXmlTT12Ado(selected);
+                if (listXmlAdos == null || listXmlAdos.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    XtraMessageBox.Show("Không sinh được dữ liệu XML TT12.", "Thông báo");
+                    return;
+                }
+
+                // Map sang model XMLEmployeeTT12DetailData theo 24 thẻ XML
+                List<XMLData.XMLEmployeeTT12DetailData> listXmlDetails = new List<XMLData.XMLEmployeeTT12DetailData>();
+                MapADOToXmlTT12(listXmlAdos, ref listXmlDetails);
+
+                XMLData.XMLEmployeeTT12Data xmlData = new XMLData.XMLEmployeeTT12Data
+                {
+                    DanhMuc = listXmlDetails,
+                    ChuKyDonVi = string.Empty
+                };
+
+                string fullFileName = string.Format("NhanVien_TT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+                string saveFilePath = Path.Combine(folderPath, fullFileName);
+
+                // Serialize ra file theo XMLEmployeeTT12Data/XMLEmployeeTT12DetailData
+                success = CreatedXmlFile(xmlData, false, true, saveFilePath);
+
+                // Nếu cần ký số thì tái sử dụng hạ tầng ký đã có (USB Token / HSM)
+                if (success && chkSign.Checked)
+                {
+                    if (!SignFile(fullFileName, saveFilePath))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Ký file XML TT12 thất bại.");
+                    }
+                }
+
+                WaitingManager.Hide();
+
+                CommonParam param = new CommonParam();
+                MessageManager.Show(this, param, success);
+
+                if (success)
+                {
+                    if (XtraMessageBox.Show("Lưu file XML TT12 thành công. Bạn có muốn mở file?", "Thông báo",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        try
+                        {
+                            Process.Start(saveFilePath);
+                        }
+                        catch (Exception exOpen)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exOpen);
+                        }
+                    }
+                }
+                else
+                {
+                    XtraMessageBox.Show("Lưu file XML TT12 thất bại.", "Thông báo");
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private List<XMLData.EmployeeTT12Ado> GenerateXmlTT12Ado(List<HIS_EMPLOYEE> listEmployees)
+        {
+            List<XMLData.EmployeeTT12Ado> result = new List<XMLData.EmployeeTT12Ado>();
+            try
+            {
+                if (listEmployees == null || listEmployees.Count == 0)
+                    return result;
+
+                var departments = BackendDataWorker.Get<HIS_DEPARTMENT>() ?? new List<HIS_DEPARTMENT>();
+                var branches = BackendDataWorker.Get<HIS_BRANCH>() ?? new List<HIS_BRANCH>();
+                var careerTitles = BackendDataWorker.Get<HIS_CAREER_TITLE>() ?? new List<HIS_CAREER_TITLE>();
+                var services = BackendDataWorker.Get<HIS_SERVICE>() ?? new List<HIS_SERVICE>();
+                var genders = BackendDataWorker.Get<HIS_GENDER>() ?? new List<HIS_GENDER>();
+
+                int count = 1;
+                foreach (var employee in listEmployees)
+                {
+                    var department = departments.FirstOrDefault(o => o.ID == employee.DEPARTMENT_ID);
+                    var branch = branches.FirstOrDefault(o => o.ID == employee.BRANCH_ID);
+                    var careerTitle = careerTitles.FirstOrDefault(o => o.ID == employee.CAREER_TITLE_ID);
+
+                    var xmlTT12 = new XMLData.EmployeeTT12Ado();
+
+                    // 1. STT
+                    xmlTT12.STT = count;
+
+                    // 2. MA_KHOA
+                    xmlTT12.MA_KHOA = department != null ? (department.BHYT_CODE ?? string.Empty) : string.Empty;
+
+                    // 3. TEN_KHOA
+                    xmlTT12.TEN_KHOA = department != null ? (department.DEPARTMENT_NAME ?? string.Empty) : string.Empty;
+
+                    // 4. HO_TEN
+                    xmlTT12.HO_TEN = employee.TDL_USERNAME ?? string.Empty;
+
+                    // 5. GIOI_TINH - Lookup GENDER_CODE từ HIS_GENDER và đảo mapping
+                    if (employee.GENDER_ID.HasValue)
+                    {
+                        var gender = genders.FirstOrDefault(o => o.ID == employee.GENDER_ID.Value);
+                        if (gender != null && !string.IsNullOrEmpty(gender.GENDER_CODE))
+                        {
+                            if (gender.GENDER_CODE == "01")
+                                xmlTT12.GIOI_TINH = "2";// Nữ trong DB → "02" trong XML
+                            else if (gender.GENDER_CODE == "02")
+                                xmlTT12.GIOI_TINH = "1"; // Nam trong DB → "01" trong XML
+                            else if (gender.GENDER_CODE == "03")
+                                xmlTT12.GIOI_TINH = "3";// Không xác định giữ nguyên
+                            else
+                                xmlTT12.GIOI_TINH = string.Empty;
+                        }
+                        else
+                        {
+                            xmlTT12.GIOI_TINH = string.Empty;
+                        }
+                    }
+                    else
+                    {
+                        xmlTT12.GIOI_TINH = string.Empty;
+                    }
+
+                    // 6. SO_DINH_DANH
+                    xmlTT12.SO_DINH_DANH = employee.IDENTIFICATION_NUMBER ?? string.Empty;
+
+                    // 7. CHUCDANH_NN (mã nghề nghiệp)
+                    xmlTT12.CHUCDANH_NN = careerTitle != null
+                        ? (careerTitle.CAREER_TITLE_CODE ?? string.Empty)
+                        : string.Empty;
+
+                    // 8. VI_TRI
+                    xmlTT12.VI_TRI = employee.POSITION.HasValue
+                        ? employee.POSITION.Value.ToString()
+                        : string.Empty;
+
+                    // 9. MACCHN
+                    xmlTT12.MACCHN = employee.DIPLOMA ?? string.Empty;
+
+                    // 10. NGAYCAP_CCHN (yyyyMMdd)
+                    xmlTT12.NGAYCAP_CCHN = ToDate8(employee.DIPLOMA_DATE);
+
+                    // 11. NOICAP_CCHN
+                    xmlTT12.NOICAP_CCHN = employee.DIPLOMA_PLACE ?? string.Empty;
+
+                    // 12. PHAMVI_CM
+                    xmlTT12.PHAMVI_CM = employee.SPECIALITY_CODES ?? string.Empty;
+
+                    // 13. PHAMVI_CMBS
+                    xmlTT12.PHAMVI_CMBS = employee.PRACTICE_SCOPE_DECISION ?? string.Empty;
+
+                    // 14. DVKT_KHAC (từ OTHER_SERVICE_CODES -> HEIN_SERVICE_BHYT_CODE, ghép ;)
+                    xmlTT12.DVKT_KHAC = BuildOtherServiceHeinCodes(employee.OTHER_SERVICE_CODES, services);
+
+                    // 15. VB_PHANCONG
+                    xmlTT12.VB_PHANCONG = employee.ASSIGNMENT_DOCUMENT ?? string.Empty;
+
+                    // 16. THOIGIAN_DK (1/2)
+                    xmlTT12.THOIGIAN_DK = employee.TYPE_OF_TIME.HasValue
+                        ? employee.TYPE_OF_TIME.Value.ToString()
+                        : string.Empty;
+
+                    // 17. THOIGIAN_NGAY
+                    xmlTT12.THOIGIAN_NGAY = employee.WORKING_SCHEDULE ?? string.Empty;
+
+                    // 18. THOIGIAN_TUAN
+                    xmlTT12.THOIGIAN_TUAN = employee.WEEK_WORK_DAYS ?? string.Empty;
+
+                    // 19. CSKCB_KHAC
+                    xmlTT12.CSKCB_KHAC = employee.MEDI_ORG_CODES ?? string.Empty;
+
+                    // 20. CSKCB_CGKT
+                    xmlTT12.CSKCB_CGKT = employee.TRANSFER_MEDI_ORG_CODE ?? string.Empty;
+
+                    // 21. QD_CGKT
+                    xmlTT12.QD_CGKT = employee.TECH_TRANSFER_DECISIONS ?? string.Empty;
+
+                    // 22. TU_NGAY
+                    xmlTT12.TU_NGAY = ToDate8(employee.FROM_TIME);
+
+                    // 23. DEN_NGAY
+                    xmlTT12.DEN_NGAY = ToDate8(employee.TO_TIME);
+
+                    // 24. MA_CSKCB
+                    xmlTT12.MA_CSKCB = branch != null
+                        ? (branch.HEIN_MEDI_ORG_CODE ?? string.Empty)
+                        : string.Empty;
+
+                    result.Add(xmlTT12);
+                    count++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            return result;
+        }
+
+        private string ToDate8(long? timeNumber)
+        {
+            if (!timeNumber.HasValue || timeNumber.Value <= 0)
+                return string.Empty;
+
+            var dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(timeNumber.Value);
+            return dt.HasValue ? dt.Value.ToString("yyyyMMdd") : string.Empty;
+        }
+
+        private string BuildOtherServiceHeinCodes(string otherServiceCodes, List<HIS_SERVICE> services)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(otherServiceCodes) || services == null || services.Count == 0)
+                    return string.Empty;
+
+                var codes = otherServiceCodes
+                    .Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(x => x.Trim())
+                    .ToList();
+
+                if (codes.Count == 0)
+                    return string.Empty;
+
+                List<string> heinCodes = new List<string>();
+                foreach (var code in codes)
+                {
+                    var srv = services.FirstOrDefault(o => o.SERVICE_CODE == code);
+                    if (srv != null && !string.IsNullOrEmpty(srv.HEIN_SERVICE_BHYT_CODE))
+                    {
+                        heinCodes.Add(srv.HEIN_SERVICE_BHYT_CODE);
+                    }
+                }
+
+                return string.Join(";", heinCodes);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return string.Empty;
+            }
+        }
+
+        public void MapADOToXmlTT12(List<XMLData.EmployeeTT12Ado> listAdo,
+                            ref List<XMLData.XMLEmployeeTT12DetailData> datas)
+        {
+            try
+            {
+                if (datas == null)
+                    datas = new List<XMLData.XMLEmployeeTT12DetailData>();
+
+                if (listAdo == null || listAdo.Count == 0)
+                    return;
+
+                foreach (var ado in listAdo)
+                {
+                    var detail = new XMLData.XMLEmployeeTT12DetailData
+                    {
+                        STT = ado.STT,
+                        MA_KHOA = ado.MA_KHOA,
+                        TEN_KHOA = ado.TEN_KHOA,
+                        HO_TEN = ado.HO_TEN,
+                        GIOI_TINH = ado.GIOI_TINH,
+                        SO_DINH_DANH = ado.SO_DINH_DANH,
+                        CHUCDANH_NN = ado.CHUCDANH_NN,
+                        VI_TRI = ado.VI_TRI,
+                        MACCHN = ado.MACCHN,
+                        NGAYCAP_CCHN = ado.NGAYCAP_CCHN,
+                        NOICAP_CCHN = ado.NOICAP_CCHN,
+                        PHAMVI_CM = ado.PHAMVI_CM,
+                        PHAMVI_CMBS = ado.PHAMVI_CMBS,
+                        DVKT_KHAC = ado.DVKT_KHAC,
+                        VB_PHANCONG = ado.VB_PHANCONG,
+                        THOIGIAN_DK = ado.THOIGIAN_DK,
+                        THOIGIAN_NGAY = ado.THOIGIAN_NGAY,
+                        THOIGIAN_TUAN = ado.THOIGIAN_TUAN,
+                        CSKCB_KHAC = ado.CSKCB_KHAC,
+                        CSKCB_CGKT = ado.CSKCB_CGKT,
+                        QD_CGKT = ado.QD_CGKT,
+                        TU_NGAY = ado.TU_NGAY,
+                        DEN_NGAY = ado.DEN_NGAY,
+                        MA_CSKCB = ado.MA_CSKCB
+                    };
+
+                    datas.Add(detail);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dtTimeFrom_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
+                {
+                    dtTimeTo.Enabled = false;
+                }
+                else
+                {
+                    dtTimeTo.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dtTimeTo_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dtTimeTo.EditValue != null && dtTimeTo.DateTime != DateTime.MinValue)
+                {
+                    dtTimeFrom.Enabled = false;
+                }
+                else
+                {
+                    dtTimeFrom.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridViewFormList_ShowingEditor(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                if (view.FocusedColumn.FieldName == "IsSelected")
+                {
+                    var data = (HIS_EMPLOYEE)view.GetFocusedRow();
+                    if (data != null && data.IS_ACTIVE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    {
+                        // Dòng khóa: không cho tick
+                        e.Cancel = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewFormList_CustomDrawColumnHeader(object sender, DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            try
+            {
+                if (e.Column != null && e.Column.FieldName == "IsSelected")
+                {
+                    e.Info.InnerElements.Clear();
+                    e.Info.Caption = string.Empty;
+
+                    e.Painter.DrawObject(e.Info);
+
+                    Rectangle checkRect = e.Bounds;
+                    int size = 14;
+                    checkRect.X += (e.Bounds.Width - size) / 2;
+                    checkRect.Y += (e.Bounds.Height - size) / 2;
+                    checkRect.Width = size;
+                    checkRect.Height = size;
+
+                    DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo info;
+                    DevExpress.XtraEditors.Drawing.CheckEditPainter painter;
+                    DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit edit;
+
+                    edit = (DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit)repositoryItemCheckIsSelected; // repositoryChk bạn đã kéo vào form
+                    painter = (DevExpress.XtraEditors.Drawing.CheckEditPainter)edit.CreatePainter();
+                    info = (DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo)edit.CreateViewInfo();
+                    info.EditValue = isCheckAllEmployee;
+                    info.Bounds = checkRect;
+                    info.CalcViewInfo(e.Graphics);
+                    DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs args =
+                        new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(info, new DevExpress.Utils.Drawing.GraphicsCache(e.Graphics), checkRect);
+                    painter.Draw(args);
+                    args.Cache.Dispose();
+
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewFormList_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                var view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                DevExpress.XtraGrid.Views.Grid.ViewInfo.GridHitInfo hitInfo = view.CalcHitInfo(e.Location);
+
+                if (hitInfo.InColumn && hitInfo.Column != null && hitInfo.Column.FieldName == "IsSelected")
+                {
+                    // Toggle trạng thái check-all
+                    isCheckAllEmployee = !isCheckAllEmployee;
+
+                    // Áp dụng cho dữ liệu (bỏ qua dòng khóa)
+                    SelectAllEmployees(isCheckAllEmployee);
+
+                    // Vẽ lại header
+                    view.InvalidateColumnHeader(hitInfo.Column);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewFormList_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "IsSelected")
+                {
+                    var data = gridControl2.DataSource as List<EmployeeADO>;
+                    if (data != null && data.Count > 0)
+                    {
+                        // Cập nhật lại selectedEmployees cho dòng vừa đổi (phòng trường hợp edit trực tiếp)
+                        var row = gridViewFormList.GetRow(e.RowHandle) as EmployeeADO;
+                        if (row != null)
+                        {
+                            selectedEmployees[row.ID] = row.IsSelected;
+                        }
+
+                        // Tính lại trạng thái header: tất cả dòng active đều được tick?
+                        bool allActiveChecked = data
+                            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                            .All(o => o.IsSelected);
+
+                        isCheckAllEmployee = allActiveChecked;
+
+                        gridViewFormList.InvalidateColumnHeader(gridViewFormList.Columns["IsSelected"]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboOtherService_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    // Clear selection trong GridCheckMarksSelection
+                    var gridCheckMark = cboOtherService.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboOtherService.Properties.View);
+                    }
+
+                    // Xóa text hiển thị
+                    cboOtherService.EditValue = null;
+                    cboOtherService.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboOtherService_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                var gridCheckMark = cboOtherService.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark == null)
+                {
+                    e.DisplayText = string.Empty;
+                    return;
+                }
+
+                var codes = new List<string>();
+                foreach (HIS_SERVICE s in gridCheckMark.Selection)
+                {
+                    if (s != null && !string.IsNullOrEmpty(s.SERVICE_CODE))
+                    {
+                        codes.Add(s.SERVICE_CODE);
+                    }
+                }
+
+                // Hiển thị: CODE1, CODE2, CODE3
+                e.DisplayText = string.Join(", ", codes);
+                cboOtherService.ToolTip = e.DisplayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboCGKT_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    // Clear selection trong GridCheckMarksSelection
+                    var gridCheckMark = cboCGKT.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboCGKT.Properties.View);
+                    }
+
+                    // Xóa text hiển thị
+                    cboCGKT.EditValue = null;
+                    cboCGKT.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }
