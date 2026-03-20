@@ -101,8 +101,12 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.gridColumn38 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn39 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Item_Check = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
-            this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();
-            this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumn40 = new DevExpress.XtraGrid.Columns.GridColumn();            this.gridColumn41 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn42 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn43 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn44 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn45 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn46 = new DevExpress.XtraGrid.Columns.GridColumn();            this.Btn_ErrorLine = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Btn_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -246,7 +250,13 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.gridColumn37,
             this.gridColumn38,
             this.gridColumn39,
-            this.gridColumn40});
+            this.gridColumn40,
+            this.gridColumn41,
+            this.gridColumn42,
+            this.gridColumn43,
+            this.gridColumn44,
+            this.gridColumn45,
+            this.gridColumn46});
             this.gridViewService.GridControl = this.gridControlService;
             this.gridViewService.Name = "gridViewService";
             this.gridViewService.OptionsCustomization.AllowFilter = false;
@@ -664,6 +674,66 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
             this.gridColumn40.VisibleIndex = 35;
             this.gridColumn40.Width = 150;
             // 
+            // gridColumn41
+            // 
+            this.gridColumn41.Caption = "QĐ giá";
+            this.gridColumn41.FieldName = "QD_PD_GIA";
+            this.gridColumn41.Name = "gridColumn41";
+            this.gridColumn41.OptionsColumn.AllowEdit = false;
+            this.gridColumn41.Visible = true;
+            this.gridColumn41.VisibleIndex = 36;
+            this.gridColumn41.Width = 120;
+            // 
+            // gridColumn42
+            // 
+            this.gridColumn42.Caption = "Tên DV giá";
+            this.gridColumn42.FieldName = "TEN_DVKT_GIA";
+            this.gridColumn42.Name = "gridColumn42";
+            this.gridColumn42.OptionsColumn.AllowEdit = false;
+            this.gridColumn42.Visible = true;
+            this.gridColumn42.VisibleIndex = 37;
+            this.gridColumn42.Width = 200;
+            // 
+            // gridColumn43
+            // 
+            this.gridColumn43.Caption = "SL CGKT";
+            this.gridColumn43.FieldName = "SO_LUONG_CGKT_STR";
+            this.gridColumn43.Name = "gridColumn43";
+            this.gridColumn43.OptionsColumn.AllowEdit = false;
+            this.gridColumn43.Visible = true;
+            this.gridColumn43.VisibleIndex = 38;
+            this.gridColumn43.Width = 80;
+            // 
+            // gridColumn44
+            // 
+            this.gridColumn44.Caption = "Cơ sở CGKT";
+            this.gridColumn44.FieldName = "CSKCB_CGKT";
+            this.gridColumn44.Name = "gridColumn44";
+            this.gridColumn44.OptionsColumn.AllowEdit = false;
+            this.gridColumn44.Visible = true;
+            this.gridColumn44.VisibleIndex = 39;
+            this.gridColumn44.Width = 120;
+            // 
+            // gridColumn45
+            // 
+            this.gridColumn45.Caption = "QĐ DV";
+            this.gridColumn45.FieldName = "QD_DVKT";
+            this.gridColumn45.Name = "gridColumn45";
+            this.gridColumn45.OptionsColumn.AllowEdit = false;
+            this.gridColumn45.Visible = true;
+            this.gridColumn45.VisibleIndex = 40;
+            this.gridColumn45.Width = 120;
+            // 
+            // gridColumn46
+            // 
+            this.gridColumn46.Caption = "Cơ sở CLS";
+            this.gridColumn46.FieldName = "CSKCB_CLS";
+            this.gridColumn46.Name = "gridColumn46";
+            this.gridColumn46.OptionsColumn.AllowEdit = false;
+            this.gridColumn46.Visible = true;
+            this.gridColumn46.VisibleIndex = 41;
+            this.gridColumn46.Width = 120;
+            // 
             // Btn_ErrorLine
             // 
             this.Btn_ErrorLine.AutoHeight = false;
@@ -917,5 +987,11 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn38;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn39;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn40;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn41;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn42;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn43;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn44;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn45;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn46;
     }
 }
