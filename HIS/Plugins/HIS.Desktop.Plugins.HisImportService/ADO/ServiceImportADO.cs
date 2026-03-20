@@ -53,6 +53,12 @@ namespace HIS.Desktop.Plugins.HisImportService.ADO
         public string ERROR { get; set; }
         public string ALLOW_SEND_PACS_STR { get; set; }
         public string EMR_FORM_CODES { get; set; }
+        public string SO_LUONG_CGKT_STR { get; set; }
+        public string TEN_DVKT_GIA { get; set; }
+        public string CSKCB_CGKT { get; set; }
+        public string CSKCB_CLS { get; set; }
+        public string QD_DVKT { get; set; }
+        public string QD_PD_GIA { get; set; }
         
         public ServiceImportADO()
         {

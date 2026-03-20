@@ -799,6 +799,67 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                             serAdo.ALLOW_SEND_PACS = (short)1;
                         }
                     }
+
+                    if (!string.IsNullOrEmpty(item.QD_PD_GIA))
+                    {
+                        if (Encoding.UTF8.GetByteCount(item.QD_PD_GIA.Trim()) > 200)
+                        {
+                            error += string.Format(Message.MessageImport.Maxlength, "QĐ giá");
+                        }
+                        serAdo.QD_PD_GIA = item.QD_PD_GIA.Trim();
+                    }
+
+                    if (!string.IsNullOrEmpty(item.TEN_DVKT_GIA))
+                    {
+                        if (Encoding.UTF8.GetByteCount(item.TEN_DVKT_GIA.Trim()) > 2000)
+                        {
+                            error += string.Format(Message.MessageImport.Maxlength, "Tên DV giá");
+                        }
+                        serAdo.TEN_DVKT_GIA = item.TEN_DVKT_GIA.Trim();
+                    }
+
+                    if (!string.IsNullOrEmpty(item.SO_LUONG_CGKT_STR))
+                    {
+                        if (Inventec.Common.Number.Check.IsNumber(item.SO_LUONG_CGKT_STR))
+                        {
+                            serAdo.SO_LUONG_CGKT = Inventec.Common.TypeConvert.Parse.ToInt64(item.SO_LUONG_CGKT_STR);
+                            if (serAdo.SO_LUONG_CGKT.ToString().Length > 4 || serAdo.SO_LUONG_CGKT < 0)
+                            {
+                                error += string.Format(Message.MessageImport.KhongHopLe, "SL CGKT");
+                            }
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "SL CGKT");
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(item.CSKCB_CGKT))
+                    {
+                        if (Encoding.UTF8.GetByteCount(item.CSKCB_CGKT.Trim()) > 200)
+                        {
+                            error += string.Format(Message.MessageImport.Maxlength, "Cơ sở CGKT");
+                        }
+                        serAdo.CSKCB_CGKT = item.CSKCB_CGKT.Trim();
+                    }
+
+                    if (!string.IsNullOrEmpty(item.QD_DVKT))
+                    {
+                        if (Encoding.UTF8.GetByteCount(item.QD_DVKT.Trim()) > 200)
+                        {
+                            error += string.Format(Message.MessageImport.Maxlength, "QĐ DV");
+                        }
+                        serAdo.QD_DVKT = item.QD_DVKT.Trim();
+                    }
+
+                    if (!string.IsNullOrEmpty(item.CSKCB_CLS))
+                    {
+                        if (Encoding.UTF8.GetByteCount(item.CSKCB_CLS.Trim()) > 200)
+                        {
+                            error += string.Format(Message.MessageImport.Maxlength, "Cơ sở CLS");
+                        }
+                        serAdo.CSKCB_CLS = item.CSKCB_CLS.Trim();
+                    }
                     serAdo.ERROR = error;
                     serAdo.ID = i;
                     serAdo.IS_LEAF = 1;
@@ -1310,15 +1371,19 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                                     && string.IsNullOrEmpty(item.MultiRequest)
                                     && string.IsNullOrEmpty(item.BILL_OPTION_STR)
                                     && string.IsNullOrEmpty(item.PARENT_CODE)
-                                    && string.IsNullOrEmpty(item.DESCRIPTION);
+                                    && string.IsNullOrEmpty(item.DESCRIPTION)
+                                    && string.IsNullOrEmpty(item.QD_PD_GIA)
+                                    && string.IsNullOrEmpty(item.TEN_DVKT_GIA)
+                                    && item.SO_LUONG_CGKT_STR == null
+                                    && string.IsNullOrEmpty(item.CSKCB_CGKT)
+                                    && string.IsNullOrEmpty(item.QD_DVKT)
+                                    && string.IsNullOrEmpty(item.CSKCB_CLS);
 
                                 if (checkNull)
                                 {
                                     listAfterRemove.Remove(item);
                                 }
                             }
-                            WaitingManager.Hide();
-
                             this.currentAdos = listAfterRemove;
 
                             if (this.currentAdos != null && this.currentAdos.Count > 0)
@@ -1330,6 +1395,7 @@ namespace HIS.Desktop.Plugins.HisImportService.FormLoad
                                 addServiceToProcessList(currentAdos, ref serviceAdos);
                                 SetDataSource(serviceAdos);
                             }
+                            WaitingManager.Hide();
                             //btnSave.Enabled = true;
                         }
                         else
