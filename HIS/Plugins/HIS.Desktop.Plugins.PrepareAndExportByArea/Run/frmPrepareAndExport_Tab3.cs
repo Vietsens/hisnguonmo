@@ -51,6 +51,18 @@ namespace HIS.Desktop.Plugins.PrepareAndExportByArea.Run
 
                 // Lọc dữ liệu theo điều kiện
                 var filteredData = lstAll.Where(o => o.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE && o.IS_ABSENT != 1).ToList();
+                
+                // Lọc loại bỏ các treatment code có phiếu xuất không phải EXECUTE
+                var treatmentCodesWithNonExecute = lstAll
+                    .Where(o => o.EXP_MEST_STT_ID != IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE)
+                    .Select(o => o.TDL_TREATMENT_CODE)
+                    .Distinct()
+                    .ToList();
+                
+                if (treatmentCodesWithNonExecute != null && treatmentCodesWithNonExecute.Count > 0)
+                {
+                    filteredData = filteredData.Where(o => !treatmentCodesWithNonExecute.Contains(o.TDL_TREATMENT_CODE)).ToList();
+                }
 
                 // Gom nhóm theo TDL_TREATMENT_CODE, IS_CONFIRM, EXP_MEST_STT_ID
                 var groupedData = filteredData

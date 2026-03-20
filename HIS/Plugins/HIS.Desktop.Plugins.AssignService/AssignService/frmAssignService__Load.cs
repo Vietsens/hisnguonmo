@@ -2037,7 +2037,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == "OT");
                             sereServADO.PRIMARY_PATIENT_TYPE_ID = patientType.ID;
                         }
-                        else if(result.IS_ADDITION_REQUIRED == 1 && HisConfigCFG.ServicePatyForServicePackage == "3" && (packageId != null || packageId > 0))
+                        else if(result.IS_ADDITION_REQUIRED == 1 && HisConfigCFG.ServicePatyForServicePackage == "3" && (cboPackage.EditValue != null || packageId > 0))
                         {
                             //sereServADO.PRIMARY_PATIENT_TYPE_ID = primaryPatientTypeTemps.OrderBy(o => o.ID).FirstOrDefault().ID;
                             //isInPackage = true;
@@ -2050,6 +2050,10 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                             List<HIS_SERE_SERV> sameService = this.sereServWithTreatment != null ? this.sereServWithTreatment.Where(o => o.SERVICE_ID == sereServADO.SERVICE_ID).ToList() : null;
                             var intructionNum = sameService != null ? (long)sameService.Count() + 1 : 1;
                             List<V_HIS_SERVICE_PATY> s = BranchDataWorker.ServicePatyWithListPatientType(sereServADO.SERVICE_ID, this.patientTypeIdAls);
+                            if(sereServADO.TDL_EXECUTE_BRANCH_ID == null || sereServADO.TDL_EXECUTE_BRANCH_ID == 0)
+                            {
+                                sereServADO.TDL_EXECUTE_BRANCH_ID = this.requestRoom.BRANCH_ID;
+                            }
                             foreach (var item in primaryPatientTypeTemps)
                             {
                                 var itemPaty = MOS.ServicePaty.ServicePatyUtil.GetApplied(servicePaties, sereServADO.TDL_EXECUTE_BRANCH_ID, null, this.requestRoom.ID, this.requestRoom.DEPARTMENT_ID, instructionTime, this.currentHisTreatment.IN_TIME, sereServADO.SERVICE_ID, item.ID, intructionNum, intructionNumByType, sereServADO.PackagePriceId, sereServADO.SERVICE_CONDITION_ID, this.currentHisTreatment.TDL_PATIENT_CLASSIFY_ID, null);
