@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCExportXml));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -183,7 +184,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem27 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem28 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.autoSync = new System.Windows.Forms.Timer();
+            this.autoSync = new System.Windows.Forms.Timer(this.components);
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -304,9 +305,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             // btnXML3176
             // 
-            this.btnXML3176.Location = new System.Drawing.Point(710, 646);
+            this.btnXML3176.Location = new System.Drawing.Point(673, 646);
             this.btnXML3176.Name = "btnXML3176";
-            this.btnXML3176.Size = new System.Drawing.Size(90, 22);
+            this.btnXML3176.Size = new System.Drawing.Size(80, 22);
             this.btnXML3176.StyleController = this.layoutControl1;
             this.btnXML3176.TabIndex = 57;
             this.btnXML3176.Text = "Xuất XML 3176";
@@ -314,17 +315,17 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             // chkSignFileCertUtil
             // 
-            this.chkSignFileCertUtil.Location = new System.Drawing.Point(223, 646);
+            this.chkSignFileCertUtil.Location = new System.Drawing.Point(221, 646);
             this.chkSignFileCertUtil.Name = "chkSignFileCertUtil";
             this.chkSignFileCertUtil.Properties.Caption = "Ký số";
-            this.chkSignFileCertUtil.Size = new System.Drawing.Size(53, 19);
+            this.chkSignFileCertUtil.Size = new System.Drawing.Size(48, 19);
             this.chkSignFileCertUtil.StyleController = this.layoutControl1;
             this.chkSignFileCertUtil.TabIndex = 56;
             this.chkSignFileCertUtil.CheckedChanged += new System.EventHandler(this.chkSignFileCertUtil_CheckedChanged);
             // 
             // chkXML3176
             // 
-            this.chkXML3176.Location = new System.Drawing.Point(280, 646);
+            this.chkXML3176.Location = new System.Drawing.Point(273, 646);
             this.chkXML3176.Name = "chkXML3176";
             this.chkXML3176.Properties.Caption = "XML 3176";
             this.chkXML3176.Size = new System.Drawing.Size(68, 19);
@@ -334,9 +335,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             // btnExportGroupXml
             // 
-            this.btnExportGroupXml.Location = new System.Drawing.Point(932, 646);
+            this.btnExportGroupXml.Location = new System.Drawing.Point(876, 646);
             this.btnExportGroupXml.Name = "btnExportGroupXml";
-            this.btnExportGroupXml.Size = new System.Drawing.Size(83, 22);
+            this.btnExportGroupXml.Size = new System.Drawing.Size(74, 22);
             this.btnExportGroupXml.StyleController = this.layoutControl1;
             this.btnExportGroupXml.TabIndex = 55;
             this.btnExportGroupXml.Text = "Xuất XML gộp";
@@ -344,18 +345,18 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             // btnSend
             // 
-            this.btnSend.Location = new System.Drawing.Point(1118, 646);
+            this.btnSend.Location = new System.Drawing.Point(1048, 646);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(39, 22);
+            this.btnSend.Size = new System.Drawing.Size(35, 22);
             this.btnSend.StyleController = this.layoutControl1;
             this.btnSend.TabIndex = 54;
             this.btnSend.Text = "Gửi";
             // 
             // btnExportCollinearXml
             // 
-            this.btnExportCollinearXml.Location = new System.Drawing.Point(804, 646);
+            this.btnExportCollinearXml.Location = new System.Drawing.Point(757, 646);
             this.btnExportCollinearXml.Name = "btnExportCollinearXml";
-            this.btnExportCollinearXml.Size = new System.Drawing.Size(124, 22);
+            this.btnExportCollinearXml.Size = new System.Drawing.Size(115, 22);
             this.btnExportCollinearXml.StyleController = this.layoutControl1;
             this.btnExportCollinearXml.TabIndex = 53;
             this.btnExportCollinearXml.Text = "Xuất XML thông tuyến";
@@ -383,9 +384,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             // btnSavePath
             // 
-            this.btnSavePath.Location = new System.Drawing.Point(536, 646);
+            this.btnSavePath.Location = new System.Drawing.Point(510, 646);
             this.btnSavePath.Name = "btnSavePath";
-            this.btnSavePath.Size = new System.Drawing.Size(79, 22);
+            this.btnSavePath.Size = new System.Drawing.Size(68, 22);
             this.btnSavePath.StyleController = this.layoutControl1;
             this.btnSavePath.TabIndex = 51;
             this.btnSavePath.Text = "Thư mục lưu";
@@ -399,7 +400,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
             this.cboXml130Result.Properties.NullText = "";
             this.cboXml130Result.Properties.View = this.gridView4;
-            this.cboXml130Result.Size = new System.Drawing.Size(240, 20);
+            this.cboXml130Result.Size = new System.Drawing.Size(166, 20);
             this.cboXml130Result.StyleController = this.layoutControl1;
             this.cboXml130Result.TabIndex = 50;
             this.cboXml130Result.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboXml130Result_Closed);
@@ -415,7 +416,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.btnSettingConfigSync.Image = ((System.Drawing.Image)(resources.GetObject("btnSettingConfigSync.Image")));
             this.btnSettingConfigSync.ImageLocation = DevExpress.XtraEditors.ImageLocation.MiddleCenter;
-            this.btnSettingConfigSync.Location = new System.Drawing.Point(1019, 646);
+            this.btnSettingConfigSync.Location = new System.Drawing.Point(954, 646);
             this.btnSettingConfigSync.Name = "btnSettingConfigSync";
             this.btnSettingConfigSync.Size = new System.Drawing.Size(20, 22);
             this.btnSettingConfigSync.StyleController = this.layoutControl1;
@@ -426,9 +427,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             // btnAutoSync
             // 
-            this.btnAutoSync.Location = new System.Drawing.Point(1043, 646);
+            this.btnAutoSync.Location = new System.Drawing.Point(978, 646);
             this.btnAutoSync.Name = "btnAutoSync";
-            this.btnAutoSync.Size = new System.Drawing.Size(71, 22);
+            this.btnAutoSync.Size = new System.Drawing.Size(66, 22);
             this.btnAutoSync.StyleController = this.layoutControl1;
             this.btnAutoSync.TabIndex = 48;
             this.btnAutoSync.Text = "Gửi tự động";
@@ -438,9 +439,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // btnUnlock
             // 
             this.btnUnlock.Enabled = false;
-            this.btnUnlock.Location = new System.Drawing.Point(434, 646);
+            this.btnUnlock.Location = new System.Drawing.Point(418, 646);
             this.btnUnlock.Name = "btnUnlock";
-            this.btnUnlock.Size = new System.Drawing.Size(98, 22);
+            this.btnUnlock.Size = new System.Drawing.Size(88, 22);
             this.btnUnlock.StyleController = this.layoutControl1;
             this.btnUnlock.TabIndex = 46;
             this.btnUnlock.Text = "Mở khóa (Ctrl O)";
@@ -449,9 +450,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // btnLock
             // 
             this.btnLock.Enabled = false;
-            this.btnLock.Location = new System.Drawing.Point(352, 646);
+            this.btnLock.Location = new System.Drawing.Point(345, 646);
             this.btnLock.Name = "btnLock";
-            this.btnLock.Size = new System.Drawing.Size(78, 22);
+            this.btnLock.Size = new System.Drawing.Size(69, 22);
             this.btnLock.StyleController = this.layoutControl1;
             this.btnLock.TabIndex = 45;
             this.btnLock.Text = "Khóa (Ctrl L)";
@@ -472,7 +473,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.dtHeinLockTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
             this.dtHeinLockTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
             this.dtHeinLockTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
-            this.dtHeinLockTime.Size = new System.Drawing.Size(52, 20);
+            this.dtHeinLockTime.Size = new System.Drawing.Size(50, 20);
             this.dtHeinLockTime.StyleController = this.layoutControl1;
             this.dtHeinLockTime.TabIndex = 44;
             // 
@@ -537,7 +538,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Properties.NullValuePrompt = "Từ khóa";
             this.txtKeyword.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtKeyword.Size = new System.Drawing.Size(298, 20);
+            this.txtKeyword.Size = new System.Drawing.Size(224, 20);
             this.txtKeyword.StyleController = this.layoutControl1;
             this.txtKeyword.TabIndex = 28;
             this.txtKeyword.ToolTip = "Cho phép tìm kiếm theo thông tin Số lưu trữ, Tên bệnh nhân, Số thẻ BHYT, Mã điều " +
@@ -588,7 +589,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.btnImport.Location = new System.Drawing.Point(951, 52);
             this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(206, 22);
+            this.btnImport.Size = new System.Drawing.Size(132, 22);
             this.btnImport.StyleController = this.layoutControl1;
             this.btnImport.TabIndex = 20;
             this.btnImport.Text = "NK điều kiện lọc";
@@ -619,12 +620,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.ucPaging1.Location = new System.Drawing.Point(2, 620);
             this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(1155, 22);
+            this.ucPaging1.Size = new System.Drawing.Size(1081, 22);
             this.ucPaging1.TabIndex = 17;
             // 
             // btnExportXml
             // 
-            this.btnExportXml.Location = new System.Drawing.Point(619, 646);
+            this.btnExportXml.Location = new System.Drawing.Point(582, 646);
             this.btnExportXml.Name = "btnExportXml";
             this.btnExportXml.Size = new System.Drawing.Size(87, 22);
             this.btnExportXml.StyleController = this.layoutControl1;
@@ -636,9 +637,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // panelControlSereServTree
             // 
             this.panelControlSereServTree.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlSereServTree.Location = new System.Drawing.Point(1161, 2);
+            this.panelControlSereServTree.Location = new System.Drawing.Point(1087, 2);
             this.panelControlSereServTree.Name = "panelControlSereServTree";
-            this.panelControlSereServTree.Size = new System.Drawing.Size(157, 666);
+            this.panelControlSereServTree.Size = new System.Drawing.Size(231, 666);
             this.panelControlSereServTree.TabIndex = 14;
             // 
             // gridControlTreatment
@@ -655,7 +656,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.Btn_ViewXmlCheckinEnable,
             this.Btn_ViewXmlCheckinDisable,
             this.Btn_SaveSuccess});
-            this.gridControlTreatment.Size = new System.Drawing.Size(1159, 542);
+            this.gridControlTreatment.Size = new System.Drawing.Size(1085, 542);
             this.gridControlTreatment.TabIndex = 12;
             this.gridControlTreatment.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewTreatment});
@@ -1225,23 +1226,23 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem7.Location = new System.Drawing.Point(0, 76);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem7.Size = new System.Drawing.Size(1159, 542);
+            this.layoutControlItem7.Size = new System.Drawing.Size(1085, 542);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.panelControlSereServTree;
-            this.layoutControlItem8.Location = new System.Drawing.Point(1159, 0);
+            this.layoutControlItem8.Location = new System.Drawing.Point(1085, 0);
             this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(161, 670);
+            this.layoutControlItem8.Size = new System.Drawing.Size(235, 670);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem8.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.btnExportXml;
-            this.layoutControlItem4.Location = new System.Drawing.Point(617, 644);
+            this.layoutControlItem4.Location = new System.Drawing.Point(580, 644);
             this.layoutControlItem4.MaxSize = new System.Drawing.Size(110, 26);
             this.layoutControlItem4.MinSize = new System.Drawing.Size(91, 26);
             this.layoutControlItem4.Name = "layoutControlItem4";
@@ -1258,7 +1259,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 618);
             this.layoutControlItem5.MinSize = new System.Drawing.Size(104, 26);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(1159, 26);
+            this.layoutControlItem5.Size = new System.Drawing.Size(1085, 26);
             this.layoutControlItem5.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
@@ -1312,7 +1313,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem10.Control = this.btnImport;
             this.layoutControlItem10.Location = new System.Drawing.Point(949, 50);
             this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(210, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(136, 26);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -1406,7 +1407,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem3.Control = this.dtHeinLockTime;
             this.layoutControlItem3.Location = new System.Drawing.Point(0, 644);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(221, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(219, 26);
             this.layoutControlItem3.Text = "Thời gian khóa hồ sơ BHYT:";
             this.layoutControlItem3.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem3.TextSize = new System.Drawing.Size(160, 20);
@@ -1415,18 +1416,18 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.btnLock;
-            this.layoutControlItem14.Location = new System.Drawing.Point(350, 644);
+            this.layoutControlItem14.Location = new System.Drawing.Point(343, 644);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(82, 26);
+            this.layoutControlItem14.Size = new System.Drawing.Size(73, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
             // layoutControlItem17
             // 
             this.layoutControlItem17.Control = this.btnUnlock;
-            this.layoutControlItem17.Location = new System.Drawing.Point(432, 644);
+            this.layoutControlItem17.Location = new System.Drawing.Point(416, 644);
             this.layoutControlItem17.Name = "layoutControlItem17";
-            this.layoutControlItem17.Size = new System.Drawing.Size(102, 26);
+            this.layoutControlItem17.Size = new System.Drawing.Size(92, 26);
             this.layoutControlItem17.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem17.TextVisible = false;
             // 
@@ -1435,23 +1436,23 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem1.Control = this.txtKeyword;
             this.layoutControlItem1.Location = new System.Drawing.Point(857, 24);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(302, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(228, 26);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem21
             // 
             this.layoutControlItem21.Control = this.btnAutoSync;
-            this.layoutControlItem21.Location = new System.Drawing.Point(1041, 644);
+            this.layoutControlItem21.Location = new System.Drawing.Point(976, 644);
             this.layoutControlItem21.Name = "layoutControlItem21";
-            this.layoutControlItem21.Size = new System.Drawing.Size(75, 26);
+            this.layoutControlItem21.Size = new System.Drawing.Size(70, 26);
             this.layoutControlItem21.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem21.TextVisible = false;
             // 
             // layoutControlItem23
             // 
             this.layoutControlItem23.Control = this.btnSettingConfigSync;
-            this.layoutControlItem23.Location = new System.Drawing.Point(1017, 644);
+            this.layoutControlItem23.Location = new System.Drawing.Point(952, 644);
             this.layoutControlItem23.MaxSize = new System.Drawing.Size(24, 26);
             this.layoutControlItem23.MinSize = new System.Drawing.Size(24, 26);
             this.layoutControlItem23.Name = "layoutControlItem23";
@@ -1467,7 +1468,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem24.Control = this.cboXml130Result;
             this.layoutControlItem24.Location = new System.Drawing.Point(857, 0);
             this.layoutControlItem24.Name = "layoutControlItem24";
-            this.layoutControlItem24.Size = new System.Drawing.Size(302, 24);
+            this.layoutControlItem24.Size = new System.Drawing.Size(228, 24);
             this.layoutControlItem24.Text = "Tình trạng:";
             this.layoutControlItem24.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.AutoSize;
             this.layoutControlItem24.TextSize = new System.Drawing.Size(53, 13);
@@ -1476,9 +1477,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // layoutControlItem19
             // 
             this.layoutControlItem19.Control = this.btnSavePath;
-            this.layoutControlItem19.Location = new System.Drawing.Point(534, 644);
+            this.layoutControlItem19.Location = new System.Drawing.Point(508, 644);
             this.layoutControlItem19.Name = "layoutControlItem19";
-            this.layoutControlItem19.Size = new System.Drawing.Size(83, 26);
+            this.layoutControlItem19.Size = new System.Drawing.Size(72, 26);
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
             // 
@@ -1499,52 +1500,52 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // layoutControlItem25
             // 
             this.layoutControlItem25.Control = this.btnExportCollinearXml;
-            this.layoutControlItem25.Location = new System.Drawing.Point(802, 644);
+            this.layoutControlItem25.Location = new System.Drawing.Point(755, 644);
             this.layoutControlItem25.Name = "layoutControlItem25";
-            this.layoutControlItem25.Size = new System.Drawing.Size(128, 26);
+            this.layoutControlItem25.Size = new System.Drawing.Size(119, 26);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
             // 
             // layoutControlItem26
             // 
             this.layoutControlItem26.Control = this.btnSend;
-            this.layoutControlItem26.Location = new System.Drawing.Point(1116, 644);
+            this.layoutControlItem26.Location = new System.Drawing.Point(1046, 644);
             this.layoutControlItem26.Name = "layoutControlItem26";
-            this.layoutControlItem26.Size = new System.Drawing.Size(43, 26);
+            this.layoutControlItem26.Size = new System.Drawing.Size(39, 26);
             this.layoutControlItem26.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem26.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnExportGroupXml;
-            this.layoutControlItem9.Location = new System.Drawing.Point(930, 644);
+            this.layoutControlItem9.Location = new System.Drawing.Point(874, 644);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(87, 26);
+            this.layoutControlItem9.Size = new System.Drawing.Size(78, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem27
             // 
             this.layoutControlItem27.Control = this.chkSignFileCertUtil;
-            this.layoutControlItem27.Location = new System.Drawing.Point(221, 644);
+            this.layoutControlItem27.Location = new System.Drawing.Point(219, 644);
             this.layoutControlItem27.Name = "layoutControlItem27";
-            this.layoutControlItem27.Size = new System.Drawing.Size(57, 26);
+            this.layoutControlItem27.Size = new System.Drawing.Size(52, 26);
             this.layoutControlItem27.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem27.TextVisible = false;
             // 
             // layoutControlItem28
             // 
             this.layoutControlItem28.Control = this.btnXML3176;
-            this.layoutControlItem28.Location = new System.Drawing.Point(708, 644);
+            this.layoutControlItem28.Location = new System.Drawing.Point(671, 644);
             this.layoutControlItem28.Name = "layoutControlItem28";
-            this.layoutControlItem28.Size = new System.Drawing.Size(94, 26);
+            this.layoutControlItem28.Size = new System.Drawing.Size(84, 26);
             this.layoutControlItem28.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem28.TextVisible = false;
             // 
             // layoutControlItem29
             // 
             this.layoutControlItem29.Control = this.chkXML3176;
-            this.layoutControlItem29.Location = new System.Drawing.Point(278, 644);
+            this.layoutControlItem29.Location = new System.Drawing.Point(271, 644);
             this.layoutControlItem29.Name = "layoutControlItem29";
             this.layoutControlItem29.Size = new System.Drawing.Size(72, 26);
             this.layoutControlItem29.TextSize = new System.Drawing.Size(0, 0);
