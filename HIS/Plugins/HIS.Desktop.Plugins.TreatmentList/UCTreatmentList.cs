@@ -1,20 +1,20 @@
- /* IVT
- * @Project : hisnguonmo
- * Copyright (C) 2017 INVENTEC
- *  
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *  
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
- * GNU General Public License for more details.
- *  
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+/* IVT
+* @Project : hisnguonmo
+* Copyright (C) 2017 INVENTEC
+*  
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*  
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+* GNU General Public License for more details.
+*  
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*/
 using ACS.EFMODEL.DataModels;
 using ACS.Filter;
 using DevExpress.Utils;
@@ -140,7 +140,8 @@ namespace HIS.Desktop.Plugins.TreatmentList
             InPhieuKSKDinhKy,
             InSoKSKDinhKy,
             XuatExcelKQKSK,
-            InPhieuKQCLSKSK
+            InPhieuKQCLSKSK,
+            InTongHopKsk
         }
 
         string fileName = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.IO.Path.Combine("ModuleDesign", "HIS.Desktop.Plugins.TreatmentList.gridViewtreatmentList.xml"));
@@ -1931,7 +1932,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                                 #region ----- Kết thúc điều trị -----
                                 if (treatmentData != null)
                                 {
-                                    
+
                                     if (!HisConfigCFG.IsUnlockConditionOption)
                                     {
                                         isfinishButton = (isPause != 1) && (CheckLoginAdmin.IsAdmin(loginName) || IsStayingDepartment(departmentIds));
@@ -3312,6 +3313,11 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 InPhieuKQCLSKSK.ItemClick += new ItemClickEventHandler(onClick__Pluss);
                 this.menu.AddItem(InPhieuKQCLSKSK);
 
+                BarButtonItem InTongHopKsk = new BarButtonItem(barManager, "In tổng hợp KSK", 5);
+                InTongHopKsk.Tag = PrintType.InTongHopKsk;
+                InTongHopKsk.ItemClick += new ItemClickEventHandler(onClick__Pluss);
+                this.menu.AddItem(InTongHopKsk);
+
                 this.menu.ShowPopup(Cursor.Position);
             }
             catch (Exception ex)
@@ -3370,7 +3376,9 @@ namespace HIS.Desktop.Plugins.TreatmentList
                         case PrintType.InPhieuKQCLSKSK:
                             ProcessPrintKQCLSKSK(listTreatment);
                             break;
-
+                        case PrintType.InTongHopKsk:
+                            ProcessPrintTHKSK(listTreatment);
+                            break;
                     }
                 }
             }
@@ -3378,6 +3386,28 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void ProcessPrintTHKSK(List<V_HIS_TREATMENT_4> listTreatment4)
+        {
+            try
+            {
+                List<HIS_TREATMENT> listTreatment = new List<HIS_TREATMENT>();
+                foreach (var i in listTreatment4)
+                {
+                    HIS_TREATMENT treat = new HIS_TREATMENT();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TREATMENT>(treat, i);
+                    listTreatment.Add(treat);
+                }
+                var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(listTreatment, this.currentModule != null ? this.currentModule.RoomId : 0);
+                PrintServiceReqProcessor.previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                PrintServiceReqProcessor.Print("Mps000276", true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void gridView5_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)

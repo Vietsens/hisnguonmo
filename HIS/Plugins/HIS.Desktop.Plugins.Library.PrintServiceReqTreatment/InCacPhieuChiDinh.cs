@@ -29,7 +29,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
 {
     class InCacPhieuChiDinh
     {
-        public InCacPhieuChiDinh(string printTypeCode, string fileName, List<V_HIS_SERVICE_REQ> _lstServiceReqs, List<HIS_SERE_SERV> _lstSereServ, List<HIS_TREATMENT> _lstTreatment, List<V_HIS_PATIENT_TYPE_ALTER> _LstPatientTypeAlter, V_HIS_ROOM _vHisRoom, bool printNow, ref bool result,List<HIS_CONFIG> configs,HIS_TRANS_REQ tranReq, Action<DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned, MPS.ProcessorBase.PrintConfig.PreviewType? previewType, List<HIS_SERE_SERV_EXT> _ext, ServiceReqADO serviceReqADO)
+        public InCacPhieuChiDinh(string printTypeCode, string fileName, List<V_HIS_SERVICE_REQ> _lstServiceReqs, List<HIS_SERE_SERV> _lstSereServ, List<HIS_TREATMENT> _lstTreatment, List<V_HIS_PATIENT_TYPE_ALTER> _LstPatientTypeAlter, V_HIS_ROOM _vHisRoom, bool printNow, ref bool result,List<HIS_CONFIG> configs,HIS_TRANS_REQ tranReq, Action<DocumentSignedUpdateIGSysResultDTO> DlgSendResultSigned, MPS.ProcessorBase.PrintConfig.PreviewType? previewType, List<HIS_SERE_SERV_EXT> _ext, ServiceReqADO serviceReqADO, List<HIS_KSK> _ksk, List<HIS_KSK_CONTRACT> _kskContract, List<HIS_KSK_SERVICE> _kskService)
         {
             try
             {
@@ -58,6 +58,9 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                             _ext,
                             serviceReqADO
                             );
+                        mps000276RDO._Ksk = _ksk;
+                        mps000276RDO._KskContract = _kskContract;
+                        mps000276RDO._KskServices = _kskService;
                         Print.PrintData(_vHisRoom.ID, printTypeCode, fileName, mps000276RDO, printNow, ref result, DlgSendResultSigned, previewType);
                     }
                 }
