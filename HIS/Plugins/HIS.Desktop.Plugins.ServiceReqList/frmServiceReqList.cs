@@ -6019,12 +6019,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                             if (listServiceReq != null && listServiceReq.Count > 0)
                             {
-                                CommonParam param = new CommonParam();
-                                if (CheckListServiceReqMedicine(listServiceReq, param))
-                                {
-                                    MessageManager.Show(this, param, false);
-                                    return;
-                                }
+                                //CommonParam param = new CommonParam();
+                                //if (CheckListServiceReqMedicine(listServiceReq, param))
+                                //{
+                                //    MessageManager.Show(this, param, false);
+                                //    return; 
+                                //}
 
                                 InDonThuocTongHop(MPS000234);
                             }
