@@ -227,7 +227,8 @@ namespace HIS.UC.HisMateInStockByExpireDate.Run
                 records = new BindingList<HisMateInStockByExpireDateADO>(HisMateInStockByExpireDateADOs);
                 trvService.DataSource = null;
                 trvService.DataSource = records;
-                trvService.ExpandToLevel(0);
+                //trvService.ExpandToLevel(0);
+                trvService.ExpandAll();
                 if (this.HisMateInStockByExpireDate_CheckAllNode != null)
                     this.HisMateInStockByExpireDate_CheckAllNode(trvService.Nodes);
             }

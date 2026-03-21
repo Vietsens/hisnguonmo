@@ -474,12 +474,18 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                     invoiceV.CusBankName = "";
                     invoiceV.CusBankNo = data.BuyerAccountNumber;
                     invoiceV.CusPhone = data.BuyerPhone;
-                    invoiceV.CusCode = data.BuyerCode; 
+                    invoiceV.CusCode = data.BuyerCode;
+                    invoiceV.CusTaxCode = data.BuyerTaxCode;
                     //invoiceV.CusName = (data.BuyerName ?? data.BuyerOrganization);
                     string cusName = (data.BuyerName ?? data.BuyerOrganization);
                     //qtcode
                     HisConfigCFG config = new HisConfigCFG();
-                    if (HisConfigCFG.IsSwapNameOption)
+                    if (!String.IsNullOrEmpty(invoiceV.CusTaxCode)) // trường hợp có mã số thuế hiển thị họ tên tại trường tên đơn vị
+                    {
+                        invoiceV.BuyerName = "";
+                        invoiceV.CusName = cusName;
+                    }
+                    else if (HisConfigCFG.IsSwapNameOption)
                     {
                         invoiceV.BuyerName = cusName;
                         invoiceV.CusName = "";
@@ -489,7 +495,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.SODR
                         invoiceV.BuyerName = "";
                         invoiceV.CusName = cusName;
                     }
-                    invoiceV.CusTaxCode = data.BuyerTaxCode;
+                    
                     invoiceV.Email = data.BuyerEmail;
                     invoiceV.PaymentMethod = this.ElectronicBillDataInput.PaymentMethod;
                     if (ElectronicBillDataInput.Transaction != null && !String.IsNullOrEmpty(ElectronicBillDataInput.Transaction.TRANSACTION_CODE))
