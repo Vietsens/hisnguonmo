@@ -105,6 +105,8 @@ namespace HIS.Desktop.Plugins.EmpUser
         string[] specialityNew;
         List<HIS_MEDI_ORG> mediOrgSeleteds;
         string[] mediOrgNew;
+        List<HIS_DEPARTMENT> departmentSeleteds;
+        string[] departmentNew;
         #region function
         private void FillDataToGridControl()
         {
@@ -326,6 +328,11 @@ namespace HIS.Desktop.Plugins.EmpUser
             else
                 updateDTOEmployee.MEDI_ORG_CODES = null;
 
+            if (departmentSeleteds != null && departmentSeleteds.Count > 0)
+                updateDTOEmployee.DEPARTMENT_CODES = string.Join(";", departmentSeleteds.Select(o => o.DEPARTMENT_CODE).ToList());
+            else
+                updateDTOEmployee.DEPARTMENT_CODES = null;
+
             if (chkIsNeedSignInstead.Checked == true)
             {
                 updateDTOEmployee.IS_NEED_SIGN_INSTEAD = 1;
@@ -541,6 +548,48 @@ namespace HIS.Desktop.Plugins.EmpUser
                     mediOrgSeleteds = new List<HIS_MEDI_ORG>();
                     cboMediOrgCodes.Text = "";
                     SetValueMediOrgCodes(this.cboMediOrgCodes, this.mediOrgSeleteds, BackendDataWorker.Get<HIS_MEDI_ORG>());
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+                LogSystem.Error(ex);
+            }
+        }
+        private void filldatatocboDepartmentTT12(HIS_EMPLOYEE data)
+        {
+            try
+            {
+                if (data.DEPARTMENT_CODES != null)
+                {
+                    departmentSeleteds = new List<HIS_DEPARTMENT>();
+                    cboDepartmentTT12.Text = "";
+                    SetValueDepartmentTT12(this.cboDepartmentTT12, this.departmentSeleteds, BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList());
+                    string departmentCodes = data.DEPARTMENT_CODES;
+                    departmentNew = departmentCodes.Split(';');
+
+                    List<string> displayText = new List<string>();
+                    for (int i = 0; i < departmentNew.Count(); i++)
+                    {
+                        string m = (departmentNew[i]);
+                        List<HIS_DEPARTMENT> deptLoad = new List<HIS_DEPARTMENT>();
+                        deptLoad = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.DEPARTMENT_CODE == m && o.IS_ACTIVE == 1).ToList();
+                        foreach (HIS_DEPARTMENT a in deptLoad)
+                        {
+                            displayText.Add(a.DEPARTMENT_CODE);
+                            departmentSeleteds.Add(a);
+                        }
+                    }
+
+                    cboDepartmentTT12.Text = string.Join(";", displayText);
+
+                }
+                else
+                {
+                    departmentSeleteds = new List<HIS_DEPARTMENT>();
+                    cboDepartmentTT12.Text = "";
+                    SetValueDepartmentTT12(this.cboDepartmentTT12, this.departmentSeleteds, BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList());
 
                 }
             }
@@ -939,6 +988,8 @@ namespace HIS.Desktop.Plugins.EmpUser
                     cboBranch.EditValue = currentDataEmp.BRANCH_ID;
                     SetValueMediOrgCodes(this.cboMediOrgCodes, this.mediOrgSeleteds, BackendDataWorker.Get<HIS_MEDI_ORG>());
                     filldatatocboMediOrgCodes(currentDataEmp);
+                    SetValueDepartmentTT12(this.cboDepartmentTT12, this.departmentSeleteds, BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList());
+                    filldatatocboDepartmentTT12(currentDataEmp);
 
                 }
                 txtLoginName.Focus();
@@ -999,6 +1050,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 mediStockSeleteds = new List<HIS_MEDI_STOCK>();
                 specialitySeleteds = new List<HIS_SPECIALITY>();
                 mediOrgSeleteds = new List<HIS_MEDI_ORG>();
+                departmentSeleteds = new List<HIS_DEPARTMENT>();
                 foreach (DevExpress.XtraLayout.BaseLayoutItem item in lcEditInfo.Items)
                 {
                     DevExpress.XtraLayout.LayoutControlItem lci = item as DevExpress.XtraLayout.LayoutControlItem;
@@ -1060,6 +1112,9 @@ namespace HIS.Desktop.Plugins.EmpUser
                 cboMediOrgCodes.Reset();
                 SetValueMediOrgCodes(this.cboMediOrgCodes, this.mediOrgSeleteds, BackendDataWorker.Get<HIS_MEDI_ORG>());
                 cboMediOrgCodes.Focus();
+                cboDepartmentTT12.Reset();
+                SetValueDepartmentTT12(this.cboDepartmentTT12, this.departmentSeleteds, BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList());
+                cboDepartmentTT12.Focus();
             }
             catch (Exception ex)
             {
@@ -1446,6 +1501,10 @@ namespace HIS.Desktop.Plugins.EmpUser
 
                 InitComboMediStock(cboMediOrgCodes, BackendDataWorker.Get<HIS_MEDI_ORG>().ToList(), "MEDI_ORG_CODE", "MEDI_ORG_NAME", "ID");
                 InitCheck(cboMediOrgCodes, SelectionGrid__MediOrgCodes);
+                
+                InitComboMediStock(cboDepartmentTT12, BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList(), "DEPARTMENT_CODE", "DEPARTMENT_NAME", "ID");
+                InitCheck(cboDepartmentTT12, SelectionGrid__DepartmentTT12);
+                
                 // Dịch vụ khác
                 var services = BackendDataWorker.Get<HIS_SERVICE>().Where(o => o.IS_ACTIVE == 1).ToList();
                 InitComboMediStock(cboOtherService, services, "SERVICE_CODE", "SERVICE_NAME", "ID");
@@ -1500,7 +1559,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             catch (Exception ex)
             {
 
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1576,7 +1635,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             catch (Exception ex)
             {
 
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -1587,7 +1646,10 @@ namespace HIS.Desktop.Plugins.EmpUser
                 lstPosition = new List<ObjectCombo>() {
                     new ObjectCombo() { id = 1, name = "Người chịu trách nhiệm chuyên môn" },
                     new ObjectCombo() { id = 2, name = "Trưởng khoa" },
-                    new ObjectCombo() { id = 3, name = "Người chịu trách nhiệm chuyên môn kiêm Trưởng khoa" }
+                    new ObjectCombo() { id = 3, name = "Người chịu trách nhiệm chuyên môn kiêm Trưởng khoa" },
+                    new ObjectCombo() { id = 4, name = "Người đứng đầu cơ sở khám bệnh, chữa bệnh hoặc người được người đứng đầu cơ sở khám bệnh, chữa bệnh ủy quyền ký giấy chuyển tuyến khám bệnh, chữa bệnh, giấy ra viện, giấy hẹn khám lại" },
+                    new ObjectCombo() { id = 5, name = "Người hành nghề được giao phụ trách khoa trong trường hợp không có trưởng khoa" },
+                    new ObjectCombo() { id = 6, name = "Người được ủy quyền chịu trách nhiệm chuyên môn kỹ thuật theo khoản 11 Điều 27 Nghị định số 96/2023/NĐCP" }
                 };
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("id", "Mã", 100, 1));
@@ -1782,7 +1844,38 @@ namespace HIS.Desktop.Plugins.EmpUser
             catch (Exception ex)
             {
 
-                throw;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void SelectionGrid__DepartmentTT12(object sender, EventArgs e)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
+                if (gridCheckMark != null)
+                {
+                    List<HIS_DEPARTMENT> sgSelectedNews = new List<HIS_DEPARTMENT>();
+                    foreach (HIS_DEPARTMENT rv in (gridCheckMark).Selection)
+                    {
+                        if (rv != null)
+                        {
+                            if (sb.ToString().Length > 0)
+                            {
+                                sb.Append(";");
+                            }
+                            sb.Append(rv.DEPARTMENT_CODE.ToString());
+                            sgSelectedNews.Add(rv);
+                        }
+                    }
+                    this.departmentSeleteds = new List<HIS_DEPARTMENT>();
+                    this.departmentSeleteds.AddRange(sgSelectedNews);
+                }
+                this.cboDepartmentTT12.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
         private void SetValueMediStock(GridLookUpEdit grdLookUpEdit, List<HIS_MEDI_STOCK> listSelect, List<HIS_MEDI_STOCK> listAll)
@@ -1861,6 +1954,28 @@ namespace HIS.Desktop.Plugins.EmpUser
             catch (Exception ex)
             {
 
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetValueDepartmentTT12(GridLookUpEdit grdLookUpEdit, List<HIS_DEPARTMENT> listSelect, List<HIS_DEPARTMENT> listAll)
+        {
+            try
+            {
+                if (listSelect != null)
+                {
+                    grdLookUpEdit.Properties.DataSource = listAll;
+                    var selectFilter = listAll.Where(o => listSelect.Exists(p => o.DEPARTMENT_CODE == p.DEPARTMENT_CODE)).ToList();
+                    GridCheckMarksSelection gridCheckMark = grdLookUpEdit.Properties.Tag as GridCheckMarksSelection;
+                    gridCheckMark.Selection.Clear();
+
+                    gridCheckMark.Selection.AddRange(selectFilter);
+                }
+                grdLookUpEdit.Text = null;
+
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -3841,7 +3956,11 @@ namespace HIS.Desktop.Plugins.EmpUser
 
                 XMLData.XMLEmployeeTT12Data xmlData = new XMLData.XMLEmployeeTT12Data
                 {
-                    DanhMuc = listXmlDetails,
+                    DANHSACH_DMNHANLUCKBCB = new XMLData.XMLEmployeeTT12ListData
+                    {
+                        Id = "Id-" + Guid.NewGuid().ToString(),
+                        DMNHANLUCKBCB = listXmlDetails
+                    },
                     ChuKyDonVi = string.Empty
                 };
 
@@ -3849,7 +3968,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 string saveFilePath = Path.Combine(folderPath, fullFileName);
 
                 // Serialize ra file theo XMLEmployeeTT12Data/XMLEmployeeTT12DetailData
-                success = CreatedXmlFile(xmlData, false, true, saveFilePath);
+                success = CreatedXmlFile(xmlData, true, true, saveFilePath);
 
                 // Nếu cần ký số thì tái sử dụng hạ tầng ký đã có (USB Token / HSM)
                 if (success && chkSign.Checked)
@@ -3908,7 +4027,8 @@ namespace HIS.Desktop.Plugins.EmpUser
                 int count = 1;
                 foreach (var employee in listEmployees)
                 {
-                    var department = departments.FirstOrDefault(o => o.ID == employee.DEPARTMENT_ID);
+                    var deptCodes = employee.DEPARTMENT_CODES.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                    var employeeDepartments = departments.Where(o => deptCodes.Contains(o.DEPARTMENT_CODE)) .ToList();
                     var branch = branches.FirstOrDefault(o => o.ID == employee.BRANCH_ID);
                     var careerTitle = careerTitles.FirstOrDefault(o => o.ID == employee.CAREER_TITLE_ID);
 
@@ -3918,10 +4038,10 @@ namespace HIS.Desktop.Plugins.EmpUser
                     xmlTT12.STT = count;
 
                     // 2. MA_KHOA
-                    xmlTT12.MA_KHOA = department != null ? (department.BHYT_CODE ?? string.Empty) : string.Empty;
+                    xmlTT12.MA_KHOA = string.Join(";",employeeDepartments.Select(o => o.BHYT_CODE ?? string.Empty));
 
                     // 3. TEN_KHOA
-                    xmlTT12.TEN_KHOA = department != null ? (department.DEPARTMENT_NAME ?? string.Empty) : string.Empty;
+                    xmlTT12.TEN_KHOA = string.Join(";",employeeDepartments.Select(o => o.DEPARTMENT_NAME ?? string.Empty));
 
                     // 4. HO_TEN
                     xmlTT12.HO_TEN = employee.TDL_USERNAME ?? string.Empty;
@@ -4350,6 +4470,80 @@ namespace HIS.Desktop.Plugins.EmpUser
                     // Xóa text hiển thị
                     cboCGKT.EditValue = null;
                     cboCGKT.Text = string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDepartmentTT12_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    GridCheckMarksSelection gridCheckMark = cboDepartmentTT12.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboDepartmentTT12.Properties.View);
+                    }
+                    cboDepartmentTT12.EditValue = null;
+                    cboDepartmentTT12.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboDepartmentTT12_CustomDisplayText(object sender, CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                e.DisplayText = "";
+                string departmentName = "";
+                if (this.departmentSeleteds != null && this.departmentSeleteds.Count > 0)
+                {
+                    foreach (var item in this.departmentSeleteds)
+                    {
+                        departmentName += item.DEPARTMENT_CODE + ";";
+                    }
+                }
+                e.DisplayText = departmentName;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDepartmentTT12_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                // Khi dropdown đóng, đồng bộ lại giá trị từ grid selection
+                GridCheckMarksSelection gridCheckMark = cboDepartmentTT12.Properties.Tag as GridCheckMarksSelection;
+                if (gridCheckMark != null && gridCheckMark.Selection.Count > 0)
+                {
+                    List<HIS_DEPARTMENT> sgSelectedNews = new List<HIS_DEPARTMENT>();
+                    StringBuilder sb = new StringBuilder();
+                    
+                    foreach (HIS_DEPARTMENT item in gridCheckMark.Selection)
+                    {
+                        if (item != null)
+                        {
+                            if (sb.Length > 0)
+                                sb.Append(";");
+                            sb.Append(item.DEPARTMENT_CODE);
+                            sgSelectedNews.Add(item);
+                        }
+                    }
+                    
+                    this.departmentSeleteds = sgSelectedNews;
+                    cboDepartmentTT12.Text = sb.ToString();
                 }
             }
             catch (Exception ex)
