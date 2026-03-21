@@ -146,6 +146,9 @@ namespace MPS.Processor.Mps000234
                                 ado.ICD_CODE = serviceReq.ICD_CODE ?? "";
                                 ado.ICD_NAME = serviceReq.ICD_NAME ?? "";
                                 ado.ADVISE = serviceReq.ADVISE ?? "";
+                                string electronicExpMestCode = string.Format("{0}{1}-C", MPS.ProcessorBase.PrintConfig.MediOrgCode, HIS.ERXConnect.ERXCode.Encode(Convert.ToInt64(serviceReq.SERVICE_REQ_CODE)));
+                                ado.ELECTRONIC_EXP_MEST_CODES = electronicExpMestCode;
+
 
                                 if (rdo.ListAcsUser != null && rdo.ListAcsUser.Count > 0)
                                 {
@@ -163,6 +166,8 @@ namespace MPS.Processor.Mps000234
                                     {
                                         ado.REQUEST_ROOM_CODE = room.ROOM_CODE;
                                         ado.REQUEST_ROOM_NAME = room.ROOM_NAME;
+                                        ado.REQUEST_DEPARTMENT_NAME = room.DEPARTMENT_NAME;
+                                        ado.REQUEST_DEPARTMENT_NAME = room.DEPARTMENT_CODE;
                                     }
                                 }
 
