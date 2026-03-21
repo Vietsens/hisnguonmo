@@ -328,6 +328,37 @@ namespace HIS.Desktop.Plugins.TransactionList
                     bbtnPhieuHoanUngDichVu.Tag = ItemType.PhieuHoanUngDichVu;
                     bbtnPhieuHoanUngDichVu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
 
+<<<<<<< Updated upstream
+=======
+                    if (HisConfigCFG.RefundConfig != null && HisConfigCFG.RefundConfig.Count > 0 && _Transaction.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && _Transaction.IS_CANCEL != 1)
+                    {
+                        if (HisConfigCFG.RefundConfig.Count == 1)
+                        {
+                            BarButtonItem bbtnHoanTienNganHang = new BarButtonItem(this._BarManager, "Hoàn tiền ngân hàng", 1);
+                            bbtnHoanTienNganHang.Tag = ItemType.HoanTienNganHang;
+                            bbtnHoanTienNganHang.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+
+                            string name = HisConfigCFG.RefundConfig.First().KEY.Replace("HIS.Desktop.Plugins.RefundByTransfer.", "").Replace("Info", "");
+                            bbtnHoanTienNganHang.Hint = name;
+                            this._PopupMenu.AddItem(bbtnHoanTienNganHang);
+                        }
+                        else
+                        {
+                            BarSubItem subCongKhai = new BarSubItem(this._BarManager, "Hoàn tiền ngân hàng", 2);
+                            foreach (var item in HisConfigCFG.RefundConfig)
+                            {
+                                string name = item.KEY.Replace("HIS.Desktop.Plugins.RefundByTransfer.", "").Replace("Info", "");
+                                BarButtonItem bbtnHoanTienNganHang = new BarButtonItem(this._BarManager, name, 1);
+                                bbtnHoanTienNganHang.Tag = ItemType.HoanTienNganHang;
+                                bbtnHoanTienNganHang.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
+                                bbtnHoanTienNganHang.Hint = name;
+                                subCongKhai.AddItem(bbtnHoanTienNganHang);
+                            }
+                            this._PopupMenu.AddItem(subCongKhai);
+                        }
+                    }
+
+>>>>>>> Stashed changes
                     this._PopupMenu.AddItems(new BarItem[] { bbtnPhieuHoanUng, bbtnPhieuHoanUngDichVu });
                 }
 

@@ -194,6 +194,32 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+<<<<<<< Updated upstream
+=======
+
+        private void HoanTienNganHang(string hint)
+        {
+            try
+            {
+                HIS_TRANSACTION transaction = new HIS_TRANSACTION();
+                HIS_TREATMENT treatment = GetTreatment(this.transactionPrint.TREATMENT_ID.Value);
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(transaction, this.transactionPrint);
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(treatment);
+                listArgs.Add(transaction);
+                listArgs.Add(hint);
+                listArgs.Add((HIS.Desktop.Common.RefeshReference)(FillDataToGrid));
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.RefundByTransfer", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+>>>>>>> Stashed changes
         private bool DeletegatePrintTemplate(string printCode, string fileName)
         {
             bool result = false;

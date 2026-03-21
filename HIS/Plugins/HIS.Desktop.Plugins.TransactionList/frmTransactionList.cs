@@ -1228,6 +1228,33 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
+                        else if (e.Column.FieldName == "BANK_STR")
+                        {
+                            try
+                            {
+                                e.Value = "";
+                                if (data.BANK_QUERY_STATUS == "PENDING_APPROVAL")
+                                    e.Value += "Đang chờ phê duyệt";
+                                else if (data.BANK_QUERY_STATUS == "REJECTED")
+                                    e.Value += "Bị từ chối";
+                                else if (data.BANK_QUERY_STATUS == "FAIL")
+                                    e.Value += "Giao dịch thất bại";
+                                else if (data.BANK_QUERY_STATUS == "SUCCESS")
+                                    e.Value += "Thành công";
+                                else if (data.BANK_QUERY_STATUS == "TIMEOUT")
+                                    e.Value += "Giao dịch Timeout";
+                                else if (data.BANK_QUERY_STATUS == "EXPIRED")
+                                    e.Value += "Hết hạn (quá hạn phê duyệt)";
+                                else if (data.BANK_QUERY_STATUS == "UNKNOWN")
+                                    e.Value += "Chưa xác định";
+                                if (!string.IsNullOrEmpty(data.BANK_MESSAGE))
+                                    e.Value += " ("+data.BANK_MESSAGE+")";
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
                         else if (e.Column.FieldName == "EXEMPTION_STR")
                         {
                             try
@@ -1464,7 +1491,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         }
                         else if (e.Column.FieldName == "ChangeLock")
                         {
-                            if (data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                            if (data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU)
                             {
                                 if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                                 {
@@ -2986,7 +3013,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                             }
                             else if (hi.Column.FieldName == "ChangeLock")
                             {
-                                if ((transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT))
+                                if ((transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU))
                                 {
                                     if (transactionData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                                     {
@@ -3838,5 +3865,64 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+<<<<<<< Updated upstream
+=======
+
+        private void btnRepayCheck_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<V_HIS_TRANSACTION> listTransaction = new List<V_HIS_TRANSACTION>();
+                var rowHandles = gridViewTransaction.GetSelectedRows();
+                if (rowHandles != null && rowHandles.Count() > 0)
+                {
+                    foreach (var i in rowHandles)
+                    {
+                        var row = (V_HIS_TRANSACTION)gridViewTransaction.GetRow(i);
+                        if (row != null)
+                        {
+                            listTransaction.Add(row);
+                        }
+                    }
+                }
+
+                if (listTransaction != null && listTransaction.Count > 0)
+                {
+                    if (HisConfigCFG.RefundConfig == null)
+                    {
+                        MessageBox.Show("Chưa cấu hình hoàn tiền ngân hàng!");
+                        return;
+                    }
+
+                    string bankCode = HisConfigCFG.RefundConfig.First().KEY.Replace("HIS.Desktop.Plugins.RefundByTransfer.", "").Replace("Info", "");
+                    string data = BankHubProcess.GetAccessToken(bankCode);
+                    if (string.IsNullOrEmpty(data))
+                    {
+                        MessageBox.Show("Không thể kết nối đến hệ thống ngân hàng, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        return;
+                    }
+
+
+                    CommonParam param = new CommonParam();
+                    bool success = false;
+                    WaitingManager.Show();
+                    List<long> longIds = listTransaction.Select(o => o.ID).ToList();
+                    success = new BackendAdapter(param).Post<bool>("api/HisTransaction/CheckBankRepayStatus", ApiConsumers.MosConsumer, longIds, param);
+                    //success = rs != null;
+                    if (success)
+                    {
+                        FillDataToGrid();
+                    }
+
+                    WaitingManager.Hide();
+                    MessageManager.Show(this, param, success);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+>>>>>>> Stashed changes
     }
 }

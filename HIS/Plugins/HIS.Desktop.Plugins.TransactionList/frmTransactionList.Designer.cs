@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionList));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -132,7 +133,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtTransactionCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCFind = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRCRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -160,6 +161,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.txtAccountBookCodeFind = new DevExpress.XtraEditors.TextEdit();
             this.txtTreatmentCodeFind = new DevExpress.XtraEditors.TextEdit();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
+            this.btnRepayCheck = new DevExpress.XtraEditors.SimpleButton();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.btnFind = new DevExpress.XtraEditors.SimpleButton();
             this.navBarControl1 = new DevExpress.XtraNavBar.NavBarControl();
@@ -315,7 +317,13 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
+<<<<<<< Updated upstream
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
+=======
+            this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
+            this.gridColumn19 = new DevExpress.XtraGrid.Columns.GridColumn();
+>>>>>>> Stashed changes
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtTransactionCode.Properties)).BeginInit();
@@ -432,6 +440,10 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
+<<<<<<< Updated upstream
+=======
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
+>>>>>>> Stashed changes
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -771,6 +783,17 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.ucPaging1.Name = "ucPaging1";
             this.ucPaging1.Size = new System.Drawing.Size(1039, 22);
             this.ucPaging1.TabIndex = 9;
+            // 
+            // btnRepayCheck
+            // 
+            this.btnRepayCheck.Enabled = false;
+            this.btnRepayCheck.Location = new System.Drawing.Point(2, 654);
+            this.btnRepayCheck.Name = "btnRepayCheck";
+            this.btnRepayCheck.Size = new System.Drawing.Size(257, 22);
+            this.btnRepayCheck.StyleController = this.layoutControl1;
+            this.btnRepayCheck.TabIndex = 8;
+            this.btnRepayCheck.Text = "Kiểm tra hoàn tiền ngân hàng";
+            this.btnRepayCheck.Click += new System.EventHandler(this.btnRepayCheck_Click);
             // 
             // btnRefresh
             // 
@@ -1589,7 +1612,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.gridColumn_Transaction_ModifyTime,
             this.gridColumn_Transaction_Modifier,
             this.gridColumn1,
-            this.gridColumn17});
+            this.gridColumn17,
+            this.gridColumn19});
             this.gridViewTransaction.GridControl = this.gridControlTransaction;
             this.gridViewTransaction.Name = "gridViewTransaction";
             this.gridViewTransaction.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDownFocused;
@@ -2591,11 +2615,36 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
+<<<<<<< Updated upstream
+=======
+            // layoutControlItem25
+            // 
+            this.layoutControlItem25.Control = this.btnRepayCheck;
+            this.layoutControlItem25.Location = new System.Drawing.Point(0, 652);
+            this.layoutControlItem25.Name = "layoutControlItem25";
+            this.layoutControlItem25.Size = new System.Drawing.Size(261, 26);
+            this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem25.TextVisible = false;
+            // 
+>>>>>>> Stashed changes
             // popupMenu1
             // 
             this.popupMenu1.Manager = this.barManager1;
             this.popupMenu1.Name = "popupMenu1";
             // 
+<<<<<<< Updated upstream
+=======
+            // gridColumn19
+            // 
+            this.gridColumn19.Caption = "Trạng thái ngân hàng";
+            this.gridColumn19.FieldName = "BANK_STR";
+            this.gridColumn19.Name = "gridColumn19";
+            this.gridColumn19.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn19.Visible = true;
+            this.gridColumn19.VisibleIndex = 55;
+            this.gridColumn19.Width = 150;
+            // 
+>>>>>>> Stashed changes
             // frmTransactionList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2732,6 +2781,10 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
+<<<<<<< Updated upstream
+=======
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
+>>>>>>> Stashed changes
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -2926,5 +2979,11 @@ namespace HIS.Desktop.Plugins.TransactionList
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Refund_Reason;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Edit_Bill;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn_Transaction_BuyerEmail;
+<<<<<<< Updated upstream
+=======
+        private DevExpress.XtraEditors.SimpleButton btnRepayCheck;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem25;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn19;
+>>>>>>> Stashed changes
     }
 }

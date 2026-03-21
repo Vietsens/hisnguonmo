@@ -70,6 +70,12 @@
     <Reference Include="HIS.Desktop.ModuleExt">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
+<<<<<<< Updated upstream
+=======
+    <Reference Include="HIS.Desktop.Plugins.Library.BankHub">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.BankHub.dll</HintPath>
+    </Reference>
+>>>>>>> Stashed changes
     <Reference Include="HIS.Desktop.Plugins.Library.ElectronicBill">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.ElectronicBill\HIS.Desktop.Plugins.Library.ElectronicBill.dll</HintPath>
     </Reference>
