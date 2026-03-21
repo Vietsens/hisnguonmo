@@ -2110,22 +2110,22 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                WaitingManager.Show();
+                WaitingManager.Show(); 
                 this.isInit = true;
                 this.ResetFillPatientDefault();
                 this.ResetData();
                 this.ClearValidate();
+                this.LoadSearch();
                 this.FillInfoPatient(treatment);
                 this.LoadAccountBookToLocal();
                 this.FillDataToGirdTransaction();
                 this.GeneratePopupMenu();
                 if (this.treatment != null)
-                {
+                { 
                     this.txtSearch.Text = this.treatment.TREATMENT_CODE;
                     this.btnSavePrint.Focus();
 
                 }
-                this.LoadSearch();
                 this.LoadListSereServ();
                 this.ProcessDataByCheckNot();
                 this.ResetControlValue();
