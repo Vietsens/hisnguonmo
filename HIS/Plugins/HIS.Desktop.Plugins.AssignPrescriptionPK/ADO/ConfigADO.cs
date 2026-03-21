@@ -30,7 +30,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public bool IsChecked { get; set; }
         public enum RowConfigID
         {
-            KhongHienThiDonKhongLayODonThuocTH = 1
+            KhongHienThiDonKhongLayODonThuocTH = 1,
+            InDonThuocGop = 2
         }
     }
 }
