@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using FlexCel.Report;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using MPS.Processor.Mps000234.PDO;
@@ -24,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -146,9 +148,10 @@ namespace MPS.Processor.Mps000234
                                 ado.ICD_CODE = serviceReq.ICD_CODE ?? "";
                                 ado.ICD_NAME = serviceReq.ICD_NAME ?? "";
                                 ado.ADVISE = serviceReq.ADVISE ?? "";
-                                string electronicExpMestCode = string.Format("{0}{1}-C", MPS.ProcessorBase.PrintConfig.MediOrgCode, HIS.ERXConnect.ERXCode.Encode(Convert.ToInt64(serviceReq.SERVICE_REQ_CODE)));
-                                ado.ELECTRONIC_EXP_MEST_CODES = electronicExpMestCode;
 
+                                string electronicExpMestCode = string.Format("{0}{1}-C",
+                                    MPS.ProcessorBase.PrintConfig.MediOrgCode, HIS.ERXConnect.ERXCode.Encode(Convert.ToInt64(serviceReq.SERVICE_REQ_CODE)));
+                                ado.ELECTRONIC_EXP_MEST_CODES = electronicExpMestCode;
 
                                 if (rdo.ListAcsUser != null && rdo.ListAcsUser.Count > 0)
                                 {
@@ -167,7 +170,7 @@ namespace MPS.Processor.Mps000234
                                         ado.REQUEST_ROOM_CODE = room.ROOM_CODE;
                                         ado.REQUEST_ROOM_NAME = room.ROOM_NAME;
                                         ado.REQUEST_DEPARTMENT_NAME = room.DEPARTMENT_NAME;
-                                        ado.REQUEST_DEPARTMENT_NAME = room.DEPARTMENT_CODE;
+                                        ado.REQUEST_DEPARTMENT_CODE = room.DEPARTMENT_CODE;
                                     }
                                 }
 
@@ -186,7 +189,7 @@ namespace MPS.Processor.Mps000234
 
                         detail.Add(ado);
                     }
-                    //
+
                     string totalICDSubCode = "";
                     string totalICDText = "";
                     var listICDSubCode = detail.Select(o => o.ICD_SUB_CODE).ToList() ?? new List<string>();
@@ -199,6 +202,13 @@ namespace MPS.Processor.Mps000234
                     SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.TOTAL_ICD_SUB_CODE, totalICDSubCode));
                     SetSingleKey(new KeyValue(Mps000234ExtendSingleKey.TOTAL_ICD_TEXT, totalICDText));
 
+                    var codesByStock = detail
+                        .Where(s => !string.IsNullOrEmpty(s.ELECTRONIC_EXP_MEST_CODES))
+                        .GroupBy(o => o.MEDI_STOCK_ID)
+                        .ToDictionary(
+                            g => g.Key,
+                            g => string.Join(",", g.Select(s => s.ELECTRONIC_EXP_MEST_CODES).Distinct())); 
+
                     var grDetail = detail.GroupBy(o => new { o.MEDI_STOCK_ID, o.PATIENT_TYPE_ID, o.MEDICINE_TYPE_ID, o.PRICE, o.REQ_ROOM_ID }).ToList();
                     foreach (var item in grDetail)
                     {
@@ -208,7 +218,7 @@ namespace MPS.Processor.Mps000234
                         ado.AMOUNT = item.Sum(s => s.AMOUNT);
                         ado.PRES_AMOUNT = item.Sum(s => s.PRES_AMOUNT ?? 0);
 
-                        GroupDetail.Add(ado);
+                        GroupDetail.Add(ado); 
                     }
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => rdo.expMestMedicines), rdo.expMestMedicines));
@@ -246,6 +256,11 @@ namespace MPS.Processor.Mps000234
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestsGroupADO>(ado, item.First());
                         ado.AMOUNT = item.Sum(s => s.AMOUNT);
                         ado.PRES_AMOUNT = item.Sum(s => s.PRES_AMOUNT ?? 0);
+
+                        var stockId = item.Key.MEDI_STOCK_ID;
+                        ado.ELECTRONIC_EXP_MEST_CODES = codesByStock.ContainsKey(stockId)
+                            ? codesByStock[stockId]
+                            : "";
 
                         GroupByStock.Add(ado);
                     }
