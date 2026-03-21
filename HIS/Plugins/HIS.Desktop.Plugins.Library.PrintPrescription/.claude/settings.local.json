@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r 'class V_HIS_EXP_MEST_MEDICINE' e:GitLabhisnguonmo --include=*.cs)",
+      "Bash(grep -r \"namespace.*EFMODEL\\\\|namespace.*DataModels\" e:GitLabhisnguonmo --include=*.cs)",
+      "Bash(grep -r \"public.*V_HIS_EXP_MEST_MEDICINE\\\\|DbSet.*V_HIS_EXP_MEST_MEDICINE\" e:GitLabhisnguonmo --include=*.cs)",
+      "Bash(grep -r \"namespace.*MOS\\\\|namespace.*EF\\\\|namespace.*DataModel\" e:GitLabhisnguonmo --include=*.cs)",
+      "Bash(find e:GitLabhisnguonmo -path *MOS* -name *.cs -type f)",
+      "Bash(grep -r \"public.*IS_FUNCTIONAL_FOOD\\\\|IS_FUNCTIONAL_FOOD.*{.*get.*set\" e:GitLabhisnguonmo --include=*.cs)"
+    ]
+  }
+}
