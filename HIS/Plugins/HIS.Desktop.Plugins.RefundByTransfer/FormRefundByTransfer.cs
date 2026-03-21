@@ -45,7 +45,11 @@ namespace HIS.Desktop.Plugins.RefundByTransfer
         private V_HIS_TRANSACTION currentTransaction;
         private TotalPriceInfoProcessor totalPriceProcessor;
         private UserControl ucTotalPriceInfo;
+<<<<<<< HEAD
 
+=======
+        HIS.Desktop.Common.RefeshReference refresh;
+>>>>>>> Nampp
         int ActionType = -1;
         int positionHandle = -1;
 
@@ -54,7 +58,11 @@ namespace HIS.Desktop.Plugins.RefundByTransfer
             InitializeComponent();
         }
 
+<<<<<<< HEAD
         public FormRefundByTransfer(Module moduleData, string bankCode, HIS_TREATMENT treatment, HIS_TRANSACTION transaction)
+=======
+        public FormRefundByTransfer(Module moduleData, string bankCode, HIS_TREATMENT treatment, HIS_TRANSACTION transaction, HIS.Desktop.Common.RefeshReference refresh)
+>>>>>>> Nampp
             : base(moduleData)
         {
             try
@@ -64,6 +72,10 @@ namespace HIS.Desktop.Plugins.RefundByTransfer
                 this.treatment = treatment;
                 this.transaction = transaction;
                 this.bankCode = !string.IsNullOrWhiteSpace(bankCode) ? bankCode : "MBB";
+<<<<<<< HEAD
+=======
+                this.refresh = refresh;
+>>>>>>> Nampp
                 if ((transaction != null && transaction.ID <= 0))
                 {
                     MessageBox.Show("Thông tin giao dịch không hợp lệ. Vui lòng kiểm tra lại");
@@ -439,6 +451,11 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 if (currentTransReq != null)
                 {
                     success = true;
+<<<<<<< HEAD
+=======
+                    if (refresh != null)
+                        refresh();
+>>>>>>> Nampp
                 }
                 WaitingManager.Hide();
 
@@ -515,6 +532,12 @@ Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     if (CheckStatusTrue)
                     {
                         txtAccName.Text = bankAccountResultSDO.AccountName;
+<<<<<<< HEAD
+=======
+
+                        if (refresh != null)
+                            refresh();
+>>>>>>> Nampp
                     }
                 }
             }

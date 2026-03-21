@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,7 +61,6 @@ using MOS.SDO;
 using HIS.Desktop.ADO;
 using Newtonsoft.Json;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
-using HIS.Desktop.Plugins.Library.BankHub;
 
 
 namespace HIS.Desktop.Plugins.TransactionList
@@ -101,7 +100,7 @@ namespace HIS.Desktop.Plugins.TransactionList
 
         private bool isPermission = false;
         private List<HIS_PERMISSION> hisPermissionList = new List<HIS_PERMISSION>();
-
+     
 
         bool isNotLoadWhilecboFilterStateInFirst = true;
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
@@ -230,14 +229,13 @@ namespace HIS.Desktop.Plugins.TransactionList
 
                 FillDataToGrid();
                 //GetHisPermission();
-
+               
                 //GetHisPermissionLoad();
 
-                hasPermission = await GetHisPermission();
+                 hasPermission = await GetHisPermission();
 
                 var permissions = await GetHisPermissionLoad();
                 btnExportBill.Enabled = false;
-                btnRepayCheck.Enabled = false;
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -430,7 +428,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                 lcProcessed.Text = " ";
                 lcErrorProcessed.Text = " ";
                 btnExportBill.Enabled = false;
-                btnRepayCheck.Enabled = false;
                 txtErrorProcessed.Text = "";
                 txtProcessed.Text = "";
                 lciWarning.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -1072,7 +1069,6 @@ namespace HIS.Desktop.Plugins.TransactionList
         {
             try
             {
-                var tmCkQtId = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
                 if (e.ListSourceRowIndex >= 0 && e.IsGetData && e.Column.UnboundType != DevExpress.Data.UnboundColumnType.Bound)
                 {
                     var data = (HisTransactionADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
@@ -1232,6 +1228,33 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 Inventec.Common.Logging.LogSystem.Error(ex);
                             }
                         }
+                        else if (e.Column.FieldName == "BANK_STR")
+                        {
+                            try
+                            {
+                                e.Value = "";
+                                if (data.BANK_QUERY_STATUS == "PENDING_APPROVAL")
+                                    e.Value += "Đang chờ phê duyệt";
+                                else if (data.BANK_QUERY_STATUS == "REJECTED")
+                                    e.Value += "Bị từ chối";
+                                else if (data.BANK_QUERY_STATUS == "FAIL")
+                                    e.Value += "Giao dịch thất bại";
+                                else if (data.BANK_QUERY_STATUS == "SUCCESS")
+                                    e.Value += "Thành công";
+                                else if (data.BANK_QUERY_STATUS == "TIMEOUT")
+                                    e.Value += "Giao dịch Timeout";
+                                else if (data.BANK_QUERY_STATUS == "EXPIRED")
+                                    e.Value += "Hết hạn (quá hạn phê duyệt)";
+                                else if (data.BANK_QUERY_STATUS == "UNKNOWN")
+                                    e.Value += "Chưa xác định";
+                                if (!string.IsNullOrEmpty(data.BANK_MESSAGE))
+                                    e.Value += " ("+data.BANK_MESSAGE+")";
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                        }
                         else if (e.Column.FieldName == "EXEMPTION_STR")
                         {
                             try
@@ -1265,7 +1288,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         {
                             try
                             {
-                                if (data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT || data.PAY_FORM_ID == tmCkQtId.ID)
+                                if (data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
                                 {
                                     e.Value = Inventec.Common.Number.Convert.NumberToString(data.SWIPE_AMOUNT ?? 0, ConfigApplications.NumberSeperator);
                                 }
@@ -1283,7 +1306,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         {
                             try
                             {
-                                if (data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK || data.PAY_FORM_ID == tmCkQtId.ID)
+                                if (data.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
                                 {
                                     e.Value = Inventec.Common.Number.Convert.NumberToString(data.TRANSFER_AMOUNT ?? 0, ConfigApplications.NumberSeperator);
                                 }
@@ -1346,7 +1369,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 {
                                     e.Value = "";
                                 }
-                            }
+                            } 
                             catch (Exception ex)
                             {
                                 Inventec.Common.Logging.LogSystem.Error(ex);
@@ -1468,7 +1491,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         }
                         else if (e.Column.FieldName == "ChangeLock")
                         {
-                            if (data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT)
+                            if (data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || data.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU)
                             {
                                 if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                                 {
@@ -1808,9 +1831,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                         this.popupMenuProcessor = new PopupMenuProcessor(this.transactionPrint, this.baManager, MouseRightItemClick, currentModule);
                         this.popupMenuProcessor.InitMenu();
                     }
+                   
 
-
-
+                    
                 }
             }
             catch (Exception ex)
@@ -1824,7 +1847,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             try
             {
                 FillDataToGrid();
-                // GetHisPermissionLoad();
+               // GetHisPermissionLoad();
 
 
             }
@@ -2730,7 +2753,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                     bool setError = true;
 
                                     string serviceConfig = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("HIS.DESKTOP.LIBRARY.ELECTRONIC_BILL.CONFIG");
-                                    if (listTransaction[i].EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT || (!listTransaction[i].EINVOICE_TYPE_ID.HasValue &&
+                                    if (listTransaction[i].EINVOICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_EINVOICE_TYPE.ID__VNPT || (!listTransaction[i].EINVOICE_TYPE_ID.HasValue && 
                                         serviceConfig.Contains(ProviderType.VNPT)))
                                     {
                                         List<long> ids = listTransactionVnptError.Where(o => o == listTransaction[i].ID).ToList();
@@ -2778,12 +2801,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                 if (gridViewTransaction.GetSelectedRows().Count() > 0)
                 {
                     btnExportBill.Enabled = true;
-                    btnRepayCheck.Enabled = true;
                 }
                 else
                 {
                     btnExportBill.Enabled = false;
-                    btnRepayCheck.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -2944,7 +2965,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                         var HisPermissionList = await GetHisPermissionLoad();
                                         isPremission = HisPermissionList
                                             .FirstOrDefault(o => o.EFFECTIVE_DATE == transactionData.TRANSACTION_DATE);
-
+                                      
                                     }
                                     catch (Exception ex)
                                     {
@@ -2963,7 +2984,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                     //    isPremission = null;
                                     //}
 
-
+                                    
                                     if (HisConfigCFG.ALLOW_OTHER_LOGINNAME == "2")
                                     {
                                         if (transactionData.IS_ACTIVE == 1
@@ -2992,7 +3013,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                             }
                             else if (hi.Column.FieldName == "ChangeLock")
                             {
-                                if ((transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT))
+                                if ((transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TU || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__TT || transactionData.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU))
                                 {
                                     if (transactionData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                                     {
@@ -3507,7 +3528,7 @@ namespace HIS.Desktop.Plugins.TransactionList
 
             try
             {
-                WaitingManager.Show();
+                WaitingManager.Show(); 
                 var gridView = gridControlTransaction.MainView as DevExpress.XtraGrid.Views.Grid.GridView;
                 if (gridView != null)
                 {
@@ -3518,11 +3539,11 @@ namespace HIS.Desktop.Plugins.TransactionList
                         if (!string.IsNullOrWhiteSpace(accountBookCode) && accountBookCode == ACCOUNT_BOOK_CODE_VN)
                         {
                             MessageBox.Show("Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
+                            return; 
                         }
                     }
                 }
-                WaitingManager.Hide();
+                WaitingManager.Hide(); 
                 transactionPrint = new V_HIS_TRANSACTION();
                 this.transactionPrint = (V_HIS_TRANSACTION)gridViewTransaction.GetFocusedRow();
                 listData = new List<V_HIS_TRANSACTION>();
@@ -3731,7 +3752,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     TransReqQRADO adoqr = new TransReqQRADO();
                     adoqr.TreatmentId = this.transactionPrint.TREATMENT_ID ?? 0;
                     adoqr.TransReqId = CreateReqType.Transaction;
-                    adoqr.ConfigValue = new HIS_CONFIG() { VALUE = itemConfig.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", itemConfig.BANK) };
+                    adoqr.ConfigValue = new HIS_CONFIG() { VALUE = itemConfig.VALUE, KEY = string.Format("HIS.Desktop.Plugins.PaymentQrCode.{0}Info", itemConfig.BANK) }; 
                     HIS_TRANSACTION tran = new HIS_TRANSACTION();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(tran, transactionPrint);
                     adoqr.Transaction = tran;
@@ -3844,6 +3865,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+<<<<<<< Updated upstream
+=======
 
         private void btnRepayCheck_Click(object sender, EventArgs e)
         {
@@ -3884,8 +3907,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                     bool success = false;
                     WaitingManager.Show();
                     List<long> longIds = listTransaction.Select(o => o.ID).ToList();
-                    var rs = new BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/CheckBankRepayStatus", ApiConsumers.MosConsumer, longIds, param);
-                    success = rs != null;
+                    success = new BackendAdapter(param).Post<bool>("api/HisTransaction/CheckBankRepayStatus", ApiConsumers.MosConsumer, longIds, param);
+                    //success = rs != null;
                     if (success)
                     {
                         FillDataToGrid();
@@ -3900,5 +3923,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+>>>>>>> Stashed changes
     }
 }
