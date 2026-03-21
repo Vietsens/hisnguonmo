@@ -107,5 +107,12 @@ namespace MPS.Processor.Mps000321
         internal const string TOTAL_PRICE_PATIENT_SELF_DV = "TOTAL_PRICE_PATIENT_SELF_DV";
         internal const string TOTAL_PRICE_PATIENT_SELF_TP = "TOTAL_PRICE_PATIENT_SELF_TP";
         internal const string TOTAL_PRICE_PATIENT_SELF_DD = "TOTAL_PRICE_PATIENT_SELF_DD";
+        internal const string IN_TIME = "IN_TIME";
+        internal const string OUT_TIME = "OUT_TIME";
+        internal const string BILL_AMOUNT = "BILL_AMOUNT";
+
+        internal const string TOTAL_PRICE_NT = "TOTAL_PRICE_NT";
+        internal const string TOTAL_PRICE_NGT = "TOTAL_PRICE_NGT";
+        internal const string TOTAL_PRICE_GUARANTEE = "TOTAL_PRICE_GUARANTEE";
     }
 }
