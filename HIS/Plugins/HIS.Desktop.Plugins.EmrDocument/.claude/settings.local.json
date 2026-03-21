@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls -d /e/GitLab/hisnguonmo/HIS/Plugins/HIS.Desktop.Plugins.*)",
+      "Bash(grep -r \"09BH\\\\|BangKe\\\\|DieuChinh\" /e/GitLab/hisnguonmo/HIS/Plugins --include=*.cs)",
+      "Bash(grep -r \"DataGridView\\\\|GridControl\" /e/GitLab/hisnguonmo/HIS/Plugins/HIS.Desktop.Plugins.TreatmentList --include=*.cs)"
+    ]
+  }
+}
