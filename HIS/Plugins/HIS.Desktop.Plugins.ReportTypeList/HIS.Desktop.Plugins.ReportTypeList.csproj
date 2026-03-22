@@ -151,7 +151,7 @@
       <Project>{efae3b9c-2afd-4cc7-8649-6063115b4b58}</Project>
       <Name>His.UC.CreateReport</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\USERCONTROL\HIS\HIS.UC.FormType\HIS.UC.FormType.csproj">
+    <ProjectReference Include="..\..\..\UC\HIS.UC.FormType\HIS.UC.FormType.csproj">
       <Project>{a61418d7-2d72-4c4d-9e99-e0adf913fc4e}</Project>
       <Name>HIS.UC.FormType</Name>
     </ProjectReference>

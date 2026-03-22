@@ -1792,6 +1792,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         }
                     }
                 }
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
@@ -3323,6 +3324,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 FormatSpint(spinTransferAmount);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
@@ -3331,6 +3333,21 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             }
         }
 
+        private void CalcuCanThu()
+        {
+
+            try
+            {
+                lblReceiveAmount.Tag = Convert.ToInt64(totalAmountDeposit) - spinTransferAmount.Value;
+                lblReceiveAmount.Text = (Convert.ToInt64(totalAmountDeposit) - spinTransferAmount.Value).ToString();
+                this.lblReceiveAmount.Text = string.Format("{0:#,##0}", double.Parse(this.lblReceiveAmount.Text));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         #endregion
 
         private void ddbPrint_Click(object sender, EventArgs e)
