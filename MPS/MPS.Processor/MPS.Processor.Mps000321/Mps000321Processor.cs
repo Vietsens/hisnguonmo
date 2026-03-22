@@ -320,7 +320,8 @@ namespace MPS.Processor.Mps000321
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TREATMENT_CODE, rdo.Treatment.TREATMENT_CODE));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.IN_TIME, rdo.Treatment.IN_TIME));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.OUT_TIME, rdo.Treatment.OUT_TIME));
-                SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.BILL_AMOUNT, ListPayFormType[0].BILL_AMOUNT));
+                if (ListPayFormType != null && ListPayFormType.Count > 0)
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.BILL_AMOUNT, ListPayFormType[0].BILL_AMOUNT));
 
                 if (rdo.CurrentPatyAlter != null)
                 {
@@ -580,7 +581,7 @@ namespace MPS.Processor.Mps000321
 
                 decimal thanhtien_tong = 0;
                 //qtcode
-                decimal thanhtien_baolanh = 0; 
+                decimal thanhtien_baolanh = 0;
                 decimal thanhtienBH_tong = 0;
                 decimal bhytthanhtoan_tong = 0;
                 decimal nguonkhac_tong = 0;
@@ -603,10 +604,10 @@ namespace MPS.Processor.Mps000321
 
                         foreach (var sereServExamADO in sereServExamADOs)
                         {
-                            executeRoomExam += sereServExamADO.EXECUTE_ROOM_NAME + ", " ;
+                            executeRoomExam += sereServExamADO.EXECUTE_ROOM_NAME + ", ";
                         }
                     }
-                    thanhtien_baolanh = sereServADOs.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND != 1 || o.IS_EXPEND == null)).Sum(p => p.PRICE); 
+                    thanhtien_baolanh = sereServADOs.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND != 1 || o.IS_EXPEND == null)).Sum(p => p.PRICE);
                     thanhtienBH_tong = sereServADOs.Sum(o => o.TOTAL_PRICE_BHYT);
                     thanhtien_tong = sereServADOs.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
                     bhytthanhtoan_tong = sereServADOs.Sum(o => o.VIR_TOTAL_HEIN_PRICE) ?? 0;
@@ -631,7 +632,7 @@ namespace MPS.Processor.Mps000321
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.FIRST_EXAM_ROOM_NAME, executeRoomExamFirst));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.LAST_EXAM_ROOM_NAME, executeRoomExamLast));
 
-                SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0))); 
+                SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_GUARANTEE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_baolanh, 0)));
                 switch (rdo.CurrentPatyAlter.TREATMENT_TYPE_ID)
                 {
@@ -643,7 +644,7 @@ namespace MPS.Processor.Mps000321
                         break;
                     case IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU:
                         SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_NGT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
-                        break; 
+                        break;
                     default:
                         break;
                 }
