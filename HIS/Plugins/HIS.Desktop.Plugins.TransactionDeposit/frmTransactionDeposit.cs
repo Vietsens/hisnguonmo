@@ -589,7 +589,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                     HideNewControls();
                 }
-                else if (payForm != null && payForm.ID == 9) 
+                else if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT) 
                 {
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
                     ValidControlTransferAmount(true);
@@ -3068,6 +3068,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             try
             {
                 FormatSpint(txtTotalAmount);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
@@ -3081,6 +3082,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             try
             {
                 FormatSpint(spinTransferAmount);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
@@ -3088,12 +3090,30 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void CalcuCanThu()
+        {
 
+            try
+            {
+                var totalAmountDeposit = txtTotalAmount.Value;
+                var transferAmount = spinTransferAmount.Value;
+                var swipeAmount = spinSwipeAmount.Value;
+                lblReceiveAmount.Tag = totalAmountDeposit - transferAmount - swipeAmount;
+                lblReceiveAmount.Text = (totalAmountDeposit - transferAmount - swipeAmount).ToString();
+                this.lblReceiveAmount.Text = string.Format("{0:#,##0}", double.Parse(this.lblReceiveAmount.Text));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
         private void spinSwipeAmount_EditValueChanged(object sender, EventArgs e) 
         {
             try
             {
                 FormatSpint(spinSwipeAmount);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
