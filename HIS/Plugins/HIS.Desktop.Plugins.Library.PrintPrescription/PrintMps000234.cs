@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
         Action<int, Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> SavedData;
         Action<string> CancelPrint;
+        bool IsGroupTreatmentList = false;
 
         public PrintMps000234(string printTypeCode, string fileName, ref bool result,
             MOS.SDO.OutPatientPresResultSDO currentOutPresSDO,
@@ -358,7 +359,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     //Tach thuoc TPCN
                     listTPCN234 = ExpMestMedicineSDO.Where(o => o.IS_FUNCTIONAL_FOOD == IS_TRUE).OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
                     ExpMestMedicineSDO = ExpMestMedicineSDO.Where(o => o.IS_FUNCTIONAL_FOOD != IS_TRUE).ToList();
-                    listOutStockTPCN234 = ExpMestMedicineSDOIncludeOutStock.Where(o => o.IS_FUNCTIONAL_FOOD == IS_TRUE).OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
+                    listOutStockTPCN234 = ExpMestMedicineSDOIncludeOutStock.Where(o => o.IS_FUNCTIONAL_FOOD == IS_TRUE && o.Type == 3).OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
                     ExpMestMedicineSDOIncludeOutStock = ExpMestMedicineSDOIncludeOutStock.Where(o => o.IS_FUNCTIONAL_FOOD != IS_TRUE).ToList();
 
                     //Xếp thuốc theo thứ tự

@@ -61,6 +61,7 @@ using MOS.SDO;
 using HIS.Desktop.ADO;
 using Newtonsoft.Json;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
+using HIS.Desktop.Plugins.Library.BankHub;
 
 
 namespace HIS.Desktop.Plugins.TransactionList
@@ -428,6 +429,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 lcProcessed.Text = " ";
                 lcErrorProcessed.Text = " ";
                 btnExportBill.Enabled = false;
+                btnRepayCheck.Enabled = false;
                 txtErrorProcessed.Text = "";
                 txtProcessed.Text = "";
                 lciWarning.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
@@ -2184,7 +2186,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         }
                         else
                         {
-                            rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/Lock", ApiConsumers.MosConsumer, data.ID, param);
+                            rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/RepayLock", ApiConsumers.MosConsumer, data.ID, param);
                         }
 
                     }
@@ -2201,7 +2203,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                         else
                         {
                             //rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/Unlock", ApiConsumers.MosConsumer, data.ID, param);
-                            rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("HisTransaction/RepayUnlock", ApiConsumers.MosConsumer, sdoLock, param);
+                            rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<V_HIS_TRANSACTION>("api/HisTransaction/RepayUnlock", ApiConsumers.MosConsumer, sdoLock, param);
                         }
 
                     }
@@ -2801,10 +2803,12 @@ namespace HIS.Desktop.Plugins.TransactionList
                 if (gridViewTransaction.GetSelectedRows().Count() > 0)
                 {
                     btnExportBill.Enabled = true;
+                    btnRepayCheck.Enabled = true;
                 }
                 else
                 {
                     btnExportBill.Enabled = false;
+                    btnRepayCheck.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -3865,8 +3869,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-<<<<<<< Updated upstream
-=======
 
         private void btnRepayCheck_Click(object sender, EventArgs e)
         {
@@ -3923,6 +3925,5 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
->>>>>>> Stashed changes
     }
 }

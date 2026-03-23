@@ -44,6 +44,8 @@ namespace HIS.Desktop.Plugins.HisImportBloodType.ADO
         public string VOLUME_STR { get; set; }
         public string NUM_ORDER_STR { get; set; }
         public string OUT_PARENT_FEE { get; set; }
+        public string TUBE_SLOT_STR { get; set; }
+        public long? TUBE_SLOT { get; set; }
 
         public long? HEIN_LIMIT_PRICE_IN_TIME { get; set; }
         public long? HEIN_LIMIT_PRICE_INTR_TIME { get; set; }

@@ -246,6 +246,9 @@
   <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_NUM_ORDER" xml:space="preserve">
     <value>STT hiển thị</value>
   </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_TUBE_SLOT" xml:space="preserve">
+    <value>Vị trí ống</value>
+  </data>
   <data name="KhongDongThoiCoCacThongTin" xml:space="preserve">
     <value>Chỉ được nhập {0} hoặc {1}</value>
   </data>
