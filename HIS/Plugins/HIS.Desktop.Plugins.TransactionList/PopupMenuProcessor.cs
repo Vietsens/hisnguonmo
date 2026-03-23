@@ -82,7 +82,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             Mps000440_BienBanDieuChinhTangGiamTrenHoaDon__,
             HuyHoaDonDienTu,
             ThayThe,
-            InHoaDonNhap
+            InHoaDonNhap,
+            HoanTienNganHang
         }
 
         internal PopupMenuProcessor(V_HIS_TRANSACTION transaction, BarManager barmanager, TransactionMouseRightClick mouseRightClick, Inventec.Desktop.Common.Modules.Module currentModule)
@@ -328,8 +329,8 @@ namespace HIS.Desktop.Plugins.TransactionList
                     bbtnPhieuHoanUngDichVu.Tag = ItemType.PhieuHoanUngDichVu;
                     bbtnPhieuHoanUngDichVu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
 
-<<<<<<< Updated upstream
-=======
+
+
                     if (HisConfigCFG.RefundConfig != null && HisConfigCFG.RefundConfig.Count > 0 && _Transaction.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && _Transaction.IS_CANCEL != 1)
                     {
                         if (HisConfigCFG.RefundConfig.Count == 1)
@@ -357,8 +358,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                             this._PopupMenu.AddItem(subCongKhai);
                         }
                     }
-
->>>>>>> Stashed changes
                     this._PopupMenu.AddItems(new BarItem[] { bbtnPhieuHoanUng, bbtnPhieuHoanUngDichVu });
                 }
 
