@@ -184,6 +184,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                         case PopupMenuProcessor.ItemType.DieuChinhHoaDon:
                             this.DieuChinhHoaDon();
                             break;
+                        case PopupMenuProcessor.ItemType.HoanTienNganHang:
+                            this.HoanTienNganHang(e.Item.Hint);
+                            break;
                         default:
                             break;
                     }
@@ -194,8 +197,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-<<<<<<< Updated upstream
-=======
 
         private void HoanTienNganHang(string hint)
         {
@@ -219,7 +220,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             }
         }
 
->>>>>>> Stashed changes
+
         private bool DeletegatePrintTemplate(string printCode, string fileName)
         {
             bool result = false;
