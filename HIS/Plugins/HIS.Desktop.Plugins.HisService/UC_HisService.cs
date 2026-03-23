@@ -23,8 +23,11 @@ using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraPrinting.Native.WebClientUIControl;
 using DevExpress.XtraTreeList;
 using EMR.EFMODEL.DataModels;
+using EMR.TDO;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
@@ -34,9 +37,13 @@ using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisService.ADO;
 using HIS.Desktop.Utilities.Extensions;
+using HIS.UC.SettingSignInfo;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
+using Inventec.Common.SignLibrary;
+using Inventec.Common.SignLibrary.ADO;
+using Inventec.Common.SignLibrary.ServiceSign;
 using Inventec.Core;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using Inventec.Desktop.Common.LanguageManager;
@@ -46,15 +53,19 @@ using LIS.EFMODEL.DataModels;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
+using EMR.WCF.DCO;
 
 namespace HIS.Desktop.Plugins.HisService
 {
@@ -88,6 +99,7 @@ namespace HIS.Desktop.Plugins.HisService
         List<HIS_SUIM_INDEX> listHisSuimIndex;
         List<HIS_SUIM_INDEX> listHisSuimIndexChoose = new List<HIS_SUIM_INDEX>();
         List<HIS_SERVICE> hisServiceRef;
+        List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG> listMediOrg;
         V_HIS_SERVICE currentRightClick;
         List<V_HIS_SERVICE> listVServiceExport = new List<V_HIS_SERVICE>();
         List<V_HIS_SERVICE_PATY> listVServicePatyExport = new List<V_HIS_SERVICE_PATY>();
@@ -95,6 +107,10 @@ namespace HIS.Desktop.Plugins.HisService
         List<SAR.EFMODEL.DataModels.SAR_PRINT_TYPE> ListPrintType;
         List<MOS.EFMODEL.DataModels.HIS_EMR_FORM> listEmrType;
         private System.Windows.Forms.SaveFileDialog SaveFileExportExcel = new SaveFileDialog();
+        private System.Windows.Forms.SaveFileDialog SaveFileExportXmlTT12 = new SaveFileDialog();
+        SettingSignADO settingSignADO;
+        private bool isNotLoadWhileChangeControlStateInFirst = false;
+
         public class CauHinhItem
         {
             public int Id { get; set; }
@@ -357,6 +373,8 @@ namespace HIS.Desktop.Plugins.HisService
                 this.chkLock.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkLock.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.BtnExportExcel.Text = Inventec.Common.Resource.Get.Value("UC_HisService.BtnExportExcel.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnImport.Text = Inventec.Common.Resource.Get.Value("UC_HisService.btnImport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnXuatXmlTT12.Text = Inventec.Common.Resource.Get.Value("UC_HisService.btnXuatXmlTT12.Text", Resources.ResourceLanguageManager.LanguageResource,LanguageManager.GetCulture());
+                this.chkKy.Properties.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.chkKy.Properties.Caption",Resources.ResourceLanguageManager.LanguageResource,LanguageManager.GetCulture());
                 this.cboSearchType.Properties.NullText = Inventec.Common.Resource.Get.Value("UC_HisService.cboSearchType.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSearch.Text = Inventec.Common.Resource.Get.Value("UC_HisService.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.treeListColumn1.Caption = Inventec.Common.Resource.Get.Value("UC_HisService.treeListColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -722,6 +740,12 @@ namespace HIS.Desktop.Plugins.HisService
                 cboPetroleum.EditValue = null;
                 cboPetroleum.Enabled = false;
 
+                txtQdGia.EditValue = null;
+                txtTenDvGia.EditValue = null;
+                spSlCgkt.EditValue = null;
+                cboCskcbCgkt.EditValue = null;
+                txtQdDv.EditValue = null;
+                cboCskcbCls.EditValue = null;
 
 
             }
@@ -797,6 +821,7 @@ namespace HIS.Desktop.Plugins.HisService
                 InitComboDTTT2();
                 InitComboDTTT3();
                 InitComboPetroleum();
+                InitComboMediOrg();
             }
             catch (Exception ex)
             {
@@ -1515,6 +1540,31 @@ namespace HIS.Desktop.Plugins.HisService
                 columnInfos.Add(new ColumnInfo("SERVICE_UNIT_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("SERVICE_UNIT_NAME", "ID", columnInfos, false, 350);
                 ControlEditorLoader.Load(cboDVT, data, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboMediOrg()
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisMediOrgFilter filter = new MOS.Filter.HisMediOrgFilter();
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                listMediOrg = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.HIS_MEDI_ORG>>("api/HisMediOrg/Get", ApiConsumers.MosConsumer, filter, null)
+                    .ToList();
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("MEDI_ORG_CODE", "Mã", 100, 1));
+                columnInfos.Add(new ColumnInfo("MEDI_ORG_NAME", "Tên cơ sở", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_ORG_NAME", "MEDI_ORG_CODE", columnInfos, true, 350);
+
+                ControlEditorLoader.Load(cboCskcbCgkt, listMediOrg, controlEditorADO);
+                ControlEditorLoader.Load(cboCskcbCls, listMediOrg, controlEditorADO);
             }
             catch (Exception ex)
             {
@@ -2269,6 +2319,12 @@ namespace HIS.Desktop.Plugins.HisService
                         this.EMR_FORM_CODES = null;
                     }
                 }
+                txtQdGia.Text = data.QD_PD_GIA ?? "";
+                txtTenDvGia.Text = data.TEN_DVKT_GIA ?? "";
+                spSlCgkt.EditValue = data.SO_LUONG_CGKT;
+                cboCskcbCgkt.EditValue = !string.IsNullOrEmpty(data.CSKCB_CGKT) ? (object)data.CSKCB_CGKT : null;
+                txtQdDv.Text = data.QD_DVKT ?? "";
+                cboCskcbCls.EditValue = !string.IsNullOrEmpty(data.CSKCB_CLS) ? (object)data.CSKCB_CLS : null;
             }
             catch (Exception ex)
             {
@@ -3387,6 +3443,18 @@ namespace HIS.Desktop.Plugins.HisService
                     currentDTO.PETROLEUM_CODE = null;
                     currentDTO.PETROLEUM_NAME = null;
                 }
+                currentDTO.QD_PD_GIA = !string.IsNullOrEmpty(txtQdGia.Text.Trim()) ? txtQdGia.Text.Trim() : null;
+                currentDTO.TEN_DVKT_GIA = !string.IsNullOrEmpty(txtTenDvGia.Text.Trim()) ? txtTenDvGia.Text.Trim() : null;
+                currentDTO.SO_LUONG_CGKT = spSlCgkt.EditValue != null
+                    ? (long?)Convert.ToInt64(spSlCgkt.Value)
+                    : null;
+                currentDTO.CSKCB_CGKT = cboCskcbCgkt.EditValue != null
+                    ? cboCskcbCgkt.EditValue.ToString()
+                    : null;
+                currentDTO.QD_DVKT = !string.IsNullOrEmpty(txtQdDv.Text.Trim()) ? txtQdDv.Text.Trim() : null;
+                currentDTO.CSKCB_CLS = cboCskcbCls.EditValue != null
+                    ? cboCskcbCls.EditValue.ToString()
+                    : null;
             }
             catch (Exception ex)
             {
@@ -7732,6 +7800,507 @@ namespace HIS.Desktop.Plugins.HisService
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void cboCskcbCgkt_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboCskcbCgkt.EditValue = null;
+                    cboCskcbCgkt.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboCskcbCgkt_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboCskcbCgkt.Properties.Buttons[1].Visible = (cboCskcbCgkt.EditValue != null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboCskcbCls_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboCskcbCls.EditValue = null;
+                    cboCskcbCls.Properties.Buttons[1].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboCskcbCls_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                cboCskcbCls.Properties.Buttons[1].Visible = (cboCskcbCls.EditValue != null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void btnXuatXmlTT12_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (listVServiceExport == null || listVServiceExport.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Không có dữ liệu dịch vụ để xuất. Vui lòng tìm kiếm trước.",
+                        "Thông báo");
+                    return;
+                }
+
+                SaveFileExportXmlTT12.Filter = "XML files (*.xml)|*.xml";
+                SaveFileExportXmlTT12.FileName = "DMDICHVUKBCB_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+
+                if (SaveFileExportXmlTT12.ShowDialog() != DialogResult.OK)
+                    return;
+
+                string savePath = SaveFileExportXmlTT12.FileName;
+
+                WaitingManager.Show();
+                try
+                {
+                    // Lấy danh sách SERVICE_ID đang hiển thị trên màn hình
+                    List<long> serviceIds = listVServiceExport.Select(o => o.ID).ToList();
+
+                    // Lấy dữ liệu thuốc hao phí (V_HIS_SERVICE_METY) theo service IDs
+                    List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY> listMety = GetServiceMetyList(serviceIds);
+
+                    // Xuất XML
+                    // ✅ Đúng — theo chi nhánh hiện tại
+                    var branch = BackendDataWorker.Get<HIS_BRANCH>()
+                        .FirstOrDefault(o => o.ID == BranchDataWorker.GetCurrentBranchId());
+                    string maCskcb = branch?.HEIN_MEDI_ORG_CODE;
+                    string xmlContent = BuildXmlTT12(listVServiceExport, listMety, maCskcb);
+                   System.IO.File.WriteAllText(savePath, xmlContent, new System.Text.UTF8Encoding(false));
+
+                    // Ký số nếu chkKy đang tích
+                    if (chkKy.Checked)
+                    {
+                        string fileName = System.IO.Path.GetFileName(savePath);
+                        bool signed = SignFile(fileName, savePath);
+                        if (!signed)
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(
+                                "Ký số thất bại!", "Thông báo");
+                        }
+                    }
+
+                    WaitingManager.Hide();
+                    MessageManager.Show(this.ParentForm, new CommonParam(), true);
+                }
+                catch (Exception ex)
+                {
+                    WaitingManager.Hide();
+                    Inventec.Common.Logging.LogSystem.Error(ex);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Xuất XML TT12 thất bại: " + ex.Message,
+                        "Lỗi");
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY> GetServiceMetyList(List<long> serviceIds)
+        {
+            try
+            {
+                if (serviceIds == null || serviceIds.Count == 0)
+                    return new List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY>();
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisServiceMetyFilter filter = new MOS.Filter.HisServiceMetyFilter();
+                filter.SERVICE_IDs = serviceIds;
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+
+                var result = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY>>(
+                        "api/HisServiceMety/GetView",
+                        ApiConsumers.MosConsumer, filter, null);
+
+                return result ?? new List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY>();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return new List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY>();
+            }
+        }
+
+        private string BuildXmlTT12(
+      List<MOS.EFMODEL.DataModels.V_HIS_SERVICE> services,
+      List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY> listMety,
+      string maCskcb)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("<HSDANHMUC xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
+            sb.AppendLine("  <DANHSACH_DMDICHVUKBCB Id=\"Id-" + Guid.NewGuid() + "\">");
+
+            int stt = 1;
+            foreach (var svc in services)
+            {
+                var metyOfSvc = listMety.Where(m => m.SERVICE_ID == svc.ID).ToList();
+
+                decimal sumThuoc = metyOfSvc.Sum(m =>
+                {
+                    if (m.LIEU_BQ_PX != null && m.LIEU_BQ_PX != 0 && m.TL_THUCTE_BQ_PX != null && m.TL_THUCTE_BQ_PX != 0)
+                        return (m.EXPEND_PRICE ?? 0) * (m.LIEU_BQ_PX ?? 0) / (m.TL_THUCTE_BQ_PX ?? 1);
+                    else if (m.DM_THUCTE_CDD != null)
+                        return (m.EXPEND_PRICE ?? 0) * (m.DM_THUCTE_CDD ?? 0);
+                    return 0;
+                });
+
+                decimal donGia = svc.HEIN_LIMIT_PRICE ?? svc.HEIN_LIMIT_PRICE_OLD ?? 0;
+                decimal giaTT = svc.HEIN_LIMIT_PRICE ?? svc.HEIN_LIMIT_PRICE_OLD ?? 0;
+
+                string tuNgay = (svc.HEIN_LIMIT_PRICE != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
+                                 ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME) : null;
+                string denNgay = (svc.HEIN_LIMIT_PRICE_OLD != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
+                                 ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME) : null;
+
+                sb.AppendLine("    <DMDICHVUKBCB>");
+                sb.AppendLine(X("STT", stt.ToString(), 6));
+                sb.AppendLine(X("MA_DICH_VU", svc.HEIN_SERVICE_BHYT_CODE, 6));
+                sb.AppendLine(X("TEN_DICH_VU", svc.HEIN_SERVICE_BHYT_NAME, 6));
+                sb.AppendLine(X("TEN_DVKT_GIA", svc.TEN_DVKT_GIA, 6));
+                sb.AppendLine(X("DON_GIA", donGia.ToString("F0"), 6));
+                sb.AppendLine(X("QUY_TRINH", svc.PROCESS_CODE, 6));
+                sb.AppendLine(X("SO_LUONG_CGKT", svc.SO_LUONG_CGKT?.ToString(), 6));
+                sb.AppendLine(X("CSKCB_CGKT", svc.CSKCB_CGKT, 6));
+                sb.AppendLine(X("CSKCB_CLS", svc.CSKCB_CLS, 6));
+                sb.AppendLine(X("QD_DVKT", svc.QD_DVKT, 6));
+                sb.AppendLine(X("QD_PD_GIA", svc.QD_PD_GIA, 6));
+                sb.AppendLine(X("GHI_CHU", svc.NOTICE, 6));
+                sb.AppendLine(X("TU_NGAY", tuNgay, 6));
+                sb.AppendLine(X("DEN_NGAY", denNgay, 6));
+                sb.AppendLine(X("MA_CSKCB", maCskcb, 6));
+                sb.AppendLine(X("GIA_THANH_TOAN", giaTT == 0 ? null : giaTT.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 6));
+
+                sb.AppendLine("      <DS_THUOCPX>");
+                int sttThuoc = 1;
+                foreach (var mety in metyOfSvc)
+                {
+                    decimal thanhTien = 0;
+                    if (mety.LIEU_BQ_PX != null && mety.LIEU_BQ_PX != 0 && mety.TL_THUCTE_BQ_PX != null && mety.TL_THUCTE_BQ_PX != 0)
+                        thanhTien = (mety.EXPEND_PRICE ?? 0) * (mety.LIEU_BQ_PX ?? 0) / (mety.TL_THUCTE_BQ_PX ?? 1);
+                    else if (mety.DM_THUCTE_CDD != null)
+                        thanhTien = (mety.EXPEND_PRICE ?? 0) * (mety.DM_THUCTE_CDD ?? 0);
+
+                    sb.AppendLine("        <TT_THUOCPX>");
+                    sb.AppendLine(X("STT", sttThuoc.ToString(), 10));
+                    sb.AppendLine(X("MA_THUOC", mety.MEDICINE_TYPE_CODE, 10));
+                    sb.AppendLine(X("TEN_THUOC", mety.MEDICINE_TYPE_NAME, 10));
+                    sb.AppendLine(X("SO_DANG_KY", mety.REGISTER_NUMBER, 10));
+                    sb.AppendLine(X("DON_VI_TINH", mety.SERVICE_UNIT_CODE, 10));
+                    sb.AppendLine(X("TT_THAU", mety.TT_THAU, 10));
+                    sb.AppendLine(X("DON_GIA_THUOC", mety.EXPEND_PRICE?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                    sb.AppendLine(X("DM_NSX_CDD", mety.DM_NSX_CDD?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                    sb.AppendLine(X("DM_THUCTE_CDD", mety.DM_THUCTE_CDD?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                    sb.AppendLine(X("LIEU_BQ_PX", mety.LIEU_BQ_PX?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                    sb.AppendLine(X("TL_THUCTE_BQ_PX", mety.TL_THUCTE_BQ_PX?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                    sb.AppendLine(X("THANH_TIEN_THUOC", thanhTien == 0 ? null : thanhTien.ToString("F0"), 10));
+                    sb.AppendLine("        </TT_THUOCPX>");
+                    sttThuoc++;
+                }
+                sb.AppendLine("      </DS_THUOCPX>");
+                sb.AppendLine("    </DMDICHVUKBCB>");
+                stt++;
+            }
+            sb.AppendLine("  </DANHSACH_DMDICHVUKBCB>");
+            sb.AppendLine("  <CHUKYDONVI/>");
+            sb.AppendLine("</HSDANHMUC>");
+            return sb.ToString();
+        }
+
+        private string X(string tag, string value, int indent)
+        {
+            string pad = new string(' ', indent);
+            return string.IsNullOrEmpty(value)
+                ? pad + "<" + tag + "/>"
+                : pad + "<" + tag + ">" + XmlEscape(value) + "</" + tag + ">";
+        }
+
+        private string XmlEscape(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return "";
+            return value
+                .Replace("&", "&amp;")
+                .Replace("<", "&lt;")
+                .Replace(">", "&gt;")
+                .Replace("\"", "&quot;")
+                .Replace("'", "&apos;");
+        }
+
+        private string FormatTimeNumber(long? timeNumber)
+        {
+            try
+            {
+                if (timeNumber == null || timeNumber == 0) return "";
+                string s = timeNumber.ToString();
+                if (s.Length >= 8) return s.Substring(0, 8); // yyyyMMdd
+                return s;
+            }
+            catch
+            {
+                return "";
+            }
+        }
+        private void chkKy_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                    return;
+
+                if (chkKy.Checked == true)
+                {
+                    frmSetting frm = new frmSetting(settingSignADO, (result) =>
+                    {
+                        settingSignADO = (SettingSignADO)result;
+                    });
+                    frm.ShowDialog();
+
+                    if (settingSignADO == null || string.IsNullOrEmpty(settingSignADO.SerialNumber))
+                        chkKy.Checked = false;
+                }
+                else
+                {
+                    settingSignADO = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public bool SignFile(string fullFileName, string saveFilePath)
+        {
+            try
+            {
+                if (settingSignADO == null || string.IsNullOrEmpty(settingSignADO.SerialNumber))
+                {
+                    MessageBox.Show("Không có thông tin Usb Token ký số");
+                    return false;
+                }
+
+                string currentDirectory = System.IO.Directory.GetCurrentDirectory();
+                string tempFolderPath = System.IO.Path.Combine(currentDirectory, "Temp");
+                System.IO.Directory.CreateDirectory(tempFolderPath);
+                string tempFilePath = System.IO.Path.Combine(tempFolderPath, fullFileName);
+                System.IO.File.Create(tempFilePath).Close();
+                string pathAfterFileSign = null;
+
+                if (settingSignADO.IsHsm)
+                {
+                    // HSM server
+                    var xmlBase64 = SourceFileSignApi(ReadFileContent(saveFilePath));
+                    if (string.IsNullOrEmpty(xmlBase64))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Ký HSM thất bại");
+                        return false;
+                    }
+                    var xmlBytes = Convert.FromBase64String(xmlBase64);
+                    System.IO.File.WriteAllBytes(tempFilePath, xmlBytes);
+                    pathAfterFileSign = tempFilePath;
+                }
+                else
+                {
+                    // USB Token → hiện màn nhập mật khẩu
+                    WcfSignDCO wcfSignDCO = new WcfSignDCO
+                    {
+                        SerialNumber = settingSignADO.SerialNumber,
+                        OutputFile = tempFilePath,
+                        PIN = "",
+                        SourceFile = saveFilePath,
+                        fieldSigned = "CHUKYDONVI"
+                    };
+                    string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                    SignProcessorClient signProcessorClient = new SignProcessorClient();
+                    if (!VerifyServiceSignProcessorIsRunning())
+                        Inventec.Common.Logging.LogSystem.Warn("Service ký số không chạy");
+
+                    var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                    if (wcfSignResultDCO == null || !wcfSignResultDCO.Success)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Ký file thất bại: " + (wcfSignResultDCO?.Message ?? ""));
+                        return false;
+                    }
+                    pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                }
+
+                if (!string.IsNullOrEmpty(pathAfterFileSign) && System.IO.File.Exists(pathAfterFileSign))
+                    System.IO.File.Copy(pathAfterFileSign, saveFilePath, true);
+
+                if (System.IO.File.Exists(tempFilePath))
+                    System.IO.File.Delete(tempFilePath);
+
+                if (System.IO.Directory.Exists(tempFolderPath)
+                    && System.IO.Directory.GetFiles(tempFolderPath).Length == 0
+                    && System.IO.Directory.GetDirectories(tempFolderPath).Length == 0)
+                    System.IO.Directory.Delete(tempFolderPath);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+
+        private string SourceFileSignApi(string xmlBase64Source)
+        {
+            string result = null;
+            try
+            {
+                CommonParam param = new CommonParam();
+                EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
+                signXmlBhytSDO.XmlBase64 = xmlBase64Source;
+                signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
+                signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO()
+                {
+                    HsmSerialNumber = settingSignADO.SerialNumber,
+                    HsmType = settingSignADO.Id,
+                    HsmUserCode = settingSignADO.Name,
+                    Password = settingSignADO.Password,
+                    SecretKey = settingSignADO.SercetKey,
+                    IdentityNumber = settingSignADO.CccdNumber
+                };
+                result = new BackendAdapter(param).Post<string>(
+                    "api/EmrSign/SignXmlBhyt",
+                    ApiConsumer.ApiConsumers.EmrConsumer,
+                    signXmlBhytSDO,
+                    SessionManager.ActionLostToken, param);
+
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                {
+                    string message = string.Join(Environment.NewLine, param.Messages);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Inventec.Common.Logging.LogSystem.Warn(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private string ReadFileContent(string filePath)
+        {
+            try
+            {
+                if (System.IO.File.Exists(filePath))
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    XmlDocument xmlDocument = new XmlDocument();
+                    try
+                    {
+                        xmlDocument.LoadXml(RemoveByteOrderMark(Encoding.UTF8.GetString(fileBytes)));
+                        return Convert.ToBase64String(StringToBytes(RemoveByteOrderMark(Encoding.UTF8.GetString(fileBytes))));
+                    }
+                    catch
+                    {
+                        xmlDocument.LoadXml(Encoding.UTF8.GetString(fileBytes));
+                        return Convert.ToBase64String(StringToBytes(Encoding.UTF8.GetString(fileBytes)));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return null;
+        }
+
+        private string RemoveByteOrderMark(string xml)
+        {
+            string bom = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+            if (xml.StartsWith(bom))
+                xml = xml.Remove(0, bom.Length);
+            return xml;
+        }
+
+        private byte[] StringToBytes(string input)
+        {
+            if (input == null) return null;
+            return Encoding.UTF8.GetBytes(input);
+        }
+
+        internal bool VerifyServiceSignProcessorIsRunning()
+        {
+            bool valid = false;
+            try
+            {
+                string exeSignPath = System.IO.Path.Combine(
+                    System.IO.Path.Combine(
+                        System.IO.Path.Combine(Application.StartupPath, "Integrate"),
+                        "EMR.SignProcessor"),
+                    "EMR.SignProcessor.exe");
+
+                if (System.IO.File.Exists(exeSignPath))
+                {
+                    if (IsProcessOpen("EMR.SignProcessor"))
+                    {
+                        valid = true;
+                    }
+                    else
+                    {
+                        ProcessStartInfo startInfo = new ProcessStartInfo { FileName = exeSignPath };
+                        try
+                        {
+                            Process.Start(startInfo);
+                            Thread.Sleep(500);
+                            valid = true;
+                        }
+                        catch (Exception exx)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exx);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+
+        private bool IsProcessOpen(string name)
+        {
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                if (clsProcess.ProcessName == name
+                    || clsProcess.ProcessName == name + ".exe"
+                    || clsProcess.ProcessName == name + " (32 bit)"
+                    || clsProcess.ProcessName == name + ".exe (32 bit)")
+                    return true;
+            }
+            return false;
+        }
+
     }
 }
 
