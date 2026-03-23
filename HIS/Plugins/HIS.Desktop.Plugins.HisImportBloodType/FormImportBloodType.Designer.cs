@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormImportBloodType));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -80,13 +81,14 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             this.Gc_HeinLimitPriceIntrTime = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_InternalPrice = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_CPNG = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemCheckEdit = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.Gc_NumOrder = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_PackingTypeName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_Element = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_AlterExpiredDate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.Gc_ParentCode = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Gc_TubeSlot = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemBtnLineError = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
-            this.repositoryItemCheckEdit = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.BtnSave = new DevExpress.XtraEditors.SimpleButton();
             this.BtnLineError = new DevExpress.XtraEditors.SimpleButton();
             this.BtnImport = new DevExpress.XtraEditors.SimpleButton();
@@ -98,7 +100,7 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonSave = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -110,8 +112,8 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnDelete)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLineError)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLineError)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
@@ -130,23 +132,26 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             this.layoutControl1.Controls.Add(this.BtnImport);
             this.layoutControl1.Controls.Add(this.BtnDownloadTemplate);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl1.Location = new System.Drawing.Point(0, 29);
+            this.layoutControl1.Location = new System.Drawing.Point(0, 38);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(1210, 432);
+            this.layoutControl1.Size = new System.Drawing.Size(1613, 529);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // gridControl
             // 
-            this.gridControl.Location = new System.Drawing.Point(2, 28);
+            this.gridControl.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControl.Location = new System.Drawing.Point(3, 36);
             this.gridControl.MainView = this.gridView;
+            this.gridControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControl.Name = "gridControl";
             this.gridControl.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemBtnLineError,
             this.repositoryItemBtnDelete,
             this.repositoryItemCheckEdit});
-            this.gridControl.Size = new System.Drawing.Size(1206, 402);
+            this.gridControl.Size = new System.Drawing.Size(1607, 490);
             this.gridControl.TabIndex = 9;
             this.gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView});
@@ -180,7 +185,8 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             this.Gc_PackingTypeName,
             this.Gc_Element,
             this.Gc_AlterExpiredDate,
-            this.Gc_ParentCode});
+            this.Gc_ParentCode,
+            this.Gc_TubeSlot});
             this.gridView.GridControl = this.gridControl;
             this.gridView.Name = "gridView";
             this.gridView.OptionsCustomization.AllowFilter = false;
@@ -428,6 +434,13 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             this.Gc_CPNG.VisibleIndex = 21;
             this.Gc_CPNG.Width = 70;
             // 
+            // repositoryItemCheckEdit
+            // 
+            this.repositoryItemCheckEdit.AutoHeight = false;
+            this.repositoryItemCheckEdit.Name = "repositoryItemCheckEdit";
+            this.repositoryItemCheckEdit.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.repositoryItemCheckEdit.ReadOnly = true;
+            // 
             // Gc_NumOrder
             // 
             this.Gc_NumOrder.Caption = "STT hiện";
@@ -475,6 +488,16 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             this.Gc_ParentCode.Visible = true;
             this.Gc_ParentCode.VisibleIndex = 26;
             // 
+            // Gc_TubeSlot
+            // 
+            this.Gc_TubeSlot.Caption = "Vị trí ống";
+            this.Gc_TubeSlot.FieldName = "TUBE_SLOT_STR";
+            this.Gc_TubeSlot.Name = "Gc_TubeSlot";
+            this.Gc_TubeSlot.OptionsColumn.AllowEdit = false;
+            this.Gc_TubeSlot.Visible = true;
+            this.Gc_TubeSlot.VisibleIndex = 27;
+            this.Gc_TubeSlot.Width = 70;
+            // 
             // repositoryItemBtnLineError
             // 
             this.repositoryItemBtnLineError.AutoHeight = false;
@@ -484,18 +507,12 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             this.repositoryItemBtnLineError.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnLineError.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnLineError_ButtonClick);
             // 
-            // repositoryItemCheckEdit
-            // 
-            this.repositoryItemCheckEdit.AutoHeight = false;
-            this.repositoryItemCheckEdit.Name = "repositoryItemCheckEdit";
-            this.repositoryItemCheckEdit.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
-            this.repositoryItemCheckEdit.ReadOnly = true;
-            // 
             // BtnSave
             // 
-            this.BtnSave.Location = new System.Drawing.Point(332, 2);
+            this.BtnSave.Location = new System.Drawing.Point(444, 3);
+            this.BtnSave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnSave.Name = "BtnSave";
-            this.BtnSave.Size = new System.Drawing.Size(106, 22);
+            this.BtnSave.Size = new System.Drawing.Size(140, 27);
             this.BtnSave.StyleController = this.layoutControl1;
             this.BtnSave.TabIndex = 7;
             this.BtnSave.Text = "Lưu(Ctrl S)";
@@ -503,9 +520,10 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             // 
             // BtnLineError
             // 
-            this.BtnLineError.Location = new System.Drawing.Point(222, 2);
+            this.BtnLineError.Location = new System.Drawing.Point(297, 3);
+            this.BtnLineError.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnLineError.Name = "BtnLineError";
-            this.BtnLineError.Size = new System.Drawing.Size(106, 22);
+            this.BtnLineError.Size = new System.Drawing.Size(141, 27);
             this.BtnLineError.StyleController = this.layoutControl1;
             this.BtnLineError.TabIndex = 6;
             this.BtnLineError.Text = "Dòng lỗi";
@@ -513,9 +531,10 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             // 
             // BtnImport
             // 
-            this.BtnImport.Location = new System.Drawing.Point(112, 2);
+            this.BtnImport.Location = new System.Drawing.Point(150, 3);
+            this.BtnImport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnImport.Name = "BtnImport";
-            this.BtnImport.Size = new System.Drawing.Size(106, 22);
+            this.BtnImport.Size = new System.Drawing.Size(141, 27);
             this.BtnImport.StyleController = this.layoutControl1;
             this.BtnImport.TabIndex = 5;
             this.BtnImport.Text = "Nhập khẩu";
@@ -523,9 +542,10 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             // 
             // BtnDownloadTemplate
             // 
-            this.BtnDownloadTemplate.Location = new System.Drawing.Point(2, 2);
+            this.BtnDownloadTemplate.Location = new System.Drawing.Point(3, 3);
+            this.BtnDownloadTemplate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.BtnDownloadTemplate.Name = "BtnDownloadTemplate";
-            this.BtnDownloadTemplate.Size = new System.Drawing.Size(106, 22);
+            this.BtnDownloadTemplate.Size = new System.Drawing.Size(141, 27);
             this.BtnDownloadTemplate.StyleController = this.layoutControl1;
             this.BtnDownloadTemplate.TabIndex = 4;
             this.BtnDownloadTemplate.Text = "Tải tệp mẫu";
@@ -545,7 +565,7 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup1.Size = new System.Drawing.Size(1210, 432);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(1613, 529);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -553,51 +573,51 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             this.layoutControlItem1.Control = this.BtnDownloadTemplate;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem1.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.BtnImport;
-            this.layoutControlItem2.Location = new System.Drawing.Point(110, 0);
+            this.layoutControlItem2.Location = new System.Drawing.Point(147, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.BtnLineError;
-            this.layoutControlItem3.Location = new System.Drawing.Point(220, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(294, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem3.Size = new System.Drawing.Size(147, 33);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(440, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(587, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(770, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(1026, 33);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.BtnSave;
-            this.layoutControlItem4.Location = new System.Drawing.Point(330, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(441, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(110, 26);
+            this.layoutControlItem4.Size = new System.Drawing.Size(146, 33);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.gridControl;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 26);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 33);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(1210, 406);
+            this.layoutControlItem6.Size = new System.Drawing.Size(1613, 496);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
@@ -605,10 +625,6 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonSave});
@@ -637,51 +653,57 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1210, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlTop.Size = new System.Drawing.Size(1613, 0);
             // 
             // barDockControlBottom
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 461);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1210, 0);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 567);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1613, 0);
             // 
             // barDockControlLeft
             // 
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 432);
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 529);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1210, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 432);
+            this.barDockControlRight.Location = new System.Drawing.Point(1613, 38);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 529);
             // 
             // FormImportBloodType
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1210, 461);
+            this.ClientSize = new System.Drawing.Size(1613, 567);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormImportBloodType";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nhập khẩu loại máu";
             this.Load += new System.EventHandler(this.FormImportBloodType_Load);
+            this.Controls.SetChildIndex(this.barDockControlTop, 0);
+            this.Controls.SetChildIndex(this.barDockControlBottom, 0);
+            this.Controls.SetChildIndex(this.barDockControlRight, 0);
+            this.Controls.SetChildIndex(this.barDockControlLeft, 0);
+            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnDelete)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLineError)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemBtnLineError)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
@@ -748,5 +770,6 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
         private DevExpress.XtraGrid.Columns.GridColumn Gc_CPNG;
         private DevExpress.XtraGrid.Columns.GridColumn Gc_NumOrder;
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEdit;
+        private DevExpress.XtraGrid.Columns.GridColumn Gc_TubeSlot;
     }
 }
