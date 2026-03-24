@@ -518,6 +518,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                                 adoBlood.AC_SELF_ENVIDENCE_SECOND = bl.AC_SELF_ENVIDENCE_SECOND;
                                 adoBlood.PREPARATIONS_BLOOD_NAME = bl.PREPARATIONS_BLOOD_NAME;
                                 adoBlood.NUM_ORDER = bl.NUM_ORDER??0;
+                                adoBlood.DEFROST_TIME = bl.DEFROST_TIME;
+                                adoBlood.NOTE = bl.NOTE;
                                 datas.Add(adoBlood);
                             }
 
@@ -593,6 +595,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 ValidationControlMaxLength(txtTestTubeTwo, 100);
                 ValidationControlMaxLength(txtScangelGelcard, 100);
                 ValidationControlMaxLength(txtCoombs, 100);
+                ValidationControlMaxLength(txtNote, 1000);
             }
             catch (Exception ex)
             {
@@ -879,6 +882,15 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 data.AcSelfEnvidence = cboAC.EditValue != null ? (decimal?)cboAC.EditValue : null;
                 data.AcSelfEnvidenceSecond = cboAC2.EditValue != null ? (decimal?)cboAC2.EditValue : null;
                 currentDTO.ExpMestBloods.Add(data);
+                if (dtDefrostTime.EditValue != null && dtDefrostTime.DateTime != DateTime.MinValue)
+                {
+                    currentDTO.DefrostTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtDefrostTime.DateTime);
+                }
+                else
+                {
+                    currentDTO.DefrostTime = null;
+                }
+                currentDTO.Note = txtNote.Text;
 
             }
             catch (Exception ex)
@@ -930,6 +942,15 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
                     cboAC.EditValue = (decimal?)data.AC_SELF_ENVIDENCE;
                     cboAC2.EditValue = (decimal?)data.AC_SELF_ENVIDENCE_SECOND;
+                    if (data.DEFROST_TIME.HasValue)
+                    {
+                        dtDefrostTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.DEFROST_TIME.Value);
+                    }
+                    else
+                    {
+                        dtDefrostTime.EditValue = null;
+                    }
+                    txtNote.Text = data.NOTE ?? "";
                     if (data.BloodTypeId > 0)
                     {
                         var bloodType = BackendDataWorker.Get<HIS_BLOOD_TYPE>().Where(o => o.ID == data.BloodTypeId).FirstOrDefault();
@@ -1009,6 +1030,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     cboAntiGlobulinTwo.EditValue = null;
                     cboAC.EditValue = null;
                     cboAC2.EditValue = null;
+                    dtDefrostTime.EditValue = null;
+                    txtNote.Text = "";
 
 
                     txtTestTube.Enabled = true;
