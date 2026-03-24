@@ -946,8 +946,13 @@ namespace HIS.Desktop.Plugins.HisActiveIngredient.HisActiveIngredient
         {
             try
             {
-                ValidateMaxLength validRule = new ValidateMaxLength();
-                validRule.textEdit = textEdit;
+                //ValidateMaxLength validRule = new ValidateMaxLength();
+                //validRule.textEdit = textEdit;
+                //validRule.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                //validRule.ErrorType = ErrorType.Warning;
+                //dxValidationProviderEditorInfo.SetValidationRule(textEdit, validRule);
+                ActiveIngredientName__ValidationRule validRule = new ActiveIngredientName__ValidationRule();
+                validRule.txtHisActiveIngredientName = textEdit;
                 validRule.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
                 validRule.ErrorType = ErrorType.Warning;
                 dxValidationProviderEditorInfo.SetValidationRule(textEdit, validRule);
