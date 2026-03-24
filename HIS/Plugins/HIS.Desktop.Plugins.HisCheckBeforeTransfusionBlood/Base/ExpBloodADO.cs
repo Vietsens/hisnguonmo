@@ -61,6 +61,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
         public string TEST_TUBE_TWO { get; set; }
         public long? SALT_ENVI_TWO { get; set; }
         public long? ANTI_GLOBULIN_TWO { get; set; }
+        public long? TUBE_SLOT { get; set; }
         public bool is_Sevrvice_Blood { get; set; }
         public decimal? AC_SELF_ENVIDENCE { get; set; }
         public decimal? AC_SELF_ENVIDENCE_SECOND { get; set; }
