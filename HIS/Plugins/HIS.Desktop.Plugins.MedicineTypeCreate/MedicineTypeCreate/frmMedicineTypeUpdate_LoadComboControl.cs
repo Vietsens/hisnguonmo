@@ -355,16 +355,19 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 col2.VisibleIndex = 1;
                 col2.Width = 350;
                 col2.Caption = "Tất cả";
+                //col2.FilterMode = DevExpress.XtraGrid.ColumnFilterMode.DisplayText;
+                col2.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
                 cbo.Properties.PopupFormWidth = 350;
                 cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsView.ShowAutoFilterRow = true;
                 cbo.Properties.View.OptionsSelection.MultiSelect = true;
                 cbo.Properties.View.OptionsSelection.ShowCheckBoxSelectorInColumnHeader = DefaultBoolean.True;
 
-                GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
-                if (gridCheckMark != null)
-                {
-                    gridCheckMark.SelectAll(cbo.Properties.DataSource);
-                }
+                //GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
+                //if (gridCheckMark != null)
+                //{
+                //    gridCheckMark.SelectAll(cbo.Properties.DataSource);
+                //}
             }
             catch (Exception ex)
             {
@@ -372,6 +375,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
 
         }
+
 
         private void InitCheck(GridLookUpEdit cbo, GridCheckMarksSelection.SelectionChangedEventHandler eventSelect)
         {
