@@ -178,6 +178,11 @@ namespace Inventec.Common.ElectronicBill.Misa.Model
         public string BuyerFullName { get; set; }
 
         /// <summary>
+        /// CCCD hoặc CMND của người mua hàng. Trường hợp người mua là Doanh nghiệp thì là mã số thuế của người mua
+        /// </summary>
+        public string BuyerIDNumber { get; set; }        
+
+        /// <summary>
         /// Số tài khoản ngân hàng người mua
         /// </summary>
         public string BuyerBankAccount { get; set; }
@@ -290,6 +295,8 @@ namespace Inventec.Common.ElectronicBill.Misa.Model
         /// Object chứa tùy chọn để định dạng số các thông tin trên hóa đơn
         /// </summary>
         public UserDefined OptionUserDefined { get; set; }
+
+        public bool IsInvoiceCalculatingMachine { get; set; }
 
         public string CustomField1 { get; set; }
         public string CustomField2 { get; set; }

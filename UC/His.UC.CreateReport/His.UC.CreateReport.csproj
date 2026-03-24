@@ -305,6 +305,10 @@
     <Content Include="Lib\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\common\SHAREUTIL\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.csproj">
+      <Project>{c73196a6-e1cc-4d81-bcd5-a8e5c5ea74cb}</Project>
+      <Name>Inventec.Common.SignLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\Inventec.Common\Inventec.Common.FlexCelPrint\Inventec.Common.FlexCelPrint.csproj">
       <Project>{a9e46128-5af1-4bbd-b318-854517fc26ab}</Project>
       <Name>Inventec.Common.FlexCelPrint</Name>
@@ -328,6 +332,10 @@
     <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.ConfigSystem\HIS.Desktop.LocalStorage.ConfigSystem.csproj">
       <Project>{48d25a6a-11bc-4f0f-8dd7-15e03a2bcada}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigSystem</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\HIS\Plugins\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
+      <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
+      <Name>HIS.Desktop.Plugins.Library.EmrGenerate</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.UC.FormType\HIS.UC.FormType.csproj">
       <Project>{a61418d7-2d72-4c4d-9e99-e0adf913fc4e}</Project>

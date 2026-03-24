@@ -58,6 +58,10 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.ADO
         public short? EVENING_IS_USED { get; set; }
         public long? USED_TIME { get; set; }
         public bool IS_IN_VALID_NODE_EXCEPTION { get; set; }
+        public long? EXP_TIME { get; set; }
+        public long? USE_TIME { get; set; }
+        public List<HIS_EXP_MEDIMATE_USED> EXP_MEDIMATE_USEDs { get; set; }
+        public bool IsCallExpMestMediMateUsed { get; set; }
         public ExpMestMediMateADO()
         {
         }

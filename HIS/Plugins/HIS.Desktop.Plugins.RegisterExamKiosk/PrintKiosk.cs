@@ -24,7 +24,6 @@ using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
-using LibUsbDotNetF;
 using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
@@ -132,8 +131,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                     this.ListTransaction,
                     this.ServiceReqPrint,
                     this.sereServs,
-                    transReqObj,
-                    lstConfig,
                     this.patyAlter,
                     this.patyAlter.PATIENT_TYPE_NAME, 
                     treatmentPrint
@@ -257,8 +254,6 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk
                      this.ListTransaction,
                      this.ServiceReqPrint,
                      this.sereServs,
-                     transReqObj,
-                     lstConfig,
                      this.patyAlter,
                      this.patyAlter.PATIENT_TYPE_NAME, 
                      treatmentPrint

@@ -124,12 +124,15 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.MpsBehavior.Mps000463
                 List<HIS_MEDICINE_TYPE> medicineTypes = null;
                 List<HIS_MEDICINE_LINE> medicineLines = null;
                 List<HIS_SERVICE_REQ> serviceReqs = null;
+                hisConfigValue.IsGroupHeinServiceByUseTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKey.ConfigKey_IsGroupHeinServiceByUseTime) == 1;
                 MPS.Processor.Mps000463.PDO.Mps000463PDO rdo = null;
                 if (isShowMedicineLine == 1)
                 {
                     medicineTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_TYPE>();
                     medicineLines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_LINE>();
-
+                }
+                if (isShowMedicineLine == 1 || hisConfigValue.IsGroupHeinServiceByUseTime)
+                {
                     HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                     serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
                     serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };

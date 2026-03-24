@@ -52,7 +52,7 @@ namespace MPS.Processor.Mps000302
                                               select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes,
                                                   rdo.Services, rdo.Rooms, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes,
                                                   rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, rdo.Treatment, ListPta,
-                                                  rdo.ListPatientType, false, rdo.ListSereServBills, rdo.ListSereServDeposits, rdo.ListSeseDepoRepays));
+                                                  rdo.ListPatientType, false, rdo.ListSereServBills, rdo.ListSereServDeposits, rdo.ListSeseDepoRepays, rdo.ServiceReqs));
 
                     //sereServ la bhyt, gom nhom
                     //bỏ công khám cùng chuyên khoa - công khám 0đ
@@ -79,7 +79,7 @@ namespace MPS.Processor.Mps000302
                     foreach (var sereServBHYTGroup in sereServBHYTGroups)
                     {
                         SereServADO sereServ = sereServBHYTGroup.FirstOrDefault();
-                        sereServ.AMOUNT = sereServBHYTGroup.Sum(o => o.AMOUNT);                       
+                        sereServ.AMOUNT = sereServBHYTGroup.Sum(o => o.AMOUNT);
                         sereServ.VIR_TOTAL_HEIN_PRICE = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_HEIN_PRICE);
                         sereServ.VIR_TOTAL_PATIENT_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.VIR_TOTAL_PATIENT_PRICE_BHYT);
                         sereServ.TOTAL_PRICE_BHYT = sereServBHYTGroup.Sum(o => o.TOTAL_PRICE_BHYT);
@@ -116,7 +116,7 @@ namespace MPS.Processor.Mps000302
                                                     select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes,
                                                         rdo.Services, rdo.Rooms, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes,
                                                         rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, rdo.Treatment, ListPta,
-                                                        rdo.ListPatientType, true, rdo.ListSereServBills, rdo.ListSereServDeposits, rdo.ListSeseDepoRepays));
+                                                        rdo.ListPatientType, true, rdo.ListSereServBills, rdo.ListSereServDeposits, rdo.ListSeseDepoRepays, rdo.ServiceReqs));
                     sereServADOSAs = new List<SereServADO>();
                     var sereServBHYTGroupSuatAns = sereServADOTempsSuatAn
                        .Where(o =>
@@ -181,7 +181,7 @@ namespace MPS.Processor.Mps000302
                                                         select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes,
                                                             rdo.Services, rdo.Rooms, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes,
                                                             rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, rdo.Treatment, ListPta,
-                                                            rdo.ListPatientType, false, rdo.ListSereServBills, rdo.ListSereServDeposits, rdo.ListSeseDepoRepays));
+                                                            rdo.ListPatientType, false, rdo.ListSereServBills, rdo.ListSereServDeposits, rdo.ListSeseDepoRepays, rdo.ServiceReqs));
 
                     sereServADONoExamZero = new List<SereServADO>();
                     var sereServBHYTGroupNoExamZeros = sereServADOTempsNoExamZero

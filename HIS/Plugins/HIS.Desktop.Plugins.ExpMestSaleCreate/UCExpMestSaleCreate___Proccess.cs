@@ -61,6 +61,7 @@ using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.ADO;
 using IcdInputADO = HIS.UC.Icd.ADO.IcdInputADO;
 using MediMateTypeADO = HIS.Desktop.Plugins.ExpMestSaleCreate.ADO.MediMateTypeADO;
+using Inventec.Common.Logging;
 
 namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 {
@@ -107,6 +108,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             {
                 bool sucPOS = true;
                 success = false;
+                var soTienCKQT = spinSwipeAmountNew.Value + spinTransferAmountNew.Value;
                 if (dicMediMateAdo != null)
                 {
                     if (ExistServiceNotInStock() || ExistServiceExceedsAvailable() || !CheckValiDiscount() || !CheckPatientDob())
@@ -125,6 +127,14 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         XtraMessageBox.Show(String.Format("Số tiền chuyển khoản [{0}] lớn hơn số tiền cần thanh toán của phiếu xuất [{1}]", Inventec.Common.Number.Convert.NumberToStringRoundAuto(spinTransferAmount.Value, 2), Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.totalPayPrice ?? 0, 2)));
                         spinTransferAmount.Focus();
                         spinTransferAmount.SelectAll();
+                        return;
+                    }
+                }
+                else if(payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT)                 
+                { 
+                    if (soTienCKQT > this.totalPayPrice)
+                    {
+                        XtraMessageBox.Show(String.Format("Tổng tiền chuyển khoản/quẹt thẻ [{0}] lớn hơn số tiền cần thanh toán của phiếu xuất [{1}]", Inventec.Common.Number.Convert.NumberToStringRoundAuto(soTienCKQT, 2), Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.totalPayPrice ?? 0, 2)));
                         return;
                     }
                 }
@@ -922,14 +932,14 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     }
                 }
 
-                if (!String.IsNullOrEmpty(txtLoginName.Text))
-                {
-                    ado.PrescriptionReqLoginname = txtLoginName.Text;
-                }
-                if (!String.IsNullOrEmpty(txtPresUser.Text))
-                {
-                    ado.PrescriptionReqUsername = txtPresUser.Text;
-                }
+                //if (!String.IsNullOrEmpty(txtLoginName.Text))
+                //{
+                //    ado.PrescriptionReqLoginname = txtLoginName.Text;
+                //}
+                //if (!String.IsNullOrEmpty(txtPresUser.Text))
+                //{
+                //    ado.PrescriptionReqUsername = txtPresUser.Text;
+                //}
                 if (cboBillCashierRoom.EditValue != null)
                 {
                     long cashierRoomId = Convert.ToInt64(cboBillCashierRoom.EditValue);
@@ -966,8 +976,35 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     var dataCoverts = dataTrees.SelectMany(p => p).Distinct().OrderByDescending(o => o.TOTAL_PRICE).ToList();
                     var dataGroups = dataCoverts.GroupBy(p => p.SERVICE_REQ_CODE).Select(p => p.ToList()).ToList();
 
+                    var allReqCodes = dataGroups.SelectMany(g => g)
+                    .Select(o => o.SERVICE_REQ_CODE)
+                    .Where(code => !string.IsNullOrEmpty(code))
+                    .Distinct()
+                    .ToList();
+
+                    CommonParam param = new CommonParam();
+                    HisServiceReqFilter HisServiceReq = new HisServiceReqFilter();
+                    HisServiceReq.SERVICE_REQ_CODES = allReqCodes;
+                    var listResult = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, HisServiceReq, param);
+                    Inventec.Common.Logging.LogSystem.Info("listResult1: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listResult), listResult));
+
                     foreach (var items in dataGroups)
                     {
+                        LogSystem.Debug("items.First().SERVICE_REQ_CODE:" + items.First().SERVICE_REQ_CODE);
+                        var serReq = listResult?.FirstOrDefault(o => o.SERVICE_REQ_CODE == items.First().SERVICE_REQ_CODE);
+                        ado.PrescriptionReqLoginname = null;
+                        ado.PrescriptionReqUsername = null;
+                        Inventec.Common.Logging.LogSystem.Info("serReq: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serReq), serReq));
+
+                        if (serReq != null)
+                        {
+                            if (!string.IsNullOrWhiteSpace(serReq.REQUEST_LOGINNAME))
+                                ado.PrescriptionReqLoginname = serReq.REQUEST_LOGINNAME;
+
+                            if (!string.IsNullOrWhiteSpace(serReq.REQUEST_USERNAME))
+                                ado.PrescriptionReqUsername = serReq.REQUEST_USERNAME;
+                        }
+
                         //trong trường hợp chọn nhiều hơn bệnh nhân sẽ set lại thông tin bệnh nhân theo y lệnh
                         if (!checkIsVisitor.Checked && this.serviceReq != null && this.serviceReq.Count > 0)
                         {
@@ -976,17 +1013,27 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             {
                                 ado.PrescriptionId = req.ID;
                                 ado.TreatmentId = req.TREATMENT_ID;
-
+                                
                                 if (serviceReq.Select(s => s.TDL_PATIENT_ID > 0).Distinct().Count() > 1)
                                 {
                                     ado.PatientName = req.TDL_PATIENT_NAME;
                                     ado.PatientGenderId = req.TDL_PATIENT_GENDER_ID;
                                     ado.PatientId = req.TDL_PATIENT_ID;
                                     ado.PatientPhone = req.TDL_PATIENT_PHONE;
-                                    ado.PrescriptionReqLoginname = req.REQUEST_LOGINNAME;
-                                    ado.PrescriptionReqUsername = req.REQUEST_USERNAME;
                                 }
                             }
+                        }
+
+                        if (string.IsNullOrWhiteSpace(ado.PrescriptionReqLoginname)
+                            && !string.IsNullOrWhiteSpace(txtLoginName.Text))
+                        {
+                            ado.PrescriptionReqLoginname = txtLoginName.Text;
+                        }
+
+                        if (string.IsNullOrWhiteSpace(ado.PrescriptionReqUsername)
+                            && !string.IsNullOrWhiteSpace(txtPresUser.Text))
+                        {
+                            ado.PrescriptionReqUsername = txtPresUser.Text;
                         }
 
                         HisExpMestSaleSDO adoNew = new HisExpMestSaleSDO();
@@ -1077,6 +1124,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         listSale.Add(adoNew);
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Info("listSale11: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listSale), listSale));
+
                 saleSDO.SaleData = listSale;
                 if (chkCreateBill.Checked)
                 {
@@ -1102,7 +1151,19 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             saleSDO.TransferAmount = tranferAmountSum;
                         }
-
+                        else if (payform_ != null && (payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT))
+                        {
+                            saleSDO.SwipeAmount = tranferAmountSum;
+                        }
+                    }
+                    if (spinTransferAmountNew.EditValue != null && spinTransferAmountNew.Value > 0 && spinSwipeAmountNew.EditValue != null && spinSwipeAmountNew.Value > 0)
+                    {
+                        var payform_ = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == (long)cboPayForm.EditValue);
+                        if (payform_ != null && payform_.ID  == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT)
+                        {
+                            saleSDO.TransferAmount = spinTransferAmountNew.Value;
+                            saleSDO.SwipeAmount = spinSwipeAmountNew.Value;
+                        }
                     }
                 }
                 if (cboPayForm.EditValue != null)
@@ -1132,9 +1193,17 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     var dataTrees = dicMediMateAdo.Select(o => o.Value).ToList();
                     var dataCoverts = dataTrees.SelectMany(p => p).Distinct().OrderByDescending(o => o.TOTAL_PRICE).ToList();
                     var dataGroups = dataCoverts.GroupBy(p => p.SERVICE_REQ_CODE).Select(p => p.ToList()).ToList();
-
+                    var allReqCodes = dataGroups.SelectMany(g => g)
+                                        .Select(o => o.SERVICE_REQ_CODE)
+                                        .Where(code => !string.IsNullOrEmpty(code))
+                                        .Distinct()
+                                        .ToList();
+                    CommonParam param = new CommonParam();
+                    HisServiceReqFilter HisServiceReq = new HisServiceReqFilter();
+                    HisServiceReq.SERVICE_REQ_CODES = allReqCodes;
+                    var listResult = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, HisServiceReq, param);
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => dicMediMateAdo), dicMediMateAdo));
-
+                    
                     int count = 0;
                     foreach (var item in dataGroups)
                     {
@@ -1170,8 +1239,28 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         {
                             ado.ExpMestId = this.expMestId;
                         }
-                        ado.PrescriptionReqLoginname = txtLoginName.Text;
-                        ado.PrescriptionReqUsername = txtPresUser.Text;
+                        //ado.PrescriptionReqLoginname = txtLoginName.Text;
+                        //ado.PrescriptionReqUsername = txtPresUser.Text;
+
+                        ado.PrescriptionReqLoginname = null;
+                        ado.PrescriptionReqUsername = null;
+
+                        var serReq = listResult?.FirstOrDefault(o => o.SERVICE_REQ_CODE == item.First().SERVICE_REQ_CODE);
+                        if (serReq != null)
+                        {
+                            if (!string.IsNullOrWhiteSpace(serReq.REQUEST_LOGINNAME))
+                                ado.PrescriptionReqLoginname = serReq.REQUEST_LOGINNAME;
+
+                            if (!string.IsNullOrWhiteSpace(serReq.REQUEST_USERNAME))
+                                ado.PrescriptionReqUsername = serReq.REQUEST_USERNAME;
+                        }
+
+                        if (string.IsNullOrWhiteSpace(ado.PrescriptionReqLoginname))
+                            ado.PrescriptionReqLoginname = txtLoginName.Text;
+
+                        if (string.IsNullOrWhiteSpace(ado.PrescriptionReqUsername))
+                            ado.PrescriptionReqUsername = txtPresUser.Text;
+
                         if (cboBillCashierRoom.EditValue != null)
                         {
                             long cashierRoomId = Convert.ToInt64(cboBillCashierRoom.EditValue);
@@ -1205,7 +1294,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         if (cboPatientType.EditValue != null)
                             ado.PatientTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPatientType.EditValue.ToString());
                         if (spinDiscountRatio.EditValue != null)
-                            ado.Discount = item.Sum(o => o.TOTAL_PRICE * spinDiscountRatio.Value / 100) ?? 0;
+                            ado.Discount = item.Sum(o => o.TOTAL_PRICE * spinDiscountRatio.Value / 100) ?? 0;              
                         if (!checkIsVisitor.Checked && this.serviceReq != null && this.serviceReq.Count > 0)
                         {
                             var req = serviceReq.FirstOrDefault(o => o.SERVICE_REQ_CODE == item.First().SERVICE_REQ_CODE);
@@ -1220,8 +1309,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                                     ado.PatientGenderId = req.TDL_PATIENT_GENDER_ID;
                                     ado.PatientId = req.TDL_PATIENT_ID;
                                     ado.PatientPhone = req.TDL_PATIENT_PHONE;
-                                    ado.PrescriptionReqLoginname = req.REQUEST_LOGINNAME;
-                                    ado.PrescriptionReqUsername = req.REQUEST_USERNAME;
+                                    //ado.PrescriptionReqLoginname = req.REQUEST_LOGINNAME;
+                                    //ado.PrescriptionReqUsername = req.REQUEST_USERNAME;
                                 }
                             }
                         }
@@ -1314,6 +1403,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                         listSale.Add(adoNew);
                         saleSDO.SaleData = listSale;
+                        var payform_ = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == (long)cboPayForm.EditValue);
                         if (chkCreateBill.Checked)
                         {
                             if (cboBillCashierRoom.EditValue != null)
@@ -1334,12 +1424,19 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                             }
                             if (tranferAmountSum.HasValue && tranferAmountSum.Value > 0)
                             {
-                                var payform_ = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.ID == (long)cboPayForm.EditValue);
                                 if (payform_ != null && (payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK || payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK))
                                 {
                                     saleSDO.TransferAmount = tranferAmountSum;
                                 }
-
+                                else if (payform_ != null && (payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)) 
+                                {
+                                    saleSDO.SwipeAmount = tranferAmountSum;
+                                }
+                            }
+                            else if(spinTransferAmountNew.EditValue != null && spinSwipeAmountNew.Value > 0 && spinSwipeAmountNew.EditValue != null && spinSwipeAmountNew.Value > 0 && payform_ != null && payform_.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT) 
+                            { 
+                                saleSDO.TransferAmount = spinTransferAmountNew.Value;
+                                saleSDO.SwipeAmount = spinSwipeAmountNew.Value;
                             }
                         }
                         if (cboPayForm.EditValue != null)
@@ -1516,9 +1613,16 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
             try
             {
                 UpdateSpinTransferAmountControl(false);
+                var idTmCk = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
                 if (payForm != null && (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK || payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK))
                 {
                     ValidControlTransferAmount(true);
+
+                    ValidControlTransferAmountNew(false);
+                    ValidControlSwipeAmount(false);
+                    lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     //UpdateSpinTransferAmountControl(true);
                     dxValidationProvider_Save.RemoveControlError(spinTransferAmount);
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -1530,12 +1634,33 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     //UpdateSpinTransferAmountControl(true);
                     dxValidationProvider_Save.RemoveControlError(spinTransferAmount);
                     ValidControlTransferAmount(true);
+                    ValidControlTransferAmountNew(false);
+                    ValidControlSwipeAmount(false);
+                    lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
                     lciTranferAmount.Enabled = true;
                     lciTranferAmount.Text = "Số tiền quẹt thẻ:";
                 }
+                else if (payForm != null && payForm.ID == idTmCk.ID)
+                {
+                    dxValidationProvider_Save.RemoveControlError(spinTransferAmount);
+                    ValidControlTransferAmount(false);
+                    ValidControlTransferAmountNew(true);
+                    ValidControlSwipeAmount(true);
+                    lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    //lcQuetthe.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
                 else
                 {
+                    ValidControlTransferAmountNew(false);
+                    ValidControlSwipeAmount(false);
+                    lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
                     lciTranferAmount.Enabled = false;
                 }
@@ -1598,6 +1723,36 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 TranferAmountValidate.spinTranferAmount = spinTransferAmount;
                 TranferAmountValidate.isRequiredPin = IsRequiredField;
                 dxValidationProvider_Save.SetValidationRule(spinTransferAmount, TranferAmountValidate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlTransferAmountNew(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule TranferAmountValidate = new SpinTranferAmountValidationRule();
+                TranferAmountValidate.spinTranferAmount = spinTransferAmountNew;
+                TranferAmountValidate.isRequiredPin = IsRequiredField;
+                dxValidationProvider_Save.SetValidationRule(spinTransferAmountNew, TranferAmountValidate);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlSwipeAmount(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule TranferAmountValidate = new SpinTranferAmountValidationRule();
+                TranferAmountValidate.spinTranferAmount = spinSwipeAmountNew;
+                TranferAmountValidate.isRequiredPin = IsRequiredField;
+                dxValidationProvider_Save.SetValidationRule(spinSwipeAmountNew, TranferAmountValidate);
             }
             catch (Exception ex)
             {

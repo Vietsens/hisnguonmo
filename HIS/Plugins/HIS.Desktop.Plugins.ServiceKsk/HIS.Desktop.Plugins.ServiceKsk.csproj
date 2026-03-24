@@ -57,7 +57,13 @@
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\HIS.Desktop.Utility\bin\Release\HIS.Desktop.Utility.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.Ksk">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Ksk.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.Service">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.Service.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -170,14 +176,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.Ksk\HIS.UC.Ksk.csproj">
-      <Project>{043bb9da-d4ce-4b00-be7e-ee4ffa972f4d}</Project>
-      <Name>HIS.UC.Ksk</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.Service\HIS.UC.Service.csproj">
-      <Project>{ffb0ee9e-d4c9-4cca-a638-1481e789a770}</Project>
-      <Name>HIS.UC.Service</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
       <Project>{808c25cd-0925-417f-bbf9-caf9604da879}</Project>
       <Name>HIS.Desktop.ADO</Name>

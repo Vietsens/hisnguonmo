@@ -27,13 +27,19 @@ namespace HIS.Desktop.Plugins.ExpMestAggregate.ADO
     class HisConfigCFG
     {
         internal const string CONFIG_KEY__IsEnableDeleteAggregate = "HIS.Desktop.Plugins.IsEnableDeleteAggregate";
+        private const string CONFIG_KEY__CHOOSEROOM_GROUP_ROOM_OPTION = "HIS.Desktop.Plugins.ChooseRoom.GroupRoomOption";
+        private const string CONFIG_KEY__IS_AGGREGATE_BY_DEPARTMENT = "HIS.Desktop.Plugins.ExpMestAggregate.IsAggregateByDepartment";
 
+        internal static string IsAggregateByDepartment;
+        internal static string IsChooseRoomGroupRoomOption;
         internal static bool isEnableDeleteAggregate;
         internal static void LoadConfig()
         {
             try
             {
                 isEnableDeleteAggregate = GetValue(CONFIG_KEY__IsEnableDeleteAggregate) == "1";
+                IsChooseRoomGroupRoomOption = GetValue(CONFIG_KEY__CHOOSEROOM_GROUP_ROOM_OPTION);
+                IsAggregateByDepartment = GetValue(CONFIG_KEY__IS_AGGREGATE_BY_DEPARTMENT);
             }
             catch (Exception ex)
             {

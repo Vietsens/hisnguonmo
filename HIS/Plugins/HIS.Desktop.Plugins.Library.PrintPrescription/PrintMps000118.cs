@@ -361,8 +361,10 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                             }
                         }
                         numCopy = 1;
-                        if (NumCopy.NumCopyConfig.NumCopys != null && NumCopy.NumCopyConfig.NumCopys.Count > 0)
+                        if (NumCopy.NumCopyConfig.NumCopys != null && NumCopy.NumCopyConfig.NumCopys.Count > 0 && vHisPatientTypeAlter != null) 
                         {
+                            Inventec.Common.Logging.LogSystem.Info("vHisPatientTypeAlter " + vHisPatientTypeAlter);
+                            Inventec.Common.Logging.LogSystem.Info("vHisPatientTypeAlter " + NumCopy.NumCopyConfig.NumCopys.Count);
                             var num = NumCopy.NumCopyConfig.NumCopys.Where(o => o.Id == vHisPatientTypeAlter.PATIENT_TYPE_ID).ToList();
                             if (num != null && num.Count > 0) numCopy = num[0].Num;
                         }
@@ -372,6 +374,19 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         {
                             numCopy = 1;
                         }
+
+                        var filterViexView = new MOS.Filter.HisSereServViexViewFilter();
+                        filterViexView.TDL_PATIENT_ID = hisTreatment.PATIENT_ID;
+
+                        var sereServViexViews = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                            .Get<List<V_HIS_SERE_SERV_VIEX>>(
+                                ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GETVIEW,
+                                ApiConsumer.ApiConsumers.MosConsumer,
+                                filterViexView,
+                                HIS.Desktop.Controls.Session.SessionManager.ActionLostToken,
+                                new CommonParam())
+                            ?.OrderByDescending(o => o.VISION_TEST_TIME)
+                            .FirstOrDefault();
 
                         #region in thuong
                         //không có đơn thuốc sẽ gán dữ liệu với ID = -1 để in
@@ -422,7 +437,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 item,
                                 hisServiceReq_CurentExam,
                                 transReq,
-                                _lstConfig);
+                                _lstConfig,
+                                sereServViexViews
+                                );
 
                             Print.PrintData(printTypeCode, fileName, mps000118RDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, lstMedicineExpmestTypeADO.Count, this.SavedData, numCopy);
                             //PrintData(printTypeCode, fileName, mps000118RDO, printNow, numCopy, ref result);
@@ -475,7 +492,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 item,
                                 hisServiceReq_CurentExam,
                                 transReq,
-                                _lstConfig);
+                                _lstConfig,
+                                sereServViexViews
+                                );
 
                             Print.PrintData(printTypeCode, fileName, mps000118RDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listTThuongNgoaiKho.Count, this.SavedData, numCopy);
                         }
@@ -554,7 +573,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                                 item,
                                 hisServiceReq_CurentExam,
                                 transReq,
-                                _lstConfig);
+                                _lstConfig,
+                                sereServViexViews
+                                );
 
                             Print.PrintData(printTypeCode, fileName, mps000118RDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listNgoaiVien.Count, this.SavedData, numCopy);
                             //PrintData(printTypeCode, fileName, mps000118RDO, printNow, numCopy, ref result);

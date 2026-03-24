@@ -1437,11 +1437,16 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
                     if (moduleData == null) Inventec.Common.Logging.LogSystem.Error("khong tim thay moduleLink = HIS.Desktop.Plugins.AggrExpMestPrintFilter");
                     if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
                     {
+                        moduleData.RoomId = this.roomId;
+                        moduleData.RoomTypeId = this.roomTypeId;
                         List<object> listArgs = new List<object>();
-                        listArgs.Add(_ExpMestTraDoiChecks);
+                        var l3 = new List<V_HIS_EXP_MEST>();
+                        AutoMapper.Mapper.CreateMap<V_HIS_EXP_MEST_3, V_HIS_EXP_MEST>();
+                        l3 = AutoMapper.Mapper.Map<List<V_HIS_EXP_MEST>>(_ExpMestTraDoiChecks);
+                        listArgs.Add(l3);
                         listArgs.Add((long)5);
-                        listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.roomId, this.roomTypeId));
-                        var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, this.roomId, this.roomTypeId), listArgs);
+                        listArgs.Add(moduleData);
+                        var extenceInstance = PluginInstance.GetPluginInstance(moduleData, listArgs);
                         if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
                         if (extenceInstance.GetType() == typeof(bool))
                         {
@@ -1845,12 +1850,20 @@ namespace HIS.Desktop.Plugins.HisAggrExpMestList
 
                     if (_ExpMestTraDoiChecks != null && _ExpMestTraDoiChecks.Count > 0)
                     {
-                        listArgs.Add(_ExpMestTraDoiChecks);
+                        var l3 = new List<V_HIS_EXP_MEST>();
+                        AutoMapper.Mapper.CreateMap<V_HIS_EXP_MEST_3, V_HIS_EXP_MEST>();
+                        l3 = AutoMapper.Mapper.Map<List<V_HIS_EXP_MEST>>(_ExpMestTraDoiChecks);
+                        listArgs.Add(l3);
                     }
                     else
                     {
-                        var expMest = (V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
-                        listArgs.Add(expMest);
+                        var expMestFocused = (V_HIS_EXP_MEST_3)gridView.GetFocusedRow();
+
+                        MOS.EFMODEL.DataModels.V_HIS_EXP_MEST ExpMestData = new MOS.EFMODEL.DataModels.V_HIS_EXP_MEST();
+                        Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.V_HIS_EXP_MEST>(ExpMestData, expMestFocused);
+
+
+                        listArgs.Add(ExpMestData);
                     }
 
                     listArgs.Add(printType);

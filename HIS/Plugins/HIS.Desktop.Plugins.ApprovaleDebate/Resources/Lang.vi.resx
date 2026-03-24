@@ -126,14 +126,41 @@
   <data name="frmApprovaleDebate.btnSave.Text" xml:space="preserve">
     <value>Duyệt (Ctrl S)</value>
   </data>
+  <data name="frmApprovaleDebate.cboICD_YHCT.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
   <data name="frmApprovaleDebate.layoutControl1.Text" xml:space="preserve">
     <value>layoutControl1</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem10.Text" xml:space="preserve">
+    <value>PP xử lý:</value>
   </data>
   <data name="frmApprovaleDebate.layoutControlItem2.Text" xml:space="preserve">
     <value>Ý kiến bác sĩ:</value>
   </data>
   <data name="frmApprovaleDebate.layoutControlItem3.Text" xml:space="preserve">
     <value>Bác sĩ hội chẩn:</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem5.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem5.Text" xml:space="preserve">
+    <value>Cđ chính:</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem6.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem7.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem7.Text" xml:space="preserve">
+    <value>Cđ phụ:</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="frmApprovaleDebate.layoutControlItem9.Text" xml:space="preserve">
+    <value>Diễn biến:</value>
   </data>
   <data name="frmApprovaleDebate.tabCDHA.Text" xml:space="preserve">
     <value>CĐHA</value>
@@ -147,17 +174,29 @@
   <data name="frmApprovaleDebate.tabSieuAmNoiSoi.Text" xml:space="preserve">
     <value>Siêu âm/ nội soi</value>
   </data>
-  <data name="frmApprovaleDebate.tabThuocVatTuMau.Text" xml:space="preserve">
-    <value>Thuốc/vật tư/máu</value>
-  </data>
   <data name="frmApprovaleDebate.tabToDieuTri.Text" xml:space="preserve">
     <value>Tờ điều trị</value>
+  </data>
+  <data name="frmApprovaleDebate.tabThuocVatTuMau.Text" xml:space="preserve">
+    <value>Thuốc/vật tư/máu</value>
   </data>
   <data name="frmApprovaleDebate.tabXetNghiem.Text" xml:space="preserve">
     <value>Xét nghiệm</value>
   </data>
   <data name="frmApprovaleDebate.Text" xml:space="preserve">
     <value>Duyệt hội chẩn</value>
+  </data>
+  <data name="frmApprovaleDebate.txtICD_YHCT.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán chính</value>
+  </data>
+  <data name="frmApprovaleDebate.txtICDsub.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
+  </data>
+  <data name="frmApprovaleDebate.txtICDsubName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>Nhấn F1 để chọn bệnh phụ</value>
+  </data>
+  <data name="frmApprovaleDebate.txtICDsubName.ToolTip" xml:space="preserve">
+    <value>Chẩn đoán phụ</value>
   </data>
   <data name="UCTreeListService.isRation.Caption" xml:space="preserve">
     <value>ĐTTT</value>
@@ -227,6 +266,18 @@
   </data>
   <data name="UCTreeListTracking.TRACKING_TIME.Caption" xml:space="preserve">
     <value>Ngày giờ</value>
+  </data>
+  <data name="UCTreeListTracking.treeListColumn1.Caption" xml:space="preserve">
+    <value>Mã chẩn đoán chính</value>
+  </data>
+  <data name="UCTreeListTracking.treeListColumn2.Caption" xml:space="preserve">
+    <value>Y lệnh</value>
+  </data>
+  <data name="UCTreeListTracking.treeListColumn3.Caption" xml:space="preserve">
+    <value>Mã chẩn đoán chính</value>
+  </data>
+  <data name="UCTreeListTracking.treeListColumn5.Caption" xml:space="preserve">
+    <value>Mã chẩn đoán chính</value>
   </data>
   <data name="UCTreeListTracking.treeSereServ.OptionsFind.FindNullPrompt" xml:space="preserve">
     <value>Nhập chuỗi tìm kiếm ...</value>

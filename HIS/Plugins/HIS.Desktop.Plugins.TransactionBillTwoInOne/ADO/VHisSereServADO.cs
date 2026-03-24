@@ -38,6 +38,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.ADO
         public decimal VAT { get; set; }
         public bool? IsExpend { get; set; }
         public bool? IsLeaf { get; set; }
+        public bool? IsGuaranteed { get; set; }
 
         public VHisSereServADO()
         {
@@ -52,7 +53,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.ADO
             this.VIR_PRICE_PLUS = service.VIR_PRICE.HasValue ? Inventec.Common.Number.Convert.NumberToString(service.VIR_PRICE.Value, HIS.Desktop.LocalStorage.ConfigApplication.ConfigApplications.NumberSeperator) : "";
             //this.CONCRETE_ID__IN_SETY = (service.SERVICE_TYPE_ID + "." + service.CONCRETE_ID);
             //this.PARENT_ID__IN_SETY = (service.SERVICE_TYPE_ID + "." + service.PARENT_ID);
-
+            IsGuaranteed = (service.IS_GUARANTEED == 1);
         }
 
         public VHisSereServADO(V_HIS_SERE_SERV service, int patyId)
@@ -61,6 +62,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne.ADO
             IsExpend = (service.IS_EXPEND == 1);
             this.PARENT_ID__IN_SETY = patyId + "." + service.TDL_SERVICE_TYPE_ID;
             this.CONCRETE_ID__IN_SETY = patyId + "." + service.TDL_SERVICE_TYPE_ID + "." + service.SERVICE_ID;
+            IsGuaranteed = (service.IS_GUARANTEED == 1);
         }
     }
 }

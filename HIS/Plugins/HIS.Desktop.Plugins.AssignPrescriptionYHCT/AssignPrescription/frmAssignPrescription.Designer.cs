@@ -162,6 +162,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lciUCTopPanel = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl4 = new DevExpress.XtraLayout.LayoutControl();
             this.lblTreatmentTypeName = new DevExpress.XtraEditors.LabelControl();
+            this.lblGuarantee = new DevExpress.XtraEditors.LabelControl();
             this.lblPatientTypeName = new DevExpress.XtraEditors.LabelControl();
             this.lblPatientName = new DevExpress.XtraEditors.LabelControl();
             this.lblDob = new DevExpress.XtraEditors.LabelControl();
@@ -170,10 +171,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.lciDob = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPatientName = new DevExpress.XtraLayout.LayoutControlItem();
-            this.lciHeinCardNumberInfo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciGenderName = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPatientTypeName = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciTreatmentTypeName = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciGuarantee = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciHeinCardNumberInfo = new DevExpress.XtraLayout.LayoutControlItem();
             this.panelControlSubIcd = new DevExpress.XtraEditors.PanelControl();
             this.panelControlIcd = new DevExpress.XtraEditors.PanelControl();
             this.rdOpionGroup = new DevExpress.XtraEditors.RadioGroup();
@@ -204,6 +206,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.repositoryItemButtonOthePaySource = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.grcExpend__TabMedicine = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcIsOutKtcFee__TabMedicine = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.grcGuarantee = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemChkMediMati_Guarantee = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.grcTotalPrice__TabMedicine = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colTUTORIAL = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grcUseForm__TabMedicine = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -244,6 +248,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.gridColumn4 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.colINFORMATION_MEDICINEUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn5 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colgrcGuaranteeUnb = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemcboPatientType_TabMedicine = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.repositoryItemChkIsExpend__MedicinePage = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.repositoryItemChkIsKH__MedicinePage = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
@@ -391,10 +396,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDob)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientName)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciHeinCardNumberInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGenderName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientTypeName)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentTypeName)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGuarantee)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHeinCardNumberInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlIcd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdOpionGroup.Properties)).BeginInit();
@@ -412,6 +418,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinAmount__MedicinePage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonOthePaySource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkMediMati_Guarantee)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemcboMedicineUseForm)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpReasion)).BeginInit();
@@ -515,6 +522,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barbtnSaveShortcut,
@@ -613,8 +624,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1254, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1254, 29);
             // 
             // barDockControlBottom
             // 
@@ -1231,6 +1242,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             // layoutControl4
             // 
             this.layoutControl4.Controls.Add(this.lblTreatmentTypeName);
+            this.layoutControl4.Controls.Add(this.lblGuarantee);
             this.layoutControl4.Controls.Add(this.lblPatientTypeName);
             this.layoutControl4.Controls.Add(this.lblPatientName);
             this.layoutControl4.Controls.Add(this.lblDob);
@@ -1250,9 +1262,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lblTreatmentTypeName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblTreatmentTypeName.Location = new System.Drawing.Point(72, 74);
             this.lblTreatmentTypeName.Name = "lblTreatmentTypeName";
-            this.lblTreatmentTypeName.Size = new System.Drawing.Size(233, 20);
+            this.lblTreatmentTypeName.Size = new System.Drawing.Size(216, 20);
             this.lblTreatmentTypeName.StyleController = this.layoutControl4;
             this.lblTreatmentTypeName.TabIndex = 98;
+            // 
+            // lblGuarantee
+            // 
+            this.lblGuarantee.AllowHtmlString = true;
+            this.lblGuarantee.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
+            this.lblGuarantee.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblGuarantee.Location = new System.Drawing.Point(72, 98);
+            this.lblGuarantee.Name = "lblGuarantee";
+            this.lblGuarantee.Size = new System.Drawing.Size(216, 20);
+            this.lblGuarantee.StyleController = this.layoutControl4;
+            this.lblGuarantee.TabIndex = 105;
+            this.lblGuarantee.Text = "0";
             // 
             // lblPatientTypeName
             // 
@@ -1261,7 +1285,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lblPatientTypeName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblPatientTypeName.Location = new System.Drawing.Point(72, 50);
             this.lblPatientTypeName.Name = "lblPatientTypeName";
-            this.lblPatientTypeName.Size = new System.Drawing.Size(233, 20);
+            this.lblPatientTypeName.Size = new System.Drawing.Size(216, 20);
             this.lblPatientTypeName.StyleController = this.layoutControl4;
             this.lblPatientTypeName.TabIndex = 30;
             // 
@@ -1272,7 +1296,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lblPatientName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblPatientName.Location = new System.Drawing.Point(72, 2);
             this.lblPatientName.Name = "lblPatientName";
-            this.lblPatientName.Size = new System.Drawing.Size(233, 20);
+            this.lblPatientName.Size = new System.Drawing.Size(216, 20);
             this.lblPatientName.StyleController = this.layoutControl4;
             this.lblPatientName.TabIndex = 87;
             // 
@@ -1283,7 +1307,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lblDob.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
             this.lblDob.Location = new System.Drawing.Point(72, 26);
             this.lblDob.Name = "lblDob";
-            this.lblDob.Size = new System.Drawing.Size(97, 20);
+            this.lblDob.Size = new System.Drawing.Size(88, 20);
             this.lblDob.StyleController = this.layoutControl4;
             this.lblDob.TabIndex = 89;
             // 
@@ -1292,9 +1316,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lblGenderName.AllowHtmlString = true;
             this.lblGenderName.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblGenderName.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblGenderName.Location = new System.Drawing.Point(243, 26);
+            this.lblGenderName.Location = new System.Drawing.Point(234, 26);
             this.lblGenderName.Name = "lblGenderName";
-            this.lblGenderName.Size = new System.Drawing.Size(62, 20);
+            this.lblGenderName.Size = new System.Drawing.Size(54, 20);
             this.lblGenderName.StyleController = this.layoutControl4;
             this.lblGenderName.TabIndex = 88;
             // 
@@ -1304,9 +1328,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lblHeinCardNumberInfo.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblHeinCardNumberInfo.Appearance.TextOptions.WordWrap = DevExpress.Utils.WordWrap.Wrap;
             this.lblHeinCardNumberInfo.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblHeinCardNumberInfo.Location = new System.Drawing.Point(72, 98);
+            this.lblHeinCardNumberInfo.Location = new System.Drawing.Point(72, 122);
             this.lblHeinCardNumberInfo.Name = "lblHeinCardNumberInfo";
-            this.lblHeinCardNumberInfo.Size = new System.Drawing.Size(233, 36);
+            this.lblHeinCardNumberInfo.Size = new System.Drawing.Size(216, 36);
             this.lblHeinCardNumberInfo.StyleController = this.layoutControl4;
             this.lblHeinCardNumberInfo.TabIndex = 97;
             // 
@@ -1317,14 +1341,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.layoutControlGroup3.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.lciDob,
             this.lciPatientName,
-            this.lciHeinCardNumberInfo,
             this.lciGenderName,
             this.lciPatientTypeName,
-            this.lciTreatmentTypeName});
+            this.lciTreatmentTypeName,
+            this.lciGuarantee,
+            this.lciHeinCardNumberInfo});
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(307, 136);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(290, 160);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // lciDob
@@ -1334,7 +1359,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lciDob.Control = this.lblDob;
             this.lciDob.Location = new System.Drawing.Point(0, 24);
             this.lciDob.Name = "lciDob";
-            this.lciDob.Size = new System.Drawing.Size(171, 24);
+            this.lciDob.Size = new System.Drawing.Size(162, 24);
             this.lciDob.Text = "Ngày sinh:";
             this.lciDob.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciDob.TextSize = new System.Drawing.Size(65, 20);
@@ -1347,36 +1372,20 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lciPatientName.Control = this.lblPatientName;
             this.lciPatientName.Location = new System.Drawing.Point(0, 0);
             this.lciPatientName.Name = "lciPatientName";
-            this.lciPatientName.Size = new System.Drawing.Size(307, 24);
+            this.lciPatientName.Size = new System.Drawing.Size(290, 24);
             this.lciPatientName.Text = "Bệnh nhân:";
             this.lciPatientName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientName.TextSize = new System.Drawing.Size(65, 20);
             this.lciPatientName.TextToControlDistance = 5;
-            // 
-            // lciHeinCardNumberInfo
-            // 
-            this.lciHeinCardNumberInfo.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.lciHeinCardNumberInfo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.lciHeinCardNumberInfo.Control = this.lblHeinCardNumberInfo;
-            this.lciHeinCardNumberInfo.Location = new System.Drawing.Point(0, 96);
-            this.lciHeinCardNumberInfo.MaxSize = new System.Drawing.Size(0, 40);
-            this.lciHeinCardNumberInfo.MinSize = new System.Drawing.Size(85, 40);
-            this.lciHeinCardNumberInfo.Name = "lciHeinCardNumberInfo";
-            this.lciHeinCardNumberInfo.Size = new System.Drawing.Size(307, 40);
-            this.lciHeinCardNumberInfo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
-            this.lciHeinCardNumberInfo.Text = "Thẻ BHYT:";
-            this.lciHeinCardNumberInfo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciHeinCardNumberInfo.TextSize = new System.Drawing.Size(65, 20);
-            this.lciHeinCardNumberInfo.TextToControlDistance = 5;
             // 
             // lciGenderName
             // 
             this.lciGenderName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciGenderName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciGenderName.Control = this.lblGenderName;
-            this.lciGenderName.Location = new System.Drawing.Point(171, 24);
+            this.lciGenderName.Location = new System.Drawing.Point(162, 24);
             this.lciGenderName.Name = "lciGenderName";
-            this.lciGenderName.Size = new System.Drawing.Size(136, 24);
+            this.lciGenderName.Size = new System.Drawing.Size(128, 24);
             this.lciGenderName.Text = "Giới tính:";
             this.lciGenderName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciGenderName.TextSize = new System.Drawing.Size(65, 20);
@@ -1389,7 +1398,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lciPatientTypeName.Control = this.lblPatientTypeName;
             this.lciPatientTypeName.Location = new System.Drawing.Point(0, 48);
             this.lciPatientTypeName.Name = "lciPatientTypeName";
-            this.lciPatientTypeName.Size = new System.Drawing.Size(307, 24);
+            this.lciPatientTypeName.Size = new System.Drawing.Size(290, 24);
             this.lciPatientTypeName.Text = "Đối tượng:";
             this.lciPatientTypeName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPatientTypeName.TextSize = new System.Drawing.Size(65, 20);
@@ -1403,11 +1412,42 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.lciTreatmentTypeName.Location = new System.Drawing.Point(0, 72);
             this.lciTreatmentTypeName.Name = "lciTreatmentTypeName";
             this.lciTreatmentTypeName.OptionsToolTip.ToolTip = "Diện đối tượng";
-            this.lciTreatmentTypeName.Size = new System.Drawing.Size(307, 24);
+            this.lciTreatmentTypeName.Size = new System.Drawing.Size(290, 24);
             this.lciTreatmentTypeName.Text = "Diện ĐT:";
             this.lciTreatmentTypeName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciTreatmentTypeName.TextSize = new System.Drawing.Size(65, 20);
             this.lciTreatmentTypeName.TextToControlDistance = 5;
+            // 
+            // lciGuarantee
+            // 
+            this.lciGuarantee.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciGuarantee.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciGuarantee.Control = this.lblGuarantee;
+            this.lciGuarantee.Location = new System.Drawing.Point(0, 96);
+            this.lciGuarantee.Name = "lciGuarantee";
+            this.lciGuarantee.OptionsToolTip.ToolTip = "Hạn mức bảo lãnh";
+            this.lciGuarantee.Size = new System.Drawing.Size(290, 24);
+            this.lciGuarantee.Text = "Bảo lãnh:";
+            this.lciGuarantee.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciGuarantee.TextSize = new System.Drawing.Size(65, 20);
+            this.lciGuarantee.TextToControlDistance = 5;
+            this.lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
+            // lciHeinCardNumberInfo
+            // 
+            this.lciHeinCardNumberInfo.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciHeinCardNumberInfo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciHeinCardNumberInfo.Control = this.lblHeinCardNumberInfo;
+            this.lciHeinCardNumberInfo.Location = new System.Drawing.Point(0, 120);
+            this.lciHeinCardNumberInfo.MaxSize = new System.Drawing.Size(0, 40);
+            this.lciHeinCardNumberInfo.MinSize = new System.Drawing.Size(85, 40);
+            this.lciHeinCardNumberInfo.Name = "lciHeinCardNumberInfo";
+            this.lciHeinCardNumberInfo.Size = new System.Drawing.Size(290, 40);
+            this.lciHeinCardNumberInfo.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
+            this.lciHeinCardNumberInfo.Text = "Thẻ BHYT:";
+            this.lciHeinCardNumberInfo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciHeinCardNumberInfo.TextSize = new System.Drawing.Size(65, 20);
+            this.lciHeinCardNumberInfo.TextToControlDistance = 5;
             // 
             // panelControlSubIcd
             // 
@@ -1626,7 +1666,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.repositoryItemButtonOthePaySource,
             this.repositoryItemCustomGridLookUpReasion,
             this.repInForMedicineEnable,
-            this.repInForMedicineDisable});
+            this.repInForMedicineDisable,
+            this.repositoryItemChkMediMati_Guarantee});
             this.gridControlServiceProcess.Size = new System.Drawing.Size(939, 345);
             this.gridControlServiceProcess.TabIndex = 26;
             this.gridControlServiceProcess.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1647,6 +1688,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.gridColumn3,
             this.grcExpend__TabMedicine,
             this.grcIsOutKtcFee__TabMedicine,
+            this.grcGuarantee,
             this.grcTotalPrice__TabMedicine,
             this.colTUTORIAL,
             this.grcUseForm__TabMedicine,
@@ -1682,7 +1724,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.colEXP_MEST_REASON_IDUnb,
             this.gridColumn4,
             this.colINFORMATION_MEDICINEUnb,
-            this.gridColumn5});
+            this.gridColumn5,
+            this.colgrcGuaranteeUnb});
             this.gridViewServiceProcess.GridControl = this.gridControlServiceProcess;
             this.gridViewServiceProcess.Name = "gridViewServiceProcess";
             this.gridViewServiceProcess.OptionsBehavior.AutoExpandAllGroups = true;
@@ -1897,6 +1940,22 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.grcIsOutKtcFee__TabMedicine.VisibleIndex = 13;
             this.grcIsOutKtcFee__TabMedicine.Width = 20;
             // 
+            // grcGuarantee
+            // 
+            this.grcGuarantee.Caption = "Bảo lãnh";
+            this.grcGuarantee.ColumnEdit = this.repositoryItemChkMediMati_Guarantee;
+            this.grcGuarantee.FieldName = "grcGuarantee";
+            this.grcGuarantee.FieldNameSortGroup = "grcGuaranteeUnb";
+            this.grcGuarantee.Name = "grcGuarantee";
+            this.grcGuarantee.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grcGuarantee.Visible = true;
+            this.grcGuarantee.VisibleIndex = 14;
+            // 
+            // repositoryItemChkMediMati_Guarantee
+            // 
+            this.repositoryItemChkMediMati_Guarantee.AutoHeight = false;
+            this.repositoryItemChkMediMati_Guarantee.Name = "repositoryItemChkMediMati_Guarantee";
+            // 
             // grcTotalPrice__TabMedicine
             // 
             this.grcTotalPrice__TabMedicine.Caption = "Thành tiền";
@@ -1907,7 +1966,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.grcTotalPrice__TabMedicine.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcTotalPrice__TabMedicine.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.grcTotalPrice__TabMedicine.Visible = true;
-            this.grcTotalPrice__TabMedicine.VisibleIndex = 16;
+            this.grcTotalPrice__TabMedicine.VisibleIndex = 17;
             this.grcTotalPrice__TabMedicine.Width = 44;
             // 
             // colTUTORIAL
@@ -1919,7 +1978,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.colTUTORIAL.OptionsColumn.AllowEdit = false;
             this.colTUTORIAL.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.colTUTORIAL.Visible = true;
-            this.colTUTORIAL.VisibleIndex = 18;
+            this.colTUTORIAL.VisibleIndex = 19;
             this.colTUTORIAL.Width = 47;
             // 
             // grcUseForm__TabMedicine
@@ -1969,7 +2028,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.grcMediStockExpMest__TabMedicine.OptionsColumn.AllowEdit = false;
             this.grcMediStockExpMest__TabMedicine.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcMediStockExpMest__TabMedicine.Visible = true;
-            this.grcMediStockExpMest__TabMedicine.VisibleIndex = 15;
+            this.grcMediStockExpMest__TabMedicine.VisibleIndex = 16;
             this.grcMediStockExpMest__TabMedicine.Width = 78;
             // 
             // grcKHBHYT__TabMedicine
@@ -2021,7 +2080,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.gridColumnEquipment.Name = "gridColumnEquipment";
             this.gridColumnEquipment.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumnEquipment.Visible = true;
-            this.gridColumnEquipment.VisibleIndex = 14;
+            this.gridColumnEquipment.VisibleIndex = 15;
             this.gridColumnEquipment.Width = 47;
             // 
             // colREMOVE_SELECED_ROWUnb
@@ -2166,7 +2225,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.grcExpMestReason__TabMedicine.Name = "grcExpMestReason__TabMedicine";
             this.grcExpMestReason__TabMedicine.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.grcExpMestReason__TabMedicine.Visible = true;
-            this.grcExpMestReason__TabMedicine.VisibleIndex = 17;
+            this.grcExpMestReason__TabMedicine.VisibleIndex = 18;
             this.grcExpMestReason__TabMedicine.Width = 110;
             // 
             // repositoryItemCustomGridLookUpReasion
@@ -2213,7 +2272,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.gridColumn4.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
             this.gridColumn4.ToolTip = "Thông tin sản phẩm";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 19;
+            this.gridColumn4.VisibleIndex = 20;
             // 
             // colINFORMATION_MEDICINEUnb
             // 
@@ -2226,6 +2285,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             this.gridColumn5.FieldName = "DX$CheckboxSelectorColumnUnb";
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            // 
+            // colgrcGuaranteeUnb
+            // 
+            this.colgrcGuaranteeUnb.FieldName = "grcGuaranteeUnb";
+            this.colgrcGuaranteeUnb.Name = "colgrcGuaranteeUnb";
+            this.colgrcGuaranteeUnb.UnboundType = DevExpress.Data.UnboundColumnType.String;
             // 
             // repositoryItemcboPatientType_TabMedicine
             // 
@@ -3306,10 +3371,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciDob)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientName)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.lciHeinCardNumberInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciGenderName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPatientTypeName)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciTreatmentTypeName)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciGuarantee)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciHeinCardNumberInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlSubIcd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlIcd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.rdOpionGroup.Properties)).EndInit();
@@ -3327,6 +3393,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemMemoEdit2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinAmount__MedicinePage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonOthePaySource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemChkMediMati_Guarantee)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemcboMedicineUseForm)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCustomGridLookUpReasion)).EndInit();
@@ -3566,7 +3633,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         internal CustomGridControlWithFilterMultiColumn gridControlMediMaty;
         internal CustomGridViewWithFilterMultiColumn gridViewMediMaty;
         private DevExpress.XtraEditors.LabelControl lblTreatmentTypeName;
+        private DevExpress.XtraEditors.LabelControl lblGuarantee;
         private DevExpress.XtraLayout.LayoutControlItem lciTreatmentTypeName;
+        private DevExpress.XtraLayout.LayoutControlItem lciGuarantee;
         internal DevExpress.XtraEditors.SpinEdit spinAmount;
         private DevExpress.XtraEditors.Repository.RepositoryItemSpinEdit repositoryItemSpinAmount_Le_MedicinePage;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
@@ -3662,5 +3731,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
         private DevExpress.XtraBars.PopupMenu popupMenu1;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn5;
+        private DevExpress.XtraGrid.Columns.GridColumn grcGuarantee;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemChkMediMati_Guarantee;
+        private DevExpress.XtraGrid.Columns.GridColumn colgrcGuaranteeUnb;
     }
 }

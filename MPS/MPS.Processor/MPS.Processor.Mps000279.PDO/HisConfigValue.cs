@@ -28,5 +28,6 @@ namespace MPS.Processor.Mps000279.PDO
         public bool IsPriceWithDifference { get; set; }
         public bool IsNotSameDepartment { get; set; }
         public bool IsSurgPriceOption_1 { get; set; }
+        public bool IsGroupHeinServiceByUseTime { get; set; }
     }
 }

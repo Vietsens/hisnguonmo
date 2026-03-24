@@ -353,22 +353,61 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                     hisServiceReqFilter.IS_RESULTED = true;
                 }
 
-                if (serviceSelecteds != null && serviceSelecteds.Count == 0)
+                if (HisConfigCFG.FilterByParentService != "1")
                 {
-                    hisServiceReqFilter.SERVICE_IDs = null;
+                    if (serviceSelecteds != null && serviceSelecteds.Count == 0)
+                    {
+                        hisServiceReqFilter.SERVICE_IDs = null;
+                    }
+                    else
+                    {
+                        if (listServices != null && serviceSelecteds != null)
+                        {
+                            if (serviceSelecteds.Count == listServices.Count)
+                            {
+                                hisServiceReqFilter.SERVICE_IDs = null;
+                            }
+                            else
+                            {
+                                hisServiceReqFilter.SERVICE_IDs = serviceSelecteds.Select(o => o.ID).ToList();
+                            }
+                        }
+                    }
                 }
                 else
                 {
-                    if (listServices != null && serviceSelecteds != null)
+                    if (serviceSelecteds != null && serviceSelecteds.Count > 0)
                     {
-                        if (serviceSelecteds.Count == listServices.Count)
+                        const long OTHER_GROUP_ID = 0;
+
+                        var listServiceIds = lstServiceRoom.Where(o => o.ROOM_ID == this.roomId).Select(o => o.SERVICE_ID).ToList();
+
+                        var leafServices = listServices.Where(o => listServiceIds.Contains(o.ID) && o.IS_LEAF == 1 && o.IS_ACTIVE == 1).ToList();
+
+                        var selectedParentIds = serviceSelecteds.Select(o => o.ID).ToList();
+
+                        var parentIds = leafServices.Where(o => o.PARENT_ID.HasValue).Select(o => o.PARENT_ID.Value).Distinct().ToList();
+
+                        bool hasOther = leafServices.Any(o => !o.PARENT_ID.HasValue);
+
+                        int totalGroupCount = parentIds.Count + (hasOther ? 1 : 0);
+
+                        if (selectedParentIds.Count == totalGroupCount)
                         {
                             hisServiceReqFilter.SERVICE_IDs = null;
                         }
                         else
                         {
-                            hisServiceReqFilter.SERVICE_IDs = serviceSelecteds.Select(o => o.ID).ToList();
-                        }
+                            var childServiceIds = leafServices
+                            .Where(o => (o.PARENT_ID.HasValue && selectedParentIds.Contains(o.PARENT_ID.Value))
+                                || (!o.PARENT_ID.HasValue && selectedParentIds.Contains(OTHER_GROUP_ID))).Select(o => o.ID).Distinct().ToList();
+
+                            hisServiceReqFilter.SERVICE_IDs = childServiceIds.Count > 0 ? childServiceIds : new List<long> { -1 };
+                        }    
+                    }
+                    else
+                    {
+                        hisServiceReqFilter.SERVICE_IDs = null;
                     }
                 }
 

@@ -279,7 +279,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             if (!this.isShowMess) MessageManager.Show(this.ParentForm, param, false);
                         }
                         if (success)
+                        {
                             this.EnableControl(false);
+                            this.IsCheckSave = true;
+                        }    
+                            
                         WaitingManager.Hide();
                     }
                     catch (Exception ex)

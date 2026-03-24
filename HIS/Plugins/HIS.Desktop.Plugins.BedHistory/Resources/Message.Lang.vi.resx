@@ -126,9 +126,6 @@
   <data name="HIS_Desktop_Plugins_BedAssign__GiuongDaCoBenhNhanNam" xml:space="preserve">
     <value>Giường đã có bệnh nhân nằm. Bạn có muốn cho bệnh nhân nằm ghép không?</value>
   </data>
-	<data name="HIS_Desktop_Plugins_BedAssign__KhongDuocNamGhepGiuong" xml:space="preserve">
-    <value>Bệnh nhân {0} không được phép nằm ghép giường</value>
-  </data>
   <data name="HIS_Desktop_Plugins_BedAssign__GiuongVuotQuaSoLuong" xml:space="preserve">
     <value>Giường đã vượt quá số lượng nằm ghép tối đa</value>
   </data>
@@ -139,7 +136,7 @@
     <value>Ngày kết thúc giường không được nhỏ hơn ngày bắt đầu vào</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__FORM_BED_HISTORY__ERROR_END_FINISH_TIME" xml:space="preserve">
-    <value>Ngày kết thúc không được nhỏ hơn ngày bắt đầu</value>
+    <value>Ngày kết thúc giường phải lớn hơn ngày bắt đầu vào</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__FORM_BED_HISTORY__ERROR_SERVICE_REQ" xml:space="preserve">
     <value>Dịch vụ dữ liệu không hợp lệ</value>
@@ -167,6 +164,9 @@
   </data>
   <data name="ThoiGianBatDauKhongDuocNhoHonThoiGianVaoVien" xml:space="preserve">
     <value>Thời gian bắt đầu không được nhỏ hơn thời gian đến viện</value>
+  </data>
+  <data name="HIS_Desktop_Plugins_BedAssign__KhongDuocNamGhepGiuong" xml:space="preserve">
+    <value>Bệnh nhân {0} không được phép nằm ghép giường</value>
   </data>
   <data name="TatCaDuLieuDaLuu" xml:space="preserve">
     <value>Tất cả dữ liệu đã được lưu</value>

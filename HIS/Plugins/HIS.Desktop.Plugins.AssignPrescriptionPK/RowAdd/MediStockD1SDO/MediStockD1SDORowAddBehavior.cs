@@ -110,6 +110,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
             {
                 this.IsExpend = true;
             }
+            if (this.ServiceTypeId == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+            {
+                var mediMatyTypeADO = (HIS.Desktop.Plugins.AssignPrescriptionPK.ADO.MediMatyTypeADO)dataRow;
+                var stock1 = frmAssignPrescription.mediStockD1ADOs.FirstOrDefault(x => x.SERVICE_ID == mediMatyTypeADO.SERVICE_ID);
+                if (stock1 != null && stock1.IS_NOT_EXPEND == 1)
+                {
+                    this.IsExpend = false;
+                    this.IsDisableExpend = true;
+                    this.NotExpend = true;
+                }
+
+                var stock2 = frmAssignPrescription.mediMatyTypeAvailables.FirstOrDefault(x => x.SERVICE_ID == mediMatyTypeADO.SERVICE_ID);
+                if (stock2 != null && stock2.IS_NOT_EXPEND == 1)
+                {
+                    this.IsExpend = false;
+                    this.IsDisableExpend = true;
+                    this.NotExpend = true;
+                }
+            }
             this.expMestId = frmAssignPrescription.oldExpMestId;
             this.Speed = frmAssignPrescription.spinTocDoTruyen.EditValue != null ? (decimal?)frmAssignPrescription.spinTocDoTruyen.Value : null;
             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.currentMedicineTypeADOForEdit.IS_AUTO_EXPEND), frmAssignPrescription.currentMedicineTypeADOForEdit.IS_AUTO_EXPEND) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => HisConfigCFG.IsAutoTickExpendWithAssignPresPTTT), HisConfigCFG.IsAutoTickExpendWithAssignPresPTTT) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.isAutoCheckExpend), frmAssignPrescription.isAutoCheckExpend) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.currentMedicineTypeADOForEdit.HEIN_SERVICE_TYPE_ID), frmAssignPrescription.currentMedicineTypeADOForEdit.HEIN_SERVICE_TYPE_ID) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => frmAssignPrescription.currentMedicineTypeADOForEdit.IntructionTimeSelecteds), frmAssignPrescription.currentMedicineTypeADOForEdit.IntructionTimeSelecteds));
@@ -123,6 +142,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
             {
                 if (this.ValidMetyMatyType__Add())
                 {
+                    // qtcode
+                    
                     List<MediMatyTypeADO> mediMatyTypeADOTemps = new List<MediMatyTypeADO>();
                     //Nếu thuốc đã kê không đủ khả dụng trong kho, người dùng chọn lấy thuốc ngoài kho thay thế
                     //==> Lấy các thuốc ngoài kho + các thông tin số lượng, đường dùng, cách dùng, hướng dẫn sử dụng,.. đã chọn => tự động bổ sung vào danh sách thuốc đã chọn luôn
@@ -131,8 +152,12 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
                         SetValidAssianInDayError();
                         SetValidAmountError();
                         UpdateMediMatyByMedicineTypeCategory(medicineTypeSDO__Category__SameMediAcin);
+                        // qtcode
+                        this.medicineTypeSDO.IsGuarantee = true;
                         this.medicineTypeSDO.IsMultiDateState = this.IsMultiDateState;//TODO
                         this.medicineTypeSDO.IntructionTimeSelecteds = this.IntructionTimeSelecteds;//TODO
+                        //qtcode 
+                        //this.medicineTypeSDO.IsGuarantee = true; 
                         mediMatyTypeADOTemps.Add(this.medicineTypeSDO);
                     }
                     //Nếu thuốc còn khả dụng trong kho
@@ -146,6 +171,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
                             if (!frmAssignPrescription.GetOverReason(medicineTypeSDO))
                                 return success;
                         }
+                        this.medicineTypeSDO.IsGuarantee = true;
                         this.UpdateMedicinePackageInfoInDataRow(this.medicineTypeSDO);
                         this.UpdatePatientTypeInDataRow(this.medicineTypeSDO);
                         this.UpdateExpMestReasonInDataRow(this.medicineTypeSDO);

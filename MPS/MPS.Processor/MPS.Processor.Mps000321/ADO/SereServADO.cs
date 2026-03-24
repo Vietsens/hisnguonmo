@@ -66,7 +66,9 @@ namespace MPS.Processor.Mps000321.ADO
         //public string MEDICINE_LINE_NAME { get; set; }
 
         public HIS_PATIENT_TYPE_ALTER PatientTypeAlter { get; set; }
+        public HIS_PATIENT_TYPE_ALTER PatientTypeAlterReal { get; set; }
         public string KEY_PATY_ALTER { get; set; }
+        public string KEY_PATY_ALTER_REAL { get; set; }
         public decimal? SERVICE_PAY_RATE { get; set; }
         public decimal? BHYT_PAY_RATE { get; set; }
         public long? HEIN_SERVICE_TYPE_PARENT_1_ID { get; set; } //Cap 1 "Giuong"
@@ -77,7 +79,12 @@ namespace MPS.Processor.Mps000321.ADO
         public decimal? TOTAL_PRICE_PATIENT_SELF_TP { get; set; }
         public long? HEIN_SERVICE_TYPE_CHILD_NUM_ORDER { get; set; }
 
-        public SereServADO(HIS_SERE_SERV data, List<HIS_SERE_SERV> SereServs, List<HIS_SERE_SERV_EXT> sereServExts, List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes, List<V_HIS_SERVICE> services, List<V_HIS_ROOM> rooms, List<HIS_MATERIAL_TYPE> materialTypes, PatientTypeCFG patientTypeCFG, HisConfigValue hisConfigValue, List<HIS_SERVICE_UNIT> hisServiceUnit, List<HIS_PATIENT_TYPE_ALTER> ListPta, V_HIS_TREATMENT treatment)
+        public SereServADO(HIS_SERE_SERV data, List<HIS_SERE_SERV> SereServs, List<HIS_SERE_SERV_EXT> sereServExts, 
+            List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes, List<V_HIS_SERVICE> services, 
+            List<V_HIS_ROOM> rooms, List<HIS_MATERIAL_TYPE> materialTypes, PatientTypeCFG patientTypeCFG,
+            HisConfigValue hisConfigValue, List<HIS_SERVICE_UNIT> hisServiceUnit, List<HIS_PATIENT_TYPE_ALTER> ListPta, 
+            V_HIS_TREATMENT treatment, List<HIS_SERVICE_REQ> serviceReqs
+            )
         {
             try
             {
@@ -225,8 +232,17 @@ namespace MPS.Processor.Mps000321.ADO
                 #endregion
 
                 string keyPaty = "";
+                string keyPatyReal = "";
                 this.PatientTypeAlter = PatientTypeAlterProcessor.GetPatientTypeAlter(data, patientTypeCFG, treatment.TREATMENT_END_TYPE_ID ?? 0, ref keyPaty);
+                this.PatientTypeAlterReal = PatientTypeAlterProcessor.GetPatientTypeAlter(data, patientTypeCFG, treatment.TREATMENT_END_TYPE_ID ?? 0, ref keyPatyReal);
                 this.KEY_PATY_ALTER = keyPaty;
+                this.KEY_PATY_ALTER_REAL = keyPatyReal;
+
+                if (data.PATIENT_TYPE_ID != patientTypeCFG.PATIENT_TYPE__BHYT && PatientTypeAlterReal != null)
+                {
+                    this.KEY_PATY_ALTER_REAL = null;
+                    this.PatientTypeAlterReal = null;
+                }
 
                 if (String.IsNullOrWhiteSpace(this.KEY_PATY_ALTER) && ListPta.Count > 0)
                 {
@@ -235,6 +251,29 @@ namespace MPS.Processor.Mps000321.ADO
 
                     this.KEY_PATY_ALTER = PatientTypeAlterProcessor.ToString(pta);
                     this.PatientTypeAlter = pta;
+                }
+                if (hisConfigValue != null && hisConfigValue.IsGroupHeinServiceByUseTime)
+                {
+                    if (this.SERVICE_REQ_ID.HasValue && serviceReqs != null && serviceReqs.Count > 0 && ListPta != null && ListPta.Count > 0)
+                    {
+                        HIS_SERVICE_REQ sr = serviceReqs.FirstOrDefault(x => x.ID == this.SERVICE_REQ_ID.Value);
+                        long useTime = (sr != null && sr.USE_TIME.HasValue) ? sr.USE_TIME.Value : 0;
+                        if (useTime > 0)
+                        {
+                            HIS_PATIENT_TYPE_ALTER ptaApplied = ListPta
+                                .Where(x =>
+                                    (!x.HEIN_CARD_FROM_TIME.HasValue || x.HEIN_CARD_FROM_TIME.Value <= useTime)
+                                    && (!x.HEIN_CARD_TO_TIME.HasValue || x.HEIN_CARD_TO_TIME.Value >= useTime))
+                                .OrderByDescending(x => x.HEIN_CARD_FROM_TIME ?? 0)
+                                .ThenByDescending(x => x.LOG_TIME)
+                                .FirstOrDefault();
+                            if (ptaApplied != null)
+                            {
+                                this.PatientTypeAlter = ptaApplied;
+                                this.KEY_PATY_ALTER = PatientTypeAlterProcessor.ToString(ptaApplied, this, treatment.TDL_TREATMENT_TYPE_ID ?? 0);
+                            }
+                        }
+                    }
                 }
 
                 if (this.VIR_TOTAL_HEIN_PRICE.HasValue)

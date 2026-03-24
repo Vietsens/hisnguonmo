@@ -19,6 +19,7 @@ using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisPatientBankAccount.Validate;
+using HIS.Desktop.Plugins.Library.BankHub;
 using HIS.Desktop.Utilities;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -59,6 +60,8 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         DelegateSelectData delegateSelectData1;
 
         private HIS_TREATMENT currentTreatment;
+
+        private bool IsCheckOk = false;
 
         List<string> arrControlEnableNotChange = new List<string>();
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
@@ -125,16 +128,13 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 InitComboBankPayer();
                 FillDataToGridControl();
                 ValidateForm();
-
-
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-      
+
         private void SetCaptionByLanguageKey()
         {
             try
@@ -181,9 +181,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 dxValidationProviderEditorInfo.RemoveControlError(cboListBank);
                 dxValidationProviderEditorInfo.RemoveControlError(txtReceiver);
                 dxValidationProviderEditorInfo.RemoveControlError(txtRelation);
-
-
-                dxErrorProvider.ClearErrors(); 
+                dxErrorProvider.ClearErrors();
             }
             catch (Exception ex)
             {
@@ -247,7 +245,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         /// Ham lay du lieu theo dieu kien tim kiem va gan du lieu vao danh sach
         /// </summary>
         /// 
-
         public void FillDataToGridControl()
         {
             try
@@ -279,14 +276,12 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
 
-
         /// <summary>
         /// Ham goi api lay du lieu phan trang
         /// </summary>
         /// <param name="param"></param>
         private void LoadPaging(object param)
         {
-
             try
             {
 
@@ -335,10 +330,9 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         }
         #endregion
 
-
         private void SaveProcess()
         {
-            if (!Validate1()) return; 
+            if (!Validate1()) return;
             CommonParam param = new CommonParam();
             try
             {
@@ -362,53 +356,47 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 }
 
                 UpdateDTOFromDataForm(ref updateDTO, ref updateBank);
-                bool checkBank = this.CheckBankAccount(param, ref updateDTO);
+                var name = (this.txtReceiver.Text ?? string.Empty).Trim();
+                updateDTO.IS_CHECK = IsCheckOk ? (short?)1 : null;
+                updateDTO.PAYEE_NAME = name; 
 
-                if (checkBank)
+                if (ActionType == GlobalVariables.ActionAdd)
                 {
-                    updateDTO.IS_CHECK = 1;
-                    updateDTO.PAYEE_NAME = this.txtReceiver.Text.Trim();
-                    if (ActionType == GlobalVariables.ActionAdd)
-                    {
-                        updateDTO.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-                        updateDTO.PATIENT_ID = currentTreatment.PATIENT_ID;
-                        var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
-                            HisRequestUriStore.CREATE,
-                            ApiConsumers.MosConsumer,
-                            updateDTO,
-                            param
-                        );
+                    updateDTO.PATIENT_ID = currentTreatment.PATIENT_ID;
+                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
+                        HisRequestUriStore.CREATE,
+                        ApiConsumers.MosConsumer,
+                        updateDTO,
+                        param
+                    );
 
-                        if (resultData != null)
-                        {
-                            success = true;
-                            FillDataToGridControl();
-                            ResetFormData();
-                        }
-                    }
-                    else
+                    if (resultData != null)
                     {
-                        var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
-                            HisRequestUriStore.UPDATE,
-                            ApiConsumers.MosConsumer,
-                            updateDTO,
-                            param
-                        );
-
-                        if (resultData != null)
-                        {
-                            success = true;
-                            FillDataToGridControl();
-                        }
+                        success = true;
+                        FillDataToGridControl();
+                        ResetFormData();
                     }
                 }
-                
+                else
+                { 
+                    var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
+                        HisRequestUriStore.UPDATE,
+                        ApiConsumers.MosConsumer,
+                        updateDTO,
+                        param
+                    );
+
+                    if (resultData != null)
+                    {
+                        success = true;
+                        FillDataToGridControl();
+                    }
+                }
 
                 if (success)
                 {
                     SetFocusEditor();
                     ResetFormData();
-
                 }
 
                 WaitingManager.Hide();
@@ -435,11 +423,13 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             {
                 dxErrorProvider.SetError(txtAccNumber, "Trường dữ liệu bắt buộc", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
                 Valid = false;
-            }else if(Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtAccNumber.Text, 100))
+            }
+            else if (Inventec.Common.String.CheckString.IsOverMaxLengthUTF8(txtAccNumber.Text, 100))
             {
                 dxErrorProvider.SetError(txtAccNumber, "Trường dữ liệu vượt quá 100 ký tự", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
                 Valid = false;
-            }else
+            }
+            else
             {
                 dxErrorProvider.SetError(txtAccNumber, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
             }
@@ -476,7 +466,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             {
                 dxErrorProvider.SetError(txtRelation, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
             }
-                return Valid;
+            return Valid;
         }
 
         private void LoadCurrent(long currentId, ref MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT currentDTO)
@@ -495,15 +485,16 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         {
             try
             {
+                long bankId = 0;
                 if (cboListBank.EditValue != null)
-                    currentDTO.PAYEE_BANK_ID = Convert.ToInt64(cboListBank.EditValue);
+                    bankId = Convert.ToInt64(cboListBank.EditValue);
+
+                currentDTO.PAYEE_BANK_ID = bankId;
                 currentDTO.PAYEE_ACCOUNT_NUMBER = txtAccNumber.Text.Trim();
                 currentDTO.PAYEE_NAME = txtReceiver.Text.Trim();
                 currentDTO.RELATION_NAME = txtRelation.Text.Trim();
 
-
-
-
+                currentBank = BackendDataWorker.Get<HIS_BANK>().FirstOrDefault(o => o.ID == bankId);
             }
             catch (Exception ex)
             {
@@ -523,7 +514,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Debug(ex);
             }
         }
-
 
         private void DisplayPatientInfo(HIS_TREATMENT patient)
         {
@@ -551,11 +541,11 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 {
                     if (patient.TDL_PATIENT_DOB > 0)
                     {
-                        lblPatientDOB.Text = patient.TDL_PATIENT_DOB.ToString().Substring(0, 4); 
+                        lblPatientDOB.Text = patient.TDL_PATIENT_DOB.ToString().Substring(0, 4);
                     }
                     else
                     {
-                        lblPatientDOB.Text = ""; 
+                        lblPatientDOB.Text = "";
                     }
                 }
                 else
@@ -671,8 +661,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             }
         }
 
-
-
         private void ChangedDataRow(MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT data)
         {
             try
@@ -720,9 +708,9 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         }
         private void FillDataToEditorControl(MOS.EFMODEL.DataModels.V_HIS_PATIENT_BANK_ACCOUNT currentData)
         {
-
             try
             {
+                IsCheckOk = false;
                 if (currentData != null)
                 {
                     cboListBank.EditValue = currentData.PAYEE_BANK_ID;
@@ -730,15 +718,11 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                     txtReceiver.Text = currentData.PAYEE_NAME;
                     txtRelation.Text = currentData.RELATION_NAME;
                 }
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-
-
-
         }
 
 
@@ -805,9 +789,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                         }
                     }
 
-
-
-
                     gridControlFormList.RefreshDataSource();
                 }
             }
@@ -816,6 +797,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         #region handleEvent
         private void btnSearch_Click(object sender, EventArgs e)
         {
@@ -828,6 +810,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void txtKeyword_KeyUp(object sender, KeyEventArgs e)
         {
             try
@@ -852,6 +835,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
         private void gridViewFormList_Click(object sender, EventArgs e)
         {
             try
@@ -886,7 +870,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             try
             {
                 SaveProcess();
-               
             }
             catch (Exception ex)
             {
@@ -937,8 +920,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                     if (rowData != null)
                     {
                         ChangedDataRow(rowData);
-
-
                         SetFocusEditor();
                     }
                 }
@@ -983,11 +964,6 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
-
-
-
-
         #endregion
 
         private void repoPrint_ButtonClick(object sender, ButtonPressedEventArgs e)
@@ -1006,6 +982,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         private bool DeletegatePrintTemplate(string printCode, string fileName)
         {
             bool result = false;
@@ -1099,6 +1076,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 throw;
             }
         }
+
         protected override bool ProcessCmdKey(ref System.Windows.Forms.Message msg, Keys keyData)
         {
 
@@ -1126,39 +1104,38 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private bool CheckBankAccount(CommonParam param, ref HIS_PATIENT_BANK_ACCOUNT currentDTO)
+        private bool CheckBankAccount(string bankCode, string accNum, ref string accName)
         {
-            bool result;
+            bool result = false;
             try
             {
+                string data = BankHubProcess.GetAccessToken("MBB");
+                if (string.IsNullOrEmpty(data))
+                {
+                    MessageBox.Show("Không thể kết nối đến hệ thống ngân hàng, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    return false;
+                }
+                CommonParam param = new CommonParam();
                 BankAccountSDO bankAccountSDO = new BankAccountSDO();
-                bankAccountSDO.BankNumber = currentDTO.PAYEE_BANK_ID.ToString();
-                bankAccountSDO.AccountNumber = currentDTO.PAYEE_ACCOUNT_NUMBER;
+                bankAccountSDO.BankCode = "MBB";
+                bankAccountSDO.BenBankCode = bankCode;
+                bankAccountSDO.BenAccountNumber = accNum;
                 BankAccountResultSDO bankAccountResultSDO = new BackendAdapter(param).Post<BankAccountResultSDO>(HisRequestUriStore.CheckBank, ApiConsumers.MosConsumer, bankAccountSDO, param);
-                bool Check = bankAccountResultSDO == null;
-                if (Check)
+
+                bool CheckStatusTrue = bankAccountResultSDO != null && bankAccountResultSDO.Status;
+                if (CheckStatusTrue)
                 {
-                    XtraMessageBox.Show("Không thể kiểm tra tài khoản, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    result = false;
+                    accName = bankAccountResultSDO.AccountName;
+                    result = true;
                 }
-                else
-                {
-                    bool CheckStatusFalse = bankAccountResultSDO != null && bankAccountResultSDO.Status != "1";
-                    if (CheckStatusFalse)
-                    {
-                        XtraMessageBox.Show("Tài khoản hiện đang tạm khóa vui lòng chọn tài khoản khác.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                        result = false;
-                    }
-                    else
-                    {
-                        bool CheckStatusTrue = bankAccountResultSDO != null && bankAccountResultSDO.Status == "1";
-                        if (CheckStatusTrue)
-                        {
-                            this.txtReceiver.Text = bankAccountResultSDO.PayeeName;
-                        }
-                        result = true;
-                    }
-                }
+
+                #region Hien thi message thong bao
+                MessageManager.Show(this, param, result);
+                #endregion
+
+                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
+                SessionManager.ProcessTokenLost(param);
+                #endregion
             }
             catch (Exception ex)
             {
@@ -1172,46 +1149,18 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
         {
             try
             {
-                CommonParam commonParam = new CommonParam();
-                BankAccountSDO bankAccountSDO = new BankAccountSDO();
-                bankAccountSDO.BankNumber = this.cboListBank.EditValue.ToString().Trim();
-                bankAccountSDO.AccountNumber = this.txtAccNumber.Text.Trim();
-                BankAccountResultSDO bankAccountResultSDO = new BackendAdapter(commonParam).Post<BankAccountResultSDO>("api/HisPatientBankAccount/CheckBankAccount", ApiConsumers.MosConsumer, bankAccountSDO, commonParam);
-                bool Check = bankAccountResultSDO == null;
-                if (Check)
+                V_HIS_PATIENT_BANK_ACCOUNT acc = (V_HIS_PATIENT_BANK_ACCOUNT)this.gridViewFormList.GetFocusedRow();
+                string name = "";
+                if (CheckBankAccount(acc.PAYEE_BANK_CODE, acc.PAYEE_ACCOUNT_NUMBER, ref name))
                 {
-                    XtraMessageBox.Show("Không thể kiểm tra tài khoản, vui lòng thử lại sau.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
-                else
-                {
-                    bool CheckStatusFalse = bankAccountResultSDO != null && bankAccountResultSDO.Status != "1";
-                    if (CheckStatusFalse)
+                    CommonParam commonParam = new CommonParam();
+                    acc.IS_CHECK = 1;
+                    acc.PAYEE_NAME = name;
+                    var resultData = new BackendAdapter(commonParam).Post<HIS_PATIENT_BANK_ACCOUNT>(HisRequestUriStore.UPDATE, ApiConsumers.MosConsumer, acc, commonParam);
+
+                    if (resultData != null)
                     {
-                        XtraMessageBox.Show("Tài khoản hiện đang tạm khóa vui lòng chọn tài khoản khác.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    }
-                    else
-                    {
-                        bool CheckStatusTrue = bankAccountResultSDO != null && bankAccountResultSDO.Status == "1";
-                        if (CheckStatusTrue)
-                        {
-                            V_HIS_PATIENT_BANK_ACCOUNT v_HIS_PATIENT_BANK_ACCOUNT = (V_HIS_PATIENT_BANK_ACCOUNT)this.gridViewFormList.GetFocusedRow();
-                            HisPatientBankAccountFilter hisPatientBankAccountFilter = new HisPatientBankAccountFilter();
-                            hisPatientBankAccountFilter.ID = v_HIS_PATIENT_BANK_ACCOUNT.ID;
-                            HIS_PATIENT_BANK_ACCOUNT his_PATIENT_BANK_ACCOUNT = new BackendAdapter(commonParam).Get<List<HIS_PATIENT_BANK_ACCOUNT>>(HisRequestUriStore.GET, ApiConsumers.MosConsumer, hisPatientBankAccountFilter, commonParam).SingleOrDefault();
-                            if (his_PATIENT_BANK_ACCOUNT != null)
-                            {
-                                HIS_PATIENT_BANK_ACCOUNT BANK_ACCOUNT = new HIS_PATIENT_BANK_ACCOUNT();
-                                BANK_ACCOUNT = his_PATIENT_BANK_ACCOUNT;
-                                BANK_ACCOUNT.IS_CHECK = 1;
-                                BANK_ACCOUNT.PAYEE_NAME = bankAccountResultSDO.PayeeName;
-                                var resultData = new BackendAdapter(commonParam).Post<HIS_PATIENT_BANK_ACCOUNT>(HisRequestUriStore.UPDATE, ApiConsumers.MosConsumer, BANK_ACCOUNT, commonParam);
-                                
-                                if (resultData != null)
-                                {
-                                    this.FillDataToGridControl();
-                                }
-                            }
-                        }
+                        this.FillDataToGridControl();
                     }
                 }
             }
@@ -1219,6 +1168,35 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
             {
                 LogSystem.Error(ex);
             }
+        }
+
+        private void TryAutoCheckBankAccount()
+        {
+            try
+            {
+                if (cboListBank.EditValue == null) return;
+                var bankIdObj = cboListBank.EditValue;
+                var account = txtAccNumber.Text?.Trim();
+                if (string.IsNullOrEmpty(account)) return;
+
+                long bankId;
+                if (!long.TryParse(bankIdObj.ToString(), out bankId)) return;
+
+                var currentBank = BackendDataWorker.Get<HIS_BANK>().FirstOrDefault(o => o.ID == bankId);
+
+                string name = "";
+                CheckBankAccount(currentBank.BANK_CODE, account, ref name);
+                txtReceiver.Text = name;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void txtAccNumber_Leave(object sender, EventArgs e)
+        {
+            TryAutoCheckBankAccount();
         }
     }
 }

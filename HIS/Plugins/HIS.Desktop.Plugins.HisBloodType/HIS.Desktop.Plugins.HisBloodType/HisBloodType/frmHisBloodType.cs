@@ -575,6 +575,7 @@ namespace HIS.Desktop.Plugins.HisBloodType
                     cboParent.EditValue = data.PARENT_ID;
                     chkCPNG.Checked = data.IS_OUT_PARENT_FEE == 1 ? true : false;
                     chkIsRedBloodCells.Checked = data.IS_RED_BLOOD_CELLS == 1;
+                    cboTubeSlot.EditValue = data.TUBE_SLOT.HasValue ? data.TUBE_SLOT.Value.ToString() : null;    
                     // get HIS_SERVICE
                     MOS.Filter.HisServiceViewFilter serviceViewFilter = new HisServiceViewFilter();
                     serviceViewFilter.ID = data.SERVICE_ID;
@@ -1018,6 +1019,11 @@ namespace HIS.Desktop.Plugins.HisBloodType
                 {
                     currentDTO.IS_RED_BLOOD_CELLS = null;
                 }
+                if (cboTubeSlot.EditValue != null)
+                    currentDTO.TUBE_SLOT = Inventec.Common.TypeConvert.Parse.ToInt64(cboTubeSlot.EditValue.ToString());
+                else
+                    currentDTO.TUBE_SLOT = null;
+
             }
             catch (Exception ex)
             {
@@ -2691,6 +2697,18 @@ namespace HIS.Desktop.Plugins.HisBloodType
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+        private void cboTubeSlot_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                    cboTubeSlot.EditValue = null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

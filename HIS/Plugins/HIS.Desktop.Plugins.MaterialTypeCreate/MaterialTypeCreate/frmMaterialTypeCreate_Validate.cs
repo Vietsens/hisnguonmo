@@ -75,6 +75,8 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             ValidMaxlengthTxtBhytCodes();
             ValidMaxlengthTxtModel();
             ValidationImpUnitConverRatio(spUnitConvertRatio, cboImpUnit);
+            ValidMaxlengthtxtTTThau();
+            ValidationControlSpinNotVatAndBlack(spinBYTNumOrder);
             GetSelectedSupplierIds();
         }
 
@@ -403,6 +405,20 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 validRule.ErrorText = "Vượt quá độ dài cho phép (" + maxlength + ")";
                 validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
                 dxValidationProvider1.SetValidationRule(control, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        void ValidMaxlengthtxtTTThau()
+        {
+            try
+            {
+                ValidateMaxLength validateMaxLength = new ValidateMaxLength();
+                validateMaxLength.textEdit = txtTTThau;
+                validateMaxLength.maxLength = 50;
+                dxValidationProvider1.SetValidationRule(txtTTThau, validateMaxLength);
             }
             catch (Exception ex)
             {

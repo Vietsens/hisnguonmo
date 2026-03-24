@@ -102,26 +102,30 @@ namespace HIS.Desktop.Plugins.Library.PrintBordereau.Mps000285
 
                 long isShowMedicineLine = Inventec.Common.TypeConvert.Parse.ToInt64(HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SdaConfigKey.IS_SHOW_MEDICINE_LINE));
                 List<HIS_MEDI_ORG> mediOrg = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDI_ORG>();
-
-                MPS.Processor.Mps000285.PDO.Mps000285PDO rdo = null;
+                List<HIS_MEDICINE_TYPE> medicineTypes = null;
+                List<HIS_MEDICINE_LINE> medicineLines = null;
+                List<HIS_SERVICE_REQ> serviceReqs = null;
                 if (isShowMedicineLine == 1)
                 {
-                    List<HIS_MEDICINE_TYPE> medicineTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_TYPE>();
-                    List<HIS_MEDICINE_LINE> medicineLines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_LINE>();
-
+                    medicineTypes = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_TYPE>();
+                    medicineLines = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_MEDICINE_LINE>();
+                }
+                var hisConfigValue = new MPS.Processor.Mps000285.PDO.Config.HisConfigValue();
+                hisConfigValue.IsGroupHeinServiceByUseTime = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>(SdaConfigKey.ConfigKey_IsGroupHeinServiceByUseTime) == 1;
+                if (isShowMedicineLine == 1 || hisConfigValue.IsGroupHeinServiceByUseTime)
+                {
                     HisServiceReqFilter serviceReqFilter = new HisServiceReqFilter();
                     serviceReqFilter.TREATMENT_ID = this.Treatment.ID;
                     serviceReqFilter.SERVICE_REQ_TYPE_IDs = new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT };
-                    List<HIS_SERVICE_REQ> serviceReqs = new BackendAdapter(param)
+                    serviceReqs = new BackendAdapter(param)
                     .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
 
-                    rdo = new MPS.Processor.Mps000285.PDO.Mps000285PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, serviceReqs, departments, singleValue, mediOrg);
                 }
-                else
-                {
+                MPS.Processor.Mps000285.PDO.Mps000285PDO rdo = null;
+                rdo = new MPS.Processor.Mps000285.PDO.Mps000285PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, heinServiceType, 
+                    patientTypeCFG, this.SereServs, sereServExts, Treatment, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, medicineTypes, materialTypes, medicineLines, 
+                    serviceReqs, departments, singleValue, mediOrg, hisConfigValue);
 
-                    rdo = new MPS.Processor.Mps000285.PDO.Mps000285PDO(this.CurrentPatientTypeAlter, patientTypeAlters, DepartmentTrans, TreatmentFees, heinServiceType, patientTypeCFG, this.SereServs, sereServExts, Treatment, HeinServiceTypes, Rooms, Services, treatmentTypes, branch, materialTypes, departments, singleValue, mediOrg);
-                }
 
                 #region Run Print
 

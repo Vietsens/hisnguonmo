@@ -117,7 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__PRINT_MENU__ITEM_BARCODE" xml:space="preserve">
+  <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__
+		_MENU__ITEM_BARCODE" xml:space="preserve">
     <value>In barcode</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__FRM_TRANSACTION_BILL__PRINT_MENU__ITEM_BIEN_BAN_KIEM_NHAP_TU_NCC" xml:space="preserve">

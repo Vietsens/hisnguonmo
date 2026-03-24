@@ -296,10 +296,18 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
         {
             try
             {
+                var tmCkQtId = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
                 if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
                 {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
                     ValidControlTransferAmount(true);
+                    ValidControlTransferNewAmount(false);
+                    ValidControlSwipeNewAmount(false);
 
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
@@ -309,9 +317,16 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 }
                 else if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
                 {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
-                    ValidControlTransferAmount(true);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
 
+                    ValidControlTransferAmount(true);
+                    ValidControlTransferNewAmount(false);
+                    ValidControlSwipeNewAmount(false);
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_SWIPE_AMOUNT_TEXT", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_SWIPE_AMOUNT_TOOLTIP", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
@@ -320,23 +335,51 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 }
                 else if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
                 {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
                     ValidControlTransferAmount(false);
+                    ValidControlTransferNewAmount(false);
+                    ValidControlSwipeNewAmount(false);
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
                     lciTranferAmount.Enabled = false;
                 }
+                else if(payForm != null && tmCkQtId != null && payForm.ID == tmCkQtId.ID)
+                {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
+                    ValidControlTransferAmount(false);
+                    ValidControlTransferNewAmount(true);
+                    ValidControlSwipeNewAmount(true);
+                }
                 else
                 {
+                    this.lblTransferNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lblSwipeNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    this.lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                    dxValidationProvider1.RemoveControlError(spinTransferNew);
+                    dxValidationProvider1.RemoveControlError(spinSwipeNew);
                     ValidControlTransferAmount(false);
+                    ValidControlTransferNewAmount(false);
+                    ValidControlSwipeNewAmount(false);
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Resources.ResourceLanguageManager.LanguageResource, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
                     lciTranferAmount.Enabled = false;
                 }
                 spinTransferAmount.EditValue = 0;
+                spinTransferNew.EditValue = 0;
+                spinSwipeNew.EditValue = 0;
             }
             catch (Exception ex)
             {
@@ -352,6 +395,36 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 PINRule.spinTranferAmount = spinTransferAmount;
                 PINRule.isRequiredPin = IsRequiredField;
                 dxValidationProvider1.SetValidationRule(spinTransferAmount, PINRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlTransferNewAmount(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule PINRule = new SpinTranferAmountValidationRule();
+                PINRule.spinTranferAmount = spinTransferNew;
+                PINRule.isRequiredPin = IsRequiredField;
+                dxValidationProvider1.SetValidationRule(spinTransferNew, PINRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlSwipeNewAmount(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule PINRule = new SpinTranferAmountValidationRule();
+                PINRule.spinTranferAmount = spinSwipeNew;
+                PINRule.isRequiredPin = IsRequiredField;
+                dxValidationProvider1.SetValidationRule(spinSwipeNew, PINRule);
             }
             catch (Exception ex)
             {
@@ -1121,6 +1194,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 long payFormId = 0;
                 var payForm = this.payFormList.FirstOrDefault(o => o.PayFormId == cboPayForm.EditValue);
                 payFormId = payForm.ID;
+                var tmCkQtId = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
                 if (transactionData == null)
                 {
                     transactionData = new HisTransactionDepositSDO();
@@ -1186,6 +1260,11 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 else if (transactionData.Transaction != null && transactionData.Transaction.PAY_FORM_ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT && spinTransferAmount.EditValue != null)
                 {
                     transactionData.Transaction.SWIPE_AMOUNT = spinTransferAmount.Value;
+                }
+                else if(transactionData.Transaction != null && transactionData.Transaction.PAY_FORM_ID == tmCkQtId.ID && spinTransferNew.EditValue != null && spinSwipeNew.EditValue != null)
+                {
+                    transactionData.Transaction.TRANSFER_AMOUNT = spinTransferNew.Value;
+                    transactionData.Transaction.SWIPE_AMOUNT = spinSwipeNew.Value;
                 }
             }
             catch (Exception ex)
@@ -1738,6 +1817,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     txtDescription.Text = "";
                     txtTransactionCode.Text = "";
                     spinTransferAmount.EditValue = null;
+                    spinSwipeNew.EditValue = null;
+                    spinTransferNew.EditValue = null;
                 }
             }
             catch (Exception ex)
@@ -1792,11 +1873,27 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         }
                     }
                 }
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void CalcuCanThu()
+        {
+
+            try
+            {
+                lblReceiveAmount.Tag = Convert.ToInt64(totalAmountDeposit) - spinTransferAmount.Value - spinSwipeNew.Value - spinTransferNew.Value;
+                lblReceiveAmount.Text = (Convert.ToInt64(totalAmountDeposit) - spinTransferAmount.Value - spinSwipeNew.Value - spinTransferNew.Value).ToString();
+                this.lblReceiveAmount.Text = string.Format("{0:#,##0}", double.Parse(this.lblReceiveAmount.Text));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         //mặc định sổ mới nhất
@@ -2368,7 +2465,14 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
 
                     if (success && isSaveAndPrint)
                     {
-                        this.isPrintNow = true;
+                        if (chkPreviewBeforePrint.Checked)
+                        {
+                            this.isPrintNow = false;
+                        }
+                        else
+                        {
+                            this.isPrintNow = true;
+                        }
                         Inventec.Common.RichEditor.RichEditorStore richEditorMain = new Inventec.Common.RichEditor.RichEditorStore(HIS.Desktop.ApiConsumer.ApiConsumers.SarConsumer, HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(), HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
                         richEditorMain.RunPrintTemplate(PrintTypeCodeStore.PRINT_TYPE_CODE__MPS000102, DelegateRunPrinter);
                         if (isShowTransation && !isShowTransationQR) // nếu thanh toán QR không tự động thì ko gọi màn thanh toán ngay, khi tắt QR mới gọi
@@ -2483,7 +2587,25 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             {
                 CommonParam param = new CommonParam();
                 this.hisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES>();
-                var vHisPolicies1 = BackendDataWorker.Get<MOS.EFMODEL.DataModels.V_HIS_HOLIDAY_POLICIES>();
+                var patienttype = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>();
+                string patientTypeCode = "";
+                if (patienttype != null && this.hisPolicies1 != null && this.hisPolicies1.Count > 0)
+                {
+                    var firstPolicy = this.hisPolicies1.FirstOrDefault();
+                    if (firstPolicy != null && firstPolicy.PATIENT_TYPE_ID.HasValue)
+                    {
+                        var patientTypeObj = patienttype.FirstOrDefault(o => o.ID == firstPolicy.PATIENT_TYPE_ID.Value);
+                        if (patientTypeObj != null)
+                        {
+                            patientTypeCode = patientTypeObj.PATIENT_TYPE_CODE;
+                        }
+                    }
+                }
+
+                if (this.hisPolicies1 != null)
+                {
+                    this.hisPolicies1 = this.hisPolicies1.Where(p => p.IS_WARNING_DEPOSIT_SERVICE != 1).ToList();
+                }
 
                 if (hisPolicies1 == null || hisPolicies1.Count == 0)
                     return true;
@@ -2492,7 +2614,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 if (!transactionDate.HasValue)
                     transactionDate = DateTime.Now;
 
-                // Lấy các dịch vụ được chọn
+                // Lấy các dịch vụ được chọn 
                 var checkedServices = ssTreeProcessor.GetListCheck(ucSereServTree);
 
                 // Gộp kiểm tra theo DAY_OF_WEEK, DAY_OF_YEAR, HOLIDAY 
@@ -2500,11 +2622,15 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
 
                 // 1. Theo DAY_OF_WEEK
                 var policiesByDayOfWeek = hisPolicies1.Where(p => p.DAY_OF_WEEK != null).ToList();
+                int currentHourMinute = int.Parse(transactionDate.Value.ToString("HHmmss"));
                 if (policiesByDayOfWeek.Count > 0)
                 {
                     int currentDayOfWeek = (int)transactionDate.Value.DayOfWeek;
                     int dbDayOfWeek = currentDayOfWeek == 0 ? 1 : currentDayOfWeek + 1;
-                    todayPolicies.AddRange(policiesByDayOfWeek.Where(p => p.DAY_OF_WEEK == dbDayOfWeek));
+
+                    todayPolicies.AddRange(policiesByDayOfWeek.Where(p => p.DAY_OF_WEEK == dbDayOfWeek &&
+                            currentHourMinute >= (p.TIME_FROM ?? 0) &&
+                            currentHourMinute <= (p.TIME_TO ?? 235959)));
                 }
 
                 // 2. Theo DAY_OF_YEAR (ngày/tháng)
@@ -2513,7 +2639,6 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                 {
                     int currentDay = transactionDate.Value.Day;
                     int currentMonth = transactionDate.Value.Month;
-                    int currentHourMinute = int.Parse(transactionDate.Value.ToString("HHmmss"));
                     todayPolicies.AddRange(policiesByDayOfYear
                         .Where(p =>
                             p.DAY_OF_YEAR.HasValue &&
@@ -2524,36 +2649,28 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         ));
                 }
 
-                // 3. Theo HOLIDAY
+                // 3. Theo HOLIDAY 
                 var policiesByHoliday = hisPolicies1.Where(p => p.DAY_OF_WEEK == null && p.DAY_OF_YEAR == null && p.HOLIDAY != null).ToList();
                 if (policiesByHoliday.Count > 0)
                 {
                     int currentDateInt = int.Parse(transactionDate.Value.ToString("yyyyMMdd"));
-                    todayPolicies.AddRange(policiesByHoliday.Where(p => p.HOLIDAY == currentDateInt));
+
+                    todayPolicies.AddRange(policiesByHoliday.Where(p => p.HOLIDAY == currentDateInt &&
+                            currentHourMinute >= (p.TIME_FROM ?? 0) &&
+                            currentHourMinute <= (p.TIME_TO ?? 235959)));
                 }
 
-                // Xử lý cảnh báo cho trường hợp không phải cấp cứu
-                if (this.hisTreatment != null && this.hisTreatment.IS_EMERGENCY != 1)
+                // Xử lý cảnh báo cho trường hợp không phải cấp cứu 
+                if (this.hisTreatment != null && this.hisTreatment.IS_EMERGENCY != 1 &&
+                    this.hisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && todayPolicies.Count > 0)
                 {
-                    var policiesIsWarning = vHisPolicies1.Where(p => p.IS_WARNING_DEPOSIT_SERVICE != 1 && p.PATIENT_TYPE_CODE == "OT").ToList();
-
-                    if (policiesIsWarning.Count > 0 && policiesIsWarning != null)
-                    {
-                        bool canContinue = ValidateAndShowWarning(null, policiesIsWarning, checkedServices);
-                        if (!canContinue)
-                            return false;
-                    }
-                }
-
-                // Xử lý cảnh báo cho policies hôm nay
-                if (todayPolicies.Count > 0)
-                {
-                    bool canContinue = ValidateAndShowWarning(todayPolicies, null, checkedServices);
+                    bool canContinue = ValidateAndShowWarning(todayPolicies, checkedServices);
                     if (!canContinue)
                         return false;
+
                 }
 
-                // Nếu không có policy phù hợp, cho phép lưu
+                // Nếu không có policy phù hợp, cho phép lưu 
                 return true;
             }
             catch (Exception ex)
@@ -2563,18 +2680,16 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             }
         }
 
-        private bool ValidateAndShowWarning(List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> policies, List<MOS.EFMODEL.DataModels.V_HIS_HOLIDAY_POLICIES> vPolicies, List<SereServADO> checkedServices)
+        private bool ValidateAndShowWarning(List<MOS.EFMODEL.DataModels.HIS_HOLIDAY_POLICIES> policies, List<SereServADO> checkedServices)
         {
-            var allowedPatientTypeIds = vPolicies != null ? vPolicies.Where(p => p.PATIENT_TYPE_ID != null).Select(p => (long)p.PATIENT_TYPE_ID).Distinct().ToList()
-                        : policies.Where(p => p.PATIENT_TYPE_ID != null).Select(p => (long)p.PATIENT_TYPE_ID).Distinct().ToList();
 
-            var notAllowed = checkedServices
-                .Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID))
-                .GroupBy(s => s.PATIENT_TYPE_ID)
-                .ToDictionary(
+            var allowedPatientTypeIds = policies.Where(p => p.PATIENT_TYPE_ID != null).Select(p => (long)p.PATIENT_TYPE_ID).Distinct().ToList();
+
+            var notAllowed = checkedServices.Where(s => !allowedPatientTypeIds.Contains(s.PATIENT_TYPE_ID) && !allowedPatientTypeIds.Contains(s.PRIMARY_PATIENT_TYPE_ID ?? 0))
+                .GroupBy(s => s.PATIENT_TYPE_ID).ToDictionary(
                     g => g.Key,
-                    g => g.Select(s => s.TDL_SERVICE_CODE).ToList()
-                );
+                    g => g.Select(s => s.TDL_SERVICE_CODE).ToList());
+
 
             Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("notAllowed:", notAllowed));
 
@@ -3322,10 +3437,45 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 FormatSpint(spinTransferAmount);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
 
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinTransferNew_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (spinTransferNew.Value < 0)
+                {
+                    spinTransferNew.Value = 0;
+                }
+                FormatSpint(spinTransferNew);
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void spinSwipeNew_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (spinSwipeNew.Value < 0)
+                {
+                    spinSwipeNew.Value = 0;
+                }
+                FormatSpint(spinSwipeNew);
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -3499,6 +3649,10 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         {
                             IsHidePatientPrice = item.VALUE == "1";
                         }
+                        else if (item.KEY == "chkPreviewBeforePrint")
+                        {
+                            chkPreviewBeforePrint.Checked = item.VALUE == "1";
+                        }
                     }
 
                 }
@@ -3541,6 +3695,39 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkConnectionPOS.Name;
                     csAddOrUpdate.VALUE = (chkConnectionPOS.Checked ? "1" : "");
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkPreviewBeforePrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "chkPreviewBeforePrint" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkPreviewBeforePrint.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = "chkPreviewBeforePrint";
+                    csAddOrUpdate.VALUE = (chkPreviewBeforePrint.Checked ? "1" : "");
                     csAddOrUpdate.MODULE_LINK = moduleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();

@@ -119,9 +119,6 @@
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintServiceReq\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
-      <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
-    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTestTotal">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintTestTotal\HIS.Desktop.Plugins.Library.PrintTestTotal.dll</HintPath>
     </Reference>
@@ -132,8 +129,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintTreatmentFinish\HIS.Desktop.Plugins.Library.PrintTreatmentFinish.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Utility">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Utility.dll</HintPath>
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCCauseOfDeath, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -274,7 +272,7 @@
     </Reference>
     <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
       <HintPath>..\..\..\..\LIB\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
@@ -287,8 +285,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000007.PDO">
-      <HintPath>..\..\..\..\LIB\MPSv2\MPS.PDO\MPS.Processor.Mps000007.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000007.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000007.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000008.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -590,6 +589,10 @@
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.csproj">
+      <Project>{bc332fab-0449-4db0-84dc-424918a35700}</Project>
+      <Name>HIS.Desktop.Plugins.Library.PrintServiceReqTreatment</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

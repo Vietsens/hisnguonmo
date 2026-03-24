@@ -125,9 +125,8 @@
     <Reference Include="HIS.UC.KskContract">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.KskContract\HIS.UC.KskContract.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.PlusInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC.PlusInfo\bin\Debug\HIS.UC.PlusInfo.dll</HintPath>
+    <Reference Include="HIS.UC.PlusInfo">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.PlusInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.ServiceRoom">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ServiceRoom.dll</HintPath>
@@ -148,13 +147,8 @@
     <Reference Include="HIS.UC.UCImageInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCImageInfo\HIS.UC.UCImageInfo.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.UC.UCOtherServiceReqInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCOtherServiceReqInfo.dll</HintPath>
-    </Reference>
-    <Reference Include="HIS.UC.UCPatientRaw, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\UC\HIS.UC.UCPatientRaw\bin\Debug\HIS.UC.UCPatientRaw.dll</HintPath>
+    <Reference Include="HIS.UC.UCPatientRaw">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.UCPatientRaw.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.UCRelativeInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -567,6 +561,10 @@
     <Compile Include="ValidationRule\PatientDob__ValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\UC\HIS.UC.UCOtherServiceReqInfo\HIS.UC.UCOtherServiceReqInfo.csproj">
+      <Project>{e54cfcd0-4353-453d-a6b2-9e472265f3d1}</Project>
+      <Name>HIS.UC.UCOtherServiceReqInfo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
@@ -691,8 +689,30 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
+
+echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
+
+if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
+
+xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
+xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
+xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
+xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
+
+if errorlevel 1 goto BuildEventFailed
+
+if errorlevel 1 goto BuildEventFailed
+
+REM Exit properly because the build will not fail
+REM unless the final step exits with an error code
+
+goto BuildEventOK
+:BuildEventFailed
+echo PREBUILDSTEP for $(ProjectName) FAILED
+exit 1
+:BuildEventOK
+echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

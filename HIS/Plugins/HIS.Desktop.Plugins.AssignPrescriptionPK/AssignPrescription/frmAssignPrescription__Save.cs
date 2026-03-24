@@ -1240,6 +1240,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     //+ Nếu checkbox "Ký" không được check, thì thực hiện tự động hiển thị màn hình print preview đơn thuốc trên HIS
                     MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null;
                     bool printNow = (isSaveAndPrint || chkPrint.Checked);
+                    var PrintMps234 = lstConfig.Exists(o => o.IsChecked && o.ID == (int)ConfigADO.RowConfigID.InDonThuocGop) ? "Mps000234" : null;
                     switch (saveType)
                     {
                         case SAVETYPE.SAVE:
@@ -1296,14 +1297,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             if (previewType != null)
                             {
-                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, printNow, previewType);
+                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : (PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode), printNow, previewType);
                             }
                             break;
                         case SAVETYPE.SAVE_PRINT_NOW:
                             this.PrescriptionSavePrintShowHasClickSave(this.PrintPrescription, true, null);
                             break;
                         case SAVETYPE.SAVE_SHOW_PRINT_PREVIEW:
-                            this.PrescriptionSavePrintShowHasClickSave(MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null);
+                            this.PrescriptionSavePrintShowHasClickSave(PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null);
                             break;
                     }
 
@@ -2639,6 +2640,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     expMestMaterialFilter.EXP_MEST_IDs = expMestList.Select(o => o.ID).ToList();
                     ExpMestMaterialList = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MATERIAL>>(ApiConsumer.HisRequestUriStore.HIS_EXP_MEST_MATERIAL_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, expMestMaterialFilter, null);
                 }
+                
+                //Bo sung Do thi luc
+                var paramViex = new CommonParam();
+                var filterViexView = new MOS.Filter.HisSereServViexViewFilter();
+                filterViexView.TDL_PATIENT_ID = patient.ID;
+                //filterViexView.SERVICE_REQ_ID = vServiceReq.ID;
+                var sereServViexViews = new BackendAdapter(paramViex).Get<List<V_HIS_SERE_SERV_VIEX>>
+                    (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filterViexView, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramViex);
+
+                //thời gian đo lớn nhất (VISION_TEST_TIME)
+                V_HIS_SERE_SERV_VIEX latestViex = null;
+                if (sereServViexViews != null && sereServViexViews.Count > 0)
+                {
+                    latestViex = sereServViexViews
+                        .OrderByDescending(x => x.VISION_TEST_TIME)
+                        .FirstOrDefault();
+                }
+
                 MPS.Processor.Mps000007.PDO.Mps000007PDO rdo = new MPS.Processor.Mps000007.PDO.Mps000007PDO(
                     patient,
                     patientTypeAlter,
@@ -2651,7 +2670,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     ExpMestBloodList,
                     ExpMestBltyReqList,
                     ExpMestMedicineList,
-                    ExpMestMaterialList
+                    ExpMestMaterialList,
+                    latestViex
                     );
 
                 MPS.ProcessorBase.PrintConfig.PreviewType PreviewType;

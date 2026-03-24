@@ -34,6 +34,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
 {
     public class MediMatyTypeADO : MOS.EFMODEL.DataModels.V_HIS_MEDICINE_TYPE
     {
+        // qtcode
+        public bool IsGuarantee { get; set; } = false;
         public MediMatyTypeADO()
         {
 
@@ -1960,6 +1962,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.ADO
         public decimal? PRES_AMOUNT { get; set; }
         public short? IS_OUT_MEDI_STOCK { get; set; }
         public bool IsDisableExpend { get; set; }
+        public bool NotExpend { get; set; }
         public bool IsNotOutStock { get; set; }
         public string EXCEED_LIMIT_IN_PRES_REASON { get; set; }
         public string EXCEED_LIMIT_IN_DAY_REASON { get; set; }

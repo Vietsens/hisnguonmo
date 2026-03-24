@@ -158,6 +158,10 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                     HIS_SERVICE ser = new HIS_SERVICE();
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_MATERIAL_TYPE>(mater, item);
                     Inventec.Common.Mapper.DataObjectMapper.Map<HIS_SERVICE>(ser, item);
+                    mater.IS_NOT_EXPEND = item.IS_NOT_EXPEND;
+                    mater.TT_THAU = item.TT_THAU;
+                    mater.BYT_NUM_ORDER = item.BYT_NUM_ORDER;
+
                     ser.SERVICE_UNIT_ID = item.SERVICE_UNIT_ID;
                     mater.SUPPLIER_IDS = item.SUPPLIER_IDS;
                     ser.ID = 0;
@@ -568,6 +572,27 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                         {
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay sua VatTuDinhDanh", ex);
                         }
+                    }
+                    else if (e.Column.FieldName == "KhongHaoPhi")
+                    {
+                        try
+                        {
+                            e.Value = pData.IS_NOT_EXPEND == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot KhongHaoPhi", ex);
+                        }
+                    }
+
+                    else if (e.Column.FieldName == "TT_THAU")
+                    {
+                        e.Value = pData.TT_THAU;
+                    }
+
+                    else if (e.Column.FieldName == "BYT_NUM_ORDER")
+                    {
+                        e.Value = pData.BYT_NUM_ORDER;
                     }
                 }
             }
@@ -1086,6 +1111,62 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.FormLoad
                         {
                             error += string.Format(Message.MessageImport.KhongHopLe, "Tự động hao phí");
                             mateAdo.AUTO_EXPEND_ERROR = 1;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(item.NOT_EXPEND))
+                    {
+                        if (item.NOT_EXPEND.Trim().ToLower() == "x")
+                        {
+                            mateAdo.IS_NOT_EXPEND = 1;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Không hao phí");
+                            mateAdo.NOT_EXPEND_ERROR = 1;
+                        }
+                    }
+
+                    if (mateAdo.IS_AUTO_EXPEND == 1 && mateAdo.IS_NOT_EXPEND == 1)
+                    {
+                        error += "Vật tư không được chọn đồng thời 'Tự động hao phí' và 'Không hao phí'. ";
+                        mateAdo.AUTO_EXPEND_ERROR = 1;
+                        mateAdo.NOT_EXPEND_ERROR = 1;
+                    }
+
+                    if (!string.IsNullOrEmpty(item.TT_THAU))
+                    {
+                        if (!CheckMaxLenth(item.TT_THAU, 50))
+                        {
+                            error += string.Format(Message.MessageImport.Maxlength, "Thông tin thầu");
+                            mateAdo.TT_THAU_ERROR = 1;
+                        }
+                        else
+                        {
+                            mateAdo.TT_THAU = item.TT_THAU;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(item.BYT_NUM_ORDER))
+                    {
+                        if (Inventec.Common.Number.Check.IsDecimal(item.BYT_NUM_ORDER))
+                        {
+                            var val = Inventec.Common.TypeConvert.Parse.ToDecimal(item.BYT_NUM_ORDER);
+
+                            if (val < 0)
+                            {
+                                error += "STT (TT04) không được là số âm. ";
+                                mateAdo.BYT_NUM_ORDER_ERROR = 1;
+                            }
+                            else
+                            {
+                                mateAdo.BYT_NUM_ORDER = item.BYT_NUM_ORDER;
+                            }
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "STT (TT04)");
+                            mateAdo.BYT_NUM_ORDER_ERROR = 1;
                         }
                     }
 

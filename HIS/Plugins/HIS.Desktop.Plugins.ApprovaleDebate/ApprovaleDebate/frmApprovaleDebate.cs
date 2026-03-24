@@ -1,5 +1,6 @@
 ﻿using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.ViewInfo;
 using DevExpress.XtraTab;
 using EMR.EFMODEL.DataModels;
@@ -35,6 +36,7 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
 {
@@ -54,9 +56,16 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 Resources.ResourceLanguageManager.LanguageResource = new ResourceManager("HIS.Desktop.Plugins.ApprovaleDebate.Resources.Lang", typeof(frmApprovaleDebate).Assembly);
                 ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
                 this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bar1.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.bbtnSave.Caption = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.bbtnSave.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtICDsubName.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.txtICDsubName.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtICDsubName.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.txtICDsubName.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtICDsub.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.txtICDsub.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboICD_YHCT.Properties.NullText = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.cboICD_YHCT.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboICD_YHCT.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.cboICD_YHCT.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtICD_YHCT.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.txtICD_YHCT.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboEmployee.Properties.NullText = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.cboEmployee.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSave.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.btnSave.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabToDieuTri.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabToDieuTri.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabCDHA.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabCDHA.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.tabXetNghiem.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabXetNghiem.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -66,6 +75,14 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 this.tabGiaiPhauBenh.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.tabGiaiPhauBenh.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem2.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem3.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem5.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem5.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem5.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem5.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem6.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem6.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem7.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem7.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem7.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem7.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem8.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem8.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem10.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.layoutControlItem10.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.Text = Inventec.Common.Resource.Get.Value("frmApprovaleDebate.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
             }
             catch (Exception ex)
@@ -115,6 +132,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     this.cboICD_YHCT.EditValue = this.currentHisSpecialistExam.ICD_CODE;
                     this.txtICDsub.Text = this.currentHisSpecialistExam.ICD_SUB_CODE;
                     this.txtICDsubName.Text = this.currentHisSpecialistExam.ICD_TEXT;
+                    this.txtDienBien.Text = this.currentHisSpecialistExam.CONTENT;
+                    this.txtPPXuLy.Text = this.currentHisSpecialistExam.MEDICAL_INSTRUCTION;
                     LogSystem.Debug("IS_APPROVAL: " + currentHisSpecialistExam.IS_APPROVAL);
                     btnSave.Enabled = (currentHisSpecialistExam.IS_APPROVAL == null || currentHisSpecialistExam.IS_APPROVAL == 2);
                     this.ProcessSelectEmployee();
@@ -591,6 +610,17 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
             spin.editor = cboEmployee;
             spin.GetSelectedEmployees = () => this.EmployeeSelecteds; 
             this.dxValidationProvider1.SetValidationRule(cboEmployee, spin);
+
+            ValidateNull controlEditNull = new ValidateNull();
+            controlEditNull.textEdit = txtDienBien;
+            controlEditNull.ErrorType = ErrorType.Warning;
+            this.dxValidationProvider1.SetValidationRule(txtDienBien, controlEditNull);
+
+            ValidateMaxLength controlEditMax = new ValidateMaxLength();
+            controlEditMax.textEdit = txtPPXuLy;
+            controlEditMax.maxLength = 4000;
+            controlEditMax.ErrorType = ErrorType.Warning;
+            this.dxValidationProvider1.SetValidationRule(txtPPXuLy, controlEditMax);
         }
 
         private void bbtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -627,6 +657,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     datamapper.EXAM_EXECUTE_USERNAME = string.Join(", ", this.EmployeeSelecteds.Select(o => o.TDL_USERNAME.ToString()).ToList());
                 }
                 datamapper.EXAM_EXECUTE_CONTENT = txtYKienBacSi.Text.Trim();
+                datamapper.CONTENT = txtDienBien.Text.Trim();
+                datamapper.MEDICAL_INSTRUCTION = txtPPXuLy.Text.Trim();
                 datamapper.REJECT_APPROVAL_REASON = null;
                 datamapper.IS_APPROVAL = 1;
                 datamapper.ICD_CODE = cboICD_YHCT.EditValue != null? cboICD_YHCT.EditValue.ToString(): null;
@@ -646,6 +678,8 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                     currentHisSpecialistExam.ICD_NAME = datamapper.ICD_NAME;
                     currentHisSpecialistExam.ICD_SUB_CODE = datamapper.ICD_SUB_CODE;
                     currentHisSpecialistExam.ICD_TEXT = datamapper.ICD_TEXT;
+                    currentHisSpecialistExam.CONTENT = datamapper.CONTENT;
+                    currentHisSpecialistExam.MEDICAL_INSTRUCTION = datamapper.MEDICAL_INSTRUCTION;
                     this.delegateRefresh();
                 }
                 MessageManager.Show(this, param, rs != null);

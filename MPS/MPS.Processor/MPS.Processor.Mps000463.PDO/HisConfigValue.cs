@@ -30,5 +30,6 @@ namespace MPS.Processor.Mps000463.PDO
         public bool IsSurgPriceOption_1 { get; set; }
         public bool IsNotIncludeIsExpend { get; set; }
         public bool IsMergeServiceNotHein { get; set; }
+        public bool IsGroupHeinServiceByUseTime { get; set; }
     }
 }

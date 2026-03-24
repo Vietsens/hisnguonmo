@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,7 +56,6 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
                 this.KeyPreview = true;
-                this.gridViewPolicies.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewPolicies_FocusedRowChanged);
                 try
                 {
                     string iconPath = System.IO.Path.Combine(
@@ -372,6 +372,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
 
                 ValidationControlTextEditCode();
                 ValidationControlTextEditName();
+                ValidationControlTimeTo();
 
                 ValidationControlGridLookUpEdit(gluDayOfWeek, layoutControlItem4.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always);
                 ValidationControlGridLookUpEdit(gluDayOfYear, layoutControlItem5.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always);
@@ -430,6 +431,15 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void ValidationControlTimeTo()
+        {
+            var rule = new HIS.Desktop.Plugins.HisHolidayPolicies.Validation.ValidationTimeToGreaterThanFrom();
+            rule.dtTimeFrom = dtTimeFrom;
+            rule.dtTimeTo = dtTimeTo;
+            rule.ErrorType = ErrorType.Warning;
+
+            dxValidationProvider1.SetValidationRule(dtTimeTo, rule);
         }
 
         private void ValidationControlDateEdit(DateEdit dateEdit, bool isVisible)
@@ -511,8 +521,14 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                 gluDayOfYear.EditValue = null;
                 gluMonthOfYear.EditValue = null;
                 dtDay.EditValue = null;
-                gluPatientType.EditValue = null;
-                rdoDayOfWeek.Checked = true; 
+                var idOt = BackendDataWorker.Get<HIS_PATIENT_TYPE>()
+                .Where(x => x.PATIENT_TYPE_CODE == "OT")
+                .Select(x => x.ID)
+                .FirstOrDefault();
+                gluPatientType.EditValue = idOt;
+                rdoDayOfWeek.Checked = true;
+                dtTimeFrom.EditValue = null;
+                dtTimeTo.EditValue = null;
                 UpdateComboBoxVisibility();  
             }
             catch (Exception ex)
@@ -611,7 +627,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-                SaveProcess();
+            SaveProcess();
 
         }
 
@@ -710,8 +726,10 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             {
                 currentDTO.HOLIDAY_POLICIES_CODE = txtMa.Text.Trim();
                 currentDTO.HOLIDAY_POLICIES_NAME = txtTen.Text.Trim();
-                currentDTO.PATIENT_TYPE_ID = gluPatientType.EditValue != null ? (long?)gluPatientType.EditValue : null;
-
+                currentDTO.PATIENT_TYPE_ID = long.TryParse(gluPatientType.EditValue?.ToString(), out var pt) ? (long?)pt : null;
+                currentDTO.IS_WARNING_DEPOSIT_SERVICE = chkWarningDepoService.Checked ? (short?)1 : (short?)0;
+                currentDTO.TIME_FROM = TimeEditToHHmmssLong(dtTimeFrom);
+                currentDTO.TIME_TO = TimeEditToHHmmssLong(dtTimeTo);
                 currentDTO.DAY_OF_WEEK = null;
                 currentDTO.DAY_OF_YEAR = null;
                 currentDTO.HOLIDAY = null;
@@ -786,20 +804,35 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                 {
                     foreach (DevExpress.XtraLayout.BaseLayoutItem item in layoutControl1.Items)
                     {
-                        DevExpress.XtraLayout.LayoutControlItem lci = item as DevExpress.XtraLayout.LayoutControlItem;
-                        if (lci != null && lci.Control != null && lci.Control is BaseEdit)
+                        var lci = item as DevExpress.XtraLayout.LayoutControlItem;
+                        if (lci?.Control is BaseEdit be)
                         {
-                            DevExpress.XtraEditors.BaseEdit formatFrm = lci.Control as DevExpress.XtraEditors.BaseEdit;
-                            formatFrm.ResetText();
-                            formatFrm.EditValue = null;
+                            if (be is CheckEdit ce)
+                            {
+                                ce.Checked = false;            
+                                                               
+                            }
+                            else
+                            {
+                                be.ResetText();
+                                be.EditValue = null;
+                            }
                         }
                     }
                     gluDayOfWeek.EditValue = null;
                     gluDayOfYear.EditValue = null;
                     gluMonthOfYear.EditValue = null;
                     dtDay.EditValue = null;
-                    gluPatientType.EditValue = null;
+                    dtTimeFrom.EditValue = null;
+                    dtTimeTo.EditValue = null;
                     rdoDayOfWeek.Checked = true;
+                    var idOt = BackendDataWorker.Get<HIS_PATIENT_TYPE>()
+                    .Where(x => x.PATIENT_TYPE_CODE == "OT")
+                    .Select(x => x.ID)
+                    .FirstOrDefault();
+                    chkWarningDepoService.Checked = false;
+                    gluPatientType.EditValue = idOt;
+
                     UpdateComboBoxVisibility();
 
                     dxValidationProvider1.RemoveControlError(txtMa);
@@ -946,6 +979,9 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                     txtMa.Text = data.HOLIDAY_POLICIES_CODE;
                     txtTen.Text = data.HOLIDAY_POLICIES_NAME;
                     gluPatientType.EditValue = data.PATIENT_TYPE_ID;
+                    dtTimeFrom.EditValue = HHmmssLongToDateTime(data.TIME_FROM);
+                    dtTimeTo.EditValue = HHmmssLongToDateTime(data.TIME_TO);
+                    chkWarningDepoService.Checked = data.IS_WARNING_DEPOSIT_SERVICE == 1;
 
                     if (data.HOLIDAY_POLICIES_TYPE == 1) 
                     {
@@ -1131,7 +1167,6 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                             Inventec.Common.Logging.LogSystem.Error(ex);
                         }
                     }    
-                    gridControl1.RefreshDataSource();
                 }
             }
             catch (Exception ex)
@@ -1147,27 +1182,39 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             try
             {
                 HIS_HOLIDAY_POLICIES data = (HIS_HOLIDAY_POLICIES)gridViewPolicies.GetFocusedRow();
-                if (MessageBox.Show(HIS.Desktop.LibraryMessage.MessageUtil.GetMessage
-                    (HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonBoKhoaDuLieuKhong), "", MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question) == DialogResult.Yes)
+                if (data == null) return;
+
+                if (MessageBox.Show(
+                    HIS.Desktop.LibraryMessage.MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.HeThongTBCuaSoThongBaoBanCoMuonKhoaDuLieuKhong),
+                    "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                    return;
+
+                // NEW: check overlap trước khi mở khóa
+                string msg;
+                if (HasOverlapActive(data, out msg))
                 {
-                    WaitingManager.Show();
-                    var rs = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_HOLIDAY_POLICIES>(HisRequestUriStore.HIS_DAY_POLICIES_CHANGE_LOCK,
-                        ApiConsumers.MosConsumer, data.ID, param);
-                    WaitingManager.Hide();
-                    if (rs != null)
-                    {
-                        notHandler = true;
-                        FillDataToControl();
-                    }
-                    
-                    MessageManager.Show(this, param, notHandler);
+                    XtraMessageBox.Show(msg, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+                WaitingManager.Show();
+                var rs = new BackendAdapter(param).Post<HIS_HOLIDAY_POLICIES>(
+                    HisRequestUriStore.HIS_DAY_POLICIES_CHANGE_LOCK,
+                    ApiConsumers.MosConsumer, data.ID, param);
+
+                WaitingManager.Hide();
+
+                if (rs != null)
+                {
+                    notHandler = true;
+                    FillDataToControl();
+                }
+                MessageManager.Show(this, param, notHandler);
             }
             catch (Exception ex)
             {
                 WaitingManager.Hide();
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                LogSystem.Error(ex);
             }
         }
 
@@ -1233,13 +1280,17 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
             if (e.RowHandle >= 0)
             {
-                HIS_HOLIDAY_POLICIES data = (HIS_HOLIDAY_POLICIES)((IList)((BaseView)sender).DataSource)[e.RowHandle];
-                if (e.Column.FieldName == "IS_ACTIVE_STR")
+                var list = (IList)((BaseView)sender).DataSource;
+                if (list != null && e.RowHandle < list.Count)
                 {
-                    if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
-                        e.Appearance.ForeColor = Color.Red;
-                    else
-                        e.Appearance.ForeColor = Color.Green;
+                    HIS_HOLIDAY_POLICIES data = (HIS_HOLIDAY_POLICIES)list[e.RowHandle];
+                    if (e.Column.FieldName == "IS_ACTIVE_STR")
+                    {
+                        if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__FALSE)
+                            e.Appearance.ForeColor = Color.Red;
+                        else
+                            e.Appearance.ForeColor = Color.Green;
+                    }
                 }
             }
         }
@@ -1274,6 +1325,23 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private static long? TimeEditToHHmmssLong(TimeEdit te)
+        {
+            if (te?.EditValue is DateTime dt)
+                return long.Parse(dt.ToString("HHmmss")); // 06:00:00 -> 060000 -> long 60000
+            return null;
+        }
+        private static DateTime? HHmmssLongToDateTime(long? hhmmss)
+        {
+            if (!hhmmss.HasValue) return null;
+
+            var s = hhmmss.Value.ToString("000000"); // 60000 -> "060000"
+            int h = int.Parse(s.Substring(0, 2));
+            int m = int.Parse(s.Substring(2, 2));
+            int sec = int.Parse(s.Substring(4, 2));
+
+            return DateTime.Today.AddHours(h).AddMinutes(m).AddSeconds(sec);
+        }
 
         private void txtSearch_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -1303,6 +1371,151 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private bool HasOverlapActive(HIS_HOLIDAY_POLICIES target, out string message)
+        {
+            message = null;
+            try
+            {
+                if (target == null) return false;
+
+                // chỉ check khi mở khóa => target sẽ thành active
+                long? fromA = target.TIME_FROM;
+                long? toA = target.TIME_TO;
+
+                // Nếu thiếu time thì coi như không check (hoặc anh muốn bắt buộc thì return true)
+                if (!fromA.HasValue || !toA.HasValue) return false;
+
+                // Lấy list đang active cùng điều kiện cơ bản
+                var all = gridControl1.DataSource as List<HIS_HOLIDAY_POLICIES>;
+                if (all == null || all.Count == 0) return false;
+
+                var candidates = all.Where(x =>
+                    x.ID != target.ID
+                    && (x.IS_ACTIVE ?? 0) == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                    && x.HOLIDAY_POLICIES_TYPE == target.HOLIDAY_POLICIES_TYPE
+                    && (x.PATIENT_TYPE_ID ?? 0) == (target.PATIENT_TYPE_ID ?? 0)
+                    && x.TIME_FROM.HasValue && x.TIME_TO.HasValue
+                );
+
+                // Điều kiện cùng ngày/thứ theo type
+                if (target.HOLIDAY_POLICIES_TYPE == 1)         // thứ trong tuần
+                    candidates = candidates.Where(x => (x.DAY_OF_WEEK ?? -1) == (target.DAY_OF_WEEK ?? -2));
+                else if (target.HOLIDAY_POLICIES_TYPE == 2)    // ngày trong năm MMdd (short)
+                    candidates = candidates.Where(x => (x.DAY_OF_YEAR ?? -1) == (target.DAY_OF_YEAR ?? -2));
+                else if (target.HOLIDAY_POLICIES_TYPE == 3)    // ngày cụ thể yyyymmdd (int)
+                    candidates = candidates.Where(x => (x.HOLIDAY ?? -1) == (target.HOLIDAY ?? -2));
+                else
+                    return false;
+
+                // Check chồng chéo thời gian: A.TIME_FROM < B.TIME_TO && A.TIME_TO > B.TIME_FROM
+                var overlapped = candidates.FirstOrDefault(b =>
+                    (fromA.Value < b.TIME_TO.Value) && (toA.Value > b.TIME_FROM.Value)
+                );
+
+                if (overlapped != null)
+                {
+                    string patyName = GetPatientTypeName(target.PATIENT_TYPE_ID);
+
+                    string fromStr = FormatHHmmssToHourText(target.TIME_FROM); // "18 giờ"
+                    string toStr = FormatHHmmssToHourText(target.TIME_TO);     // "23 giờ"
+
+                    if (target.HOLIDAY_POLICIES_TYPE == 1)
+                    {
+                        string dayName = GetDayOfWeekName(target.DAY_OF_WEEK);
+                        message = $"Đã tồn tại thiết lập cho đối tượng {patyName} khung thời gian {dayName} từ {fromStr} đến {toStr}";
+                    }
+                    else if (target.HOLIDAY_POLICIES_TYPE == 2)
+                    {
+                        string ddmm = FormatDayOfYear(target.DAY_OF_YEAR); // "02/09"
+                        message = $"Đã tồn tại thiết lập cho đối tượng {patyName} khung thời gian ngày {ddmm} từ {fromStr} đến {toStr}";
+                    }
+                    else if (target.HOLIDAY_POLICIES_TYPE == 3)
+                    {
+                        string ddmmyyyy = FormatHolidayDate(target.HOLIDAY); // "02/09/2026"
+                        message = $"Đã tồn tại thiết lập cho đối tượng {patyName} khung thời gian ngày {ddmmyyyy} từ {fromStr} đến {toStr}";
+                    }
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
+            }
+            return false;
+        }
+
+        private string GetPatientTypeName(long? id)
+        {
+            if (!id.HasValue) return "";
+            var pt = patientTypes?.FirstOrDefault(x => x.ID == id.Value);
+            return pt != null ? pt.PATIENT_TYPE_NAME : "";
+        }
+
+        private string GetDayOfWeekName(short? day)
+        {
+            // hệ của anh: 1 CN, 2 T2 ... 7 T7
+            if (!day.HasValue) return "";
+            switch (day.Value)
+            {
+                case 1: return "Chủ nhật";
+                case 2: return "Thứ 2";
+                case 3: return "Thứ 3";
+                case 4: return "Thứ 4";
+                case 5: return "Thứ 5";
+                case 6: return "Thứ 6";
+                case 7: return "Thứ 7";
+                default: return "";
+            }
+        }
+
+        private string FormatHHmmssToHourText(long? hhmmss)
+        {
+            if (!hhmmss.HasValue) return "";
+            var s = hhmmss.Value.ToString("000000"); // 60000 -> "060000"
+            int h = int.Parse(s.Substring(0, 2));
+            // anh đang viết “18 giờ” chứ không cần phút/giây
+            return $"{h} giờ";
+        }
+
+        private string FormatDayOfYear(short? dayOfYear)
+        {
+            if (!dayOfYear.HasValue) return "";
+            string s = dayOfYear.Value.ToString("D4"); // "0902" (MMDD)
+            string mm = s.Substring(0, 2);
+            string dd = s.Substring(2, 2);
+            return $"{dd}/{mm}";
+        }
+
+        private string FormatHolidayDate(int? yyyymmdd)
+        {
+            if (!yyyymmdd.HasValue) return "";
+            int v = yyyymmdd.Value;
+            int year = v / 10000;
+            int month = (v % 10000) / 100;
+            int day = v % 100;
+            return $"{day:00}/{month:00}/{year}";
+        }
+
+        private void gridViewPolicies_RowClick(object sender, DevExpress.XtraGrid.Views.Grid.RowClickEventArgs e)
+        {
+            try
+            {
+                if (e.RowHandle < 0) return;
+                var rowData = gridViewPolicies.GetRow(e.RowHandle) as HIS_HOLIDAY_POLICIES;
+                if (rowData == null) return;
+
+                currentModule = rowData;
+                FillDataToEditorControls(rowData);
+                this.ActionType = GlobalVariables.ActionEdit;
+                EnableControlChanged(this.ActionType);
+                btnEdit.Enabled = (rowData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Warn(ex);
             }
         }
     }

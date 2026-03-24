@@ -44,7 +44,10 @@ namespace MPS.Processor.Mps000304
                 var sereServADOTemps = new List<SereServADO>();
                 GroupType groupType = GroupType.DepaRoom;
                 sereServADOTemps.AddRange(from r in rdo.SereServs
-                                          select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, rdo.Departments, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, rdo.ListOtherPaySource, rdo.Treatment, groupType));
+                                          select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services,
+                                          rdo.Rooms, rdo.Departments, rdo.medicineTypes, rdo.MedicineLines, rdo.materialTypes, rdo.PatientTypeCFG, 
+                                          rdo.HisConfigValue, rdo.HisServiceUnit, rdo.ListOtherPaySource, rdo.Treatment, rdo.ServiceReqs, rdo.PatientTypeAlterAlls
+                                          , groupType));
 
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps.Where(o => o.TDL_SERVICE_NAME.Contains("Natri clorid"))), sereServADOTemps.Where(o => o.TDL_SERVICE_NAME.Contains("Natri clorid"))));
 

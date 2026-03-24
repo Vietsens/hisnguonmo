@@ -302,11 +302,12 @@ namespace HIS.UC.HisMaterialInStock.Run
                     if (HisMaterialInStockADO != null)
                         HisMaterialInStockADO.HisMaterialInStocks = rearchResult.Select(x => (HisMaterialInStockSDO)x).ToList();
                 }
-                else 
+                else
                 {
-                    listResult = new BindingList<HisMaterialInStockADO>(HisMaterialInStockADOs);
+                    var allList = HisMaterialInStockADO.HisMaterialInStocks?.Select(x => new HisMaterialInStockADO(x)).ToList() ?? new List<HisMaterialInStockADO>();
+                    listResult = new BindingList<HisMaterialInStockADO>(allList);
                     if (HisMaterialInStockADO != null)
-                        HisMaterialInStockADO.HisMaterialInStocks = HisMaterialInStockADOs.Select(x => (HisMaterialInStockSDO)x).ToList();
+                        HisMaterialInStockADO.HisMaterialInStocks = allList.Select(x => (HisMaterialInStockSDO)x).ToList();
                 }
                 trvService.DataSource = listResult;
                 chkDetails.Checked = IsDetails;

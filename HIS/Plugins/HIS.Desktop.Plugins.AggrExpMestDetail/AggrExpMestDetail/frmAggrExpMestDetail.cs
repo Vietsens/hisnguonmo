@@ -21,6 +21,7 @@ using DevExpress.Utils;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Drawing;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
@@ -29,6 +30,7 @@ using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LibraryMessage;
 using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Plugins.AggrExpMestDetail.ADO;
@@ -36,6 +38,7 @@ using HIS.Desktop.Plugins.AggrExpMestDetail.Resources;
 using HIS.Desktop.Plugins.ExpMestViewDetail;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.ThreadCustom;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
@@ -50,8 +53,7 @@ using System.Configuration;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.LocalStorage.HisConfig;
+using System.Windows.Markup;
 
 namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
 {
@@ -71,7 +73,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         DelegateSelectData delegateSelectData = null;
         List<ACS.EFMODEL.DataModels.ACS_CONTROL> controlAcs;
         bool InitData;
-
+        bool IsAllowRemoveOnApprove { get; set; }
+        bool IsAllowEditSlOnApprove { get; set; }      
+        private bool _isReloading = false; 
+        Dictionary<long, decimal> _originalAmountDict = new Dictionary<long, decimal>();
+        List<ExpMestMatyMetyReqSDODetail> _deletedItems = new List<ExpMestMatyMetyReqSDODetail>();
+        List<long> _deletedServiceReqIds = new List<long>();
         GridColumn lastColumn = null;
         ToolTipControlInfo lastInfo = null;
         int lastRowHandle = -1;
@@ -104,9 +111,18 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         {
             try
             {
+                ButtonEdit_DeleteMediMate.Buttons.Clear();
+                ButtonEdit_DeleteMediMate.Buttons.Add(new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete));
+
                 WaitingManager.Show();
                 InitData = true;
                 IsReasonRequired = HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__IS_REASON_REQUIRED) == "1";
+                LoadMediStockConfig();
+                if (!IsAllowEditSlOnApprove)
+                {
+                    btnIconSave.Visible = false;
+                    layoutControlItem_Save.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
                 isNotLoadWhileChangeControlStateInFirst = true;
                 LoadDataToComboReasonRequired();
                 GetControlAcs();
@@ -126,6 +142,28 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 InitData = false;
 
                 gridControlExpMestChild.ToolTipController = toolTipControllerGrid;
+                // Đăng ký sự kiện chặn click nút xóa
+                gridViewExpMestChild.ShowingEditor += gridViewExpMestChild_ShowingEditor;
+                gridViewMedicineMaterialDetail.ShowingEditor += gridViewMedicineMaterialDetail_ShowingEditor;
+
+                gridViewExpMestChildDetail.ValidatingEditor += gridViewExpMestChildDetail_ValidatingEditor;
+
+                // THÊM DÒNG NÀY ĐỂ ẨN CHỮ "Y lệnh:" TRÊN GROUP HEADER
+                gridViewExpMestChildDetail.GroupFormat = "          {1} {2}";
+
+                // Thêm 2 dòng này để vẽ và xử lý nút X trên dòng Group
+                gridViewExpMestChildDetail.CustomDrawGroupRow += gridViewExpMestChildDetail_CustomDrawGroupRow;
+                gridViewExpMestChildDetail.MouseDown += gridViewExpMestChildDetail_MouseDown;
+
+                // Redraw khi kéo cột để icon X ăn theo đúng vị trí
+                gridViewExpMestChildDetail.ColumnWidthChanged += (s, args) => gridControlExpMestChild.Invalidate();
+                gridColumnDeleteMediMate.Caption = " ";
+                gridColDetail_Delete.Caption = " ";
+                // Ẩn cột X trên grid PHẢI khi ở chế độ sửa SL theo y lệnh
+                if (IsAllowEditSlOnApprove)
+                {
+                    gridColumnDeleteMediMate.Visible = false;
+                }
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -164,6 +202,55 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void LoadMediStockConfig()
+        {
+            try
+            {
+                IsAllowRemoveOnApprove = false;
+                IsAllowEditSlOnApprove = false;
+
+                var mediStock = BackendDataWorker.Get<HIS_MEDI_STOCK>()
+                    .FirstOrDefault(o => o.ID == this.AggExpMest.MEDI_STOCK_ID);
+
+                if (mediStock == null) return;
+
+                var type = mediStock.GetType();
+
+                var propRemove = type.GetProperty("IS_REMOVE_AMOUNT_APPROVE");
+                if (propRemove != null)
+                {
+                    var val = propRemove.GetValue(mediStock);
+                    IsAllowRemoveOnApprove = val != null && Convert.ToInt64(val) == 1;
+                }
+
+                var propChange = type.GetProperty("IS_CHANGE_AMOUNT_APPROVE");
+                if (propChange != null)
+                {
+                    var val = propChange.GetValue(mediStock);
+                    IsAllowEditSlOnApprove = val != null && Convert.ToInt64(val) == 1;
+                    if (IsAllowEditSlOnApprove)
+                    {
+                        gridControlExpMestChild.MainView = gridViewExpMestChildDetail;
+                        gridViewExpMestChildDetail.GroupRowHeight = 28;
+                        gridColDetail_ConvertUnit.Visible = false;
+                        gridColDetail_ConvertRatio.Visible = false;
+                        gridColDetail_ConvertAmount.Visible = false;
+                        gridColDetail_Lot.Visible = false;
+                        gridControlMedicineMaterialDetail.RepositoryItems.Remove(this.ButtonEdit_DeleteMediMate);
+                        gridControlMedicineMaterialDetail.RepositoryItems.Remove(this.repositoryItemSpinEdit_Amount);
+                        gridControlExpMestChild.RepositoryItems.Add(this.ButtonEdit_DeleteMediMate);
+                        gridControlExpMestChild.RepositoryItems.Add(this.repositoryItemSpinEdit_Amount);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                IsAllowRemoveOnApprove = false;
+                IsAllowEditSlOnApprove = false;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         private void InitComboExpMestReason(List<HIS_EXP_MEST_REASON> data)
@@ -376,7 +463,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         {
             try
             {
-                if (expMestMedicineMaterials != null && expMestMedicineMaterials.Count > 0)
+                if (!IsAllowEditSlOnApprove && expMestMedicineMaterials != null && expMestMedicineMaterials.Count > 0)
                 {
                     expMestMedicineMaterials = expMestMedicineMaterials.OrderByDescending(o => o.IS_MEDICINE).ThenBy(o => o.MEDICINE_TYPE_NUM_ORDER ?? 99999).ThenBy(o => o.MEDICINE_TYPE_NAME).ToList();
                 }
@@ -384,6 +471,9 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 gridControlMedicineMaterialDetail.BeginUpdate();
                 gridControlMedicineMaterialDetail.DataSource = expMestMedicineMaterials;
                 gridControlMedicineMaterialDetail.EndUpdate();
+
+                if (!IsAllowEditSlOnApprove)
+                    gridViewMedicineMaterialDetail.ClearGrouping();
             }
             catch (Exception ex)
             {
@@ -516,7 +606,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 var ExpMestMatyMetyReqSDODetailsDb = new List<ExpMestMatyMetyReqSDODetail>();
                 List<V_HIS_EXP_MEST_MEDICINE> expMestMedicineTemps = new List<V_HIS_EXP_MEST_MEDICINE>();
                 List<V_HIS_EXP_MEST_MATERIAL> expMestMaterialTemps = new List<V_HIS_EXP_MEST_MATERIAL>();
-
+                // Nếu kho cho phép sửa SL khi duyệt → load chi tiết vào grid TRÁI
+                if (IsAllowEditSlOnApprove)
+                {
+                    LoadDataToGridMediMateByPatient(expMestCheckeds, isDefault);
+                    // tiếp tục chạy để build tổng hợp vào grid PHẢI (không return)
+                }
                 List<long> expMestIds = expMestCheckeds.Select(o => o.ID).ToList();
                 // nếu là load lên mặc định (check all các phiếu xuất)
                 if (isDefault)
@@ -936,10 +1031,322 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             }
         }
 
+        private void LoadDataToGridMediMateByPatient(List<ExpMestSDO> expMestCheckeds, bool isDefault)
+        {
+            try
+            {
+                if (expMestCheckeds == null || expMestCheckeds.Count == 0)
+                {
+                    gridControlMedicineMaterialDetail.DataSource = null;
+                    return;
+                }
+
+                List<long> expMestIds = expMestCheckeds.Select(o => o.ID).ToList();
+                if (isDefault) expMestIds.Add(this.AggExpMest.ID);
+
+                var rawList = new List<ExpMestMatyMetyReqSDODetail>();
+
+                if (this.expMestMedicines != null)
+                {
+                    rawList.AddRange(
+                        this.expMestMedicines
+                            .Where(o => expMestIds.Contains(o.EXP_MEST_ID ?? 0))
+                            .Select(o => new ExpMestMatyMetyReqSDODetail(o)));
+                }
+                if (this.expMestMaterials != null)
+                {
+                    rawList.AddRange(
+                        this.expMestMaterials
+                            .Where(o => expMestIds.Contains(o.EXP_MEST_ID ?? 0))
+                            .Select(o => new ExpMestMatyMetyReqSDODetail(o)));
+                }
+
+                var expMestMap = expMestCheckeds.ToDictionary(o => o.ID, o => o);
+                if (!expMestMap.ContainsKey(this.AggExpMest.ID))
+                    expMestMap[this.AggExpMest.ID] = new ExpMestSDO(this.AggExpMest);
+
+                foreach (var item in rawList)
+                {
+                    ExpMestSDO parent = null;
+                    if (item.EXP_MEST_ID.HasValue)
+                        expMestMap.TryGetValue(item.EXP_MEST_ID.Value, out parent);
+
+                    if (parent != null)
+                    {
+                        item.TDL_SERVICE_REQ_ID_DETAIL = item.TDL_SERVICE_REQ_ID ?? parent.ID;
+                        item.TDL_SERVICE_REQ_CODE_DETAIL = parent.TDL_SERVICE_REQ_CODE ?? "";
+                        item.TDL_PATIENT_NAME_DETAIL = parent.TDL_PATIENT_NAME ?? "";
+                        item.TDL_TREATMENT_CODE_DETAIL = parent.TDL_TREATMENT_CODE ?? "";
+                        item.INTRUCTION_DATE_DETAIL = parent.TDL_INTRUCTION_DATE != null
+                            ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(parent.TDL_INTRUCTION_DATE ?? 0)
+                            : "";
+                        string icdCode = parent.ICD_CODE ?? "";
+                        string icdName = parent.ICD_NAME ?? parent.ICD_TEXT ?? "";
+                        item.ICD_DISPLAY_DETAIL = !string.IsNullOrEmpty(icdCode)
+    ? $"{icdCode} {icdName}"
+    : icdName;
+
+                        item.GROUP_HEADER_DISPLAY = string.Join(" - ", new[]
+                        {
+                            item.TDL_SERVICE_REQ_CODE_DETAIL,
+                            item.TDL_PATIENT_NAME_DETAIL,
+                            item.TDL_TREATMENT_CODE_DETAIL,
+                            item.INTRUCTION_DATE_DETAIL,
+                            item.ICD_DISPLAY_DETAIL
+                        }.Where(s => !string.IsNullOrEmpty(s)));
+                    }
+                    else
+                    {
+                        item.TDL_SERVICE_REQ_ID_DETAIL = item.EXP_MEST_ID;
+                        item.GROUP_HEADER_DISPLAY = $"EXP_MEST_ID: {item.EXP_MEST_ID}";
+                    }
+                }
+                foreach (var item in rawList)
+                {
+
+                    Inventec.Common.Logging.LogSystem.Debug($"DEBUG_GROUP: MEDI_MATE_ID={item.MEDI_MATE_ID}, TDL_SERVICE_REQ_ID_DETAIL={item.TDL_SERVICE_REQ_ID_DETAIL}, IS_MEDICINE={item.IS_MEDICINE}, AMOUNT={item.AMOUNT}");
+                }
+                rawList = rawList
+                   .GroupBy(o => new { o.TDL_SERVICE_REQ_ID_DETAIL, o.MEDI_MATE_TYPE_ID, o.IS_MEDICINE })
+                    .Select(g =>
+                    {
+                        var first = g.First();
+                        first.AMOUNT = g.Sum(x => x.AMOUNT);
+                        return first;
+                    })
+                    .OrderBy(o => o.TDL_SERVICE_REQ_ID_DETAIL)
+                    .ThenByDescending(o => o.IS_MEDICINE)
+                    .ThenBy(o => o.MEDICINE_TYPE_NUM_ORDER ?? 99999)
+                    .ThenBy(o => o.MEDICINE_TYPE_NAME)
+                    .ToList();
+
+                int stt = 1;
+                foreach (var grp in rawList.GroupBy(o => o.TDL_SERVICE_REQ_ID_DETAIL))
+                {
+                    foreach (var item in grp)
+                        item.GROUP_HEADER_DISPLAY = $"{stt}.            {item.GROUP_HEADER_DISPLAY}";
+                    stt++;
+                }
+
+                _originalAmountDict.Clear();
+                foreach (var item in rawList)
+                {
+                    if (item.ID > 0 && !_originalAmountDict.ContainsKey(item.ID))
+                        _originalAmountDict[item.ID] = item.AMOUNT;
+                }
+
+                gridControlExpMestChild.BeginUpdate();
+                gridControlExpMestChild.DataSource = rawList;
+                gridControlExpMestChild.EndUpdate();
+                ApplyGroupByServiceReq();
+
+                UpdateBtnSaveState();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void ApplyGroupByServiceReq()
+        {
+            try
+            {
+                gridViewExpMestChildDetail.BeginSort();
+                gridViewExpMestChildDetail.ClearGrouping();
+                var colGroup = gridViewExpMestChildDetail.Columns["GROUP_HEADER_DISPLAY"];
+                if (colGroup != null)
+                {
+                    colGroup.GroupIndex = 0;
+                    colGroup.SortOrder = DevExpress.Data.ColumnSortOrder.Ascending;
+                }
+                gridViewExpMestChildDetail.EndSort();
+                gridViewExpMestChildDetail.ExpandAllGroups();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void UpdateBtnSaveState()
+        {
+            try
+            {
+                bool isNotApproved = this.AggExpMest.EXP_MEST_STT_ID
+                    == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST;
+
+                if (!isNotApproved)
+                {
+                    btnIconSave.Enabled = false;
+                    return;
+                }
+
+                var dataSource = IsAllowEditSlOnApprove
+                    ? gridControlExpMestChild.DataSource as List<ExpMestMatyMetyReqSDODetail>
+                    : gridControlMedicineMaterialDetail.DataSource as List<ExpMestMatyMetyReqSDODetail>;
+                bool hasError = dataSource != null
+                    && dataSource.Any(o => !o.IS_DELETED_IN_APPROVE && o.AMOUNT <= 0);
+
+                btnIconSave.Enabled = !hasError;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ProcessDeleteMediMateItem(ExpMestMatyMetyReqSDODetail item)
+        {
+            try
+            {
+                if (item == null) return;
+
+                item.IS_DELETED_IN_APPROVE = true;
+                _deletedItems.Add(item);
+
+                var dataSource = gridControlExpMestChild.DataSource as List<ExpMestMatyMetyReqSDODetail>;
+                if (dataSource == null) return;
+
+                dataSource.Remove(item);
+
+                long serviceReqId = item.TDL_SERVICE_REQ_ID_DETAIL ?? 0;
+                if (serviceReqId > 0)
+                {
+                    bool allGone = !dataSource.Any(
+                        o => (o.TDL_SERVICE_REQ_ID_DETAIL ?? 0) == serviceReqId
+                             && !o.IS_DELETED_IN_APPROVE);
+                    if (allGone && !_deletedServiceReqIds.Contains(serviceReqId))
+                        _deletedServiceReqIds.Add(serviceReqId);
+                }
+
+                gridControlExpMestChild.BeginUpdate();
+                gridControlExpMestChild.DataSource = dataSource;
+                gridControlExpMestChild.EndUpdate();
+                gridViewExpMestChildDetail.RefreshData();
+
+                UpdateBtnSaveState();
+
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SavePressInApprove()
+        {
+            try
+            {
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+
+                var dataSource = gridControlExpMestChild.DataSource as List<ExpMestMatyMetyReqSDODetail>;
+                var modifiedMedicines = new List<ExpMestMedicineUpdateSDO>();
+                var modifiedMaterials = new List<ExpMestMaterialUpdateSDO>();
+                var deletedMedicineIds = new List<long>();
+                var deletedMaterialIds = new List<long>();
+
+                if (dataSource != null)
+                {
+                    foreach (var item in dataSource)
+                    {
+                        if (item.IS_DELETED_IN_APPROVE) continue;
+                        if (_originalAmountDict.ContainsKey(item.ID))
+                        {
+                            decimal originalAmount = _originalAmountDict[item.ID];
+                            decimal amountAdd = item.AMOUNT - originalAmount;
+                            if (amountAdd != 0)
+                            {
+                                if (item.IS_MEDICINE)
+                                    modifiedMedicines.Add(new ExpMestMedicineUpdateSDO { ExpMestMedicineId = item.ID, AmountAdd = amountAdd });
+                                else
+                                    modifiedMaterials.Add(new ExpMestMaterialUpdateSDO { ExpMestMaterialId = item.ID, AmountAdd = amountAdd });
+                            }
+                        }
+                    }
+                }
+
+                if (_deletedItems != null)
+                {
+                    foreach (var item in _deletedItems)
+                    {
+                        if (item.IS_MEDICINE) deletedMedicineIds.Add(item.ID);
+                        else deletedMaterialIds.Add(item.ID);
+                    }
+                }
+
+                if (modifiedMedicines.Count == 0 && modifiedMaterials.Count == 0 &&
+                    deletedMedicineIds.Count == 0 && deletedMaterialIds.Count == 0 &&
+                    _deletedServiceReqIds.Count == 0)
+                {
+                    WaitingManager.Hide();
+                    Inventec.Common.Logging.LogSystem.Info("Không có thay đổi nào cần lưu.");
+                    return;
+                }
+
+                var requestSdo = new UpdatePresInApproveSDO
+                {
+                    ExpMestIds = this.ExpMestChildFromAggs?.Select(o => o.ID).ToList() ?? new List<long>(),
+                    WorkingRoomId = this.moduleData.RoomId,
+                    MedicineUpdates = modifiedMedicines,
+                    MaterialUpdates = modifiedMaterials,
+                    DeleteMedicineIds = deletedMedicineIds,
+                    DeleteMaterialIds = deletedMaterialIds,
+                    DeleteServiceReqIds = _deletedServiceReqIds,
+                };
+
+                Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("requestSdo", requestSdo));
+                var result = new BackendAdapter(param).Post<HIS_EXP_MEST>(
+                        RequestUriStore.HIS_EXP_MEST_UPDATE_PRESS_IN_APPROVE,
+                        ApiConsumer.ApiConsumers.MosConsumer,
+                        requestSdo,
+                        param);
+
+                WaitingManager.Hide();
+
+                if (result != null)
+                {
+                    _deletedItems.Clear();
+                    _deletedServiceReqIds.Clear();
+                    _originalAmountDict.Clear();
+
+                    _isReloading = true;
+                    try
+                    {
+                        GetChildExpMestFromAggExpMest(this.AggExpMest.ID);
+                        GetdExpMestMedicineMaterial();
+                        LoadDataToGridMediMate(this.ExpMestChildFromAggs, true);
+                        if (!IsAllowEditSlOnApprove)
+                        {
+                            SetDataToExpMestChildGrid(ExpMestChildFromAggs, false, false);
+                            gridViewExpMestChild.SelectAll();
+                        }
+                    }
+                    finally
+                    {
+                        _isReloading = false;
+                    }
+                }
+
+                bool success = result != null;
+                Inventec.Desktop.Common.Message.MessageManager.Show(this.ParentForm, param, success);
+                HIS.Desktop.Controls.Session.SessionManager.ProcessTokenLost(param);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         void SetDataToExpMestChildGrid(List<ExpMestSDO> expMests, bool isSearch, bool IsHightLight)
         {
             try
             {
+                if (IsAllowEditSlOnApprove) return;
+
                 InitRestoreLayoutGridViewFromXml(gridViewExpMestChild);
                 if (expMests != null && expMests.Count > 0 && !isSearch)
                 {
@@ -1207,6 +1614,8 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         {
             try
             {
+                if (_isReloading) return;
+
                 List<ExpMestSDO> expMestCheckeds = new List<ExpMestSDO>();
                 int[] selectRows = gridViewExpMestChild.GetSelectedRows();
                 if (selectRows != null && selectRows.Count() > 0)
@@ -1215,19 +1624,23 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     {
                         expMestCheckeds.Add((ExpMestSDO)gridViewExpMestChild.GetRow(selectRows[i]));
                     }
-                }
+                }             
                 else
                 {
-                    var dataSource = (List<ExpMestSDO>)gridControlExpMestChild.DataSource;
-                    foreach (var item in dataSource)
+                    var dataSource = gridControlExpMestChild.DataSource as List<ExpMestSDO>;
+                    if (dataSource != null)
                     {
-                        item.IsHighLight = false;
+                        foreach (var item in dataSource)
+                        {
+                            item.IsHighLight = false;
+                        }
+                        gridViewExpMestChild.BeginDataUpdate();
+                        gridControlExpMestChild.DataSource = dataSource;
+                        gridViewExpMestChild.EndDataUpdate();
                     }
-                    gridViewExpMestChild.BeginDataUpdate();
-                    gridControlExpMestChild.DataSource = dataSource;
-                    gridViewExpMestChild.EndDataUpdate();
                 }
 
+                if (expMestCheckeds == null || expMestCheckeds.Count == 0) return;
                 LoadDataToGridMediMate(expMestCheckeds, false);
             }
             catch (Exception ex)
@@ -1317,15 +1730,31 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 if (e.RowHandle >= 0)
                 {
 
-                    V_HIS_EXP_MEST data = (V_HIS_EXP_MEST)((IList)((BaseView)sender).DataSource)[e.RowHandle];
+                    V_HIS_EXP_MEST data = (V_HIS_EXP_MEST)((IList)((BaseView)sender).DataSource)[e.RowHandle];                  
                     if (e.Column.FieldName == "DELETE_ITEM")
                     {
-                        if (this.AggExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST)
+                        bool isRequest = this.AggExpMest.EXP_MEST_STT_ID
+                            == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST;
+                        bool canRemove = isRequest && IsAllowRemoveOnApprove;
+                        e.RepositoryItem = canRemove
+                            ? ButtonEditRemoveEnable
+                            : ButtonEditRemoveDisable;
+                    }
+                    else if (e.Column.FieldName == "DELETE")
+                    {
+                        try
                         {
-                            e.RepositoryItem = ButtonEditRemoveEnable;
+                            if (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                                e.RepositoryItem = btnGDelete;
+                            else
+                                e.RepositoryItem = btnGDisableDelete;
+
                         }
-                        else
-                            e.RepositoryItem = ButtonEditRemoveDisable;
+                        catch (Exception ex)
+                        {
+
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
                     }
                     else if (e.Column.FieldName == "ANTIBIOTIC_REQUEST_STT_ICON")
                     {
@@ -1370,8 +1799,12 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     MOS.EFMODEL.DataModels.V_HIS_EXP_MEST pData = (MOS.EFMODEL.DataModels.V_HIS_EXP_MEST)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (e.Column.FieldName == "STT")
                     {
-                        e.Value = e.ListSourceRowIndex + 1;
+                        if (IsAllowEditSlOnApprove)
+                            e.Value = null;
+                        else
+                            e.Value = e.ListSourceRowIndex + 1;
                     }
+
                     else if (e.Column.FieldName == "DOB_STR")
                     {
                         try
@@ -1447,7 +1880,10 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     ExpMestMatyMetyReqSDODetail pData = (ExpMestMatyMetyReqSDODetail)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (e.Column.FieldName == "STT")
                     {
-                        e.Value = e.ListSourceRowIndex + 1;
+                        if (view.Name == "gridViewExpMestChildDetail")
+                            e.Value = null;
+                        else
+                            e.Value = e.ListSourceRowIndex + 1;
                     }
                     else if (e.Column.FieldName == "EXPIRED_DATE_DISPLAY")
                     {
@@ -1501,21 +1937,140 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             }
         }
 
+        private void gridViewMedicineMaterialDetail_CustomRowCellEdit(object sender, CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                if (!IsAllowEditSlOnApprove) return;
+                if (e.RowHandle < 0) return;
+
+                bool isNotApproved = this.AggExpMest.EXP_MEST_STT_ID
+                    == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST;
+
+                if (e.Column.FieldName == "DELETE_ITEM_MEDI")
+                {
+                    e.RepositoryItem = ButtonEdit_DeleteMediMate;
+                }
+                else if (e.Column.FieldName == "AMOUNT" && isNotApproved && IsAllowEditSlOnApprove)
+                {
+                    e.RepositoryItem = repositoryItemSpinEdit_Amount;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewExpMestChild_ShowingEditor(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                if (view.FocusedColumn.FieldName == "DELETE_ITEM")
+                {
+                    bool isRequest = this.AggExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST;
+                    if (!isRequest || !IsAllowRemoveOnApprove)
+                    {
+                        e.Cancel = true; 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewMedicineMaterialDetail_ShowingEditor(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                if (view.FocusedColumn.FieldName == "DELETE_ITEM_MEDI")
+                {
+                    bool isRequest = this.AggExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST;
+                    if (!isRequest || !IsAllowRemoveOnApprove)
+                    {
+                        e.Cancel = true; 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ButtonEdit_DeleteMediMate_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                bool isRequest = this.AggExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST;
+                if (!isRequest)
+                {
+                    XtraMessageBox.Show("Phiếu đã duyệt/xuất, không được phép xóa thuốc/vật tư.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                if (!IsAllowRemoveOnApprove) return;
+
+                var focusedItem = (ExpMestMatyMetyReqSDODetail)gridViewExpMestChildDetail.GetFocusedRow();
+                if (focusedItem == null) return;
+
+                if (XtraMessageBox.Show(
+                $"Bạn có chắc chắn muốn xóa thuốc/vật tư \"{focusedItem.MEDICINE_TYPE_NAME}\" không?",
+                "Xác nhận xóa",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) != DialogResult.Yes) return;
+
+                ProcessDeleteMediMateItem(focusedItem);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewExpMestChildDetail_ValidatingEditor(object sender, DevExpress.XtraEditors.Controls.BaseContainerValidateEditorEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                if (view == null) return;
+
+                if (view.FocusedColumn.FieldName == "AMOUNT")
+                {
+                    decimal newValue = 0;
+                    if (e.Value == null || !decimal.TryParse(e.Value.ToString(), out newValue) || newValue <= 0)
+                    {
+                        e.Valid = false;
+                        e.ErrorText = "Số lượng không được phép nhỏ hơn hoặc bằng 0!";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
         private void gridViewMedicineMaterialDetail_RowCellStyle(object sender, RowCellStyleEventArgs e)
         {
             try
             {
-                if (e.RowHandle < 0)
-                    return;
-                var data = (ExpMestMatyMetyReqSDODetail)gridViewMedicineMaterialDetail.GetRow(e.RowHandle);
+                if (e.RowHandle < 0) return;
+
+                // FIX: Dùng sender để linh hoạt áp dụng cho cả gridViewExpMestChildDetail
+                var view = sender as GridView;
+                var data = (ExpMestMatyMetyReqSDODetail)view.GetRow(e.RowHandle);
+
                 if (data != null)
                 {
-                    // nếu thuốc là gây nghiện hướng thần
+                    // 1. Đổi màu chữ theo loại thuốc (như cũ)
                     if (data.IS_MEDICINE && (data.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__HT || data.MEDICINE_GROUP_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_GROUP.ID__GN))
                     {
                         e.Appearance.ForeColor = Color.Red;
                     }
-                    else if (data.IS_MEDICINE)// thuốc thường
+                    else if (data.IS_MEDICINE)
                     {
                         e.Appearance.ForeColor = Color.Black;
                     }
@@ -1523,8 +2078,23 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     {
                         e.Appearance.ForeColor = Color.Blue;
                     }
-                }
 
+                    // 2. TÔ NỀN MÀU VÀNG NẾU ĐANG ĐƯỢC HIGHLIGHT TỪ GRID BÊN PHẢI (MỚI THÊM)
+                    if (data.IsHighLightInDetail)
+                    {
+                        e.Appearance.BackColor = Color.Yellow;
+                    }
+
+                    // 3. Cảnh báo đỏ nhạt khi SL <= 0
+                    if (IsAllowEditSlOnApprove
+                        && !data.IS_DELETED_IN_APPROVE
+                        && data.AMOUNT <= 0
+                        && e.Column.FieldName == "AMOUNT")
+                    {
+                        e.Appearance.BackColor = Color.FromArgb(255, 200, 200);
+                        e.Appearance.ForeColor = Color.DarkRed;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -1544,17 +2114,33 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     GridHitInfo hi = view.CalcHitInfo(e.Location);
                     if (hi.InRowCell)
                     {
-                        var expMestFocus = (ExpMestSDO)gridViewExpMestChild.GetRow(hi.RowHandle);
+                        var expMestFocus = (ExpMestSDO)gridViewExpMestChild.GetRow(hi.RowHandle);                      
                         if (hi.Column.FieldName == "DELETE_ITEM")
                         {
-                            if (this.AggExpMest.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST)
+                            bool isRequest = this.AggExpMest.EXP_MEST_STT_ID
+                                == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__REQUEST;
+                            if (isRequest && IsAllowRemoveOnApprove)
                             {
                                 ProcessHisExpMestAggrRemove(expMestFocus);
                             }
                         }
                         if (hi.Column.FieldName == "Y_LENH_BN_DETAIL")
                         {
-                            YLenhThuocBN(expMestFocus);
+                            if (IsAllowEditSlOnApprove)
+                            {
+                                var detailSource = gridControlMedicineMaterialDetail.DataSource
+                                    as List<ExpMestMatyMetyReqSDODetail>;
+                                if (detailSource != null)
+                                {
+                                    foreach (var item in detailSource)
+                                        item.IsHighLightInDetail = (item.EXP_MEST_ID == expMestFocus.ID);
+                                    gridViewMedicineMaterialDetail.RefreshData();
+                                }
+                            }
+                            else
+                            {
+                                YLenhThuocBN(expMestFocus);
+                            }
                         }
                     }
                 }
@@ -1781,9 +2367,31 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             try
             {
                 var focus = (ExpMestMatyMetyReqSDODetail)gridViewMedicineMaterialDetail.GetFocusedRow();
-                if (focus != null)
+                if (focus == null) return;
+
+                if (IsAllowEditSlOnApprove)
                 {
-                    var dataSource = (List<ExpMestSDO>)gridControlExpMestChild.DataSource;
+                    var dataSourceDetail = gridControlExpMestChild.DataSource as List<ExpMestMatyMetyReqSDODetail>;
+                    if (dataSourceDetail != null)
+                    {
+                        foreach (var item in dataSourceDetail)
+                        {
+                            bool isMatch = item.IS_MEDICINE == focus.IS_MEDICINE && item.MEDI_MATE_TYPE_ID == focus.MEDI_MATE_TYPE_ID;
+
+                            if (chkTheoLo.Checked)
+                            {
+                                isMatch = isMatch && (item.MEDI_MATE_ID == focus.MEDI_MATE_ID);
+                            }
+
+                            item.IsHighLightInDetail = isMatch;
+                        }
+                        gridViewExpMestChildDetail.RefreshData();
+                    }
+                }
+                else
+                {
+                    var dataSource = gridControlExpMestChild.DataSource as List<ExpMestSDO>;
+                    if (dataSource == null) return;
                     var select = gridViewExpMestChild.GetSelectedRows();
 
                     if (chkTheoLo.Checked)// theo loại thuốc
@@ -1792,70 +2400,30 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                         {
                             List<V_HIS_EXP_MEST_MEDICINE> medicineCheck = (this.expMestMedicines != null && this.expMestMedicines.Count() > 0) ? this.expMestMedicines.Where(o => o.MEDICINE_TYPE_ID == focus.MEDI_MATE_TYPE_ID).ToList() : null;
                             foreach (var item in dataSource)
-                            {
-                                if (medicineCheck != null && medicineCheck.Count() > 0 && medicineCheck.Select(o => o.EXP_MEST_ID).Contains(item.ID))
-                                {
-                                    item.IsHighLight = true;
-                                }
-                                else
-                                {
-                                    item.IsHighLight = false;
-                                }
-                            }
+                                item.IsHighLight = medicineCheck != null && medicineCheck.Select(o => o.EXP_MEST_ID).Contains(item.ID);
                         }
                         else
                         {
                             List<V_HIS_EXP_MEST_MATERIAL> materialCheck = (this.expMestMaterials != null && this.expMestMaterials.Count() > 0) ? this.expMestMaterials.Where(o => o.MATERIAL_TYPE_ID == focus.MEDI_MATE_TYPE_ID).ToList() : null;
                             foreach (var item in dataSource)
-                            {
-                                if (materialCheck != null && materialCheck.Count() > 0 && materialCheck.Select(o => o.EXP_MEST_ID).Contains(item.ID))
-                                {
-                                    item.IsHighLight = true;
-                                }
-                                else
-                                {
-                                    item.IsHighLight = false;
-                                }
-                            }
+                                item.IsHighLight = materialCheck != null && materialCheck.Select(o => o.EXP_MEST_ID).Contains(item.ID);
                         }
-
                     }
                     else// theo lô
                     {
                         if (focus.IS_MEDICINE)
                         {
                             List<V_HIS_EXP_MEST_MEDICINE> medicineCheck = this.expMestMedicines != null && this.expMestMedicines.Count() > 0 ? this.expMestMedicines.Where(o => o.MEDICINE_ID == focus.MEDI_MATE_ID && o.MEDICINE_TYPE_ID == focus.MEDI_MATE_TYPE_ID).ToList() : null;
-
                             foreach (var item in dataSource)
-                            {
-                                if (medicineCheck != null && medicineCheck.Count() > 0 && medicineCheck.Select(o => o.EXP_MEST_ID).Contains(item.ID))
-                                {
-                                    item.IsHighLight = true;
-                                }
-                                else
-                                {
-                                    item.IsHighLight = false;
-                                }
-                            }
+                                item.IsHighLight = medicineCheck != null && medicineCheck.Select(o => o.EXP_MEST_ID).Contains(item.ID);
                         }
                         else
                         {
                             List<V_HIS_EXP_MEST_MATERIAL> materialCheck = this.expMestMaterials != null && this.expMestMaterials.Count() > 0 ? this.expMestMaterials.Where(o => o.MATERIAL_ID == focus.MEDI_MATE_ID && o.MATERIAL_TYPE_ID == focus.MEDI_MATE_TYPE_ID).ToList() : null;
-
                             foreach (var item in dataSource)
-                            {
-                                if (materialCheck != null && materialCheck.Count() > 0 && materialCheck.Select(o => o.EXP_MEST_ID).Contains(item.ID))
-                                {
-                                    item.IsHighLight = true;
-                                }
-                                else
-                                {
-                                    item.IsHighLight = false;
-                                }
-                            }
+                                item.IsHighLight = materialCheck != null && materialCheck.Select(o => o.EXP_MEST_ID).Contains(item.ID);
                         }
                     }
-
 
                     gridControlExpMestChild.BeginUpdate();
                     gridControlExpMestChild.DataSource = dataSource;
@@ -1865,7 +2433,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                     }
                     gridControlExpMestChild.EndUpdate();
                 }
-
             }
             catch (Exception ex)
             {
@@ -1884,7 +2451,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 {
                     e.Appearance.BackColor = Color.Yellow;
                 }
-
             }
             catch (Exception ex)
             {
@@ -2016,6 +2582,34 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
 
         }
 
+        private void gridViewMedicineMaterialDetail_AmountCellValueChanged(object sender, CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (!IsAllowEditSlOnApprove) return;
+                if (e.Column.FieldName != "AMOUNT") return;
+
+                GridView view = sender as GridView;
+                if (view == null) return;
+
+                var item = view.GetRow(e.RowHandle) as ExpMestMatyMetyReqSDODetail;
+                if (item == null) return;
+
+                decimal newVal = 0;
+                bool valid = decimal.TryParse(e.Value?.ToString(), out newVal) && newVal > 0;
+
+                if (valid)
+                    item.AMOUNT = newVal;
+
+                view.RefreshRow(e.RowHandle);
+                UpdateBtnSaveState();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void repReasonRequired_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -2038,11 +2632,31 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+     
         private void btnIconSave_Click(object sender, EventArgs e)
         {
             try
             {
+                if (IsAllowEditSlOnApprove)
+                {
+                    var dataSource = gridControlExpMestChild.DataSource as List<ExpMestMatyMetyReqSDODetail>;
+                    bool hasError = dataSource != null && dataSource.Any(o => !o.IS_DELETED_IN_APPROVE && o.AMOUNT <= 0);
+                    if (hasError)
+                    {
+                        XtraMessageBox.Show(
+                            "Số lượng thuốc/vật tư phải lớn hơn 0. Vui lòng kiểm tra lại.",
+                            MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao),
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                        return;
+                    }
+                    gridViewExpMestChildDetail.PostEditor();
+                    gridViewExpMestChildDetail.UpdateCurrentRow();
+
+                    SavePressInApprove();
+                    return;
+                }
+
                 if (IsReasonRequired && cboExpMestReason.EditValue == null)
                 {
                     XtraMessageBox.Show(ResourceLanguageManager.BatBuocNhapLyDoXuat, MessageUtil.GetMessage(LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaThongBao), MessageBoxButtons.OK);
@@ -2157,6 +2771,7 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -2176,6 +2791,208 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail.AggrExpMestDetail
         private void lblReqAreaName_Click(object sender, EventArgs e)
         {
 
+        }
+        private Rectangle GetColumnRect(GridView view, GridViewInfo viewInfo, GridColumn col, int y, int height)
+        {
+            if (col == null || !col.Visible) return Rectangle.Empty;
+            GridColumnInfoArgs cInfo = viewInfo.ColumnsInfo[col];
+            if (cInfo != null) return new Rectangle(cInfo.Bounds.X, y, cInfo.Bounds.Width, height);
+
+            GridColumn refCol = null;
+            int refX = 0;
+            foreach (GridColumn c in view.VisibleColumns)
+            {
+                var cI = viewInfo.ColumnsInfo[c];
+                if (cI != null) { refCol = c; refX = cI.Bounds.X; break; }
+            }
+            if (refCol == null) return Rectangle.Empty;
+
+            int targetX = refX;
+            if (col.VisibleIndex < refCol.VisibleIndex)
+            {
+                for (int i = col.VisibleIndex; i < refCol.VisibleIndex; i++)
+                    targetX -= view.VisibleColumns[i].VisibleWidth;
+            }
+            else
+            {
+                for (int i = refCol.VisibleIndex; i < col.VisibleIndex; i++)
+                    targetX += view.VisibleColumns[i].VisibleWidth;
+            }
+            return new Rectangle(targetX, y, col.VisibleWidth, height);
+        }
+
+        private void gridViewExpMestChildDetail_CustomDrawGroupRow(object sender, RowObjectCustomDrawEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                GridGroupRowInfo info = e.Info as GridGroupRowInfo;
+                if (info == null) return;
+
+                string originalGroupText = info.GroupText;
+                info.GroupText = " ";
+                e.Painter.DrawObject(info);
+                info.GroupText = originalGroupText;
+
+                GridViewInfo viewInfo = view.GetViewInfo() as GridViewInfo;
+
+                var firstRow = view.GetRow(view.GetChildRowHandle(e.RowHandle, 0)) as ExpMestMatyMetyReqSDODetail;
+                if (firstRow == null) { e.Handled = true; return; }
+
+                string fullText = firstRow.GROUP_HEADER_DISPLAY ?? "";
+                string sttText = "";
+                string contentText = fullText;
+
+                int dotIndex = fullText.IndexOf('.');
+                if (dotIndex > 0)
+                {
+                    sttText = fullText.Substring(0, dotIndex).Trim();
+                    contentText = fullText.Substring(dotIndex + 1).Trim();
+                }
+
+                Font boldFont = new Font("Tahoma", 8.5F, FontStyle.Regular);
+                Brush blackBrush = Brushes.Black;
+
+                GridColumn colSTT = view.Columns["STT"];
+                Rectangle sttRect = GetColumnRect(view, viewInfo, colSTT, info.Bounds.Y, info.Bounds.Height);
+                if (sttRect != Rectangle.Empty)
+                {
+                    StringFormat sfCenter = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
+                    e.Cache.DrawString(sttText, boldFont, blackBrush, sttRect, sfCenter);
+                }
+
+                GridColumn colDelete = view.Columns["DELETE_ITEM_MEDI"];
+                Rectangle delRect = GetColumnRect(view, viewInfo, colDelete, info.Bounds.Y, info.Bounds.Height);
+                if (delRect != Rectangle.Empty)
+                {
+                    using (Pen penBorder = new Pen(Color.FromArgb(180, 180, 180)))
+                    {
+                        e.Graphics.DrawLine(penBorder, delRect.X - 1, info.Bounds.Y, delRect.X - 1, info.Bounds.Bottom);
+                        e.Graphics.DrawLine(penBorder, delRect.Right - 1, info.Bounds.Y, delRect.Right - 1, info.Bounds.Bottom);
+                    }
+
+                    Image imgX = ButtonEditRemoveEnable.Buttons[0].Image;
+                    if (imgX != null)
+                    {
+                        int btnSize = imgX.Width + 6;
+                        int xOffset = delRect.X + (delRect.Width - btnSize) / 2;
+                        int yOffset = delRect.Y + (delRect.Height - btnSize) / 2;
+                        Rectangle btnRect = new Rectangle(xOffset, yOffset, btnSize, btnSize);
+
+                        e.Cache.FillRectangle(SystemColors.Control, btnRect);
+                        ControlPaint.DrawBorder3D(e.Graphics, btnRect, Border3DStyle.Raised);
+
+                        Rectangle iconRect = new Rectangle(btnRect.X + 2, btnRect.Y + 2, btnRect.Width - 4, btnRect.Height - 4);
+                        e.Graphics.DrawImage(imgX, iconRect);
+                    }
+                }
+
+                GridColumn colCode = view.Columns["MEDICINE_TYPE_CODE"];
+                Rectangle codeRect = GetColumnRect(view, viewInfo, colCode, info.Bounds.Y, info.Bounds.Height);
+                if (codeRect != Rectangle.Empty)
+                {
+                    Rectangle textRect = new Rectangle(codeRect.X, info.Bounds.Y - 2, 5000, info.Bounds.Height);
+                    StringFormat sfLeft = new StringFormat { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center, FormatFlags = StringFormatFlags.NoWrap };
+                    e.Cache.DrawString(contentText, boldFont, blackBrush, textRect, sfLeft);
+                }
+
+                e.Handled = true;
+            }
+            catch { }
+        }
+
+        private void gridViewExpMestChildDetail_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                GridView view = sender as GridView;
+                GridHitInfo hi = view.CalcHitInfo(e.Location);
+
+                if (hi.InGroupRow)
+                {
+                    GridViewInfo viewInfo = view.GetViewInfo() as GridViewInfo;
+                    if (viewInfo == null) return;
+
+                    GridColumn colDelete = view.Columns["DELETE_ITEM_MEDI"];
+                    if (colDelete != null && colDelete.Visible)
+                    {
+                        GridColumnInfoArgs colInfo = viewInfo.ColumnsInfo[colDelete];
+                        GridGroupRowInfo rowInfo = viewInfo.GetGridRowInfo(hi.RowHandle) as GridGroupRowInfo;
+
+                        if (colInfo != null && rowInfo != null)
+                        {
+                            Rectangle cellRect = new Rectangle(colInfo.Bounds.X, rowInfo.Bounds.Y, colInfo.Bounds.Width, rowInfo.Bounds.Height);
+                            int btnSize = 16;
+                            int xOffset = cellRect.X + (cellRect.Width - btnSize) / 2;
+                            int yOffset = cellRect.Y + (cellRect.Height - btnSize) / 2;
+                            Rectangle deleteBtnRect = new Rectangle(xOffset, yOffset, btnSize, btnSize);
+
+                            if (deleteBtnRect.Contains(e.Location))
+                            {
+                                var firstChildRow = view.GetRow(view.GetChildRowHandle(hi.RowHandle, 0)) as ExpMestMatyMetyReqSDODetail;
+                                if (firstChildRow != null)
+                                {
+                                    long reqId = firstChildRow.TDL_SERVICE_REQ_ID_DETAIL ?? 0;
+                                    if (reqId > 0)
+                                    {
+                                        if (XtraMessageBox.Show("Bạn có chắc chắn muốn xóa TOÀN BỘ thuốc/vật tư của y lệnh này khỏi phiếu lĩnh?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                        {
+                                            DeleteEntireServiceReq(reqId);
+                                        }
+                                    }
+                                }
+                                DevExpress.Utils.DXMouseEventArgs.GetMouseArgs(e).Handled = true;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void DeleteEntireServiceReq(long serviceReqId)
+        {
+            try
+            {
+                var dataSource = gridControlExpMestChild.DataSource as List<ExpMestMatyMetyReqSDODetail>;
+                if (dataSource == null) return;
+
+                var itemsToDelete = dataSource.Where(o => o.TDL_SERVICE_REQ_ID_DETAIL == serviceReqId && !o.IS_DELETED_IN_APPROVE).ToList();
+                if (itemsToDelete.Count == 0) return;
+
+                foreach (var item in itemsToDelete)
+                {
+                    item.IS_DELETED_IN_APPROVE = true;
+                    _deletedItems.Add(item);
+                    dataSource.Remove(item);
+                }
+
+
+                if (!_deletedServiceReqIds.Contains(serviceReqId))
+                    _deletedServiceReqIds.Add(serviceReqId);
+
+                gridControlExpMestChild.BeginUpdate();
+                gridControlExpMestChild.DataSource = null;
+                gridControlExpMestChild.DataSource = dataSource;
+                gridControlExpMestChild.EndUpdate();
+                ApplyGroupByServiceReq();
+                UpdateBtnSaveState();
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            btnIconSave_Click(sender, e);
         }
     }
 }

@@ -642,7 +642,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
                 ValidationMaxLength(txtTinhTrangNguoiBenh, 3000);
                 ValidationMaxLength(txtPhuongTienVanChuyen, 3000);
                 //qtcode
-                ValidationMaxLength(txtClinicalSigns, 3000);
+                ValidationMaxLength(txtClinicalSigns, 4000);
                 ValidateTextEdit(txtClinicalSigns);
                 //qtcode
                 //ValidationMaxLength(txtNguoiHoTong, 200);
@@ -1060,7 +1060,6 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.CloseTreatment
             try
             {
                 this.positionHandle = -1;
-                ValidationMaxLength(txtClinicalSigns, 4000);
 
                 if (!dxValidationProvider.Validate()) return;
 

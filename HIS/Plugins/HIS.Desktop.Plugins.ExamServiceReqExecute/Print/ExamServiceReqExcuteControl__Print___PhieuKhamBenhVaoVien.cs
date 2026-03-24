@@ -139,6 +139,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 //HIS_TREATMENT treatmentRaw = AutoMapper.Mapper.Map<V_HIS_TREATMENT, HIS_TREATMENT>(treatment);
 
                 WaitingManager.Hide();
+                // Đo thị lực
+                var paramViex = new CommonParam();
+                var filterViexView = new MOS.Filter.HisSereServViexViewFilter();
+                filterViexView.TDL_PATIENT_ID = patient.ID;
+                var sereServViexViews = new BackendAdapter(paramViex).Get<List<V_HIS_SERE_SERV_VIEX>>
+                    (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filterViexView, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramViex)?.OrderByDescending(o => o.VISION_TEST_TIME.HasValue ? o.VISION_TEST_TIME.Value : 0).FirstOrDefault();
 
                 MPS.Processor.Mps000007.PDO.Mps000007PDO rdo = new MPS.Processor.Mps000007.PDO.Mps000007PDO(
                     patient,
@@ -152,7 +158,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     ExpMestBloodList,
                     ExpMestBltyReqList,
                     ExpMestMedicineList,
-                    ExpMestMaterialList
+                    ExpMestMaterialList,
+                    sereServViexViews
                     );
 
                 MPS.ProcessorBase.PrintConfig.PreviewType PreviewType;

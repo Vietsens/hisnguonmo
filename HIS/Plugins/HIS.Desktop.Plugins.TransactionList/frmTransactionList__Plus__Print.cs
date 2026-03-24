@@ -184,6 +184,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                         case PopupMenuProcessor.ItemType.DieuChinhHoaDon:
                             this.DieuChinhHoaDon();
                             break;
+                        case PopupMenuProcessor.ItemType.HoanTienNganHang:
+                            this.HoanTienNganHang(e.Item.Hint);
+                            break;
                         default:
                             break;
                     }
@@ -194,6 +197,30 @@ namespace HIS.Desktop.Plugins.TransactionList
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void HoanTienNganHang(string hint)
+        {
+            try
+            {
+                HIS_TRANSACTION transaction = new HIS_TRANSACTION();
+                HIS_TREATMENT treatment = GetTreatment(this.transactionPrint.TREATMENT_ID.Value);
+                Inventec.Common.Mapper.DataObjectMapper.Map<HIS_TRANSACTION>(transaction, this.transactionPrint);
+
+                List<object> listArgs = new List<object>();
+                listArgs.Add(treatment);
+                listArgs.Add(transaction);
+                listArgs.Add(hint);
+                listArgs.Add((HIS.Desktop.Common.RefeshReference)(FillDataToGrid));
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.RefundByTransfer", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
         private bool DeletegatePrintTemplate(string printCode, string fileName)
         {
             bool result = false;
@@ -271,6 +298,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 TDL_SERVICE_CODE = "",
                                 TDL_SERVICE_NAME = item.GOODS_NAME,
                                 SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME,
+                                TDL_SERVICE_UNIT_ID = item.SERVICE_UNIT_ID ?? 0,
                                 PRICE = unitPrice,
                                 VIR_PRICE = unitPrice,
                                 VIR_TOTAL_PATIENT_PRICE = totalPriceWithVat
@@ -4108,6 +4136,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 ssb.TDL_SERVICE_CODE = "";
                                 ssb.TDL_SERVICE_NAME = item.GOODS_NAME;
                                 ssb.SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME;
+                                ssb.TDL_SERVICE_UNIT_ID = item.SERVICE_UNIT_ID ?? 0;
                                 ssb.PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
                                 ssb.VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
                                 ssb.VIR_TOTAL_PATIENT_PRICE = ssb.VIR_PRICE * (1 + ssb.VAT_RATIO) * ssb.AMOUNT;
@@ -4225,6 +4254,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 ssb.TDL_SERVICE_CODE = "";
                                 ssb.TDL_SERVICE_NAME = item.GOODS_NAME;
                                 ssb.SERVICE_UNIT_NAME = item.GOODS_UNIT_NAME;
+                                ssb.TDL_SERVICE_UNIT_ID = item.SERVICE_UNIT_ID ?? 0;
                                 ssb.PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
                                 ssb.VIR_PRICE = item.PRICE - ((item.DISCOUNT ?? 0) / item.AMOUNT);
                                 ssb.VIR_TOTAL_PATIENT_PRICE = ssb.VIR_PRICE * (1 + ssb.VAT_RATIO) * ssb.AMOUNT;

@@ -15,12 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Data;
 using DevExpress.Data.WcfLinq;
 using DevExpress.Utils.Drawing;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraEditors.Repository;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using DevExpress.XtraPrinting.Native;
 using DevExpress.XtraTreeList;
 using DevExpress.XtraTreeList.Nodes;
 using HIS.Desktop.Library.CacheClient;
@@ -38,6 +42,7 @@ using MOS.EFMODEL.DataModels;
 using MOS.Filter;
 using MOS.SDO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -95,6 +100,21 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             {
                 HisConfigCFG.LoadConfig();
                 InitComboStatus();
+
+                // Cấu hình cho phép chọn giờ, phút, giây trong repDateEna
+                if (repDateEna != null)
+                {
+                    repDateEna.CalendarTimeEditing = DevExpress.Utils.DefaultBoolean.True;
+                    repDateEna.CalendarTimeProperties.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                    repDateEna.CalendarTimeProperties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+                    repDateEna.CalendarTimeProperties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
+                    repDateEna.CalendarTimeProperties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+                    repDateEna.CalendarTimeProperties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+                    repDateEna.CalendarView = DevExpress.XtraEditors.Repository.CalendarView.Vista;
+                    repDateEna.VistaDisplayMode = DevExpress.Utils.DefaultBoolean.True;
+                    repDateEna.VistaEditTime = DevExpress.Utils.DefaultBoolean.True;
+                }
+
                 dtIntructionTimeFrom.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.Now() ?? 0) ?? DateTime.MinValue;
                 dtIntructionTimeTo.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Inventec.Common.DateTime.Get.Now() ?? 0) ?? DateTime.MinValue;
                 btnSearch_Click(null, null);
@@ -116,10 +136,14 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     var listBySety = itemGr.ToList<ExpMestMediMateADO>();
                     ExpMestMediMateADO ssRootSety = new ExpMestMediMateADO();
                     ssRootSety.MEDIMATE_TYPE_CODE = listBySety.FirstOrDefault().SERVICE_REQ_CODE;
-                    ssRootSety.MEDIMATE_TYPE_NAME = listBySety.FirstOrDefault().REQUEST_LOGINNAME + " - " + listBySety.FirstOrDefault().REQUEST_USERNAME + " " + '(' + listBySety.FirstOrDefault().INTRUCTION_DATE + ')';
+                    ssRootSety.MEDIMATE_TYPE_NAME = listBySety.FirstOrDefault().REQUEST_LOGINNAME + " - " + listBySety.FirstOrDefault().REQUEST_USERNAME + " " + "(TG y lệnh: " + Inventec.Common.DateTime.Convert.TimeNumberToTimeString(listBySety.FirstOrDefault().INTRUCTION_TIME) + " - TG thực xuất:" + Inventec.Common.DateTime.Convert.TimeNumberToTimeString(listBySety.FirstOrDefault().EXP_TIME ?? 0) + ')';
                     ssRootSety.IS_USED = false;
                     ssRootSety.CONCRETE_ID__IN_SETY = listBySety.FirstOrDefault().SERVICE_REQ_CODE ?? "";
                     ssRootSety.IS_PARENT = true;
+                    if (listBySety.FirstOrDefault().USE_TIME.HasValue)
+                    {
+                        ssRootSety.SERVICE_UNIT_NAME = "Dự trù: " + Inventec.Common.DateTime.Convert.TimeNumberToTimeString(listBySety.FirstOrDefault().USE_TIME ?? 0);
+                    }
                     SereServADOs.Add(ssRootSety);
 
                     int d = 0;
@@ -267,7 +291,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                                 ado.AMOUNT = item.AMOUNT;
                                 ado.IS_USED = item.IS_USED == 1 ? true : false;
                                 ado.USED_TIME = item.USED_TIME;
-
+                                ado.EXP_TIME = item.EXP_TIME;
                                 HIS_SERVICE_REQ servicereq = (lstserviceReq != null && lstserviceReq.Count > 0) ? lstserviceReq.FirstOrDefault(o => o.ID == item.TDL_SERVICE_REQ_ID) : null;
                                 if (servicereq != null)
                                 {
@@ -276,6 +300,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                                     ado.SERVICE_REQ_CODE = servicereq.SERVICE_REQ_CODE;
                                     ado.REQUEST_LOGINNAME = servicereq.REQUEST_LOGINNAME;
                                     ado.REQUEST_USERNAME = servicereq.REQUEST_USERNAME;
+                                    ado.USE_TIME = servicereq.USE_TIME;
                                 }
 
                                 lstAdo.Add(ado);
@@ -315,6 +340,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                                 ado.AMOUNT = item.AMOUNT;
                                 ado.IS_USED = item.IS_USED == 1 ? true : false;
                                 ado.USED_TIME = item.USED_TIME;
+                                ado.EXP_TIME = item.EXP_TIME;
                                 HIS_SERVICE_REQ servicereq = (lstserviceReq != null && lstserviceReq.Count > 0) ? lstserviceReq.FirstOrDefault(o => o.ID == item.TDL_SERVICE_REQ_ID) : null;
                                 if (servicereq != null)
                                 {
@@ -323,6 +349,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                                     ado.SERVICE_REQ_CODE = servicereq.SERVICE_REQ_CODE;
                                     ado.REQUEST_LOGINNAME = servicereq.REQUEST_LOGINNAME;
                                     ado.REQUEST_USERNAME = servicereq.REQUEST_USERNAME;
+                                    ado.USE_TIME = servicereq.USE_TIME;
                                 }
 
                                 lstAdo.Add(ado);
@@ -532,101 +559,11 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                         {
                             e.RepositoryItem = repositoryItemCheckEditUsed;
                         }
-                        if (rowData.IS_MEDICINE)
+                        else if (e.Column.FieldName == "View")
                         {
-                            if (e.Column.FieldName == "MORNING_CHK")
-                            {
-                                bool state = (rowData.MORNING != null && int.TryParse(rowData.MORNING.ToString(), out int morningValue) && morningValue > 0);
-                                e.RepositoryItem = repositoryItemCheckEditMorning;
-                                if (!state)
-                                {
-                                    e.RepositoryItem = repositoryItemCheckEditD;
-                                }
-                                //if (rowData.ID == 131548)
-                                //{
-                                //    bool rs = true;
-                                //}
-                                //repositoryItemCheckEditMorning.ValueChecked = state;
-                            }
-                            if (e.Column.FieldName == "LUNCH_CHK")
-                            {
-                                bool state = (rowData.NOON != null && int.TryParse(rowData.NOON.ToString(), out int noonValue) && noonValue > 0);
-                                e.RepositoryItem = repositoryItemCheckEditLunch;
-                                if (!state)
-                                {
-                                    e.RepositoryItem = repositoryItemCheckEditD;
-                                }
-
-                            }
-                            if (e.Column.FieldName == "AFTERNOON_CHK")
-                            {
-                                bool state = (rowData.AFTERNOON != null && int.TryParse(rowData.AFTERNOON.ToString(), out int afternoonValue) && afternoonValue > 0);
-                                e.RepositoryItem = repositoryItemCheckEditAfternoon;
-                                if (!state)
-                                {
-                                    e.RepositoryItem = repositoryItemCheckEditD;
-                                }
-
-
-                            }
-                            if (e.Column.FieldName == "DINNER_CHK")
-                            {
-                                bool state = (rowData.EVENING != null && int.TryParse(rowData.EVENING.ToString(), out int eveningValue) && eveningValue > 0);
-                                e.RepositoryItem = repositoryItemCheckEditDinner;
-                                if (!state)
-                                {
-                                    e.RepositoryItem = repositoryItemCheckEditD;
-                                }
-                            }
-
-                        }
-                        else
-                        {
-                            if (e.Column.FieldName == "MORNING_CHK")
-                            {
-                                e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem(); // Đặt lại RepositoryItem
-                            }
-                            if (e.Column.FieldName == "LUNCH_CHK")
-                            {
-                                e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem(); // Đặt lại RepositoryItem
-                            }
-                            if (e.Column.FieldName == "AFTERNOON_CHK")
-                            {
-                                e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem(); // Đặt lại RepositoryItem
-                            }
-                            if (e.Column.FieldName == "DINNER_CHK")
-                            {
-                                e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem(); // Đặt lại RepositoryItem
-                            }
+                            e.RepositoryItem = repView;
                         }
 
-                    }
-                    else
-                    {
-                        if (e.Column.FieldName == "IS_USED")
-                        {
-                            e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem();
-                        }
-                        if (e.Column.FieldName == "MORNING_CHK")
-                        {
-                            e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem(); // Đặt lại RepositoryItem
-                        }
-                        if (e.Column.FieldName == "LUNCH_CHK")
-                        {
-                            e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem(); // Đặt lại RepositoryItem
-                        }
-                        if (e.Column.FieldName == "AFTERNOON_CHK")
-                        {
-                            e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem(); // Đặt lại RepositoryItem
-                        }
-                        if (e.Column.FieldName == "DINNER_CHK")
-                        {
-                            e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem(); // Đặt lại RepositoryItem
-                        }
-                        if (e.Column.FieldName == "USED_TIME_STR")
-                        {
-                            e.RepositoryItem = new DevExpress.XtraEditors.Repository.RepositoryItem(); // Đặt lại RepositoryItem
-                        }
                     }
                 }
             }
@@ -692,13 +629,15 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     bool isChecked = e.NewValue is bool isUsed && isUsed;
                     var treeList = usedCheckEdit.Parent as TreeList;
                     var rowData = treeList.GetDataRecordByNode(treeList.FocusedNode) as ExpMestMediMateADO;
-                    if (rowData != null)
+
+                    var useTime = isChecked ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) : null;
+                    if (rowData != null && (!useTime.HasValue || rowData.INTRUCTION_TIME < useTime.Value))
                     {
                         bool success = false;
                         ExpMestMediMateADO dataUpdate = new ExpMestMediMateADO();
                         Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMediMateADO>(dataUpdate, rowData);
                         dataUpdate.IS_USED = isChecked;
-                        dataUpdate.USED_TIME = isChecked ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now) : null;
+                        dataUpdate.USED_TIME = useTime;
                         success = this.UpdateHisExpMest(ref dataUpdate, isChecked, phaseIsUnUsed);
                         if (success)
                         {
@@ -709,6 +648,18 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                             e.Cancel = true;
                         }
                     }
+                    else
+                    {
+                        if (useTime.HasValue)
+                        {
+                            rowData.USED_TIME = useTime;
+                            rowData.IS_USED = true;
+                        }
+                    }
+
+                    //if (useTime.HasValue)
+                   //     rowData.USED_TIME = useTime;
+
                     treeList.RefreshNode(treeList.FocusedNode);
                 }
             }
@@ -901,7 +852,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             return data != null && data.Count(o => !o.IS_PARENT) == data.Count(o => !o.IS_PARENT && o.IS_USED == true);
         }
 
-        
+
         private bool IsInvalidNodeException(TreeList tree)
         {
             List<ExpMestMediMateADO> data = null;
@@ -942,7 +893,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 {
                     if (IsInvalidNodeException(tree))
                     {
-                         return;
+                        return;
                     }
                     DevExpress.XtraTreeList.ViewInfo.ColumnInfo info = tree.ViewInfo.ColumnsInfo[hit.Column];
                     //Rectangle checkRect = new Rectangle(info.Bounds.Left + (info.Bounds.Width - 12) / 2, info.Bounds.Top + 2, 12, 12);
@@ -988,6 +939,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                             }
                             sdo.ExpMedicineIds = new List<long>();
                             sdo.ExpMaterialIds = new List<long>();
+                            List<string> mess = new List<string>();
                             foreach (var item in listResultCheck)
                             {
                                 if (item.IS_MEDICINE)
@@ -998,6 +950,19 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                                 {
                                     sdo.ExpMaterialIds.Add(item.EXP_MEST_MEDI_MATE_ID);
                                 }
+                                if(item.INTRUCTION_TIME > sdo.UsedTime)
+                                {
+                                    mess.Add("Thời gian dùng của " + item.MEDIMATE_TYPE_NAME+" không được nhỏ hơn thời gian y lệnh ("
+                            +
+                            Inventec.Common.DateTime.Convert.TimeNumberToTimeString(item.INTRUCTION_TIME)
+                            + ")");
+                                }    
+                            }
+                            if (mess != null && mess.Count > 0)
+                            {
+                                WaitingManager.Hide();
+                                XtraMessageBox.Show(string.Join("\r\n",mess.Distinct().ToList()),"Cảnh báo");
+                                return;
                             }
                             Inventec.Common.Logging.LogSystem.Debug("LoadSearch: " + Inventec.Common.Logging.LogUtil.TraceData("HisExpMestUsedSDO__", sdo));
                             if (isUsed)
@@ -1303,32 +1268,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                 var data = treeMedicineIsUsePt.GetDataRecordByNode(e.Node);
                 if (data is ExpMestMediMateADO rowData)
                 {
-                    // Xác định cột nào đang được chỉnh sửa
-                    if (e.Column.FieldName == "MORNING")
-                    {
-                        repositoryItemCheckEditMorning.ValueChecked = rowData.MORNING_IS_USED == 1 ||
-                                  (rowData.IS_USED != null && rowData.MORNING != null &&
-                                   int.TryParse(rowData.MORNING.ToString(), out int morningValue) && morningValue > 0);
-                    }
-                    else if (e.Column.FieldName == "LUNCH")
-                    {
-                        repositoryItemCheckEditLunch.ValueChecked = rowData.NOON_IS_USED == 1 ||
-                                  (rowData.IS_USED != null && rowData.NOON != null &&
-                                   int.TryParse(rowData.NOON.ToString(), out int noonValue) && noonValue > 0);
-                    }
-                    else if (e.Column.FieldName == "AFTERNOON")
-                    {
-                        repositoryItemCheckEditAfternoon.ValueChecked = rowData.AFTERNOON_IS_USED == 1 ||
-                                  (rowData.IS_USED != null && rowData.AFTERNOON != null &&
-                                   int.TryParse(rowData.AFTERNOON.ToString(), out int afternoonValue) && afternoonValue > 0);
-                    }
-                    else if (e.Column.FieldName == "DINNER")
-                    {
-                        repositoryItemCheckEditDinner.ValueChecked = rowData.EVENING_IS_USED == 1 ||
-                                  (rowData.IS_USED != null && rowData.EVENING != null &&
-                                   int.TryParse(rowData.EVENING.ToString(), out int eveningValue) && eveningValue > 0);
-                    }
-                    else if (e.Column.FieldName == "USED_TIME_STR")
+                    if (e.Column.FieldName == "USED_TIME_STR")
                     {
                         if (e.IsGetData)
                         {
@@ -1375,7 +1315,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
                     if (IsUsedTimeLessThanInstructionTime(rowData))
                     {
                         e.Valid = false;
-                        e.ErrorText = "Thời gian dùng không được nhỏ hơn thời gian y lệnh (" 
+                        e.ErrorText = "Thời gian dùng không được nhỏ hơn thời gian y lệnh ("
                             +
                             Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowData.INTRUCTION_TIME)
                             + ")";
@@ -1387,7 +1327,7 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            
+
         }
         private void treeMedicineIsUsePt_InvalidNodeException(object sender, DevExpress.XtraTreeList.InvalidNodeExceptionEventArgs e)
         {
@@ -1436,6 +1376,910 @@ namespace HIS.Desktop.Plugins.MedicineIsUsedPatient.MedicineIsUsedPatient
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repView_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var treeList = treeMedicineIsUsePt;
+                var rowData = treeList.GetDataRecordByNode(treeList.FocusedNode) as ExpMestMediMateADO;
+
+                if (rowData != null && !rowData.IS_PARENT)
+                {
+                    // TODO: Khởi tạo danh sách chi tiết thời gian dùng thuốc theo dữ liệu thực tế
+                    List<TimeUsed> detailList = new List<TimeUsed>();
+
+                    // Ví dụ: nếu sau này có dữ liệu cụ thể, thêm vào detailList ở đây
+                    // detailList.Add(new TimeUsed { ... });
+                    if ((rowData.EXP_MEDIMATE_USEDs == null || rowData.EXP_MEDIMATE_USEDs.Count == 0) && !rowData.IsCallExpMestMediMateUsed)
+                    {
+                        HisExpMedimateUsedFilter filter = new HisExpMedimateUsedFilter();
+                        if (rowData.IS_MEDICINE)
+                            filter.EXP_MEST_MEDICINE_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        else if (rowData.IS_MATERIAL)
+                            filter.EXP_MEST_MATERIAL_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        filter.TDL_TREATMENT_ID = currentTreatment.ID;
+                        CommonParam param = new CommonParam();
+                        var usedList = new BackendAdapter(param).Get<List<HIS_EXP_MEDIMATE_USED>>("api/HisExpMedimateUsed/Get", ApiConsumers.MosConsumer, filter, param);
+                        if (usedList != null && usedList.Count > 0)
+                        {
+                            rowData.EXP_MEDIMATE_USEDs = usedList;
+                        }
+                    }
+
+                    if (rowData.EXP_MEDIMATE_USEDs != null && rowData.EXP_MEDIMATE_USEDs.Count > 0)
+                    {
+                        foreach (var item in rowData.EXP_MEDIMATE_USEDs)
+                        {
+                            TimeUsed ado = new TimeUsed();
+                            if (item.MEDICATION_SESSION.HasValue)
+                            {
+                                ado.ID = item.ID;
+                                switch (item.MEDICATION_SESSION)
+                                {
+                                    case 1:
+                                        ado.TG_MORNING = item.USE_TIME;
+                                        ado.SL_MORNING = item.AMOUNT;
+                                        break;
+                                    case 2:
+                                        ado.TG_NOON = item.USE_TIME;
+                                        ado.SL_NOON = item.AMOUNT;
+                                        break;
+                                    case 3:
+                                        ado.TG_AFTERNOON = item.USE_TIME;
+                                        ado.SL_AFTERNOON = item.AMOUNT;
+                                        break;
+                                    case 4:
+                                        ado.TG_EVENING = item.USE_TIME;
+                                        ado.SL_EVENING = item.AMOUNT;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                ado.IS_DELETE = true;
+                                detailList.Add(ado);
+                            }
+                        }
+                    }
+                    if (detailList == null || detailList.Count == 0)
+                    {
+                        TimeUsed ado = new TimeUsed();
+                        ado.IS_ADD = true;
+                        ado.IS_DELETE = false;
+                        detailList.Add(ado);
+                    }
+                    else
+                    {
+                        detailList.LastOrDefault().IS_ADD = true;
+                        if (detailList.Count == 1)
+                        {
+                            detailList.LastOrDefault().IS_DELETE = false;
+                        }
+                        else
+                        {
+                            detailList.ForEach(o => o.IS_DELETE = true);
+                        }
+                    }
+
+                    gridControl1.DataSource = detailList;
+
+                    // Lấy hit-info tại vị trí click trên TreeList
+                    // X, Y là tọa độ click tương đối trong TreeList
+                    Point clickPoint = treeList.PointToClient(Control.MousePosition);
+                    TreeListHitInfo hitInfo = treeList.CalcHitInfo(clickPoint);
+
+                    Rectangle nodeBounds;
+                    if (hitInfo != null && hitInfo.Node != null)
+                    {
+                        // Lấy vùng hiển thị của node hiện tại
+                        nodeBounds = hitInfo.Bounds;
+                    }
+                    else
+                    {
+                        // Fallback nếu không xác định được node
+                        nodeBounds = new Rectangle(0, 50, treeList.Width, treeList.RowHeight);
+                    }
+
+                    // Tính điểm hiển thị popup ngay dưới vị trí click
+                    int popupX = clickPoint.X;
+                    int popupY = nodeBounds.Bottom;
+
+                    // Chuyển sang tọa độ màn hình
+                    Point screenPoint = treeList.PointToScreen(new Point(popupX, popupY));
+                    popupControlContainer1.ShowPopup(screenPoint);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView1_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
+        {
+            try
+            {
+                GridView View = sender as GridView;
+                if (e.RowHandle >= 0)
+                {
+                    var row = gridView1.GetRow(e.RowHandle) as TimeUsed;
+                    if (row != null)
+                    {
+                        bool isAdd = row.IS_ADD;
+                        bool isDelete = row.IS_DELETE;
+
+                        if (e.Column.FieldName == "Add")
+                        {
+                            if (isAdd)
+                            {
+                                e.RepositoryItem = repAdd;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = null;
+                            }
+                        }
+                        else if (e.Column.FieldName == "Delete")
+                        {
+                            if (isDelete)
+                            {
+                                e.RepositoryItem = repDelete;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = null;
+                            }
+                        }
+                        else if (e.Column.FieldName == "TG_MORNING_STR")
+                        {
+                            if (row.TG_MORNING.HasValue || row.SL_MORNING.HasValue || (!row.TG_NOON.HasValue && !row.SL_NOON.HasValue && !row.TG_EVENING.HasValue && !row.SL_EVENING.HasValue && !row.TG_AFTERNOON.HasValue && !row.SL_AFTERNOON.HasValue))
+                            {
+                                e.RepositoryItem = repDateEna;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repDateDis;
+                            }
+                        }
+                        else if (e.Column.FieldName == "SL_MORNING")
+                        {
+                            if (row.TG_MORNING.HasValue || row.SL_MORNING.HasValue || (!row.TG_NOON.HasValue && !row.SL_NOON.HasValue && !row.TG_EVENING.HasValue && !row.SL_EVENING.HasValue && !row.TG_AFTERNOON.HasValue && !row.SL_AFTERNOON.HasValue))
+                            {
+                                e.RepositoryItem = repAmountEna;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repAmountDis;
+                            }
+                        }
+                        else if (e.Column.FieldName == "TG_NOON_STR")
+                        {
+                            if (row.TG_NOON.HasValue || row.SL_NOON.HasValue || (!row.TG_MORNING.HasValue && !row.SL_MORNING.HasValue && !row.TG_EVENING.HasValue && !row.SL_EVENING.HasValue && !row.TG_AFTERNOON.HasValue && !row.SL_AFTERNOON.HasValue))
+                            {
+                                e.RepositoryItem = repDateEna;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repDateDis;
+                            }
+                        }
+                        else if (e.Column.FieldName == "SL_NOON")
+                        {
+                            if (row.TG_NOON.HasValue || row.SL_NOON.HasValue || (!row.TG_MORNING.HasValue && !row.SL_MORNING.HasValue && !row.TG_EVENING.HasValue && !row.SL_EVENING.HasValue && !row.TG_AFTERNOON.HasValue && !row.SL_AFTERNOON.HasValue))
+                            {
+                                e.RepositoryItem = repAmountEna;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repAmountDis;
+                            }
+                        }
+                        else if (e.Column.FieldName == "TG_AFTERNOON_STR")
+                        {
+                            if (row.TG_AFTERNOON.HasValue || row.SL_AFTERNOON.HasValue || (!row.TG_NOON.HasValue && !row.SL_NOON.HasValue && !row.TG_EVENING.HasValue && !row.SL_EVENING.HasValue && !row.TG_MORNING.HasValue && !row.SL_MORNING.HasValue))
+                            {
+                                e.RepositoryItem = repDateEna;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repDateDis;
+                            }
+                        }
+                        else if (e.Column.FieldName == "SL_AFTERNOON")
+                        {
+                            if (row.TG_AFTERNOON.HasValue || row.SL_AFTERNOON.HasValue || (!row.TG_NOON.HasValue && !row.SL_NOON.HasValue && !row.TG_EVENING.HasValue && !row.SL_EVENING.HasValue && !row.TG_MORNING.HasValue && !row.SL_MORNING.HasValue))
+                            {
+                                e.RepositoryItem = repAmountEna;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repAmountDis;
+                            }
+                        }
+                        else if (e.Column.FieldName == "TG_EVENING_STR")
+                        {
+                            if (row.TG_EVENING.HasValue || row.SL_EVENING.HasValue || (!row.TG_NOON.HasValue && !row.SL_NOON.HasValue && !row.TG_MORNING.HasValue && !row.SL_MORNING.HasValue && !row.TG_AFTERNOON.HasValue && !row.SL_AFTERNOON.HasValue))
+                            {
+                                e.RepositoryItem = repDateEna;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repDateDis;
+                            }
+                        }
+                        else if (e.Column.FieldName == "SL_EVENING")
+                        {
+                            if (row.TG_EVENING.HasValue || row.SL_EVENING.HasValue || (!row.TG_NOON.HasValue && !row.SL_NOON.HasValue && !row.TG_MORNING.HasValue && !row.SL_MORNING.HasValue && !row.TG_AFTERNOON.HasValue && !row.SL_AFTERNOON.HasValue))
+                            {
+                                e.RepositoryItem = repAmountEna;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repAmountDis;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridView1_CustomUnboundColumnData(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDataEventArgs e)
+        {
+
+            try
+            {
+                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                {
+                    TimeUsed dataRow = (TimeUsed)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    if (e.Column.FieldName == "TG_MORNING_STR")
+                    {
+                        e.Value = dataRow.TG_MORNING.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataRow.TG_MORNING.Value) : (DateTime?)null;
+                    }
+                    else if (e.Column.FieldName == "TG_NOON_STR")
+                    {
+                        e.Value = dataRow.TG_NOON.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataRow.TG_NOON.Value) : (DateTime?)null;
+                    }
+                    else if (e.Column.FieldName == "TG_AFTERNOON_STR")
+                    {
+                        e.Value = dataRow.TG_AFTERNOON.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataRow.TG_AFTERNOON.Value) : (DateTime?)null;
+                    }
+                    else if (e.Column.FieldName == "TG_EVENING_STR")
+                    {
+                        e.Value = dataRow.TG_EVENING.HasValue ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(dataRow.TG_EVENING.Value) : (DateTime?)null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void repDateEna_EditValueChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                TimeUsed data = (TimeUsed)gridView1.GetFocusedRow();
+                if (data != null)
+                {
+                    DateEdit dtTime = sender as DateEdit;
+                    if (dtTime.EditValue != null && dtTime.DateTime != DateTime.MinValue)
+                    {
+                        if (gridView1.FocusedColumn.FieldName == "TG_MORNING_STR")
+                            data.TG_MORNING = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime);
+                        else if (gridView1.FocusedColumn.FieldName == "TG_NOON_STR")
+                            data.TG_NOON = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime);
+                        else if (gridView1.FocusedColumn.FieldName == "TG_AFTERNOON_STR")
+                            data.TG_AFTERNOON = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime);
+                        else if (gridView1.FocusedColumn.FieldName == "TG_EVENING_STR")
+                            data.TG_EVENING = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtTime.DateTime);
+
+                    }
+                    else
+                    {
+                        if (gridView1.FocusedColumn.FieldName == "TG_MORNING_STR")
+                            data.TG_MORNING = null;
+                        else if (gridView1.FocusedColumn.FieldName == "TG_NOON_STR")
+                            data.TG_NOON = null;
+                        else if (gridView1.FocusedColumn.FieldName == "TG_AFTERNOON_STR")
+                            data.TG_AFTERNOON = null;
+                        else if (gridView1.FocusedColumn.FieldName == "TG_EVENING_STR")
+                            data.TG_EVENING = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repAdd_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)
+                {
+                    var list = gridControl1.DataSource as IList<TimeUsed>;
+                    if (list == null)
+                    {
+                        return;
+                    }
+
+                    var current = gridView1.GetFocusedRow() as TimeUsed;
+                    TimeUsed newRow = new TimeUsed
+                    {
+                        IS_ADD = true,
+                        IS_DELETE = list.Count > 0
+                    };
+
+                    // Hàng hiện tại không còn nút thêm
+                    if (current != null)
+                    {
+                        current.IS_ADD = false;
+                        current.IS_DELETE = true;
+                    }
+
+                    list.Add(newRow);
+                    gridControl1.RefreshDataSource();
+
+                    int newHandle = gridView1.GetRowHandle(list.Count - 1);
+                    if (newHandle >= 0)
+                    {
+                        gridView1.FocusedRowHandle = newHandle;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void repDelete_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+
+            try
+            {
+
+                var list = gridControl1.DataSource as IList<TimeUsed>;
+                if (list == null || list.Count == 0)
+                {
+                    return;
+                }
+
+                var current = gridView1.GetFocusedRow() as TimeUsed;
+                if (current == null)
+                {
+                    return;
+                }
+
+                // Nếu bản ghi đã tồn tại trên hệ thống (ID > 0) thì gọi API xóa trước
+                if (current.ID > 0)
+                {
+                    CommonParam param = new CommonParam();
+                    var deleteResult = new BackendAdapter(param)
+                        .Post<HIS_EXP_MEDIMATE_USED>("api/HisExpMedimateUsed/Delete", ApiConsumers.MosConsumer, current.ID, param);
+
+                    if (deleteResult == null)
+                    {
+                        MessageManager.Show(this, param, false);
+                        return;
+                    }
+                }
+
+                int currentIndex = list.IndexOf(current);
+                if (currentIndex < 0)
+                {
+                    return;
+                }
+
+                list.RemoveAt(currentIndex);
+
+                if (list.Count == 1)
+                {
+                    list[0].IS_DELETE = false;
+                    list[0].IS_ADD = true;
+                }else
+                    list.LastOrDefault().IS_ADD = true;
+
+                gridControl1.RefreshDataSource();
+
+                if (list.Count > 0)
+                {
+                    int newIndex = Math.Min(currentIndex, list.Count - 1);
+                    int newHandle = gridView1.GetRowHandle(newIndex);
+                    if (newHandle >= 0)
+                    {
+                        gridView1.FocusedRowHandle = newHandle;
+                        gridView1.FocusedColumn = gridView1.Columns["Add"];
+                        // Đảm bảo focus quay lại cột Delete sau khi di chuyển dòng
+                        if (gridView1.Columns["Delete"] != null)
+                        {
+                            gridView1.FocusedColumn = gridView1.Columns["Delete"];
+                            gridView1.ShowEditor();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Lấy danh sách chi tiết thời gian dùng thuốc từ grid
+                var detailList = gridControl1.DataSource as IList<TimeUsed>;
+                if (detailList == null || detailList.Count == 0)
+                {
+                    return;
+                }
+
+                // Lấy node đang được focus trên tree và dữ liệu tương ứng
+                var treeList = treeMedicineIsUsePt;
+                if (treeList == null || treeList.FocusedNode == null)
+                {
+                    return;
+                }
+
+                var rowData = treeList.GetDataRecordByNode(treeList.FocusedNode) as ExpMestMediMateADO;
+                if (rowData == null || rowData.IS_PARENT)
+                {
+                    return;
+                }
+
+                // Chuyển danh sách TimeUsed hiển thị sang danh sách HIS_EXP_MEDIMATE_USED
+                var usedEntities = new List<HIS_EXP_MEDIMATE_USED>();
+                foreach (var item in detailList)
+                {
+                    // Bỏ qua các dòng không nhập dữ liệu
+                    if (!item.TG_MORNING.HasValue && !item.SL_MORNING.HasValue &&
+                        !item.TG_NOON.HasValue && !item.SL_NOON.HasValue &&
+                        !item.TG_AFTERNOON.HasValue && !item.SL_AFTERNOON.HasValue &&
+                        !item.TG_EVENING.HasValue && !item.SL_EVENING.HasValue)
+                    {
+                        continue;
+                    }
+
+                    // Sáng
+                    if (item.TG_MORNING.HasValue || item.SL_MORNING.HasValue)
+                    {
+                        var used = new HIS_EXP_MEDIMATE_USED
+                        {
+                            ID = item.ID,
+                            TDL_TREATMENT_ID = currentTreatment != null ? currentTreatment.ID : 0,
+                            USE_TIME = item.TG_MORNING,
+                            AMOUNT = item.SL_MORNING,
+                            MEDICATION_SESSION = 1
+                        };
+                        if (rowData.IS_MEDICINE)
+                        {
+                            used.EXP_MEST_MEDICINE_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        }
+                        else if (rowData.IS_MATERIAL)
+                        {
+                            used.EXP_MEST_MATERIAL_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        }
+
+                        usedEntities.Add(used);
+                    }
+
+                    // Trưa
+                    if (item.TG_NOON.HasValue || item.SL_NOON.HasValue)
+                    {
+                        var used = new HIS_EXP_MEDIMATE_USED
+                        {
+                            ID = item.ID,
+                            TDL_TREATMENT_ID = currentTreatment != null ? currentTreatment.ID : 0,
+                            USE_TIME = item.TG_NOON,
+                            AMOUNT = item.SL_NOON,
+                            MEDICATION_SESSION = 2
+                        };
+                        if (rowData.IS_MEDICINE)
+                        {
+                            used.EXP_MEST_MEDICINE_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        }
+                        else if (rowData.IS_MATERIAL)
+                        {
+                            used.EXP_MEST_MATERIAL_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        }
+
+                        usedEntities.Add(used);
+                    }
+
+                    // Chiều
+                    if (item.TG_AFTERNOON.HasValue || item.SL_AFTERNOON.HasValue)
+                    {
+                        var used = new HIS_EXP_MEDIMATE_USED
+                        {
+                            ID = item.ID,
+                            TDL_TREATMENT_ID = currentTreatment != null ? currentTreatment.ID : 0,
+                            USE_TIME = item.TG_AFTERNOON,
+                            AMOUNT = item.SL_AFTERNOON,
+                            MEDICATION_SESSION = 3
+                        };
+                        if (rowData.IS_MEDICINE)
+                        {
+                            used.EXP_MEST_MEDICINE_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        }
+                        else if (rowData.IS_MATERIAL)
+                        {
+                            used.EXP_MEST_MATERIAL_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        }
+
+                        usedEntities.Add(used);
+                    }
+
+                    // Tối
+                    if (item.TG_EVENING.HasValue || item.SL_EVENING.HasValue)
+                    {
+                        var used = new HIS_EXP_MEDIMATE_USED
+                        {
+                            ID = item.ID,
+                            TDL_TREATMENT_ID = currentTreatment != null ? currentTreatment.ID : 0,
+                            USE_TIME = item.TG_EVENING,
+                            AMOUNT = item.SL_EVENING,
+                            MEDICATION_SESSION = 4
+                        };
+                        if (rowData.IS_MEDICINE)
+                        {
+                            used.EXP_MEST_MEDICINE_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        }
+                        else if (rowData.IS_MATERIAL)
+                        {
+                            used.EXP_MEST_MATERIAL_ID = rowData.EXP_MEST_MEDI_MATE_ID;
+                        }
+
+                        usedEntities.Add(used);
+                    }
+                }
+
+
+                var notify = usedEntities.Where(o => o.USE_TIME < rowData.INTRUCTION_TIME).ToList();
+                if (notify != null && notify.Count > 0)
+                {
+                   
+                    XtraMessageBox.Show("Có thời gian dùng thuốc nhỏ hơn thời gian y lệnh (" + Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowData.INTRUCTION_TIME) + "). Vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var checkUsed = usedEntities.Where(o => o.USE_TIME == null || o.AMOUNT == null).ToList();
+                if (checkUsed != null && checkUsed.Count > 0)
+                {
+                    XtraMessageBox.Show("Thời gian hoặc số lượng chưa được nhập. Vui lòng kiểm tra lại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }    
+
+                // Gắn lại danh sách vào node đang focus
+                rowData.EXP_MEDIMATE_USEDs = usedEntities;
+
+                // Ẩn popup sau khi lưu tạm vào node
+                if (popupControlContainer1 != null && popupControlContainer1.Visible)
+                {
+                    popupControlContainer1.HidePopup();
+                }
+
+                treeList.RefreshNode(treeList.FocusedNode);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
+        /// <summary>
+        /// Chuyển chuỗi số lượng (các định dạng: 02; 02.1; 02,1; 2,1; 2.1) sang decimal.
+        /// Trả về null nếu chuỗi rỗng hoặc không hợp lệ.
+        /// </summary>
+        private decimal ParseDecimalFromString(string value)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return 0;
+                }
+
+                string normalized = value.Trim();
+
+                // Thay thế dấu phẩy bằng dấu chấm để thống nhất
+                normalized = normalized.Replace(',', '.');
+
+                decimal result;
+                if (decimal.TryParse(
+                    normalized,
+                    System.Globalization.NumberStyles.Number,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out result))
+                {
+                    return result;
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return 0;
+            }
+        }
+
+        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            if (btnSave.Enabled)
+                btnSave.PerformClick();
+        }
+
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!ValidateUsedAmounts(treeMedicineIsUsePt.DataSource as BindingList<ExpMestMediMateADO>))
+                    return;
+
+                var data = treeMedicineIsUsePt.DataSource as BindingList<ExpMestMediMateADO>;
+                if (data == null || data.Count == 0)
+                {
+                    return;
+                }
+
+                List<HisExpMediMateUsedSDO> saveList = new List<HisExpMediMateUsedSDO>();
+                foreach (var item in data.Where(o => !o.IS_PARENT))
+                {
+                    if (item.EXP_MEDIMATE_USEDs == null || item.EXP_MEDIMATE_USEDs.Count == 0)
+                    {
+                        continue;
+                    }
+
+                    foreach (var i in item.EXP_MEDIMATE_USEDs)
+                    {
+                        HisExpMediMateUsedSDO sdo = new HisExpMediMateUsedSDO();
+                        sdo.TreatmentId = currentTreatment.ID;
+                        sdo.UseTime = i.USE_TIME;
+                        sdo.Amount = i.AMOUNT;
+                        sdo.MedicationSession = i.MEDICATION_SESSION;
+
+                        if (item.IS_MEDICINE)
+                        {
+                            sdo.ExpMestMedicineId = item.EXP_MEST_MEDI_MATE_ID;
+                        }
+                        else if (item.IS_MATERIAL)
+                        {
+                            sdo.ExpMestMaterialId = item.EXP_MEST_MEDI_MATE_ID;
+                        }
+
+                        sdo.ExpMediMateUsedId = i.ID;
+                        saveList.Add(sdo);
+                    }
+                }
+
+                if (saveList.Count == 0)
+                {
+                    XtraMessageBox.Show("Chưa nhập nội dung thông tin kê sáng/trưa/chiều/tối của đơn thuốc", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => saveList), saveList));
+                CommonParam param = new CommonParam();
+                var result = new BackendAdapter(param)
+                    .Post<HisExpMediMateUsedResultSDO>("api/HisExpMedimateUsed/Used", ApiConsumers.MosConsumer, saveList, param);
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
+                if (result != null && result.HIS_EXP_MEDIMATE_USED != null && result.HIS_EXP_MEDIMATE_USED.Count > 0)
+                {
+                    // Ánh xạ lại kết quả trả về vào các EXP_MEDIMATE_USEDs của từng dòng trong tree
+                    foreach (var row in data.Where(o => !o.IS_PARENT))
+                    {
+                        if (row.IS_MEDICINE)
+                        {
+                            var listByRow = result.HIS_EXP_MEDIMATE_USED
+                                .Where(x => x.EXP_MEST_MEDICINE_ID == row.EXP_MEST_MEDI_MATE_ID)
+                                .ToList();
+
+                            if (listByRow != null && listByRow.Count > 0)
+                            {
+                                row.EXP_MEDIMATE_USEDs = listByRow;
+                            }
+                            else
+                            {
+                                // Nếu không còn bản ghi nào, giữ nguyên hoặc gán list rỗng tùy yêu cầu
+                                // row.EXP_MEDIMATE_USEDs = new List<HIS_EXP_MEDIMATE_USED>();
+                            }
+                        }
+                        else if (row.IS_MATERIAL)
+                        {
+                            var listByRow = result.HIS_EXP_MEDIMATE_USED
+                                .Where(x => x.EXP_MEST_MATERIAL_ID == row.EXP_MEST_MEDI_MATE_ID)
+                                .ToList();
+
+                            if (listByRow != null && listByRow.Count > 0)
+                            {
+                                row.EXP_MEDIMATE_USEDs = listByRow;
+                            }
+                            else
+                            {
+                                // row.EXP_MEDIMATE_USEDs = new List<HIS_EXP_MEDIMATE_USED>();
+                            }
+                        }
+                    }
+
+                    treeMedicineIsUsePt.RefreshDataSource();
+                }
+
+                MessageManager.Show(this, param, result != null && result.HIS_EXP_MEDIMATE_USED != null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool ValidateUsedAmounts(BindingList<ExpMestMediMateADO> data)
+        {
+            try
+            {
+                if (data == null || data.Count == 0)
+                {
+                    return true;
+                }
+
+                Dictionary<string, List<string>> dicMess = new Dictionary<string, List<string>>();
+
+                foreach (var rowData in data.Where(o => !o.IS_PARENT))
+                {
+                    if (rowData == null)
+                    {
+                        continue;
+                    }
+
+                    decimal prescribedMorning = ParseDecimalFromString(rowData.MORNING);
+                    decimal prescribedNoon = ParseDecimalFromString(rowData.NOON);
+                    decimal prescribedAfternoon = ParseDecimalFromString(rowData.AFTERNOON);
+                    decimal prescribedEvening = ParseDecimalFromString(rowData.EVENING);
+
+                    decimal totalMorning = 0;
+                    decimal totalNoon = 0;
+                    decimal totalAfternoon = 0;
+                    decimal totalEvening = 0;
+
+                    if (rowData.EXP_MEDIMATE_USEDs != null && rowData.EXP_MEDIMATE_USEDs.Count > 0)
+                    {
+                        foreach (var used in rowData.EXP_MEDIMATE_USEDs)
+                        {
+                            if (!used.MEDICATION_SESSION.HasValue || !used.AMOUNT.HasValue)
+                            {
+                                continue;
+                            }
+
+                            switch (used.MEDICATION_SESSION.Value)
+                            {
+                                case 1:
+                                    totalMorning += used.AMOUNT.Value;
+                                    break;
+                                case 2:
+                                    totalNoon += used.AMOUNT.Value;
+                                    break;
+                                case 3:
+                                    totalAfternoon += used.AMOUNT.Value;
+                                    break;
+                                case 4:
+                                    totalEvening += used.AMOUNT.Value;
+                                    break;
+                            }
+                        }
+                    }
+
+                    List<string> mess = new List<string>();
+                    if (prescribedMorning > 0 && totalMorning > prescribedMorning)
+                    {
+                        mess.Add(string.Format(
+                            "Tổng số lượng {0} của buổi sáng không được lớn hơn số lượng {1} đã kê của thuốc {2}",
+                            totalMorning,
+                            prescribedMorning,
+                            rowData.MEDIMATE_TYPE_NAME));
+                    }
+
+                    if (prescribedNoon > 0 && totalNoon > prescribedNoon)
+                    {
+                        mess.Add(string.Format(
+                            "Tổng số lượng {0} của buổi trưa không được lớn hơn số lượng {1} đã kê của thuốc {2}",
+                            totalNoon,
+                            prescribedNoon,
+                            rowData.MEDIMATE_TYPE_NAME));
+                    }
+
+                    if (prescribedAfternoon > 0 && totalAfternoon > prescribedAfternoon)
+                    {
+                        mess.Add(string.Format(
+                            "Tổng số lượng {0} của buổi chiều không được lớn hơn số lượng {1} đã kê của thuốc {2}",
+                            totalAfternoon,
+                            prescribedAfternoon,
+                            rowData.MEDIMATE_TYPE_NAME));
+                    }
+
+                    if (prescribedEvening > 0 && totalEvening > prescribedEvening)
+                    {
+                        mess.Add(string.Format(
+                            "Tổng số lượng {0} của buổi tối không được lớn hơn số lượng {1} đã kê của thuốc {2}",
+                            totalEvening,
+                            prescribedEvening,
+                            rowData.MEDIMATE_TYPE_NAME));
+                    }
+
+
+                    if (prescribedMorning == 0
+                       && prescribedNoon == 0
+                       && prescribedAfternoon == 0
+                       && prescribedEvening == 0)
+                    {
+                        decimal totalUserAmount = totalMorning + totalNoon + totalAfternoon + totalEvening;
+
+                        decimal totalPrescribedAmount = rowData.AMOUNT.HasValue ? rowData.AMOUNT.Value : 0;
+
+                        if (totalPrescribedAmount > 0 && totalUserAmount > totalPrescribedAmount)
+                        {
+                            mess.Add(string.Format(
+                                "Tổng số lượng người dùng nhập cho cả sáng, trưa, chiều, tối (số lượng {0}) không được lớn hơn Tổng số lượng bác sĩ kê đơn (số lượng {1}) cho thuốc {2}",
+                                totalUserAmount,
+                                totalPrescribedAmount,
+                                rowData.MEDIMATE_TYPE_NAME));
+                        }
+                    }
+
+                    if (mess != null && mess.Count > 0)
+                    {
+                        if (!dicMess.ContainsKey(rowData.MEDIMATE_TYPE_NAME))
+                        {
+                            dicMess.Add(rowData.MEDIMATE_TYPE_NAME, mess);
+                        }
+                        else
+                        {
+                            dicMess[rowData.MEDIMATE_TYPE_NAME].AddRange(mess);
+                        }
+                    }
+                }
+
+                if (dicMess.Count > 0)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (KeyValuePair<string, List<string>> kvp in dicMess)
+                    {
+                        foreach (string msg in kvp.Value.Where(m => !string.IsNullOrWhiteSpace(m)))
+                        {
+                            sb.AppendLine(msg);
+                        }
+                    }
+
+                    if (sb.Length > 0)
+                    {
+                        XtraMessageBox.Show(sb.ToString(), "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
         }
     }

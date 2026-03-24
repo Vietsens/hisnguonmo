@@ -54,10 +54,7 @@ namespace HIS.Desktop.Plugins.TransactionDebtCollect
             this.bbtnNew = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRCSavePrint = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.barButtonFocusCode = new DevExpress.XtraBars.BarButtonItem();
             this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.spinDiscountRatio = new DevExpress.XtraEditors.SpinEdit();
             this.spinDiscount = new DevExpress.XtraEditors.SpinEdit();
@@ -142,11 +139,14 @@ namespace HIS.Desktop.Plugins.TransactionDebtCollect
             this.lciTotalExemption = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.bindingSource1 = new System.Windows.Forms.BindingSource();
             this.timerInitForm = new System.Windows.Forms.Timer();
             this.imageCollectionMediStock = new DevExpress.Utils.ImageCollection();
-            this.barButtonFocusCode = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtMaCongNo.Properties)).BeginInit();
@@ -270,10 +270,6 @@ namespace HIS.Desktop.Plugins.TransactionDebtCollect
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnRCSave,
@@ -330,33 +326,13 @@ namespace HIS.Desktop.Plugins.TransactionDebtCollect
             this.barButtonItem1.Name = "barButtonItem1";
             this.barButtonItem1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItem1_ItemClick);
             // 
-            // barDockControlTop
+            // barButtonFocusCode
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(689, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 627);
-            this.barDockControlBottom.Size = new System.Drawing.Size(689, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 598);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(689, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 598);
+            this.barButtonFocusCode.Caption = "F2";
+            this.barButtonFocusCode.Id = 6;
+            this.barButtonFocusCode.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
+            this.barButtonFocusCode.Name = "barButtonFocusCode";
+            this.barButtonFocusCode.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonFocusCode_ItemClick);
             // 
             // labelControl3
             // 
@@ -1424,27 +1400,43 @@ namespace HIS.Desktop.Plugins.TransactionDebtCollect
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(689, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 627);
+            this.barDockControlBottom.Size = new System.Drawing.Size(689, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 598);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(689, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 598);
+            // 
             // dxValidationProvider1
             // 
             this.dxValidationProvider1.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider1_ValidationFailed);
-            // 
-            // timerInitForm
-            // 
-            //this.timerInitForm.Tick += new System.EventHandler(this.timerInitForm_Tick);
             // 
             // imageCollectionMediStock
             // 
             this.imageCollectionMediStock.ImageStream = ((DevExpress.Utils.ImageCollectionStreamer)(resources.GetObject("imageCollectionMediStock.ImageStream")));
             this.imageCollectionMediStock.Images.SetKeyName(0, "dau tích-02.jpg");
             this.imageCollectionMediStock.Images.SetKeyName(1, "dau tích-01.jpg");
-            // 
-            // barButtonFocusCode
-            // 
-            this.barButtonFocusCode.Caption = "F2";
-            this.barButtonFocusCode.Id = 6;
-            this.barButtonFocusCode.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F2);
-            this.barButtonFocusCode.Name = "barButtonFocusCode";
-            this.barButtonFocusCode.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonFocusCode_ItemClick);
             // 
             // frmTransactionDebtCollect
             // 

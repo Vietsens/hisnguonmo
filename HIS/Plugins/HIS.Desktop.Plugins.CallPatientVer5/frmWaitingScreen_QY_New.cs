@@ -536,17 +536,49 @@ namespace HIS.Desktop.Plugins.CallPatientVer5
                                 e.Value = namsinh.ToString();
                             }
                         }
+                        //if (e.Column.FieldName == "UT_STR")
+                        //{
+                        //    long uutien = data.PRIORITY ?? 0;
+                        //    if (uutien > 0)
+                        //    {
+                        //        var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == uutien).ToList();
+                        //        if (priority != null)
+                        //            e.Value = "ƯT";
+                        //    }
+
+                        //}
                         if (e.Column.FieldName == "UT_STR")
                         {
                             long uutien = data.PRIORITY ?? 0;
+                            string utStr = "";
                             if (uutien > 0)
                             {
                                 var priority = BackendDataWorker.Get<HIS_PRIORITY_TYPE>().Where(o => o.ID == uutien).ToList();
                                 if (priority != null)
-                                    e.Value = "ƯT";
+                                    utStr = "ƯT";
                             }
 
+                            string hkStr = "";
+                            // Kiểm tra bệnh nhân đăng ký qua App và có thời gian chỉ định hợp lệ
+                            if (data.IS_REGISTER_BY_APP == 1 && data.INTRUCTION_TIME > 0)
+                            {
+                                string timeStr = data.INTRUCTION_TIME.ToString();
+                                // INTRUCTION_TIME có định dạng yyyyMMddHHmmss
+                                if (timeStr.Length >= 12)
+                                {
+                                    hkStr = string.Format("HK {0}:{1}", timeStr.Substring(8, 2), timeStr.Substring(10, 2));
+                                }
+                            }
+
+                            // Nối chuỗi hiển thị
+                            if (!string.IsNullOrEmpty(utStr) && !string.IsNullOrEmpty(hkStr))
+                                e.Value = utStr + Environment.NewLine + hkStr;
+                            else if (!string.IsNullOrEmpty(utStr))
+                                e.Value = utStr;
+                            else
+                                e.Value = hkStr;
                         }
+
                         if (e.Column.FieldName == "PATIENT_FULL_NAME")
                         {
                             e.Value = data.TDL_PATIENT_LAST_NAME + " " + data.TDL_PATIENT_FIRST_NAME;

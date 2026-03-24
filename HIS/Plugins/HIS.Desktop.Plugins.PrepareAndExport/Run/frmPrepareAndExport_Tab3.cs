@@ -309,6 +309,12 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                     CallSpecific(target);
                     return;
                 }
+                //var one = GetMinOrderForMyGate();
+                //if (one != null)
+                //{
+                //    CallSpecific(one);
+                //    return;
+                //}
 
                 CallPatientCPA();
             }

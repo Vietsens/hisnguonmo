@@ -88,6 +88,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
 
         private const string KEY_CHECK_BED_END = "MOS.HIS_TREATMENT.IS_NOT_ALLOW_BED_END_GREATER_THAN_FINISHING_WITH_STAY_IN_PATIENT";
         private const string KEY_CHECK_PRESCRIPTION_END = "MOS.HIS_TREATMENT.IS_NOT_ALLOW__PRESCRIPTION_END_GREATER_THAN_FINISHING_WITH_STAY_IN_PATIENT";
+        private const string KEY_CHECK_USED_DRUG_QUANTITY_MISMATCH = "MOS.HIS_TREATMENT.FINISH.CHECK_USED_DRUG_QUANTITY_MISMATCH";
 
         internal static string OptionTreatmentEndTypeIsTransfer;
         internal static string MustChooseSeviceExamOption;
@@ -133,6 +134,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
 
         internal static string CheckBedEnd;
         internal static string CheckPrescriptionEnd;
+        internal static string CheckUsedDrugQuantityMismatch;
 
 
         internal static void GetConfigKey()
@@ -198,6 +200,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Config
                 IsAutoMapIcd10WithIcdYhct = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__HIS_DESKTOP_PLUGINS_HISICD_AUTOMAPICD10WITHICDYHCT) == IS__TRUE;
                 CheckBedEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_BED_END);
                 CheckPrescriptionEnd = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_PRESCRIPTION_END);
+                CheckUsedDrugQuantityMismatch = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY_CHECK_USED_DRUG_QUANTITY_MISMATCH);
                 TreatmentEndCFG.GetConfig();
                 CheckFinishTimeCFG.GetConfig();
             }

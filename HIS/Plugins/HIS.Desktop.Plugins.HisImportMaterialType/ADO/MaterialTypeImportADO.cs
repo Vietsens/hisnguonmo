@@ -68,7 +68,10 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.ADO
         public string SUPPLIER_CODE { get; set; } 
         public string SUPPLIER_NAMES { get; set; }
         public string SUPPLIER_IDS { get; set; } 
-        public int? SUPPLIER_CODE_ERROR { get; set; } 
+        public int? SUPPLIER_CODE_ERROR { get; set; }
+        public new short? IS_NOT_EXPEND { get; set; }
+        public new string TT_THAU { get; set; }
+        public new string BYT_NUM_ORDER { get; set; }
 
         public MaterialTypeImportADO()
         {
@@ -123,5 +126,9 @@ namespace HIS.Desktop.Plugins.HisImportMaterialType.ADO
         public int RECORDING_TRANSACTION_ERROR { get; set; }
         public int ALERT_MAX_IN_DAY_STR_ERROR { get; set; }
         public int IDENTITY_MANAGEMEN_ERROR { get; set; }
+        public string NOT_EXPEND { get; set; }
+        public int NOT_EXPEND_ERROR { get; set; }      
+        public int TT_THAU_ERROR { get; set; }   
+        public int BYT_NUM_ORDER_ERROR { get; set; } 
     }
 }

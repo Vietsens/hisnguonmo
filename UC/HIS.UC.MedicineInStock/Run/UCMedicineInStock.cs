@@ -335,13 +335,32 @@ namespace HIS.UC.HisMedicineInStock.Run
                     listResult = new BindingList<HisMedicineInStockADO>(rearchResult);
                     if (HisMedicineInStockADO != null)
                         HisMedicineInStockADO.HisMedicineInStocks = rearchResult.Select(x => (HisMedicineInStockSDO)x).ToList();
-                } 
+                }
                 else
                 {
-                    listResult = new BindingList<HisMedicineInStockADO>(HisMedicineInStockADOs);
+                    //listResult = new BindingList<HisMedicineInStockADO>(HisMedicineInStockADOs);
+                    //if (HisMedicineInStockADO != null)
+                    //{
+
+                    //    var allSDOs = new List<HisMedicineInStockSDO>();
+                    //    foreach (var ado in HisMedicineInStockADOs)
+                    //    {
+                    //        if (ado != null)
+                    //            allSDOs.Add((HisMedicineInStockSDO)ado);
+                    //    }
+                    //    HisMedicineInStockADO.HisMedicineInStocks = allSDOs;
+                    //}
+
+                    var allList = HisMedicineInStockADO.HisMedicineInStocks?.Select(x => new HisMedicineInStockADO(x)).ToList() ?? new List<HisMedicineInStockADO>();
+                    listResult = new BindingList<HisMedicineInStockADO>(allList);
                     if (HisMedicineInStockADO != null)
-                        HisMedicineInStockADO.HisMedicineInStocks = HisMedicineInStockADOs.Select(x => (HisMedicineInStockSDO)x).ToList();
+                        HisMedicineInStockADO.HisMedicineInStocks = allList.Select(x => (HisMedicineInStockSDO)x).ToList();
+
+
                 }
+
+
+
                 trvService.DataSource = listResult;
                 chkDetails.Checked = IsDetails;
                 chkCollapseAll.Checked = IsCollapseAll;

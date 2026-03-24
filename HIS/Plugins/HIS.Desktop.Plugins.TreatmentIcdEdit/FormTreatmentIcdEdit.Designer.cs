@@ -63,15 +63,13 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.CboCustomerDetail = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonEdit1 = new DevExpress.XtraEditors.ButtonEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.barButtonItemSave = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItemSave1 = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.CboCustomerDetail = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboSourceCustomer = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView2 = new DevExpress.XtraGrid.Views.Grid.GridView();
@@ -211,15 +209,21 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem38 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem41 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem43 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem47 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProviderTime = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.label1 = new System.Windows.Forms.Label();
             this.layoutControl17 = new DevExpress.XtraLayout.LayoutControl();
             this.emptySpaceItem9 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CboCustomerDetail.Properties)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.buttonEdit1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CboCustomerDetail.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboSourceCustomer.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).BeginInit();
@@ -361,7 +365,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem43)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).BeginInit();
@@ -369,7 +373,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             // 
             // layoutControl1
             // 
-            this.layoutControl1.Controls.Add(this.CboCustomerDetail);
+            this.layoutControl1.Controls.Add(this.panel1);
             this.layoutControl1.Controls.Add(this.cboSourceCustomer);
             this.layoutControl1.Controls.Add(this.txtSourceCustomer);
             this.layoutControl1.Controls.Add(this.label2);
@@ -388,31 +392,34 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // CboCustomerDetail
+            // panel1
             // 
-            this.CboCustomerDetail.Location = new System.Drawing.Point(789, 375);
-            this.CboCustomerDetail.MenuManager = this.barManager1;
-            this.CboCustomerDetail.Name = "CboCustomerDetail";
-            this.CboCustomerDetail.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-            this.CboCustomerDetail.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            this.panel1.Controls.Add(this.buttonEdit1);
+            this.panel1.Controls.Add(this.CboCustomerDetail);
+            this.panel1.Location = new System.Drawing.Point(770, 375);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(169, 20);
+            this.panel1.TabIndex = 31;
+            // 
+            // buttonEdit1
+            // 
+            this.buttonEdit1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.buttonEdit1.Location = new System.Drawing.Point(0, 0);
+            this.buttonEdit1.MenuManager = this.barManager1;
+            this.buttonEdit1.Name = "buttonEdit1";
+            this.buttonEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
-            this.CboCustomerDetail.Properties.NullText = "";
-            this.CboCustomerDetail.Properties.View = this.gridView5;
-            this.CboCustomerDetail.Size = new System.Drawing.Size(150, 20);
-            this.CboCustomerDetail.StyleController = this.layoutControl1;
-            this.CboCustomerDetail.TabIndex = 6;
-            this.CboCustomerDetail.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.CboCustomerDetail_ButtonClick);
-            this.CboCustomerDetail.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.CboCustomerDetail_CustomDisplayText);
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
+            this.buttonEdit1.Size = new System.Drawing.Size(169, 20);
+            this.buttonEdit1.TabIndex = 7;
+            this.buttonEdit1.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.buttonEdit1_ButtonClick);
+            this.buttonEdit1.Validated += new System.EventHandler(this.buttonEdit1_Validated);
             // 
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar2});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItemSave1,
@@ -449,33 +456,22 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.barButtonItemSave1.Name = "barButtonItemSave1";
             this.barButtonItemSave1.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barButtonItemSave_ItemClick);
             // 
-            // barDockControlTop
+            // CboCustomerDetail
             // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(941, 22);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 751);
-            this.barDockControlBottom.Size = new System.Drawing.Size(941, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 22);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 729);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(941, 22);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 729);
+            this.CboCustomerDetail.Location = new System.Drawing.Point(0, 0);
+            this.CboCustomerDetail.MenuManager = this.barManager1;
+            this.CboCustomerDetail.Name = "CboCustomerDetail";
+            this.CboCustomerDetail.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.CboCustomerDetail.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.CboCustomerDetail.Properties.NullText = "";
+            this.CboCustomerDetail.Properties.View = this.gridView5;
+            this.CboCustomerDetail.Size = new System.Drawing.Size(169, 20);
+            this.CboCustomerDetail.TabIndex = 6;
+            this.CboCustomerDetail.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.CboCustomerDetail_Closed);
+            this.CboCustomerDetail.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.CboCustomerDetail_ButtonClick);
+            this.CboCustomerDetail.CustomDisplayText += new DevExpress.XtraEditors.Controls.CustomDisplayTextEventHandler(this.CboCustomerDetail_CustomDisplayText);
             // 
             // gridView5
             // 
@@ -492,10 +488,11 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.cboSourceCustomer.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboSourceCustomer.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
             this.cboSourceCustomer.Properties.NullText = "";
             this.cboSourceCustomer.Properties.View = this.gridView2;
-            this.cboSourceCustomer.Size = new System.Drawing.Size(129, 20);
+            this.cboSourceCustomer.Size = new System.Drawing.Size(102, 20);
             this.cboSourceCustomer.StyleController = this.layoutControl1;
             this.cboSourceCustomer.TabIndex = 30;
             this.cboSourceCustomer.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboSourceCustomer_Closed);
@@ -2119,7 +2116,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.emptySpaceItem1,
             this.layoutControlItem38,
             this.layoutControlItem41,
-            this.layoutControlItem43});
+            this.layoutControlItem47});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -2230,23 +2227,50 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.layoutControlItem41.Location = new System.Drawing.Point(589, 373);
             this.layoutControlItem41.Name = "layoutControlItem41";
             this.layoutControlItem41.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem41.Size = new System.Drawing.Size(131, 24);
+            this.layoutControlItem41.Size = new System.Drawing.Size(104, 24);
             this.layoutControlItem41.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem41.TextVisible = false;
             // 
-            // layoutControlItem43
+            // layoutControlItem47
             // 
-            this.layoutControlItem43.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem43.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem43.Control = this.CboCustomerDetail;
-            this.layoutControlItem43.Location = new System.Drawing.Point(720, 373);
-            this.layoutControlItem43.Name = "layoutControlItem43";
-            this.layoutControlItem43.OptionsToolTip.ToolTip = "Nguồn khách chi tiết";
-            this.layoutControlItem43.Size = new System.Drawing.Size(221, 24);
-            this.layoutControlItem43.Text = "NK chi tiết:";
-            this.layoutControlItem43.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem43.TextSize = new System.Drawing.Size(62, 13);
-            this.layoutControlItem43.TextToControlDistance = 5;
+            this.layoutControlItem47.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem47.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem47.Control = this.panel1;
+            this.layoutControlItem47.Location = new System.Drawing.Point(693, 373);
+            this.layoutControlItem47.Name = "layoutControlItem47";
+            this.layoutControlItem47.Size = new System.Drawing.Size(248, 24);
+            this.layoutControlItem47.Text = "NK  chi tiết:";
+            this.layoutControlItem47.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem47.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem47.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 22);
+            this.barDockControlTop.Size = new System.Drawing.Size(941, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 751);
+            this.barDockControlBottom.Size = new System.Drawing.Size(941, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 22);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 729);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(941, 22);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 729);
             // 
             // dxValidationProviderTime
             // 
@@ -2297,8 +2321,10 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.CboCustomerDetail.Properties)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.buttonEdit1.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CboCustomerDetail.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboSourceCustomer.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView2)).EndInit();
@@ -2440,7 +2466,7 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem38)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem41)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem43)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem47)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderTime)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem9)).EndInit();
@@ -2604,6 +2630,8 @@ namespace HIS.Desktop.Plugins.TreatmentIcdEdit
         private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem11;
         private DevExpress.XtraEditors.GridLookUpEdit CboCustomerDetail;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem43;
+        private System.Windows.Forms.Panel panel1;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem47;
+        private DevExpress.XtraEditors.ButtonEdit buttonEdit1;
     }
 }

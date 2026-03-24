@@ -46,14 +46,6 @@ namespace HIS.Desktop.Plugins.BidDetail
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -63,6 +55,11 @@ namespace HIS.Desktop.Plugins.BidDetail
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
+            this.btnXmlTT12 = new DevExpress.XtraEditors.SimpleButton();
+            this.chkSign = new DevExpress.XtraEditors.CheckEdit();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.bar1 = new DevExpress.XtraBars.Bar();
+            this.bbtnRCPrint = new DevExpress.XtraBars.BarButtonItem();
             this.cboPrint = new DevExpress.XtraEditors.SimpleButton();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPageMedicine = new DevExpress.XtraTab.XtraTabPage();
@@ -82,6 +79,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcImpVatRatio = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvMedicine_GcAdjustAmount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.GvMedicine_GcTTThau = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvMedicine_GcServiceUnitName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvMedicine_GcBidNumOrder = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn2 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -113,6 +111,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcImpVatRatio = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvMaterial_GcAjustAmount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.GvMaterial_GcTTThau = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvMaterial_GcSerViceUnitName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvMaterial_GcBidNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvMaterial_GcBidNumOrder = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -141,6 +140,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvBlood_GcAmount = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvBlood_GcImpPrice = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvBlood_GcImpVatRatio = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.GvBlood_GcTTThau = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvBlood_GcServiceUnitName = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvBlood_GcBidNumber = new DevExpress.XtraGrid.Columns.GridColumn();
             this.GvBlood_GcBidNumOrder = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -158,9 +158,8 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
-            this.bar1 = new DevExpress.XtraBars.Bar();
-            this.bbtnRCPrint = new DevExpress.XtraBars.BarButtonItem();
+            this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
@@ -170,6 +169,8 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.xtraTabPageMedicine.SuspendLayout();
@@ -191,11 +192,14 @@ namespace HIS.Desktop.Plugins.BidDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnXmlTT12);
+            this.layoutControl1.Controls.Add(this.chkSign);
             this.layoutControl1.Controls.Add(this.cboPrint);
             this.layoutControl1.Controls.Add(this.xtraTabControl1);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -206,11 +210,60 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
+            // btnXmlTT12
+            // 
+            this.btnXmlTT12.Location = new System.Drawing.Point(937, 509);
+            this.btnXmlTT12.Name = "btnXmlTT12";
+            this.btnXmlTT12.Size = new System.Drawing.Size(90, 22);
+            this.btnXmlTT12.StyleController = this.layoutControl1;
+            this.btnXmlTT12.TabIndex = 9;
+            this.btnXmlTT12.Text = "Xuất XML TT12";
+            this.btnXmlTT12.Click += new System.EventHandler(this.btnXmlTT12_Click);
+            // 
+            // chkSign
+            // 
+            this.chkSign.Location = new System.Drawing.Point(877, 509);
+            this.chkSign.MenuManager = this.barManager1;
+            this.chkSign.Name = "chkSign";
+            this.chkSign.Properties.Caption = "Ký số";
+            this.chkSign.Size = new System.Drawing.Size(56, 19);
+            this.chkSign.StyleController = this.layoutControl1;
+            this.chkSign.TabIndex = 8;
+            this.chkSign.CheckedChanged += new System.EventHandler(this.chkSign_CheckedChanged);
+            // 
+            // barManager1
+            // 
+            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
+            this.bar1});
+            this.barManager1.Form = this;
+            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
+            this.bbtnRCPrint});
+            this.barManager1.MaxItemId = 1;
+            // 
+            // bar1
+            // 
+            this.bar1.BarName = "Tools";
+            this.bar1.DockCol = 0;
+            this.bar1.DockRow = 0;
+            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
+            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
+            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnRCPrint)});
+            this.bar1.Text = "Tools";
+            this.bar1.Visible = false;
+            // 
+            // bbtnRCPrint
+            // 
+            this.bbtnRCPrint.Caption = "In (Ctrl P)";
+            this.bbtnRCPrint.Id = 0;
+            this.bbtnRCPrint.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
+            this.bbtnRCPrint.Name = "bbtnRCPrint";
+            this.bbtnRCPrint.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnRCPrint_ItemClick);
+            // 
             // cboPrint
             // 
-            this.cboPrint.Location = new System.Drawing.Point(1020, 509);
+            this.cboPrint.Location = new System.Drawing.Point(1031, 509);
             this.cboPrint.Name = "cboPrint";
-            this.cboPrint.Size = new System.Drawing.Size(62, 22);
+            this.cboPrint.Size = new System.Drawing.Size(51, 22);
             this.cboPrint.StyleController = this.layoutControl1;
             this.cboPrint.TabIndex = 7;
             this.cboPrint.Text = "In";
@@ -265,6 +318,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcImpPrice,
             this.GvMedicine_GcImpVatRatio,
             this.GvMedicine_GcAdjustAmount,
+            this.GvMedicine_GcTTThau,
             this.GvMedicine_GcServiceUnitName,
             this.GvMedicine_GcBidNumOrder,
             this.gridColumn2,
@@ -317,7 +371,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             // 
             this.btnLock.AutoHeight = false;
             this.btnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.BidDetail.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.BidDetail.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.btnLock.Name = "btnLock";
             this.btnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnLock_ButtonClick);
@@ -447,6 +501,16 @@ namespace HIS.Desktop.Plugins.BidDetail
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
             this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
             // 
+            // GvMedicine_GcTTThau
+            // 
+            this.GvMedicine_GcTTThau.Caption = "Thông tin thầu";
+            this.GvMedicine_GcTTThau.FieldName = "TT_THAU";
+            this.GvMedicine_GcTTThau.Name = "GvMedicine_GcTTThau";
+            this.GvMedicine_GcTTThau.OptionsColumn.AllowEdit = false;
+            this.GvMedicine_GcTTThau.Visible = true;
+            this.GvMedicine_GcTTThau.VisibleIndex = 12;
+            this.GvMedicine_GcTTThau.Width = 100;
+            // 
             // GvMedicine_GcServiceUnitName
             // 
             this.GvMedicine_GcServiceUnitName.Caption = "Đơn vị";
@@ -455,7 +519,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcServiceUnitName.OptionsColumn.AllowEdit = false;
             this.GvMedicine_GcServiceUnitName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GvMedicine_GcServiceUnitName.Visible = true;
-            this.GvMedicine_GcServiceUnitName.VisibleIndex = 12;
+            this.GvMedicine_GcServiceUnitName.VisibleIndex = 13;
             this.GvMedicine_GcServiceUnitName.Width = 80;
             // 
             // GvMedicine_GcBidNumOrder
@@ -465,7 +529,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcBidNumOrder.Name = "GvMedicine_GcBidNumOrder";
             this.GvMedicine_GcBidNumOrder.OptionsColumn.AllowEdit = false;
             this.GvMedicine_GcBidNumOrder.Visible = true;
-            this.GvMedicine_GcBidNumOrder.VisibleIndex = 13;
+            this.GvMedicine_GcBidNumOrder.VisibleIndex = 14;
             // 
             // gridColumn2
             // 
@@ -475,7 +539,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.gridColumn2.OptionsColumn.AllowEdit = false;
             this.gridColumn2.ToolTip = "Gói thầu";
             this.gridColumn2.Visible = true;
-            this.gridColumn2.VisibleIndex = 14;
+            this.gridColumn2.VisibleIndex = 15;
             // 
             // gridColumn1
             // 
@@ -485,7 +549,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.gridColumn1.OptionsColumn.AllowEdit = false;
             this.gridColumn1.ToolTip = "Nhóm thầu";
             this.gridColumn1.Visible = true;
-            this.gridColumn1.VisibleIndex = 15;
+            this.gridColumn1.VisibleIndex = 16;
             // 
             // GvMedicine_GcBidNumber
             // 
@@ -500,7 +564,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcRegisterNumber.FieldName = "REGISTER_NUMBER";
             this.GvMedicine_GcRegisterNumber.Name = "GvMedicine_GcRegisterNumber";
             this.GvMedicine_GcRegisterNumber.Visible = true;
-            this.GvMedicine_GcRegisterNumber.VisibleIndex = 16;
+            this.GvMedicine_GcRegisterNumber.VisibleIndex = 17;
             // 
             // GvMedicine_GcSupplierName
             // 
@@ -508,7 +572,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcSupplierName.FieldName = "SUPPLIER_NAME";
             this.GvMedicine_GcSupplierName.Name = "GvMedicine_GcSupplierName";
             this.GvMedicine_GcSupplierName.Visible = true;
-            this.GvMedicine_GcSupplierName.VisibleIndex = 17;
+            this.GvMedicine_GcSupplierName.VisibleIndex = 18;
             this.GvMedicine_GcSupplierName.Width = 126;
             // 
             // GvMedicine_GcManufacturerName
@@ -517,7 +581,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcManufacturerName.FieldName = "MANUFACTURER_NAME";
             this.GvMedicine_GcManufacturerName.Name = "GvMedicine_GcManufacturerName";
             this.GvMedicine_GcManufacturerName.Visible = true;
-            this.GvMedicine_GcManufacturerName.VisibleIndex = 18;
+            this.GvMedicine_GcManufacturerName.VisibleIndex = 19;
             // 
             // GvMedicine_GcNationalName
             // 
@@ -525,7 +589,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcNationalName.FieldName = "NATIONAL_NAME";
             this.GvMedicine_GcNationalName.Name = "GvMedicine_GcNationalName";
             this.GvMedicine_GcNationalName.Visible = true;
-            this.GvMedicine_GcNationalName.VisibleIndex = 19;
+            this.GvMedicine_GcNationalName.VisibleIndex = 20;
             // 
             // GvMedicine_GcCreateTime
             // 
@@ -539,7 +603,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcCreateTime.OptionsColumn.AllowEdit = false;
             this.GvMedicine_GcCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GvMedicine_GcCreateTime.Visible = true;
-            this.GvMedicine_GcCreateTime.VisibleIndex = 20;
+            this.GvMedicine_GcCreateTime.VisibleIndex = 21;
             this.GvMedicine_GcCreateTime.Width = 120;
             // 
             // GvMedicine_GcCreator
@@ -562,7 +626,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcModifyTime.OptionsColumn.AllowEdit = false;
             this.GvMedicine_GcModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GvMedicine_GcModifyTime.Visible = true;
-            this.GvMedicine_GcModifyTime.VisibleIndex = 21;
+            this.GvMedicine_GcModifyTime.VisibleIndex = 22;
             this.GvMedicine_GcModifyTime.Width = 120;
             // 
             // GvMedicine_GcModifier
@@ -577,7 +641,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             // 
             this.btnUnLock.AutoHeight = false;
             this.btnUnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.BidDetail.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.BidDetail.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.btnUnLock.Name = "btnUnLock";
             this.btnUnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnUnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnUnLock_ButtonClick);
@@ -619,6 +683,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcImpPrice,
             this.GvMaterial_GcImpVatRatio,
             this.GvMaterial_GcAjustAmount,
+            this.GvMaterial_GcTTThau,
             this.GvMaterial_GcSerViceUnitName,
             this.GvMaterial_GcBidNumber,
             this.GvMaterial_GcBidNumOrder,
@@ -673,7 +738,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             // 
             this.btnLockMaterial.AutoHeight = false;
             this.btnLockMaterial.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.BidDetail.Properties.Resources.hmenu_lock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
             this.btnLockMaterial.Name = "btnLockMaterial";
             this.btnLockMaterial.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnLockMaterial.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnLockMaterial_ButtonClick);
@@ -788,6 +853,16 @@ namespace HIS.Desktop.Plugins.BidDetail
             new DevExpress.XtraEditors.Controls.EditorButton()});
             this.repositoryItemButtonEdit2.Name = "repositoryItemButtonEdit2";
             // 
+            // GvMaterial_GcTTThau
+            // 
+            this.GvMaterial_GcTTThau.Caption = "Thông tin thầu";
+            this.GvMaterial_GcTTThau.FieldName = "TT_THAU";
+            this.GvMaterial_GcTTThau.Name = "GvMaterial_GcTTThau";
+            this.GvMaterial_GcTTThau.OptionsColumn.AllowEdit = false;
+            this.GvMaterial_GcTTThau.Visible = true;
+            this.GvMaterial_GcTTThau.VisibleIndex = 10;
+            this.GvMaterial_GcTTThau.Width = 100;
+            // 
             // GvMaterial_GcSerViceUnitName
             // 
             this.GvMaterial_GcSerViceUnitName.Caption = "Đơn vị";
@@ -796,7 +871,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcSerViceUnitName.OptionsColumn.AllowEdit = false;
             this.GvMaterial_GcSerViceUnitName.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GvMaterial_GcSerViceUnitName.Visible = true;
-            this.GvMaterial_GcSerViceUnitName.VisibleIndex = 10;
+            this.GvMaterial_GcSerViceUnitName.VisibleIndex = 11;
             this.GvMaterial_GcSerViceUnitName.Width = 80;
             // 
             // GvMaterial_GcBidNumber
@@ -813,7 +888,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcBidNumOrder.Name = "GvMaterial_GcBidNumOrder";
             this.GvMaterial_GcBidNumOrder.OptionsColumn.AllowEdit = false;
             this.GvMaterial_GcBidNumOrder.Visible = true;
-            this.GvMaterial_GcBidNumOrder.VisibleIndex = 11;
+            this.GvMaterial_GcBidNumOrder.VisibleIndex = 12;
             // 
             // gridColumn7
             // 
@@ -821,7 +896,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.gridColumn7.FieldName = "BID_PACKAGE_CODE";
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 12;
+            this.gridColumn7.VisibleIndex = 13;
             // 
             // gridColumn4
             // 
@@ -831,7 +906,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.gridColumn4.OptionsColumn.AllowEdit = false;
             this.gridColumn4.ToolTip = "Nhóm thầu";
             this.gridColumn4.Visible = true;
-            this.gridColumn4.VisibleIndex = 13;
+            this.gridColumn4.VisibleIndex = 14;
             // 
             // GvMaterial_GcRegisterNumber
             // 
@@ -844,7 +919,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcSupplierName.FieldName = "SUPPLIER_NAME";
             this.GvMaterial_GcSupplierName.Name = "GvMaterial_GcSupplierName";
             this.GvMaterial_GcSupplierName.Visible = true;
-            this.GvMaterial_GcSupplierName.VisibleIndex = 14;
+            this.GvMaterial_GcSupplierName.VisibleIndex = 15;
             this.GvMaterial_GcSupplierName.Width = 126;
             // 
             // GvMaterial_GcManufacturerName
@@ -853,7 +928,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcManufacturerName.FieldName = "MANUFACTURER_NAME";
             this.GvMaterial_GcManufacturerName.Name = "GvMaterial_GcManufacturerName";
             this.GvMaterial_GcManufacturerName.Visible = true;
-            this.GvMaterial_GcManufacturerName.VisibleIndex = 15;
+            this.GvMaterial_GcManufacturerName.VisibleIndex = 16;
             // 
             // GvMaterial_GcNationalName
             // 
@@ -861,7 +936,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcNationalName.FieldName = "NATIONAL_NAME";
             this.GvMaterial_GcNationalName.Name = "GvMaterial_GcNationalName";
             this.GvMaterial_GcNationalName.Visible = true;
-            this.GvMaterial_GcNationalName.VisibleIndex = 16;
+            this.GvMaterial_GcNationalName.VisibleIndex = 17;
             // 
             // GvMaterial_GcCreateTime
             // 
@@ -875,7 +950,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcCreateTime.OptionsColumn.AllowEdit = false;
             this.GvMaterial_GcCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GvMaterial_GcCreateTime.Visible = true;
-            this.GvMaterial_GcCreateTime.VisibleIndex = 17;
+            this.GvMaterial_GcCreateTime.VisibleIndex = 18;
             this.GvMaterial_GcCreateTime.Width = 120;
             // 
             // GvMaterial_GcCreator
@@ -898,7 +973,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcModifyTime.OptionsColumn.AllowEdit = false;
             this.GvMaterial_GcModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GvMaterial_GcModifyTime.Visible = true;
-            this.GvMaterial_GcModifyTime.VisibleIndex = 18;
+            this.GvMaterial_GcModifyTime.VisibleIndex = 19;
             this.GvMaterial_GcModifyTime.Width = 120;
             // 
             // GvMaterial_GcModifier
@@ -923,7 +998,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             // 
             this.btnUnLockMaterial.AutoHeight = false;
             this.btnUnLockMaterial.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, global::HIS.Desktop.Plugins.BidDetail.Properties.Resources.hmenu_unlock, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
             this.btnUnLockMaterial.Name = "btnUnLockMaterial";
             this.btnUnLockMaterial.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.btnUnLockMaterial.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.btnUnLockMaterial_ButtonClick);
@@ -959,6 +1034,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvBlood_GcAmount,
             this.GvBlood_GcImpPrice,
             this.GvBlood_GcImpVatRatio,
+            this.GvBlood_GcTTThau,
             this.GvBlood_GcServiceUnitName,
             this.GvBlood_GcBidNumber,
             this.GvBlood_GcBidNumOrder,
@@ -1084,6 +1160,16 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvBlood_GcImpVatRatio.VisibleIndex = 5;
             this.GvBlood_GcImpVatRatio.Width = 50;
             // 
+            // GvBlood_GcTTThau
+            // 
+            this.GvBlood_GcTTThau.Caption = "Thông tin thầu";
+            this.GvBlood_GcTTThau.FieldName = "TT_THAU";
+            this.GvBlood_GcTTThau.Name = "GvBlood_GcTTThau";
+            this.GvBlood_GcTTThau.OptionsColumn.AllowEdit = false;
+            this.GvBlood_GcTTThau.Visible = true;
+            this.GvBlood_GcTTThau.VisibleIndex = 6;
+            this.GvBlood_GcTTThau.Width = 100;
+            // 
             // GvBlood_GcServiceUnitName
             // 
             this.GvBlood_GcServiceUnitName.Caption = "Đơn vị";
@@ -1091,7 +1177,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvBlood_GcServiceUnitName.Name = "GvBlood_GcServiceUnitName";
             this.GvBlood_GcServiceUnitName.OptionsColumn.AllowEdit = false;
             this.GvBlood_GcServiceUnitName.Visible = true;
-            this.GvBlood_GcServiceUnitName.VisibleIndex = 6;
+            this.GvBlood_GcServiceUnitName.VisibleIndex = 7;
             this.GvBlood_GcServiceUnitName.Width = 80;
             // 
             // GvBlood_GcBidNumber
@@ -1108,7 +1194,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvBlood_GcBidNumOrder.Name = "GvBlood_GcBidNumOrder";
             this.GvBlood_GcBidNumOrder.OptionsColumn.AllowEdit = false;
             this.GvBlood_GcBidNumOrder.Visible = true;
-            this.GvBlood_GcBidNumOrder.VisibleIndex = 7;
+            this.GvBlood_GcBidNumOrder.VisibleIndex = 8;
             // 
             // gridColumn6
             // 
@@ -1137,7 +1223,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvBlood_GcSupplierName.FieldName = "SUPPLIER_NAME";
             this.GvBlood_GcSupplierName.Name = "GvBlood_GcSupplierName";
             this.GvBlood_GcSupplierName.Visible = true;
-            this.GvBlood_GcSupplierName.VisibleIndex = 8;
+            this.GvBlood_GcSupplierName.VisibleIndex = 9;
             this.GvBlood_GcSupplierName.Width = 126;
             // 
             // GvBlood_GcManufacturerName
@@ -1162,7 +1248,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvBlood_GcCreateTime.OptionsColumn.AllowEdit = false;
             this.GvBlood_GcCreateTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GvBlood_GcCreateTime.Visible = true;
-            this.GvBlood_GcCreateTime.VisibleIndex = 9;
+            this.GvBlood_GcCreateTime.VisibleIndex = 10;
             this.GvBlood_GcCreateTime.Width = 120;
             // 
             // GvBlood_GcCreator
@@ -1185,7 +1271,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvBlood_GcModifyTime.OptionsColumn.AllowEdit = false;
             this.GvBlood_GcModifyTime.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.GvBlood_GcModifyTime.Visible = true;
-            this.GvBlood_GcModifyTime.VisibleIndex = 10;
+            this.GvBlood_GcModifyTime.VisibleIndex = 11;
             this.GvBlood_GcModifyTime.Width = 120;
             // 
             // GvBlood_GcModifier
@@ -1203,7 +1289,9 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.layoutControlGroup1.Items.AddRange(new DevExpress.XtraLayout.BaseLayoutItem[] {
             this.layoutControlItem1,
             this.emptySpaceItem1,
-            this.layoutControlItem2});
+            this.layoutControlItem2,
+            this.layoutControlItem3,
+            this.layoutControlItem4});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1224,45 +1312,35 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.emptySpaceItem1.AllowHotTrack = false;
             this.emptySpaceItem1.Location = new System.Drawing.Point(0, 507);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(1018, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(875, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.cboPrint;
-            this.layoutControlItem2.Location = new System.Drawing.Point(1018, 507);
+            this.layoutControlItem2.Location = new System.Drawing.Point(1029, 507);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(66, 26);
+            this.layoutControlItem2.Size = new System.Drawing.Size(55, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
-            // barManager1
+            // layoutControlItem3
             // 
-            this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
-            this.bar1});
-            this.barManager1.Form = this;
-            this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
-            this.bbtnRCPrint});
-            this.barManager1.MaxItemId = 1;
+            this.layoutControlItem3.Control = this.chkSign;
+            this.layoutControlItem3.Location = new System.Drawing.Point(875, 507);
+            this.layoutControlItem3.Name = "layoutControlItem3";
+            this.layoutControlItem3.Size = new System.Drawing.Size(60, 26);
+            this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem3.TextVisible = false;
             // 
-            // bar1
+            // layoutControlItem4
             // 
-            this.bar1.BarName = "Tools";
-            this.bar1.DockCol = 0;
-            this.bar1.DockRow = 0;
-            this.bar1.DockStyle = DevExpress.XtraBars.BarDockStyle.Top;
-            this.bar1.LinksPersistInfo.AddRange(new DevExpress.XtraBars.LinkPersistInfo[] {
-            new DevExpress.XtraBars.LinkPersistInfo(this.bbtnRCPrint)});
-            this.bar1.Text = "Tools";
-            this.bar1.Visible = false;
-            // 
-            // bbtnRCPrint
-            // 
-            this.bbtnRCPrint.Caption = "In (Ctrl P)";
-            this.bbtnRCPrint.Id = 0;
-            this.bbtnRCPrint.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P));
-            this.bbtnRCPrint.Name = "bbtnRCPrint";
-            this.bbtnRCPrint.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnRCPrint_ItemClick);
+            this.layoutControlItem4.Control = this.btnXmlTT12;
+            this.layoutControlItem4.Location = new System.Drawing.Point(935, 507);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(94, 26);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem4.TextVisible = false;
             // 
             // barDockControlTop
             // 
@@ -1343,6 +1421,8 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkSign.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             this.xtraTabControl1.ResumeLayout(false);
             this.xtraTabPageMedicine.ResumeLayout(false);
@@ -1364,7 +1444,8 @@ namespace HIS.Desktop.Plugins.BidDetail
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1469,14 +1550,21 @@ namespace HIS.Desktop.Plugins.BidDetail
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn9;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn10;
         private DevExpress.XtraGrid.Columns.GridColumn GvMedicine_GcAdjustAmount;
+        private DevExpress.XtraGrid.Columns.GridColumn GvMedicine_GcTTThau;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit1;
         private DevExpress.XtraGrid.Columns.GridColumn GvMaterial_GcAjustAmount;
+        private DevExpress.XtraGrid.Columns.GridColumn GvMaterial_GcTTThau;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEdit2;
+        private DevExpress.XtraGrid.Columns.GridColumn GvBlood_GcTTThau;
         private DevExpress.XtraGrid.Columns.GridColumn GvMedicine_Lock;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnLock;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnUnLock;
         private DevExpress.XtraGrid.Columns.GridColumn GvMaterial_Lock;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnLockMaterial;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnUnLockMaterial;
+        private DevExpress.XtraEditors.SimpleButton btnXmlTT12;
+        private DevExpress.XtraEditors.CheckEdit chkSign;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
     }
 }

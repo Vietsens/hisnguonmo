@@ -165,6 +165,18 @@
   <ItemGroup>
     <None Include="Resources\khoa1.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lock %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\unlock %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hmenu-unlock.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hmenu-lock.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

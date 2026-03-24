@@ -70,6 +70,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
         private int positionHandle = -1;
         private BindingList<ExpBloodADO> records = null;
         ExpBloodADO curentSelect = null;
+        private TestIndexProcessor testIndexProcessor = null;
         #endregion
 
         public frmHisCheckBeforeTransfusionBlood(Inventec.Desktop.Common.Modules.Module module, DelegateSelectData delegateData)
@@ -176,7 +177,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
         {
             try
             {
-
                 WaitingManager.Show();
 
                 Config.ConfigKey.GetConfigKey();
@@ -185,18 +185,25 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
                 LoadCurrentPatient();
 
-                LoadComboAC(cboAC);
+                // Khởi tạo processor
+                testIndexProcessor = new TestIndexProcessor();
 
+                // Load dữ liệu chỉ số xét nghiệm
+                if (this.expMest != null && this.expMest.TDL_TREATMENT_ID.HasValue)
+                {
+                    testIndexProcessor.LoadTestIndexData(this.expMest.TDL_TREATMENT_ID.Value);
+                }
+
+                LoadComboAC(cboAC);
                 LoadComboAC(cboAC2);
-                //loadExpMest();
+
                 btnPrint.Enabled = (this.expMest != null && this.expMest.EXP_MEST_STT_ID == 5);
 
                 LoadDataToCombo();
-
                 LoadDataToComboboxEnvironment();
+                LoadComboTestHarmony();
 
                 BuidTreeList();
-
                 InitBtnPrint();
 
                 WaitingManager.Hide();
@@ -204,6 +211,35 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void LoadComboTestHarmony()
+        {
+            try
+            {
+                if (testIndexProcessor == null || testIndexProcessor.TestHarmonyList == null)
+                    return;
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("RESULT_TIME_STR", "Trả", 80, 1));
+                columnInfos.Add(new ColumnInfo("BLOOD_VALUE", "Túi máu", 100, 2));
+                columnInfos.Add(new ColumnInfo("SALT_VALUE", "MT muối", 100, 2));
+                columnInfos.Add(new ColumnInfo("ANTI_GLOBULIN_VALUE", "Anti globulin", 100, 2));
+
+                ControlEditorADO controlEditorADO = new ControlEditorADO(
+                    "RESULT_TIME_STR",
+                    "SERE_SERV_ID",
+                    columnInfos,
+                    false,
+                    400);
+
+                ControlEditorLoader.Load(cboXNHH, testIndexProcessor.TestHarmonyList, controlEditorADO);
+
+                cboXNHH.Properties.ImmediatePopup = true;
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
@@ -477,6 +513,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                                 adoBlood.SCANGEL_GELCARD = bl.SCANGEL_GELCARD;
                                 adoBlood.TEST_TUBE = bl.TEST_TUBE;
                                 adoBlood.TEST_TUBE_TWO = bl.TEST_TUBE_TWO;
+                                adoBlood.TUBE_SLOT = bl.TUBE_SLOT;
                                 adoBlood.AC_SELF_ENVIDENCE = bl.AC_SELF_ENVIDENCE;
                                 adoBlood.AC_SELF_ENVIDENCE_SECOND = bl.AC_SELF_ENVIDENCE_SECOND;
                                 adoBlood.PREPARATIONS_BLOOD_NAME = bl.PREPARATIONS_BLOOD_NAME;
@@ -953,6 +990,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                             }
                         }
                     }
+                    ProcessAutoFillFromTestHarmony(data);
                 }
                 else
                 {
@@ -975,6 +1013,10 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
                     txtTestTube.Enabled = true;
                     txtTestTubeTwo.Enabled = true;
+                    if (cboXNHH != null)
+                    {
+                        cboXNHH.EditValue = null;
+                    }
                 }
             }
             catch (Exception ex)
@@ -982,7 +1024,85 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private void ProcessAutoFillFromTestHarmony(ExpBloodADO data)
+        {
+            try
+            {
+                if (data == null || testIndexProcessor == null || string.IsNullOrWhiteSpace(data.BLOOD_CODE))
+                    return;
 
+                // Lấy TUBE_SLOT từ ADO (đã load sẵn trong BuidTreeList)
+                long? tubeSlot = data.TUBE_SLOT;
+
+                // Kiểm tra TUBE_SLOT khác 1 và 2 thì kết thúc
+                if (!tubeSlot.HasValue || (tubeSlot != 1 && tubeSlot != 2))
+                    return;
+
+                // Kiểm tra điều kiện fill
+                bool shouldFill = false;
+                if (tubeSlot == 1)
+                {
+                    shouldFill = !data.SALT_ENVI.HasValue || !data.ANTI_GLOBULIN.HasValue;
+                }
+                else if (tubeSlot == 2)
+                {
+                    shouldFill = !data.SALT_ENVI_TWO.HasValue || !data.ANTI_GLOBULIN_TWO.HasValue;
+                }
+
+                if (!shouldFill)
+                    return;
+
+                // Tìm A1
+                var a1 = testIndexProcessor.FindBloodTestIndexByBloodCode(data.BLOOD_CODE);
+                if (a1 == null)
+                    return;
+
+                // Hiển thị thời gian trả kết quả lên combobox XN hòa hợp
+                if (cboXNHH != null && a1.RESULT_TIME.HasValue)
+                {
+                    var harmonyItem = testIndexProcessor.TestHarmonyList
+                        .FirstOrDefault(o => o.SERE_SERV_ID == a1.SERE_SERV_ID);
+                    if (harmonyItem != null)
+                    {
+                        cboXNHH.EditValue = harmonyItem.SERE_SERV_ID;
+                    }
+                }
+
+                // Lấy chỉ số môi trường muối và anti globulin
+                var saltIndex = testIndexProcessor.GetSaltEnviTestIndexBySereServId(a1.SERE_SERV_ID);
+                var antiGlobulinIndex = testIndexProcessor.GetAntiGlobulinTestIndexBySereServId(a1.SERE_SERV_ID);
+
+                // Fill vào combobox tương ứng
+                if (tubeSlot == 1)
+                {
+                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
+                    {
+                        SetComboEnviValue(cboSaltEnvi, saltIndex.VALUE);
+                    }
+
+                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
+                    {
+                        SetComboEnviValue(cboAntiGlobulin, antiGlobulinIndex.VALUE);
+                    }
+                }
+                else if (tubeSlot == 2)
+                {
+                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
+                    {
+                        SetComboEnviValue(cboSaltEnviTwo, saltIndex.VALUE);
+                    }
+
+                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
+                    {
+                        SetComboEnviValue(cboAntiGlobulinTwo, antiGlobulinIndex.VALUE);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
         private void dxValidationProvider1_ValidationFailed(object sender, ValidationFailedEventArgs e)
         {
             try
@@ -1895,5 +2015,119 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
         }
 
         #endregion
+
+        private void cboXNHH_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboXNHH.EditValue == null || testIndexProcessor == null || this.curentSelect == null)
+                    return;
+
+                long sereServId = Convert.ToInt64(cboXNHH.EditValue);
+
+                // Lấy TUBE_SLOT từ ADO (đã load sẵn trong BuidTreeList)
+                long? tubeSlot = this.curentSelect.TUBE_SLOT;
+
+                // Lấy các chỉ số xét nghiệm theo SERE_SERV_ID
+                var saltIndex = testIndexProcessor.GetSaltEnviTestIndexBySereServId(sereServId);
+                var antiGlobulinIndex = testIndexProcessor.GetAntiGlobulinTestIndexBySereServId(sereServId);
+
+                // Hiển thị kết quả lên combobox tương ứng
+                if (tubeSlot == 1)
+                {
+                    // Hiển thị lên MT muối và Anti globulin
+                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
+                    {
+                        SetComboEnviValue(cboSaltEnvi, saltIndex.VALUE);
+                    }
+
+                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
+                    {
+                        SetComboEnviValue(cboAntiGlobulin, antiGlobulinIndex.VALUE);
+                    }
+                }
+                else if (tubeSlot == 2)
+                {
+                    // Hiển thị lên MT muối 2 và Anti globulin 2
+                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
+                    {
+                        SetComboEnviValue(cboSaltEnviTwo, saltIndex.VALUE);
+                    }
+
+                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
+                    {
+                        SetComboEnviValue(cboAntiGlobulinTwo, antiGlobulinIndex.VALUE);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void SetComboEnviValue(DevExpress.XtraEditors.LookUpEdit cbo, string value)
+        {
+            try
+            {
+                var dataSource = cbo.Properties.DataSource as List<ComboboxADO>;
+                if (dataSource != null)
+                {
+                    var item = dataSource.FirstOrDefault(o => o.ItemName == value);
+                    if (item != null)
+                    {
+                        cbo.EditValue = item.Id;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboXNHH_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    SendKeys.Send("{TAB}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboXNHH_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboXNHH.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboXNHH_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == PopupCloseMode.Normal)
+                {
+                    SendKeys.Send("{TAB}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

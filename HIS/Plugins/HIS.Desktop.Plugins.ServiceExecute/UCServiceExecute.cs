@@ -2189,6 +2189,27 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     if (AppConfigKeys.MachineShowOption == "1")
                     {
                         allowMachineIds = ListServiceMachine.Where(k => k.SERVICE_ID == data.SERVICE_ID).Select(o => o.MACHINE_ID).ToList();
+
+                        List<HisMachineCounterSDO> dataCombo = new List<HisMachineCounterSDO>();
+
+                        bool allowUseCounter =
+                            ((AppConfigKeys.IsPatientTypeOption == "1" && data.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT)
+                              || AppConfigKeys.IsPatientTypeOption != "1");
+
+                        if (allowUseCounter
+                            && GlobalVariables.MachineCounterSdos != null
+                            && GlobalVariables.MachineCounterSdos.Count > 0
+                            && allowMachineIds.Count > 0)
+                        {
+                            var allowSet = new HashSet<long>(allowMachineIds);
+
+                            dataCombo = GlobalVariables.MachineCounterSdos
+                                .Where(o => allowSet.Contains(o.ID))
+                                .ToList();
+                        }
+
+                        InitComboExecuteRoom(editor, dataCombo);
+                        return;
                     }
                     else if (AppConfigKeys.MachineShowOption == "2")
                     {
@@ -2201,13 +2222,18 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                             allowMachineIds = machinesByRoom.Select(m => m.ID).ToList();
                         }    
-                    }    
-                    List<HisMachineCounterSDO> dataCombo = new List<HisMachineCounterSDO>();
+                    }
+                    else
+                    {
+                        allowMachineIds = ListServiceMachine.Where(o => o.SERVICE_ID == data.SERVICE_ID).Select(o => o.MACHINE_ID).ToList();
+                    } 
+                        
+                        List<HisMachineCounterSDO> dataCombo2 = new List<HisMachineCounterSDO>();
 
                     if (((AppConfigKeys.IsPatientTypeOption == "1" && data.PATIENT_TYPE_ID == AppConfigKeys.PatientTypeId__BHYT) || AppConfigKeys.IsPatientTypeOption != "1")
                         && GlobalVariables.MachineCounterSdos != null && GlobalVariables.MachineCounterSdos.Count > 0)
                     {
-                        dataCombo = GlobalVariables.MachineCounterSdos.Where(o => allowMachineIds.Contains(o.ID) && ListMachine.Select(s => s.ID).Contains(o.ID)).ToList();
+                        dataCombo2 = GlobalVariables.MachineCounterSdos.Where(o => allowMachineIds.Contains(o.ID) && ListMachine.Select(s => s.ID).Contains(o.ID)).ToList();
                     }
                     else if (allowMachineIds != null && allowMachineIds.Count > 0)
                     {
@@ -2216,11 +2242,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                         {
                             var sdo = new HisMachineCounterSDO();
                             Inventec.Common.Mapper.DataObjectMapper.Map<HisMachineCounterSDO>(sdo, item);
-                            dataCombo.Add(sdo);
+                            dataCombo2.Add(sdo);
                         }
                     }
 
-                    InitComboExecuteRoom(editor, dataCombo);
+                    InitComboExecuteRoom(editor, dataCombo2);
                 }
             }
             catch (Exception ex)

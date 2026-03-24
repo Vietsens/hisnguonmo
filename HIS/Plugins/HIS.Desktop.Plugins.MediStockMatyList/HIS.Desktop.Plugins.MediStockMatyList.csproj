@@ -39,9 +39,11 @@
     <Reference Include="DevExpress.XtraEditors.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="HIS.UC.MediStock, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.MediStock.dll</HintPath>
+    <Reference Include="HIS.UC.ListMaterialType">
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.ListMaterialType.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.MediStock">
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.MediStock.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -125,10 +127,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UC\HIS.UC\HIS.UC.ListMaterialType\HIS.UC.ListMaterialType.csproj">
-      <Project>{c8197f41-ee0c-474a-b3f7-7f384043bf75}</Project>
-      <Name>HIS.UC.ListMaterialType</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>

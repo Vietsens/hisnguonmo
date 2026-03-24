@@ -51,6 +51,13 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="HIS.Desktop.LocalStorage.LocalData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.LocalData.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.Location">
+      <HintPath>..\..\..\..\lib\HIS\His.UC.Icd\HIS.Desktop.LocalStorage.Location.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.dll</HintPath>
     </Reference>
@@ -159,13 +166,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000315.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000452.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000452.PDO\bin\Debug\MPS.Processor.Mps000452.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000452.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000452.PDO.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000453.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\MPS\MPS.Processor\MPS.Processor.Mps000453.PDO\bin\Debug\MPS.Processor.Mps000453.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000453.PDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MPS.Processor.Mps000453.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.Processor.Mps000454.PDO">
       <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000454.PDO.dll</HintPath>
@@ -291,14 +296,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.HisConfig\HIS.Desktop.LocalStorage.HisConfig.csproj">
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
-      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
-      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
-      <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
-      <Name>HIS.Desktop.LocalStorage.Location</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.ModuleExt\HIS.Desktop.ModuleExt.csproj">
       <Project>{168b4cc6-8447-41da-b034-a02f336168e4}</Project>

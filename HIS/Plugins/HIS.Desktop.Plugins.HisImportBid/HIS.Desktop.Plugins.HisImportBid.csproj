@@ -85,7 +85,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
@@ -156,6 +156,7 @@
     <EmbeddedResource Include="FormImportBid.resx">
       <DependentUpon>FormImportBid.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

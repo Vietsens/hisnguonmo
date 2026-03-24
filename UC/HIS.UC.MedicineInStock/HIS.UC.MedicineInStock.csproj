@@ -151,10 +151,16 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\mo-khoa.png" />
+    <None Include="Resources\hmenu-lock.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\khoa.png" />
+    <None Include="Resources\unlock %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\lock %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hmenu-unlock.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

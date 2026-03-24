@@ -73,6 +73,31 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
                     }
                 }
 
+                // Check ceiling expend for material by department (HIS_DEPARTMENT_EXPE_MATY)
+                if (!this.currentMediMate.IsMedicine && !this.currentMediMate.IsBlood)
+                {
+                    long? mediStockId = null;
+                    if (cboExpMediStock.EditValue != null)
+                    {
+                        mediStockId = Inventec.Common.TypeConvert.Parse.ToInt64(cboExpMediStock.EditValue.ToString());
+                    }
+
+                    decimal? maxExpend = GetMaxExpendMaterialByDepartment(this.currentMediMate.MEDI_MATE_TYPE_ID, this.currentRoom.DEPARTMENT_ID, mediStockId);
+                    if (maxExpend.HasValue && spinExpAmount.Value > maxExpend.Value)
+                    {
+                        string departmentName = this.currentRoom != null ? this.currentRoom.DEPARTMENT_NAME : txtReqDepartmentName.Text;
+                        string message = string.Format("Số lượng vật tư lớn hơn trần hao phí {0} của khoa {1}. Bạn có muốn tiếp tục?", maxExpend.Value, departmentName);
+                        if (DevExpress.XtraEditors.XtraMessageBox.Show(
+                            message,
+                            MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TieuDeCuaSoThongBaoLaCanhBao),
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question) != DialogResult.Yes)
+                        {
+                            return;
+                        }
+                    }
+                }
+
                 this.currentMediMate.EXP_AMOUNT = spinExpAmount.Value;
                 this.currentMediMate.NOTE = txtNote.Text;
 
@@ -111,6 +136,40 @@ namespace HIS.Desktop.Plugins.ExpMestDepaCreate
             {
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private decimal? GetMaxExpendMaterialByDepartment(long materialTypeId, long departmentId, long? mediStockId)
+        {
+            try
+            {
+                var configs = BackendDataWorker.Get<HIS_DEPARTMENT_EXPE_MATY>();
+                if (configs == null || configs.Count == 0)
+                    return null;
+
+                var candidates = configs
+                    .Where(o => o.DEPARTMENT_ID == departmentId
+                                && o.MATERIAL_TYPE_ID == materialTypeId
+                                && (!o.MEDI_STOCK_ID.HasValue || (mediStockId.HasValue && o.MEDI_STOCK_ID == mediStockId.Value)))
+                    .ToList();
+
+                if (candidates == null || candidates.Count == 0)
+                    return null;
+
+                var chosen = candidates
+                    .OrderByDescending(o => o.MEDI_STOCK_ID.HasValue && mediStockId.HasValue && o.MEDI_STOCK_ID == mediStockId.Value)
+                    .ThenByDescending(o => o.MEDI_STOCK_ID.HasValue)
+                    .FirstOrDefault();
+
+                if (chosen == null)
+                    return null;
+
+                return chosen.MAX_EXPEND;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return null;
             }
         }
 

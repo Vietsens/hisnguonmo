@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
         Action<int, Inventec.Common.FlexCelPrint.Ado.PrintMergeAdo> SavedData;
         Action<string> CancelPrint;
+        bool IsGroupTreatmentList = false;
 
         public PrintMps000234(string printTypeCode, string fileName, ref bool result,
             MOS.SDO.OutPatientPresResultSDO currentOutPresSDO,
@@ -184,6 +185,11 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                     List<MPS.Processor.Mps000234.PDO.ExpMestMedicineSDO> listOutStockHCGN234 = new List<MPS.Processor.Mps000234.PDO.ExpMestMedicineSDO>();
                     //Thuốc có chứa dược chất hướng thần ngoài kho
                     List<MPS.Processor.Mps000234.PDO.ExpMestMedicineSDO> listOutStockHCHT234 = new List<MPS.Processor.Mps000234.PDO.ExpMestMedicineSDO>();
+
+                    //Thuốc TPCN trong kho
+                    List<MPS.Processor.Mps000234.PDO.ExpMestMedicineSDO> listTPCN234 = new List<MPS.Processor.Mps000234.PDO.ExpMestMedicineSDO>();
+                    //Thuốc TPCN ngoài kho
+                    List<MPS.Processor.Mps000234.PDO.ExpMestMedicineSDO> listOutStockTPCN234 = new List<MPS.Processor.Mps000234.PDO.ExpMestMedicineSDO>();
 
                     foreach (var item in ExpMests)
                     {
@@ -350,6 +356,12 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         }
                     }
 
+                    //Tach thuoc TPCN
+                    listTPCN234 = ExpMestMedicineSDO.Where(o => o.IS_FUNCTIONAL_FOOD == IS_TRUE).OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
+                    ExpMestMedicineSDO = ExpMestMedicineSDO.Where(o => o.IS_FUNCTIONAL_FOOD != IS_TRUE).ToList();
+                    listOutStockTPCN234 = ExpMestMedicineSDOIncludeOutStock.Where(o => o.IS_FUNCTIONAL_FOOD == IS_TRUE && o.Type == 3).OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
+                    ExpMestMedicineSDOIncludeOutStock = ExpMestMedicineSDOIncludeOutStock.Where(o => o.IS_FUNCTIONAL_FOOD != IS_TRUE).ToList();
+
                     //Xếp thuốc theo thứ tự
                     ExpMestMedicineSDO = ExpMestMedicineSDO.OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
                     ExpMestMedicineSDOIncludeOutStock = ExpMestMedicineSDOIncludeOutStock.OrderBy(o => o.NUM_ORDER ?? 99999).ToList();
@@ -453,6 +465,19 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
                         if (listHuongThan.Count > 0)
                             InHuongThan();
                         #endregion
+
+                        #region TPCN
+                        listTPCN = new List<ExpMestMedicineSDO>();
+                        var listAllTPCN234Option1 = listTPCN234.Union(listOutStockTPCN234).ToList();
+                        foreach (var itemN in listAllTPCN234Option1)
+                        {
+                            ExpMestMedicineSDO ado = new ExpMestMedicineSDO();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMedicineSDO>(ado, itemN);
+                            listTPCN.Add(ado);
+                        }
+                        if (listTPCN.Count > 0)
+                            InThucPham();
+                        #endregion
                     }
                     else
                     {
@@ -499,6 +524,19 @@ namespace HIS.Desktop.Plugins.Library.PrintPrescription
 
                             Print.PrintData(printTypeCode, fileName, mps000234RDO, printNow, treatmentCode, ref result, this.currentModule != null ? currentModule.RoomId : 0, previewType, listOutStockHT234.Count, this.SavedData, numCopy);
                         }
+                        #endregion
+
+                        #region TPCN
+                        listTPCN = new List<ExpMestMedicineSDO>();
+                        var listAllTPCN234Else = listTPCN234.Union(listOutStockTPCN234).ToList();
+                        foreach (var itemN in listAllTPCN234Else)
+                        {
+                            ExpMestMedicineSDO ado = new ExpMestMedicineSDO();
+                            Inventec.Common.Mapper.DataObjectMapper.Map<ExpMestMedicineSDO>(ado, itemN);
+                            listTPCN.Add(ado);
+                        }
+                        if (listTPCN.Count > 0)
+                            InThucPham();
                         #endregion
                     }
 

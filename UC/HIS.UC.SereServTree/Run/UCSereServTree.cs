@@ -33,6 +33,7 @@ using System.Collections;
 using DevExpress.XtraTreeList;
 using DevExpress.Utils.Menu;
 using DevExpress.XtraTreeList.Nodes;
+using Inventec.Common.Logging;
 
 namespace HIS.UC.SereServTree.Run
 {
@@ -780,6 +781,53 @@ namespace HIS.UC.SereServTree.Run
                 var row = trvService.GetDataRecordByNode(e.Node);
                 if (row != null && row is SereServADO)
                 {
+                    SereServADO data = (SereServADO)row;
+
+                    if (e.Node.Checked == false)
+                    {
+                        if (data.IsLeaf.HasValue && data.IsLeaf.Value)
+                        {
+                            // For leaf nodes, set IsGuaranteed = false
+                            data.IsGuaranteed = false;
+                            data.IS_GUARANTEED = 0; 
+
+                            this.updateSingleRow?.Invoke(data);
+
+                            var colGuaranteed = trvService.Columns["IsGuaranteed"];
+                            if (colGuaranteed != null)
+                            {
+                                var args = new DevExpress.XtraTreeList.CellValueChangedEventArgs(colGuaranteed, e.Node, false);
+                                this.SereServTreeADO.treeSereServ_CellValueChanged?.Invoke(data, args);
+                            }
+                        }
+                        else
+                        {
+                            // For parent nodes, set IsGuaranteed = false for all leaf children only
+                            var childNodes = GetChild(records, data);
+                            if (childNodes != null && childNodes.Count > 0)
+                            {
+                                // Filter only leaf children
+                                var leafChildNodes = childNodes.Where(c => c.IsLeaf.HasValue && c.IsLeaf.Value).ToList();
+                                foreach (var child in leafChildNodes)
+                                {
+                                    child.IsGuaranteed = false;
+                                    child.IS_GUARANTEED = 0;
+                                    this.updateSingleRow?.Invoke(child);
+
+                                    var colGuaranteed = trvService.Columns["IsGuaranteed"];
+                                    if (colGuaranteed != null)
+                                    {
+                                        var childNode = trvService.FindNodeByKeyID(child.CONCRETE_ID__IN_SETY);
+                                        if (childNode != null)
+                                        {
+                                            var args = new DevExpress.XtraTreeList.CellValueChangedEventArgs(colGuaranteed, childNode, false);
+                                            this.SereServTreeADO.treeSereServ_CellValueChanged?.Invoke(child, args);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     //e.Node.Checked = !e.Node.Checked;
                     //sereServTreeClick((SereServADO)row);
                     sereServTree_AfterCheck(e.Node, (SereServADO)row);
@@ -987,6 +1035,20 @@ namespace HIS.UC.SereServTree.Run
                                 rowData.IsExpend = false;
                             }
                         }
+
+                        if (e.Column.FieldName == "IsGuaranteed")
+                        {
+                            if (this.updateSingleRow != null)
+                            {
+                                e.RepositoryItem = repositoryItemchkIsGuaranteed__Enable;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = repositoryItemchkIsGuaranteed__Disable;
+                            }
+                            e.Column.OptionsColumn.AllowEdit = true;
+                            e.Column.OptionsColumn.ReadOnly = false;
+                        }
                     }
                 }
             }
@@ -1156,6 +1218,16 @@ namespace HIS.UC.SereServTree.Run
 
         private void trvService_ShowingEditor(object sender, CancelEventArgs e)
         {
+            var tree = sender as DevExpress.XtraTreeList.TreeList;
+            if (tree == null) return;
+
+            if (tree.FocusedColumn.FieldName == "IsGuaranteed")
+            {
+                if (!tree.FocusedNode.Checked)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
 
         private void trvService_ShownEditor(object sender, EventArgs e)
@@ -1213,6 +1285,54 @@ namespace HIS.UC.SereServTree.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemchkIsGuaranteed_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                trvService.PostEditor();
+
+                var node = trvService.FocusedNode;
+                if (node != null)
+                {
+                    var rowData = trvService.GetDataRecordByNode(node) as SereServADO;
+                    if (rowData != null)
+                    {
+                        rowData.IS_GUARANTEED = (short)((rowData.IsGuaranteed ?? false) ? 1 : 0);
+
+                        this.updateSingleRow?.Invoke(rowData);
+
+                        var args = new DevExpress.XtraTreeList.CellValueChangedEventArgs(trvService.Columns["IsGuaranteed"], node, rowData.IsGuaranteed);
+                        this.SereServTreeADO.treeSereServ_CellValueChanged?.Invoke(rowData, args);
+
+                        trvService.RefreshNode(node);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void trvService_CellValueChanging_1(object sender, CellValueChangedEventArgs e)
+        {
+        }
+        
+        public List<SereServADO> GetDataSource()
+        {
+            try
+            {
+                // Lấy dữ liệu từ TreeList
+                var source = trvService.DataSource as BindingList<SereServADO>;
+                return source != null ? source.ToList() : new List<SereServADO>();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return new List<SereServADO>();
             }
         }
     }

@@ -43,6 +43,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
+using System.Text;
 using Inventec.Desktop.Common.Controls.ValidationRule;
 using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.Plugins.HisDepartment.Entity;
@@ -53,13 +57,24 @@ using HIS.Desktop.Utility;
 using HIS.Desktop.Utilities.Extensions;
 using ACS.EFMODEL.DataModels;
 using HIS.Desktop.Plugins.HisDepartment.Validation;
-
+using DevExpress.XtraEditors.Repository;
+using HIS.UC.SettingSignInfo;
+using HIS.Desktop.ADO;
+using Newtonsoft.Json;
+using HIS.Desktop.Plugins.HisDepartment.ADO;
+using EMR.WCF.DCO;
+using EMR.SDO;
+using Inventec.Common.SignLibrary.ServiceSign;
+using System.Threading;
+using System.Diagnostics;
 
 namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
 {
     public partial class frmHisDepartment : HIS.Desktop.Utility.FormBase
     {
         #region Declare
+        //qtcode
+        private bool isHeaderChecked = false;
         int rowCount = 0;
         int dataTotal = 0;
         int startPage = 0;
@@ -78,6 +93,11 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         private const short IS_ACTIVE_TRUE = 1;
         private const short IS_ACTIVE_FALSE = 0;
         long departmentId;
+        // qtcode
+        bool isNotLoadWhileChangeControlStateInFirst;
+        SettingSignADO SettingSignADO;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         #endregion
 
         #region Construct
@@ -87,7 +107,6 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             try
             {
                 InitializeComponent();
-
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
                 gridControlFormList.ToolTipController = toolTipControllerGrid;
@@ -231,6 +250,9 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 spNumOrder.EditValue = null;
                 spTheoryPatientCount.EditValue = null;
                 spRealityPatientCount.EditValue = null;
+                spExamDeskCount.EditValue = null;
+                spIcuBedCount.EditValue = null;
+                spErResusBedCount.EditValue = null;
                 chkWarningWhenIsNoSurg.Checked = false;
             }
             catch (Exception ex)
@@ -578,9 +600,11 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 if (apiResult != null)
                 {
                     var data = (List<MOS.EFMODEL.DataModels.HIS_DEPARTMENT>)apiResult.Data;
+                    var listADO = data.Select(o => new HisDepartmentADO(o))
+                     .ToList();
                     //dnNavigation.DataSource = data;
-                    gridviewFormList.GridControl.DataSource = data;
-                    rowCount = (data == null ? 0 : data.Count);
+                    gridviewFormList.GridControl.DataSource = listADO;
+                    rowCount = (listADO == null ? 0 : listADO.Count);
                     dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
                 }
 
@@ -644,7 +668,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 {
                     DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
                     MOS.EFMODEL.DataModels.HIS_DEPARTMENT pData = (MOS.EFMODEL.DataModels.HIS_DEPARTMENT)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                   
+
                     if (e.Column.FieldName == "STT")
                     {
                         e.Value = e.ListSourceRowIndex + 1 + startPage + ((pagingGrid.CurrentPage - 1) * pagingGrid.PageSize);
@@ -888,6 +912,34 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             {
                 if (data != null)
                 {
+                    // qtcode
+                    spExamDeskCount.EditValue = data.EXAM_DESK_COUNT;
+                    spIcuBedCount.EditValue = data.ICU_BED_COUNT;
+                    spErResusBedCount.EditValue = data.ER_RESUS_BED_COUNT;
+                    // Thời gian hiệu lực đến
+                    if (data.FROM_TIME.HasValue && data.FROM_TIME.Value > 0)
+                    {
+                        deTimeFrom.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.FROM_TIME.Value);
+                    }
+                    else
+                    {
+                        deTimeFrom.EditValue = null;
+                    }
+
+                    if (data.TO_TIME.HasValue && data.TO_TIME.Value > 0)
+                    {
+                        deTimeTo.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.TO_TIME.Value);
+                    }
+                    else
+                    {
+                        deTimeTo.EditValue = null;
+                    }
+
+                    // Đồng bộ disable
+                    deTimeFrom_EditValueChanged(null, null);
+                    deTimeTo_EditValueChanged(null, null);
+
+                    // qtcode
                     departmentId = data.ID;
                     txtDepartmentCode.Text = data.DEPARTMENT_CODE;
                     txtDepartmentName.Text = data.DEPARTMENT_NAME;
@@ -938,7 +990,6 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                     // QTCODE
                     txtSubsDirectorLoginName.Text = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
                     cboSubsDirectorUserName.EditValue = data.HOSP_SUBS_DIRECTOR_LOGINNAME;
-                    
 
                     // QTCODE
 
@@ -1433,11 +1484,52 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 currentDTO.HEAD_LOGINNAME = txtHeadLoginName.Text;
                 currentDTO.HEAD_USERNAME = cboHeadUserName.Text;
 
-               // QTCODE
+                // QTCODE
                 currentDTO.HOSP_SUBS_DIRECTOR_LOGINNAME = txtSubsDirectorLoginName.Text;
-                currentDTO.HOSP_SUBS_DIRECTOR_USERNAME = cboSubsDirectorUserName.Text; 
+                currentDTO.HOSP_SUBS_DIRECTOR_USERNAME = cboSubsDirectorUserName.Text;
 
                 // END QTCODE
+                if (spExamDeskCount.EditValue != null && spExamDeskCount.Value >= 0)
+                {
+                    currentDTO.EXAM_DESK_COUNT = (long)spExamDeskCount.Value;
+                }
+                else
+                {
+                    currentDTO.EXAM_DESK_COUNT = null;
+                }
+
+                // Số giường HSTC
+                if (spIcuBedCount.EditValue != null && spIcuBedCount.Value >= 0)
+                {
+                    currentDTO.ICU_BED_COUNT = (long)spIcuBedCount.Value;
+                }
+                else
+                {
+                    currentDTO.ICU_BED_COUNT = null;
+                }
+
+                // Số giường HSCC
+                if (spErResusBedCount.EditValue != null && spErResusBedCount.Value >= 0)
+                {
+                    currentDTO.ER_RESUS_BED_COUNT = (long)spErResusBedCount.Value;
+                }
+                else
+                {
+                    currentDTO.ER_RESUS_BED_COUNT = null;
+                }
+
+                // Thời gian hiệu lực đến
+                currentDTO.FROM_TIME = null;
+                currentDTO.TO_TIME = null;
+
+                if (deTimeFrom.EditValue != null && deTimeFrom.DateTime != DateTime.MinValue)
+                {
+                    currentDTO.FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(deTimeFrom.DateTime);
+                }
+                else if (deTimeTo.EditValue != null && deTimeTo.DateTime != DateTime.MinValue)
+                {
+                    currentDTO.TO_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(deTimeTo.DateTime);
+                }
 
                 GridCheckMarksSelection gridCheckMark_ = cboIcdCode.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark_ != null && gridCheckMark_.SelectedCount > 0)
@@ -1599,7 +1691,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 LoadComboHead();
 
                 // Load combo Người ký thay
-                LoadComboSubsDirector(); 
+                LoadComboSubsDirector();
 
                 //Init combo TreatmentType
                 InitCheck(cboTreatmentType, SelectionGrid__TreatmentType);
@@ -1625,6 +1717,8 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
 
                 //Focus default
                 SetDefaultFocus();
+
+                InitControlStateSign();
             }
             catch (Exception ex)
             {
@@ -2440,7 +2534,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                             cboHeadUserName.Properties.Buttons[1].Visible = true;
                         }
                         txtSubsDirectorLoginName.Focus();
-                        txtSubsDirectorLoginName.SelectAll(); 
+                        txtSubsDirectorLoginName.SelectAll();
                     }
 
                 }
@@ -2617,7 +2711,7 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
             }
         }
 
-    
+
         private void LoadComboSubsDirector()
         {
             try
@@ -2727,5 +2821,670 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        private void gridviewFormList_CustomDrawColumnHeader(object sender, DevExpress.XtraGrid.Views.Grid.ColumnHeaderCustomDrawEventArgs e)
+        {
+            if (e.Column != null && e.Column.FieldName == "IS_CHECK_DEPT")
+            {
+                // Xóa các element mặc định nếu cần (để vẽ sạch)
+                e.Info.InnerElements.Clear();
+                e.Painter.DrawObject(e.Info);
+
+                RepositoryItemCheckEdit checkEdit = e.Column.ColumnEdit as RepositoryItemCheckEdit;
+                if (checkEdit != null)
+                {
+                    int size = 16;  // Kích thước checkbox
+                    int x = e.Bounds.X + (e.Bounds.Width - size) / 2;
+                    int y = e.Bounds.Y + (e.Bounds.Height - size) / 2;
+                    Rectangle rect = new Rectangle(x, y, size, size);
+
+                    var info = (DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo)checkEdit.CreateViewInfo();
+                    var painter = (DevExpress.XtraEditors.Drawing.CheckEditPainter)checkEdit.CreatePainter();
+
+                    // Trạng thái checkbox header dựa trên biến
+                    info.EditValue = isHeaderChecked;
+
+                    info.Bounds = rect;
+                    info.CalcViewInfo(e.Graphics);
+
+                    using (DevExpress.Utils.Drawing.GraphicsCache cache = new DevExpress.Utils.Drawing.GraphicsCache(e.Graphics))
+                    {
+                        painter.Draw(new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(info, cache, rect));
+                    }
+                }
+
+                e.Handled = true;
+            }
+        }
+
+        private void chkSignXml_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("isNotLoadWhileChangeControlStateInFirst: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", isNotLoadWhileChangeControlStateInFirst));
+                Inventec.Common.Logging.LogSystem.Debug("SettingSignADO: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", SettingSignADO));
+
+
+                if (isNotLoadWhileChangeControlStateInFirst) return;
+
+                //if (chkSignXml.Checked && (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber)))
+                if (chkSignXml.Checked)
+                {
+                    // Mở form thiết lập ký (giống popup XML130)
+                    frmSetting frm = new frmSetting(SettingSignADO, (result) =>
+                    {
+                        SettingSignADO = result as SettingSignADO;
+                    });
+                    frm.ShowDialog();
+
+                    if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+                    {
+                        chkSignXml.Checked = false;
+                    }
+                }
+
+                // Lưu trạng thái
+                SaveControlState("chkSignXml", chkSignXml.Checked ? "1" : "0");
+                SaveControlState("SignXml_Config", SettingSignADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SaveControlState(string key, object value)
+        {
+            string json = null;
+
+            if (value != null)
+            {
+                if (value is string)
+                {
+                    json = value.ToString();   // không serialize
+                }
+                else
+                {
+                    json = JsonConvert.SerializeObject(value);
+                }
+            }
+            var cs = currentControlStateRDO?.FirstOrDefault(o => o.KEY == key && o.MODULE_LINK == this.currentModuleBase.ModuleLink);
+
+            if (cs != null)
+            {
+                cs.VALUE = json;
+            }
+            else
+            {
+                cs = new HIS.Desktop.Library.CacheClient.ControlStateRDO
+                {
+                    KEY = key,
+                    VALUE = json,
+                    MODULE_LINK = this.currentModuleBase.ModuleLink
+                };
+                if (currentControlStateRDO == null) currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                currentControlStateRDO.Add(cs);
+            }
+
+            controlStateWorker.SetData(currentControlStateRDO);
+        }
+
+        private void InitControlStateSign()
+        {
+            try
+            {
+                controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                currentControlStateRDO = controlStateWorker.GetData(this.currentModuleBase.ModuleLink);
+
+                isNotLoadWhileChangeControlStateInFirst = true;
+
+                var csSign = currentControlStateRDO?.FirstOrDefault(o => o.KEY == "chkSignXml" && o.MODULE_LINK == this.currentModuleBase.ModuleLink);
+                chkSignXml.Checked = csSign != null && csSign.VALUE == "1";
+
+                var csDetail = currentControlStateRDO?.FirstOrDefault(o => o.KEY == "SignXml_Config" && o.MODULE_LINK == this.currentModuleBase.ModuleLink);
+                if (csDetail != null && !string.IsNullOrEmpty(csDetail.VALUE))
+                {
+                    SettingSignADO = JsonConvert.DeserializeObject<SettingSignADO>(csDetail.VALUE);
+                }
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnExportXmlTT12_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool success = false;
+                var listAll = gridviewFormList.GridControl.DataSource as List<HisDepartmentADO>;
+                var selectedDepts = listAll.Where(o => o.IS_CHECK_DEPT).ToList();
+                if (selectedDepts.Count == 0)
+                {
+                    XtraMessageBox.Show("Vui lòng checkbox ít nhất một khoa để xuất XML TT12", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                if (fbd.ShowDialog() != DialogResult.OK)
+                    return;
+                string savePath = fbd.SelectedPath;
+                if (String.IsNullOrEmpty(savePath))
+                    return;
+
+                WaitingManager.Show();
+
+                string fullFileName = String.Format("DepartmentTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+                string saveFilePath = System.IO.Path.Combine(savePath, fullFileName);
+
+                List<XML.DepartmentXmlAdo> listAdos = GenerateXmlTT12Ado(selectedDepts);
+                List<XML.XMLDepartmentDetailData> listDetails = new List<XML.XMLDepartmentDetailData>();
+                MapADOToXml(listAdos, ref listDetails);
+
+                string listId = "Id-" + Guid.NewGuid().ToString();
+                XML.XMLDepartmentData xmlData = new XML.XMLDepartmentData();
+                xmlData.DanhSach = new XML.XMLDepartmentList { Id = listId, Items = listDetails };
+                xmlData.ChuKyDonVi = "";
+
+                var rs = CreatedXmlFileTT12Plus(xmlData);
+                if (rs != null)
+                {
+                    if (chkSignXml.Checked)
+                    {
+                        rs = SignXmlTT12(rs, SettingSignADO, fullFileName, saveFilePath);
+                    }
+                    FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
+                    rs.WriteTo(file);
+                    file.Close();
+                    rs.Close();
+                    success = true;
+                }
+
+                WaitingManager.Hide();
+                MessageManager.Show(this, new CommonParam(), success);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private List<XML.DepartmentXmlAdo> GenerateXmlTT12Ado(List<HisDepartmentADO> listDepts)
+        {
+            var result = new List<XML.DepartmentXmlAdo>();
+            try
+            {
+                int count = 1;
+                foreach (var dept in listDepts)
+                {
+                    string maCSKCB = "";
+                    if (dept.BRANCH_ID > 0)
+                    {
+                        var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == dept.BRANCH_ID);
+                        if (branch != null)
+                            maCSKCB = branch.HEIN_MEDI_ORG_CODE ?? "";
+                    }
+
+                    var ado = new XML.DepartmentXmlAdo();
+                    ado.Stt        = count;
+                    ado.MaKhoa     = dept.BHYT_CODE ?? "";
+                    ado.TenKhoa    = dept.DEPARTMENT_NAME ?? "";
+                    ado.BanKham    = dept.EXAM_DESK_COUNT.HasValue ? dept.EXAM_DESK_COUNT.Value.ToString() : "";
+                    ado.GiuongPD   = dept.THEORY_PATIENT_COUNT.HasValue ? dept.THEORY_PATIENT_COUNT.Value.ToString() : "";
+                    ado.GiuongTK   = dept.REALITY_PATIENT_COUNT.HasValue ? dept.REALITY_PATIENT_COUNT.Value.ToString() : "";
+                    ado.GiuongHSTC = dept.ICU_BED_COUNT.HasValue ? dept.ICU_BED_COUNT.Value.ToString() : "";
+                    ado.GiuongHSCC = dept.ER_RESUS_BED_COUNT.HasValue ? dept.ER_RESUS_BED_COUNT.Value.ToString() : "";
+                    ado.TuNgay     = dept.FROM_TIME.HasValue ? FormatTimeToYYYYMMDD(dept.FROM_TIME.Value) : "";
+                    ado.DenNgay    = dept.TO_TIME.HasValue ? FormatTimeToYYYYMMDD(dept.TO_TIME.Value) : "";
+                    ado.MaCSKCB    = maCSKCB;
+
+                    result.Add(ado);
+                    count++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private void MapADOToXml(List<XML.DepartmentXmlAdo> listAdos, ref List<XML.XMLDepartmentDetailData> datas)
+        {
+            try
+            {
+                if (datas == null)
+                    datas = new List<XML.XMLDepartmentDetailData>();
+                if (listAdos == null || listAdos.Count == 0)
+                    return;
+                foreach (var ado in listAdos)
+                {
+                    var detail = new XML.XMLDepartmentDetailData();
+                    detail.STT         = ado.Stt;
+                    detail.MA_KHOA     = ado.MaKhoa;
+                    detail.TEN_KHOA    = ConvertStringToXmlDocument(ado.TenKhoa);
+                    detail.BAN_KHAM    = ado.BanKham;
+                    detail.GIUONG_PD   = ado.GiuongPD;
+                    detail.GIUONG_TK   = ado.GiuongTK;
+                    detail.GIUONG_HSTC = ado.GiuongHSTC;
+                    detail.GIUONG_HSCC = ado.GiuongHSCC;
+                    detail.TU_NGAY     = ado.TuNgay;
+                    detail.DEN_NGAY    = ado.DenNgay;
+                    detail.MA_CSKCB    = ado.MaCSKCB;
+                    datas.Add(detail);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private MemoryStream CreatedXmlFileTT12Plus(XML.XMLDepartmentData xmlData)
+        {
+            MemoryStream stream = null;
+            try
+            {
+                var enc = new System.Text.UTF8Encoding(false);
+                stream = new MemoryStream();
+                var xmlNamespaces = new System.Xml.Serialization.XmlSerializerNamespaces();
+                xmlNamespaces.Add("xsd", "http://www.w3.org/2001/XMLSchema");
+                xmlNamespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+                var xmlWriterSettings = new XmlWriterSettings
+                {
+                    CloseOutput = false,
+                    Encoding = enc,
+                    OmitXmlDeclaration = false,
+                    Indent = true
+                };
+                using (var xw = XmlWriter.Create(stream, xmlWriterSettings))
+                {
+                    var s = new System.Xml.Serialization.XmlSerializer(typeof(XML.XMLDepartmentData));
+                    s.Serialize(xw, xmlData, xmlNamespaces);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                stream = null;
+            }
+            return stream;
+        }
+
+        internal XmlCDataSection ConvertStringToXmlDocument(string data)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml("<book genre='novel' ISBN='1-861001-57-5'><title>Pride And Prejudice</title></book>");
+            return doc.CreateCDataSection(RemoveXmlCharError(data));
+        }
+
+        internal string RemoveXmlCharError(string data)
+        {
+            string result = "";
+            try
+            {
+                var s = new System.Text.StringBuilder();
+                if (!string.IsNullOrWhiteSpace(data))
+                {
+                    foreach (char c in data)
+                    {
+                        if (!System.Xml.XmlConvert.IsXmlChar(c)) continue;
+                        s.Append(c);
+                    }
+                }
+                result = s.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private string FormatTimeToYYYYMMDD(long timeValue)
+        {
+            try
+            {
+                // timeValue được lưu ở dạng số (ví dụ: 20260312000000)
+                string timeStr = timeValue.ToString("D14").PadLeft(14, '0');
+                if (timeStr.Length >= 8)
+                {
+                    // Lấy 4 ký tự năm + 2 ký tự tháng + 2 ký tự ngày
+                    return timeStr.Substring(0, 8);
+                }
+                return "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Lỗi khi format thời gian: " + ex.Message);
+                return "";
+            }
+        }
+
+
+        private MemoryStream SignXmlDocument(MemoryStream xmlStream, SettingSignADO signInfo)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Info("Ký số XML với Serial: " + signInfo.SerialNumber);
+
+                // Tạm thời return nguyên file (chưa ký)
+                return xmlStream;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error("Lỗi khi ký XML: " + ex.Message);
+                return xmlStream;
+            }
+        }
+
+        private void deTimeFrom_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (deTimeFrom.EditValue != null && deTimeFrom.DateTime != DateTime.MinValue)
+                {
+                    deTimeTo.Enabled = false;
+                    deTimeTo.EditValue = null;
+                }
+                else
+                {
+                    deTimeTo.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void deTimeTo_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (deTimeTo.EditValue != null && deTimeTo.DateTime != DateTime.MinValue)
+                {
+                    deTimeFrom.Enabled = false;
+                    deTimeFrom.EditValue = null;
+                }
+                else
+                {
+                    deTimeFrom.Enabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridviewFormList_MouseDown(object sender, MouseEventArgs e)
+        {
+            DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+            DevExpress.XtraGrid.Views.Grid.ViewInfo.GridHitInfo hitInfo = view.CalcHitInfo(e.Location);
+
+            if (hitInfo.InColumn && hitInfo.Column.FieldName == "IS_CHECK_DEPT")
+            {
+                isHeaderChecked = !isHeaderChecked;
+
+                List<HisDepartmentADO> list = gridviewFormList.DataSource as List<HisDepartmentADO>;
+                if (list != null)
+                {
+                    foreach (var item in list)
+                    {
+                        if (isHeaderChecked)
+                        {
+                            if (item.IS_ACTIVE == 1)
+                            {
+                                item.IS_CHECK_DEPT = true;
+                            }
+                        }
+                        else
+                        {
+                            item.IS_CHECK_DEPT = false;
+                        }
+                    }
+                    gridviewFormList.RefreshData();
+                }
+                view.InvalidateColumnHeader(hitInfo.Column); // vẽ lại checkbox header
+            }
+        }
+
+
+
+
+        private void gridviewFormList_CellValueChanging(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)
+        {
+            if (e.Column.FieldName == "IS_CHECK_DEPT")
+            {
+                bool allActiveChecked = true;
+
+                for (int i = 0; i < gridviewFormList.RowCount; i++)
+                {
+                    var row = gridviewFormList.GetRow(i) as HisDepartmentADO;
+
+                    if (row != null && row.IS_ACTIVE == 1)
+                    {
+                        bool isChecked;
+
+                        if (i == e.RowHandle)
+                        {
+                            // dùng giá trị mới
+                            isChecked = Convert.ToBoolean(e.Value);
+                        }
+                        else
+                        {
+                            // dùng giá trị hiện tại
+                            isChecked = Convert.ToBoolean(gridviewFormList.GetRowCellValue(i, "IS_CHECK_DEPT"));
+                        }
+
+                        if (!isChecked)
+                        {
+                            allActiveChecked = false;
+                            break;
+                        }
+                    }
+                }
+
+                isHeaderChecked = allActiveChecked;
+
+                gridviewFormList.InvalidateColumnHeader(gridviewFormList.Columns["IS_CHECK_DEPT"]);
+            }
+        }
+        private MemoryStream SignXmlTT12(MemoryStream xmlStream, SettingSignADO signInfo, string fullFileName, string saveFilePath)
+        {
+            try
+            {
+                if (signInfo == null || string.IsNullOrEmpty(signInfo.SerialNumber))
+                {
+                    Inventec.Common.Logging.LogSystem.Warn("Không có thông tin USB Token để ký");
+                    return xmlStream; // trả về file gốc nếu không ký được
+                }
+
+                string currentDirectory = Directory.GetCurrentDirectory();
+                string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+                Directory.CreateDirectory(tempFolderPath);
+                string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
+
+                // Lưu tạm file XML gốc để ký
+                using (FileStream tempFile = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    xmlStream.WriteTo(tempFile);
+                }
+                xmlStream.Position = 0;
+
+                string pathAfterSign = null;
+                WcfSignDCO wcfSignDCO = null;
+
+                if (signInfo.IsHsm)
+                {
+                    // Ký HSM (nếu dùng HSM)
+                    var xmlBase64 = SourceFileSignApi(ConvertStreamToBase64(xmlStream));
+                    if (string.IsNullOrEmpty(xmlBase64))
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Ký HSM thất bại");
+                        return xmlStream;
+                    }
+
+                    var xmlBytes = Convert.FromBase64String(xmlBase64);
+                    File.WriteAllBytes(tempFilePath, xmlBytes);
+                    pathAfterSign = tempFilePath;
+                }
+                else
+                {
+                    // Ký USB Token qua service
+                    wcfSignDCO = new WcfSignDCO
+                    {
+                        SerialNumber = signInfo.SerialNumber,
+                        OutputFile = tempFilePath,
+                        PIN = "", // nếu cần PIN thì truyền vào đây
+                        SourceFile = tempFilePath,
+                        fieldSigned = "CHUKYDONVI" // giống XML130
+                    };
+
+                    string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                    SignProcessorClient signProcessorClient = new SignProcessorClient();
+
+                    if (!VerifyServiceSignProcessorIsRunning())
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Service ký số không chạy");
+                        return xmlStream;
+                    }
+
+                    var wcfSignResult = signProcessorClient.SignXml130(jsonData);
+                    if (wcfSignResult == null || !wcfSignResult.Success)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("Ký file thất bại: " + (wcfSignResult?.Message ?? ""));
+                        return xmlStream;
+                    }
+
+                    pathAfterSign = wcfSignResult.OutputFile;
+                }
+
+                // Đọc file đã ký và trả về stream
+                if (!string.IsNullOrEmpty(pathAfterSign) && File.Exists(pathAfterSign))
+                {
+                    byte[] signedBytes = File.ReadAllBytes(pathAfterSign);
+                    MemoryStream signedStream = new MemoryStream(signedBytes);
+                    signedStream.Position = 0;
+                    return signedStream;
+                }
+
+                // Xóa file temp
+                if (File.Exists(tempFilePath)) File.Delete(tempFilePath);
+                if (Directory.Exists(tempFolderPath) && Directory.GetFiles(tempFolderPath).Length == 0)
+                    Directory.Delete(tempFolderPath);
+
+                return xmlStream; // nếu ký thất bại, trả về file gốc
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return xmlStream;
+            }
+        }
+        private string SourceFileSignApi(string xmlBase64Source)
+        {
+            string result = null;
+            try
+            {
+                CommonParam param = new CommonParam();
+                EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
+                signXmlBhytSDO.XmlBase64 = xmlBase64Source;
+                signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
+                signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                {
+                    string message = string.Join(Environment.NewLine, param.Messages);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Inventec.Common.Logging.LogSystem.Warn(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+        internal bool VerifyServiceSignProcessorIsRunning()
+        {
+            bool valid = false;
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.1");
+                string exeSignPath = AppFilePathSignService();
+                if (File.Exists(exeSignPath))
+                {
+                    if (IsProcessOpen("EMR.SignProcessor"))
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.2");
+                        valid = true;
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.3");
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exeSignPath), exeSignPath));
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = exeSignPath;
+                        try
+                        {
+
+                            Process.Start(startInfo);
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.4");
+                            Thread.Sleep(500);
+                            valid = true;
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.5");
+                        }
+                        catch (Exception exx)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exx);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+        public string AppFilePathSignService()
+        {
+            try
+            {
+                string pathFolderTemp = Path.Combine(Path.Combine(Path.Combine(Application.StartupPath, "Integrate"), "EMR.SignProcessor"), "EMR.SignProcessor.exe");
+                return pathFolderTemp;
+            }
+            catch (IOException exception)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Error create temp file: " + exception.Message);
+                return "";
+            }
+        }
+        private bool IsProcessOpen(string name)
+        {
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                if (clsProcess.ProcessName == name || clsProcess.ProcessName == String.Format("{0}.exe", name) || clsProcess.ProcessName == String.Format("{0} (32 bit)", name) || clsProcess.ProcessName == String.Format("{0}.exe (32 bit)", name))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        // Hàm hỗ trợ convert stream sang base64 (dùng cho HSM)
+        private string ConvertStreamToBase64(MemoryStream stream)
+        {
+            stream.Position = 0;
+            byte[] buffer = stream.ToArray();
+            return Convert.ToBase64String(buffer);
+        }
     }
 }
+
+

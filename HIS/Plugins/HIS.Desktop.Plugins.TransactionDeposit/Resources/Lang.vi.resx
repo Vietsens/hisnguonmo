@@ -234,6 +234,9 @@
   <data name="frmTransactionDeposit.lciPatientName.Text" xml:space="preserve">
     <value>Tên bệnh nhân:</value>
   </data>
+  <data name="frmTransactionDeposit.lciPreviewPrint.Text" xml:space="preserve">
+    <value>Xem trước in:</value>
+  </data>
   <data name="frmTransactionDeposit.lciTranferAmount.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Số tiền chuyển khoản</value>
   </data>

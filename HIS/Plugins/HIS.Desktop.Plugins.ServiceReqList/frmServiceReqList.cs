@@ -1914,7 +1914,11 @@ namespace HIS.Desktop.Plugins.ServiceReqList
                         //{
                         //    e.RepositoryItem = repositoryItemReadOnly;
                         //}
-                        if (creator == this.loginName || reqLoginName == this.loginName || CheckLoginAdmin.IsAdmin(this.loginName))
+                        if (HisConfigCFG.AssignBedOption == "2" && data.SERVICE_REQ_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__G)
+                        {
+                            e.RepositoryItem = repositoryItemBtnEditServiceReqDisable;
+                        }    
+                        else if (creator == this.loginName || reqLoginName == this.loginName || CheckLoginAdmin.IsAdmin(this.loginName))
                         {
                             if (isNoExecute != Base.GlobalStore.IS_TRUE)
                             {
@@ -6015,12 +6019,12 @@ namespace HIS.Desktop.Plugins.ServiceReqList
 
                             if (listServiceReq != null && listServiceReq.Count > 0)
                             {
-                                CommonParam param = new CommonParam();
-                                if (CheckListServiceReqMedicine(listServiceReq, param))
-                                {
-                                    MessageManager.Show(this, param, false);
-                                    return;
-                                }
+                                //CommonParam param = new CommonParam();
+                                //if (CheckListServiceReqMedicine(listServiceReq, param))
+                                //{
+                                //    MessageManager.Show(this, param, false);
+                                //    return; 
+                                //}
 
                                 InDonThuocTongHop(MPS000234);
                             }

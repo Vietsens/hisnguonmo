@@ -1,0 +1,522 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmAssignBed.bar2.Text" xml:space="preserve">
+    <value>ပင်မမီနူး</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem1.Caption" xml:space="preserve">
+    <value>barButtonItem1</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem2.Caption" xml:space="preserve">
+    <value>Save(Ctrl S)</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem3.Caption" xml:space="preserve">
+    <value>ပုံနှိပ်သိမ်းဆည်းပါ (Ctrl I)</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem4.Caption" xml:space="preserve">
+    <value>အသစ် (Ctrl N)</value>
+  </data>
+  <data name="frmAssignBed.barButtonItem5.Caption" xml:space="preserve">
+    <value>barButtonItem5</value>
+  </data>
+  <data name="frmAssignBed.btnCreateBill.Text" xml:space="preserve">
+    <value>ပေးဆပ်ပါ။</value>
+  </data>
+  <data name="frmAssignBed.btnDepositService.Text" xml:space="preserve">
+    <value>ယာယီစုဆောင်းခြင်း။\r\nဝန်ဆောင်မှု</value>
+  </data>
+  <data name="frmAssignBed.btnNew.Text" xml:space="preserve">
+    <value>အသစ်\r\n(Ctrl N)</value>
+  </data>
+  <data name="frmAssignBed.btnQRPay.Text" xml:space="preserve">
+    <value>ယာယီစုဆောင်းထားသော QR</value>
+  </data>
+  <data name="frmAssignBed.btnSave.Text" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။\r\n(Ctrl S)</value>
+  </data>
+  <data name="frmAssignBed.btnSaveAndPrint.Text" xml:space="preserve">
+    <value>ပုံနှိပ်သိမ်းဆည်းပါ။\r\n(Ctrl I)</value>
+  </data>
+  <data name="frmAssignBed.btnServiceReqList.Text" xml:space="preserve">
+    <value>အော်ဒါစာရင်း</value>
+  </data>
+  <data name="frmAssignBed.chkEditIcd.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="frmAssignBed.chkEditIcdCause.Properties.Caption" xml:space="preserve">
+    <value>ပြင်ပါ။</value>
+  </data>
+  <data name="frmAssignBed.grcServiceCode_TabService.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုကုဒ်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn_Service_PrimaryPatientType.Caption" xml:space="preserve">
+    <value>တယ်လီဖုန်းအပိုကြေး</value>
+  </data>
+  <data name="frmAssignBed.gridColumn1.Caption" xml:space="preserve">
+    <value>ရောဂါအမည်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn10.Caption" xml:space="preserve">
+    <value>ယူနစ်စျေးနှုန်း</value>
+  </data>
+  <data name="frmAssignBed.gridColumn11.Caption" xml:space="preserve">
+    <value>ကုတ်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn12.Caption" xml:space="preserve">
+    <value>တွဲထားသောနံပါတ်များ</value>
+  </data>
+  <data name="frmAssignBed.gridColumn13.Caption" xml:space="preserve">
+    <value>အခြားသတင်းရင်းမြစ်များ</value>
+  </data>
+  <data name="frmAssignBed.gridColumn14.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn15.Caption" xml:space="preserve">
+    <value>gridColumn15</value>
+  </data>
+  <data name="frmAssignBed.gridColumn16.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn17.Caption" xml:space="preserve">
+    <value>တန်ဖိုး</value>
+  </data>
+  <data name="frmAssignBed.gridColumn18.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှုနှုန်း</value>
+  </data>
+  <data name="frmAssignBed.gridColumn2.Caption" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကုဒ်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn3.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn4.Caption" xml:space="preserve">
+    <value>အိပ်ရာဝင်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn5.Caption" xml:space="preserve">
+    <value>စတင်ချိန်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn6.Caption" xml:space="preserve">
+    <value>ကုန်ဆုံးချိန်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn7.Caption" xml:space="preserve">
+    <value>အရေအတွက်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn8.Caption" xml:space="preserve">
+    <value>ရောဂါကုဒ်</value>
+  </data>
+  <data name="frmAssignBed.gridColumn9.Caption" xml:space="preserve">
+    <value>ရွေးချယ်ပါ။</value>
+  </data>
+  <data name="frmAssignBed.gridColumnExecuteRoomName__TabService.Caption" xml:space="preserve">
+    <value>စီမံဆောင်ရွက်နေတယ်။</value>
+  </data>
+  <data name="frmAssignBed.gridColumnPatientTypeName__TabService.Caption" xml:space="preserve">
+    <value>DTTTT</value>
+  </data>
+  <data name="frmAssignBed.gridViewServiceProcess.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>သော့ချက်စာလုံးများကို ရှာဖွေပါ...</value>
+  </data>
+  <data name="frmAssignBed.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmAssignBed.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem14.Text" xml:space="preserve">
+    <value>ပဏာမကောလိပ်-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem15.Text" xml:space="preserve">
+    <value>သတ်မှတ်သူ-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem20.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စုစုပေါင်း လူနာပေးဆောင်ရမည့် ကုန်ကျစရိတ်</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem20.Text" xml:space="preserve">
+    <value>BN မှပေးဆောင်ရမည့် စုစုပေါင်းကုန်ကျစရိတ်</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem21.Text" xml:space="preserve">
+    <value>ထရန်-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem22.Text" xml:space="preserve">
+    <value>၎င်းတွင်- ကျန်းမာရေးအာမခံ-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem23.Text" xml:space="preserve">
+    <value>အခြား-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem24.Text" xml:space="preserve">
+    <value>လူနာ-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem26.Text" xml:space="preserve">
+    <value>ပိတ်သည်-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem28.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကွာဟချက်</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem28.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကွာခြားချက်-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem29.Text" xml:space="preserve">
+    <value>အလေးချိန်-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem30.Text" xml:space="preserve">
+    <value>အမြင့်-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem31.Text" xml:space="preserve">
+    <value>BMI-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem33.Text" xml:space="preserve">
+    <value>လက္ခဏာ-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem34.Text" xml:space="preserve">
+    <value>ညောင်ပင်</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem35.Text" xml:space="preserve">
+    <value>ပုံနှိပ်ခြင်းမပြုမီ အစမ်းကြည့်ရှုပါ။</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem36.Text" xml:space="preserve">
+    <value>ဓာတ်ခွဲခန်း-</value>
+  </data>
+  <data name="frmAssignBed.layoutControlItem5.Text" xml:space="preserve">
+    <value>အလယ်တန်းကောလိပ်များ</value>
+  </data>
+  <data name="frmAssignBed.lblCaptionFortoggleSwitchDataChecked.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအားလုံး</value>
+  </data>
+  <data name="frmAssignBed.lciForlblConThua.Text" xml:space="preserve">
+    <value>ပျောက်ဆုံးနေသည်-</value>
+  </data>
+  <data name="frmAssignBed.lciForlblSoDuTaiKhoan.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အကောင့်လက်ကျန်</value>
+  </data>
+  <data name="frmAssignBed.lciForlblSoDuTaiKhoan.Text" xml:space="preserve">
+    <value>အကောင့်လက်ကျန်-</value>
+  </data>
+  <data name="frmAssignBed.lciIcdText.Text" xml:space="preserve">
+    <value>ပင်မကောလိပ်-</value>
+  </data>
+  <data name="frmAssignBed.lciIcdTextCause.Text" xml:space="preserve">
+    <value>ပြင်ပလက်ခံသူ-</value>
+  </data>
+  <data name="frmAssignBed.Text" xml:space="preserve">
+    <value>အိပ်ရာဝင်ပါဟယ်</value>
+  </data>
+  <data name="frmAssignBed.toggleSwitchDataChecked.Properties.OffText" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအားလုံး</value>
+  </data>
+  <data name="frmAssignBed.toggleSwitchDataChecked.Properties.OnText" xml:space="preserve">
+    <value>ရွေးချယ်ထားသောဝန်ဆောင်မှု</value>
+  </data>
+  <data name="frmAssignBed.txtIcdText.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmContraindicated.btnN.Text" xml:space="preserve">
+    <value>ပိတ်လိုက်</value>
+  </data>
+  <data name="frmContraindicated.btnY.Text" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmContraindicated.emptySpaceItem1.Text" xml:space="preserve">
+    <value>ပိတ်ဆို့ခြင်းဝန်ဆောင်မှုများကို အောက်ပါရောဂါလက္ခဏာများတွင် တားမြစ်ထားသည်။</value>
+  </data>
+  <data name="frmContraindicated.gridColumn1.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု</value>
+  </data>
+  <data name="frmContraindicated.gridColumn2.Caption" xml:space="preserve">
+    <value>ရောဂါရှာဖွေခြင်း (ICD)</value>
+  </data>
+  <data name="frmContraindicated.gridColumn3.Caption" xml:space="preserve">
+    <value>တားမြစ်ထားသောအကြောင်းအရာ</value>
+  </data>
+  <data name="frmContraindicated.layoutControlRoot.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmContraindicated.Text" xml:space="preserve">
+    <value>contraindications များကိုပိတ်ဆို့</value>
+  </data>
+  <data name="frmDetail.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmDetail.bbtnPrint.Caption" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="frmDetail.btnPrint.Text" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="frmDetail.grcCreator_TabService.Caption" xml:space="preserve">
+    <value>တောင်းဆိုသူ</value>
+  </data>
+  <data name="frmDetail.grcExecuteRoomName_TabService.Caption" xml:space="preserve">
+    <value>စီမံဆောင်ရွက်နေတယ်။</value>
+  </data>
+  <data name="frmDetail.grcIntructionTime_TabService.Caption" xml:space="preserve">
+    <value>တောင်းဆိုထားတဲ့အချိန်</value>
+  </data>
+  <data name="frmDetail.grcServiceReqCode_TabService.Caption" xml:space="preserve">
+    <value>ကုဒ်တောင်းပါ။</value>
+  </data>
+  <data name="frmDetail.grcServiceReqTypeName_TabService.Caption" xml:space="preserve">
+    <value>တောင်းဆိုမှုအမျိုးအစား</value>
+  </data>
+  <data name="frmDetail.grcStt__TabService.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmDetail.grcTotalAmount_TabService.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအရေအတွက်</value>
+  </data>
+  <data name="frmDetail.grcTotalPrice_TabService.Caption" xml:space="preserve">
+    <value>စုစုပေါင်းတန်ဘိုး</value>
+  </data>
+  <data name="frmDetail.gridColumn1.Caption" xml:space="preserve">
+    <value>နမူနာအမျိုးအစား</value>
+  </data>
+  <data name="frmDetail.gridColumn7.Caption" xml:space="preserve">
+    <value>တောင်းဆိုချက်ပုံစံကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="frmDetail.gridColumn7.ToolTip" xml:space="preserve">
+    <value>တောင်းဆိုချက်ပုံစံကို ပုံနှိပ်ပါ။</value>
+  </data>
+  <data name="frmDetail.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmDetail.repositoryItemButtonTabServiceViewReq_Print.NullText" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmDetail.Text" xml:space="preserve">
+    <value>အသေးစိတ်</value>
+  </data>
+  <data name="frmDetailsSereServ.btnClose.Text" xml:space="preserve">
+    <value>ပိတ်လိုက်</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn1.Caption" xml:space="preserve">
+    <value>အမိန့်ကုဒ်</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn2.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုအမည်</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn3.Caption" xml:space="preserve">
+    <value>ငွေရှာပါ။</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn4.Caption" xml:space="preserve">
+    <value>သတ်မှတ်ထားသောအခန်း</value>
+  </data>
+  <data name="frmDetailsSereServ.gridColumn5.Caption" xml:space="preserve">
+    <value>အကောင်အထည်ဖော်ရေးအခန်း</value>
+  </data>
+  <data name="frmDetailsSereServ.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmDetailsSereServ.layoutControlItem1.Text" xml:space="preserve">
+    <value>လူနာက ပိုက်ဆံမရှင်းသေးဘူး။ ဝန်ဆောင်မှုအမှာစာ/ဆေးစာများကို ခွင့်မပြုပါ။</value>
+  </data>
+  <data name="frmDetailsSereServ.Text" xml:space="preserve">
+    <value>အသိပေးချက်</value>
+  </data>
+  <data name="frmMissingIcd.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmMissingIcd.bbtnPrint.Caption" xml:space="preserve">
+    <value>ပရင့်ထုတ်ခြင်း (Ctrl P)</value>
+  </data>
+  <data name="frmMissingIcd.bbtnSearch.Caption" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmMissingIcd.btnAddIcd.Text" xml:space="preserve">
+    <value>အပိုရောဂါရှာဖွေမှုများ</value>
+  </data>
+  <data name="frmMissingIcd.btnPrint.Text" xml:space="preserve">
+    <value>ပိတ်လိုက်</value>
+  </data>
+  <data name="frmMissingIcd.btnSearch.Text" xml:space="preserve">
+    <value>ရှာပါ (Ctrl F)</value>
+  </data>
+  <data name="frmMissingIcd.btnSkip.Text" xml:space="preserve">
+    <value>ကျော်သွားပါ။</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIcdName.Caption" xml:space="preserve">
+    <value>ရောဂါရှာဖွေခြင်း (ICD)</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIsCauseIcd.Caption" xml:space="preserve">
+    <value>အလယ်တန်းကောလိပ်</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIsCauseIcd.ToolTip" xml:space="preserve">
+    <value>ဒုတိယရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIsMainIcd.Caption" xml:space="preserve">
+    <value>ပင်မကောလိပ်</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnIsMainIcd.ToolTip" xml:space="preserve">
+    <value>အဓိကရောဂါလက္ခဏာ</value>
+  </data>
+  <data name="frmMissingIcd.gridColumnServiceName.Caption" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု</value>
+  </data>
+  <data name="frmMissingIcd.labelControl1.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှုများသည် အောက်ပါရောဂါရှာဖွေရေးကိစ္စများတွင်သာ ရက်ချိန်းခွင့်ပြုသည်-</value>
+  </data>
+  <data name="frmMissingIcd.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmMissingIcd.Text" xml:space="preserve">
+    <value>ရောဂါရှာဖွေရေးအချက်အလက်များ ပျောက်ဆုံးနေပါသည်။</value>
+  </data>
+  <data name="frmPriceEdit.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmPriceEdit.barbtnOK.Caption" xml:space="preserve">
+    <value>အိုကေ</value>
+  </data>
+  <data name="frmPriceEdit.btnOK.Text" xml:space="preserve">
+    <value>သဘောတူသည် (Ctrl S)</value>
+  </data>
+  <data name="frmPriceEdit.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmPriceEdit.layoutControlItem1.Text" xml:space="preserve">
+    <value>စျေးနှုန်း-</value>
+  </data>
+  <data name="frmPriceEdit.Text" xml:space="preserve">
+    <value>စျေးနှုန်းပြင်ပါ။</value>
+  </data>
+  <data name="frmServiceDebateConfirm.btnClose.Text" xml:space="preserve">
+    <value>ပိတ်လိုက်</value>
+  </data>
+  <data name="frmServiceDebateConfirm.btnCreateDebate.Text" xml:space="preserve">
+    <value>တိုင်ပင်ဆွေးနွေးမှု မိနစ်များကို ဖန်တီးပါ။</value>
+  </data>
+  <data name="frmServiceDebateConfirm.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmServiceDebateConfirm.Text" xml:space="preserve">
+    <value>အသိပေးချက်</value>
+  </data>
+  <data name="frmWaringConfigIcdService.btnNo.Text" xml:space="preserve">
+    <value>မဟုတ်ပါလား။</value>
+  </data>
+  <data name="frmWaringConfigIcdService.btnServiceICD.Text" xml:space="preserve">
+    <value>အပိုဆောင်းစည်းမျဉ်း</value>
+  </data>
+  <data name="frmWaringConfigIcdService.btnYes.Text" xml:space="preserve">
+    <value>ရှိသည်</value>
+  </data>
+  <data name="frmWaringConfigIcdService.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmWaringConfigIcdService.Text" xml:space="preserve">
+    <value>အသိပေးချက်</value>
+  </data>
+</root>

@@ -44,15 +44,18 @@ namespace MPS.Processor.Mps000321
                 sereServADOs = new List<SereServADO>();
                 var sereServADOTemps = new List<SereServADO>();
                 sereServADOTemps.AddRange(from r in rdo.SereServs
-                                          select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, ListPta, rdo.Treatment));
+                                          select new SereServADO(r, rdo.SereServs, rdo.SereServExts, rdo.HeinServiceTypes, rdo.Services, rdo.Rooms, 
+                                          rdo.materialTypes, rdo.PatientTypeCFG, rdo.HisConfigValue, rdo.HisServiceUnit, ListPta, 
+                                          rdo.Treatment, rdo.ServiceReqs));
 
-                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOTemps), sereServADOTemps));
                 sereServADOTemps = sereServADOTemps
                     .Where(o =>
                         o.AMOUNT > 0
                         && o.IS_NO_EXECUTE != 1
                         && (!rdo.HisConfigValue.NotIncludeIsExpend || (rdo.HisConfigValue.NotIncludeIsExpend && o.IS_EXPEND != 1)))
                     .OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999).ToList();
+                DataInputProcessReal();
+
                 //sereServ la bhyt, gom nhom
                 var sereServBHYTGroups = sereServADOTemps
                     .GroupBy(o => new
@@ -70,6 +73,7 @@ namespace MPS.Processor.Mps000321
                         o.STENT_ORDER
                     }).ToList();
 
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOsReal.Select(o => new { o.SERVICE_NAME, o.AMOUNT })), sereServADOsReal.Select(o => new { o.SERVICE_NAME, o.AMOUNT })));
                 ProcessOtherSource(sereServADOTemps);
 
                 foreach (var sereServBHYTGroup in sereServBHYTGroups)
@@ -104,7 +108,6 @@ namespace MPS.Processor.Mps000321
                 //Inventec.Common.Logging.LogSystem.Info("sereServADOs" + sereServADOs.Count(o => String.IsNullOrWhiteSpace(o.KEY_PATY_ALTER)));
 
                 sereServADOs = sereServADOs.OrderBy(o => o.STENT_ORDER ?? 0).ThenBy(o => o.SERVICE_NAME).ToList();
-
                 this.PatyAlterProcess();
             }
             catch (Exception ex)
@@ -112,7 +115,7 @@ namespace MPS.Processor.Mps000321
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+      
         private void GroupDisplayProcess()
         {
             try
@@ -134,6 +137,7 @@ namespace MPS.Processor.Mps000321
 
                 this.GroupDepartmentProcess();
                 this.GroupPatientTypeProcess();
+
             }
             catch (Exception ex)
             {
@@ -284,7 +288,7 @@ namespace MPS.Processor.Mps000321
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+      
         private void HeinServiceTypeBedProcess()
         {
             try

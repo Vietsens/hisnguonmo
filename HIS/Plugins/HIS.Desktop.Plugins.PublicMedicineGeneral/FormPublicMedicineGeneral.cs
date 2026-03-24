@@ -1209,6 +1209,52 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                     DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.KhongCoYLenh, "Cảnh báo", MessageBoxButtons.OK);
                     return;
                 }
+                // Filter data according to checkbox selections before building PDO
+                // Medicine
+                if (!chkMedicine.Checked)
+                {
+                    if (listSereServView2 != null)
+                        listSereServView2 = listSereServView2
+                            .Where(x => x.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
+                            .ToList();
+                    if (listServiceReqMety != null)
+                        listServiceReqMety = new List<HIS_SERVICE_REQ_METY>();
+                }
+                // Material
+                if (!chkMedical.Checked)
+                {
+                    if (listSereServView2 != null)
+                        listSereServView2 = listSereServView2
+                            .Where(x => x.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT)
+                            .ToList();
+                    if (listServiceReqMaty != null)
+                        listServiceReqMaty = new List<HIS_SERVICE_REQ_MATY>();
+                }
+                // Blood
+                if (!chkBlood.Checked)
+                {
+                    if (listSereServView2 != null)
+                        listSereServView2 = listSereServView2
+                            .Where(x => x.TDL_SERVICE_TYPE_ID != IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU)
+                            .ToList();
+                }
+                // After filtering detail lists, remove service requests that no longer have any relevant items
+                var remainingReqIds = new HashSet<long>();
+                if (listSereServView2 != null && listSereServView2.Count > 0)
+                    foreach (var v in listSereServView2)
+                        if (v.SERVICE_REQ_ID.HasValue)
+                            remainingReqIds.Add(v.SERVICE_REQ_ID.Value);
+
+                if (listServiceReqMety != null && listServiceReqMety.Count > 0)
+                    foreach (var m in listServiceReqMety)
+                        remainingReqIds.Add(m.SERVICE_REQ_ID);
+
+                if (listServiceReqMaty != null && listServiceReqMaty.Count > 0)
+                    foreach (var m in listServiceReqMaty)
+                        remainingReqIds.Add(m.SERVICE_REQ_ID);
+
+                if (listserviceReqs != null && listserviceReqs.Count > 0)
+                    listserviceReqs = listserviceReqs.Where(sr => remainingReqIds.Contains(sr.ID)).ToList();
                 Mps000486PDO pdo = new Mps000486PDO(
                                 listserviceReqs,
                                 listSereServView2,

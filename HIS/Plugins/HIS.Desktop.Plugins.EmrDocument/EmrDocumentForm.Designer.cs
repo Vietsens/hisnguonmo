@@ -48,7 +48,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmrDocumentForm));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject65 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject66 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -101,7 +100,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
-            this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.btnDocument = new DevExpress.XtraEditors.SimpleButton();
+            this.toolTipController1 = new DevExpress.Utils.ToolTipController();
             this.gridControlSign = new DevExpress.XtraGrid.GridControl();
             this.gridViewSign = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.grclStt = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -120,7 +120,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.btnHomeRelativeSign = new DevExpress.XtraEditors.SimpleButton();
             this.btnPatientSign = new DevExpress.XtraEditors.SimpleButton();
             this.cboStatusPatientSign = new DevExpress.XtraEditors.GridLookUpEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar3 = new DevExpress.XtraBars.Bar();
             this.bbtnsearch = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
@@ -149,12 +149,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.treeListColumn3 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumnDOCUMENT_TYPE_NAME = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn6 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.treeListColumn5 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn7 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn8 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn9 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn10 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn11 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
-            this.treeListColumn5 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.repositoryItem__Delete_E = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItem__Delete_D = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryItem__SetingSign_E = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -196,17 +196,16 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.repositoryItemCheckEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.lciPaging = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
-            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.imageCheck = new DevExpress.Utils.ImageCollection(this.components);
-            this.btnDocument = new DevExpress.XtraEditors.SimpleButton();
-            this.layoutControlItem29 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.dxValidationProviderControl = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+            this.imageCheck = new DevExpress.Utils.ImageCollection();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
@@ -276,6 +275,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).BeginInit();
@@ -285,7 +285,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCheck)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).BeginInit();
             this.SuspendLayout();
             // 
             // bar1
@@ -487,6 +486,18 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControl2.TabIndex = 4;
             this.layoutControl2.Text = "layoutControl2";
             this.layoutControl2.GroupExpandChanged += new DevExpress.XtraLayout.Utils.LayoutGroupEventHandler(this.layoutControl2_GroupExpandChanged);
+            // 
+            // btnDocument
+            // 
+            this.btnDocument.Location = new System.Drawing.Point(434, 460);
+            this.btnDocument.Name = "btnDocument";
+            this.btnDocument.Size = new System.Drawing.Size(114, 22);
+            this.btnDocument.StyleController = this.layoutControl2;
+            this.btnDocument.TabIndex = 36;
+            this.btnDocument.Text = "VB chưa ghi nhận";
+            this.btnDocument.ToolTip = "Danh sách văn bản tồn tại trong thư mục lưu trữ nhưng chưa có trong hệ thống";
+            this.btnDocument.ToolTipController = this.toolTipController1;
+            this.btnDocument.Click += new System.EventHandler(this.btnDocument_Click);
             // 
             // gridControlSign
             // 
@@ -922,12 +933,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.treeListColumn3,
             this.treeListColumnDOCUMENT_TYPE_NAME,
             this.treeListColumn6,
+            this.treeListColumn5,
             this.treeListColumn7,
             this.treeListColumn8,
             this.treeListColumn9,
             this.treeListColumn10,
-            this.treeListColumn11,
-            this.treeListColumn5});
+            this.treeListColumn11});
             this.treeListDocument.Cursor = System.Windows.Forms.Cursors.Default;
             this.treeListDocument.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeListDocument.Location = new System.Drawing.Point(2, 2);
@@ -1032,6 +1043,17 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.treeListColumn6.VisibleIndex = 5;
             this.treeListColumn6.Width = 50;
             // 
+            // treeListColumn5
+            // 
+            this.treeListColumn5.Caption = "Trạng thái";
+            this.treeListColumn5.FieldName = "Status_Str";
+            this.treeListColumn5.Name = "treeListColumn5";
+            this.treeListColumn5.OptionsColumn.AllowEdit = false;
+            this.treeListColumn5.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.String;
+            this.treeListColumn5.Visible = true;
+            this.treeListColumn5.VisibleIndex = 6;
+            this.treeListColumn5.Width = 100;
+            // 
             // treeListColumn7
             // 
             this.treeListColumn7.Caption = "STT";
@@ -1039,7 +1061,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.treeListColumn7.Name = "treeListColumn7";
             this.treeListColumn7.OptionsColumn.AllowEdit = false;
             this.treeListColumn7.Visible = true;
-            this.treeListColumn7.VisibleIndex = 6;
+            this.treeListColumn7.VisibleIndex = 7;
             this.treeListColumn7.Width = 40;
             // 
             // treeListColumn8
@@ -1050,7 +1072,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.treeListColumn8.OptionsColumn.AllowEdit = false;
             this.treeListColumn8.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn8.Visible = true;
-            this.treeListColumn8.VisibleIndex = 7;
+            this.treeListColumn8.VisibleIndex = 8;
             // 
             // treeListColumn9
             // 
@@ -1060,7 +1082,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.treeListColumn9.OptionsColumn.AllowEdit = false;
             this.treeListColumn9.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn9.Visible = true;
-            this.treeListColumn9.VisibleIndex = 8;
+            this.treeListColumn9.VisibleIndex = 9;
             this.treeListColumn9.Width = 100;
             // 
             // treeListColumn10
@@ -1070,7 +1092,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.treeListColumn10.Name = "treeListColumn10";
             this.treeListColumn10.OptionsColumn.AllowEdit = false;
             this.treeListColumn10.Visible = true;
-            this.treeListColumn10.VisibleIndex = 9;
+            this.treeListColumn10.VisibleIndex = 10;
             // 
             // treeListColumn11
             // 
@@ -1079,14 +1101,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.treeListColumn11.Name = "treeListColumn11";
             this.treeListColumn11.OptionsColumn.AllowEdit = false;
             this.treeListColumn11.Visible = true;
-            this.treeListColumn11.VisibleIndex = 10;
+            this.treeListColumn11.VisibleIndex = 11;
             this.treeListColumn11.Width = 100;
-            // 
-            // treeListColumn5
-            // 
-            this.treeListColumn5.Caption = "Trạng thái";
-            this.treeListColumn5.FieldName = "Trạng thái";
-            this.treeListColumn5.Name = "treeListColumn5";
             // 
             // repositoryItem__Delete_E
             // 
@@ -1551,6 +1567,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
+            // layoutControlItem29
+            // 
+            this.layoutControlItem29.Control = this.btnDocument;
+            this.layoutControlItem29.Location = new System.Drawing.Point(432, 458);
+            this.layoutControlItem29.Name = "layoutControlItem29";
+            this.layoutControlItem29.Size = new System.Drawing.Size(118, 26);
+            this.layoutControlItem29.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem29.TextVisible = false;
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -1621,27 +1646,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             this.imageCheck.Images.SetKeyName(0, "uncheck.jpg");
             this.imageCheck.Images.SetKeyName(1, "Select.png");
             this.imageCheck.Images.SetKeyName(2, "check.jpg");
-            // 
-            // btnDocument
-            // 
-            this.btnDocument.Location = new System.Drawing.Point(434, 460);
-            this.btnDocument.Name = "btnDocument";
-            this.btnDocument.Size = new System.Drawing.Size(114, 22);
-            this.btnDocument.StyleController = this.layoutControl2;
-            this.btnDocument.TabIndex = 36;
-            this.btnDocument.Text = "VB chưa ghi nhận";
-            this.btnDocument.ToolTip = "Danh sách văn bản tồn tại trong thư mục lưu trữ nhưng chưa có trong hệ thống";
-            this.btnDocument.ToolTipController = this.toolTipController1;
-            this.btnDocument.Click += new System.EventHandler(this.btnDocument_Click);
-            // 
-            // layoutControlItem29
-            // 
-            this.layoutControlItem29.Control = this.btnDocument;
-            this.layoutControlItem29.Location = new System.Drawing.Point(432, 458);
-            this.layoutControlItem29.Name = "layoutControlItem29";
-            this.layoutControlItem29.Size = new System.Drawing.Size(118, 26);
-            this.layoutControlItem29.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem29.TextVisible = false;
             // 
             // EmrDocumentForm
             // 
@@ -1733,6 +1737,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup3)).EndInit();
@@ -1742,7 +1747,6 @@ namespace HIS.Desktop.Plugins.EmrDocument
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.imageCheck)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem29)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

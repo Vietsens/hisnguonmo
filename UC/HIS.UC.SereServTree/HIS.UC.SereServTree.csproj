@@ -60,7 +60,7 @@
       <HintPath>..\..\..\..\..\LIBRARY\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigApplication">
-      <HintPath>..\..\..\..\His_Test_20250906143200\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
+      <HintPath>..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.ConfigApplication.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\lib\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>

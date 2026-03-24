@@ -62,10 +62,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 var selectedItemsForMenu = GetMediMatySelected();
                 if (selectedItemsForMenu == null || selectedItemsForMenu.Count == 0)
                     return;
-
-                if (selectedItemsForMenu.Count == 1 && CheckEditDayNum() && !GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
+                 
+                if (CheckEditDayNum() && !GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
                 {
-                    Inventec.Common.Logging.LogSystem.Info("InitMenu.2");
+                    Inventec.Common.Logging.LogSystem.Info("InitMenu.2"); 
                     BarButtonItem itemEditDayNum = new BarButtonItem(barManager1, ResourceMessage.PopupMenu_SuaSoNgay, 1);
                     itemEditDayNum.Tag = MOUSE_RIGHT_TYPE.EDIT_DAY_NUM;
                     itemEditDayNum.ItemClick += new ItemClickEventHandler(setProcessMenu);

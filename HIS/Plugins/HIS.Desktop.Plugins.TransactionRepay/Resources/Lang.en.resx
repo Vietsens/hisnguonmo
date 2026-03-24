@@ -150,6 +150,9 @@
   <data name="frmTransactionRepay.chkAutoClose.ToolTip" xml:space="preserve">
     <value>Automatically close function when 'Save' or 'Save in' is successful</value>
   </data>
+  <data name="frmTransactionRepay.chkXemTruoc.Properties.Caption" xml:space="preserve">
+    <value>:Print preview</value>
+  </data>
   <data name="frmTransactionRepay.layoutAccountBook.Text" xml:space="preserve">
     <value>Revenue and expenditure book:</value>
   </data>

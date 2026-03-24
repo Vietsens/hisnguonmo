@@ -571,8 +571,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciTranferAmount.Enabled = true;
 
+                    HideNewControls();
                 }
                 else if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
                 {
@@ -582,8 +584,27 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_SWIPE_AMOUNT_TEXT", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_SWIPE_AMOUNT_TOOLTIP", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciTranferAmount.Enabled = true;
 
+                    HideNewControls();
+                }
+                else if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT) 
+                {
+                    dxValidationProvider1.RemoveControlError(spinTransferAmount);
+                    ValidControlTransferAmount(true);
+                    this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciTranferAmount.Enabled = true;
+
+                    dxValidationProvider1.RemoveControlError(spinSwipeAmount);
+                    ValidControlSwipeAmount(true);
+                    lciSwipeAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    lciSwipeAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    emptySpaceItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    spinSwipeAmount.EditValue = 0;
                 }
                 else if (payForm != null && payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
                 {
@@ -592,9 +613,11 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciTranferAmount.Enabled = false;
-                }
 
+                    HideNewControls();
+                }
                 else
                 {
                     dxValidationProvider1.RemoveControlError(spinTransferAmount);
@@ -602,7 +625,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     this.lciTranferAmount.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TEXT", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     this.lciTranferAmount.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_DEPOSIT__LAYOUT_TRANSFER_AMOUNT_TOOLTIP", Base.ResourceLangManager.LanguageFrmTransactionDeposit, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
+                    lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciTranferAmount.Enabled = false;
+
+                    HideNewControls();
                 }
                 spinTransferAmount.EditValue = 0;
             }
@@ -610,6 +636,15 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void HideNewControls()
+        {
+            lciSwipeAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            emptySpaceItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            dxValidationProvider1.RemoveControlError(spinSwipeAmount);
+            ValidControlSwipeAmount(false);
+            spinSwipeAmount.EditValue = 0;
         }
 
         private void ValidControlTransferAmount(bool IsRequiredField)
@@ -620,6 +655,21 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 PINRule.spinTranferAmount = spinTransferAmount;
                 PINRule.isRequiredPin = IsRequiredField;
                 dxValidationProvider1.SetValidationRule(spinTransferAmount, PINRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void ValidControlSwipeAmount(bool IsRequiredField)
+        {
+            try
+            {
+                SpinTranferAmountValidationRule rule = new SpinTranferAmountValidationRule();
+                rule.spinTranferAmount = spinSwipeAmount;
+                rule.isRequiredPin = IsRequiredField;
+                dxValidationProvider1.SetValidationRule(spinSwipeAmount, rule);
             }
             catch (Exception ex)
             {
@@ -1012,6 +1062,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 btnSave.Enabled = true;
                 btnSaveAndSign.Enabled = true;
                 spinTransferAmount.EditValue = null;
+                spinSwipeAmount.EditValue = null;
                 V_HIS_TREATMENT_FEE fee = null;
                 FillDataToCommon(fee);
                 if (HisConfigCFG.ShowServerTimeByDefault == "1")
@@ -1765,6 +1816,42 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                             data.Transaction.SWIPE_AMOUNT = Inventec.Common.TypeConvert.Parse.ToDecimal(spinTransferAmount.Text);
                         }
                     }
+                    else if (payFormer.ID == 9) // Tiền mặt/Chuyển khoản/Quẹt thẻ
+                    {
+                        decimal transferAmt = spinTransferAmount.EditValue != null ? spinTransferAmount.Value : 0;
+                        decimal swipeAmt = spinSwipeAmount.EditValue != null ? spinSwipeAmount.Value : 0;
+                        if (transferAmt <= 0)
+                        {
+                            isShowMess = true;
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show("Vui lòng nhập Số tiền chuyển khoản lớn hơn 0", "Thông báo");
+                            return;
+                        }
+                        if (swipeAmt <= 0)
+                        {
+                            isShowMess = true;
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show("Vui lòng nhập Số tiền quẹt thẻ lớn hơn 0", "Thông báo");
+                            return;
+                        }
+                        if (transferAmt + swipeAmt > data.Transaction.AMOUNT)
+                        {
+                            isShowMess = true;
+                            WaitingManager.Hide();
+                            XtraMessageBox.Show(String.Format("Tổng tiền chuyển khoản/quẹt thẻ [{0}] lớn hơn số tiền tạm ứng của bệnh nhân [{1}]",
+                                Inventec.Common.Number.Convert.NumberToStringRoundAuto(transferAmt + swipeAmt, ConfigApplications.NumberSeperator),
+                                Inventec.Common.Number.Convert.NumberToStringRoundAuto(data.Transaction.AMOUNT, ConfigApplications.NumberSeperator)), "Thông báo");
+                            return;
+                        }
+                        if (spinTransferAmount.EditValue != null)
+                        {
+                            data.Transaction.TRANSFER_AMOUNT = spinTransferAmount.Value;
+                        }
+                        if (spinSwipeAmount.EditValue != null)
+                        {
+                            data.Transaction.SWIPE_AMOUNT = spinSwipeAmount.Value;
+                        }
+                    }
                 }
 
                 if (this.depositReq != null && this.depositReq.ID > 0)
@@ -1787,6 +1874,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 else if (txtTotalAmount.EditValue != null && payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE)
                 {
                     money = (long)txtTotalAmount.Value;
+                }
+                else if (payFormer.ID == 9 && spinSwipeAmount.EditValue != null) // Tiền mặt/Chuyển khoản/Quẹt thẻ
+                {
+                    money = (long)spinSwipeAmount.Value;
                 }
                 Inventec.Common.Logging.LogSystem.Info(" money " + money);
                 // tạm ứng qua thẻ
@@ -1841,7 +1932,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         data.Transaction.TIG_TRANSACTION_TIME = DepositDCO.TransactionTime;
                     }
                 }
-                else if ((payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+                else if ((payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payFormer.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT || payFormer.ID == 9)
                     && chkConnectionPOS.Checked == true && money > 0)
                 {
                     var check = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>(UriStores.HIS_TRANSACTION_CHECK_DEPOSIT, ApiConsumers.MosConsumer, data, param);
@@ -2286,6 +2377,8 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
         private bool ProcessPrintDeposit(string printTypeCode, string fileName)
         {
+            Inventec.Common.Logging.LogSystem.Info("CheDoIn = " + ConfigApplications.CheDoInChoCacChucNangTrongPhanMem);
+            Inventec.Common.Logging.LogSystem.Info("chkPreviewPrint.Checked = " + chkPreviewPrint.Checked);
             bool result = false;
             try
             {
@@ -2339,13 +2432,15 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultTranDeposit != null ? this.resultTranDeposit.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
 
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (chkPreviewPrint.Checked)
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, null);
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
                     if (isSaveAndSign)
                     {
                         result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
-
                     }
                     else
                     {
@@ -2354,8 +2449,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 }
                 else
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, null);
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO, ShowPrintLog = (MPS.ProcessorBase.PrintConfig.DelegateShowPrintLog)CallModuleShowPrintLog });
                 }
                 //result = MPS.MpsPrinter.Run(printData);
 
@@ -2443,15 +2537,25 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 }
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultTranDeposit != null ? this.resultTranDeposit.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
-                if (isSaveAndSign)
+                if (chkPreviewPrint.Checked)
                 {
-                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, printerName) { EmrInputADO = inputADO });
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
+                    if (isSaveAndSign)
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintPreview, printerName) { EmrInputADO = inputADO });
+                    }
+                    else
+                    {
+                        result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
+                    }
                 }
                 else
                 {
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, rdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
                 }
-                //result = MPS.MpsPrinter.Run(printData);
 
                 if (result && chkAutoClose.CheckState == CheckState.Checked)
                 {
@@ -2575,19 +2679,18 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                 MPS.Processor.Mps000171.PDO.Mps000171PDO pdo = new MPS.Processor.Mps000171.PDO.Mps000171PDO(this.resultTranDeposit, currentPatientTypeAlter, departmentTran, ratio, patient);
                 MPS.ProcessorBase.Core.PrintData printData = null;
                 WaitingManager.Hide();
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (chkPreviewPrint.Checked)
                 {
-
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, null);
-
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
                 }
                 else
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, null);
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
                 }
-                //result = MPS.MpsPrinter.Run(printData);
             }
             catch (Exception ex)
             {
@@ -2672,17 +2775,18 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
 
                 Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADOWithPrintTypeCode((this.resultTranDeposit != null ? this.resultTranDeposit.TREATMENT_CODE : ""), printTypeCode, currentModule != null ? currentModule.RoomId : 0);
                 WaitingManager.Hide();
-                if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                if (chkPreviewPrint.Checked)
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, null);
+                    result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
+                }
+                else if (ConfigApplications.CheDoInChoCacChucNangTrongPhanMem == 2)
+                {
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow, printerName) { EmrInputADO = inputADO });
                 }
                 else
                 {
-                    //printData = new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, null);
                     result = MPS.MpsPrinter.Run(new MPS.ProcessorBase.Core.PrintData(printTypeCode, fileName, pdo, MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog, printerName) { EmrInputADO = inputADO });
                 }
-                //result = MPS.MpsPrinter.Run(printData);
             }
             catch (Exception ex)
             {
@@ -2964,6 +3068,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             try
             {
                 FormatSpint(txtTotalAmount);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
@@ -2977,10 +3082,41 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
             try
             {
                 FormatSpint(spinTransferAmount);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
 
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void CalcuCanThu()
+        {
+
+            try
+            {
+                var totalAmountDeposit = txtTotalAmount.Value;
+                var transferAmount = spinTransferAmount.Value;
+                var swipeAmount = spinSwipeAmount.Value;
+                lblReceiveAmount.Tag = totalAmountDeposit - transferAmount - swipeAmount;
+                lblReceiveAmount.Text = (totalAmountDeposit - transferAmount - swipeAmount).ToString();
+                this.lblReceiveAmount.Text = string.Format("{0:#,##0}", double.Parse(this.lblReceiveAmount.Text));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+        private void spinSwipeAmount_EditValueChanged(object sender, EventArgs e) 
+        {
+            try
+            {
+                FormatSpint(spinSwipeAmount);
+                CalcuCanThu();
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -3005,6 +3141,39 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
                     csAddOrUpdate.KEY = chkAutoClose.Name;
                     csAddOrUpdate.VALUE = (chkAutoClose.CheckState.ToString());
+                    csAddOrUpdate.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+                WaitingManager.Hide();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void chkPreviewPrint_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+                WaitingManager.Show();
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkPreviewPrint.Name && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = (chkPreviewPrint.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkPreviewPrint.Name;
+                    csAddOrUpdate.VALUE = (chkPreviewPrint.Checked ? "1" : "");
                     csAddOrUpdate.MODULE_LINK = moduleLink;
                     if (this.currentControlStateRDO == null)
                         this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
@@ -3055,6 +3224,10 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                         else if (item.KEY == chkConnectionPOS.Name)
                         {
                             chkConnectionPOS.Checked = item.VALUE == "1";
+                        }
+                        else if (item.KEY == chkPreviewPrint.Name)
+                        {
+                            chkPreviewPrint.Checked = item.VALUE == "1";
                         }
 
                     }
@@ -3194,7 +3367,7 @@ namespace HIS.Desktop.Plugins.TransactionDeposit
                     btnSavePrint.Enabled = false;
                 }
                 WaitingManager.Hide();
-                if (!success)
+                if (!success) 
                 {
                     if (!isShowMess)
                     {

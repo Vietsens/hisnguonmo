@@ -222,4 +222,7 @@
   <data name="frmHisDayPolicies.txtSearch.Properties.NullValuePrompt" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="frmHisHolidayPolicies.chkWarningDepoService.Text" xml:space="preserve">
+    <value>Bỏ qua cảnh báo khi Tạm ứng dịch vụ</value>
+  </data>
 </root>

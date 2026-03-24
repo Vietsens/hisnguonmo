@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
         private int MAX_REQUEST_LENGTH_PARAM = 500;
 
         Dictionary<long, string> dicChmsImpMest = new Dictionary<long, string>();
-
+        string moduleLink = "HIS.Desktop.Plugins.HisExpMestMediMate";
         Inventec.Desktop.Common.Modules.Module _Module;
         long RoomId;
         long RoomTypeId;
@@ -344,6 +344,7 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
         public string convertToUnSign3(string s)
         {
             if (String.IsNullOrWhiteSpace(s))
@@ -1103,6 +1104,54 @@ namespace HIS.Desktop.Plugins.HisExpMestMediMate.HisExpMestMediMate
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
+            }
+        }
+
+        private void ChangeCheckPrintAndPreview()
+        {
+            try
+            {
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdatePrintDocumentSigned = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "chkIsNotTaken" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                if (csAddOrUpdatePrintDocumentSigned != null)
+                {
+                    csAddOrUpdatePrintDocumentSigned.VALUE = (chkIsNotTaken.Checked ? "1" : "");
+                }
+                else
+                {
+                    csAddOrUpdatePrintDocumentSigned = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdatePrintDocumentSigned.KEY = "chkIsNotTaken";
+                    csAddOrUpdatePrintDocumentSigned.VALUE = (chkIsNotTaken.Checked ? "1" : "");
+                    csAddOrUpdatePrintDocumentSigned.MODULE_LINK = moduleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdatePrintDocumentSigned);
+                }
+
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkIsNotTaken_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                {
+                    return;
+                }
+
+                isNotLoadWhileChangeControlStateInFirst = false;
+                ChangeCheckPrintAndPreview();
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

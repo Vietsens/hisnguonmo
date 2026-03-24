@@ -127,6 +127,11 @@ namespace MPS.Processor.Mps000118
                     AddObjectKeyIntoListkey<HIS_DHST>(rdo.hisDhst, false);
                 }
 
+                if (rdo.HisSereServViex != null)
+                {
+                    AddObjectKeyIntoListkey<V_HIS_SERE_SERV_VIEX>(rdo.HisSereServViex, false);
+                }
+
                 if (rdo.HisPrescription != null)
                 {
                     if (rdo.expMestMedicines != null && rdo.expMestMedicines.Count > 0)

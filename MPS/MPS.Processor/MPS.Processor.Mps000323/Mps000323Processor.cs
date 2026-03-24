@@ -68,6 +68,7 @@ namespace MPS.Processor.Mps000323
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 SetSingleKey();
+                SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
                 CreateListKey();
                 singleTag.ProcessData(store, singleValueDictionary);
                 //barCodeTag.ProcessData(store, dicImage);
@@ -88,6 +89,26 @@ namespace MPS.Processor.Mps000323
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+            return result;
+        }
+        public override string ProcessUniqueCodeData()
+        {
+            string result = "";
+            try
+            {
+                if (rdo != null && rdo.currentHisDebate != null && rdo.HisTreatment != null)
+                {
+                    string treatmentCode = "TREATMENT_CODE:" + rdo.HisTreatment.TREATMENT_CODE;
+                    string debateId = "HIS_DEBATE:" + rdo.currentHisDebate.ID;
+                    result = String.Format("Mps000323 {0} {1}", treatmentCode, debateId);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            Inventec.Common.Logging.LogSystem.Debug("HIS_CODE: " + result);
             return result;
         }
         private void CreateListKey()

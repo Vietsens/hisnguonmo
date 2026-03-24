@@ -83,6 +83,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         bool isNotLoadWhileChangeInstructionTimeInFirst;
         long? serviceReqParentId;
         long treatmentId = 0;
+        decimal totalGuarantee = 0; 
         string treatmentCode;
         int actionBosung = 0;
         int positionHandle = 0;
@@ -634,6 +635,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 this.InitTabIndex();
                 LogSystem.Debug("Loaded default data");
                 this.FillDataToControlsForm();
+            
+                this.VisibleGuarantee();
+                this.LoadGuaranteeInfo();
                 this.ValidateForm();
                 this.ValidateBosung();
                 this.VisibleButton(this.actionBosung);
@@ -669,6 +673,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     && !GlobalStore.IsCabinet) ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
 
                 this.isNotLoadWhileChangeInstructionTimeInFirst = false;
+                RefeshSereServInTreatmentData(); 
+                CalculatorToTalGuaranteeOriginal();
                 WaitingManager.Hide();
             }
             catch (Exception ex)
@@ -677,7 +683,40 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        List<HIS_SERE_SERV> ss = new List<HIS_SERE_SERV>(); 
+        private void RefeshSereServInTreatmentData()
+        {
+            try 
+            { 
+                CommonParam param = new CommonParam();
+                HisSereServFilter hisSereServFilter = new HisSereServFilter();
+                hisSereServFilter.TREATMENT_ID = this.treatmentId;
+                this.ss = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, hisSereServFilter, ProcessLostToken, param);
+                Inventec.Common.Logging.LogSystem.Debug("ss count: " + (ss != null ? ss.Count() : 0));
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Fatal(ex);
+            }
+        }
+        decimal totalGuaranteeOriginal = 0; 
+        private void CalculatorToTalGuaranteeOriginal()
+        {
+            try 
+            {
+                var a = this.sereServWithTreatment;
+               Inventec.Common.Logging.LogSystem.Debug("sereServWithTreatment count: " + (sereServWithTreatment != null ? sereServWithTreatment.Count() : 0));
+                if (this.totalGuaranteeOriginal == 0)
+                    this.totalGuaranteeOriginal = ss != null ? ss.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND == null || o.IS_EXPEND != 1)).Sum(o => o.PRICE) : 0;
+                //this.lblTotalGuarantee.Text = this.totalGuaranteeOriginal.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
 
+        }
         private void Timer_Tick(object sender, EventArgs e)
         {
 
@@ -3154,6 +3193,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             try
             {
                 var medicineTypeADOForEdit = this.gridViewMediMaty.GetFocusedRow();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => medicineTypeADOForEdit), medicineTypeADOForEdit));
                 if (medicineTypeADOForEdit != null)
                 {
                     popupControlContainerMediMaty.HidePopup();
@@ -3308,11 +3348,29 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     }
                     else if (e.Column.FieldName == "IsExpend")
                     {
-                        //#16421 để key cấu hình giá trị 1: Không cho phép check hao phí với thuốc/vật tư không đính kèm
-                        if (data.IsDisableExpend || (data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU) && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0)) || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent))
-                            e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
-                        else
+                        // Vật tư không cho phép hao phí: luôn dùng repo disabled
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data.IS_NOT_EXPEND), data.IS_NOT_EXPEND));
+                        if ((data.IS_NOT_EXPEND ?? 0) == 1)
+
+                        {
                             e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                        }
+                        else
+                        {
+                            // Cấu hình cũ: không cho phép hao phí nếu không có dịch vụ cha (nếu bật cấu hình)
+                            if ((data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC
+                                 || data.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
+                                && ((HisConfigCFG.IsNotAllowingExpendWithoutHavingParent
+                                        && ((data.SereServParentId ?? 0) > 0 || GetSereServInKip() > 0))
+                                    || !HisConfigCFG.IsNotAllowingExpendWithoutHavingParent))
+                            {
+                                e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage;
+                            }
+                            else
+                            {
+                                e.RepositoryItem = this.repositoryItemChkIsExpend__MedicinePage_Disable;
+                            }
+                        }
                     }
                     else if (e.Column.FieldName == "IsKHBHYT")
                     {
@@ -3358,23 +3416,52 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
-                if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
+                if (e.Column.UnboundType == UnboundColumnType.Bound)
+                    return;
+
+                MediMatyTypeADO rowData = (MediMatyTypeADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                if (rowData == null)
                 {
-                    MediMatyTypeADO data_ManuMedicineADO = (MediMatyTypeADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                    if (data_ManuMedicineADO != null)
-                    {
-                        if (e.Column.FieldName == "UseTimeToDisplay")
-                        {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data_ManuMedicineADO.UseTimeTo ?? 0);
-                        }
-                        else if (e.Column.FieldName == "TotalPriceDisplay")
-                        {
-                            e.Value = Inventec.Common.Number.Convert.NumberToString(data_ManuMedicineADO.TotalPrice, ConfigApplications.NumberSeperator);
-                        }
-                    }
-                    else
-                    {
+                    if (e.IsGetData)
                         e.Value = null;
+                    return;
+                }
+
+                if (e.IsGetData)
+                {
+                    if (e.Column.FieldName == "UseTimeToDisplay")
+                    {
+                        e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(rowData.UseTimeTo ?? 0);
+                    }
+                    else if (e.Column.FieldName == "TotalPriceDisplay")
+                    {
+                        e.Value = Inventec.Common.Number.Convert.NumberToString(rowData.TotalPrice, ConfigApplications.NumberSeperator);
+                    }
+                    else if (e.Column.FieldName == "grcGuarantee")
+                    {
+                        e.Value = ((rowData.IS_GUARANTEED ?? 1) == 1);
+                    }
+                    else if (e.Column.FieldName == "grcGuaranteeUnb")
+                    {
+                        e.Value = ((rowData.IS_GUARANTEED ?? 1) == 1) ? "1" : "0";
+                    }
+                }
+                else if (e.IsSetData)
+                {
+                    if (e.Column.FieldName == "grcGuarantee")
+                    {
+                        bool isChecked = false;
+                        try
+                        {
+                            if (e.Value != null)
+                                isChecked = Convert.ToBoolean(e.Value);
+                        }
+                        catch
+                        {
+                            isChecked = false;
+                        }
+
+                        rowData.IS_GUARANTEED = (short?)(isChecked ? 1 : 0);
                     }
                 }
             }
@@ -4168,10 +4255,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             {
                 CheckEdit chk = sender as CheckEdit;
                 var currentRowSereServADO = (MediMatyTypeADO)gridViewServiceProcess.GetFocusedRow();
-                if(currentRowSereServADO.IsDisableExpend)
+                if (currentRowSereServADO == null)
+                    return;
+
+                if ((currentRowSereServADO.IS_NOT_EXPEND ?? 0) == 1)
+                {
+                    chk.Checked = false;
+                    currentRowSereServADO.IsExpend = false;
+                    return;
+                }
+
+                // Kho hao phí: khóa checkbox ở trạng thái true nếu cấu hình như cũ
+                if (currentRowSereServADO.IsDisableExpend)
                 {
                     chk.Checked = true;
-                }    
+                }
             }
             catch (Exception ex)
             {
@@ -4179,7 +4277,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
-        
+
 
         private void repositoryItemCustomGridLookUpReasion_ButtonClick(object sender, ButtonPressedEventArgs e)
         {

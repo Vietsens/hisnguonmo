@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="frmHisImportMestMedicine.Text" xml:space="preserve">
-    <value />
+    <value>Revocation import list</value>
   </data>
   <data name="frmMessage.btnCancel.Text" xml:space="preserve">
-    <value />
+    <value>Are not</value>
   </data>
   <data name="frmMessage.btnOK.Text" xml:space="preserve">
-    <value />
+    <value>Have</value>
   </data>
   <data name="frmMessage.labelControl1.Text" xml:space="preserve">
     <value>Do you want to actually enter data?</value>
@@ -375,14 +375,20 @@
   <data name="UCHisImportMestMedicine.layoutControlItem30.Text" xml:space="preserve">
     <value>Contractor group:</value>
   </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem31.Text" xml:space="preserve">
+    <value>Some contracts:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem32.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Invoice date from</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem32.Text" xml:space="preserve">
+    <value>Invoice date from:</value>
+  </data>
   <data name="UCHisImportMestMedicine.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Invoicing company</value>
   </data>
   <data name="UCHisImportMestMedicine.layoutControlItem33.Text" xml:space="preserve">
     <value>Invoicing company:</value>
-  </data>
-  <data name="UCHisImportMestMedicine.layoutControlItem31.Text" xml:space="preserve">
-    <value>Some contracts:</value>
   </data>
   <data name="UCHisImportMestMedicine.layoutControlItem34.Text" xml:space="preserve">
     <value> </value>
@@ -432,6 +438,15 @@
   <data name="UCHisImportMestMedicine.layoutControlItem46.Text" xml:space="preserve">
     <value>Address:</value>
   </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem47.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Tax amount of invoices and vouchers:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem47.Text" xml:space="preserve">
+    <value>Tax amount vouchers:</value>
+  </data>
+  <data name="UCHisImportMestMedicine.layoutControlItem48.Text" xml:space="preserve">
+    <value>Arrive:</value>
+  </data>
   <data name="UCHisImportMestMedicine.layoutControlItem8.Text" xml:space="preserve">
     <value>Status:</value>
   </data>
@@ -461,11 +476,5 @@
   </data>
   <data name="UCHisImportMestMedicine.txtTreatmentCode.Properties.NullValuePrompt" xml:space="preserve">
     <value>Treatment code</value>
-  </data>
-  <data name="UCHisImportMestMedicine.layoutControlItem47.Text" xml:space="preserve">
-    <value>Tax amount vouchers:</value>
-  </data>
-  <data name="UCHisImportMestMedicine.layoutControlItem47.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Tax amount of invoices and vouchers:</value>
   </data>
 </root>

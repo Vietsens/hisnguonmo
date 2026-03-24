@@ -841,7 +841,7 @@
     <value>Hóa chất:</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem175.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Thực phẩm chức năng</value>
+    <value>Sản phẩm không phải là thuốc</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem175.Text" xml:space="preserve">
     <value>TPCN:</value>
@@ -1123,7 +1123,7 @@
     <value>Hóa chất:</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem262.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Thực phẩm chức năng</value>
+    <value>Sản phẩm không phải là thuốc</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem262.Text" xml:space="preserve">
     <value>TPCN:</value>
@@ -1408,7 +1408,7 @@
     <value>Hóa chất:</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem356.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Thực phẩm chức năng</value>
+    <value>Sản phẩm không phải là thuốc</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem356.Text" xml:space="preserve">
     <value>TPCN:</value>
@@ -1756,7 +1756,7 @@
     <value>BB nhập HSD:</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem99.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Thực phẩm chức năng</value>
+    <value>Sản phẩm không phải là thuốc</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem99.Text" xml:space="preserve">
     <value>TPCN:</value>
@@ -2080,7 +2080,7 @@
     <value>SL tối đa/đơn:</value>
   </data>
   <data name="frmMedicineTypeCreate.lkIsFood.OptionsToolTip.ToolTip" xml:space="preserve">
-    <value>Thực phẩm chức năng</value>
+    <value>Sản phẩm không phải là thuốc</value>
   </data>
   <data name="frmMedicineTypeCreate.lkIsFood.Text" xml:space="preserve">
     <value>TPCN:</value>

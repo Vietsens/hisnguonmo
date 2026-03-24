@@ -244,10 +244,11 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                     if (editMode == (int)EditMode.Create)
                     {
                         result.Success = true;
-                        result.InvoiceCode = HoaDonData.First().data.hdon_id;
-                        result.InvoiceNumOrder = HoaDonData.First().data.khieu + HoaDonData.First().data.shdon;
+                        result.InvoiceCode = HoaDonData.First().data != null ? HoaDonData.First().data.hdon_id : ""; 
+                        result.InvoiceNumOrder = HoaDonData.First().data != null ? HoaDonData.First().data.khieu + HoaDonData.First().data.shdon : "";
                         result.InvoiceLoginname = adoLogin.username;
-                        result.InvoiceTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(HoaDonData.First().data.nlap);
+                        result.InvoiceTime = HoaDonData.First().data != null ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(HoaDonData.First().data.nlap) : 0;
+                        result.InvoiceLookupCode = HoaDonData.First().data != null ? HoaDonData.First().data.sbmat : ""; 
                     }
                     result.InvoiceSys = ProviderType.MOBIFONE;
                 }

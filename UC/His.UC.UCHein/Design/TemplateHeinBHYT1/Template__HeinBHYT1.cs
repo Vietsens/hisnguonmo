@@ -212,7 +212,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                     .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
                     .ToList();
                 List<HIS_HEIN_PATIENT_TYPE> heinList = new List<HIS_HEIN_PATIENT_TYPE>();
-                if ((this.ActionType == 1 || isCallByRegistor || IsReset) && !firstCheck && !isClickCboPatientTypeCode)
+                if (((this.ActionType != null || this.ActionType > 0) || isCallByRegistor || IsReset) && !firstCheck && !isClickCboPatientTypeCode)
                 {
                     string rightRouteCode = null;
                     if (rdoRightRoute.Checked)
@@ -2174,7 +2174,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                 if (e.CloseMode == PopupCloseMode.Normal)
                 {
                     isClickCboPatientTypeCode = true;
-                    if (this.ActionType == 1 || isCallByRegistor || IsReset)
+                    if (isCallByRegistor || IsReset)
                     {
                         var heinData = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && o.HEIN_PATIENT_TYPE_CODE == cboPatientCode.EditValue.ToString()).FirstOrDefault();

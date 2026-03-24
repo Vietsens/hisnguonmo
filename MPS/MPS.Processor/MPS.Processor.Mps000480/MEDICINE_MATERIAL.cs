@@ -40,6 +40,7 @@ namespace MPS.Processor.Mps000480
         public string NOON { get; set; }
         public string AFTERNOON { get; set; }
         public string EVENING { get; set; }
+        public long? AGGR_EXP_MEST_ID { get; set; }
 
         public MEDICINE_MATERIAL() { }
     }

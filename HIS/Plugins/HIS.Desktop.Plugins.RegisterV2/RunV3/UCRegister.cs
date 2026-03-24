@@ -30,7 +30,6 @@ using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
 using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
 using HIS.Desktop.Plugins.Library.RegisterConfig;
 using HIS.Desktop.Plugins.RegisterV2.Choice;
-using HIS.Desktop.Plugins.RegisterV2.Config;
 using HIS.Desktop.Utility;
 using HIS.UC.AddressCombo.ADO;
 using HIS.UC.KskContract;
@@ -116,6 +115,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
         bool IsActionSavePrint = false;
         internal string GuarateeCode = null;
         internal string GuaranteeRequestCode = null;
+        bool IsCheckSave = false;
         #endregion
 
         #region Construct - Load
@@ -338,6 +338,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.ucPlusInfo1.SetDelegateInitTHX(result => { if (result) this.ucAddressCombo1.InitControlState(); });
                 this.ucPlusInfo1.InitFieldFromAsync();
                 this.ucPlusInfo1.SetDelegateWorkPlaceUCPlusInfo(this.SetDelegateSetWorkPlace);
+                this.ucOtherServiceReqInfo1.SetDelegateEmergence(this.SetEmergenceForRoom);
                 this.ucOtherServiceReqInfo1.InitFieldFromAsync();
                 this.ucRelativeInfo1.InitFieldFromAsync();
                 this.ucPatientRaw1.FocusUserControl();
@@ -1086,7 +1087,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.isResetForm = true;
                 this.IsReadCardTheViet = false;
                 this.isCheckSS = false;
-                if (!string.IsNullOrEmpty(Library.RegisterConfig.HisConfigCFG.GuaranteeConnection) || Library.RegisterConfig.HisConfigCFG.GuaranteeConnection != "")
+                if (!this.IsCheckSave && (!string.IsNullOrEmpty(Library.RegisterConfig.HisConfigCFG.GuaranteeConnection) || Library.RegisterConfig.HisConfigCFG.GuaranteeConnection != ""))
                 {
                     // Parse cấu trúc: <Địa chỉ>|<Mã ứng dụng>:<Tài khoản>:<mật khẩu>|<hạn mức đăng ký mặc định>
                     string[] parts = Library.RegisterConfig.HisConfigCFG.GuaranteeConnection.Split('|');
@@ -1161,6 +1162,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                     //Gán guarantee
                     //Thất bại -> Uncheck và thông báo lỗi
                 }
+                this.IsCheckSave = false;
                 this.RefreshUserControl();
                 this.ucPatientRaw1.LoadDataCboDoiTuong(roomId);
                 if (this.ucPatientRaw1.cboPatientType.EditValue == null)
@@ -2234,8 +2236,10 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                             }
                             else
                             {
-                                LogSystem.Debug("Gọi api thất bại"); 
-                                XtraMessageBox.Show(string.Format("Đăng ký bảo lãnh thất bại. {0} ", rs?.Data.ErrorMessage), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                LogSystem.Debug("Gọi api thất bại");
+                                var errorMsg = !string.IsNullOrWhiteSpace(rs?.Data?.ErrorMessage) ? rs.Data.ErrorMessage : rs?.Message;
+
+                                XtraMessageBox.Show(string.Format("Đăng ký bảo lãnh thất bại. {0} ", errorMsg), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 this.chkBaoLanh.Checked = false;
                             }
                         }

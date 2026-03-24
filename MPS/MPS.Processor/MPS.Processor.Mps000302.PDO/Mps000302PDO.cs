@@ -184,5 +184,72 @@ namespace MPS.Processor.Mps000302.PDO
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        public Mps000302PDO(
+            V_HIS_PATIENT_TYPE_ALTER _currentPatyAlter,
+            List<HIS_PATIENT_TYPE_ALTER> _patientTypeAlterAll,
+            List<V_HIS_DEPARTMENT_TRAN> _departmentTrans,
+            List<V_HIS_TREATMENT_FEE> _treatmentFees,
+            HeinServiceTypeCFG _heinServiceTypeCfg,
+            PatientTypeCFG _patientTypeCfg,
+            List<HIS_SERE_SERV> _sereServ,
+            List<HIS_SERE_SERV_EXT> _sereServExts,
+            V_HIS_TREATMENT _treatment,
+            V_HIS_PATIENT _patient,
+            List<HIS_HEIN_SERVICE_TYPE> _heinServiceTypes,
+            List<V_HIS_ROOM> _rooms,
+            List<V_HIS_SERVICE> _services,
+            List<HIS_TREATMENT_TYPE> _treatmentType,
+            HIS_BRANCH _branch,
+            List<HIS_MATERIAL_TYPE> _materialTypes,
+            List<HIS_DEPARTMENT> _departments,
+            SingleKeyValue _singleKeyValue,
+            HisConfigValue _hisConfigValue,
+            List<HIS_SERVICE_UNIT> _hisServiceUnit,
+            List<HIS_MEDI_ORG> _listMediOrg,
+            List<HIS_PATIENT_TYPE> _listPatientType,
+            List<HIS_SERE_SERV_BILL> _listSereServBills,
+            List<HIS_SERE_SERV_DEPOSIT> _listSereServDeposits,
+            List<HIS_SESE_DEPO_REPAY> _listSeseDepoRepays,
+            HIS_TRANS_REQ transReq,
+            List<HIS_CONFIG> listHisConfigPaymentQrCode,
+            List<HIS_SERVICE_REQ> serviceReqs
+            )
+        {
+            try
+            {
+                this.SereServs = _sereServ;
+                this.Treatment = _treatment;
+                this.DepartmentTrans = _departmentTrans;
+                this.TreatmentFees = _treatmentFees;
+                this.HeinServiceTypeCFG = _heinServiceTypeCfg;
+                this.SingleKeyValue = _singleKeyValue;
+                this.HeinServiceTypes = _heinServiceTypes;
+                this.Services = _services;
+                this.Rooms = _rooms;
+                this.PatientTypeCFG = _patientTypeCfg;
+                this.Branch = _branch;
+                this.TreatmentTypes = _treatmentType;
+                this.CurrentPatyAlter = _currentPatyAlter;
+                this.SereServExts = _sereServExts;
+                this.materialTypes = _materialTypes;
+                this.Departments = _departments;
+                this.PatientTypeAlterAlls = _patientTypeAlterAll;
+                this.HisConfigValue = _hisConfigValue;
+                this.Patient = _patient;
+                this.HisServiceUnit = _hisServiceUnit;
+                this.ListMediOrg = _listMediOrg;
+                this.ListPatientType = _listPatientType;
+                this.ListSereServBills = _listSereServBills;
+                this.ListSereServDeposits = _listSereServDeposits;
+                this.ListSeseDepoRepays = _listSeseDepoRepays;
+                this.TransReq = transReq;
+                this.ListHisConfigPaymentQrCode = listHisConfigPaymentQrCode;
+                this.ServiceReqs = serviceReqs;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }

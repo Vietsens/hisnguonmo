@@ -56,7 +56,8 @@
     <Reference Include="His.Bhyt.ExportXml">
       <HintPath>..\..\..\..\lib\HIS\His.Bhyt.ExportXml\His.Bhyt.ExportXml.dll</HintPath>
     </Reference>
-    <Reference Include="His.Bhyt.ExportXml.XML130">
+    <Reference Include="His.Bhyt.ExportXml.XML130, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XML130.XML1">
@@ -104,6 +105,9 @@
     <Reference Include="His.Bhyt.ExportXml.XML130.XML9">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
     </Reference>
+    <Reference Include="His.Bhyt.ExportXml.XMLTT12.XML01BH">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XMLTT12.XML01BH.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.ADO">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>
     </Reference>
@@ -111,9 +115,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.WorkPlace\HIS.Desktop.LibraryMessage.dll</HintPath>
     </Reference>
+    <Reference Include="HIS.Desktop.LocalStorage.BackendData">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.ConfigSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.ListReports\HIS.Desktop.LocalStorage.ConfigSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility">
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SereServTree">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SereServTree\HIS.UC.SereServTree.dll</HintPath>
@@ -201,14 +211,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.UC.Paging">
       <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.Filter">
-      <HintPath>..\..\..\..\lib\MOS\MOS.Filter.dll</HintPath>
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\MOS.EFMODEL.dll</HintPath>
+    </Reference>
+    <Reference Include="MOS.Filter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.LibraryHein.Bhyt">
       <HintPath>..\..\..\..\lib\MOS\MOS.LibraryHein.Bhyt.dll</HintPath>
@@ -247,6 +268,7 @@
     <Compile Include="ADO\TreatmentImportADO.cs" />
     <Compile Include="Base\ConfigStore.cs" />
     <Compile Include="Base\CustomProvider.cs" />
+    <Compile Include="ExportXml\C79Models.cs" />
     <Compile Include="frmSettingSavePath.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -330,10 +352,6 @@
       <Project>{9b4b505c-afa1-4974-8ac8-503f748bd5a2}</Project>
       <Name>HIS.Desktop.Controls.Session</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.BackendData\HIS.Desktop.LocalStorage.BackendData.csproj">
-      <Project>{86709a9c-a149-4ebb-a817-1bf8f4f4bc07}</Project>
-      <Name>HIS.Desktop.LocalStorage.BackendData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.ConfigApplication\HIS.Desktop.LocalStorage.ConfigApplication.csproj">
       <Project>{3a2c932a-9d3a-483b-89a0-9f9c8225b283}</Project>
       <Name>HIS.Desktop.LocalStorage.ConfigApplication</Name>
@@ -349,10 +367,6 @@
     <ProjectReference Include="..\..\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>

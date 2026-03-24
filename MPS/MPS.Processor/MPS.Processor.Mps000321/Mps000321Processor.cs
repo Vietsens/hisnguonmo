@@ -42,6 +42,27 @@ namespace MPS.Processor.Mps000321
         private List<GroupPatientTypeADO> GroupPatientType { get; set; }
         private List<OtherSourceADO> ListOtherSource = new List<OtherSourceADO>();
         private List<PayFormTypeADO> ListPayFormType = new List<PayFormTypeADO>();
+        #region Real (Tách theo dịch vụ thanh toán)
+
+        private List<PatyAlterBhytADO> patyAlterBHYTADOsReal { get; set; }
+        private List<SereServADO> sereServADOsReal { get; set; }
+
+        private List<HeinServiceTypeADO> heinServiceTypeADOsReal { get; set; }
+        private List<HeinServiceTypeADO> HeinServiceTypeBedsReal { get; set; }
+
+        #region Không gom theo khoa
+
+        private List<SereServADO> sereServADOsRealNotGroupDepartment { get; set; }
+
+        private List<HeinServiceTypeADO> heinServiceTypeADOsRealNotGroupDepartment { get; set; }
+        private List<HeinServiceTypeADO> HeinServiceTypeBedsRealNotGroupDepartment { get; set; }
+        #endregion
+
+
+
+        private List<GroupDepartmentADO> GroupDepartmentsReal { get; set; }
+        private List<OtherSourceADO> ListOtherSourceReal = new List<OtherSourceADO>();
+        #endregion
 
         Mps000321PDO rdo;
         public Mps000321Processor(CommonParam param, PrintData printData)
@@ -138,8 +159,9 @@ namespace MPS.Processor.Mps000321
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
                 DataInputProcess();
                 GroupDisplayProcess();
-                ProcessSingleKey();
+                //ProcessSingleKey();
                 ProcessTransaction();
+                ProcessSingleKey();
                 SetQrCode();
                 SetBarcodeKey();
                 SetImageKey();
@@ -151,6 +173,10 @@ namespace MPS.Processor.Mps000321
 
                 singleTag.ProcessData(store, singleValueDictionary);
                 barCodeTag.ProcessData(store, dicImage);
+
+                ProcessAddKeyList(ref objectTag);
+
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sereServADOsReal.Select(o => new { o.SERVICE_NAME, o.AMOUNT })), sereServADOsReal.Select(o => new { o.SERVICE_NAME, o.AMOUNT })));
                 objectTag.AddObjectData(store, "HeinServiceType", heinServiceTypeADOs);
                 objectTag.AddObjectData(store, "Service", sereServADOs);
                 objectTag.AddObjectData(store, "PatyAlterBHYT", patyAlterBHYTADOs);
@@ -181,7 +207,9 @@ namespace MPS.Processor.Mps000321
 
                 objectTag.SetUserFunction(store, "ReplaceValue", new ReplaceValueFunction());
 
+
                 objectTag.AddObjectData(store, "OtherPaySource", this.ListOtherSource);
+                objectTag.AddObjectData(store, "OtherPaySourceReal", this.ListOtherSourceReal);
                 objectTag.AddObjectData(store, "PayFromType", this.ListPayFormType);
 
                 result = true;
@@ -194,6 +222,7 @@ namespace MPS.Processor.Mps000321
 
             return result;
         }
+
         private void SetQrCode()
         {
             try
@@ -289,6 +318,10 @@ namespace MPS.Processor.Mps000321
                 }
 
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TREATMENT_CODE, rdo.Treatment.TREATMENT_CODE));
+                SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.IN_TIME, rdo.Treatment.IN_TIME));
+                SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.OUT_TIME, rdo.Treatment.OUT_TIME));
+                if (ListPayFormType != null && ListPayFormType.Count > 0)
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.BILL_AMOUNT, ListPayFormType[0].BILL_AMOUNT));
 
                 if (rdo.CurrentPatyAlter != null)
                 {
@@ -547,6 +580,8 @@ namespace MPS.Processor.Mps000321
                 string executeRoomExamLast = "";
 
                 decimal thanhtien_tong = 0;
+                //qtcode
+                decimal thanhtien_baolanh = 0;
                 decimal thanhtienBH_tong = 0;
                 decimal bhytthanhtoan_tong = 0;
                 decimal nguonkhac_tong = 0;
@@ -572,7 +607,7 @@ namespace MPS.Processor.Mps000321
                             executeRoomExam += sereServExamADO.EXECUTE_ROOM_NAME + ", ";
                         }
                     }
-
+                    thanhtien_baolanh = sereServADOs.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND != 1 || o.IS_EXPEND == null)).Sum(p => p.PRICE);
                     thanhtienBH_tong = sereServADOs.Sum(o => o.TOTAL_PRICE_BHYT);
                     thanhtien_tong = sereServADOs.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
                     bhytthanhtoan_tong = sereServADOs.Sum(o => o.VIR_TOTAL_HEIN_PRICE) ?? 0;
@@ -598,6 +633,23 @@ namespace MPS.Processor.Mps000321
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.LAST_EXAM_ROOM_NAME, executeRoomExamLast));
 
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
+                SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_GUARANTEE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_baolanh, 0)));
+                switch (rdo.CurrentPatyAlter.TREATMENT_TYPE_ID)
+                {
+                    case IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM:
+                    case IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNGOAITRU:
+                    case IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__NHANTHUOC:
+                    case IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__TYTXA:
+                        SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_NT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
+                        break;
+                    case IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU:
+                        SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_NGT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
+                        break;
+                    default:
+                        break;
+                }
+
+
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_BHYT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtienBH_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_HEIN, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bhytthanhtoan_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_PATIENT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(bnthanhtoan_tong, 0)));

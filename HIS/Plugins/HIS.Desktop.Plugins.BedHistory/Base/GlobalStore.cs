@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.BedHistory.Base
         public const string EXE_CREATE_BED_LOG_DEPARTMENT_CODES = "EXE.CREATE_BED_LOG.DEPARTMENT_CODES";//Cau hinh khoa load giuong tu dong ccc
 
         public const string SHOW_PRIMARY_PATIENT_TYPE = "MOS.HIS_SERE_SERV.IS_SET_PRIMARY_PATIENT_TYPE";
+        public const string SERVICE_PATY_FOR_SERVICE_PACKAGE = "His.Desktop.AssignService.HisPackage.ServicePatyForServicePackage";
         public const string REQ_USER_MUST_HAVE_DIPLOMA = "MOS.HIS_SERVICE_REQ.REQ_USER_MUST_HAVE_DIPLOMA";
         public const string SHOW_REQUEST_USER = "HIS.Desktop.Plugins.AssignConfig.ShowRequestUser";
 
@@ -53,6 +54,15 @@ namespace HIS.Desktop.Plugins.BedHistory.Base
             get
             {
                 return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SHOW_PRIMARY_PATIENT_TYPE);
+            }
+        }
+
+
+        public static string IsServicePatyForServicePackage
+        {
+            get
+            {
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(SERVICE_PATY_FOR_SERVICE_PACKAGE);
             }
         }
         public static string RequserMustHaveDiploma

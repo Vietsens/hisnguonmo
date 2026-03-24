@@ -48,9 +48,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
-            this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
-            this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
-            this.txtSearch = new DevExpress.XtraEditors.TextEdit();
+            this.dtTimeTo = new DevExpress.XtraEditors.TimeEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar2 = new DevExpress.XtraBars.Bar();
             this.bbtnEdit = new DevExpress.XtraBars.BarButtonItem();
@@ -61,6 +59,11 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.barDockControl2 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl3 = new DevExpress.XtraBars.BarDockControl();
             this.barDockControl4 = new DevExpress.XtraBars.BarDockControl();
+            this.dtTimeFrom = new DevExpress.XtraEditors.TimeEdit();
+            this.chkWarningDepoService = new DevExpress.XtraEditors.CheckEdit();
+            this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
+            this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
+            this.txtSearch = new DevExpress.XtraEditors.TextEdit();
             this.dtDay = new DevExpress.XtraEditors.DateEdit();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
@@ -107,7 +110,6 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -121,13 +123,22 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem3 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem4 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.emptySpaceItem5 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtTimeTo.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtTimeFrom.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkWarningDepoService.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDay.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDay.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gluPatientType.Properties)).BeginInit();
@@ -153,7 +164,6 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
@@ -167,12 +177,21 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.dtTimeTo);
+            this.layoutControl1.Controls.Add(this.dtTimeFrom);
+            this.layoutControl1.Controls.Add(this.chkWarningDepoService);
             this.layoutControl1.Controls.Add(this.ucPaging1);
             this.layoutControl1.Controls.Add(this.btnSearch);
             this.layoutControl1.Controls.Add(this.txtSearch);
@@ -199,35 +218,22 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
-            // ucPaging1
+            // dtTimeTo
             // 
-            this.ucPaging1.Location = new System.Drawing.Point(2, 448);
-            this.ucPaging1.Name = "ucPaging1";
-            this.ucPaging1.Size = new System.Drawing.Size(669, 20);
-            this.ucPaging1.TabIndex = 21;
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(422, 2);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(106, 22);
-            this.btnSearch.StyleController = this.layoutControl1;
-            this.btnSearch.TabIndex = 20;
-            this.btnSearch.Text = "Tìm kiếm (Ctrl F)";
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Location = new System.Drawing.Point(2, 2);
-            this.txtSearch.MenuManager = this.barManager1;
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
-            this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtSearch.Size = new System.Drawing.Size(416, 20);
-            this.txtSearch.StyleController = this.layoutControl1;
-            this.txtSearch.TabIndex = 18;
-            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
-            this.txtSearch.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSearch_PreviewKeyDown);
+            this.dtTimeTo.EditValue = new System.DateTime(2026, 1, 28, 0, 0, 0, 0);
+            this.dtTimeTo.Location = new System.Drawing.Point(810, 156);
+            this.dtTimeTo.MenuManager = this.barManager1;
+            this.dtTimeTo.Name = "dtTimeTo";
+            this.dtTimeTo.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.dtTimeTo.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtTimeTo.Properties.EditFormat.FormatString = "HH:mm:ss";
+            this.dtTimeTo.Properties.Mask.EditMask = "HH:mm:ss";
+            this.dtTimeTo.Properties.Mask.UseMaskAsDisplayFormat = true;
+            this.dtTimeTo.Properties.ShowNullValuePromptWhenFocused = true;
+            this.dtTimeTo.Size = new System.Drawing.Size(203, 20);
+            this.dtTimeTo.StyleController = this.layoutControl1;
+            this.dtTimeTo.TabIndex = 28;
             // 
             // barManager1
             // 
@@ -314,10 +320,67 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.barDockControl4.Location = new System.Drawing.Point(1015, 29);
             this.barDockControl4.Size = new System.Drawing.Size(0, 470);
             // 
+            // dtTimeFrom
+            // 
+            this.dtTimeFrom.EditValue = new System.DateTime(2026, 1, 28, 0, 0, 0, 0);
+            this.dtTimeFrom.Location = new System.Drawing.Point(810, 132);
+            this.dtTimeFrom.MenuManager = this.barManager1;
+            this.dtTimeFrom.Name = "dtTimeFrom";
+            this.dtTimeFrom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.dtTimeFrom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtTimeFrom.Properties.EditFormat.FormatString = "HH:mm:ss";
+            this.dtTimeFrom.Properties.Mask.EditMask = "HH:mm:ss";
+            this.dtTimeFrom.Properties.Mask.UseMaskAsDisplayFormat = true;
+            this.dtTimeFrom.Properties.ShowNullValuePromptWhenFocused = true;
+            this.dtTimeFrom.Size = new System.Drawing.Size(203, 20);
+            this.dtTimeFrom.StyleController = this.layoutControl1;
+            this.dtTimeFrom.TabIndex = 27;
+            // 
+            // chkWarningDepoService
+            // 
+            this.chkWarningDepoService.Location = new System.Drawing.Point(815, 109);
+            this.chkWarningDepoService.MenuManager = this.barManager1;
+            this.chkWarningDepoService.Name = "chkWarningDepoService";
+            this.chkWarningDepoService.Properties.Caption = "Bỏ qua cảnh báo khi tạm ứng dịch vụ";
+            this.chkWarningDepoService.Size = new System.Drawing.Size(198, 19);
+            this.chkWarningDepoService.StyleController = this.layoutControl1;
+            this.chkWarningDepoService.TabIndex = 23;
+            // 
+            // ucPaging1
+            // 
+            this.ucPaging1.Location = new System.Drawing.Point(2, 446);
+            this.ucPaging1.Name = "ucPaging1";
+            this.ucPaging1.Size = new System.Drawing.Size(669, 22);
+            this.ucPaging1.TabIndex = 21;
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(422, 2);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(106, 22);
+            this.btnSearch.StyleController = this.layoutControl1;
+            this.btnSearch.TabIndex = 20;
+            this.btnSearch.Text = "Tìm kiếm (Ctrl F)";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Location = new System.Drawing.Point(2, 2);
+            this.txtSearch.MenuManager = this.barManager1;
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
+            this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
+            this.txtSearch.Size = new System.Drawing.Size(416, 20);
+            this.txtSearch.StyleController = this.layoutControl1;
+            this.txtSearch.TabIndex = 18;
+            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
+            this.txtSearch.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSearch_PreviewKeyDown);
+            // 
             // dtDay
             // 
             this.dtDay.EditValue = null;
-            this.dtDay.Location = new System.Drawing.Point(810, 163);
+            this.dtDay.Location = new System.Drawing.Point(810, 261);
             this.dtDay.MenuManager = this.barManager1;
             this.dtDay.Name = "dtDay";
             this.dtDay.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -331,7 +394,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(817, 246);
+            this.btnAdd.Location = new System.Drawing.Point(817, 446);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(96, 22);
             this.btnAdd.StyleController = this.layoutControl1;
@@ -341,7 +404,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(917, 246);
+            this.btnRefresh.Location = new System.Drawing.Point(917, 446);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(96, 22);
             this.btnRefresh.StyleController = this.layoutControl1;
@@ -351,7 +414,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(716, 246);
+            this.btnEdit.Location = new System.Drawing.Point(716, 446);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(97, 22);
             this.btnEdit.StyleController = this.layoutControl1;
@@ -361,7 +424,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // 
             // rdoDayOfYear
             // 
-            this.rdoDayOfYear.Location = new System.Drawing.Point(849, 217);
+            this.rdoDayOfYear.Location = new System.Drawing.Point(849, 417);
             this.rdoDayOfYear.Name = "rdoDayOfYear";
             this.rdoDayOfYear.Size = new System.Drawing.Size(69, 25);
             this.rdoDayOfYear.TabIndex = 12;
@@ -372,7 +435,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // 
             // rdoHoliday
             // 
-            this.rdoHoliday.Location = new System.Drawing.Point(922, 217);
+            this.rdoHoliday.Location = new System.Drawing.Point(922, 417);
             this.rdoHoliday.Name = "rdoHoliday";
             this.rdoHoliday.Size = new System.Drawing.Size(91, 25);
             this.rdoHoliday.TabIndex = 11;
@@ -383,9 +446,9 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // 
             // rdoDayOfWeek
             // 
-            this.rdoDayOfWeek.Location = new System.Drawing.Point(762, 217);
+            this.rdoDayOfWeek.Location = new System.Drawing.Point(763, 417);
             this.rdoDayOfWeek.Name = "rdoDayOfWeek";
-            this.rdoDayOfWeek.Size = new System.Drawing.Size(83, 25);
+            this.rdoDayOfWeek.Size = new System.Drawing.Size(82, 25);
             this.rdoDayOfWeek.TabIndex = 10;
             this.rdoDayOfWeek.TabStop = true;
             this.rdoDayOfWeek.Text = "Thứ";
@@ -394,7 +457,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // 
             // gluPatientType
             // 
-            this.gluPatientType.Location = new System.Drawing.Point(810, 190);
+            this.gluPatientType.Location = new System.Drawing.Point(810, 82);
             this.gluPatientType.MenuManager = this.barManager1;
             this.gluPatientType.Name = "gluPatientType";
             this.gluPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -416,7 +479,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // 
             // gluMonthOfYear
             // 
-            this.gluMonthOfYear.Location = new System.Drawing.Point(810, 136);
+            this.gluMonthOfYear.Location = new System.Drawing.Point(810, 234);
             this.gluMonthOfYear.MenuManager = this.barManager1;
             this.gluMonthOfYear.Name = "gluMonthOfYear";
             this.gluMonthOfYear.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -441,7 +504,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // gluDayOfYear
             // 
             this.gluDayOfYear.EditValue = "";
-            this.gluDayOfYear.Location = new System.Drawing.Point(810, 109);
+            this.gluDayOfYear.Location = new System.Drawing.Point(810, 207);
             this.gluDayOfYear.MenuManager = this.barManager1;
             this.gluDayOfYear.Name = "gluDayOfYear";
             this.gluDayOfYear.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -466,7 +529,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // gluDayOfWeek
             // 
             this.gluDayOfWeek.EditValue = "";
-            this.gluDayOfWeek.Location = new System.Drawing.Point(810, 82);
+            this.gluDayOfWeek.Location = new System.Drawing.Point(810, 180);
             this.gluDayOfWeek.MenuManager = this.barManager1;
             this.gluDayOfWeek.Name = "gluDayOfWeek";
             this.gluDayOfWeek.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -515,7 +578,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.btnLock,
             this.btnUnlock,
             this.btnEnable});
-            this.gridControl1.Size = new System.Drawing.Size(673, 420);
+            this.gridControl1.Size = new System.Drawing.Size(673, 418);
             this.gridControl1.TabIndex = 0;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewPolicies});
@@ -545,6 +608,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.gridViewPolicies.OptionsView.ColumnHeaderAutoHeight = DevExpress.Utils.DefaultBoolean.False;
             this.gridViewPolicies.OptionsView.ShowGroupPanel = false;
             this.gridViewPolicies.OptionsView.ShowIndicator = false;
+            this.gridViewPolicies.RowClick += new DevExpress.XtraGrid.Views.Grid.RowClickEventHandler(this.gridViewPolicies_RowClick);
             this.gridViewPolicies.RowCellStyle += new DevExpress.XtraGrid.Views.Grid.RowCellStyleEventHandler(this.gridViewPolicies_RowCellStyle);
             this.gridViewPolicies.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewPolicies_CustomRowCellEdit);
             this.gridViewPolicies.FocusedRowChanged += new DevExpress.XtraGrid.Views.Base.FocusedRowChangedEventHandler(this.gridViewPolicies_FocusedRowChanged);
@@ -753,7 +817,6 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem4,
             this.layoutControlItem5,
             this.layoutControlItem6,
-            this.layoutControlItem8,
             this.layoutControlItem9,
             this.layoutControlItem10,
             this.layoutControlItem11,
@@ -766,7 +829,13 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem16,
             this.layoutControlItem17,
             this.emptySpaceItem3,
-            this.layoutControlItem15});
+            this.layoutControlItem15,
+            this.emptySpaceItem4,
+            this.layoutControlItem19,
+            this.emptySpaceItem5,
+            this.layoutControlItem8,
+            this.layoutControlItem22,
+            this.layoutControlItem23});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -779,7 +848,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem1.Size = new System.Drawing.Size(673, 420);
+            this.layoutControlItem1.Size = new System.Drawing.Size(673, 418);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
@@ -818,7 +887,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem4.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem4.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem4.Control = this.gluDayOfWeek;
-            this.layoutControlItem4.Location = new System.Drawing.Point(673, 80);
+            this.layoutControlItem4.Location = new System.Drawing.Point(673, 178);
             this.layoutControlItem4.Name = "layoutControlItem4";
             this.layoutControlItem4.Size = new System.Drawing.Size(342, 27);
             this.layoutControlItem4.Text = "Thứ:";
@@ -833,7 +902,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem5.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem5.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem5.Control = this.gluDayOfYear;
-            this.layoutControlItem5.Location = new System.Drawing.Point(673, 107);
+            this.layoutControlItem5.Location = new System.Drawing.Point(673, 205);
             this.layoutControlItem5.Name = "layoutControlItem5";
             this.layoutControlItem5.Size = new System.Drawing.Size(342, 27);
             this.layoutControlItem5.Text = "Ngày:";
@@ -848,7 +917,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem6.Control = this.gluMonthOfYear;
-            this.layoutControlItem6.Location = new System.Drawing.Point(673, 134);
+            this.layoutControlItem6.Location = new System.Drawing.Point(673, 232);
             this.layoutControlItem6.Name = "layoutControlItem6";
             this.layoutControlItem6.Size = new System.Drawing.Size(342, 27);
             this.layoutControlItem6.Text = "Tháng:";
@@ -856,32 +925,19 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem6.TextSize = new System.Drawing.Size(130, 23);
             this.layoutControlItem6.TextToControlDistance = 5;
             // 
-            // layoutControlItem8
-            // 
-            this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
-            this.layoutControlItem8.Control = this.gluPatientType;
-            this.layoutControlItem8.Location = new System.Drawing.Point(673, 188);
-            this.layoutControlItem8.Name = "layoutControlItem8";
-            this.layoutControlItem8.Size = new System.Drawing.Size(342, 27);
-            this.layoutControlItem8.Text = "Đối tượng thanh toán:";
-            this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem8.TextSize = new System.Drawing.Size(130, 23);
-            this.layoutControlItem8.TextToControlDistance = 5;
-            // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.rdoDayOfWeek;
-            this.layoutControlItem9.Location = new System.Drawing.Point(760, 215);
+            this.layoutControlItem9.Location = new System.Drawing.Point(761, 415);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(87, 29);
+            this.layoutControlItem9.Size = new System.Drawing.Size(86, 29);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.rdoHoliday;
-            this.layoutControlItem10.Location = new System.Drawing.Point(920, 215);
+            this.layoutControlItem10.Location = new System.Drawing.Point(920, 415);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(95, 29);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
@@ -890,7 +946,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.rdoDayOfYear;
-            this.layoutControlItem11.Location = new System.Drawing.Point(847, 215);
+            this.layoutControlItem11.Location = new System.Drawing.Point(847, 415);
             this.layoutControlItem11.Name = "layoutControlItem11";
             this.layoutControlItem11.Size = new System.Drawing.Size(73, 29);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -899,43 +955,43 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // layoutControlItem12
             // 
             this.layoutControlItem12.Control = this.btnEdit;
-            this.layoutControlItem12.Location = new System.Drawing.Point(714, 244);
+            this.layoutControlItem12.Location = new System.Drawing.Point(714, 444);
             this.layoutControlItem12.Name = "layoutControlItem12";
-            this.layoutControlItem12.Size = new System.Drawing.Size(101, 226);
+            this.layoutControlItem12.Size = new System.Drawing.Size(101, 26);
             this.layoutControlItem12.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem12.TextVisible = false;
             // 
             // layoutControlItem13
             // 
             this.layoutControlItem13.Control = this.btnRefresh;
-            this.layoutControlItem13.Location = new System.Drawing.Point(915, 244);
+            this.layoutControlItem13.Location = new System.Drawing.Point(915, 444);
             this.layoutControlItem13.Name = "layoutControlItem13";
-            this.layoutControlItem13.Size = new System.Drawing.Size(100, 226);
+            this.layoutControlItem13.Size = new System.Drawing.Size(100, 26);
             this.layoutControlItem13.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem13.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(673, 215);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(673, 415);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(87, 29);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(88, 29);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(673, 244);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(673, 444);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(41, 226);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(41, 26);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem14
             // 
             this.layoutControlItem14.Control = this.btnAdd;
-            this.layoutControlItem14.Location = new System.Drawing.Point(815, 244);
+            this.layoutControlItem14.Location = new System.Drawing.Point(815, 444);
             this.layoutControlItem14.Name = "layoutControlItem14";
-            this.layoutControlItem14.Size = new System.Drawing.Size(100, 226);
+            this.layoutControlItem14.Size = new System.Drawing.Size(100, 26);
             this.layoutControlItem14.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem14.TextVisible = false;
             // 
@@ -946,7 +1002,7 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.Control = this.dtDay;
-            this.layoutControlItem7.Location = new System.Drawing.Point(673, 161);
+            this.layoutControlItem7.Location = new System.Drawing.Point(673, 259);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(342, 27);
             this.layoutControlItem7.Text = "Ngày:";
@@ -985,11 +1041,75 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             // layoutControlItem15
             // 
             this.layoutControlItem15.Control = this.ucPaging1;
-            this.layoutControlItem15.Location = new System.Drawing.Point(0, 446);
+            this.layoutControlItem15.Location = new System.Drawing.Point(0, 444);
             this.layoutControlItem15.Name = "layoutControlItem15";
-            this.layoutControlItem15.Size = new System.Drawing.Size(673, 24);
+            this.layoutControlItem15.Size = new System.Drawing.Size(673, 26);
             this.layoutControlItem15.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem15.TextVisible = false;
+            // 
+            // emptySpaceItem4
+            // 
+            this.emptySpaceItem4.AllowHotTrack = false;
+            this.emptySpaceItem4.Location = new System.Drawing.Point(673, 286);
+            this.emptySpaceItem4.Name = "emptySpaceItem4";
+            this.emptySpaceItem4.Size = new System.Drawing.Size(342, 129);
+            this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem19
+            // 
+            this.layoutControlItem19.Control = this.chkWarningDepoService;
+            this.layoutControlItem19.Location = new System.Drawing.Point(813, 107);
+            this.layoutControlItem19.Name = "layoutControlItem19";
+            this.layoutControlItem19.Size = new System.Drawing.Size(202, 23);
+            this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem19.TextVisible = false;
+            // 
+            // emptySpaceItem5
+            // 
+            this.emptySpaceItem5.AllowHotTrack = false;
+            this.emptySpaceItem5.Location = new System.Drawing.Point(673, 107);
+            this.emptySpaceItem5.Name = "emptySpaceItem5";
+            this.emptySpaceItem5.Size = new System.Drawing.Size(140, 23);
+            this.emptySpaceItem5.TextSize = new System.Drawing.Size(0, 0);
+            // 
+            // layoutControlItem8
+            // 
+            this.layoutControlItem8.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem8.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem8.Control = this.gluPatientType;
+            this.layoutControlItem8.Location = new System.Drawing.Point(673, 80);
+            this.layoutControlItem8.Name = "layoutControlItem8";
+            this.layoutControlItem8.Size = new System.Drawing.Size(342, 27);
+            this.layoutControlItem8.Text = "Đối tượng thanh toán:";
+            this.layoutControlItem8.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem8.TextSize = new System.Drawing.Size(130, 23);
+            this.layoutControlItem8.TextToControlDistance = 5;
+            // 
+            // layoutControlItem22
+            // 
+            this.layoutControlItem22.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem22.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem22.Control = this.dtTimeFrom;
+            this.layoutControlItem22.Location = new System.Drawing.Point(673, 130);
+            this.layoutControlItem22.Name = "layoutControlItem22";
+            this.layoutControlItem22.Size = new System.Drawing.Size(342, 24);
+            this.layoutControlItem22.Text = "Thời gian từ:";
+            this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem22.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem22.TextToControlDistance = 5;
+            // 
+            // layoutControlItem23
+            // 
+            this.layoutControlItem23.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem23.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem23.Control = this.dtTimeTo;
+            this.layoutControlItem23.Location = new System.Drawing.Point(673, 154);
+            this.layoutControlItem23.Name = "layoutControlItem23";
+            this.layoutControlItem23.Size = new System.Drawing.Size(342, 24);
+            this.layoutControlItem23.Text = "Thời gian đến:";
+            this.layoutControlItem23.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem23.TextSize = new System.Drawing.Size(130, 20);
+            this.layoutControlItem23.TextToControlDistance = 5;
             // 
             // dxErrorProvider1
             // 
@@ -1024,8 +1144,11 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtTimeTo.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtTimeFrom.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkWarningDepoService.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSearch.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDay.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtDay.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gluPatientType.Properties)).EndInit();
@@ -1051,7 +1174,6 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
@@ -1065,6 +1187,12 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
@@ -1151,5 +1279,13 @@ namespace HIS.Desktop.Plugins.HisHolidayPolicies
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit btnEnable;
         private DevExpress.XtraBars.BarButtonItem bbtnSearch;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem4;
+        private DevExpress.XtraEditors.CheckEdit chkWarningDepoService;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem5;
+        private DevExpress.XtraEditors.TimeEdit dtTimeTo;
+        private DevExpress.XtraEditors.TimeEdit dtTimeFrom;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem22;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem23;
     }
 }

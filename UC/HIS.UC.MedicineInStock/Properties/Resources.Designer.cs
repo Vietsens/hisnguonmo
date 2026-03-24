@@ -63,6 +63,26 @@ namespace HIS.UC.MedicineInStock.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap hmenu_lock {
+            get {
+                object obj = ResourceManager.GetObject("hmenu-lock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap hmenu_unlock {
+            get {
+                object obj = ResourceManager.GetObject("hmenu-unlock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap khoa {
             get {
                 object obj = ResourceManager.GetObject("khoa", resourceCulture);
@@ -73,9 +93,29 @@ namespace HIS.UC.MedicineInStock.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap lock__1_ {
+            get {
+                object obj = ResourceManager.GetObject("lock (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mo_khoa {
             get {
                 object obj = ResourceManager.GetObject("mo-khoa", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap unlock__1_ {
+            get {
+                object obj = ResourceManager.GetObject("unlock (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

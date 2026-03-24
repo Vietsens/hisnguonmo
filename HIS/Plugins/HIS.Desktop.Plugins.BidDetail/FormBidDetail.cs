@@ -16,27 +16,45 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Data;
+using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
+using EMR.WCF.DCO;
+using His.Bhyt.ExportXml.TT12;
+using His.Bhyt.ExportXml.TT12.ADO;
+using His.Bhyt.ExportXml.TT12.Base;
+using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.ConfigSystem;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Print;
+using HIS.UC.SettingSignInfo;
+using Inventec.Common.Adapter;
+using Inventec.Common.SignLibrary.ServiceSign;
 using Inventec.Core;
 using Inventec.Desktop.Common.LanguageManager;
 using Inventec.Desktop.Common.Message;
 using MOS.EFMODEL.DataModels;
+using MOS.Filter;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Resources;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Serialization;
 
 
 namespace HIS.Desktop.Plugins.BidDetail
@@ -57,6 +75,10 @@ namespace HIS.Desktop.Plugins.BidDetail
         long roomTypeId = 0;
         decimal? adjustAmount;
         short? isActive ;
+        bool isNotLoadWhileChangeControlStateInFirst;
+        SettingSignADO SettingSignADO;
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         #endregion
 
         #region Construct
@@ -238,6 +260,7 @@ namespace HIS.Desktop.Plugins.BidDetail
 
                 //Hien thi tab chua du lieu
                 ShowTab();
+                InitControlState();
             }
             catch (Exception ex)
             {
@@ -245,6 +268,34 @@ namespace HIS.Desktop.Plugins.BidDetail
             }
         }
         #endregion
+
+        private void InitControlState()
+        {
+            try
+            {
+                isNotLoadWhileChangeControlStateInFirst = true;
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(this.ModuleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == chkSign.Name)
+                        {
+                            SettingSignADO = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingSignADO>(item.VALUE);
+                            chkSign.Checked = SettingSignADO != null && !string.IsNullOrEmpty(SettingSignADO.SerialNumber);
+                        }
+                    }
+                }
+                isNotLoadWhileChangeControlStateInFirst = false;
+            }
+            catch (Exception ex)
+            {
+                chkSign.Checked = false;
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
 
         #region Private method
         private void SetIcon()
@@ -814,22 +865,22 @@ namespace HIS.Desktop.Plugins.BidDetail
                         e.Graphics.FillRectangle(new SolidBrush(e.Appearance.BackColor), e.Bounds);
 
                         // Lấy hình ảnh từ tài nguyên
-                        Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
+                        //Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
 
-                        // Tính toán vị trí và kích thước của hình ảnh
-                        int imageWidth = image.Width;
-                        int imageHeight = image.Height;
-                        int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
-                        int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
+                        //// Tính toán vị trí và kích thước của hình ảnh
+                        //int imageWidth = image.Width;
+                        //int imageHeight = image.Height;
+                        //int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
+                        //int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
 
-                        // Vẽ hình ảnh vào ô trước khi vẽ văn bản
-                        e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
+                        //// Vẽ hình ảnh vào ô trước khi vẽ văn bản
+                        //e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
 
-                        // Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
-                        image.Dispose();
+                        //// Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
+                        //image.Dispose();
 
-                        Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
-                        imageRectangles[e.RowHandle] = imageRect;
+                        //Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
+                        //imageRectangles[e.RowHandle] = imageRect;
 
                         // Vẽ văn bản vào ô hiện tại
                         var adjustAmount = item.ADJUST_AMOUNT;
@@ -944,22 +995,22 @@ namespace HIS.Desktop.Plugins.BidDetail
                         e.Graphics.FillRectangle(new SolidBrush(e.Appearance.BackColor), e.Bounds);
 
                         // Lấy hình ảnh từ tài nguyên
-                        Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
+                        //Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
 
-                        // Tính toán vị trí và kích thước của hình ảnh
-                        int imageWidth = image.Width;
-                        int imageHeight = image.Height;
-                        int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
-                        int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
+                        //// Tính toán vị trí và kích thước của hình ảnh
+                        //int imageWidth = image.Width;
+                        //int imageHeight = image.Height;
+                        //int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
+                        //int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
 
-                        // Vẽ hình ảnh vào ô trước khi vẽ văn bản
-                        e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
+                        //// Vẽ hình ảnh vào ô trước khi vẽ văn bản
+                        //e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
 
-                        // Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
-                        image.Dispose();
+                        //// Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
+                        //image.Dispose();
 
-                        Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
-                        imageRectangles[e.RowHandle] = imageRect;
+                        //Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
+                        //imageRectangles[e.RowHandle] = imageRect;
 
                         // Vẽ văn bản vào ô hiện tại
                         var adjustAmount = item.ADJUST_AMOUNT;
@@ -1252,10 +1303,361 @@ namespace HIS.Desktop.Plugins.BidDetail
         }
 
 
-       
+
         #region Public method
 
         #endregion
+
+        private void chkSign_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isNotLoadWhileChangeControlStateInFirst)
+                    return;
+
+                isChkSignFileCertUtil();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void isChkSignFileCertUtil()
+        {
+            try
+            {
+                if (chkSign.Checked == true)
+                {
+                    frmSetting frm = new frmSetting(SettingSignADO, (result) =>
+                    {
+                        SettingSignADO = (SettingSignADO)result;
+                    });
+                    frm.ShowDialog();
+                    if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
+                        chkSign.Checked = false;
+                }
+                else
+                {
+                    SettingSignADO = null;
+                }
+                HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == chkSign.Name && o.MODULE_LINK == this.currentModule.ModuleLink).FirstOrDefault() : null;
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => csAddOrUpdate), csAddOrUpdate));
+                if (csAddOrUpdate != null)
+                {
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
+                }
+                else
+                {
+                    csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                    csAddOrUpdate.KEY = chkSign.Name;
+                    csAddOrUpdate.VALUE = Newtonsoft.Json.JsonConvert.SerializeObject(SettingSignADO);
+                    csAddOrUpdate.MODULE_LINK = this.currentModule.ModuleLink;
+                    if (this.currentControlStateRDO == null)
+                        this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                    this.currentControlStateRDO.Add(csAddOrUpdate);
+                }
+                this.controlStateWorker.SetData(this.currentControlStateRDO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnXmlTT12_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                bool success = false;
+                string savePath = "";
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    savePath = fbd.SelectedPath;
+                }
+                if (String.IsNullOrEmpty(savePath))
+                    return;
+                WaitingManager.Show();                
+                //string fullFileName = String.Format("ThuocVTMauTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+                //string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
+                CommonParam param = new CommonParam();
+                InputTT12ADO listXmlAdos = new InputTT12ADO();
+                listXmlAdos.BloodTypes = bidBloodTypes;
+                listXmlAdos.MedicineTypes = bidMedicineTypes;
+                listXmlAdos.MaterialTypes = bidMaterialTypes;
+
+                CreateXmlTT12Main xmlMain = new CreateXmlTT12Main(listXmlAdos);
+
+                if((bidMedicineTypes != null && bidMedicineTypes.Count > 0) || (bidBloodTypes != null && bidBloodTypes.Count > 0))
+                {
+                    string fullFileName = String.Format("ThuocMauTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+                    string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
+                    ResultADO result = xmlMain.RunMau03();
+                    if (result.Success)
+                    {
+                        string xml = result.Data[0].ToString();
+                        var rs = xmlMain.RunMau03Stream();
+                        if (rs != null)
+                        {
+                            FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
+                            rs.WriteTo(file);
+                            file.Close();
+                            rs.Close();
+                            success = true;
+                        }
+                    }
+                    if (chkSign.Checked)
+                    {
+                        SignFile(fullFileName, saveFilePath);
+                    }
+                }
+
+                if (bidMaterialTypes != null && bidMaterialTypes.Count > 0)
+                {
+                    string fullFileName = String.Format("VTTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
+                    string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
+                    ResultADO result2 = xmlMain.RunMau04();
+                    if (result2.Success)
+                    {
+                        string xml = result2.Data[0].ToString();
+                        var rs = xmlMain.RunMau04Stream();
+                        if (rs != null)
+                        {
+                            FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
+                            rs.WriteTo(file);
+                            file.Close();
+                            rs.Close();
+                            success = true;
+                        }
+                    }
+                    if (chkSign.Checked)
+                    {
+                        SignFile(fullFileName, saveFilePath);
+                    }
+                }
+                WaitingManager.Hide();
+                MessageManager.Show(this, param, success);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        public bool SignFile(string fullFileName, string saveFilePath)
+        {
+            try
+            {
+                if (SettingSignADO == null || (SettingSignADO != null && string.IsNullOrEmpty(SettingSignADO.SerialNumber)))
+                {
+                    MessageBox.Show("Không có thông tin Usb Token ký số");
+                    return false;
+                }
+                else
+                {
+                    string currentDirectory = Directory.GetCurrentDirectory();
+                    string tempFolderPath = Path.Combine(currentDirectory, "Temp");
+                    Directory.CreateDirectory(tempFolderPath);
+                    string tempFilePath = Path.Combine(tempFolderPath, fullFileName);
+                    File.Create(tempFilePath).Close();
+                    string pathAfterFileSign = null;
+                    WcfSignDCO wcfSignDCO = null;
+                    if (SettingSignADO.IsHsm)
+                    {
+                        var xmlBase64 = SourceFileSignApi(ReadFileContent(saveFilePath));
+                        if (string.IsNullOrEmpty(xmlBase64))
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Ký HSM thất bại");
+                            return false;
+                        }
+                        var xmlBytes = Convert.FromBase64String(xmlBase64);
+                        File.WriteAllBytes(tempFilePath, xmlBytes);
+                        pathAfterFileSign = tempFilePath;
+                    }
+                    else
+                    {
+                        wcfSignDCO = new WcfSignDCO
+                        {
+                            SerialNumber = SettingSignADO.SerialNumber,
+                            OutputFile = tempFilePath,
+                            PIN = "",
+                            SourceFile = saveFilePath,
+                            fieldSigned = "CHUKYDONVI"
+                        };
+                        string jsonData = JsonConvert.SerializeObject(wcfSignDCO);
+                        SignProcessorClient signProcessorClient = new SignProcessorClient();
+                        if (!VerifyServiceSignProcessorIsRunning())
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Service ký số không chạy");
+                        }
+                        var wcfSignResultDCO = signProcessorClient.SignXml130(jsonData);
+                        if (wcfSignResultDCO == null || !wcfSignResultDCO.Success)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Ký file thất bại: " + (wcfSignResultDCO != null ? wcfSignResultDCO.Message : ""));
+                            return false;
+                        }
+                        pathAfterFileSign = wcfSignResultDCO.OutputFile;
+                    }
+                    if (!string.IsNullOrEmpty(pathAfterFileSign) && File.Exists(pathAfterFileSign))
+                    {
+                        File.Copy(pathAfterFileSign, saveFilePath, true);
+                    }
+                    if (File.Exists(tempFilePath))
+                    {
+                        File.Delete(tempFilePath);
+                    }
+                    if (Directory.Exists(tempFolderPath) && Directory.GetFiles(tempFolderPath).Length == 0 && Directory.GetDirectories(tempFolderPath).Length == 0)
+                    {
+                        Directory.Delete(tempFolderPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return true;
+        }
+
+        public string AppFilePathSignService()
+        {
+            try
+            {
+                string pathFolderTemp = Path.Combine(Path.Combine(Path.Combine(Application.StartupPath, "Integrate"), "EMR.SignProcessor"), "EMR.SignProcessor.exe");
+                return pathFolderTemp;
+            }
+            catch (IOException exception)
+            {
+                Inventec.Common.Logging.LogSystem.Warn("Error create temp file: " + exception.Message);
+                return "";
+            }
+        }
+        private bool IsProcessOpen(string name)
+        {
+            foreach (Process clsProcess in Process.GetProcesses())
+            {
+                if (clsProcess.ProcessName == name || clsProcess.ProcessName == String.Format("{0}.exe", name) || clsProcess.ProcessName == String.Format("{0} (32 bit)", name) || clsProcess.ProcessName == String.Format("{0}.exe (32 bit)", name))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        internal bool VerifyServiceSignProcessorIsRunning()
+        {
+            bool valid = false;
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.1");
+                string exeSignPath = AppFilePathSignService();
+                if (File.Exists(exeSignPath))
+                {
+                    if (IsProcessOpen("EMR.SignProcessor"))
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.2");
+                        valid = true;
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.3");
+                        Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => exeSignPath), exeSignPath));
+                        ProcessStartInfo startInfo = new ProcessStartInfo();
+                        startInfo.FileName = exeSignPath;
+                        try
+                        {
+
+                            Process.Start(startInfo);
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.4");
+                            Thread.Sleep(500);
+                            valid = true;
+                            Inventec.Common.Logging.LogSystem.Debug("GetSerialNumber.5");
+                        }
+                        catch (Exception exx)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(exx);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return valid;
+        }
+        private string SourceFileSignApi(string xmlBase64Source)
+        {
+            string result = null;
+            try
+            {
+                CommonParam param = new CommonParam();
+                EMR.SDO.SignXmlBhytSDO signXmlBhytSDO = new EMR.SDO.SignXmlBhytSDO();
+                signXmlBhytSDO.XmlBase64 = xmlBase64Source;
+                signXmlBhytSDO.TagStoreSignatureValue = "CHUKYDONVI";
+                signXmlBhytSDO.ConfigData = new EMR.SDO.XmlConfigDataSDO() { HsmSerialNumber = SettingSignADO.SerialNumber, HsmType = SettingSignADO.Id, HsmUserCode = SettingSignADO.Name, Password = SettingSignADO.Password, SecretKey = SettingSignADO.SercetKey, IdentityNumber = SettingSignADO.CccdNumber };
+                result = new Inventec.Common.Adapter.BackendAdapter(param).Post<string>("api/EmrSign/SignXmlBhyt", ApiConsumer.ApiConsumers.EmrConsumer, signXmlBhytSDO, SessionManager.ActionLostToken, param);
+                if (param != null && param.Messages != null && param.Messages.Count > 0)
+                {
+                    string message = string.Join(Environment.NewLine, param.Messages);
+                    DevExpress.XtraEditors.XtraMessageBox.Show(message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Inventec.Common.Logging.LogSystem.Warn(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
+        }
+
+        private string ReadFileContent(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    byte[] fileBytes = File.ReadAllBytes(filePath);
+                    XmlDocument xmlDocument = new XmlDocument();
+                    try
+                    {
+                        xmlDocument.LoadXml(RemoveByteOrderMark(Encoding.UTF8.GetString(File.ReadAllBytes(filePath))));
+                        return Convert.ToBase64String(StringToBytes(RemoveByteOrderMark(Encoding.UTF8.GetString(fileBytes))));
+                    }
+                    catch (Exception)
+                    {
+                        xmlDocument.LoadXml(Encoding.UTF8.GetString(File.ReadAllBytes(filePath)));
+                        return Convert.ToBase64String(StringToBytes(Encoding.UTF8.GetString(fileBytes)));
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return null;
+            }
+        }
+        private string RemoveByteOrderMark(string XML)
+        {
+            string byteOrderMark = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
+            if (XML.StartsWith(byteOrderMark))
+            {
+                XML = XML.Remove(0, byteOrderMark.Length);
+            }
+            return XML;
+        }
+        public byte[] StringToBytes(string input)
+        {
+            if (input == null) return null;
+            return Encoding.UTF8.GetBytes(input);
+        }
 
     }
 }

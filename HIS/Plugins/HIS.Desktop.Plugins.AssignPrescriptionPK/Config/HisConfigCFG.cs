@@ -29,14 +29,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
 {
     class HisConfigCFG
     {
-        private const string CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION_DETAIL = "HIS.Desktop.Plugins.AssignPrescriptionPK.IsCheckPreviousPrescriptionDetail";      
-        private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";      
+        public const string MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO = "MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO";
+        private const string CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION_DETAIL = "HIS.Desktop.Plugins.AssignPrescriptionPK.IsCheckPreviousPrescriptionDetail";
+        private const string CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE = "HIS.Desktop.Plugins.TreatmentFinish.WarningHeinPatientTypeCode";
         private const string CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT = "MOS.MEDICINE_MATERIAL.USE_PAYMENT_OBJECT_BY_DEPT";
         private const string CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT = "HIS.HIS_ICD_SERVICE.HAS_REQUIRE.PATIENT.BHYT";
         private const string CONFIG_KEY__IsCheckServiceFollwWhenOut = "HIS.Desktop.Plugins.IsCheckServiceFollowWhenOut";
         private const string CONFIG_KEY__SuggestPrescriptionsInfo = "HIS.Desktop.AI.SuggestPrescriptionsInfo";
         private const string IS_ALLOW_SIGNATURE_PRINT_MODULELINKS = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
-        private const string CONFIG_KEY__ASSIGNPRESCRIPTION_EGFROPTION = "HIS.Desktop.Plugins.AssignPrescription.EgfrOption";   
+        private const string CONFIG_KEY__ASSIGNPRESCRIPTION_EGFROPTION = "HIS.Desktop.Plugins.AssignPrescription.EgfrOption";
         private const string CONFIG_KEY__ICD_SERVICE__CONTRAINDICATED__WARNING_OPTION = "HIS.ICD_SERVICE.CONTRAINDICATED.WARNING_OPTION";
         private const string CONFIG_KEY__TrackingCreate__UpdateTreatmentIcd = "HIS.Desktop.Plugins.TrackingCreate.UpdateTreatmentIcd";
         private const string CONFIG_KEY__HIS_SERVICE_REQ__DO_NOT_ALLOW_PRES_OUT_PATIENT_IN_CASE_OF_HAVING_DEBT = "MOS.HIS_SERVICE_REQ.DO_NOT_ALLOW_PRES_OUT_PATIENT_IN_CASE_OF_HAVING_DEBT";
@@ -155,12 +156,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         private const string KEY_ASSIGN_SIMULTANEITY_OPTION = "MOS.HIS_SERVICE_REQ.ASSIGN_SIMULTANEITY_OPTION";
         private const string KEY_CheckSoNgay = "His.Desktop.Plugins.AssignPrescriptionPK.CheckSoNgay";
         private const string KEY_IsCheckSubIcdExceedLimit = "HIS.Desktop.Plugins.IsCheckSubIcdExceedLimit";
-        private const string KEY_IsRequiredHtu = "HIS.Desktop.Plugins.AssignPrescription.IsRequiredHtu"; 
+        private const string KEY_IsRequiredHtu = "HIS.Desktop.Plugins.AssignPrescription.IsRequiredHtu";
         private const string KEY_SaveButtonOption = "HIS.Desktop.Plugins.AssignPrescriptionPK.SaveButtonOption";
         private const string KEY_ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX = "MOS.BHYT.ALLOW_ASSIGN_OFF_LIST_MEDICINE_MATERIAL__HEIN_CARD_NUMBER_PREFIX";
         private const string KEY_HIS_DESKTOP_PLUGINS_ASSIGNPRESCRIPTION_ALLOWKIDNEYPRESOUTPATIENT = "HIS.Desktop.Plugins.AssignPrescription.AllowKidneyPresOutPatient";
         internal const string TUTORIAL_FORMAT_DAY = "HIS.Desktop.Plugins.AssignPrescription.TutorialFormatSoNgay";
         private const string KEY_WARNING_OVER_TRANSFER = "HIS.Desktop.Plugins.RegisterV2.WarningOverMonthsTransfer";
+        private const string KEY_AllowOverMaxExpendService = "HIS.Desktop.Plugins.AssignPrescription.AllowOverMaxExpendService";
 
         internal static string AllowKidneyPresOutPatient;
         internal static string AllowAssignOffListMedicineMaterialHeinCardNumberPrefix;
@@ -188,6 +190,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string SuggestPrescriptionsInfo;
         internal static string IsCheckServiceFollowWhenOut;
         internal static string HisIcdServiceHasRequirePatientBhyt;
+        internal static string GuaranteeConnectionInfo;
 
         /// <summary>
         /// :Có tự động focus vào ô lời dặn không. 1-có, 0-không
@@ -436,6 +439,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         internal static string WarningHeinPatientTypeCode;
         internal static string WarningOverTransfer;
         internal static string CheckPreviousPrescriptionDetail;
+        internal static string AllowOverMaxExpendService;
 
         static MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE GetPatientTypeByCode(string code)
         {
@@ -471,11 +475,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Config
         {
             try
             {
+                GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
+                AllowOverMaxExpendService = GetValue(KEY_AllowOverMaxExpendService);
                 CheckPreviousPrescriptionDetail = GetValue(CONFIG_KEY__IS_CHECK_PREVIOUS_PRESCRIPTION_DETAIL);
                 WarningHeinPatientTypeCode = GetValue(CONFIG_KEY__TREATMENT_FINISH_WARNING_HEIN_PATIENT_TYPE_CODE);
                 UsePaymentObjectByDept = GetValue(CONFIG_KEY__MOS_MEDICINE_MATERIAL_USE_PAYMENT_OBJECT_BY_DEPT);
                 HisIcdServiceHasRequirePatientBhyt = GetValue(CONFIG_KEY__HIS_ICD_SERVICE__HAS_REQUIRE__PATIENT_BHYT);
-                IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY__IsCheckServiceFollwWhenOut);    
+                IsCheckServiceFollowWhenOut = GetValue(CONFIG_KEY__IsCheckServiceFollwWhenOut);
                 SuggestPrescriptionsInfo = GetValue(CONFIG_KEY__SuggestPrescriptionsInfo);
                 ASSIGNPRESCRIPTION_EGFROPTION = GetValue(CONFIG_KEY__ASSIGNPRESCRIPTION_EGFROPTION);
                 MODULELINKS = GetValue(IS_ALLOW_SIGNATURE_PRINT_MODULELINKS);

@@ -15,64 +15,67 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using AutoMapper;
+using DevExpress.Data;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraEditors.Filtering;
+using DevExpress.XtraEditors.ViewInfo;
+using DevExpress.XtraExport;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
+using DevExpress.XtraTreeList;
+using DevExpress.XtraTreeList.Nodes;
+using EMR.EFMODEL.DataModels;
+using EMR.Filter;
+using EMR.SDO;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Common;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.ConfigSystem;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.EmrDocument.Base;
+using HIS.Desktop.Plugins.EmrDocument.Config;
+using HIS.Desktop.Plugins.EmrDocument.Resources;
+using HIS.Desktop.Plugins.Library.EmrGenerate;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Common.SignFile;
+using Inventec.Common.SignLibrary;
+using Inventec.Common.SignLibrary.ADO;
+using Inventec.Common.SignLibrary.DTO;
+using Inventec.Common.SignLibrary.LibraryMessage;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.LibraryMessage;
+using Inventec.Desktop.Common.Message;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Text;
+using System.Drawing.Printing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Resources;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors;
-using HIS.Desktop.Common;
-using Inventec.Common.Logging;
-using HIS.Desktop.Utility;
-using HIS.Desktop.LocalStorage.LocalData;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using Inventec.Core;
-using HIS.Desktop.Controls.Session;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using HIS.Desktop.LibraryMessage;
-using DevExpress.XtraEditors.DXErrorProvider;
-using DevExpress.Data;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using DevExpress.XtraEditors.ViewInfo;
-using MOS.Filter;
-using Inventec.Desktop.Common.LanguageManager;
-using System.Resources;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using EMR.Filter;
-using EMR.EFMODEL.DataModels;
-using System.IO;
-using System.Reflection;
-using System.Net;
-using Inventec.Common.Controls.EditorLoader;
-using Inventec.Common.SignLibrary.ADO;
-using Inventec.Common.SignLibrary;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.LocalStorage.ConfigSystem;
-using HIS.Desktop.Plugins.EmrDocument.Base;
-using AutoMapper;
-using DevExpress.XtraGrid.Views.Grid;
-using DevExpress.XtraTreeList;
-using HIS.Desktop.Plugins.EmrDocument.Resources;
-using iTextSharp.text.pdf;
-using iTextSharp.text;
-using System.Drawing.Printing;
-using HIS.Desktop.Plugins.Library.EmrGenerate;
-using Inventec.Common.SignFile;
-using EMR.SDO;
 using static Aspose.Pdf.Operator;
-using DevExpress.XtraTreeList.Nodes;
-using DevExpress.XtraEditors.Filtering;
-using DevExpress.XtraExport;
-using HIS.Desktop.Plugins.EmrDocument.Config;
 
 namespace HIS.Desktop.Plugins.EmrDocument
 {
@@ -384,7 +387,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
             FillDatagctFormList();
 
             SetCaptionByLanguageKey();
-
+            DisplayConfig = MapConfig();
             this.btnAttack.Enabled = !this.isStore;
             isFirstLoad = false;
         }
@@ -1621,7 +1624,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                         rawStream.CopyTo(fs);
                                     }
 
-                                    PdfReader reader = new PdfReader(tempFilePath);
+                                    PdfReader reader = new PdfReader(File.ReadAllBytes(tempFilePath));
                                     ProcessInsertPatientSign(reader, tempFilePath, doc.ID, docPatientSigns);
                                     reader.Close();
 
@@ -1668,7 +1671,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     string desFileJoined = Utils.GenerateTempFileWithin();
                     var elementFirst = FileJoin.FirstOrDefault();
                     FileJoin.Remove(elementFirst.Key);
-                    InsertPage1(null, elementFirst.Value, FileJoin, desFileJoined, null, 0);
+                    InsertPage1Optimized(null, elementFirst.Value, FileJoin, desFileJoined, null, 0);
                     byte[] pdfBytes = File.ReadAllBytes(desFileJoined);
 
                     string mergedBase64 = Convert.ToBase64String(pdfBytes);
@@ -2869,12 +2872,122 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
         }
 
+        internal static void InsertPage1Optimized(Stream sourceStream, string sourceFile, Dictionary<long, string> fileListJoin, string desFileJoined, List<EMR_SIGN> signAlls, long documentId)
+        {
+            var outputStream = new FileStream(desFileJoined, FileMode.Create, FileAccess.Write);
+            var pdfConcat = new PdfConcatenate(outputStream);
+            try
+            {
+                // =========================
+                // 1️⃣ ADD FILE GỐC
+                // =========================
+                if (!string.IsNullOrEmpty(sourceFile) && File.Exists(sourceFile))
+                {
+                    using (var reader = new PdfReader(sourceFile))
+                    {
+                        pdfConcat.AddPages(reader);
+                    }
+                }
+                else if (sourceStream != null)
+                {
+                    sourceStream.Position = 0;
+                    using (var reader = new PdfReader(sourceStream))
+                    {
+                        pdfConcat.AddPages(reader);
+                    }
+                }
+
+                // =========================
+                // 2️⃣ ADD FILE JOIN
+                // =========================
+                if (fileListJoin == null || fileListJoin.Count == 0)
+                    return;
+
+                foreach (var item in fileListJoin)
+                {
+                    string path = item.Value;
+                    string ext = Path.GetExtension(path)?.ToLower();
+
+                    // ================= IMAGE
+                    if (ext != ".pdf")
+                    {
+                        string tempPdf = Path.Combine(
+                            Path.GetTempPath(),
+                            Guid.NewGuid().ToString("N") + ".pdf");
+
+                        using (var imgStream = File.Exists(path)
+                                ? (Stream)new FileStream(path, FileMode.Open, FileAccess.Read)
+                                : Inventec.Fss.Client.FileDownload.GetFile(path))
+                        using (var fs = new FileStream(tempPdf, FileMode.Create))
+                        using (var doc = new iTextSharp.text.Document())
+                        {
+                            var writer = PdfWriter.GetInstance(doc, fs);
+                            doc.Open();
+
+                            var img = iTextSharp.text.Image.GetInstance(imgStream);
+                            img.ScaleToFit(doc.PageSize.Width, doc.PageSize.Height);
+                            doc.Add(img);
+
+                            doc.Close();
+                        }
+
+                        using (var reader = new PdfReader(tempPdf))
+                        {
+                            pdfConcat.AddPages(reader);
+                        }
+
+                        File.Delete(tempPdf);
+                    }
+                    // ================= PDF
+                    else
+                    {
+                        string pdfPath = path;
+
+                        if (!File.Exists(path))
+                        {
+                            // download về file tạm (KHÔNG dùng byte[])
+                            pdfPath = Path.Combine(
+                                Path.GetTempPath(),
+                                Guid.NewGuid().ToString("N") + ".pdf");
+
+                            using (var stream = Inventec.Fss.Client.FileDownload.GetFile(path))
+                            using (var fs = new FileStream(pdfPath, FileMode.Create))
+                            {
+                                stream.CopyTo(fs);
+                            }
+                        }
+
+                        using (var reader = new PdfReader(pdfPath))
+                        {
+                            pdfConcat.AddPages(reader);
+                        }
+
+                        if (!File.Exists(path))
+                            File.Delete(pdfPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                pdfConcat.Close();
+                outputStream.Close();
+            }
+        }
+
         private void btnPrint_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!Config.ConfigKey.IsHasConnectionEmr)
                     return;
+
+                Inventec.Common.Logging.LogSystem.Info("btnPrint_Click Begin");
+                WaitingManager.Show();
+                listDataTrueStatic = listDataTrue;
                 IsMergeDocument = chkMergeDoc.Checked || chkMerge.Checked;
                 if (IsMergeDocument)
                 {
@@ -2985,7 +3098,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         listDataTrueStatic = listDataTrue;
                         if (lst != null && lst.Count > 0)
                         {
-                            InsertPage1(streamSource, streamSourceStr, lst, output, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
+                            InsertPage1Optimized(streamSource, streamSourceStr, lst, output, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
                         }
                         else
                         {
@@ -2999,11 +3112,14 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         Inventec.Common.DocumentViewer.Template.frmPdfViewer DocumentView = new Inventec.Common.DocumentViewer.Template.frmPdfViewer(output);
 
                         DocumentView.Text = "In";
-
+                        Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
+                        WaitingManager.Hide();
                         DocumentView.ShowDialog();
                     }
                     else
                     {
+                        Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
+                        WaitingManager.Hide();
                         MessageManager.Show(ResourceMessage.KhongLayDuocFile);
                     }
 
@@ -3080,11 +3196,14 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         Inventec.Common.DocumentViewer.Template.frmPdfViewer DocumentView = new Inventec.Common.DocumentViewer.Template.frmPdfViewer(output);
 
                         DocumentView.Text = "In";
-
+                        Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
+                        WaitingManager.Hide();
                         DocumentView.ShowDialog();
                     }
                     else
                     {
+                        Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
+                        WaitingManager.Hide();
                         MessageManager.Show(ResourceMessage.KhongLayDuocFile);
                     }
 
@@ -3508,7 +3627,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                                 if (lst != null && lst.Count > 0)
                                 {
-                                    InsertPage1(streamSource, streamSourceStr, lst, filePath, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
+                                    InsertPage1Optimized(streamSource, streamSourceStr, lst, filePath, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
                                 }
                                 else
                                 {
@@ -3805,11 +3924,293 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
             return rs;
         }
+        static DisplayConfig DisplayConfig { get; set; }
+        private DisplayConfigDTO GetDisplayConfig()
+        {
+            DisplayConfigDTO displayConfig = new DisplayConfigDTO();
+            try
+            {
+                var configs = EmrConfigCFG.EmrConfigs;
+                if (configs != null && configs.Count > 0)
+                {
+                    var cfgSignDisplayOption = configs.Where(o => o.KEY == "EMR.EMR_SIGN.SIGN_DISPLAY_OPTION").FirstOrDefault();
+                    if (cfgSignDisplayOption != null)
+                    {
+                        string vlOption = !String.IsNullOrEmpty(cfgSignDisplayOption.VALUE) ? cfgSignDisplayOption.VALUE : cfgSignDisplayOption.DEFAULT_VALUE;
+                        if (!String.IsNullOrEmpty(vlOption))
+                        {
+                            if (vlOption == "1")
+                            {
+                                displayConfig.TypeDisplay = Inventec.Common.SignFile.Constans.DISPLAY_RECTANGLE_TEXT;
+                            }
+                            else if (vlOption == "2")
+                            {
+                                displayConfig.TypeDisplay = Inventec.Common.SignFile.Constans.DISPLAY_IMAGE_STAMP;
+                            }
+                            else if (vlOption == "3")
+                            {
+                                displayConfig.IsDisplaySignature = false;
+                            }
+                            else
+                            {
+                                displayConfig.TypeDisplay = Inventec.Common.SignFile.Constans.DISPLAY_IMAGE_STAMP_WITH_TEXT;
+                            }
+                        }
+                    }
 
+                    var cfgAppearanceOption = configs.Where(o => o.KEY == "EMR.EMR_SIGN.SIGNATURE_APPEARANCE_OPTION").FirstOrDefault();
+                    if (cfgAppearanceOption != null)
+                    {
+                        try
+                        {
+                            string vlAppearanceOption = !String.IsNullOrEmpty(cfgAppearanceOption.VALUE) ? cfgAppearanceOption.VALUE : cfgAppearanceOption.DEFAULT_VALUE;
+                            if (!String.IsNullOrEmpty(vlAppearanceOption))
+                            {
+                                var arrOT = vlAppearanceOption.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                                if (arrOT != null && arrOT.Count() > 0)
+                                {
+                                    foreach (string vop in arrOT)
+                                    {
+                                        if (!String.IsNullOrEmpty(vop))
+                                        {
+                                            var arrOTDetail = vop.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                                            if (arrOTDetail != null && arrOTDetail.Count() > 1)
+                                            {
+                                                if (!String.IsNullOrEmpty(arrOTDetail[1]))
+                                                {
+                                                    string k = arrOTDetail[0].ToLower();
+                                                    switch (k)
+                                                    {
+                                                        case "p":
+                                                            int p = Inventec.Common.Integrate.TypeConvertParse.ToInt32(arrOTDetail[1]);
+                                                            if (p >= 0 && !displayConfig.TextPosition.HasValue)
+                                                            {
+                                                                displayConfig.TextPosition = p;
+                                                            }
+                                                            break;
+                                                        case "f":
+                                                            int f = Inventec.Common.Integrate.TypeConvertParse.ToInt32(arrOTDetail[1]);
+                                                            if (f > 0 && !displayConfig.SizeFont.HasValue)
+                                                            {
+                                                                displayConfig.SizeFont = f;
+                                                            }
+                                                            break;
+                                                        case "w":
+                                                            int w = Inventec.Common.Integrate.TypeConvertParse.ToInt32(arrOTDetail[1]);
+                                                            if (w > 0 && !displayConfig.WidthRectangle.HasValue)
+                                                            {
+                                                                displayConfig.WidthRectangle = w;
+                                                            }
+                                                            break;
+                                                        case "h":
+                                                            int h = Inventec.Common.Integrate.TypeConvertParse.ToInt32(arrOTDetail[1]);
+                                                            if (h > 0 && !displayConfig.HeightRectangle.HasValue)
+                                                            {
+                                                                displayConfig.HeightRectangle = h;
+                                                            }
+                                                            break;
+                                                        case "a":
+                                                            int a = Inventec.Common.Integrate.TypeConvertParse.ToInt32(arrOTDetail[1]);
+                                                            if (a > 0)
+                                                            {
+                                                                displayConfig.Alignment = a;
+                                                            }
+                                                            break;
+                                                        case "fs":
+                                                            string fs = (arrOTDetail[1]).ToUpper();
+                                                            if (!string.IsNullOrEmpty(fs))
+                                                            {
+                                                                if (fs.Contains("B") && !displayConfig.IsBold.HasValue)
+                                                                    displayConfig.IsBold = true;
+                                                                if (fs.Contains("I") && !displayConfig.IsItalic.HasValue)
+                                                                    displayConfig.IsItalic = true;
+                                                                if (fs.Contains("U") && !displayConfig.IsUnderlined.HasValue)
+                                                                    displayConfig.IsUnderlined = true;
+                                                            }
+                                                            break;
+                                                        case "fn":
+                                                            string fn = arrOTDetail[1];
+                                                            if (!string.IsNullOrEmpty(fn) && string.IsNullOrEmpty(displayConfig.FontName))
+                                                            {
+                                                                displayConfig.FontName = fn;
+                                                            }
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex1)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn(ex1);
+                        }
+                    }
+
+                    var cfgSignInfoDisplayOption = configs.Where(o => o.KEY == "EMR.EMR_SIGN.SIGN_INFO_DISPLAY_OPTION").FirstOrDefault();
+                    if (cfgSignInfoDisplayOption != null)
+                    {
+                        string vlSignInfoDisplayOption = !String.IsNullOrEmpty(cfgSignInfoDisplayOption.VALUE) ? cfgSignInfoDisplayOption.VALUE : cfgSignInfoDisplayOption.DEFAULT_VALUE;
+                        if (!String.IsNullOrEmpty(vlSignInfoDisplayOption))
+                        {
+                            if (vlSignInfoDisplayOption == "1")
+                            {
+                                displayConfig.FormatRectangleText = Inventec.Common.SignFile.Constans.SIGN_TEXT_FORMAT_3_1;
+                            }
+                            else if (vlSignInfoDisplayOption == "2")
+                            {
+                                displayConfig.FormatRectangleText = Inventec.Common.SignFile.Constans.SIGN_TEXT_FORMAT_3__NO_DATE;
+                            }
+                            else if (vlSignInfoDisplayOption == "3")
+                            {
+                                displayConfig.FormatRectangleText = Inventec.Common.SignFile.Constans.SIGN_TEXT_FORMAT_3__NO_TITLE;
+                            }
+                            else
+                            {
+                                displayConfig.FormatRectangleText = vlSignInfoDisplayOption;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return displayConfig;
+        }
+        private DisplayConfig MapConfig()
+        {
+            DisplayConfig displayConfig = new DisplayConfig();
+            try
+            {
+              
+                DisplayConfigDTO displayConfigParam = GetDisplayConfig();
+
+                if (displayConfigParam != null)
+                {
+                    if (displayConfigParam.WidthRectangle.HasValue)
+                    {
+                        displayConfig.WidthRectangle = displayConfigParam.WidthRectangle.Value;
+                    }
+                    if (displayConfigParam.HeightRectangle.HasValue)
+                    {
+                        displayConfig.HeightRectangle = displayConfigParam.HeightRectangle.Value;
+                    }
+                    if (displayConfigParam.SizeFont.HasValue)
+                    {
+                        displayConfig.SizeFont = displayConfigParam.SizeFont.Value;
+                    }
+                    if (displayConfigParam.TextPosition.HasValue)
+                    {
+                        displayConfig.TextPosition = (Inventec.Common.SignFile.Constans.TEXT_POSITON)displayConfigParam.TextPosition.Value;
+                    }
+                    if (displayConfigParam.TypeDisplay.HasValue)
+                    {
+                        displayConfig.TypeDisplay = displayConfigParam.TypeDisplay.Value;
+                    }
+                    if (displayConfigParam.IsDisplaySignature.HasValue)
+                    {
+                        displayConfig.IsDisplaySignature = displayConfigParam.IsDisplaySignature.Value;
+                    }
+                    if (!String.IsNullOrEmpty(displayConfigParam.FormatRectangleText))
+                    {
+                        displayConfig.FormatRectangleText = displayConfigParam.FormatRectangleText;
+                    }
+                    if (displayConfigParam.Titles != null)
+                    {
+                        displayConfig.Titles = displayConfigParam.Titles;
+                    }
+                    if (displayConfig.TextFormat == null)
+                        displayConfig.TextFormat = new FontConfig();
+                    if (displayConfigParam.Alignment != null)
+                    {
+                        displayConfig.TextFormat.Alignment = (Inventec.Common.SignFile.ALIGNMENT_OPTION)displayConfigParam.Alignment;
+                    }
+                    if (displayConfigParam.IsBold != null)
+                    {
+                        displayConfig.TextFormat.IsBold = displayConfigParam.IsBold.Value;
+                    }
+                    if (displayConfigParam.IsItalic != null)
+                    {
+                        displayConfig.TextFormat.IsItalic = displayConfigParam.IsItalic.Value;
+                    }
+                    if (displayConfigParam.IsUnderlined != null)
+                    {
+                        displayConfig.TextFormat.IsUnderlined = displayConfigParam.IsUnderlined.Value;
+                    }
+                    if (!string.IsNullOrEmpty(displayConfigParam.FontName))
+                    {
+                        displayConfig.TextFormat.FontName = displayConfigParam.FontName;
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return displayConfig;
+        }
+
+        private static DisplayConfig ProcessFontSizeFit(DisplayConfig displayConfig)
+        {
+
+            try
+            {
+                int newSizeFont = 0;
+                if (displayConfig.WidthRectangle > 0)
+                {
+                    if (displayConfig.WidthRectangle <= 30 && displayConfig.SizeFont >= 2)
+                    {
+                        newSizeFont = 1;
+                    }
+                    if (displayConfig.WidthRectangle <= 40 && displayConfig.SizeFont >= 3)
+                    {
+                        newSizeFont = 2;
+                    }
+                    else if (displayConfig.WidthRectangle <= 60 && displayConfig.SizeFont >= 4)
+                    {
+                        newSizeFont = 3;
+                    }
+                    else if (displayConfig.WidthRectangle <= 80 && displayConfig.SizeFont >= 5)
+                    {
+                        newSizeFont = 4;
+                    }
+                    else if (displayConfig.WidthRectangle <= 120 && displayConfig.SizeFont >= 6)
+                    {
+                        newSizeFont = 5;
+                    }
+                    else if (displayConfig.WidthRectangle <= 160 && displayConfig.SizeFont >= 7)
+                    {
+                        newSizeFont = 6;
+                    }
+                }
+                if (displayConfig.SizeFont != newSizeFont && newSizeFont > 0)
+                {
+                    displayConfig.SizeFont = newSizeFont;
+                    Inventec.Common.Logging.LogSystem.Debug("Kiem tra SizeFont cua vung chu ky, neu do rong cua vung ky duoc cau hinh  khong phu hop voi SizeFont thi tu dong dieu chinh cho phu hop____" +
+                        Inventec.Common.Logging.LogUtil.TraceData("oldSizeFont", displayConfig.SizeFont) +
+                        Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => newSizeFont), newSizeFont));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+            DisplayConfig result = displayConfig;
+            return result;
+        }
         private static void ProcessInsertPatientSign(PdfReader readerWorking, string outPathFile, long documentId, List<EMR_SIGN> signAlls)
         {
             try
             {
+                DisplayConfig = ProcessFontSizeFit(DisplayConfig);
                 using (FileStream fs_ = File.Open(outPathFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite))
                 {
                     using (PdfStamper stam = new PdfStamper(readerWorking, fs_))
@@ -3822,37 +4223,85 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                 int pageNum = (int)(itemsignElectronic.PAGE_NUMBER ?? 1);
                                 PdfContentByte cbo = stam.GetOverContent(pageNum);
                                 cbo.SetColorFill(iTextSharp.text.BaseColor.BLACK);
-                                cbo.SetFontAndSize(GetBaseFont(), 12);
-                                cbo.BeginText();
+                                cbo.SetFontAndSize(GetBaseFont(), DisplayConfig.SizeFont);
                                 if (itemsignElectronic.SIGN_IMAGE != null)
                                 {
                                     iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(itemsignElectronic.SIGN_IMAGE);
-                                    image.SetAbsolutePosition((float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE);
-                                    var configImage = GetConfigImage();
-                                    if (configImage != null && configImage.Count() == 2)
+
+                                    float widthImagePercent = 0;
+                                    if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x100)
                                     {
-                                        float SignaltureImageWidth = 0;
-                                        image.WidthPercentage = SharedUtils.CalculateWidthPercent(configImage[0], configImage[1], image, SignaltureImageWidth, 100, SignPdfAsynchronous.ProcessHeightPlus(100, configImage[0]));
+                                        widthImagePercent = 100;
                                     }
-                                    var signStr = !string.IsNullOrEmpty(itemsignElectronic.RELATION_PEOPLE_NAME) ? string.Format("{0}({1})", itemsignElectronic.RELATION_PEOPLE_NAME, itemsignElectronic.RELATION_NAME) : itemsignElectronic.VIR_PATIENT_NAME;
-                                    var document = listDataTrueStatic.FirstOrDefault(o => o.ID == documentId);
-                                    if (document != null)
+                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x25x75)
                                     {
-                                        switch (document.PATIENT_SIGNATURE_DISPLAY_TYPE)
-                                        {
-                                            case 0:
-                                                break;
-                                            case 1:
-                                                cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE + (image.Width / 4), (float)itemsignElectronic.COOR_Y_RECTANGLE - (image.Height / 2), 0f);
-                                                break;
-                                            case 2:
-                                                cbo.AddImage(image);
-                                                break;
-                                            default:
-                                                cbo.AddImage(image);
-                                                cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE + (image.Width / 4), (float)itemsignElectronic.COOR_Y_RECTANGLE - (image.Height / 2), 0f);
-                                                break;
-                                        }
+                                        widthImagePercent = 25;
+                                    }
+                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x30x70)
+                                    {
+                                        widthImagePercent = 30;
+                                    }
+                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x40x60)
+                                    {
+                                        widthImagePercent = 40;
+                                    }
+                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x50x50)
+                                    {
+                                        widthImagePercent = 50;
+                                    }
+                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x60x40)
+                                    {
+                                        widthImagePercent = 40;
+                                    }
+                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x70x30)
+                                    {
+                                        widthImagePercent = 30;
+                                    }
+                                    else if (DisplayConfig.TextPosition == Constans.TEXT_POSITON.x75x25)
+                                    {
+                                        widthImagePercent = 25;
+                                    }
+
+                                    float imageSpacing = 10f;
+                                    float plusH = SignPdfAsynchronous.ProcessHeightPlus(widthImagePercent, DisplayConfig);
+
+                                    float maxWidth = DisplayConfig.WidthRectangle * widthImagePercent / 100f;
+                                    float maxHeight = DisplayConfig.HeightRectangle - plusH - imageSpacing;
+
+                                    image.ScaleToFit(maxWidth, maxHeight);
+
+                                    if (DisplayConfig.SignaltureImageWidth > 0 && image.ScaledWidth > DisplayConfig.SignaltureImageWidth)
+                                    {
+                                        float scaleRatio = DisplayConfig.SignaltureImageWidth / image.ScaledWidth;
+                                        image.ScaleAbsolute(image.ScaledWidth * scaleRatio, image.ScaledHeight * scaleRatio);
+                                    }
+
+                                    float centerX = (float)itemsignElectronic.COOR_X_RECTANGLE - (image.ScaledWidth / 2);
+                                    float posY = (float)itemsignElectronic.COOR_Y_RECTANGLE + imageSpacing;
+                                    image.SetAbsolutePosition(centerX, posY);
+
+                                    var signStr = !string.IsNullOrEmpty(itemsignElectronic.RELATION_PEOPLE_NAME) ? string.Format("{0}({1})", itemsignElectronic.RELATION_PEOPLE_NAME, itemsignElectronic.RELATION_NAME) : itemsignElectronic.VIR_PATIENT_NAME;
+
+                                    var document = listDataTrueStatic.FirstOrDefault(o => o.ID == documentId);
+                                    switch (document.PATIENT_SIGNATURE_DISPLAY_TYPE)
+                                    {
+                                        case 0:
+                                            cbo.AddImage(image);
+                                            break;
+                                        case 1:
+                                            cbo.BeginText();
+                                            cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE, 0f);
+                                            cbo.EndText();
+                                            break;
+                                        case 2:
+                                            cbo.AddImage(image);
+                                            break;
+                                        default:
+                                            cbo.AddImage(image);
+                                            cbo.BeginText();
+                                            cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE, 0f);
+                                            cbo.EndText();
+                                            break;
                                     }
                                 }
                                 else if (itemsignElectronic != null && itemsignElectronic.COOR_X_RECTANGLE.HasValue && itemsignElectronic.COOR_Y_RECTANGLE.HasValue)

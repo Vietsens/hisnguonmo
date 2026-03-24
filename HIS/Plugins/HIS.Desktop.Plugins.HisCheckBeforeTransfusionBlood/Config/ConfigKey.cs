@@ -26,13 +26,17 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Config
     class ConfigKey
     {
         private const string Code_IsNotAllowEditBloodInformation = "HIS.Desktop.Plugins.BrowseExportTicket.IsNotAllowEditBloodInformation";
+        public const string Code_BloodHarmonyTestIndexConfig = "HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.BloodHarmonyTestIndex";
+
 
         internal static string IsNotAllowEditBloodInformation;
+        internal static string BloodHarmonyTestIndexConfig;
 
         internal static void GetConfigKey()
         {
             try
             {
+                BloodHarmonyTestIndexConfig = GetValue(Code_BloodHarmonyTestIndexConfig);
                 IsNotAllowEditBloodInformation = GetValue(Code_IsNotAllowEditBloodInformation);
             }
             catch (Exception ex)

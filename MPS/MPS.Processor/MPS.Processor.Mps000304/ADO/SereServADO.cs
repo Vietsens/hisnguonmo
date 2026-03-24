@@ -90,7 +90,15 @@ namespace MPS.Processor.Mps000304.ADO
         public decimal? VIR_TOTAL_HEIN_PRICE_ROW_2 { get; set; }
         public decimal? VIR_TOTAL_PATIENT_PRICE_BHYT_ROW_2 { get; set; }
 
-        public SereServADO(HIS_SERE_SERV data, List<HIS_SERE_SERV> SereServs, List<HIS_SERE_SERV_EXT> sereServExts, List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes, List<V_HIS_SERVICE> services, List<V_HIS_ROOM> rooms, List<HIS_DEPARTMENT> departments, List<HIS_MEDICINE_TYPE> medicineTypes, List<HIS_MEDICINE_LINE> medicineLines, List<HIS_MATERIAL_TYPE> materialTypes, PatientTypeCFG patientTypeCFG, HisConfigValue hisConfigValue, List<HIS_SERVICE_UNIT> hisServiceUnit, List<HIS_OTHER_PAY_SOURCE> _listOtherPaySource, V_HIS_TREATMENT treatment, GroupType? groupType = null)
+        public SereServADO(HIS_SERE_SERV data, List<HIS_SERE_SERV> SereServs, 
+            List<HIS_SERE_SERV_EXT> sereServExts, 
+            List<HIS_HEIN_SERVICE_TYPE> heinServiceTypes, 
+            List<V_HIS_SERVICE> services, List<V_HIS_ROOM> rooms, List<HIS_DEPARTMENT> departments, 
+            List<HIS_MEDICINE_TYPE> medicineTypes, List<HIS_MEDICINE_LINE> medicineLines, List<HIS_MATERIAL_TYPE> materialTypes, 
+            PatientTypeCFG patientTypeCFG, HisConfigValue hisConfigValue, List<HIS_SERVICE_UNIT> hisServiceUnit, 
+            List<HIS_OTHER_PAY_SOURCE> _listOtherPaySource, V_HIS_TREATMENT treatment, 
+            List<HIS_SERVICE_REQ> serviceReqs, List<HIS_PATIENT_TYPE_ALTER> ListPta,
+            GroupType? groupType = null)
         {
             try
             {
@@ -252,7 +260,14 @@ namespace MPS.Processor.Mps000304.ADO
                 #endregion
 
                 string keyPaty = "";
-                this.PatientTypeAlter = PatientTypeAlterProcessor.GetPatientTypeAlter(data, patientTypeCFG, treatment.TDL_TREATMENT_TYPE_ID ?? 0, ref keyPaty);
+                this.PatientTypeAlter = PatientTypeAlterProcessor.GetPatientTypeAlter(
+                                        data,
+                                        serviceReqs,
+                                        hisConfigValue,
+                                        patientTypeCFG,
+                                        ListPta,
+                                        treatment.TDL_TREATMENT_TYPE_ID ?? 0,
+                                        ref keyPaty);
                 this.KEY_PATY_ALTER = keyPaty;
 
                 if (this.VIR_TOTAL_HEIN_PRICE.HasValue)

@@ -429,7 +429,6 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 gridControlIcdCode = null;
                 layoutControl19 = null;
                 popupControlContainerMediMaty = null;
-                emptySpaceItem2 = null;
                 layoutControlItem72 = null;
                 btnChooseIcdText = null;
                 layoutControlItem61 = null;

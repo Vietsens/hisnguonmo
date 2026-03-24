@@ -16,6 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.Utils.Menu;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -94,9 +96,10 @@ namespace HIS.Desktop.Plugins.Register.Run
                 cboCustomerSourceDetail.Properties.DataSource = listADO;
                 cboCustomerSourceDetail.Properties.DisplayMember = "USERNAME";
                 cboCustomerSourceDetail.Properties.ValueMember = "LOGINNAME";
-                cboCustomerSourceDetail.Properties.NullText = "";
-                cboCustomerSourceDetail.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
-                cboCustomerSourceDetail.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+                cboCustomerSourceDetail.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                cboCustomerSourceDetail.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                cboCustomerSourceDetail.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cboCustomerSourceDetail.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
                 cboCustomerSourceDetail.Properties.View.OptionsView.ShowDetailButtons = false;
                 cboCustomerSourceDetail.Properties.View.OptionsView.ShowGroupPanel = false;
                 cboCustomerSourceDetail.Properties.View.OptionsView.ShowIndicator = false;
@@ -176,6 +179,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 }
 
                 cboCustomerSourceDetail.Text = sb.ToString();
+                UpdateCustomerSourceDetailDisplay();
             }
             catch (Exception ex)
             {
@@ -511,7 +515,7 @@ namespace HIS.Desktop.Plugins.Register.Run
                 List<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE> dataOtherPaySources = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_CUSTOMER_SOURCE>();
                 dataOtherPaySources = dataOtherPaySources != null ? dataOtherPaySources.Where(o => o.IS_ACTIVE == 1).ToList() : null;
 
-                this.InitComboCommon(this.cboCustomerSource, dataOtherPaySources, "CUSTOMER_SOURCE_CODE", "CUSTOMER_SOURCE_NAME", "CUSTOMER_SOURCE_CODE");
+                this.InitComboCommon(this.cboCustomerSource, dataOtherPaySources, "CUSTOMER_SOURCE_CODE", "CUSTOMER_SOURCE_NAME", 230, "CUSTOMER_SOURCE_CODE", 70);
                 cboCustomerSource.Properties.ImmediatePopup = true;
             }
             catch (Exception ex)
@@ -731,5 +735,98 @@ namespace HIS.Desktop.Plugins.Register.Run
             }
         }
 
+        private void buttonEdit1_ButtonClick(object sender, ButtonPressedEventArgs e)
+        
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)
+                {
+
+                    cboCustomerSourceDetail.ShowPopup();
+                }
+                else if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+
+                    cboCustomerSourceDetail.EditValue = null;
+                    GridCheckMarksSelection gridCheckMark = cboCustomerSourceDetail.Properties.Tag as GridCheckMarksSelection;
+                    if (gridCheckMark != null)
+                    {
+                        gridCheckMark.ClearSelection(cboCustomerSourceDetail.Properties.View);
+                    }
+                    this.cboCustomerSourceDetail.Focus();
+                    buttonEdit1.Text = "";
+                    manualCustomerSourceDetailInput = "";
+                }
+                else if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    var moduleData = GlobalVariables.currentModuleRaws
+                        .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.HisCustomerSourceDetail");
+                    if (moduleData != null && moduleData.IsPlugin && moduleData.ExtensionInfo != null)
+                    {
+                        var extenceInstance = HIS.Desktop.Utility.PluginInstance.GetPluginInstance(
+                            PluginInstance.GetModuleWithWorkingRoom(moduleData, this.currentModule.RoomId, this.currentModule.RoomTypeId), null);
+                        if (extenceInstance is Form form)
+                        {
+                            form.ShowDialog();
+                            LoadAllCustomerSourceDetail();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdateCustomerSourceDetailDisplay()
+        {
+            try
+            {
+                string manualInput = manualCustomerSourceDetailInput?.Trim();
+                string selected = lstCustomerSourceDetail != null && lstCustomerSourceDetail.Count > 0
+                    ? string.Join(", ", lstCustomerSourceDetail.Select(x => x.USERNAME))
+                    : "";
+
+                string displayText = "";
+                if (!string.IsNullOrEmpty(selected) && !string.IsNullOrEmpty(manualInput))
+                    displayText = selected + ", " + manualInput;
+                else if (!string.IsNullOrEmpty(selected))
+                    displayText = selected;
+                else
+                    displayText = manualInput;
+
+                buttonEdit1.EditValueChanged -= buttonEdit1_EditValueChanged; 
+                buttonEdit1.Text = displayText;
+                buttonEdit1.EditValueChanged += buttonEdit1_EditValueChanged; 
+
+                cboCustomerSourceDetail.Text = displayText;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void buttonEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var text = buttonEdit1.Text ?? "";
+                var selectedUsernames = lstCustomerSourceDetail?.Select(x => x.USERNAME).ToList() ?? new List<string>();
+                var parts = text.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x.Trim()).ToList();
+
+                // Lấy phần nhập tay không trùng với nguồn đã chọn
+                manualCustomerSourceDetailInput = string.Join(", ", parts.Where(x => !selectedUsernames.Contains(x)));
+
+                UpdateCustomerSourceDetailDisplay();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
     }
 }

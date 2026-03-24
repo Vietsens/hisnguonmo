@@ -255,7 +255,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             decimal totalPrice = 0;
             try
             {
-                totalPrice = mediMatyTypeADOs.Where(item => item.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT && (item.IsExpend) == false).Sum(o => o.TotalPrice);
+                totalPrice = (decimal)mediMatyTypeADOs.Where(item => item.PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT && (item.IsExpend) == false).Sum(o => o.TotalPrice);
             }
             catch (Exception ex)
             {
@@ -1285,23 +1285,31 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             try
             {
                 int datatype = GetDataTypeSelected();
+
+                // Set IsGuarantee cho item hiện tại TRƯỚC KHI thêm vào
+                if (this.currentMedicineTypeADOForEdit != null
+                    && !string.IsNullOrEmpty(this.Histreatment?.GUARANTEE_CODE)
+                    && this.currentHisPatientTypeAlter?.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT)
+                {
+                    this.currentMedicineTypeADOForEdit.IsGuarantee = true;
+                }
+
                 HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.IAdd iAdd = HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.AddFactory.MakeIAdd(
-                param,
-                this,
-                ValidAddRow,
-                ChoosePatientTypeDefaultlService,
-                ChoosePatientTypeDefaultlServiceOther,
-                CalulateUseTimeTo,
-                ExistsAssianInDay,
-                this.currentMedicineTypeADOForEdit,
-                datatype);
+                    param,
+                    this,
+                    ValidAddRow,
+                    ChoosePatientTypeDefaultlService,
+                    ChoosePatientTypeDefaultlServiceOther,
+                    CalulateUseTimeTo,
+                    ExistsAssianInDay,
+                    this.currentMedicineTypeADOForEdit,
+                    datatype);
 
                 if (iAdd != null)
                 {
                     var success = iAdd.Run();
-                    if (!success)
+                    if (success)
                     {
-                        //LogSystem.Debug("Add medicine/ material row error => success fail");
                     }
                 }
                 else
@@ -2600,7 +2608,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
 
-        private void ProcessChoiceExpMestTemplate(MOS.EFMODEL.DataModels.HIS_EXP_MEST_TEMPLATE expTemplate)
+        private void ProcessChoiceExpMestTemplate(HIS_EXP_MEST_TEMPLATE expTemplate)
         {
             try
             {
@@ -2611,15 +2619,28 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     return;
                 }
 
-                //Release tat ca cac thuoc/ vat tu da duoc take bean truoc do nhung chua duoc luu
                 this.ReleaseAllMediByUser();
+
                 this.ProcessGetEmteMedcineType(this.GetEmteMedicineTypeByExpMestId(expTemplate.ID), false);
                 this.ProcessGetEmteMaterialType(this.GetEmteMaterialTypeByExpMestId(expTemplate.ID), false);
                 this.ProcessInstructionTimeMediForEdit();
                 this.ProcessMergeDuplicateRowForListProcessing();
                 this.ProcessAddListRowDataIntoGridWithTakeBean();
-                //this.VerifyWarningOverCeiling();
                 this.ReloadDataAvaiableMediBeanInCombo();
+
+                if (this.mediMatyTypeADOs != null && this.mediMatyTypeADOs.Count > 0)
+                {
+                    foreach (var item in this.mediMatyTypeADOs)
+                    {
+                        item.IsGuarantee = true;
+                    }
+                }
+
+
+                this.RefeshResourceGridMedicine();    // hoặc gridControlServiceProcess.RefreshDataSource();
+
+                // Nếu cột checkbox dùng gridViewServiceProcess:
+                this.gridViewServiceProcess.RefreshData();
             }
             catch (Exception ex)
             {
@@ -3002,6 +3023,16 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                 result.Add(ado);
                                 continue;
                             }
+                            if ((item.IS_NOT_EXPEND ?? 0) == 1)
+                            {
+                                item.IsExpend = false;
+                                item.IsDisableExpend = true;
+                            }
+                            else
+                            {
+                                item.IsExpend = true;
+                                item.IsDisableExpend = true;
+                            }
 
                             if (item.AMOUNT > 0)
                             {
@@ -3295,23 +3326,48 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        bool isWarning = false;
         internal void SetTotalPrice__TrongDon()
         {
             try
             {
+                this.totalGuarantee = 0; 
                 List<MediMatyTypeADO> medicineTypeADOs = (List<MediMatyTypeADO>)this.gridControlServiceProcess.DataSource;
                 decimal totalPrice = 0;
                 if (medicineTypeADOs != null && medicineTypeADOs.Count > 0)
                 {
                     foreach (var item in medicineTypeADOs)
                     {
-                        totalPrice += item.TotalPrice;
+                        totalPrice += item.TotalPrice ?? 0;
+                        if (item.IsGuarantee)
+                        {
+                            this.totalGuarantee += item.TotalPrice ?? 0;
+                        }
                     }
                 }
                 //if (this.actionType == GlobalVariables.ActionEdit && this.totalHeinByTreatment > 0)
                 //    this.totalHeinByTreatment = this.totalHeinByTreatment - totalPrice;
+                this.totalGuarantee += this.totalGuaranteeOriginal;
                 this.lblTongTien.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPrice, ConfigApplications.NumberSeperator);
+                // Validate và xử lý warning
+                string guaranteeMessage = "";
+                bool isValid = ValidateGuaranteeAmount(ref guaranteeMessage);
+
+                // Nếu không valid VÀ chưa warning => Show warning và set flag
+                if (!isValid && !this.isWarning)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        guaranteeMessage,
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    this.isWarning = true;
+                }
+                // Nếu valid VÀ đã từng warning => Reset flag để có thể warning lại nếu cần
+                else if (isValid && this.isWarning)
+                {
+                    this.isWarning = false;
+                }
             }
             catch (Exception ex)
             {

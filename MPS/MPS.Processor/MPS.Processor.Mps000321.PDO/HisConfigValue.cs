@@ -30,5 +30,7 @@ namespace MPS.Processor.Mps000321.PDO
         public bool IsNotSameDepartment { get; set; }
         public bool IsGroupReqDepartment { get; set; }
         public bool NotIncludeIsExpend { get; set; }
+        public bool IsGroupHeinServiceByUseTime { get; set; }
+        
     }
 }

@@ -563,6 +563,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 spinImpMoreRatio.Value = 0;
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
+                txtBidInfo.Text = "";
                 txtBidGroupCode.Text = "";
                 txtBidPackageCode.Text = "";
                 txtSupplierCode.Text = "";
@@ -580,7 +581,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 cboDosageForm.Text = "";
                 cboDosageForm.EditValue = null;
                 cboNational.Text = "";
-                cboNational.EditValue = null;  
+                cboNational.EditValue = null;
                 //cboNational.Properties.Buttons[1].Visible = false;
                 cboManufacture.Text = "";
                 cboManufacture.EditValue = null;
@@ -596,6 +597,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                 dxValidationProviderLeft.RemoveControlError(cboManufacture);
                 dxValidationProviderLeft.RemoveControlError(txtBatchDivisionCode);
                 DtExpiredDate.EditValue = null;
+                if (dtItemFromTime != null) dtItemFromTime.EditValue = null;
+                if (dtItemToTime != null) dtItemToTime.EditValue = null;
                 //trang thai nut
                 EnableButton(this.ActionType);
                 VisibleButton(this.ActionType);
@@ -1210,6 +1213,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 spinImpMoreRatio.Value = 0;
                 spinImpPrice.Value = 0;
                 txtBidNumOrder.Text = "";
+                txtBidInfo.Text = "";
                 txtBatchDivisionCode.Text = "";
                 this.DtExpiredDate.EditValue = null;
                 spinAmount.Focus();
@@ -1283,7 +1287,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     bool isValid = !string.IsNullOrEmpty(this.medicineType.DOSAGE_FORM);
                     if (this.medicineType.MEDICINE_LINE_ID.Value != IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT)
                     {
-                        
+
                         ValidDosageForm();
                     }
 
@@ -1291,7 +1295,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
                         layoutControlItem21.AppearanceItemCaption.ForeColor = Color.Black;
                         dxValidationProviderLeft.SetValidationRule(cboDosageForm, null);
-                       
+
                     }
                     if (!string.IsNullOrEmpty(this.medicineType.DOSAGE_FORM))
                     {
@@ -1702,6 +1706,8 @@ namespace HIS.Desktop.Plugins.BidCreate
                     txtBidPackageCode.Text = "";
                     txtBidGroupCode.Text = "";
                 }
+                if (dtItemFromTime != null) dtItemFromTime.EditValue = null;
+                if (dtItemToTime != null) dtItemToTime.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -3272,7 +3278,7 @@ namespace HIS.Desktop.Plugins.BidCreate
         }
 
         private void repositoryItemTextEdit1_EditValueChanging(object sender, ChangingEventArgs e)
-       {
+        {
             if (e.NewValue == null)
                 return;
 
@@ -3284,6 +3290,7 @@ namespace HIS.Desktop.Plugins.BidCreate
             }
         }
 
+      
         private bool CheckBatchDivisionCodeAllRules(
             List<MedicineTypeADO> listThuoc,
             List<MedicineTypeADO> listVattu,

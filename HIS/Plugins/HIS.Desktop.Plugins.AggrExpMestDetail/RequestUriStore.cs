@@ -28,5 +28,6 @@ namespace HIS.Desktop.Plugins.AggrExpMestDetail
         internal const string HIS_EXP_MEST_Get = "api/HisExpMest/Get";
         internal const string HIS_AGGR_EXP_MEST_GetView = "api/HisAggrExpMest/GetView";
         internal const string HIS_EXP_MEST_AGGREXPORT = "api/HisExpMest/AggrExport";
+        internal const string HIS_EXP_MEST_UPDATE_PRESS_IN_APPROVE = "api/HisExpMest/UpdatePressInApprove";
     }
 }

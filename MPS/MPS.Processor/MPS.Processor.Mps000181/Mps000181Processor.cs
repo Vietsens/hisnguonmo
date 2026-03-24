@@ -188,6 +188,15 @@ namespace MPS.Processor.Mps000181
                     SetSingleKey(new KeyValue(Mps000181ExtendSingleKey.DOB, rdo.vHisPrescription5.TDL_PATIENT_DOB));
                     SetSingleKey(new KeyValue(Mps000181ExtendSingleKey.VIR_ADDRESS, rdo.vHisPrescription5.TDL_PATIENT_ADDRESS));
                     SetSingleKey(new KeyValue(Mps000181ExtendSingleKey.VIR_PATIENT_NAME, rdo.vHisPrescription5.TDL_PATIENT_NAME));
+
+                    if (rdo.vHisPrescription5 != null)
+                    {
+                        // Cấu trúc HIS thường dùng trường ADVISE cho lời dặn
+                        SetSingleKey(new KeyValue("ADVISE", rdo.vHisPrescription5.ADVISE));
+
+                        // Nếu lời dặn lưu ở trường NOTE, hãy dùng:
+                        // SetSingleKey(new KeyValue("NOTE", rdo.vHisPrescription5.NOTE)); 
+                    }
                 }
 
                 if (rdo.PatyAlterBhyt != null)

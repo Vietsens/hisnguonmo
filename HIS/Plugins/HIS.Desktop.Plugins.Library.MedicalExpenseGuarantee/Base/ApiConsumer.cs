@@ -168,6 +168,51 @@ namespace HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.Base
             //return noAccent.ToLowerInvariant().Trim();
         }
 
-        
+        public static string NormalizeVietnameseName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return "";
+
+            // Loại bỏ khoảng trắng thừa, chuẩn hóa case
+            return string.Join(" ", name.Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
+              .ToUpperInvariant()
+              // Loại bỏ dấu thanh để so sánh linh hoạt hơn
+                        .Replace("À", "A").Replace("Á", "A").Replace("Ả", "A").Replace("Ã", "A").Replace("Ạ", "A").Replace("Ă", "A")
+              .Replace("Ằ", "A").Replace("Ầ", "A").Replace("Ấ", "A").Replace("Ẩ", "A").Replace("Ẫ", "A").Replace("Ậ", "A").Replace("Â", "A")
+              .Replace("È", "E").Replace("É", "E").Replace("Ẻ", "E").Replace("Ẽ", "E").Replace("Ẹ", "E").Replace("Ễ", "E")
+              .Replace("Ì", "I").Replace("Í", "I").Replace("Ỉ", "I").Replace("Ĩ", "I").Replace("Ị", "I").Replace("Ê", "E")
+              .Replace("Ò", "O").Replace("Ó", "O").Replace("Ỏ", "O").Replace("Õ", "O").Replace("Ọ", "O").Replace("Ề", "E")
+              .Replace("Ồ", "O").Replace("Ố", "O").Replace("Ổ", "O").Replace("Ỗ", "O").Replace("Ộ", "O").Replace("Ô", "O")
+              .Replace("Ờ", "O").Replace("Ớ", "O").Replace("Ở", "O").Replace("Ỡ", "O").Replace("Ợ", "O").Replace("Ơ", "O")
+              .Replace("Ù", "U").Replace("Ú", "U").Replace("Ủ", "U").Replace("Ũ", "U").Replace("Ụ", "U").Replace("Ư", "U")
+              .Replace("Ừ", "U").Replace("Ứ", "U").Replace("Ử", "U").Replace("Ữ", "U").Replace("Ự", "U").Replace("Ế", "E")
+              .Replace("Ỳ", "Y").Replace("Ý", "Y").Replace("Ỷ", "Y").Replace("Ỹ", "Y").Replace("Ỵ", "Y").Replace("Ễ", "E")
+              .Replace("Đ", "D");
+        }
+
+        private string RemoveVietnameseTones(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return "";
+
+            // Normalize Unicode và loại bỏ dấu thanh
+            var normalizedString = text.Normalize(System.Text.NormalizationForm.FormD);
+            var stringBuilder = new System.Text.StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != System.Globalization.UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            // Normalize lại và xử lý đặc biệt cho chữ Đ
+            return stringBuilder.ToString()
+                .Normalize(System.Text.NormalizationForm.FormC)
+                .Replace("Đ", "D")
+                .Replace("đ", "d");
+        }
     }
 }

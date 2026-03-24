@@ -166,6 +166,7 @@
     <Reference Include="VSLangProj, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\otherPaySourceDetailADO.cs" />
     <Compile Include="ADO\UCServiceReqInfoADO.cs" />
     <Compile Include="Config\HisConfig.cs" />
     <Compile Include="FUN\frmFun.cs">
@@ -244,6 +245,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Common.Modules.csproj">
+      <Project>{AA9D939B-6EEA-4DC7-8D6C-56C3291EBFE3}</Project>
+      <Name>Inventec.Desktop.Common.Modules</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.csproj">
+      <Project>{9E99C16E-0F81-40E2-8078-CBA7A820CA97}</Project>
+      <Name>Inventec.Desktop.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
@@ -264,6 +273,10 @@
       <Project>{d1e5461b-8a8e-46f7-9aee-5c1b327e5f2b}</Project>
       <Name>HIS.Desktop.LocalStorage.HisConfig</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.LocalData\HIS.Desktop.LocalStorage.LocalData.csproj">
+      <Project>{e036edf5-788c-4892-8d8f-6b1c16dcbd21}</Project>
+      <Name>HIS.Desktop.LocalStorage.LocalData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HIS\HIS.Desktop.LocalStorage.Location\HIS.Desktop.LocalStorage.Location.csproj">
       <Project>{67e93829-79bd-407e-a4dd-b46cebb55a41}</Project>
       <Name>HIS.Desktop.LocalStorage.Location</Name>
@@ -278,6 +291,32 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
+
+echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
+
+if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
+
+xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
+xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\Plugins\Module" /Y /I
+xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
+xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
+
+if errorlevel 1 goto BuildEventFailed
+
+if errorlevel 1 goto BuildEventFailed
+
+REM Exit properly because the build will not fail
+REM unless the final step exits with an error code
+
+goto BuildEventOK
+:BuildEventFailed
+echo PREBUILDSTEP for $(ProjectName) FAILED
+exit 1
+:BuildEventOK
+echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -119,6 +119,8 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.btnActiveIngredient = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
@@ -162,10 +164,12 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnActiveIngredient);
             this.layoutControl1.Controls.Add(this.btnChoose);
             this.layoutControl1.Controls.Add(this.layoutControl2);
             this.layoutControl1.Controls.Add(this.ucPagingService);
@@ -609,7 +613,8 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
             this.emptySpaceItem3,
             this.layoutControlItem2,
             this.layoutControlItem11,
-            this.layoutControlItem1});
+            this.layoutControlItem1,
+            this.layoutControlItem3});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -647,9 +652,9 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(426, 0);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(509, 0);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(215, 26);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(132, 26);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem2
@@ -693,10 +698,6 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSave,
@@ -735,8 +736,8 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(851, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(851, 0);
             // 
             // barDockControlBottom
             // 
@@ -758,6 +759,25 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(851, 29);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 433);
+            // 
+            // btnActiveIngredient
+            // 
+            this.btnActiveIngredient.Location = new System.Drawing.Point(428, 2);
+            this.btnActiveIngredient.Name = "btnActiveIngredient";
+            this.btnActiveIngredient.Size = new System.Drawing.Size(79, 22);
+            this.btnActiveIngredient.StyleController = this.layoutControl1;
+            this.btnActiveIngredient.TabIndex = 11;
+            this.btnActiveIngredient.Text = "Thêm";
+            this.btnActiveIngredient.Click += new System.EventHandler(this.btnActiveIngredient_Click);
+            // 
+            // layoutControlItem3
+            // 
+            this.layoutControlItem3.Control = this.btnActiveIngredient;
+            this.layoutControlItem3.Location = new System.Drawing.Point(426, 0);
+            this.layoutControlItem3.Name = "layoutControlItem3";
+            this.layoutControlItem3.Size = new System.Drawing.Size(83, 26);
+            this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem3.TextVisible = false;
             // 
             // frmHisMedicineTypeAcin
             // 
@@ -823,6 +843,7 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProviderEditorInfo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -887,5 +908,7 @@ namespace HIS.Desktop.Plugins.HisMedicineTypeAcin
         private DevExpress.XtraEditors.SimpleButton btnChoose;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem1;
         private DevExpress.XtraBars.BarButtonItem bbtnChoose;
+        private DevExpress.XtraEditors.SimpleButton btnActiveIngredient;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem3;
     }
 }

@@ -186,6 +186,7 @@
     <Compile Include="Validation\ValidationControlGridLookUpEdit.cs" />
     <Compile Include="Validation\ValidationControlTextEditCode.cs" />
     <Compile Include="Validation\ValidationControlTextEditName.cs" />
+    <Compile Include="Validation\ValidationTimeToGreaterThanFrom.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmHisDayPolicies.resx">

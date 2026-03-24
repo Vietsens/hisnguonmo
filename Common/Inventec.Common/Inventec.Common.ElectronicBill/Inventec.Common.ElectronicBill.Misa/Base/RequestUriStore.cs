@@ -46,6 +46,9 @@ namespace Inventec.Common.ElectronicBill.Misa.Base
         internal const string PreviewInvoiceV2 = "/itg/invoicepublishing/invoicelinkview?type=1";
         internal const string ReleaseInvoiceV2 = "/itg/invoicepublishing";
 
+
+        internal const string DownloadInvoiceV2 = "/itg/invoice-calculating-published/download?downloadDataType=pdf";
+
         internal const string CancelInvoiceV2 = "/invoiceprocessing/cancelvouchers";
 
         internal const string GetFileInvoiceV2 = "/DownloadHandler.ashx?Type=pdf&Code={0}";

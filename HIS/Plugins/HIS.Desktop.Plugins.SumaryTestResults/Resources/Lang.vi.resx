@@ -117,8 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="frmSumaryTestResults.layoutControl1.Text" xml:space="preserve">
-    <value>layoutControl1</value>
+  <data name="frmSumaryTestResults.btnSearch.Text" xml:space="preserve">
+    <value>Tìm (Ctrl F)</value>
+  </data>
+  <data name="frmSumaryTestResults.grdColTestIndexUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmSumaryTestResults.gridColSerSevAmount.Caption" xml:space="preserve">
+    <value>Số lượng</value>
+  </data>
+  <data name="frmSumaryTestResults.gridColSerSevCode.Caption" xml:space="preserve">
+    <value>Mã dịch vụ</value>
+  </data>
+  <data name="frmSumaryTestResults.gridColSerSevName.Caption" xml:space="preserve">
+    <value>Tên dịch vụ</value>
+  </data>
+  <data name="frmSumaryTestResults.gridColSerSevPrint.Caption" xml:space="preserve">
+    <value>In</value>
+  </data>
+  <data name="frmSumaryTestResults.gridColSerSevSTT.Caption" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="frmSumaryTestResults.gridColSerSevTypeName.Caption" xml:space="preserve">
+    <value>Đối tượng thanh toán</value>
+  </data>
+  <data name="frmSumaryTestResults.gridColSerSevUnitName.Caption" xml:space="preserve">
+    <value>Đơn vị tính</value>
+  </data>
+  <data name="frmSumaryTestResults.gridColSerSevView.Caption" xml:space="preserve">
+    <value>Xem</value>
   </data>
   <data name="frmSumaryTestResults.gridColumn1.Caption" xml:space="preserve">
     <value>STT</value>
@@ -132,29 +159,26 @@
   <data name="frmSumaryTestResults.gridColumn4.Caption" xml:space="preserve">
     <value>Chỉ số bình thường</value>
   </data>
-  <data name="frmSumaryTestResults.gridColSerSevSTT.Caption" xml:space="preserve">
-    <value>STT</value>
+  <data name="frmSumaryTestResults.gridColumnChart.Caption" xml:space="preserve">
+    <value>Thêm Biểu Đồ</value>
   </data>
-  <data name="frmSumaryTestResults.gridColSerSevView.Caption" xml:space="preserve">
-    <value>Xem</value>
+  <data name="frmSumaryTestResults.gridColumnTestIndexCode.Caption" xml:space="preserve">
+    <value>Mã chỉ số</value>
   </data>
-  <data name="frmSumaryTestResults.gridColSerSevPrint.Caption" xml:space="preserve">
-    <value>In</value>
+  <data name="frmSumaryTestResults.layoutControl1.Text" xml:space="preserve">
+    <value>layoutControl1</value>
   </data>
-  <data name="frmSumaryTestResults.gridColSerSevCode.Caption" xml:space="preserve">
-    <value>Mã dịch vụ</value>
+  <data name="frmSumaryTestResults.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Lấy tất cả các dịch vụ xét nghiệm của bệnh nhân</value>
   </data>
-  <data name="frmSumaryTestResults.gridColSerSevName.Caption" xml:space="preserve">
-    <value>Tên dịch vụ</value>
+  <data name="frmSumaryTestResults.layoutControlItem4.Text" xml:space="preserve">
+    <value>Lấy cả ngoài đợt điều trị:</value>
   </data>
-  <data name="frmSumaryTestResults.gridColSerSevUnitName.Caption" xml:space="preserve">
-    <value>Đơn vị tính</value>
+  <data name="frmSumaryTestResults.layoutControlItem5.Text" xml:space="preserve">
+    <value>Ngày y lệnh:  Từ:</value>
   </data>
-  <data name="frmSumaryTestResults.gridColSerSevAmount.Caption" xml:space="preserve">
-    <value>Số lượng</value>
-  </data>
-  <data name="frmSumaryTestResults.gridColSerSevTypeName.Caption" xml:space="preserve">
-    <value>Đối tượng thanh toán</value>
+  <data name="frmSumaryTestResults.layoutControlItem6.Text" xml:space="preserve">
+    <value>Đến:</value>
   </data>
   <data name="frmSumaryTestResults.Text" xml:space="preserve">
     <value>Kết quả xét nghiệm </value>

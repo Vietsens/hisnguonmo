@@ -1120,6 +1120,13 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     )
                 {
                     SereServ = SereServ.Where(o => o.IS_GUARANTEED != 1).ToList();
+
+                    HisSereServView17Filter ssbFilter = new HisSereServView17Filter();
+                    ssbFilter.TDL_TREATMENT_ID = treatmentId;
+                    var sereServDaThanhToan = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV_17>>("api/HisSereServ/GetView17", ApiConsumer.ApiConsumers.MosConsumer, ssbFilter, param);
+                    if (sereServDaThanhToan != null)
+                        SereServ = SereServ.Where(o => sereServDaThanhToan.Exists(e => e.ID == o.ID)).ToList();
+
                     if (SereServ.Any())
                     {
                         frmDetailsSereServ frm = new frmDetailsSereServ(SereServ.ToList(), (RefeshReference)this.Close);
@@ -1883,7 +1890,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 CommonParam param = new CommonParam();
                 HisSereServFilter hisSereServFilter = new HisSereServFilter();
                 hisSereServFilter.TREATMENT_ID = this.treatmentId;
-                this.sereServsInTreatmentRaw = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, hisSereServFilter, ProcessLostToken, param);
+                this.sereServsInTreatment = new BackendAdapter(param).Get<List<MOS.EFMODEL.DataModels.HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, hisSereServFilter, ProcessLostToken, param);
             }
             catch (Exception ex)
             {
@@ -2314,6 +2321,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                 if (trackings == null || trackings.Count == 0)
                 {
+                    this.ValidateTrackingAndTreatment();
                     this.isInitTracking = false;
                     return;
                 }
@@ -2367,6 +2375,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                 }
                 this.InitComboTracking(cboPhieuDieuTri);
+                this.ValidateTrackingAndTreatment();
                 if (trackIdSet > 0)
                 {
                     cboPhieuDieuTri.EditValue = trackIdSet;
@@ -2421,6 +2430,18 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if (listTreatment != null && listTreatment.Count > 0)
                     {
                         this.treatmentPrint = listTreatment.FirstOrDefault();
+                    }
+                }
+                // qtcode
+                if(this.currentTreatment != null)
+                {
+                    MOS.Filter.HisTreatmentFeeViewFilter filterTreatmentFee = new MOS.Filter.HisTreatmentFeeViewFilter();
+                    filterTreatmentFee.ID = this.currentTreatment.ID;
+                    var listTreatment = new BackendAdapter(null)
+                      .Get<List<MOS.EFMODEL.DataModels.V_HIS_TREATMENT_FEE>>("api/HisTreatment/GetFeeView", ApiConsumer.ApiConsumers.MosConsumer, filterTreatmentFee, null);
+                    if (listTreatment != null && listTreatment.Count > 0)
+                    {
+                        this.treatmentPrint_2 = listTreatment.FirstOrDefault();
                     }
                 }
             }

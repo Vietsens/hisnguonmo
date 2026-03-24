@@ -1062,6 +1062,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 if (cboPayForm.EditValue == null)
                     cboPayForm.EditValue = IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TM;
                 spinTransferAmount.EditValue = null;
+                spinTransferAmountNew.EditValue = null;
+                spinSwipeAmountNew.EditValue = null;
                 this.SetLabelSave(GlobalDataStore.ModuleAction.ADD);
                 LoadMediMateFromMediStock();
                 LoadDataToControl();

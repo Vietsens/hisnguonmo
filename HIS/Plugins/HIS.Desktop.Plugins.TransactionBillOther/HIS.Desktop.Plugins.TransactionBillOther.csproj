@@ -34,9 +34,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\ACS\ACS.EFMODEL.dll</HintPath>
     </Reference>
-    <Reference Include="ACS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\LIB\ACS\ACS.SDO.dll</HintPath>
+    <Reference Include="ACS.SDO">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\ACS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\lib\Library packages\AutoMapper 4.0.4\AutoMapper.dll</HintPath>
@@ -54,6 +53,13 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="HIS.Desktop.Plugins.Library.ElectronicBill">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.ElectronicBill.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Utility, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
@@ -70,6 +76,16 @@
     <Reference Include="Inventec.Common.DocumentViewer">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.DocumentViewer\Inventec.Common.DocumentViewer.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Common.ElectronicBill">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.ElectronicBill.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.ElectronicBillViettel">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.ElectronicBillViettel.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.FlexCelPrint, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.FlexCelPrint.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Common.Logging">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Logging\Inventec.Common.Logging.dll</HintPath>
     </Reference>
@@ -82,8 +98,9 @@
     <Reference Include="Inventec.Common.RichEditor">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.RichEditor\Inventec.Common.RichEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Common.SignLibrary">
-      <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
+    <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -116,12 +133,15 @@
     <Reference Include="Inventec.Desktop.CustomControl">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop.CustomControl\Inventec.Desktop.CustomControl.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+    <Reference Include="Inventec.Token.ClientSystem">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Login">
       <HintPath>..\..\..\..\LIB\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -197,7 +217,9 @@
     <Compile Include="Validation\GoodUnitNameValidationRule.cs" />
     <Compile Include="Validation\GoodNameValidationRule.cs" />
     <Compile Include="Validation\PayFormValidationRule.cs" />
+    <Compile Include="Validation\SpinSwipeAmountValidationRule.cs" />
     <Compile Include="Validation\SpinToTalAmountValidationRule.cs" />
+    <Compile Include="Validation\SpinTransferAmountValidationRule.cs" />
     <Compile Include="Validation\TransactionTimeValidationRule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -253,17 +275,9 @@
       <Project>{aeeca321-fd65-407a-8d70-ba5362883b87}</Project>
       <Name>HIS.Desktop.Print</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HIS.Desktop.Utility\HIS.Desktop.Utilities.csproj">
-      <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
-      <Name>HIS.Desktop.Utilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Library.CacheClient\HIS.Desktop.Library.CacheClient.csproj">
       <Project>{64837e01-803d-4f1e-9dfc-d34b38ea78f9}</Project>
       <Name>HIS.Desktop.Library.CacheClient</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HIS.Desktop.Plugins.Library.ElectronicBill\HIS.Desktop.Plugins.Library.ElectronicBill.csproj">
-      <Project>{c5aecd51-4be8-4937-a6c3-04f25b11b33f}</Project>
-      <Name>HIS.Desktop.Plugins.Library.ElectronicBill</Name>
     </ProjectReference>
     <ProjectReference Include="..\HIS.Desktop.Plugins.Library.EmrGenerate\HIS.Desktop.Plugins.Library.EmrGenerate.csproj">
       <Project>{0aedfd21-7195-4fdb-a3ef-035640df48f3}</Project>
@@ -292,30 +306,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)
-
-echo Copying files from $(ProjectDir)bin\$(Configuration) to $(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies
-
-if not exist "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" mkdir "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies"
-
-xcopy "$(ProjectDir)bin\$(Configuration)\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\ReferencedAssemblies" /i /d /y
-xcopy "$(TargetDir)$(TargetName).dll" "$(SolutionDir)$(SolutionName)\bin\Debug\plugins\Module" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\vi\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\vi" /Y /I
-xcopy "$(ProjectDir)bin\$(Configuration)\en\*.dll" "$(SolutionDir)\$(SolutionName)\bin\$(Configuration)\en" /Y /I
-
-if errorlevel 1 goto BuildEventFailed
-
-if errorlevel 1 goto BuildEventFailed
-
-REM Exit properly because the build will not fail
-REM unless the final step exits with an error code
-
-goto BuildEventOK
-:BuildEventFailed
-echo PREBUILDSTEP for $(ProjectName) FAILED
-exit 1
-:BuildEventOK
-echo PREBUILDSTEP for $(ProjectName) COMPLETED OK</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -92,6 +92,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
 
         protected long HtuId { get; set; }
         protected long MedicineUseFormId { get; set; }
+        protected decimal? IS_NOT_EXPEND { get; set; }
         protected string Tutorial { get; set; }
         protected string HtuText { get; set; }
         protected bool IsExpend { get; set; }
@@ -197,6 +198,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
             medicineTypeSDO.TDL_GENDER_ID = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.TDL_GENDER_ID : null;
             medicineTypeSDO.ATC_CODES = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.ATC_CODES : null;
             medicineTypeSDO.ATC_GROUP_CODES = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.ATC_GROUP_CODES : null;
+            medicineTypeSDO.IS_NOT_EXPEND = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.IS_NOT_EXPEND : null;
             if (this.Sang > 0)
                 medicineTypeSDO.Sang = this.Sang;
             if (this.Trua > 0)
@@ -240,9 +242,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
 
         protected void SaveDataAndRefesh(MediMatyTypeADO mediMatyADO)
         {
+            mediMatyADO.IsGuarantee = true;
             frmAssignPrescription.mediMatyTypeADOs.Add(mediMatyADO);
             frmAssignPrescription.idRow += frmAssignPrescription.stepRow;
-
+            
             frmAssignPrescription.gridViewServiceProcess.BeginUpdate();
             frmAssignPrescription.gridViewServiceProcess.GridControl.DataSource = frmAssignPrescription.mediMatyTypeADOs.OrderBy(o => o.NUM_ORDER).ToList();
             frmAssignPrescription.gridViewServiceProcess.EndUpdate();

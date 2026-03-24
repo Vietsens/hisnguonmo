@@ -2648,12 +2648,25 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
         {
             try
             {
+                if (mediMatyTypeADOs == null || mediMatyTypeADOs.Count == 0)
+                    return;
+
                 foreach (var item in mediMatyTypeADOs)
                 {
                     if (!item.MEDI_STOCK_ID.HasValue)
                         continue;
-                    var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().FirstOrDefault(o=>o.ID == item.MEDI_STOCK_ID);
-                    if(stock!=null && stock.IS_EXPEND == 1)
+
+                    var stock = BackendDataWorker.Get<V_HIS_MEDI_STOCK>()
+                        .FirstOrDefault(o => o.ID == item.MEDI_STOCK_ID);
+                    if (stock == null || stock.IS_EXPEND != 1)
+                        continue;
+
+                    if ((item.IS_NOT_EXPEND ?? 0) == 1)
+                    {
+                        item.IsExpend = false;
+                        item.IsDisableExpend = true;
+                    }
+                    else
                     {
                         item.IsExpend = true;
                         item.IsDisableExpend = true;
@@ -2889,7 +2902,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-
+        
         internal void SetTotalPrice__TrongDon()
         {
             try
@@ -2901,12 +2914,40 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                     foreach (var item in medicineTypeADOs)
                     {
                         totalPrice += item.TotalPrice;
+                        if (item.IS_GUARANTEED == 1)
+                        {
+                            this.totalGuarantee += item.TotalPrice;
+                        }
                     }
                 }
+                this.totalGuarantee += this.totalGuaranteeOriginal;
                 //if (this.actionType == GlobalVariables.ActionEdit && this.totalHeinByTreatment > 0)
                 //    this.totalHeinByTreatment = this.totalHeinByTreatment - totalPrice;
                 this.tongTienDonNguoiDung = totalPrice;
                 this.lblTongTien.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPrice, ConfigApplications.NumberSeperator);
+                string guaranteeMessage = "";
+                if (!ValidateGuaranteeAmount(ref guaranteeMessage))
+                {
+                    try
+                    {
+                        if (this.gridControlServiceProcess != null)
+                            this.gridControlServiceProcess.Focus();
+                        if (this.gridViewServiceProcess != null)
+                        {
+                            this.gridViewServiceProcess.FocusedColumn = this.grcGuarantee;
+                            int firstRow = this.gridViewServiceProcess.GetRowHandle(0);
+                            if (firstRow >= 0)
+                                this.gridViewServiceProcess.FocusedRowHandle = firstRow;
+                        }
+                    }
+                    catch { }
+
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        guaranteeMessage,
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                }
             }
             catch (Exception ex)
             {

@@ -26,7 +26,8 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.HisConfig;
 using HIS.Desktop.LocalStorage.LocalData;
-using HIS.Desktop.LocalStorage.Location;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee;
+using HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.ADO;
 using HIS.Desktop.Plugins.TransactionBillTwoInOne.ADO;
 using HIS.Desktop.Plugins.TransactionBillTwoInOne.Config;
 using HIS.Desktop.Plugins.TransactionBillTwoInOne.Validation;
@@ -136,7 +137,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
         public decimal guaranteeAamount = 0;
         public decimal tongTienBaoLanh = 0;
-
+        public decimal recieptSumDV = 0;
+        bool isLoadingGuaranteeInfo = false;
+        GuaranteeInfoADO guaranteeInfo = null;
         //IS_DIRECTLY_BILLING
         private void SetCaptionByLanguageKey()
         {
@@ -291,7 +294,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private async void timer1_Tick(object sender, EventArgs e)
         {
             try
             {
@@ -349,17 +352,19 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.LoadConfigPrinter();
                 FillDataToTienHoaDon();
                 FillDataToTongChiPhi();
-
+                //LoadGuaranteeInfo();
                 if (this.treatment != null && this.treatment.GUARANTEE_CODE != null)
                 {   
                     chkGuarantee.Checked = true;
-                    FillTongTienBaoLanh();
+                    //FillTongTienBaoLanh();
+                    LoadGuaranteeInfo();
                 }
                 else
                 {
                     layoutControlItemlblGuaranteed.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItemchkGuaranteed.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItemtxtGuaranteedReftCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    treeListSereServ.Columns["IsGuaranteed"].Visible = false;
                 }
                 txtGuaranteedRefCode.Enabled = false;
                 Inventec.Common.Logging.LogSystem.Debug("timerInitForm_Tick. 7");
@@ -374,6 +379,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                var screen = Screen.FromControl(this);
+                int screenWidth = screen.Bounds.Width;
+                int screenHeight = screen.Bounds.Height;
+
+                if (screenWidth == 3166 && screenHeight == 768)
+                {
+                    this.WindowState = FormWindowState.Normal;   // đảm bảo không bị override
+                    this.FormBorderStyle = FormBorderStyle.None; // bỏ viền
+                    this.Bounds = screen.Bounds;                 // full màn hình
+                    this.TopMost = true;                         // (optional) nổi trên cùng
+                }
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBillTwoInOne_Load. 1");
                 WaitingManager.Show();
                 this.SetCaptionByLanguageKey();
@@ -396,6 +412,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     checkIsKC.Checked = !this.isDirectlyBilling.Value;
                 Inventec.Common.Logging.LogSystem.Debug("frmTransactionBillTwoInOne_Load. 3");
                 this.GeneratePopupMenu();
+                // Gắn sự kiện thay đổi giá trị để tính tiền Cần Thu realtime
+                this.spinSoTienReceipt.EditValueChanged += (s, args) => { CalcuCanThu(true); };
+                this.spinSoTienQTReceipt.EditValueChanged += (s, args) => { CalcuCanThu(true); };
+
+                this.spinInvoiceCK.EditValueChanged += (s, args) => { CalcuCanThu(true); };
+                this.spinInvoiceQT.EditValueChanged += (s, args) => { CalcuCanThu(true); };
                 if (this.treatment.TREATMENT_CODE != null)
                 {
                     this.txtSearch.Text = this.treatment.TREATMENT_CODE;
@@ -676,7 +698,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                         (!o.IS_CANCEL.HasValue || o.IS_CANCEL != 1)
                         && o.BILL_TYPE_ID.HasValue && o.BILL_TYPE_ID == 1)
                         .Sum(o => o.AMOUNT) + recieptAmountAll;
-
+                    
                     invoiceSum = transaction.Where(o =>
                         (!o.IS_CANCEL.HasValue || o.IS_CANCEL != 1)
                         && o.BILL_TYPE_ID.HasValue && o.BILL_TYPE_ID == 2)
@@ -687,6 +709,10 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     recieptSum = recieptAmountAll;
                     invoiceSum = invoiceAmountAll;
                 }
+                recieptSumDV = transaction.Where(o =>
+                        (!o.IS_CANCEL.HasValue || o.IS_CANCEL != 1)
+                        && o.TRANSACTION_TYPE_ID == 3)
+                        .Sum(o => o.AMOUNT);
                 lblTongTienVienPhi.Text = Inventec.Common.Number.Convert.NumberToString(recieptSum, ConfigApplications.NumberSeperator);
                 lblTongTienDichVu.Text = Inventec.Common.Number.Convert.NumberToString(invoiceSum, ConfigApplications.NumberSeperator);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.treatment), this.treatment));
@@ -1278,7 +1304,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     }
                 }
                 recieptAmountAll = listSereServADO.Sum(o => o.RecieptPrice ?? 0);
-                invoiceAmountAll = listSereServADO.Sum(o => o.InvoicePrice ?? 0); ;
+                invoiceAmountAll = listSereServADO.Sum(o => o.InvoicePrice ?? 0);
             }
             catch (Exception ex)
             {
@@ -1720,35 +1746,51 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                 if (isUpdateLbl)
                 {
-                    if(HisConfig.SelectPayForm == "1")
+                    // TÍNH TỔNG TIỀN KHÁCH ĐÃ NHẬP Ở CẢ 2 BÊN (Viện phí + Dịch vụ)
+                    decimal soTienCqQtReceipt = spinSoTienReceipt.Value;
+                    if (cboPayformReceipt.EditValue != null && Convert.ToInt64(cboPayformReceipt.EditValue) == 9)
                     {
-                        lblCanThu.Text = (
-                            totalInvoice
-                            + totalReciept
-                            - spinInvoiceCK.Value
-                            - spinSoTienReceipt.Value
-                        ).ToString();
+                        soTienCqQtReceipt += spinSoTienQTReceipt.Value; // Ô QT Viện phí mới
                     }
-                    else
+
+                    decimal soTienCqQtInvoice = spinInvoiceCK.Value;
+                    if (cboPayFormInvoice.EditValue != null && Convert.ToInt64(cboPayFormInvoice.EditValue) == 9)
                     {
+                        soTienCqQtInvoice += spinInvoiceQT.Value; // Ô QT Dịch vụ mới
+                    }
+
+                    decimal tongTienDaNhap = soTienCqQtReceipt + soTienCqQtInvoice;
+
+                    if (HisConfig.SelectPayForm == "1")
+                    {
+                        lblCanThu.Text = (totalInvoice + totalReciept - tongTienDaNhap).ToString();
+                    }
+                    else // <--- ĐÂY LÀ NHÁNH CHẠY CHO CẤU HÌNH == 2 CỦA BẠN
+                    {
+                        // Tính tiền Cần thu cơ bản
+                        decimal tienCanThu = totalPatientPrice - totalFund - discount;
+
+                        // Trừ đi tiền Hiện dư (Tạm ứng) nếu có
                         if (checkIsKC.CheckState == CheckState.Checked)
                         {
-                            if (totalHienDu >= (totalPatientPrice - totalFund - discount))
+                            if (totalHienDu >= tienCanThu)
                             {
-                                lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString(0);
+                                tienCanThu = 0;
                             }
                             else
                             {
-                                lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount) - totalHienDu, ConfigApplications.NumberSeperator);
+                                tienCanThu = tienCanThu - totalHienDu;
                             }
                         }
-                        else
-                        {
-                            lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount), ConfigApplications.NumberSeperator);
-                        }
-                    }
 
+                        // CUỐI CÙNG: Trừ đi số tiền khách gõ. Nếu nhập vượt quá thì tienCanThu sẽ < 0 (Âm)
+                        tienCanThu = tienCanThu - tongTienDaNhap;
+
+                        // Gán hiển thị lên màn hình (tự động có dấu trừ phía trước nếu âm)
+                        lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString(tienCanThu, ConfigApplications.NumberSeperator);
+                    }
                 }
+
                 if (this.treatment != null && this.treatment.GUARANTEE_CODE != null && chkGuarantee.Checked)
                 {
                     UpdateCanThu();
@@ -1759,6 +1801,68 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
+        //private void CalcuCanThu(bool isUpdateLbl)
+        //{
+        //    try
+        //    {
+        //        var listRecieptFund = bindingSource1.DataSource as List<VHisBillFundADO>;
+        //        decimal totalFund = 0;
+        //        decimal discount = 0;
+        //        if (!checkNotReciept.Checked)
+        //        {
+        //            if (listRecieptFund != null && listRecieptFund.Count > 0)
+        //            {
+        //                totalFund += listRecieptFund.Sum(o => o.AMOUNT);
+        //            }
+        //            discount += spinRecieptDiscountPrice.Value;
+        //        }
+        //        if (!checkNotInvoice.Checked)
+        //        {
+        //            discount += spinInvoiceDiscountPrice.Value;
+        //        }
+
+        //        if (isUpdateLbl)
+        //        {
+        //            if(HisConfig.SelectPayForm == "1")
+        //            {
+        //                lblCanThu.Text = (
+        //                    totalInvoice
+        //                    + totalReciept
+        //                    - spinInvoiceCK.Value
+        //                    - spinSoTienReceipt.Value
+        //                ).ToString();
+        //            }
+        //            else
+        //            {
+        //                if (checkIsKC.CheckState == CheckState.Checked)
+        //                {
+        //                    if (totalHienDu >= (totalPatientPrice - totalFund - discount))
+        //                    {
+        //                        lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString(0);
+        //                    }
+        //                    else
+        //                    {
+        //                        lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount) - totalHienDu, ConfigApplications.NumberSeperator);
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    lblCanThu.Text = Inventec.Common.Number.Convert.NumberToString((totalPatientPrice - totalFund - discount), ConfigApplications.NumberSeperator);
+        //                }
+        //            }
+
+        //        }
+        //        if (this.treatment != null && this.treatment.GUARANTEE_CODE != null && chkGuarantee.Checked)
+        //        {
+        //            UpdateCanThu();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
 
         private void LoadConfigPrinter()
         {
@@ -2090,22 +2194,22 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                WaitingManager.Show();
+                WaitingManager.Show(); 
                 this.isInit = true;
                 this.ResetFillPatientDefault();
                 this.ResetData();
                 this.ClearValidate();
+                this.LoadSearch();
                 this.FillInfoPatient(treatment);
                 this.LoadAccountBookToLocal();
                 this.FillDataToGirdTransaction();
                 this.GeneratePopupMenu();
                 if (this.treatment != null)
-                {
+                { 
                     this.txtSearch.Text = this.treatment.TREATMENT_CODE;
                     this.btnSavePrint.Focus();
 
                 }
-                this.LoadSearch();
                 this.LoadListSereServ();
                 this.ProcessDataByCheckNot();
                 this.ResetControlValue();
@@ -2116,10 +2220,12 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 this.CalcuCanThu(true);
                 this.FillDataToTienHoaDon();
                 this.FillDataToTongChiPhi();
+                //this.LoadGuaranteeInfo();
 
                 if (this.treatment != null && this.treatment.GUARANTEE_CODE != null)
                 {
-                    FillTongTienBaoLanh();
+                    this.LoadGuaranteeInfo();
+                    //FillTongTienBaoLanh();
                     XtraMessageBox.Show(
                         this,
                         "Bệnh nhân có đăng ký bảo lãnh viện phí. Vui lòng kiểm tra lại thông tin và check vào \"Bảo lãnh viện phí\" để thực hiện chốt số liệu.",
@@ -3317,6 +3423,62 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
+        //private void cboPayformReceipt_EditValueChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (cboPayformReceipt.EditValue != null)
+        //        {
+        //            var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
+        //            if (payFormL != null)
+        //            {
+        //                var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayformReceipt.Text);
+        //                if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+        //                {
+        //                    layoutControlItem80.Text = "Số tiền CK:";
+        //                    layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+        //                    spinSoTienReceipt.Enabled = true;
+        //                }
+        //                else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+        //                {
+        //                    layoutControlItem80.Text = "Số tiền QT:";
+        //                    layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+        //                    spinSoTienReceipt.Enabled = true;
+        //                }
+        //                else
+        //                {
+        //                    layoutControlItem80.Text = "Số tiền CK:";
+        //                    layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+        //                    spinSoTienReceipt.Enabled = false;
+        //                    dxValidationProvider1.SetValidationRule(cboPayformReceipt, null);
+        //                }
+        //                if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+        //                {
+        //                    cboBankReceipt.EditValue = payForm.BANK_ID;
+        //                    cboBankReceipt.Enabled = false;
+        //                }
+        //                else
+        //                {
+        //                    cboBankReceipt.EditValue = null;
+        //                    cboBankReceipt.Enabled = true;
+        //                }
+        //                if (payForm.IS_REQUIRED_BANK == 1)
+        //                {
+        //                    layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Maroon;
+        //                }
+        //                else
+        //                {
+        //                    layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Black;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+
         private void cboPayformReceipt_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -3324,10 +3486,26 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                 if (cboPayformReceipt.EditValue != null)
                 {
                     var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayformReceipt.EditValue));
-                    if (payFormL != null)
+                    if (payFormL != null && payFormL.Any())
                     {
                         var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayformReceipt.Text);
-                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+
+                        spinSoTienReceipt.Value = 0;
+                        spinSoTienQTReceipt.Value = 0;
+                        // Mặc định ẩn ô Quẹt thẻ (ô mới)
+                        lciSoTienQTReceipt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        spinSoTienQTReceipt.Enabled = false;
+
+                        if (payForm.ID == 9) // 9: Hình thức Tiền mặt/Chuyển khoản/Quẹt thẻ
+                        {
+                            layoutControlItem80.Text = "Số tiền CK:";
+                            layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                            spinSoTienReceipt.Enabled = true;
+
+                            lciSoTienQTReceipt.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Hiện ô QT
+                            spinSoTienQTReceipt.Enabled = true;
+                        }
+                        else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
                         {
                             layoutControlItem80.Text = "Số tiền CK:";
                             layoutControlItem80.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
@@ -3346,7 +3524,9 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             spinSoTienReceipt.Enabled = false;
                             dxValidationProvider1.SetValidationRule(cboPayformReceipt, null);
                         }
-                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+
+                        // Xử lý ẩn/hiện Ngân hàng
+                        if ((payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payForm.ID == 9) && payForm.BANK_ID != null)
                         {
                             cboBankReceipt.EditValue = payForm.BANK_ID;
                             cboBankReceipt.Enabled = false;
@@ -3356,14 +3536,11 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             cboBankReceipt.EditValue = null;
                             cboBankReceipt.Enabled = true;
                         }
+
                         if (payForm.IS_REQUIRED_BANK == 1)
-                        {
                             layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Maroon;
-                        }
                         else
-                        {
                             layoutControlItem81.AppearanceItemCaption.ForeColor = Color.Black;
-                        }
                     }
                 }
             }
@@ -3373,38 +3550,117 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             }
         }
 
+        //private void cboPayFormInvoice_EditValueChanged(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        if (cboPayFormInvoice.EditValue != null)
+        //        {
+        //            var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
+        //            if (payFormL != null)
+        //            {
+        //                var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayFormInvoice.Text);
+        //                if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+        //                {
+        //                    layoutControlItem77.Text = "Số tiền CK:";
+        //                    layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+        //                    spinInvoiceCK.Enabled = true;
+        //                    //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
+        //                }
+        //                else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
+        //                {
+        //                    layoutControlItem77.Text = "Số tiền QT:";
+        //                    layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
+        //                    spinInvoiceCK.Enabled = true;
+        //                    //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
+        //                }
+        //                else
+        //                {
+        //                    dxValidationProvider1.RemoveControlError(spinInvoiceCK);
+        //                    layoutControlItem77.Text = "Số tiền CK:";
+        //                    layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+        //                    spinInvoiceCK.Enabled = false;
+        //                }
+        //                if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+        //                {
+        //                    cboBankInvoice.EditValue = payForm.BANK_ID;
+        //                    cboBankInvoice.Enabled = false;
+        //                }
+        //                else
+        //                {
+        //                    cboBankInvoice.EditValue = null;
+        //                    cboBankInvoice.Enabled = true;
+        //                }
+        //                if (payForm.IS_REQUIRED_BANK == 1)
+        //                {
+        //                    layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Maroon;
+        //                }
+        //                else
+        //                {
+        //                    layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Black;
+        //                }
+        //            }
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Error(ex);
+        //    }
+        //}
+
         private void cboPayFormInvoice_EditValueChanged(object sender, EventArgs e)
         {
             try
             {
+                // 1. SỬA cboPayformReceipt THÀNH cboPayFormInvoice
                 if (cboPayFormInvoice.EditValue != null)
                 {
                     var payFormL = payFormList.Where(o => o.ID == Convert.ToInt64(cboPayFormInvoice.EditValue));
-                    if (payFormL != null)
+                    if (payFormL != null && payFormL.Any())
                     {
                         var payForm = payFormL.FirstOrDefault(o => o.PAY_FORM_NAME == cboPayFormInvoice.Text);
-                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+
+                        spinInvoiceCK.Value = 0;
+                        spinInvoiceQT.Value = 0;
+                        // Mặc định ẩn ô Quẹt thẻ dịch vụ
+                        lciInvoiceQT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                        spinInvoiceQT.Enabled = false;
+
+                        // 2. SỬA layoutControlItem80 THÀNH layoutControlItem77 (Ô bọc spinInvoiceCK)
+                        if (payForm.ID == 9) // 9: Hình thức Tiền mặt/Chuyển khoản/Quẹt thẻ
                         {
                             layoutControlItem77.Text = "Số tiền CK:";
                             layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
                             spinInvoiceCK.Enabled = true;
-                            //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
+
+                            lciInvoiceQT.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always; // Hiện ô QT
+                            spinInvoiceQT.Enabled = true;
+                        }
+                        else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                        {
+                            layoutControlItem77.Text = "Số tiền CK:";
+                            layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
+                            spinInvoiceCK.Enabled = true;
                         }
                         else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT)
                         {
                             layoutControlItem77.Text = "Số tiền QT:";
                             layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền quẹt thẻ";
                             spinInvoiceCK.Enabled = true;
-                            //ValidSpinSoTien(spinInvoiceCK, totalInvoice);
                         }
                         else
                         {
-                            dxValidationProvider1.RemoveControlError(spinInvoiceCK);
                             layoutControlItem77.Text = "Số tiền CK:";
                             layoutControlItem77.OptionsToolTip.ToolTip = "Số tiền chuyển khoản";
                             spinInvoiceCK.Enabled = false;
+
+                            // 3. Đổi rule validation
+                            dxValidationProvider1.SetValidationRule(cboPayFormInvoice, null);
                         }
-                        if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE && payForm.BANK_ID != null)
+
+                        // 4. SỬA cboBankReceipt THÀNH cboBankInvoice
+                        if ((payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payForm.ID == 9) && payForm.BANK_ID != null)
                         {
                             cboBankInvoice.EditValue = payForm.BANK_ID;
                             cboBankInvoice.Enabled = false;
@@ -3414,17 +3670,42 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                             cboBankInvoice.EditValue = null;
                             cboBankInvoice.Enabled = true;
                         }
-                        if (payForm.IS_REQUIRED_BANK == 1)
-                        {
-                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Maroon;
-                        }
-                        else
-                        {
-                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Black;
-                        }
-                    }
 
+                        // 5. SỬA layoutControlItem81 THÀNH layoutControlItem82 (Ô bọc Ngân hàng dịch vụ)
+                        if (payForm.IS_REQUIRED_BANK == 1)
+                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Maroon;
+                        else
+                            layoutControlItem82.AppearanceItemCaption.ForeColor = Color.Black;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinSoTienQTReceipt_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CalcuCanThu(true);
+                //if (spinSoTienQTReceipt.Value < 0)
+                //    spinSoTienQTReceipt.Value = 0;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinInvoiceQT_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                CalcuCanThu(true);
+                //if (spinInvoiceQT.Value < 0)
+                //    spinInvoiceQT.Value = 0;
             }
             catch (Exception ex)
             {
@@ -3437,8 +3718,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 CalcuCanThu(true);
-                if (spinSoTienReceipt.Value < 0)
-                    spinSoTienReceipt.Value = 0;
+                //if (spinSoTienReceipt.Value < 0)
+                //    spinSoTienReceipt.Value = 0;
             }
             catch (Exception ex)
             {
@@ -3452,8 +3733,8 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             try
             {
                 CalcuCanThu(true);
-                if (spinInvoiceCK.Value < 0)
-                    spinInvoiceCK.Value = 0;
+                //if (spinInvoiceCK.Value < 0)
+                //    spinInvoiceCK.Value = 0;
             }
             catch (Exception ex)
             {
@@ -3556,13 +3837,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
-                if (ListSereServ != null && ListSereServ.Count > 0)
-                {
-                    tongTienBaoLanh = ListSereServ
-                        .Where(x => x.IS_GUARANTEED == 1)
-                        .Sum(x => x.VIR_TOTAL_PATIENT_PRICE ?? 0);
-                }
-                lblTongTienBaoLanh.Text = Inventec.Common.Number.Convert.NumberToString(tongTienBaoLanh, ConfigApplications.NumberSeperator);
+                CalcuCanThu(true);
             }
             catch (Exception ex)
             {
@@ -3575,6 +3850,17 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
         {
             try
             {
+                tongTienBaoLanh = listRecieptData
+                    .Where(x => records.Any(r => r.TDL_SERVICE_CODE == x.TDL_SERVICE_CODE && r.IsGuaranteed == true))
+                    .Sum(x => x.VIR_TOTAL_PATIENT_PRICE ?? 0);
+                lblTongTienBaoLanh.Text = string.Format(
+                    "{0}/{1}",
+                    Inventec.Common.Number.Convert.NumberToString(tongTienBaoLanh, ConfigApplications.NumberSeperator),
+                    guaranteeInfo != null
+                        ? Inventec.Common.Number.Convert.NumberToString(guaranteeInfo.GUARANTEE_BALANCE, ConfigApplications.NumberSeperator)
+                        : "0"
+                );
+
                 decimal canThu = 0;
                 decimal.TryParse(lblCanThu.Text, out canThu);
                 if (chkGuarantee.Checked)
@@ -3636,7 +3922,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
 
                     use.useRequest = new Library.MedicalExpenseGuarantee.ADO.UseRequest();
                     use.useRequest.RequestId = this.treatment.GUARANTEE_REQUEST_CODE;
-                    use.useRequest.Amount = this.lblTongTienBaoLanh.Text;
+                    use.useRequest.Amount = Inventec.Common.Number.Convert.NumberToString(tongTienBaoLanh, ConfigApplications.NumberSeperator);
                     use.useRequest.Remark = "Thanh toán viện phí cho bệnh nhân " + this.treatment.TDL_PATIENT_NAME;
                     use.useRequest.ContractNumber = this.treatment.GUARANTEE_CODE;
                     use.useRequest.PatientFullName = this.treatment.TDL_PATIENT_NAME;
@@ -3652,12 +3938,7 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
                     else
                     {
                         WaitingManager.Hide();
-                        XtraMessageBox.Show(
-                            "Đăng ký bảo lãnh thất lại",
-                            "Thông báo",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning
-                        );
+                        XtraMessageBox.Show(this, result.Data?.ResponseStatus?.ErrorDesc, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         chkGuarantee.Checked = false;
                         return false;
                     }
@@ -3681,6 +3962,163 @@ namespace HIS.Desktop.Plugins.TransactionBillTwoInOne
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void treeListSereServ_CellValueChanged(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
+        {
+            if (e.Column.FieldName == "IsGuaranteed")
+            {
+                CalcuCanThu(true);
+            }
+        }
+        private async Task LoadGuaranteeInfo()
+        {
+            try
+            {
+                if (this.treatment == null || string.IsNullOrEmpty(this.treatment.GUARANTEE_CODE) || string.IsNullOrEmpty(this.treatment.GUARANTEE_REQUEST_CODE))
+                {
+                    //HideGuaranteeLabel();
+                    return;
+                }
+
+                isLoadingGuaranteeInfo = true;
+
+                await Task.Run(() =>
+                {
+                    try
+                    {
+                        //ConfigApplicationWorker.Get<string>(AppConfigKeys.CONFIG_KEY_HIS_DESKTOP_ASSIGN_SERVICE_CLOSED_FORM_AFTER_PRINT);
+                        var guaranteeConnection = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.GUARANTEE_CONNECTION_INFO");
+
+                        if (string.IsNullOrEmpty(guaranteeConnection))
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Chưa cấu hình thông tin kết nối hệ thống bảo lãnh");
+                            this.guaranteeInfo = null;
+                            //return;
+                        }
+                        string[] parts = guaranteeConnection.Split('|');
+                        if (parts.Length < 3)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Cấu hình kết nối bảo lãnh không đúng định dạng");
+                            this.guaranteeInfo = null;
+                            return;
+                        }
+
+                        //  Địa chỉ
+                        string[] fullGuaranteeAddress = parts[0].Trim().Split(';');
+                        string guaranteeAddressHasUri = fullGuaranteeAddress.Length > 0 ? fullGuaranteeAddress[0] : "";
+                        string guaranteeAddressAcsUri = fullGuaranteeAddress.Length > 1 ? fullGuaranteeAddress[1] : "";
+
+                        // Mã ứng dụng:Tài khoản:Mật khẩu
+                        string[] credentials = parts[1].Split(':');
+                        string guaranteeAppCode = credentials.Length > 0 ? credentials[0].Trim() : "";
+                        string guaranteeUsername = credentials.Length > 1 ? credentials[1].Trim() : "";
+                        string guaranteePassword = credentials.Length > 2 ? credentials[2].Trim() : "";
+
+                        // Hạn mức đăng ký mặc định
+                        string guaranteeDefaultLimit = parts[2].Trim();
+
+                        string branchHeinMediOrgCode = HIS.Desktop.LocalStorage.BackendData.BranchDataWorker.Branch.HEIN_MEDI_ORG_CODE;
+
+                        MedicalExpenseGuaranteeProcessor medicalExpenseGuarantee = new MedicalExpenseGuaranteeProcessor();
+                        DataInput dataInput = new DataInput();
+                        dataInput.hasUri = guaranteeAddressHasUri;
+                        dataInput.acsUri = guaranteeAddressAcsUri;
+                        dataInput.applicationCode = guaranteeAppCode;
+                        dataInput.limet = guaranteeDefaultLimit;
+                        dataInput.cskcbbd = branchHeinMediOrgCode;
+                        dataInput.username = guaranteeUsername;
+                        dataInput.password = guaranteePassword;
+                        dataInput.registerUseRequest = new RegisterUseRequest
+                        {
+                            PatientFullName = this.treatment.TDL_PATIENT_NAME.Trim(),
+                            PatientDateOfBirth = this.treatment.TDL_PATIENT_DOB != 0 ? this.treatment.TDL_PATIENT_DOB.ToString() : "",
+                            PatientCccd = this.treatment.TDL_PATIENT_CCCD_NUMBER ?? this.treatment.TDL_PATIENT_CMND_NUMBER,
+                            RequestAmount = guaranteeDefaultLimit,
+                            ApplicationCode = guaranteeAppCode,
+                            Remark = "Tra cứu hạn mức bảo lãnh",
+                            Signature = ""
+                        };
+
+                        dataInput.availableBalanceInfoRequest = new AvailableBalanceInfoRequest
+                        {
+                            RequestId = this.treatment.GUARANTEE_REQUEST_CODE,
+                            PatientFullName = this.treatment.TDL_PATIENT_NAME.Trim(),
+                            PatientDateOfBirth = this.treatment.TDL_PATIENT_DOB.ToString(),
+                            PatientCccd = this.treatment.TDL_PATIENT_CCCD_NUMBER ?? this.treatment.TDL_PATIENT_CMND_NUMBER,
+                            ApplicationCode = guaranteeAppCode,
+                            Remark = "Tra cứu hạn mức bảo lãnh"
+                        };
+                        AvailableBalanceInfoResponse balanceInfoResponse = new AvailableBalanceInfoResponse();
+                        balanceInfoResponse = medicalExpenseGuarantee.GuaranteeAvailableBalanceInfoResponse(dataInput);
+                        if (balanceInfoResponse != null && balanceInfoResponse.Success == true)
+                        {
+                            this.guaranteeInfo = new GuaranteeInfoADO
+                            {
+                                GUARANTEE_CODE = this.treatment.GUARANTEE_CODE,
+                                GUARANTEE_REGISTER = decimal.TryParse(balanceInfoResponse.Data.RegisteredAmount, out decimal limit) ? limit : 0,
+                                GUARANTEE_USED = decimal.TryParse(balanceInfoResponse.Data.UsedAmount, out decimal used) ? used : 0,
+                                GUARANTEE_BALANCE = decimal.TryParse(balanceInfoResponse.Data.AvailableBalance, out decimal remain) ? remain : 0
+                            };
+                            Inventec.Common.Logging.LogSystem.Info("guaranteeInfo: " + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => this.guaranteeInfo), this.guaranteeInfo));
+                        }
+                        else
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Tra cứu bảo lãnh thất bại");
+                            this.guaranteeInfo = null;
+                        }
+                        if (this.InvokeRequired)
+                        {
+                            this.Invoke(new Action(() => FillTongTienBaoLanh()));
+                        }
+                        else
+                        {
+                            FillTongTienBaoLanh();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                        this.guaranteeInfo = null;
+                    }
+                });
+
+                //UpdateGuaranteeLabel();
+                //UpdateTotalGuaranteePrice();
+                isLoadingGuaranteeInfo = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                isLoadingGuaranteeInfo = false;
+            }
+        }
+
+        private void treeListSereServ_CellValueChanging(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column.FieldName == "IsGuaranteed")
+                {
+                    var node = e.Node;
+                    if (node != null)
+                    {
+                        if (node.CheckState != CheckState.Checked && Convert.ToBoolean(e.Value) == true)
+                        {
+                            e.Value = false;
+                            treeListSereServ.RefreshDataSource();
+                            return;
+                        }
+                        node.SetValue(e.Column, e.Value);
+                    }
+
+                    CalcuCanThu(true);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }

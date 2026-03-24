@@ -15,44 +15,48 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.Office.Utils;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraTreeList.Data;
+using EMR.Desktop.Plugins.EmrFlow.Resources;
+using EMR.Desktop.Plugins.EmrFlow.Validate;
+using EMR.EFMODEL.DataModels;
+using EMR.Filter;
+using EMR.URI;
+using HIS.Desktop.ApiConsumer;
+using HIS.Desktop.Controls.Session;
+using HIS.Desktop.LibraryMessage;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.ConfigApplication;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Utility;
+using Inventec.Common.Adapter;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using Inventec.Desktop.Common.Controls.ValidationRule;
+using Inventec.Desktop.Common.LanguageManager;
+using Inventec.Desktop.Common.Message;
+using Inventec.Desktop.Common.Modules;
+using Inventec.Desktop.Core.Specifications;
+using Inventec.UC.Paging;
+using MOS.EFMODEL.DataModels;
+using MOS.Filter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Inventec.Desktop.Common.Modules;
-using Inventec.UC.Paging;
-using Inventec.Common.Logging;
-using HIS.Desktop.LocalStorage.LocalData;
-using EMR.Desktop.Plugins.EmrFlow.Validate;
-using HIS.Desktop.LibraryMessage;
-using DevExpress.XtraEditors.DXErrorProvider;
-using EMR.Filter;
-using EMR.EFMODEL.DataModels;
-using Inventec.Core;
-using Inventec.Common.Adapter;
-using HIS.Desktop.ApiConsumer;
-using HIS.Desktop.Controls.Session;
-using Inventec.Desktop.Common.Message;
-using HIS.Desktop.LocalStorage.ConfigApplication;
-using HIS.Desktop.LocalStorage.BackendData;
-using DevExpress.XtraEditors;
-using System.Collections;
-using DevExpress.XtraGrid.Views.Base;
-using Inventec.Common.Controls.EditorLoader;
-using MOS.EFMODEL.DataModels;
-using MOS.Filter;
-using HIS.Desktop.Utility;
-using EMR.Desktop.Plugins.EmrFlow.Resources;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
-using Inventec.Desktop.Common.Controls.ValidationRule;
-using DevExpress.XtraEditors.Controls;
-using EMR.URI;
+using EMR.SDO;
 
 
 namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
@@ -208,6 +212,38 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
         {
             LoadDataTo_cboBusinessID();
             LoadDataTo_cboRoomCode();
+            LoadDataTo_cboTemp();
+        }
+
+        private void LoadDataTo_cboTemp()
+        {
+            try
+            {
+                CommonParam paramcommon = new CommonParam();
+                ApiResultObject<List<V_EMR_FLOW>> apiResult = null;
+                EmrFlowViewFilter filter = new EmrFlowViewFilter();
+                filter.IS_TEMP = 1;
+                apiResult = new BackendAdapter(paramcommon).GetRO<List<V_EMR_FLOW>>(EMR.URI.EmrFlow.GET_VIEW, ApiConsumers.EmrConsumer, filter, paramcommon);
+                if (apiResult != null)
+                {
+                    var data = (List<V_EMR_FLOW>)apiResult.Data.Where(o => o.IS_TEMP.HasValue && o.IS_TEMP.Value == 1).ToList();
+                    if (data != null && data.Count > 0)
+                    {
+                        List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                        columnInfos.Add(new ColumnInfo("FLOW_CODE", "Mã", 100, 1));
+                        columnInfos.Add(new ColumnInfo("FLOW_NAME", "Tên ", 250, 2));
+                        ControlEditorADO controlEditort = new ControlEditorADO("FLOW_NAME", "ID", columnInfos, true, 350);
+                        ControlEditorLoader.Load(cboTemp, data, controlEditort);
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
+
         }
 
         private void LoadDataTo_cboBusinessID()
@@ -231,17 +267,18 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             }
         }
 
+        List<V_HIS_ROOM> roomList = new List<V_HIS_ROOM>();
         private void LoadDataTo_cboRoomCode()
         {
             try
             {
 
-                var data = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && (EmrBusinessData != null ? o.DEPARTMENT_CODE == EmrBusinessData.DEPARTMENT_CODE: true)).ToList();
+                roomList = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && (EmrBusinessData != null ? o.DEPARTMENT_CODE == EmrBusinessData.DEPARTMENT_CODE: true)).ToList();
                 List<ColumnInfo> columInfor = new List<ColumnInfo>();
                 columInfor.Add(new ColumnInfo("ROOM_CODE", "Mã phòng ký", 150, 1));
                 columInfor.Add(new ColumnInfo("ROOM_NAME", "Tên phòng ký", 200, 1));
                 ControlEditorADO controlEditort = new ControlEditorADO("ROOM_NAME", "ID", columInfor, true, 350);
-                ControlEditorLoader.Load(cboRoomCode, data, controlEditort);
+                ControlEditorLoader.Load(cboRoomCode, roomList, controlEditort);
             }
             catch (Exception ex)
             {
@@ -262,38 +299,50 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                     this.Text = this.module.text;
                 }
                 ResourceLanguageManager.LanguageResource = new ResourceManager("EMR.Desktop.Plugins.EmrFlow.Resources.Lang", typeof(EMR.Desktop.Plugins.EmrFlow.EmrFlow.frmEmrFlow).Assembly);
-                this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.btnAdd.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.btnEdit.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.btnSearch.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.btnRest.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.btnRest.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lcFlowCode.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.lcFlowCode.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lcFlowName.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.lcFlowName.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lcNumOder.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.lcNumOder.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.lcRoom.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.lcRoom.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.STT.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.STT.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.STT.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.STT.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColFlowCode.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColFlowCode.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColFlowCode.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColFlowCode.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColFlowName.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColFlowName.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColFlowName.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColFlowName.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColBusinessId.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColBusinessId.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColBusinessId.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColBusinessId.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColNumOder.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColNumOder.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColNumOder.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColNumOder.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColRoomCode.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColRoomCode.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColRoomCode.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColRoomCode.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColRoomName.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColRoomName.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColRoomName.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColRoomName.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColRoomTypeID.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColRoomTypeID.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColRoomTypeID.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColRoomTypeID.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCreateTime.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColCreateTime.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCreateTime.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColCreateTime.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCreator.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColCreator.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColCreator.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColCreator.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColModifyTime.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColModifyTime.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColModifyTime.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColModifyTime.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColModifier.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColModifier.Caption", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.grdColModifier.ToolTip = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColModifier.ToolTip", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                ////Gan gia tri cho cac control editor co Text/Caption/ToolTip/NullText/NullValuePrompt/FindNullPrompt
+                this.bar1.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.bar1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnEdit.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.bbtnEdit.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnAdd.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.bbtnAdd.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnRest.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.bbtnRest.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnSearch.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.bbtnSearch.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.bbtnRestFocus.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.bbtnRestFocus.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl1.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.layoutControl1.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl2.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.layoutControl2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lcEditorInfo.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.lcEditorInfo.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboTemp.Properties.NullText = Inventec.Common.Resource.Get.Value("frmEmrFlow.cboTemp.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.chkIsTemp.Properties.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.chkIsTemp.Properties.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnRest.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.btnRest.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnAdd.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.btnAdd.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnEdit.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.btnEdit.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboBusinessID.Properties.NullText = Inventec.Common.Resource.Get.Value("frmEmrFlow.cboBusinessID.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.cboRoomCode.Properties.NullText = Inventec.Common.Resource.Get.Value("frmEmrFlow.cboRoomCode.Properties.NullText", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem11.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.layoutControlItem11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lcNumOder.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.lcNumOder.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lcRoom.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.lcRoom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lcFlowCode.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.lcFlowCode.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lcFlowName.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.lcFlowName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem9.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.layoutControlItem9.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem14.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.layoutControlItem14.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl4.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.layoutControl4.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.STT.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.STT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColDelete.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColDelete.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColLock.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColLock.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColFlowCode.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColFlowCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColFlowName.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColFlowName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColBusinessId.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColBusinessId.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColNumOder.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColNumOder.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColRoomCode.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColRoomCode.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColRoomName.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColRoomName.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColRoomTypeID.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColRoomTypeID.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColIsActive.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColIsActive.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColCreateTime.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColCreateTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColCreator.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColCreator.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColModifyTime.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColModifyTime.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.grdColModifier.Caption = Inventec.Common.Resource.Get.Value("frmEmrFlow.grdColModifier.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnSearch.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.btnSearch.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.txtSearch.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("frmEmrFlow.txtSearch.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.Text = Inventec.Common.Resource.Get.Value("frmEmrFlow.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
 
             }
             catch (Exception ex)
@@ -314,6 +363,8 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                 cboBusinessID.EditValue = null;
                 txtRoomCode.Text = "";
                 cboRoomCode.EditValue = null;
+                cboTemp.EditValue = null;
+                chkIsTemp.Checked = false;
             }
             catch (Exception ex)
             {
@@ -329,7 +380,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                 btnAdd.Enabled = (action == GlobalVariables.ActionAdd);
                 btnEdit.Enabled = (action == GlobalVariables.ActionEdit);
                 txtFlowCode.ReadOnly = !(action == GlobalVariables.ActionAdd);
-                spNumOder.ReadOnly = !(action == GlobalVariables.ActionAdd);
+                //spNumOder.ReadOnly = !(action == GlobalVariables.ActionAdd);
             }
             catch (Exception ex)
             {
@@ -537,16 +588,24 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
 
                     if (!dxValidationProvider1.Validate())
                         return;
+                    if (!CheckNum_Oder())
+                    {
+                        MessageBox.Show("Xử lý thất bại. Số thứ tự ký đã tồn tại", "Thông báo");
+                        return;
+                    }
                     EMR_FLOW updateDTO = new EMR_FLOW();
                     UpdateDTOfromDataToForm(ref updateDTO);
+                    EmrFlowTempSDO emrFlowTempSDO = new EmrFlowTempSDO();
+                    if (cboTemp.EditValue != null)
+                    {
+                        long flowIdTemp = Inventec.Common.TypeConvert.Parse.ToInt64((cboTemp.EditValue).ToString());
+                        emrFlowTempSDO.flowIdTemp = flowIdTemp;
+                    }
+                        
                     if (this.ActionType == GlobalVariables.ActionAdd)
                     {
-                        if (!CheckNum_Oder())
-                        {
-                            MessageBox.Show("Xử lý thất bại. Số thứ tự ký đã tồn tại", "Thông báo");
-                            return;
-                        }
-                        var resultData = new BackendAdapter(param).Post<EMR_FLOW>(EMR.URI.EmrFlow.CREATE, ApiConsumers.EmrConsumer, updateDTO, param);
+                        emrFlowTempSDO.EmrFlow = updateDTO;
+                        var resultData = new BackendAdapter(param).Post<EMR_FLOW>(EMR.URI.EmrFlow.CREATE_TEMP, ApiConsumers.EmrConsumer, emrFlowTempSDO, param);
                         if (resultData != null)
                         {
                             success = true;
@@ -560,7 +619,8 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                         if (this.EmrFlowID > 0)
                         {
                             updateDTO.ID = EmrFlowID;
-                            var ResultData = new BackendAdapter(param).Post<EMR_FLOW>(EMR.URI.EmrFlow.UPDATE, ApiConsumers.EmrConsumer, updateDTO, param);
+                            emrFlowTempSDO.EmrFlow = updateDTO;
+                            var ResultData = new BackendAdapter(param).Post<EMR_FLOW>(EMR.URI.EmrFlow.UPDATE_TEMP, ApiConsumers.EmrConsumer, emrFlowTempSDO, param);
                             if (ResultData != null)
                             {
                                 success = true;
@@ -602,15 +662,16 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                         if (lci != null && lci.Control != null && lci.Control is BaseEdit)
                         {
                             DevExpress.XtraEditors.BaseEdit fomatFrm = lci.Control as DevExpress.XtraEditors.BaseEdit;
-                            if (fomatFrm != cboBusinessID)
+                            if (fomatFrm != cboBusinessID && fomatFrm != chkIsTemp)
                             {
                                 fomatFrm.ResetText();
                                 fomatFrm.EditValue = null;
                             }
-                            txtFlowCode.Focus();
-                            txtFlowCode.SelectAll();
                         }
                     }
+                    cboTemp.Focus();
+                    cboTemp.SelectAll();
+                    chkIsTemp.Checked = false;
                 }
                 catch (Exception ex)
                 {
@@ -650,6 +711,11 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                     data.ROOM_CODE = dataRoom.ROOM_CODE;
                     data.ROOM_NAME = dataRoom.ROOM_NAME;
                     data.ROOM_TYPE_CODE = dataRoomTypevar.ROOM_TYPE_CODE;
+                }
+
+                if(chkIsTemp.Checked)
+                {
+                    data.IS_TEMP = 1;
                 }
 
             }
@@ -692,8 +758,10 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                     spNumOder.EditValue = Data.NUM_ORDER;
                     txtFlowCode.Text = Data.FLOW_CODE;
                     txtFlowName.Text = Data.FLOW_NAME;
-                    txtRoomCode.Text = Data.ROOM_CODE;
+                    //txtRoomCode.Text = Data.ROOM_CODE;
                     cboBusinessID.EditValue = Data.BUSINESS_ID;
+                    chkIsTemp.Checked = Data.IS_TEMP == 1 ? true : false;
+                    cboTemp.EditValue = null;
                     if (Data.ROOM_CODE != null)
                     {
                         LoadtxtRoomCode1(Data);
@@ -775,8 +843,8 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
         {
             try
             {
-                txtFlowCode.Focus();
-                txtFlowCode.SelectAll();
+                cboTemp.Focus();
+                cboTemp.SelectAll();
             }
             catch (Exception ex)
             {
@@ -821,7 +889,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                 Inventec.Desktop.Controls.ControlWorker.ValidationProviderRemoveControlError(dxValidationProvider1, dxErrorProvider1);
                 RestFormData();
                 cboBusinessID.EditValue = EmrBusinessData.ID;
-                txtFlowCode.Focus();
+                cboTemp.Focus();
             }
             catch (Exception ex)
             {
@@ -1162,14 +1230,17 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
         {
             try
             {
-                List<V_HIS_ROOM> listResult = new List<V_HIS_ROOM>();
-                listResult = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.ROOM_CODE != null
+                var listResult = roomList.Where(o => o.ROOM_CODE != null
                         && o.ROOM_CODE == Data.ROOM_CODE
                         && o.ROOM_TYPE_CODE == Data.ROOM_TYPE_CODE) // Lọc theo khoa nếu có
-                .ToList();
+                .FirstOrDefault();
+                if(listResult != null)
+                {
+                    cboRoomCode.EditValue = listResult.ID;
+                    txtRoomCode.Text = listResult.ROOM_CODE;
+                }
 
-                cboRoomCode.EditValue = listResult[0].ID;
-                txtRoomCode.Text = listResult[0].ROOM_CODE;
+                    
             }
             catch (Exception ex)
             {
@@ -1281,7 +1352,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                 {
                     List<EMR_FLOW> FlowBusinessID = new List<EMR_FLOW>();
                     Int64 NumOrder = Inventec.Common.TypeConvert.Parse.ToInt64(spNumOder.EditValue.ToString());
-                    FlowBusinessID = BackendDataWorker.Get<EMR_FLOW>().Where(o => o.BUSINESS_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboBusinessID.EditValue.ToString() ?? "")).ToList();
+                    FlowBusinessID = BackendDataWorker.Get<EMR_FLOW>().Where(o => o.ID != this.EmrFlowID && o.BUSINESS_ID == Inventec.Common.TypeConvert.Parse.ToInt64(cboBusinessID.EditValue.ToString() ?? "")).ToList();
                     for (int i = 0; i < FlowBusinessID.Count(); i++)
                     {
                         if (FlowBusinessID[i].NUM_ORDER == NumOrder)
@@ -1313,7 +1384,7 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                         {
                             txtRoomCode.Text = Data.ROOM_CODE;
                             cboRoomCode.Properties.Buttons[1].Visible = true;
-                            btnAdd.Focus();
+                            chkIsTemp.Focus();
                         }
                         else
                         {
@@ -1404,20 +1475,20 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
                     if (!String.IsNullOrEmpty(cboRoomCode.Text))
                     {
                         string key = cboRoomCode.Text.ToLower();
-                        var listData = BackendDataWorker.Get<V_EMR_FLOW>().Where(o => o.ROOM_CODE.ToLower().Contains(key) || o.ROOM_NAME.ToLower().Contains(key)).ToList();
+                        var listData = BackendDataWorker.Get<V_EMR_FLOW>().Where(o => (o.ROOM_CODE ?? "").ToLower().Contains(key) || (o.ROOM_NAME ?? "").ToLower().Contains(key)).ToList();
                         if (listData != null && listData.Count == 1)
                         {
                             valid = true;
                             cboRoomCode.EditValue = listData.First().ID;
                             txtRoomCode.Text = listData.First().ROOM_CODE;
-                            btnAdd.Focus();
+                            chkIsTemp.Focus();
                         }
                     }
                     if (!valid)
                     {
                         cboRoomCode.Focus();
                         cboRoomCode.ShowPopup();
-                    }
+                    }                        
                 }
             }
             catch (Exception ex)
@@ -1440,6 +1511,93 @@ namespace EMR.Desktop.Plugins.EmrFlow.EmrFlow
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void chkIsTemp_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (this.ActionType == GlobalVariables.ActionEdit && btnEdit.Enabled)
+                    {
+                        btnEdit.Focus();
+                    }
+                    else if (this.ActionType == GlobalVariables.ActionAdd && btnAdd.Enabled)
+                    {
+                        btnAdd.Focus();
+                    }
+                    else
+                    {
+                        btnRest.Focus();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+
+        private void cboTemp_Closed(object sender, ClosedEventArgs e)
+        {
+            try
+            {
+                if (cboTemp.EditValue != null)
+                {
+                    long id = Convert.ToInt64(cboTemp.EditValue);
+                    var data = BackendDataWorker.Get<V_EMR_FLOW>().SingleOrDefault(o => o.ID == id && o.IS_TEMP == 1);
+                    if (data != null)
+                    {
+                        txtFlowCode.Text = data.FLOW_CODE;
+                        txtFlowName.Text = data.FLOW_NAME;
+                        if (data.ROOM_CODE != null)
+                            LoadtxtRoomCode1(data);
+                        else
+                        {
+                            cboRoomCode.EditValue = null;
+                            txtRoomCode.Text = "";
+                        }
+                    }
+                    else
+                    {
+                        cboTemp.EditValue = null;
+                        txtFlowCode.Text = "";
+                        txtFlowName.Text = "";
+                        txtRoomCode.Text = "";
+                        cboRoomCode.EditValue = null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+        private void cboTemp_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (!String.IsNullOrEmpty(cboTemp.Text))
+                    {
+                        txtFlowCode.Focus();
+                    }
+                    else
+                    {
+                        cboTemp.Focus();
+                        cboTemp.ShowPopup();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
     }

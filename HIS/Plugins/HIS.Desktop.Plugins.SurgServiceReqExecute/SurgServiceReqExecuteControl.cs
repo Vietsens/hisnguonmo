@@ -486,8 +486,23 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
 
                 // Call API
                 CommonParam param = new CommonParam();
+               
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "HisSereServExt/CheckConflict - Request: "
+                        + Inventec.Common.Logging.LogUtil.TraceData("extList", extList)
+                        + Inventec.Common.Logging.LogUtil.TraceData("RoomId", this.Module != null ? this.Module.RoomId : 0)
+                        + Inventec.Common.Logging.LogUtil.TraceData("ServiceReqId", this.serviceReq != null ? this.serviceReq.ID : 0)
+                    );
+               
                 var conflictResult = new BackendAdapter(param)
                     .Post<HisSereServExtConflictResultSDO>("api/HisSereServExt/CheckConflict", ApiConsumers.MosConsumer, extList, param);
+
+               
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "HisSereServExt/CheckConflict - Response: "
+                        + Inventec.Common.Logging.LogUtil.TraceData("conflictResult", conflictResult)
+                    );
+               
 
                 if (conflictResult == null)
                     return true; // API error, allow save

@@ -968,7 +968,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                             txtWeightTab3.Value = (Decimal)data.KSK_OCCUPATIONAL.HIS_DHST.WEIGHT;
                         }
                         else
-                        {
+                        { 
                             txtWeightTab3.ResetText();
                             txtWeightTab3.EditValue = null;
                         }

@@ -264,8 +264,6 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 this.layoutControlItem39.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem39.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem40.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem40.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem40.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem40.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem47.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem47.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
-                this.layoutControlItem47.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem47.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem41.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem41.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem42.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem42.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem44.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem44.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -277,6 +275,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 this.layoutControlItem33.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem33.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem33.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem33.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem31.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem31.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem47.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem47.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem47.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem47.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnExport.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.btnExport.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControl3.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtImpMestSubCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.txtImpMestSubCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.txtExpMestCode.Properties.NullValuePrompt = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.txtExpMestCode.Properties.NullValuePrompt", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -313,6 +314,9 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 this.layoutControlItem26.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem26.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem26.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem26.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem27.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem27.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem32.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem32.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem32.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem32.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.layoutControlItem48.Text = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.layoutControlItem48.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.STT.Caption = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.STT.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn1.Caption = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.gridColumn1.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.gridColumn6.Caption = Inventec.Common.Resource.Get.Value("UCHisImportMestMedicine.gridColumn6.Caption", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -371,6 +375,8 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                 txtImpMestSubCode.Text = "";
                 dtDocumentDateFrom.EditValue = null;
                 dtDocumentDateTo.EditValue = null;
+                dtDocumentDateFrom2.EditValue = null;
+                dtDocumentDateTo2.EditValue = null;
                 checkEditHasDocumentNumber.Checked = false;
                 checkEditNoDocumentNumber.Checked = false;
                 dtImpTimeFrom.EditValue = null;
@@ -642,6 +648,12 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     }
                     else
                     {
+                        if (dtDocumentDateFrom2.EditValue != null && dtDocumentDateFrom2.DateTime != DateTime.MinValue)
+                            filter.DOCUMENT_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                Convert.ToDateTime(dtDocumentDateFrom2.EditValue).ToString("yyyyMMddHHmm") + "00");
+                        if (dtDocumentDateTo2.EditValue != null && dtDocumentDateTo2.DateTime != DateTime.MinValue)
+                            filter.DOCUMENT_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                Convert.ToDateTime(dtDocumentDateTo2.EditValue).ToString("yyyyMMddHHmm") + "59");
                         if (dtCreateTimeFrom.EditValue != null && dtCreateTimeFrom.DateTime != DateTime.MinValue)
                             filter.CREATE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
                                 Convert.ToDateTime(dtCreateTimeFrom.EditValue).ToString("yyyyMMddHHmm") + "00");
@@ -694,7 +706,12 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
                     {
                         filter.REQ_DEPARTMENT_ID = this.room.DEPARTMENT_ID;
                     }
-
+                    if (dtDocumentDateFrom2.EditValue != null && dtDocumentDateFrom2.DateTime != DateTime.MinValue)
+                        filter.DOCUMENT_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtDocumentDateFrom2.EditValue).ToString("yyyyMMddHHmm") + "00");
+                    if (dtDocumentDateTo2.EditValue != null && dtDocumentDateTo2.DateTime != DateTime.MinValue)
+                        filter.DOCUMENT_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtDocumentDateTo2.EditValue).ToString("yyyyMMddHHmm") + "59");
                     if (dtCreateTimeFrom.EditValue != null && dtCreateTimeFrom.DateTime != DateTime.MinValue)
                         filter.CREATE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
                             Convert.ToDateTime(dtCreateTimeFrom.EditValue).ToString("yyyyMMddHHmm") + "00");
@@ -2537,6 +2554,50 @@ namespace HIS.Desktop.Plugins.HisImportMestMedicine
             }
             return result;
         }
+
+        private void dtDocumentDateFrom2_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    if (dtDocumentDateFrom2.EditValue != null)
+                    {
+                        dtDocumentDateTo2.Focus();
+                        dtDocumentDateTo2.ShowPopup();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dtDocumentDateTo2_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dtDocumentDateTo2.EditValue == null)
+                    return;
+                var currentDate = Convert.ToDateTime(dtCreateTimeTo.EditValue);
+                if (dtDocumentDateTo2.OldEditValue == null)
+                {
+                    dtDocumentDateTo2.DateTime = currentDate.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+                    return;
+                }
+                var oldDate = Convert.ToDateTime(dtDocumentDateTo2.OldEditValue);
+                if (currentDate.Date != oldDate.Date)
+                {
+                    dtDocumentDateTo2.DateTime = currentDate.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void PrintMps000505(ref bool result, string printTypeCode, string fileName)
         {
             try

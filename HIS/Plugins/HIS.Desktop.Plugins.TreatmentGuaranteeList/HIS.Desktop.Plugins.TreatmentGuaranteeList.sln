@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.TreatmentGuaranteeList", "HIS.Desktop.Plugins.TreatmentGuaranteeList\HIS.Desktop.Plugins.TreatmentGuaranteeList.csproj", "{F481C4C7-AA8A-4D7C-BDED-8765E046F493}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F481C4C7-AA8A-4D7C-BDED-8765E046F493}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F481C4C7-AA8A-4D7C-BDED-8765E046F493}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F481C4C7-AA8A-4D7C-BDED-8765E046F493}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F481C4C7-AA8A-4D7C-BDED-8765E046F493}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

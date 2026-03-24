@@ -530,6 +530,10 @@ namespace MPS.Processor.Mps000044
                 AddObjectKeyIntoListkey<HIS_SERVICE_REQ>(rdo.vHisPrescription5, false);
                 AddObjectKeyIntoListkey<V_HIS_PATIENT_TYPE_ALTER>(rdo.vHisPatientTypeAlter, false);
                 AddObjectKeyIntoListkey<HIS_TREATMENT>(rdo.hisTreatment, false);
+                if (rdo.HisSereServViex != null)
+                { 
+                    AddObjectKeyIntoListkey(rdo.HisSereServViex, false);
+                }
                 if (rdo.HisExpMest != null)
                 {
                     AddObjectKeyIntoListkey(rdo.HisExpMest, false);

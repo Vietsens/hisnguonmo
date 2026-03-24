@@ -40,5 +40,6 @@ namespace MPS.Processor.Mps000037
 
         public long SERVICE_PARENT_ID { get; set; }
         public long? NUM_ORDER { get; set; }
+        public long? NUM_ORDER_SERVICE_TYPE { get; set; }
     }
 }

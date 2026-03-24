@@ -271,6 +271,22 @@ namespace HIS.UC.Medicine
                         {
                             e.RepositoryItem = repositoryItemSpinEdit__Amount_Bhyt;
                         }
+                        if (e.Column.FieldName == "DM_NSX_CDD")
+                        {
+                            e.RepositoryItem = repositoryItemSpinEdit_Dm_Nsx_Cdd;
+                        }
+                        if (e.Column.FieldName == "DM_THUCTE_CDD")
+                        {
+                            e.RepositoryItem = repositoryItemSpinEdit_Dm_Thucte_Cdd;
+                        }
+                        if (e.Column.FieldName == "LIEU_BQ_PX")
+                        {
+                            e.RepositoryItem = repositoryItemSpinEdit_Lieu_Bq_Px;
+                        }
+                        if (e.Column.FieldName == "TL_THUCTE_BQ_PX")
+                        {
+                            e.RepositoryItem = repositoryItemSpinEdit_Tl_Thucte_Bq_Px;
+                        }
                     }
                 }
             }

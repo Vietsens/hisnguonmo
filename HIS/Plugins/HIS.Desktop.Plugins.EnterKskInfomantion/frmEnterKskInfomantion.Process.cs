@@ -42,7 +42,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 bool success = false;
                 if (!btnSave.Enabled)
                     return;
-
+                  
                 positionHandle = -1;
                 if (!dxValidationProviderEditorInfo.Validate())
                     return;
@@ -51,7 +51,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 MOS.SDO.HisServiceReqKskExecuteSDO updateDTO = new MOS.SDO.HisServiceReqKskExecuteSDO();
 
                 if (this.currentData != null && this.currentData.ID > 0)
-                {
+                { 
                     LoadCurrent(this.currentData, ref updateDTO);
                 }
                 UpdateDTOFromDataForm(ref updateDTO);
@@ -235,8 +235,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 kskGeneral.ExamNutrionRank = cboExamNutrionRank.EditValue != null ? (long?)cboExamNutrionRank.EditValue : null;
                 kskGeneral.HeinMediOrgCode = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == WorkPlace.GetBranchId()).HEIN_MEDI_ORG_CODE;
                 //Tab Benh nghe nghiep
-                MOS.SDO.HisKskOccupationalSDO kskOccupational = new MOS.SDO.HisKskOccupationalSDO();
-                HIS_DHST dhstOccupational = new HIS_DHST();
+                // MOS.SDO.HisKskOccupationalSDO kskOccupational = new MOS.SDO.HisKskOccupationalSDO();
+                var kskOccupational = currentDTO.KskOccupational ?? new MOS.SDO.HisKskOccupationalSDO();
+                currentDTO.KskOccupational = kskOccupational;
+                //HIS_DHST dhstOccupational = new HIS_DHST();
+                var dhstOccupational = kskOccupational.HisDhst ?? new HIS_DHST();
+                kskOccupational.HisDhst = dhstOccupational;
                 if (txtHeightTab3.EditValue != null)
                     dhstOccupational.HEIGHT = txtHeightTab3.Value;
                 if (txtWeightTab3.EditValue != null)
@@ -410,8 +414,33 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                 kskGeneral.NoteContraceptives = txtContraceptionNote.Text.Trim();
 
                 // 13. Kham the luc
-                kskGeneral.HisDhst.HEIGHT = spnHeightCm.EditValue != null ? (decimal?)spnHeightCm.Value : null;
-                kskGeneral.HisDhst.WEIGHT = spnWeightKg.EditValue != null ? (decimal?)spnWeightKg.Value : null;
+                if (kskGeneral.HisDhst == null)
+                    kskGeneral.HisDhst = new HIS_DHST();
+
+                if (spnHeightCm.EditValue != null && spnHeightCm.Value > 0)
+                    kskGeneral.HisDhst.HEIGHT = spnHeightCm.Value;
+                else
+                    kskGeneral.HisDhst.HEIGHT = dhstGeneral.HEIGHT;
+
+                if (spnWeightKg.EditValue != null && spnWeightKg.Value > 0)
+                    kskGeneral.HisDhst.WEIGHT = spnWeightKg.Value;
+                else
+                    kskGeneral.HisDhst.WEIGHT = dhstGeneral.WEIGHT;
+
+                if (spnPulse.EditValue != null && spnPulse.Value > 0)
+                    kskGeneral.HisDhst.PULSE = (long?)spnPulse.Value;
+                else
+                    kskGeneral.HisDhst.PULSE = dhstGeneral.PULSE;
+
+                if (spnBloodPressureMax.EditValue != null && spnBloodPressureMax.Value > 0)
+                    kskGeneral.HisDhst.BLOOD_PRESSURE_MAX = (long?)spnBloodPressureMax.Value;
+                else
+                    kskGeneral.HisDhst.BLOOD_PRESSURE_MAX = dhstGeneral.BLOOD_PRESSURE_MAX;
+
+                if (spnBloodPressureMin.EditValue != null && spnBloodPressureMin.Value > 0)
+                    kskGeneral.HisDhst.BLOOD_PRESSURE_MIN = (long?)spnBloodPressureMin.Value;
+                else
+                    kskGeneral.HisDhst.BLOOD_PRESSURE_MIN = dhstGeneral.BLOOD_PRESSURE_MIN;
                 try
                 {
                     Decimal n;
@@ -422,7 +451,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     }
                     else
                     {
-                        kskGeneral.HisDhst.VIR_BMI = null;
+                        kskGeneral.HisDhst.VIR_BMI = dhstGeneral.VIR_BMI;
                     }
                 }
                 catch (Exception ex)
@@ -430,9 +459,9 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                     Inventec.Common.Logging.LogSystem.Warn("ERROR: kskGeneral.HisDhst.VIR_BMI");
                 }
-                kskGeneral.HisDhst.PULSE = spnPulse.EditValue != null ? (long?)spnPulse.Value : null;
-                kskGeneral.HisDhst.BLOOD_PRESSURE_MAX = spnBloodPressureMax.EditValue != null ? (long?)spnBloodPressureMax.Value : null;
-                kskGeneral.HisDhst.BLOOD_PRESSURE_MIN = spnBloodPressureMin.EditValue != null ? (long?)spnBloodPressureMin.Value : null;
+                //kskGeneral.HisDhst.PULSE = spnPulse.EditValue != null ? (long?)spnPulse.Value : dhstGeneral.PULSE;
+                //kskGeneral.HisDhst.BLOOD_PRESSURE_MAX = spnBloodPressureMax.EditValue != null ? (long?)spnBloodPressureMax.Value : dhstGeneral.BLOOD_PRESSURE_MAX;
+                //kskGeneral.HisDhst.BLOOD_PRESSURE_MIN = spnBloodPressureMin.EditValue != null ? (long?)spnBloodPressureMin.Value : dhstGeneral.BLOOD_PRESSURE_MIN;
                 kskGeneral.DhstRank = cboDhstRank.EditValue != null
                 ? Convert.ToInt32(cboDhstRank.EditValue)
                 : (int?)null;
@@ -522,7 +551,19 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantion
                     kskGeneral.ConcluderLoginName = userTab5.LOGINNAME;
                     kskGeneral.ConcluderUserName = userTab5.USERNAME;
                 }
-                currentDTO.KskOccupational = kskOccupational;
+                try
+                {
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "UpdateDTOFromDataForm - Tab3(KskOccupational) payload: "
+                        + Inventec.Common.Logging.LogUtil.TraceData("dhstOccupational", kskOccupational.HisDhst)
+                        + Inventec.Common.Logging.LogUtil.TraceData("kskOccupational", kskOccupational)
+                    );
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+
                 if (kskGeneral.HisDhst != null)
                 {
                     var d = kskGeneral.HisDhst;

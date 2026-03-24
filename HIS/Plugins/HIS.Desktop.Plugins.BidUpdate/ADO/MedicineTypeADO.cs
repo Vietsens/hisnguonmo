@@ -79,6 +79,7 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
                 bool valid = true;
                 if (string.IsNullOrEmpty(MEDICINE_GROUP_CODE) &&
                     string.IsNullOrEmpty(BID_NUM_ORDER) &&
+                    string.IsNullOrEmpty(TT_THAU) &&
                     string.IsNullOrEmpty(SUPPLIER_CODE) &&
                     AMOUNT == null &&
                     IMP_PRICE == null &&

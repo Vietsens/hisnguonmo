@@ -221,7 +221,12 @@ namespace HIS.UC.UCHeniInfo
         {
             try
             {
-                this.txtSoThe.Text = dataHein.HeinCardNumber;
+                if (dataHein.HeinCardNumber == null)
+                {
+                    this.txtSoThe.Text = oldHeinCardNumber;
+                }
+                else
+                    this.txtSoThe.Text = dataHein.HeinCardNumber;
                 HIS.Desktop.LocalStorage.BackendData.ADO.MediOrgADO dataMediOrg = MediOrgDataWorker.MediOrgADOs.FirstOrDefault(o => o.MEDI_ORG_CODE == dataHein.MediOrgCode);
                 if (dataMediOrg != null)
                 {

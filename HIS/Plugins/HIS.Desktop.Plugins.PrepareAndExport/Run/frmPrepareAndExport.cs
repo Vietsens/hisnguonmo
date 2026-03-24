@@ -728,6 +728,7 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
         }
         private void CallSpecific(HIS_EXP_MEST one)
         {
+            bool rs;
             try
             {
                 if (string.IsNullOrEmpty(txtGateCodeString))
@@ -736,13 +737,23 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
                     frm.ShowDialog();
                     return;
                 }
+                if (this.clienttManager == null)
+                    this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
+                var myGate = (txtGateCodeString ?? "").Trim();
+                var hisGate = (one?.GATE_CODE ?? "").Trim();
+
+                if (!string.IsNullOrEmpty(hisGate) &&
+                    !string.Equals(hisGate, myGate, StringComparison.OrdinalIgnoreCase))
+                {
+                    rs = this.clienttManager.RecallOrderDataClientBool(one.NUM_ORDER.ToString(), one?.GATE_CODE);
+                    Inventec.Common.Logging.LogSystem.Error("GỌI ___" + rs);
+                    return;
+                }
 
                 currentCall = one;
                 txtCurrentCall.Text = currentCall.NUM_ORDER + " - " + currentCall.TDL_PATIENT_NAME + " - " + currentCall.TDL_TREATMENT_CODE;
 
-                if (this.clienttManager == null)
-                    this.clienttManager = new CPA.WCFClient.CallPatientClient.CallPatientClientManager(txtIpCPA);
-                bool rs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString(), txtGateCodeString);
+                rs = this.clienttManager.RecallOrderDataClientBool(currentCall.NUM_ORDER.ToString(), txtGateCodeString);
                 Inventec.Common.Logging.LogSystem.Error("GỌI ___" + rs);
 
                 if (txtGateCodeString != currentCall.GATE_CODE)   
@@ -770,6 +781,33 @@ namespace HIS.Desktop.Plugins.PrepareAndExport.Run
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private HIS_EXP_MEST GetMinOrderForMyGate()
+        {
+            try
+            {
+                var myGate = (txtGateCodeString ?? "").Trim();
+
+                var source = lstTab3 ?? lstAll;
+
+                if (source == null || source.Count == 0) return null;
+
+                var pick = source
+                    .Where(x => x != null
+                                && x.EXP_MEST_STT_ID == IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_STT.ID__EXECUTE
+                                && x.IS_ABSENT != 1
+                                && (string.IsNullOrEmpty(x.GATE_CODE) ||
+                                    string.Equals((x.GATE_CODE ?? "").Trim(), myGate, StringComparison.OrdinalIgnoreCase)))
+                    .OrderBy(x => x.NUM_ORDER)                
+                    .ThenBy(x => x.LAST_APPROVAL_TIME)        
+                    .FirstOrDefault();
+
+                return pick;
+            }
+            catch
+            {
+                return null;
             }
         }
     }

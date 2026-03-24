@@ -95,6 +95,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 txtPathXml.Text = this.savePathADO.pathXml;
                 txtPathXmlGDYK.Text = this.savePathADO.pathXmlGDYK;
                 txtPathCollinearXml.Text = this.savePathADO.pathCollinearXml;
+                txtPathXmlTT12.Text = this.savePathADO.pathXmlTT12;
             }
             catch (Exception ex)
             {
@@ -179,6 +180,23 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     this.savePathADO.pathCollinearXml = fbd.SelectedPath;
                     txtPathCollinearXml.Text = this.savePathADO.pathCollinearXml;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void btnPathXmlTT12_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    this.savePathADO.pathXmlTT12 = fbd.SelectedPath;
+                    txtPathXmlTT12.Text = this.savePathADO.pathXmlTT12;
                 }
             }
             catch (Exception ex)

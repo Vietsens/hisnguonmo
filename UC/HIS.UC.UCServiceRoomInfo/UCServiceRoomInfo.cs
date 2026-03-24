@@ -15,33 +15,34 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraLayout;
+using DevExpress.XtraLayout.Utils;
+using DevExpress.XtraSplashScreen;
+using HIS.Desktop.DelegateRegister;
+using HIS.Desktop.LocalStorage.BackendData;
+using HIS.Desktop.LocalStorage.LocalData;
+using HIS.Desktop.Plugins.Library.RegisterConfig;
+using HIS.Desktop.Utility;
+using HIS.UC.ServiceRoom;
+using HIS.UC.ServiceRoom.ADO;
+using HIS.UC.UCServiceRoomInfo.ADO;
+using HIS.UC.UCServiceRoomInfo.ClassServiceRoomInfo;
+using Inventec.Common.Controls.EditorLoader;
+using Inventec.Core;
+using Inventec.Desktop.Common.LanguageManager;
+using MOS.EFMODEL.DataModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DevExpress.XtraEditors;
-using HIS.Desktop.LocalStorage.BackendData;
-using MOS.EFMODEL.DataModels;
-using HIS.Desktop.LocalStorage.LocalData;
-using HIS.UC.ServiceRoom.ADO;
-using Inventec.Core;
-using DevExpress.XtraLayout;
-using DevExpress.XtraLayout.Utils;
-using HIS.UC.UCServiceRoomInfo.ClassServiceRoomInfo;
-using HIS.UC.ServiceRoom;
-using HIS.Desktop.DelegateRegister;
-using HIS.UC.UCServiceRoomInfo.ADO;
-using Inventec.Common.Controls.EditorLoader;
-using HIS.Desktop.Plugins.Library.RegisterConfig;
-using DevExpress.XtraEditors.Controls;
-using HIS.Desktop.Utility;
-using System.Resources;
-using Inventec.Desktop.Common.LanguageManager;
 
 namespace HIS.UC.UCServiceRoomInfo
 {
@@ -62,6 +63,9 @@ namespace HIS.UC.UCServiceRoomInfo
         long _RoomID = 0;
         System.Windows.Forms.Timer timer;
         DelegateGetIntructionTime dlgGetIntructionTime;
+        bool isEmergency = false;
+        string preExamId = null;
+        long? intructionTimeSelected;
         #endregion
 
         #region Constructor - Load
@@ -257,6 +261,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 this.layoutControl2.EndUpdate();
                 this.roomExamServiceNumber = 0;
                 this.CboPatientTypePrimary.EditValue = null;
+                ProcessCheckOT();
                 this.InitExamServiceRoom(true, null);
             }
             catch (Exception ex)
@@ -285,6 +290,71 @@ namespace HIS.UC.UCServiceRoomInfo
             }
         }
 
+        public void getIsEmergencyChecked(bool isEmergency)
+        {
+            try
+            {
+                this.isEmergency = isEmergency;
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                {
+                    ProcessCheckOT();
+                }
+                foreach (var item in lstUserRoomExam)
+                {
+                    ((UC.ServiceRoom.UCRoomExamService)item).getIsEmergency(isEmergency);
+                }
+                //((UC.ServiceRoom.UCRoomExamService)ucRoomExamService).getIsEmergency(isEmergency);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public void getTreatmentTypeId(string tmType)
+        {
+            try
+            {
+                this.preExamId = tmType;
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                {
+                    ProcessCheckOT();
+                }
+                //((UC.ServiceRoom.UCRoomExamService)ucRoomExamService).getTreatmentType(tmType);
+                foreach (var item in lstUserRoomExam)
+                {
+                    ((UC.ServiceRoom.UCRoomExamService)item).getTreatmentType(tmType);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        public void ReceivedIntructionTime(long? time)
+        {
+            try
+            {
+                this.intructionTimeSelected = time;
+                if (HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
+                {
+                    ProcessCheckOT();
+                }
+                //((UC.ServiceRoom.UCRoomExamService)ucRoomExamService).getTreatmentType(tmType);
+                foreach (var item in lstUserRoomExam)
+                {
+                    ((UC.ServiceRoom.UCRoomExamService)item).ReceiveIntructionTime(intructionTimeSelected);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+        List<UserControl> lstUserRoomExam = new List<UserControl>();
         public void InitExamServiceRoom(bool isInit, V_HIS_SERE_SERV sereServExam)
         {
             try
@@ -310,6 +380,7 @@ namespace HIS.UC.UCServiceRoomInfo
 
                         ((UC.ServiceRoom.UCRoomExamService)ucRoomExamService).InitLoad(roomExamServiceData);
                     }
+                    lstUserRoomExam.Add(this.ucRoomExamService);
                     //Inventec.Common.Logging.LogSystem.Info("roomExamServiceData____" + Newtonsoft.Json.JsonConvert.SerializeObject(roomExamServiceData.HisExecuteRooms));
                 }
             }
@@ -490,7 +561,9 @@ namespace HIS.UC.UCServiceRoomInfo
                 roomExamServiceData.ChangeServiceProcessPrimaryPatientType = this.ProcessPrimaryPatientTypeChangeService;
                 roomExamServiceData.ChangeDisablePrimaryPatientType = this.ProcessDisablePatientTypeChangeService;
                 roomExamServiceData.GetIntructionTime = this.dlgGetIntructionTime;
-
+                roomExamServiceData._isEmergencies = this.isEmergency;
+                roomExamServiceData._treatmentTypeId = this.preExamId;
+                roomExamServiceData._intructionTimeSelected = this.intructionTimeSelected;
                 List<long> _roomIdByPatientTypeRooms = new List<long>();//#15492
                 long _patientTypeId = 0;
                 if (this.cboPatientType.EditValue != null)
@@ -637,6 +710,31 @@ namespace HIS.UC.UCServiceRoomInfo
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 		}
+
+        private void ProcessCheckOT()
+        {
+            try
+            {
+                bool isOutOfHour = CheckIsOutOfHoursTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)intructionTimeSelected));
+                var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.PATIENT_TYPE_CODE == "OT").FirstOrDefault();
+                // ✅ Nếu thỏa điều kiện → Set OT
+                if (isOutOfHour && (!this.isEmergency && preExamId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU.ToString()))
+                {
+                    if (CboPatientTypePrimary.EditValue == null || CboPatientTypePrimary.EditValue == "")
+                        CboPatientTypePrimary.EditValue = patientType.ID;
+                }
+                // ✅ Nếu KHÔNG thỏa điều kiện NHƯNG đang là OT → Clear
+                else if (CboPatientTypePrimary.EditValue != null && (long)CboPatientTypePrimary.EditValue == patientType.ID)
+                {
+                    CboPatientTypePrimary.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void ProcessPrimaryPatientTypeChangeService(long billPatientTypeId)
         {
             try
@@ -645,15 +743,22 @@ namespace HIS.UC.UCServiceRoomInfo
                 //CboPatientTypePrimary.EditValue = null;
                 if (billPatientTypeId > 0)
                 {
-                    patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.ID == billPatientTypeId).FirstOrDefault();
-                    if (patientType != null && patientType.IS_ADDITION == 1 && (cboPatientType.EditValue == null || Int64.Parse(cboPatientType.EditValue.ToString()) != billPatientTypeId))
-                        //&& cboPatientType.EditValue != null && billPatientTypeId != Int64.Parse(cboPatientType.EditValue.ToString()))
+                    if(HIS.Desktop.Plugins.Library.RegisterConfig.HisConfigCFG.PrimaryPatientTypeByService != "1")
                     {
-                        CboPatientTypePrimary.EditValue = billPatientTypeId;
+                        ProcessCheckOT();
                     }
                     else
                     {
-                        CboPatientTypePrimary.EditValue = null;
+                        patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.ID == billPatientTypeId).FirstOrDefault();
+                        if (patientType != null && patientType.IS_ADDITION == 1 && (cboPatientType.EditValue == null || Int64.Parse(cboPatientType.EditValue.ToString()) != billPatientTypeId))
+                        //&& cboPatientType.EditValue != null && billPatientTypeId != Int64.Parse(cboPatientType.EditValue.ToString()))
+                        {
+                            CboPatientTypePrimary.EditValue = billPatientTypeId;
+                        }
+                        else
+                        {
+                            CboPatientTypePrimary.EditValue = null;
+                        }
                     }
                 }			
                 Inventec.Common.Logging.LogSystem.Debug("ProcessPrimaryPatientTypeChangeService:" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => billPatientTypeId), billPatientTypeId) + "____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => patientType), patientType));
@@ -710,6 +815,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 Inventec.Common.Logging.LogSystem.Debug("ProcessTimerSyncRoomCounter.1");
                 List<long> _roomIdByPatientTypeRooms = new List<long>();
                 long _patientTypeId = 0;
+                
                 if (this.cboPatientType.EditValue != null)
                 {
                     _patientTypeId = (long)this.cboPatientType.EditValue;
@@ -1214,6 +1320,8 @@ namespace HIS.UC.UCServiceRoomInfo
                 {
                     lciCboPatientTypePhuThu.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     LoadComboPatientTypePrimary();
+
+                    ProcessCheckOT();
                 }
             }
             catch (Exception ex)
@@ -1231,6 +1339,143 @@ namespace HIS.UC.UCServiceRoomInfo
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        public bool CheckIsOutOfHoursTime(DateTime? checkTime = null)
+        {
+            bool result = false;
+            try
+            {
+                DateTime timeToCheck = checkTime ?? DateTime.Now;
+
+                var holidayPolicies = BackendDataWorker.Get<V_HIS_HOLIDAY_POLICIES>()
+                    .Where(o => o.PATIENT_TYPE_CODE == "OT").ToList();
+
+                if (holidayPolicies == null || holidayPolicies.Count == 0)
+                {
+                    return false;
+                }
+
+                foreach (var policy in holidayPolicies)
+                {
+                    bool isMatchTime = false;
+
+                    if (policy.HOLIDAY_POLICIES_TYPE == 1)
+                    {
+                        int dayOfWeek;
+                        switch (timeToCheck.DayOfWeek)
+                        {
+                            case DayOfWeek.Sunday:
+                                dayOfWeek = 1;
+                                break;
+                            case DayOfWeek.Monday:
+                                dayOfWeek = 2;
+                                break;
+                            case DayOfWeek.Tuesday:
+                                dayOfWeek = 3;
+                                break;
+                            case DayOfWeek.Wednesday:
+                                dayOfWeek = 4;
+                                break;
+                            case DayOfWeek.Thursday:
+                                dayOfWeek = 5;
+                                break;
+                            case DayOfWeek.Friday:
+                                dayOfWeek = 6;
+                                break;
+                            case DayOfWeek.Saturday:
+                                dayOfWeek = 7;
+                                break;
+                            default:
+                                dayOfWeek = 0;
+                                break;
+                        }
+
+                        if (policy.DAY_OF_WEEK == dayOfWeek)
+                        {
+                            isMatchTime = CheckTimeInRange(timeToCheck, policy.TIME_FROM, policy.TIME_TO);
+                        }
+                    }
+                    else if (policy.HOLIDAY_POLICIES_TYPE == 2)
+                    {
+                        if (policy.DAY_OF_YEAR.HasValue && policy.DAY_OF_YEAR.Value > 0)
+                        {
+                            short currentMMDD = short.Parse(timeToCheck.ToString("MMdd"));
+
+                            if (policy.DAY_OF_YEAR.Value == currentMMDD)
+                            {
+                                isMatchTime = CheckTimeInRange(timeToCheck, policy.TIME_FROM, policy.TIME_TO);
+                            }
+                        }
+                    }
+                    else if (policy.HOLIDAY_POLICIES_TYPE == 3)
+                    {
+                        if (policy.HOLIDAY.HasValue && policy.HOLIDAY.Value > 0)
+                        {
+                            long currentYYYYMMDD = long.Parse(timeToCheck.ToString("yyyyMMdd"));
+
+                            if (policy.HOLIDAY.Value == currentYYYYMMDD)
+                            {
+                                isMatchTime = CheckTimeInRange(timeToCheck, policy.TIME_FROM, policy.TIME_TO);
+                            }
+                        }
+                    }
+
+                    if (isMatchTime)
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Kiểm tra thời gian có nằm trong khoảng TIME_FROM và TIME_TO không
+        /// </summary>
+        /// <param name="checkTime">Thời gian cần kiểm tra</param>
+        /// <param name="timeFrom">Giờ bắt đầu (long? - HHMMSS), null = 00:00:00</param>
+        /// <param name="timeTo">Giờ kết thúc (long? - HHMMSS), null = 23:59:59</param>
+        /// <returns>True nếu nằm trong khoảng</returns>
+        private bool CheckTimeInRange(DateTime checkTime, long? timeFrom, long? timeTo)
+        {
+            try
+            {
+                TimeSpan currentTime = checkTime.TimeOfDay;
+
+                TimeSpan startTime = TimeSpan.Zero;
+                if (timeFrom.HasValue && timeFrom.Value > 0)
+                {
+                    string timeStr = timeFrom.Value.ToString("000000");
+                    int hour = int.Parse(timeStr.Substring(0, 2));
+                    int minute = int.Parse(timeStr.Substring(2, 2));
+                    int second = int.Parse(timeStr.Substring(4, 2));
+                    startTime = new TimeSpan(hour, minute, second);
+                }
+
+                TimeSpan endTime = new TimeSpan(23, 59, 59);
+                if (timeTo.HasValue && timeTo.Value > 0)
+                {
+                    string timeStr = timeTo.Value.ToString("000000");
+                    int hour = int.Parse(timeStr.Substring(0, 2));
+                    int minute = int.Parse(timeStr.Substring(2, 2));
+                    int second = int.Parse(timeStr.Substring(4, 2));
+                    endTime = new TimeSpan(hour, minute, second);
+                }
+
+                return currentTime >= startTime && currentTime <= endTime;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
         }
     }

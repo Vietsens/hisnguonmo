@@ -77,6 +77,18 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\ReferencedAssemblies\DevLib\DevExpress.XtraTreeList.v15.2.dll</HintPath>
     </Reference>
+    <Reference Include="EMR.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\lib\EMR\EMR.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="EMR.WCF.DCO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\EMR.WCF.DCO.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.Desktop.Library.CacheClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\lib\HIS\HIS.UC.UCRelativeInfo\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.BackendData">
       <HintPath>..\..\..\..\..\lib\HIS\HIS.UC.UCPatientRaw\HIS.Desktop.LocalStorage.BackendData.dll</HintPath>
     </Reference>
@@ -85,6 +97,9 @@
     </Reference>
     <Reference Include="HIS.Desktop.Utility">
       <HintPath>..\..\..\..\..\lib\HIS\HIS.Desktop.Utilities\HIS.Desktop.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="HIS.UC.SettingSignInfo">
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.SettingSignInfo.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
@@ -109,6 +124,10 @@
     </Reference>
     <Reference Include="Inventec.Common.Resource">
       <HintPath>..\..\..\..\..\LIB\Inventec.Common\Inventec.Common.Resource\Inventec.Common.Resource.dll</HintPath>
+    </Reference>
+    <Reference Include="Inventec.Common.SignLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\lib\Inventec.Common\Inventec.Common.SignLibrary\Inventec.Common.SignLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String">
       <HintPath>..\..\..\..\..\LIB\Inventec.Common\Inventec.Common.String\Inventec.Common.String.dll</HintPath>
@@ -163,7 +182,8 @@
     <Reference Include="IMSys.DbConfig.HIS_RS.dll">
       <HintPath>..\..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.EFMODEL">
+    <Reference Include="MOS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
@@ -171,6 +191,10 @@
     </Reference>
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -211,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\HeadADO.cs" />
+    <Compile Include="ADO\HisDepartmentADO.cs" />
     <Compile Include="ADO\SubsDirectorADO.cs" />
     <Compile Include="Base\GlobalStore.cs" />
     <Compile Include="entity\Status.cs" />
@@ -234,8 +259,16 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Validation\ValidMaxlengthtxtDepartmentCode.cs" />
+    <Compile Include="XML\DepartmentXmlAdo.cs" />
+    <Compile Include="XML\XMLDepartmentData.cs" />
+    <Compile Include="XML\XMLDepartmentDetailData.cs" />
+    <Compile Include="XML\XMLDepartmentList.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\HIS.Desktop.ADO\HIS.Desktop.ADO.csproj">
+      <Project>{808C25CD-0925-417F-BBF9-CAF9604DA879}</Project>
+      <Name>HIS.Desktop.ADO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\HIS.Desktop.ApiConsumer\HIS.Desktop.ApiConsumer.csproj">
       <Project>{861bfedb-026f-4b6f-a3cf-32843ae8c03d}</Project>
       <Name>HIS.Desktop.ApiConsumer</Name>
@@ -283,6 +316,7 @@
   <ItemGroup>
     <None Include="Resources\Lock-Unlock-icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>echo PREBUILDSTEP for $(ProjectName)

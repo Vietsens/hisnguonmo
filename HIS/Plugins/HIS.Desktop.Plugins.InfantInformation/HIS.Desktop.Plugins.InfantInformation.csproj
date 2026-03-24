@@ -63,9 +63,8 @@
     <Reference Include="HIS.Desktop.Controls.Session">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.UCTransPati\HIS.Desktop.Controls.Session.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Library.CacheClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\His Test\histest\x64\ReferencedAssemblies\HIS.Desktop.Library.CacheClient.dll</HintPath>
+    <Reference Include="HIS.Desktop.Library.CacheClient">
+      <HintPath>..\..\..\..\lib\HIS\His.UC.CreateReport\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Treatment.DateTime">
       <HintPath>..\..\..\..\lib\HIS\HIS.Treatment.DateTime\HIS.Treatment.DateTime.dll</HintPath>
@@ -273,6 +272,7 @@
     </Compile>
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="Validate\FatherInfoValidationRule.cs" />
     <Compile Include="Validate\txtHeinCardTmpValidationRule.cs" />
     <Compile Include="Validate\ValidateCCCD.cs" />
     <Compile Include="Validate\ValidateMaxLength.cs" />

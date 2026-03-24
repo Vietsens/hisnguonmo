@@ -130,6 +130,8 @@ namespace HIS.Desktop.Plugins.HisBloodType
             this.lciImport = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcEditorInfo = new DevExpress.XtraLayout.LayoutControl();
             this.cboPreparation = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.cboTubeSlot = new DevExpress.XtraEditors.ComboBoxEdit();
+            this.lciTubeSlot = new DevExpress.XtraLayout.LayoutControlItem();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnSearch = new DevExpress.XtraBars.BarButtonItem();
@@ -240,6 +242,8 @@ namespace HIS.Desktop.Plugins.HisBloodType
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).BeginInit();
             this.lcEditorInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cboPreparation.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTubeSlot.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTubeSlot)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAlertHSD.Properties)).BeginInit();
@@ -795,6 +799,7 @@ namespace HIS.Desktop.Plugins.HisBloodType
             // lcEditorInfo
             // 
             this.lcEditorInfo.Controls.Add(this.cboPreparation);
+            this.lcEditorInfo.Controls.Add(this.cboTubeSlot);
             this.lcEditorInfo.Controls.Add(this.spAlertHSD);
             this.lcEditorInfo.Controls.Add(this.chkIsRedBloodCells);
             this.lcEditorInfo.Controls.Add(this.chkBBHC);
@@ -835,6 +840,22 @@ namespace HIS.Desktop.Plugins.HisBloodType
             this.lcEditorInfo.Size = new System.Drawing.Size(505, 804);
             this.lcEditorInfo.TabIndex = 4;
             this.lcEditorInfo.Text = "layoutControl5";
+            // 
+            // cboTubeSlot
+            // 
+            this.cboTubeSlot.Location = new System.Drawing.Point(118, 645);
+            this.cboTubeSlot.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboTubeSlot.MenuManager = this.barManager1;
+            this.cboTubeSlot.Name = "cboTubeSlot";
+            this.cboTubeSlot.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboTubeSlot.Properties.Items.AddRange(new object[] { "1", "2" });
+            this.cboTubeSlot.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboTubeSlot.Size = new System.Drawing.Size(384, 22);
+            this.cboTubeSlot.StyleController = this.lcEditorInfo;
+            this.cboTubeSlot.TabIndex = 55;
+            this.cboTubeSlot.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboTubeSlot_ButtonClick);
             // 
             // cboPreparation
             // 
@@ -1483,6 +1504,7 @@ namespace HIS.Desktop.Plugins.HisBloodType
             this.emptySpaceItem2,
             this.emptySpaceItem4,
             this.layoutControlItem15,
+            this.lciTubeSlot,
             this.layoutControlItem20,
             this.emptySpaceItem5,
             this.emptySpaceItem6,
@@ -1887,6 +1909,19 @@ namespace HIS.Desktop.Plugins.HisBloodType
             this.emptySpaceItem4.TextSize = new System.Drawing.Size(0, 0);
             this.emptySpaceItem4.TextVisible = true;
             // 
+            // lciTubeSlot
+            // 
+            this.lciTubeSlot.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciTubeSlot.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciTubeSlot.Control = this.cboTubeSlot;
+            this.lciTubeSlot.Location = new System.Drawing.Point(0, 644);
+            this.lciTubeSlot.Name = "lciTubeSlot";
+            this.lciTubeSlot.Size = new System.Drawing.Size(505, 28);
+            this.lciTubeSlot.Text = "Ống nghiệm:";
+            this.lciTubeSlot.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciTubeSlot.TextSize = new System.Drawing.Size(110, 20);
+            this.lciTubeSlot.TextToControlDistance = 5;
+            // 
             // layoutControlItem15
             // 
             this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -2044,6 +2079,8 @@ namespace HIS.Desktop.Plugins.HisBloodType
             ((System.ComponentModel.ISupportInitialize)(this.lcEditorInfo)).EndInit();
             this.lcEditorInfo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cboPreparation.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTubeSlot.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciTubeSlot)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAlertHSD.Properties)).EndInit();
@@ -2255,6 +2292,8 @@ namespace HIS.Desktop.Plugins.HisBloodType
         private DevExpress.XtraEditors.SpinEdit spAlertHSD;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem21;
         private DevExpress.XtraEditors.GridLookUpEdit cboPreparation;
+        private DevExpress.XtraEditors.ComboBoxEdit cboTubeSlot;
+        private DevExpress.XtraLayout.LayoutControlItem lciTubeSlot;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutChePham;
     }

@@ -155,6 +155,23 @@ namespace MPS.Processor.Mps000086
                             case 4:
                                 listAdoPrint = listAdoPrint.OrderBy(p => p.SERVICE_UNIT_NAME).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                                 break;
+                            case 5:
+
+                               
+                                listAdoPrint = listAdoPrint
+                                    .OrderBy(p => p.TYPE_ID == 1
+                                        ? (string.IsNullOrWhiteSpace(p.PARENT_MEDICINE_TYPE_NAME) ? 2 : 0)
+                                        : 1)
+                                    .ThenBy(p => p.TYPE_ID == 1
+                                        ? (p.PARENT_MEDICINE_TYPE_NAME ?? string.Empty)
+                                        : string.Empty)
+                                    .ThenBy(p => p.TYPE_ID == 1
+                                        ? (p.MEDICINE_TYPE_NAME ?? string.Empty)
+                                        : (p.MEDI_MATE_TYPE_NAME ?? string.Empty))
+                                    .ToList();
+                              BuildParentGroupName(listAdoPrint);
+                                break;
+                                 
                             case 6:
                                 listAdoPrint = listAdoPrint.OrderBy(p => p.MEDI_MATE_NUM_ORDER.HasValue ? p.MEDI_MATE_NUM_ORDER.Value : listAdoPrint.Max(s =>s.MEDI_MATE_NUM_ORDER ?? 0) + 1).ThenBy(p => p.MEDI_MATE_TYPE_NAME).ToList();
                                 break;
@@ -168,13 +185,52 @@ namespace MPS.Processor.Mps000086
                 //lấy số lần in
                 SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
                 singleTag.ProcessData(store, singleValueDictionary);
+
+              
+                var listAdoPackagePrint = (rdo.listAdo ?? new List<Mps000086ADO>()).ToList();
+
+                
+                if (rdo.OrderKey == 5)
+                {
+                    listAdoPackagePrint = listAdoPackagePrint
+                        .OrderBy(p => p.TYPE_ID == 1
+                            ? (string.IsNullOrWhiteSpace(p.PARENT_MEDICINE_TYPE_NAME) ? 2 : 0)
+                            : 1)
+                        .ThenBy(p => p.TYPE_ID == 1
+                            ? (p.PARENT_MEDICINE_TYPE_NAME ?? string.Empty)
+                            : string.Empty)
+                        .ThenBy(p => p.TYPE_ID == 1
+                            ? (p.MEDICINE_TYPE_NAME ?? string.Empty)
+                            : (p.MEDI_MATE_TYPE_NAME ?? string.Empty))
+                        .ToList();
+                    foreach (var item in listAdoPackagePrint)
+                    {
+                        if (string.IsNullOrWhiteSpace(item.PARENT_MEDICINE_TYPE_NAME))
+                        {
+                            item.PARENT_MEDICINE_TYPE_NAME = "Không phân nhóm";
+                        }
+                    }
+                    BuildParentGroupName(listAdoPackagePrint);
+                }
+
                 objectTag.AddObjectData(store, "ListMediMate1", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMate2", listAdoPrint);
                 objectTag.AddObjectData(store, "ListMediMate3", listAdoPrint);
-                objectTag.AddObjectData(store, "ListMediMatePackage1", rdo.listAdo);
-                objectTag.AddObjectData(store, "ListMediMatePackage2", rdo.listAdo);
-                objectTag.AddObjectData(store, "ListMediMatePackage3", rdo.listAdo);
+                objectTag.AddObjectData(store, "ListMediMatePackage1", listAdoPackagePrint);
+                objectTag.AddObjectData(store, "ListMediMatePackage2", listAdoPackagePrint);
+                objectTag.AddObjectData(store, "ListMediMatePackage3", listAdoPackagePrint);
                 objectTag.AddObjectData(store, "ListMediMateSplitedByPackage", listAdoPrintSplitedByPackage);
+
+                var parentList = listAdoPackagePrint
+    .GroupBy(p => p.PARENT_MEDICINE_TYPE_NAME)
+    .Select(g => new Mps000086ADO
+    {
+        PARENT_MEDICINE_TYPE_NAME = g.Key
+    })
+    .ToList();
+
+                objectTag.AddObjectData(store, "ListMediMateParent", parentList);
+                objectTag.AddRelationship(store, "ListMediMateParent", "ListMediMatePackage1", "PARENT_MEDICINE_TYPE_NAME", "PARENT_MEDICINE_TYPE_NAME");
 
                 var otherPaySourceGroup1 = listAdoPrint
                         .GroupBy(o => new
@@ -211,7 +267,27 @@ namespace MPS.Processor.Mps000086
             }
             return result;
         }
+        private void BuildParentGroupName(List<Mps000086ADO> list)
+        {
+            string lastParent = null;
 
+            foreach (var item in list)
+            {
+                var currentParent = item.TYPE_ID == 1
+                    ? item.PARENT_MEDICINE_TYPE_NAME
+                    : null;
+
+                if (!string.IsNullOrWhiteSpace(currentParent) && currentParent != lastParent)
+                {
+                   
+                    lastParent = currentParent;
+                }
+                else
+                {
+                    item.PARENT_MEDICINE_TYPE_NAME = "";
+                }
+            }
+        }
         void ProcessSingleKey()
         {
             try

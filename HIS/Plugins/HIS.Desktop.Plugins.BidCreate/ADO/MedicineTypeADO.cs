@@ -71,6 +71,8 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
         public string HOUR_LIFESPAN_STR { get; set; }
         public long? INFORMATION_BID { get; set; }
         public string BATCH_DIVISION_CODE { get; set; }
+        public long? FROM_TIME { get; set; }
+        public long? TO_TIME { get; set; }
 
         public string ErrorMessageBlock { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeBlock { get; set; }
@@ -104,7 +106,7 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
                     string.IsNullOrEmpty(MANUFACTURER_CODE) &&
                     string.IsNullOrEmpty(NATIONAL_NAME) &&
                     string.IsNullOrEmpty(BID_APTHAU_CODE) &&
-                    string.IsNullOrEmpty(BATCH_DIVISION_CODE) 
+                    string.IsNullOrEmpty(BATCH_DIVISION_CODE)
                     )
                     valid = false;
                 return valid;

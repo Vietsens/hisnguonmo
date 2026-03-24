@@ -72,6 +72,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Add
         protected ExistsAssianInDay ExistsAssianInDay { get; set; }
 
         protected List<DMediStock1ADO> MediStockD1SDOs { get; set; }
+        protected decimal? IS_NOT_EXPEND { get; set; }
         protected bool? IsOutKtcFee { get; set; }
         protected long TreatmentId { get; set; }
         protected MOS.EFMODEL.DataModels.V_HIS_PATIENT_TYPE_ALTER PatientTypeAlter { get; set; }
@@ -178,6 +179,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Add
             medicineTypeSDO.ACTIVE_INGR_BHYT_CODE = this.ActiveIngrBhytCode;
             medicineTypeSDO.ACTIVE_INGR_BHYT_NAME = this.ActiveIngrBhytName;
             medicineTypeSDO.IsOutKtcFee = this.IsOutKtcFee;
+            medicineTypeSDO.IS_NOT_EXPEND = this.IS_NOT_EXPEND;
             medicineTypeSDO.IS_STAR_MARK = frmAssignPrescription.currentMedicineTypeADOForEdit != null ? frmAssignPrescription.currentMedicineTypeADOForEdit.IS_STAR_MARK : null;
             medicineTypeSDO.IsStent = this.IsStent;
 

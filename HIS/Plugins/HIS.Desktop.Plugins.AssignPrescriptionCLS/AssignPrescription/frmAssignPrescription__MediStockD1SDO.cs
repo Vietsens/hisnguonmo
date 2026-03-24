@@ -676,6 +676,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     {
                         DMediStock1ADO dMediStock = data as DMediStock1ADO;
                         this.currentMedicineTypeADOForEdit.IsStent = ((dMediStock.IS_STENT ?? 0) == GlobalVariables.CommonNumberTrue ? true : false);
+                        this.currentMedicineTypeADOForEdit.IS_NOT_EXPEND = ((dMediStock.IS_NOT_EXPEND ?? 0) == 1 ? 1 : 0);
                         this.currentMedicineTypeADOForEdit.IsAllowOdd = this.GetIsAllowOdd(dMediStock != null && dMediStock.ID.HasValue ? dMediStock.ID.Value : 0, this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID);
                         this.currentMedicineTypeADOForEdit.TDL_GENDER_ID = dMediStock.GENDER_ID;
                         this.SetControlSoLuongNgayNhapChanLe(this.currentMedicineTypeADOForEdit);
@@ -1248,6 +1249,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                             dMediStock1ADO.CONVERT_UNIT_NAME = item.CONVERT_UNIT_NAME;
                             dMediStock1ADO.LAST_EXP_PRICE = item.LAST_EXP_PRICE;
                             dMediStock1ADO.LAST_EXP_VAT_RATIO = item.LAST_EXP_VAT_RATIO;
+                            dMediStock1ADO.IS_NOT_EXPEND = item.IS_NOT_EXPEND;
                             var medicineTpe = currentMedicineTypeTemps.FirstOrDefault(o => o.MEDICINE_TYPE_CODE == item.MEDICINE_TYPE_CODE);
                             if (medicineTpe != null)
                             {

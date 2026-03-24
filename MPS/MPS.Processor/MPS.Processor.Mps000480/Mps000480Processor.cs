@@ -32,6 +32,7 @@ namespace MPS.Processor.Mps000480
     {
         Mps000480PDO rdo;
         List<HIS_EXP_MEST> lstExpMest = new List<HIS_EXP_MEST>();
+        List<V_HIS_EXP_MEST> lstExpMestView = new List<V_HIS_EXP_MEST>();
         List<MEDICINE_MATERIAL> lstMedicineMaterials = new List<MEDICINE_MATERIAL>();
         public Mps000480Processor(CommonParam param, PrintData printData)
             : base(param, printData)
@@ -40,6 +41,12 @@ namespace MPS.Processor.Mps000480
             {
                 rdo = (Mps000480PDO)rdoBase;
             }
+        }
+        List<EXP_MEST_AREA> lstArea = new List<EXP_MEST_AREA>();
+        public class EXP_MEST_AREA
+        {
+            public string AREA_NAME { get; set; }
+            public long? AREA_ID { get; set; }
         }
 
         public override bool ProcessData()
@@ -61,8 +68,24 @@ namespace MPS.Processor.Mps000480
                 SetSingleKey();
                 ProcessListKey();
 
+                objectTag.AddObjectData(store, "Areas", lstArea);
+                objectTag.AddObjectData(store, "ExpMestViews", rdo.lstExpMestView);
+                objectTag.AddObjectData(store, "MedicineMaterials", lstMedicineMaterials);
+
+                if (rdo.lstExpMestView != null && lstArea != null)
+                    objectTag.AddRelationship(store, "Areas", "ExpMestViews", "AREA_ID", "REQ_AREA_ID");
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("Areas", lstArea));
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("ExpMestViews", rdo.lstExpMestView));
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("MedicineMaterials", lstMedicineMaterials));
+
+
+                //objectTag.AddRelationship(store, "ExpMestViews", "MedicineMaterials", "ID", "EXP_MEST_ID");
+                if (rdo.lstExpMestView != null && MedicineMaterials != null)
+                    objectTag.AddRelationship(store, "ExpMestViews", "MedicineMaterials", "ID", "AGGR_EXP_MEST_ID");
+
+
                 objectTag.AddObjectData(store, "ExpMests", this.lstExpMest);
-                objectTag.AddObjectData(store, "MedicineMaterials", this.lstMedicineMaterials);
+                //objectTag.AddObjectData(store, "MedicineMaterials", this.lstMedicineMaterials);
                 objectTag.AddRelationship(store, "ExpMests", "MedicineMaterials", "ID", "EXP_MEST_ID");
 
 
@@ -83,6 +106,22 @@ namespace MPS.Processor.Mps000480
         {
             try
             {
+                if (rdo.lstExpMestView != null && rdo.lstExpMestView.Any())
+                {
+                    lstExpMestView = rdo.lstExpMestView.ToList();
+
+                    var areaGroup = rdo.lstExpMestView
+                        .GroupBy(x => new { x.REQ_AREA_ID, x.REQ_AREA_NAME });
+
+                    foreach (var area in areaGroup)
+                    {
+                        lstArea.Add(new EXP_MEST_AREA
+                        {
+                            AREA_ID = area.Key.REQ_AREA_ID,
+                            AREA_NAME = area.Key.REQ_AREA_NAME
+                        });
+                    }
+                }
                 if (rdo.lstMedicine != null && rdo.lstMedicine.Count() > 0)
                 {
                     rdo.lstMedicine = rdo.lstMedicine.OrderBy(o => o.NUM_ORDER).ThenBy(o => o.ID).ToList();
@@ -111,6 +150,7 @@ namespace MPS.Processor.Mps000480
                         medimate.NOON = item.First().NOON;
                         medimate.AFTERNOON = item.First().AFTERNOON;
                         medimate.EVENING = item.First().EVENING;
+                        medimate.AGGR_EXP_MEST_ID = item.First().AGGR_EXP_MEST_ID;
                         if (item.First().USE_TIME_TO != null && item.First().TDL_INTRUCTION_TIME != null)
                         {
                             DateTime use_time_to = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)item.First().USE_TIME_TO) ?? DateTime.MinValue;
@@ -133,7 +173,7 @@ namespace MPS.Processor.Mps000480
                         expMest.EXP_MEST_CODE = item.First().EXP_MEST_CODE;
                         lstExpMest.Add(expMest);
                     }
-                    var materialGroupByType = rdo.lstMaterial.GroupBy(o => new { o.MATERIAL_TYPE_ID });
+                    var materialGroupByType = rdo.lstMaterial.GroupBy(o => new { o.MATERIAL_TYPE_ID, o.EXP_MEST_ID });
                     foreach (var item in materialGroupByType)
                     {
                         MEDICINE_MATERIAL medimate = new MEDICINE_MATERIAL();
@@ -144,6 +184,7 @@ namespace MPS.Processor.Mps000480
                         medimate.TUTORIAL = item.First().TUTORIAL;
                         medimate.REQ_LOGINNAME = item.First().REQ_LOGINNAME;
                         medimate.REQ_USERNAME = item.First().REQ_USERNAME;
+                        medimate.AGGR_EXP_MEST_ID = item.First().AGGR_EXP_MEST_ID;
                         lstMedicineMaterials.Add(medimate);
                     }
                 }
@@ -165,7 +206,15 @@ namespace MPS.Processor.Mps000480
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_DOB, rdo.expMest.TDL_PATIENT_DOB));
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_GENDER_NAME, rdo.expMest.TDL_PATIENT_GENDER_NAME));
                     SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.NUM_ORDER, rdo.expMest.NUM_ORDER));
-                    
+
+                }
+                else if (rdo.lstExpMestView != null)
+                {
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_TREATMENT_CODE, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_CODE));
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_NAME, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_NAME));
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_DOB, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_DOB));
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.TDL_PATIENT_GENDER_NAME, rdo.lstExpMestView.FirstOrDefault().TDL_PATIENT_GENDER_NAME));
+                    SetSingleKey(new KeyValue(Mps000480ExtendSingleKey.NUM_ORDER, rdo.lstExpMestView.FirstOrDefault().NUM_ORDER));
                 }
                 if (rdo.treatment != null)
                 {
@@ -188,6 +237,20 @@ namespace MPS.Processor.Mps000480
                 if (rdo.expMest != null && !String.IsNullOrEmpty(rdo.expMest.TDL_TREATMENT_CODE))
                 {
                     Inventec.Common.BarcodeLib.Barcode barcodePatientCode = new Inventec.Common.BarcodeLib.Barcode(rdo.expMest.TDL_TREATMENT_CODE);
+                    barcodePatientCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+                    barcodePatientCode.IncludeLabel = false;
+                    barcodePatientCode.Width = 120;
+                    barcodePatientCode.Height = 40;
+                    barcodePatientCode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+                    barcodePatientCode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+                    barcodePatientCode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+                    barcodePatientCode.IncludeLabel = true;
+
+                    dicImage.Add(Mps000480ExtendSingleKey.TREATMENT_CODE_BAR, barcodePatientCode);
+                }
+                else if (rdo.lstExpMestView != null && !String.IsNullOrEmpty(rdo.lstExpMestView.FirstOrDefault().TDL_TREATMENT_CODE))
+                {
+                    Inventec.Common.BarcodeLib.Barcode barcodePatientCode = new Inventec.Common.BarcodeLib.Barcode(rdo.lstExpMestView.FirstOrDefault().TDL_TREATMENT_CODE);
                     barcodePatientCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
                     barcodePatientCode.IncludeLabel = false;
                     barcodePatientCode.Width = 120;

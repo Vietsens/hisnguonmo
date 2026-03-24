@@ -138,6 +138,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 //    btnQrXuLy(true);
                 //}
                 SetEnableButtonSave(false);
+                if (!ValidateTransferAndSwipeAmount())
+                    return;
                 if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
                 {
                     XtraMessageBox.Show("Bắt buộc phải chọn sổ tạm ứng khi thanh toán", "Thông báo");
@@ -353,6 +355,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (!btnSavePrint.Enabled)
                     return;
                 SetEnableButtonSave(false);
+                if (!ValidateTransferAndSwipeAmount())
+                    return;
                 if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
                 {
                     XtraMessageBox.Show("Bắt buộc phải chọn sổ tạm ứng khi thanh toán", "Thông báo");
@@ -673,6 +677,8 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (!btnSave.Enabled && !lciBtnSave.Enabled)
                     return;
                 SetEnableButtonSave(false);
+                if (!ValidateTransferAndSwipeAmount())
+                    return;
                 if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
                 {
                     XtraMessageBox.Show("Bắt buộc phải chọn sổ tạm ứng khi thanh toán", "Thông báo");
@@ -938,6 +944,19 @@ namespace HIS.Desktop.Plugins.TransactionBill
             bool? success = false;
             try
             {
+                decimal currentVal = 0;
+                string cleanTienBaoLanh = (this.tienBaoLanh ?? "").Replace(".", "").Replace(",", "");
+                decimal.TryParse(cleanTienBaoLanh, out currentVal);
+
+                decimal maxBalance = (guaranteeInfo != null) ? guaranteeInfo.GUARANTEE_BALANCE : 0m;
+
+                if (currentVal > maxBalance)
+                {
+                    WaitingManager.Hide();
+                    MessageBox.Show(this, "Số tiền bảo lãnh lớn hơn hạn mức bảo lãnh", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
                 TransactionBillResultSDO = null;
                 TransactionQr = null;
                 long payFormId = 0;
@@ -1259,7 +1278,25 @@ namespace HIS.Desktop.Plugins.TransactionBill
                         data.Transaction.SWIPE_AMOUNT = spinTransferAmount.Value;
                     }
                 }
+                else if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCKQT)
+                {
+                    decimal ck = spinTransferAmountNew.Value;
+                    decimal qt = spinSwipeAmountNew.Value;
+                    var sum = ck + qt;
 
+                    if (sum > data.Transaction.AMOUNT)
+                    {
+                        param.Messages.Add(string.Format(
+                            "Tổng tiền chuyển khoản/quẹt thẻ [{0}] lớn hơn số tiền cần thanh toán của bệnh nhân [{1}]",
+                            Inventec.Common.Number.Convert.NumberToStringRoundAuto(sum, 2),
+                            Inventec.Common.Number.Convert.NumberToStringRoundAuto(data.Transaction.AMOUNT, 2)));
+                        return false;
+                    }
+
+                    // Map theo nghiệp vụ
+                    data.Transaction.TRANSFER_AMOUNT = ck;
+                    data.Transaction.SWIPE_AMOUNT = qt;
+                }
                 data.PayFormId = payFormId;
                 data.TransactionTime = data.Transaction.TRANSACTION_TIME;
                 V_HIS_ACCOUNT_BOOK accountBookRepay = null;
@@ -3973,6 +4010,9 @@ namespace HIS.Desktop.Plugins.TransactionBill
                 if (!btnSavePrint.Enabled)
                     return;
                 SetEnableButtonSave(false);
+                if (!ValidateTransferAndSwipeAmount())
+                    return;
+
                 if (HisConfigCFG.AutoCreateDepositTransaction && decimal.Parse(lblReceiveAmount.Text) > 0 && cboDepositBook.Enabled && cboDepositBook.EditValue == null)
                 {
                     XtraMessageBox.Show("Bắt buộc phải chọn sổ tạm ứng khi thanh toán", "Thông báo");

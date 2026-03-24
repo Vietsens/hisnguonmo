@@ -111,6 +111,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         ResultImpMestADO resultADO = null;
         List<VHisServicePatyADO> listServicePatyAdo = new List<VHisServicePatyADO>();
         private Dictionary<long, List<VHisServicePatyADO>> dicServicePaty = new Dictionary<long, List<VHisServicePatyADO>>();
+
+        private Dictionary<long, List<V_HIS_SERVICE_PATY>> dicAppliedPaty = new Dictionary<long, List<V_HIS_SERVICE_PATY>>();
         private List<VHisServiceADO> listServiceADO = new List<VHisServiceADO>();
         long medistockID;
         long roomTypeId;
@@ -156,6 +158,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         internal HIS_SUPPLIER currentSupplierForEdit;
         long oldSupplierId = 0;
+
+        private bool _isCheckingDocumentDuplicate;
+        private string _lastCheckedDocumentNumber;
+        private string _lastCheckedInvoiceSymbol;
+        private long? _lastCheckedSupplierId;
+        private bool? _lastCheckedDocumentDuplicateResult;
         internal int d = 0;
         private string moduleLink = "HIS.Desktop.Plugins.ImpMestCreate";
         private bool IsSetBhytInfoFromTypeByDefault;
@@ -260,7 +268,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 CreateThreadLoadData();
                 InitComboGoiThau();
                 LoadDataToComboSupplier(listSupplier);
-
+                VisibleLayoutTtThau();
                 LoadKeyUCLanguage();
                 SetFormat();
                 InitControlState();
@@ -322,6 +330,27 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void VisibleLayoutTtThau()
+        {
+            try
+            {
+                if (HisConfig.OnlyShowBidInfo)
+                {
+                    lciBidNumber.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciBidExtraCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutBidNumber.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciBid.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         private void TimerFocusImpAmount_Tick(object sender, EventArgs e)
@@ -828,6 +857,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
+                if (txtNhaCC.EditValue != null && Inventec.Common.TypeConvert.Parse.ToInt64(txtNhaCC.EditValue.ToString()) > 0)
+                {
+                    ValidateDocumentNumberDuplicateCached(forceCheck: false, focusOnInvalid: true);
+                }
             }
             catch (Exception ex)
             {
@@ -1269,7 +1302,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     {
                                         ado.TT_THAU = medicine.TT_THAU;
                                     }
-                                    
+
                                     ado.TDL_BID_NUMBER = medicine.TDL_BID_NUMBER;
                                     ado.TDL_BID_EXTRA_CODE = medicine.TDL_BID_EXTRA_CODE;
                                     ado.TDL_BID_GROUP_CODE = medicine.TDL_BID_GROUP_CODE;
@@ -1456,7 +1489,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     {
                                         ado.TT_THAU = material.TT_THAU;
                                     }
-                                    
+
                                     ado.MEDICAL_CONTRACT_ID = material.MEDICAL_CONTRACT_ID;
                                     ado.CONTRACT_PRICE = material.CONTRACT_PRICE;
                                     ado.packingTypeName = material.BID_MATERIAL_TYPE_CODE;
@@ -1990,7 +2023,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
         {
             try
             {
-                if (this.gridViewServicePaty.IsEditing) 
+                if (this.gridViewServicePaty.IsEditing)
                     this.gridViewServicePaty.CloseEditor();
 
                 if (this.gridViewServicePaty.FocusedRowModified)
@@ -2052,7 +2085,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessageManager.VatNhapKhacVoiVatNhapTrongGoiThau, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaCanhBao, DevExpress.Utils.DefaultBoolean.True);
                 }
 
-               
+
                 if (this.currentContract != null)
                 {
                     long timeNow = Inventec.Common.DateTime.Get.StartDay() ?? 0;
@@ -2405,15 +2438,37 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     lstRs.Add(this.currrentServiceAdo.TDL_BID_YEAR);
                     lstRs.Add(this.currrentServiceAdo.BidId.HasValue ? listBids.FirstOrDefault(o => o.ID == this.currrentServiceAdo.BidId).BID_APTHAU_CODE : "");
                     var medicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(p => p.ID == this.currrentServiceAdo.MEDI_MATE_ID);
-                    if (medicineType != null && medicineType.TT_THAU != null)
+                    V_HIS_BID_MEDICINE_TYPE bidMediType = new V_HIS_BID_MEDICINE_TYPE();
+
+                    string TtThau = null;
+                    if (this.currentBid != null && this._dicMedicineTypes != null && this._dicMedicineTypes.ContainsKey(this.currentBid.ID))
                     {
-                        this.currrentServiceAdo.TT_THAU = medicineType.TT_THAU;
+                        bidMediType = this._dicMedicineTypes[this.currentBid.ID].FirstOrDefault(p => p.MEDICINE_TYPE_ID == this.currrentServiceAdo.MEDI_MATE_ID && p.BID_GROUP_CODE == this.currrentServiceAdo.TDL_BID_GROUP_CODE);
                     }
-                    else
+
+                    if ((bidMediType == null || bidMediType.ID == 0) && dicBidMedicine != null && dicBidMedicine.ContainsKey(Base.StaticMethod.GetTypeKey(this.currrentServiceAdo.MEDI_MATE_ID, this.currrentServiceAdo.TDL_BID_GROUP_CODE)))
                     {
-                        this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMedicine.TT_THAU = string.Join(";", lstRs.Where(o => !string.IsNullOrEmpty(o)).ToList());
+                        bidMediType = dicBidMedicine[Base.StaticMethod.GetTypeKey(this.currrentServiceAdo.MEDI_MATE_ID, this.currrentServiceAdo.TDL_BID_GROUP_CODE)];
+                    }
+
+                    if (bidMediType != null && bidMediType.ID > 0)
+                    {
+                        TtThau = bidMediType.TT_THAU;
                     }
                     
+                    if (medicineType != null && medicineType.TT_THAU != null && string.IsNullOrEmpty(TtThau))
+                    {
+                        TtThau = medicineType.TT_THAU;
+                    }
+                    else if (string.IsNullOrEmpty(TtThau))
+                    {
+                        TtThau = string.Join(";", lstRs.Where(o => !string.IsNullOrEmpty(o)).ToList());
+                    }
+                    if (!string.IsNullOrEmpty(TtThau))
+                    {
+                        this.currrentServiceAdo.TT_THAU = TtThau;
+                    }
+
 
                     this.currrentServiceAdo.HisMedicine.MEDICAL_CONTRACT_ID = this.currrentServiceAdo.MEDICAL_CONTRACT_ID;
                     this.currrentServiceAdo.HisMedicine.CONTRACT_PRICE = this.currrentServiceAdo.CONTRACT_PRICE;
@@ -2475,7 +2530,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 {
                                     mediPaty = new HIS_MEDICINE_PATY();
                                     mediPaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                    mediPaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
+                                    if (paty.ExpPrice <= 0 && paty.ExpPriceVat > 0)
+                                    {
+                                        mediPaty.EXP_PRICE = paty.ExpPriceVat; //* (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    else
+                                    {
+                                        mediPaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    //mediPaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
@@ -2489,7 +2552,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 if (mediPaty != null)
                                 {
-                                    mediPaty.EXP_PRICE = paty.ExpPrice * (1 + (paty.PercentProfit / (decimal)100));
+                                    mediPaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
                                 else
@@ -2498,11 +2561,11 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     mediPaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
                                     if (paty.ExpPrice <= 0 && paty.ExpPriceVat > 0)
                                     {
-                                        mediPaty.EXP_PRICE = paty.ExpPriceVat * (1 + (paty.PercentProfit / (decimal)100));
+                                        mediPaty.EXP_PRICE = paty.ExpPriceVat;// * (1 + (paty.PercentProfit / (decimal)100));
                                     }
                                     else
                                     {
-                                        mediPaty.EXP_PRICE = paty.ExpPrice * (1 + (paty.PercentProfit / (decimal)100));
+                                        mediPaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
                                     }
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                     if (tp == 1 || tp == 2 || tp == 3)
@@ -2583,18 +2646,42 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         this.currrentServiceAdo.HisMaterial.TDL_BID_NUMBER = this.currrentServiceAdo.TDL_BID_NUMBER;
                     }
 
-                    var matedialType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(p => p.ID == this.currrentServiceAdo.MEDI_MATE_ID);
-
-                    if (matedialType != null && matedialType.TT_THAU != null)
+                    string TtThau = null;
+                    var matedialType = BackendDataWorker.Get<V_HIS_MATERIAL_TYPE>().FirstOrDefault(p => p.ID == this.currrentServiceAdo.MEDI_MATE_ID);
+                    V_HIS_BID_MATERIAL_TYPE bidMateType = new V_HIS_BID_MATERIAL_TYPE();
+                    if (this._dicMaterialTypes != null && this.currentBid != null && this._dicMaterialTypes.ContainsKey(this.currentBid.ID))
                     {
-                        this.currrentServiceAdo.TT_THAU = matedialType.TT_THAU;
-                    }
-                    else
-                    {
-                        this.currrentServiceAdo.TT_THAU = this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0}{1}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0}{1}{2}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : string.Format("{0}{1}{2}{3}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_GROUP_CODE) ? this.currrentServiceAdo.TDL_BID_GROUP_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null);
-
+                        bidMateType = this._dicMaterialTypes[this.currentBid.ID].FirstOrDefault(p => p.MATERIAL_TYPE_ID == currrentServiceAdo.MEDI_MATE_ID && p.BID_GROUP_CODE == currrentServiceAdo.TDL_BID_GROUP_CODE);
                     }
 
+                    if (this.currrentServiceAdo.MAP_MEDI_MATE_ID.HasValue && this.currentBid != null &&  this._dicMaterialTypes != null && this._dicMaterialTypes.ContainsKey(this.currentBid.ID))
+                    {
+                        bidMateType = this._dicMaterialTypes[this.currentBid.ID].FirstOrDefault(p => p.MATERIAL_TYPE_ID == currrentServiceAdo.MAP_MEDI_MATE_ID && p.BID_GROUP_CODE == this.currrentServiceAdo.TDL_BID_GROUP_CODE);
+                    }
+
+                    if ((bidMateType == null || bidMateType.ID == 0) && dicBidMaterial != null && dicBidMaterial.ContainsKey(Base.StaticMethod.GetTypeKey(this.currrentServiceAdo.MEDI_MATE_ID, this.currrentServiceAdo.TDL_BID_GROUP_CODE)))
+                    {
+                        bidMateType = dicBidMaterial[Base.StaticMethod.GetTypeKey(this.currrentServiceAdo.MEDI_MATE_ID, this.currrentServiceAdo.TDL_BID_GROUP_CODE)];
+                    }
+
+                    if(bidMateType != null && bidMateType.ID > 0)
+                    {
+                        TtThau = bidMateType.TT_THAU;
+                    }
+                    
+                    if (matedialType != null && matedialType.TT_THAU != null && string.IsNullOrEmpty(TtThau))
+                    {
+                        TtThau = matedialType.TT_THAU;
+                    }
+                    else if(string.IsNullOrEmpty(TtThau))
+                    {
+                        TtThau = this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0}{1}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0}{1}{2}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : string.Format("{0}{1}{2}{3}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_GROUP_CODE) ? this.currrentServiceAdo.TDL_BID_GROUP_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null);
+                    }
+                    if (!string.IsNullOrEmpty(TtThau))
+                    {
+                        this.currrentServiceAdo.TT_THAU = TtThau;
+                    }
+                    
                     this.currrentServiceAdo.BidId = materialProcessor.GetBid(this.ucMaterialTypeTree);
                     if (this.currentBid != null && this.currrentServiceAdo.BidId == null)
                     {
@@ -2651,7 +2738,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 {
                                     matePaty = new HIS_MATERIAL_PATY();
                                     matePaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                    matePaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
+                                    if (paty.ExpPrice <= 0 && paty.ExpPriceVat > 0)
+                                    {
+                                        matePaty.EXP_PRICE = paty.ExpPriceVat;// * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    else
+                                    {
+                                        matePaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    //matePaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
@@ -2666,14 +2761,22 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 var matePaty = this.currrentServiceAdo.HisMaterialPatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
                                 if (matePaty != null)
                                 {
-                                    matePaty.EXP_PRICE = (paty.IsReusable ? paty.PRICE : paty.ExpPrice) * (1 + (paty.PercentProfit / (decimal)100));
+                                    matePaty.EXP_PRICE = (paty.IsReusable ? paty.PRICE * (1 + (paty.PercentProfit / (decimal)100)) : paty.ExpPrice);// * (1 + (paty.PercentProfit / (decimal)100));
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
                                 else
                                 {
                                     matePaty = new HIS_MATERIAL_PATY();
                                     matePaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                    matePaty.EXP_PRICE = (paty.IsReusable ? paty.PRICE : paty.ExpPrice) * (1 + (paty.PercentProfit / (decimal)100));
+                                    if (paty.ExpPrice <= 0 && paty.ExpPriceVat > 0)
+                                    {
+                                        matePaty.EXP_PRICE = paty.ExpPriceVat;// * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    else
+                                    {
+                                        matePaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
+                                    }
+                                    //matePaty.EXP_PRICE = (paty.IsReusable ? paty.PRICE : paty.ExpPrice) * (1 + (paty.PercentProfit / (decimal)100));
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
@@ -2779,7 +2882,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 }
                 #endregion
 
-                listServiceADO.Add(this.currrentServiceAdo); 
+                listServiceADO.Add(this.currrentServiceAdo);
                 Inventec.Common.Logging.LogSystem.Debug("1__________AAA" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => listServiceADO), listServiceADO));
                 gridControlImpMestDetail.BeginUpdate();
                 gridControlImpMestDetail.DataSource = listServiceADO;
@@ -2807,7 +2910,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
             {
                 positionHandleControl = -1;
                 if (!btnSave.Enabled || !dxValidationProvider1.Validate() || this.listServiceADO.Count <= 0 ||
-                !this.CheckDocumentNumberV2(txtDocumentNumber.Text.Trim(), txtkyHieuHoaDon.Text))
+                !ValidateDocumentNumberDuplicateCached(forceCheck: true, focusOnInvalid: true))
                     return;
 
                 //Check thieu chinh sách giá
@@ -2980,12 +3083,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 positionHandleControl = -1;
                 if (!dxValidationProvider1.Validate() || this.listServiceADO.Count <= 0)
                     return;
-                if (CheckDocumentNumber(txtDocumentNumber.Text, txtkyHieuHoaDon.Text))
-                {
-                    WaitingManager.Hide();
-                    if (DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessageManager.SoChungTuDaDuocSuDung, Base.ResourceMessageManager.TieuDeCuaSoThongBaoLaThongBao, System.Windows.Forms.MessageBoxButtons.YesNo) != System.Windows.Forms.DialogResult.Yes)
-                        return;
-                }
+                if (!ValidateDocumentNumberDuplicateCached(forceCheck: true, focusOnInvalid: true))
+                    return;
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
                 bool success = false;
@@ -3154,6 +3253,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 if (!btnNew.Enabled)
                     return;
                 WaitingManager.Show();
+
+                _isCheckingDocumentDuplicate = false;
+                _lastCheckedDocumentNumber = null;
+                _lastCheckedInvoiceSymbol = null;
+                _lastCheckedSupplierId = null;
+                _lastCheckedDocumentDuplicateResult = null;
+
                 this._currentImpMestUp = null;
                 ColorBlack();
                 dxValidationProvider2.RemoveControlError(dtExpiredDate);
@@ -3984,7 +4090,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (this.currrentServiceAdo.IsMedicine)
                     {
                         //this.currrentServiceAdo.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT ||
-                        if (this.currrentServiceAdo.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT || String.IsNullOrEmpty(this.currrentServiceAdo.activeIngrBhytCode)) 
+                        if (this.currrentServiceAdo.MEDICINE_LINE_ID == IMSys.DbConfig.HIS_RS.HIS_MEDICINE_LINE.ID__VT_YHCT || String.IsNullOrEmpty(this.currrentServiceAdo.activeIngrBhytCode))
                         {
                             this.lciDosageForm.AppearanceItemCaption.ForeColor = Color.Black;
                         }
@@ -5217,11 +5323,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     else if (e.Column.FieldName == "PercentProfit")
                     {
                         data.PRICE = (1 + data.PercentProfit / 100) * data.ExpPriceVat;
+                        data.ExpPrice = data.PRICE;
                     }
                     else if (e.Column.FieldName == "PRICE")
                     {
                         if (data.ExpPriceVat > 0)
+                        {
                             data.PercentProfit = 100 * (data.PRICE - data.ExpPriceVat) / data.ExpPriceVat;
+                            data.ExpPrice = data.PRICE;
+                        }
                         else
                         {
                             data.ExpPriceVat = data.PRICE / (decimal)((decimal)1 + (data.PercentProfit / (decimal)100));
@@ -5232,6 +5342,30 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         if (data.IsReusable)
                             ReUpdatePrice(true);
+                        if (!chkPreExpPrice.Checked)
+                        {
+                            if (!HisConfig.ApplyServicePatyPrice)
+                            {
+
+                            }
+                            else
+                            {
+                                data.ExpPrice = data.PRICE;
+                            }
+                        }
+                        else
+                        {
+                            data.PRICE = data.PRE_PRICE_Str ?? 0;
+                            data.ExpPrice = data.PRICE;
+                        }
+                        decimal profit = 0;
+
+                        if (data.ExpPriceVat > 0 && data.PRICE > 0)
+                            profit = 100 * (data.PRICE - data.ExpPriceVat) / data.ExpPriceVat;
+                        if (data.PercentProfit < profit && data.PRICE > 0 || !data.IsNotSell)
+                        {
+                            data.PercentProfit = profit;
+                        }
                         gridControlServicePaty.RefreshDataSource();
                     }
 
@@ -5252,7 +5386,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         data.PRICE = RoundUp(data.PRICE, tp_);
                     }
 
-                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => data.PRICE), data.PRICE));
                     gridControlServicePaty.RefreshDataSource();
 
                 }
@@ -5922,11 +6055,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             }
                             SetDataSourceGridControlMediMateMaterial();
                         }
+
+                        ValidateDocumentNumberDuplicateCached(forceCheck: false, focusOnInvalid: true);
                         return;
 
                     }
                     Supplier_RowClick(supplier);
                     Contract_RowClick();
+
+                    ValidateDocumentNumberDuplicateCached(forceCheck: false, focusOnInvalid: true);
                 }
                 else if (txtNhaCC.EditValue == null && oldSupplierId != 0 && currentImpMestType != null && (this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__NCC || this.currentImpMestType.ID == IMSys.DbConfig.HIS_RS.HIS_IMP_MEST_TYPE.ID__DK))
                 {
@@ -6243,6 +6380,21 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void chkPreExpPrice_CheckedChanged(object sender, EventArgs e)
+        {
+
+            try
+            {
+                LoadServicePatyByAdo();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
+        }
+
         private bool IsContinueAfterSupplierWarning(VHisServiceADO serviceADO)
         {
             try
@@ -6291,7 +6443,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
-            return true; 
+            return true;
         }
     }
 }

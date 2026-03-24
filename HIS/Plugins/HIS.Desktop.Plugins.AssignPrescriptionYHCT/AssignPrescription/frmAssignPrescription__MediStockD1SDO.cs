@@ -748,28 +748,40 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 if (data != null)
                 {
                     Inventec.Common.Mapper.DataObjectMapper.Map<MediMatyTypeADO>(this.currentMedicineTypeADOForEdit, data);
-                    if (this.currentMedicineTypeADOForEdit == null) throw new ArgumentNullException("currentMedicineTypeADOForEdit is null");
+                    if (this.currentMedicineTypeADOForEdit == null)
+                        throw new ArgumentNullException("currentMedicineTypeADOForEdit is null");
+
                     if (data.GetType() == typeof(DMediStock1ADO))
                     {
                         DMediStock1ADO dMediStock = data as DMediStock1ADO;
-                        this.currentMedicineTypeADOForEdit.IsStent = ((dMediStock.IS_STENT ?? 0) == GlobalVariables.CommonNumberTrue ? true : false);
+
+                        this.currentMedicineTypeADOForEdit.IsStent =
+                            ((dMediStock.IS_STENT ?? 0) == GlobalVariables.CommonNumberTrue);
+
+                        // Map cờ không cho phép hao phí từ kho
+                        this.currentMedicineTypeADOForEdit.IS_NOT_EXPEND = dMediStock.IS_NOT_EXPEND;
+
+                        // Nếu vật tư/thuốc được đánh dấu không cho phép hao phí => luôn false và khóa checkbox
+                        if ((this.currentMedicineTypeADOForEdit.IS_NOT_EXPEND ?? 0) == 1)
+                        {
+                            this.currentMedicineTypeADOForEdit.IsExpend = false;
+                            this.currentMedicineTypeADOForEdit.IsDisableExpend = true;
+                        }
+
                         this.currentMedicineTypeADOForEdit.IsAllowOdd = this.GetIsAllowOdd(dMediStock);
                         this.currentMedicineTypeADOForEdit.DO_NOT_REQUIRED_USE_FORM = GetDoNotRequiredUseForm(dMediStock);
                         this.SetControlSoLuongNgayNhapChanLe(this.currentMedicineTypeADOForEdit);
                     }
 
-                    //this.ChangeControlSoLuongNgayNhapChanLe(this.currentMedicineTypeADOForEdit.MEDI_STOCK_ID ?? 0);
-                    //this.UpdateMedicineUseFormInDataRow(this.currentMedicineTypeADOForEdit);
                     this.actionBosung = GlobalVariables.ActionAdd;
                     this.VisibleButton(this.actionBosung);
                     this.ReSetDataInputAfterAdd__MedicinePage();
                     this.btnAdd.Enabled = true;
                     this.txtMediMatyForPrescription.Text = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
+
                     if (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                     {
                         this.FillDataIntoMedicineUseForm(currentMedicineTypeADOForEdit.ID);
-
-                        //Neu la vat tu thi mặc định focus vào ô số lượng
                         this.spinAmount.Focus();
                         this.spinAmount.SelectAll();
                     }

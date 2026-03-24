@@ -56,10 +56,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barbtnSave = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.panelReasonNt = new System.Windows.Forms.Panel();
             this.txtReasonNt = new DevExpress.XtraEditors.ButtonEdit();
             this.cboReasonNt = new DevExpress.XtraEditors.GridLookUpEdit();
@@ -146,9 +142,15 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciReasonNt = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem26 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.timerInit = new System.Windows.Forms.Timer(this.components);
             this.toolTipController1 = new DevExpress.Utils.ToolTipController(this.components);
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkPatientCAPD.Properties)).BeginInit();
@@ -231,6 +233,8 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             ((System.ComponentModel.ISupportInitialize)(this.lciReasonNt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -281,8 +285,8 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // chkPatientCAPD
             // 
-            this.chkPatientCAPD.Location = new System.Drawing.Point(311, 74);
-            this.chkPatientCAPD.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkPatientCAPD.Location = new System.Drawing.Point(311, 25);
+            this.chkPatientCAPD.Margin = new System.Windows.Forms.Padding(2);
             this.chkPatientCAPD.MenuManager = this.barManager1;
             this.chkPatientCAPD.Name = "chkPatientCAPD";
             this.chkPatientCAPD.Properties.Caption = "";
@@ -295,10 +299,6 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barbtnSave});
@@ -323,39 +323,11 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.barbtnSave.Name = "barbtnSave";
             this.barbtnSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.barbtnSave_ItemClick);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(459, 29);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 631);
-            this.barDockControlBottom.Size = new System.Drawing.Size(459, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 602);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(459, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 602);
-            // 
             // panelReasonNt
             // 
             this.panelReasonNt.Controls.Add(this.txtReasonNt);
             this.panelReasonNt.Controls.Add(this.cboReasonNt);
-            this.panelReasonNt.Location = new System.Drawing.Point(97, 406);
+            this.panelReasonNt.Location = new System.Drawing.Point(97, 357);
             this.panelReasonNt.MaximumSize = new System.Drawing.Size(0, 23);
             this.panelReasonNt.Name = "panelReasonNt";
             this.panelReasonNt.Size = new System.Drawing.Size(343, 20);
@@ -403,8 +375,8 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // paneControl1
             // 
             this.paneControl1.DiagramModel = null;
-            this.paneControl1.Location = new System.Drawing.Point(2, 648);
-            this.paneControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.paneControl1.Location = new System.Drawing.Point(2, 599);
+            this.paneControl1.Margin = new System.Windows.Forms.Padding(4);
             this.paneControl1.Name = "paneControl1";
             this.paneControl1.Pane = null;
             this.paneControl1.Size = new System.Drawing.Size(438, 1);
@@ -412,7 +384,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cboPatientReceive
             // 
-            this.cboPatientReceive.Location = new System.Drawing.Point(157, 242);
+            this.cboPatientReceive.Location = new System.Drawing.Point(157, 193);
             this.cboPatientReceive.MenuManager = this.barManager1;
             this.cboPatientReceive.Name = "cboPatientReceive";
             this.cboPatientReceive.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
@@ -434,7 +406,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtPatientReceive
             // 
-            this.txtPatientReceive.Location = new System.Drawing.Point(97, 242);
+            this.txtPatientReceive.Location = new System.Drawing.Point(97, 193);
             this.txtPatientReceive.MenuManager = this.barManager1;
             this.txtPatientReceive.Name = "txtPatientReceive";
             this.txtPatientReceive.Size = new System.Drawing.Size(60, 20);
@@ -445,16 +417,16 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // lblNote
             // 
             this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNote.Location = new System.Drawing.Point(97, 170);
+            this.lblNote.Location = new System.Drawing.Point(97, 121);
             this.lblNote.Name = "lblNote";
-            this.lblNote.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lblNote.Padding = new System.Windows.Forms.Padding(4);
             this.lblNote.Size = new System.Drawing.Size(343, 20);
             this.lblNote.TabIndex = 42;
             this.lblNote.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // txtGROUP_NAME
             // 
-            this.txtGROUP_NAME.Location = new System.Drawing.Point(97, 98);
+            this.txtGROUP_NAME.Location = new System.Drawing.Point(97, 49);
             this.txtGROUP_NAME.Name = "txtGROUP_NAME";
             this.txtGROUP_NAME.Size = new System.Drawing.Size(343, 20);
             this.txtGROUP_NAME.TabIndex = 41;
@@ -463,7 +435,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // chkIsEmergency
             // 
             this.chkIsEmergency.Enabled = false;
-            this.chkIsEmergency.Location = new System.Drawing.Point(97, 74);
+            this.chkIsEmergency.Location = new System.Drawing.Point(97, 25);
             this.chkIsEmergency.MenuManager = this.barManager1;
             this.chkIsEmergency.Name = "chkIsEmergency";
             this.chkIsEmergency.Properties.Caption = "";
@@ -475,7 +447,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // cboPATIENT_CLASSIFY
             // 
             this.cboPATIENT_CLASSIFY.EditValue = "";
-            this.cboPATIENT_CLASSIFY.Location = new System.Drawing.Point(157, 430);
+            this.cboPATIENT_CLASSIFY.Location = new System.Drawing.Point(157, 381);
             this.cboPATIENT_CLASSIFY.MenuManager = this.barManager1;
             this.cboPATIENT_CLASSIFY.Name = "cboPATIENT_CLASSIFY";
             this.cboPATIENT_CLASSIFY.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -499,7 +471,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtPATIENT_CLASSIFY
             // 
-            this.txtPATIENT_CLASSIFY.Location = new System.Drawing.Point(97, 430);
+            this.txtPATIENT_CLASSIFY.Location = new System.Drawing.Point(97, 381);
             this.txtPATIENT_CLASSIFY.MenuManager = this.barManager1;
             this.txtPATIENT_CLASSIFY.Name = "txtPATIENT_CLASSIFY";
             this.txtPATIENT_CLASSIFY.Size = new System.Drawing.Size(60, 20);
@@ -509,7 +481,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // labelGender
             // 
-            this.labelGender.Location = new System.Drawing.Point(376, 26);
+            this.labelGender.Location = new System.Drawing.Point(376, -23);
             this.labelGender.Name = "labelGender";
             this.labelGender.Size = new System.Drawing.Size(64, 20);
             this.labelGender.TabIndex = 37;
@@ -517,7 +489,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // labelAddress
             // 
-            this.labelAddress.Location = new System.Drawing.Point(97, 50);
+            this.labelAddress.Location = new System.Drawing.Point(97, 1);
             this.labelAddress.Name = "labelAddress";
             this.labelAddress.Size = new System.Drawing.Size(343, 20);
             this.labelAddress.TabIndex = 36;
@@ -525,7 +497,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // labelDOB
             // 
-            this.labelDOB.Location = new System.Drawing.Point(97, 26);
+            this.labelDOB.Location = new System.Drawing.Point(97, -23);
             this.labelDOB.Name = "labelDOB";
             this.labelDOB.Size = new System.Drawing.Size(187, 20);
             this.labelDOB.TabIndex = 35;
@@ -533,7 +505,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // labelName
             // 
-            this.labelName.Location = new System.Drawing.Point(97, 2);
+            this.labelName.Location = new System.Drawing.Point(97, -47);
             this.labelName.Name = "labelName";
             this.labelName.Size = new System.Drawing.Size(343, 20);
             this.labelName.TabIndex = 34;
@@ -541,7 +513,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtInCode
             // 
-            this.txtInCode.Location = new System.Drawing.Point(97, 122);
+            this.txtInCode.Location = new System.Drawing.Point(97, 73);
             this.txtInCode.MenuManager = this.barManager1;
             this.txtInCode.Name = "txtInCode";
             this.txtInCode.Size = new System.Drawing.Size(164, 20);
@@ -552,7 +524,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // panelSubIcdYhct
             // 
             this.panelSubIcdYhct.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelSubIcdYhct.Location = new System.Drawing.Point(0, 380);
+            this.panelSubIcdYhct.Location = new System.Drawing.Point(0, 331);
             this.panelSubIcdYhct.Name = "panelSubIcdYhct";
             this.panelSubIcdYhct.Size = new System.Drawing.Size(442, 24);
             this.panelSubIcdYhct.TabIndex = 32;
@@ -560,7 +532,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // panelControlIcdYhct
             // 
             this.panelControlIcdYhct.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlIcdYhct.Location = new System.Drawing.Point(0, 332);
+            this.panelControlIcdYhct.Location = new System.Drawing.Point(0, 283);
             this.panelControlIcdYhct.Name = "panelControlIcdYhct";
             this.panelControlIcdYhct.Size = new System.Drawing.Size(442, 24);
             this.panelControlIcdYhct.TabIndex = 31;
@@ -568,7 +540,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // panelControlSubIcd
             // 
             this.panelControlSubIcd.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
-            this.panelControlSubIcd.Location = new System.Drawing.Point(0, 356);
+            this.panelControlSubIcd.Location = new System.Drawing.Point(0, 307);
             this.panelControlSubIcd.Name = "panelControlSubIcd";
             this.panelControlSubIcd.Size = new System.Drawing.Size(442, 24);
             this.panelControlSubIcd.TabIndex = 30;
@@ -576,7 +548,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // LblPrice
             // 
             this.LblPrice.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.LblPrice.Location = new System.Drawing.Point(97, 598);
+            this.LblPrice.Location = new System.Drawing.Point(97, 549);
             this.LblPrice.Name = "LblPrice";
             this.LblPrice.Size = new System.Drawing.Size(343, 20);
             this.LblPrice.StyleController = this.layoutControl1;
@@ -584,7 +556,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // CboPrimaryPatientType
             // 
-            this.CboPrimaryPatientType.Location = new System.Drawing.Point(97, 526);
+            this.CboPrimaryPatientType.Location = new System.Drawing.Point(97, 477);
             this.CboPrimaryPatientType.MenuManager = this.barManager1;
             this.CboPrimaryPatientType.Name = "CboPrimaryPatientType";
             this.CboPrimaryPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -610,7 +582,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // CboPatientType
             // 
-            this.CboPatientType.Location = new System.Drawing.Point(97, 502);
+            this.CboPatientType.Location = new System.Drawing.Point(97, 453);
             this.CboPatientType.MenuManager = this.barManager1;
             this.CboPatientType.Name = "CboPatientType";
             this.CboPatientType.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -636,7 +608,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // CboBedService
             // 
-            this.CboBedService.Location = new System.Drawing.Point(97, 478);
+            this.CboBedService.Location = new System.Drawing.Point(97, 429);
             this.CboBedService.MenuManager = this.barManager1;
             this.CboBedService.Name = "CboBedService";
             this.CboBedService.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -667,7 +639,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             0,
             0,
             0});
-            this.SpNamGhep.Location = new System.Drawing.Point(97, 574);
+            this.SpNamGhep.Location = new System.Drawing.Point(97, 525);
             this.SpNamGhep.MenuManager = this.barManager1;
             this.SpNamGhep.Name = "SpNamGhep";
             this.SpNamGhep.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -685,7 +657,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // lblSoVaoVien
             // 
-            this.lblSoVaoVien.Location = new System.Drawing.Point(97, 146);
+            this.lblSoVaoVien.Location = new System.Drawing.Point(97, 97);
             this.lblSoVaoVien.Name = "lblSoVaoVien";
             this.lblSoVaoVien.Size = new System.Drawing.Size(343, 20);
             this.lblSoVaoVien.TabIndex = 23;
@@ -693,7 +665,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // layoutControlIcd
             // 
-            this.layoutControlIcd.Location = new System.Drawing.Point(0, 312);
+            this.layoutControlIcd.Location = new System.Drawing.Point(0, 263);
             this.layoutControlIcd.Name = "layoutControlIcd";
             this.layoutControlIcd.Root = this.Root;
             this.layoutControlIcd.Size = new System.Drawing.Size(442, 20);
@@ -711,7 +683,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cboBed
             // 
-            this.cboBed.Location = new System.Drawing.Point(97, 454);
+            this.cboBed.Location = new System.Drawing.Point(97, 405);
             this.cboBed.MenuManager = this.barManager1;
             this.cboBed.Name = "cboBed";
             this.cboBed.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -738,7 +710,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cboTreatmentType
             // 
-            this.cboTreatmentType.Location = new System.Drawing.Point(157, 218);
+            this.cboTreatmentType.Location = new System.Drawing.Point(157, 169);
             this.cboTreatmentType.MenuManager = this.barManager1;
             this.cboTreatmentType.Name = "cboTreatmentType";
             this.cboTreatmentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -762,7 +734,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtTreatmentTypeCode
             // 
-            this.txtTreatmentTypeCode.Location = new System.Drawing.Point(97, 218);
+            this.txtTreatmentTypeCode.Location = new System.Drawing.Point(97, 169);
             this.txtTreatmentTypeCode.MenuManager = this.barManager1;
             this.txtTreatmentTypeCode.Name = "txtTreatmentTypeCode";
             this.txtTreatmentTypeCode.Size = new System.Drawing.Size(60, 20);
@@ -772,7 +744,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(298, 622);
+            this.btnSave.Location = new System.Drawing.Point(298, 573);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(142, 22);
             this.btnSave.StyleController = this.layoutControl1;
@@ -782,7 +754,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // txtBedRoomCode
             // 
-            this.txtBedRoomCode.Location = new System.Drawing.Point(97, 266);
+            this.txtBedRoomCode.Location = new System.Drawing.Point(97, 217);
             this.txtBedRoomCode.Name = "txtBedRoomCode";
             this.txtBedRoomCode.Size = new System.Drawing.Size(60, 20);
             this.txtBedRoomCode.StyleController = this.layoutControl1;
@@ -791,7 +763,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cboBedRoom
             // 
-            this.cboBedRoom.Location = new System.Drawing.Point(157, 266);
+            this.cboBedRoom.Location = new System.Drawing.Point(157, 217);
             this.cboBedRoom.Name = "cboBedRoom";
             this.cboBedRoom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboBedRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -817,7 +789,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // dtLogTime
             // 
             this.dtLogTime.EditValue = null;
-            this.dtLogTime.Location = new System.Drawing.Point(97, 194);
+            this.dtLogTime.Location = new System.Drawing.Point(97, 145);
             this.dtLogTime.Name = "dtLogTime";
             this.dtLogTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -835,7 +807,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cboServiceCondition
             // 
-            this.cboServiceCondition.Location = new System.Drawing.Point(97, 550);
+            this.cboServiceCondition.Location = new System.Drawing.Point(97, 501);
             this.cboServiceCondition.MenuManager = this.barManager1;
             this.cboServiceCondition.Name = "cboServiceCondition";
             this.cboServiceCondition.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -860,7 +832,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // cbboDoctor
             // 
             this.cbboDoctor.EnterMoveNextControl = true;
-            this.cbboDoctor.Location = new System.Drawing.Point(157, 290);
+            this.cbboDoctor.Location = new System.Drawing.Point(157, 241);
             this.cbboDoctor.MenuManager = this.barManager1;
             this.cbboDoctor.Name = "cbboDoctor";
             this.cbboDoctor.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -883,7 +855,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             // 
             // cbbDoctor
             // 
-            this.cbbDoctor.Location = new System.Drawing.Point(97, 290);
+            this.cbbDoctor.Location = new System.Drawing.Point(97, 241);
             this.cbbDoctor.MenuManager = this.barManager1;
             this.cbbDoctor.Name = "cbbDoctor";
             this.cbbDoctor.Size = new System.Drawing.Size(60, 20);
@@ -935,7 +907,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem25,
             this.lciReasonNt,
             this.layoutControlItem26});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -49);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup1.Size = new System.Drawing.Size(442, 651);
@@ -1395,10 +1367,42 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             this.layoutControlItem26.Text = "Bệnh nhân CAPD:";
             this.layoutControlItem26.TextSize = new System.Drawing.Size(85, 13);
             // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(459, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 631);
+            this.barDockControlBottom.Size = new System.Drawing.Size(459, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 602);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(459, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 602);
+            // 
             // timerInit
             // 
             this.timerInit.Interval = 300;
             this.timerInit.Tick += new System.EventHandler(this.timerInit_Tick);
+            // 
+            // dxErrorProvider1
+            // 
+            this.dxErrorProvider1.ContainerControl = this;
             // 
             // frmBedRoomWithIn
             // 
@@ -1504,6 +1508,8 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
             ((System.ComponentModel.ISupportInitialize)(this.lciReasonNt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem26)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1609,5 +1615,7 @@ namespace HIS.Desktop.Plugins.BedRoomWithIn
         private DevExpress.XtraEditors.ButtonEdit txtReasonNt;
         private DevExpress.XtraEditors.CheckEdit chkPatientCAPD;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem26;
+        private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
     }
 }

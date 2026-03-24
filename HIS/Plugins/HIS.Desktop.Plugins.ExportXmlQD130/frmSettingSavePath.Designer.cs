@@ -68,6 +68,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPathCollinearXml = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.txtPathXmlTT12 = new DevExpress.XtraEditors.TextEdit();
+            this.lciPathXml12 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.btnPathXmlTT12 = new DevExpress.XtraEditors.SimpleButton();
+            this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -81,14 +85,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPathCollinearXml)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPathXmlTT12.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPathXml12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             this.SuspendLayout();
             // 
             // barManager1
             // 
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSave});
@@ -112,7 +115,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             // 
             this.barDockControlBottom.CausesValidation = false;
             this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 84);
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 112);
             this.barDockControlBottom.Size = new System.Drawing.Size(604, 0);
             // 
             // barDockControlLeft
@@ -120,17 +123,19 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.barDockControlLeft.CausesValidation = false;
             this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 84);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 112);
             // 
             // barDockControlRight
             // 
             this.barDockControlRight.CausesValidation = false;
             this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.barDockControlRight.Location = new System.Drawing.Point(604, 0);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 84);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 112);
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnPathXmlTT12);
+            this.layoutControl1.Controls.Add(this.txtPathXmlTT12);
             this.layoutControl1.Controls.Add(this.btnPathCollinearXml);
             this.layoutControl1.Controls.Add(this.txtPathCollinearXml);
             this.layoutControl1.Controls.Add(this.btnPathXmlGDYK);
@@ -142,7 +147,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControl1.Margin = new System.Windows.Forms.Padding(2);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(604, 84);
+            this.layoutControl1.Size = new System.Drawing.Size(604, 112);
             this.layoutControl1.TabIndex = 5;
             this.layoutControl1.Text = "layoutControl1";
             // 
@@ -219,11 +224,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem1,
             this.layoutControlItem2,
             this.lciPathCollinearXml,
-            this.layoutControlItem4});
+            this.layoutControlItem4,
+            this.lciPathXml12,
+            this.layoutControlItem5});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.OptionsItemText.TextToControlDistance = 4;
-            this.layoutControlGroup1.Size = new System.Drawing.Size(604, 84);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(604, 112);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // lciPathSaveXml
@@ -248,7 +255,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.lciPathSaveXml12.Location = new System.Drawing.Point(0, 56);
             this.lciPathSaveXml12.Name = "lciPathSaveXml12";
             this.lciPathSaveXml12.OptionsToolTip.ToolTip = "Thư mục lưu giám định y khoa (XML 12)";
-            this.lciPathSaveXml12.Size = new System.Drawing.Size(575, 28);
+            this.lciPathSaveXml12.Size = new System.Drawing.Size(575, 24);
             this.lciPathSaveXml12.Text = "Thư mục lưu gdyk:";
             this.lciPathSaveXml12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciPathSaveXml12.TextSize = new System.Drawing.Size(370, 20);
@@ -295,11 +302,53 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
+            // txtPathXmlTT12
+            // 
+            this.txtPathXmlTT12.Location = new System.Drawing.Point(377, 82);
+            this.txtPathXmlTT12.MenuManager = this.barManager1;
+            this.txtPathXmlTT12.Name = "txtPathXmlTT12";
+            this.txtPathXmlTT12.Size = new System.Drawing.Size(196, 20);
+            this.txtPathXmlTT12.StyleController = this.layoutControl1;
+            this.txtPathXmlTT12.TabIndex = 17;
+            // 
+            // lciPathXml12
+            // 
+            this.lciPathXml12.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciPathXml12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciPathXml12.Control = this.txtPathXmlTT12;
+            this.lciPathXml12.Location = new System.Drawing.Point(0, 80);
+            this.lciPathXml12.Name = "lciPathXml12";
+            this.lciPathXml12.Size = new System.Drawing.Size(575, 32);
+            this.lciPathXml12.Text = "Thư mục lưu XML TT12:";
+            this.lciPathXml12.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciPathXml12.TextSize = new System.Drawing.Size(370, 20);
+            this.lciPathXml12.TextToControlDistance = 5;
+            // 
+            // btnPathXmlTT12
+            // 
+            this.btnPathXmlTT12.Image = global::HIS.Desktop.Plugins.ExportXmlQD130.Properties.Resources.Folder;
+            this.btnPathXmlTT12.Location = new System.Drawing.Point(577, 86);
+            this.btnPathXmlTT12.Name = "btnPathXmlTT12";
+            this.btnPathXmlTT12.Size = new System.Drawing.Size(25, 24);
+            this.btnPathXmlTT12.StyleController = this.layoutControl1;
+            this.btnPathXmlTT12.TabIndex = 18;
+            this.btnPathXmlTT12.Click += new System.EventHandler(this.btnPathXmlTT12_Click);
+            // 
+            // layoutControlItem5
+            // 
+            this.layoutControlItem5.Control = this.btnPathXmlTT12;
+            this.layoutControlItem5.Location = new System.Drawing.Point(575, 84);
+            this.layoutControlItem5.Name = "layoutControlItem5";
+            this.layoutControlItem5.Size = new System.Drawing.Size(29, 28);
+            this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem5.TextVisible = false;
+            this.layoutControlItem5.Click += new System.EventHandler(this.btnPathXmlTT12_Click);
+            // 
             // frmSettingSavePath
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(604, 84);
+            this.ClientSize = new System.Drawing.Size(604, 112);
             this.Controls.Add(this.layoutControl1);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
@@ -329,6 +378,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPathCollinearXml)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtPathXmlTT12.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciPathXml12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -355,5 +407,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         private DevExpress.XtraEditors.TextEdit txtPathCollinearXml;
         private DevExpress.XtraLayout.LayoutControlItem lciPathCollinearXml;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem4;
+        private DevExpress.XtraEditors.SimpleButton btnPathXmlTT12;
+        private DevExpress.XtraEditors.TextEdit txtPathXmlTT12;
+        private DevExpress.XtraLayout.LayoutControlItem lciPathXml12;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
     }
 }
