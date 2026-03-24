@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTransactionList));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject85 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject86 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -132,7 +133,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject168 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtTransactionCode = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtnRCFind = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnRCRefresh = new DevExpress.XtraBars.BarButtonItem();
@@ -141,6 +142,10 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnCodePayQr = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnCodeTransaction = new DevExpress.XtraBars.BarButtonItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.txtCodePayQr = new DevExpress.XtraEditors.TextEdit();
             this.layoutControl7 = new DevExpress.XtraLayout.LayoutControl();
             this.btnWarning = new DevExpress.XtraEditors.SimpleButton();
@@ -156,6 +161,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.txtAccountBookCodeFind = new DevExpress.XtraEditors.TextEdit();
             this.txtTreatmentCodeFind = new DevExpress.XtraEditors.TextEdit();
             this.ucPaging1 = new Inventec.UC.Paging.UcPaging();
+            this.btnRepayCheck = new DevExpress.XtraEditors.SimpleButton();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
             this.btnFind = new DevExpress.XtraEditors.SimpleButton();
             this.navBarControl1 = new DevExpress.XtraNavBar.NavBarControl();
@@ -311,13 +317,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu();
-            this.btnRepayCheck = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.txtTransactionCode.Properties)).BeginInit();
@@ -434,8 +435,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -480,6 +481,10 @@ namespace HIS.Desktop.Plugins.TransactionList
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnRCFind,
@@ -563,6 +568,34 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.bbtnCodeTransaction.ItemShortcut = new DevExpress.XtraBars.BarShortcut(System.Windows.Forms.Keys.F4);
             this.bbtnCodeTransaction.Name = "bbtnCodeTransaction";
             this.bbtnCodeTransaction.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnCodeTransaction_ItemClick);
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1304, 29);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 733);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1304, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 704);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1304, 29);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 704);
             // 
             // txtCodePayQr
             // 
@@ -743,6 +776,17 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.ucPaging1.Name = "ucPaging1";
             this.ucPaging1.Size = new System.Drawing.Size(1039, 22);
             this.ucPaging1.TabIndex = 9;
+            // 
+            // btnRepayCheck
+            // 
+            this.btnRepayCheck.Enabled = false;
+            this.btnRepayCheck.Location = new System.Drawing.Point(2, 654);
+            this.btnRepayCheck.Name = "btnRepayCheck";
+            this.btnRepayCheck.Size = new System.Drawing.Size(257, 22);
+            this.btnRepayCheck.StyleController = this.layoutControl1;
+            this.btnRepayCheck.TabIndex = 8;
+            this.btnRepayCheck.Text = "Kiểm tra hoàn tiền ngân hàng";
+            this.btnRepayCheck.Click += new System.EventHandler(this.btnRepayCheck_Click);
             // 
             // btnRefresh
             // 
@@ -982,7 +1026,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             // 
             // txtAccountBookSymbol
             // 
-            this.txtAccountBookSymbol.Location = new System.Drawing.Point(2, 59);
+            this.txtAccountBookSymbol.Location = new System.Drawing.Point(2, 60);
             this.txtAccountBookSymbol.MenuManager = this.barManager1;
             this.txtAccountBookSymbol.Name = "txtAccountBookSymbol";
             this.txtAccountBookSymbol.Properties.NullValuePrompt = "Ký hiệu sổ";
@@ -993,7 +1037,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             // 
             // txtAccountBookTemp
             // 
-            this.txtAccountBookTemp.Location = new System.Drawing.Point(2, 35);
+            this.txtAccountBookTemp.Location = new System.Drawing.Point(2, 36);
             this.txtAccountBookTemp.MenuManager = this.barManager1;
             this.txtAccountBookTemp.Name = "txtAccountBookTemp";
             this.txtAccountBookTemp.Properties.NullValuePrompt = "Mẫu sổ";
@@ -1004,7 +1048,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             // 
             // txtAccountBookName
             // 
-            this.txtAccountBookName.Location = new System.Drawing.Point(2, 11);
+            this.txtAccountBookName.Location = new System.Drawing.Point(2, 12);
             this.txtAccountBookName.MenuManager = this.barManager1;
             this.txtAccountBookName.Name = "txtAccountBookName";
             this.txtAccountBookName.Properties.NullValuePrompt = "Tên sổ";
@@ -1021,7 +1065,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem10,
             this.layoutControlItem11,
             this.layoutControlItem12});
-            this.layoutControlGroup4.Location = new System.Drawing.Point(0, -1);
+            this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 10, 0);
             this.layoutControlGroup4.Size = new System.Drawing.Size(232, 82);
@@ -2563,50 +2607,6 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1304, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 733);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1304, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 704);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1304, 29);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 704);
-            // 
-            // popupMenu1
-            // 
-            this.popupMenu1.Manager = this.barManager1;
-            this.popupMenu1.Name = "popupMenu1";
-            // 
-            // btnRepayCheck
-            // 
-            this.btnRepayCheck.Enabled = false;
-            this.btnRepayCheck.Location = new System.Drawing.Point(2, 654);
-            this.btnRepayCheck.Name = "btnRepayCheck";
-            this.btnRepayCheck.Size = new System.Drawing.Size(257, 22);
-            this.btnRepayCheck.StyleController = this.layoutControl1;
-            this.btnRepayCheck.TabIndex = 8;
-            this.btnRepayCheck.Text = "Kiểm tra hoàn tiền ngân hàng";
-            this.btnRepayCheck.Click += new System.EventHandler(this.btnRepayCheck_Click);
-            // 
             // layoutControlItem25
             // 
             this.layoutControlItem25.Control = this.btnRepayCheck;
@@ -2615,6 +2615,11 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem25.Size = new System.Drawing.Size(261, 26);
             this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem25.TextVisible = false;
+            // 
+            // popupMenu1
+            // 
+            this.popupMenu1.Manager = this.barManager1;
+            this.popupMenu1.Name = "popupMenu1";
             // 
             // frmTransactionList
             // 
@@ -2752,8 +2757,8 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
