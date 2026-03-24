@@ -68,5 +68,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
         public string SERVICE_RESULT { get; set; }
         public long EXP_MEST_ID { get; set; }
         public string PREPARATIONS_BLOOD_NAME { set; get; }
+
+        public long? DEFROST_TIME { get; set; }
+        public string NOTE { get; set; }
     }
 }

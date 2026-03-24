@@ -48,191 +48,187 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisCheckBeforeTransfusionBlood));
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject337 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject338 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject339 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject340 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject501 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject502 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject503 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject504 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject505 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject506 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject507 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject508 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject509 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject510 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject511 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject512 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject513 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject514 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject515 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject516 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject517 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject518 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject519 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject520 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject521 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject522 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject523 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject524 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject525 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject526 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject527 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject528 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject529 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject530 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject531 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject532 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject533 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject534 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject535 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject536 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject537 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject538 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject539 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject540 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject541 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject542 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject543 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject544 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject545 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject546 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject547 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject548 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject549 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject550 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject551 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject552 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject553 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject554 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject555 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject556 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject557 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject558 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject559 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject560 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject397 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject398 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject399 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject400 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject561 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject562 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject563 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject564 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject401 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject402 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject403 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject404 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject565 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject566 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject567 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject568 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject569 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject570 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject571 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject572 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject573 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject574 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject575 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject576 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject577 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject578 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject579 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject580 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject581 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject582 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject583 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject584 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject585 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject586 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject587 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject588 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject589 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject590 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject591 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject592 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject593 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject594 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject595 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject596 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject597 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject598 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject599 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject600 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject601 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject602 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject603 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject604 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject605 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject606 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject607 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject608 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject609 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject610 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject611 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject612 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject613 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject614 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject615 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject616 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject617 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject618 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject619 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject620 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject621 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject622 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject623 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject624 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject625 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject626 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject627 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject628 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject629 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject630 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject631 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject632 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject633 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject634 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject635 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject636 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject637 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject638 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject639 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject640 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject641 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject642 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject643 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject644 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject645 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject646 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject647 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject648 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject649 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject650 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject651 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject652 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject653 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject654 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject655 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject656 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject493 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject494 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject495 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject496 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject657 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject658 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject659 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject660 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject21 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject29 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject30 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject31 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject32 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject33 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject34 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject35 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject36 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject37 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject38 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject39 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject40 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject41 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject42 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject43 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject44 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject45 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject46 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject47 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject48 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject49 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject50 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject51 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject52 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject53 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject54 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject55 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject56 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject57 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject58 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject59 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject60 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject61 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject62 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject63 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject64 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject65 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject66 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject67 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject68 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject69 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject70 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject71 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject72 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject73 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject74 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject75 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject76 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject77 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject78 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject79 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject80 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject81 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject82 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject83 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject84 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject85 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject86 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject87 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject88 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject89 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject90 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject91 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject92 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject93 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject94 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject95 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject96 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject97 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject98 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject99 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject100 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject101 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject102 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject103 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject104 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject105 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject106 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject107 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject108 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject109 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject110 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject111 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject112 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject113 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject114 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject115 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject116 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject117 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject118 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject119 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject120 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject121 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject122 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject123 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject124 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject125 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject126 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject127 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject128 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject129 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject130 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject131 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject132 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject133 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject134 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject135 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject136 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject137 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject138 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject139 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject140 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject141 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject142 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject143 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject144 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject145 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject146 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject147 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject148 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject149 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject150 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject151 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject152 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject153 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject154 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject155 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject156 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject157 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject158 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject159 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject160 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject161 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject162 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject163 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject164 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject165 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject166 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject167 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject168 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject169 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject170 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject171 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject172 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject173 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject174 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject175 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject176 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnPrint = new DevExpress.XtraEditors.DropDownButton();
             this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnPrint = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.treeListExpBlood = new DevExpress.XtraTreeList.TreeList();
             this.treeListCol_BloodTypeService = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListCol_Volume = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -266,6 +262,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboAC2 = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.dtDefrostTime = new DevExpress.XtraEditors.DateEdit();
+            this.txtNote = new DevExpress.XtraEditors.TextEdit();
             this.cboXNHH = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView36 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -282,6 +280,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciAntiGlobulinTwo = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciScangelGelcard = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciCoombs = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciDefrostTime = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lciNote = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciPuc = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem70 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -290,6 +290,10 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.emptySpaceItem1 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.emptySpaceItem11 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.dxErrorProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
@@ -793,6 +797,9 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAC2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDefrostTime.Properties.CalendarTimeProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDefrostTime.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNote.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboXNHH.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView36)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -809,6 +816,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             ((System.ComponentModel.ISupportInitialize)(this.lciAntiGlobulinTwo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciScangelGelcard)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCoombs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciDefrostTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNote)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPuc)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
@@ -1172,6 +1181,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.layoutControl1.Controls.Add(this.cboAntiGlobulinTwo);
             this.layoutControl1.Controls.Add(this.cboAC);
             this.layoutControl1.Controls.Add(this.cboAC2);
+            this.layoutControl1.Controls.Add(this.dtDefrostTime);
+            this.layoutControl1.Controls.Add(this.txtNote);
             this.layoutControl1.Controls.Add(this.cboXNHH);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
@@ -1196,10 +1207,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // barManager1
             // 
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnAdd,
@@ -1222,34 +1229,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.bbtnPrint.Name = "bbtnPrint";
             this.bbtnPrint.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnPrint_ItemClick);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1271, 0);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 629);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1271, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 629);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1271, 0);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 629);
-            // 
             // treeListExpBlood
             // 
             this.treeListExpBlood.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
@@ -1271,7 +1250,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.treeListExpBlood.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemTextEdit,
             this.repositoryItemCheckEdit7});
-            this.treeListExpBlood.Size = new System.Drawing.Size(1265, 450);
+            this.treeListExpBlood.Size = new System.Drawing.Size(1265, 422);
             this.treeListExpBlood.TabIndex = 6;
             this.treeListExpBlood.CustomNodeCellEdit += new DevExpress.XtraTreeList.GetCustomNodeCellEditEventHandler(this.treeListExpBlood_CustomNodeCellEdit);
             this.treeListExpBlood.CustomUnboundColumnData += new DevExpress.XtraTreeList.CustomColumnDataEventHandler(this.treeListExpBlood_CustomUnboundColumnData);
@@ -1395,22 +1374,22 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // txtTestTubeTwo
             // 
-            this.txtTestTubeTwo.Location = new System.Drawing.Point(98, 543);
+            this.txtTestTubeTwo.Location = new System.Drawing.Point(108, 515);
             this.txtTestTubeTwo.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestTubeTwo.MenuManager = this.barManager1;
             this.txtTestTubeTwo.Name = "txtTestTubeTwo";
-            this.txtTestTubeTwo.Size = new System.Drawing.Size(183, 22);
+            this.txtTestTubeTwo.Size = new System.Drawing.Size(173, 22);
             this.txtTestTubeTwo.StyleController = this.layoutControl1;
             this.txtTestTubeTwo.TabIndex = 11;
             this.txtTestTubeTwo.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTestTubeTwo_PreviewKeyDown);
             // 
             // txtPuc
             // 
-            this.txtPuc.Location = new System.Drawing.Point(98, 487);
+            this.txtPuc.Location = new System.Drawing.Point(108, 459);
             this.txtPuc.Margin = new System.Windows.Forms.Padding(4);
             this.txtPuc.MenuManager = this.barManager1;
             this.txtPuc.Name = "txtPuc";
-            this.txtPuc.Size = new System.Drawing.Size(750, 22);
+            this.txtPuc.Size = new System.Drawing.Size(740, 22);
             this.txtPuc.StyleController = this.layoutControl1;
             this.txtPuc.TabIndex = 8;
             this.txtPuc.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtPuc_PreviewKeyDown);
@@ -1428,27 +1407,27 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // txtTestTube
             // 
-            this.txtTestTube.Location = new System.Drawing.Point(98, 515);
+            this.txtTestTube.Location = new System.Drawing.Point(108, 487);
             this.txtTestTube.Margin = new System.Windows.Forms.Padding(4);
             this.txtTestTube.Name = "txtTestTube";
-            this.txtTestTube.Size = new System.Drawing.Size(183, 22);
+            this.txtTestTube.Size = new System.Drawing.Size(173, 22);
             this.txtTestTube.StyleController = this.layoutControl1;
             this.txtTestTube.TabIndex = 8;
             this.txtTestTube.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTestTube_PreviewKeyDown);
             // 
             // txtScangelGelcard
             // 
-            this.txtScangelGelcard.Location = new System.Drawing.Point(98, 571);
+            this.txtScangelGelcard.Location = new System.Drawing.Point(108, 543);
             this.txtScangelGelcard.Margin = new System.Windows.Forms.Padding(4);
             this.txtScangelGelcard.Name = "txtScangelGelcard";
-            this.txtScangelGelcard.Size = new System.Drawing.Size(466, 22);
+            this.txtScangelGelcard.Size = new System.Drawing.Size(456, 22);
             this.txtScangelGelcard.StyleController = this.layoutControl1;
             this.txtScangelGelcard.TabIndex = 14;
             this.txtScangelGelcard.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtScangelGelcard_PreviewKeyDown);
             // 
             // txtCoombs
             // 
-            this.txtCoombs.Location = new System.Drawing.Point(665, 571);
+            this.txtCoombs.Location = new System.Drawing.Point(665, 543);
             this.txtCoombs.Margin = new System.Windows.Forms.Padding(4);
             this.txtCoombs.Name = "txtCoombs";
             this.txtCoombs.Size = new System.Drawing.Size(603, 22);
@@ -1458,7 +1437,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboNewAbo
             // 
-            this.cboNewAbo.Location = new System.Drawing.Point(98, 459);
+            this.cboNewAbo.Location = new System.Drawing.Point(108, 431);
             this.cboNewAbo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboNewAbo.Name = "cboNewAbo";
             this.cboNewAbo.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1467,7 +1446,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
             this.cboNewAbo.Properties.NullText = "";
             this.cboNewAbo.Properties.View = this.gridView33;
-            this.cboNewAbo.Size = new System.Drawing.Size(182, 22);
+            this.cboNewAbo.Size = new System.Drawing.Size(172, 22);
             this.cboNewAbo.StyleController = this.layoutControl1;
             this.cboNewAbo.TabIndex = 10;
             this.cboNewAbo.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboNewAbo_ButtonClick);
@@ -1482,7 +1461,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboNewRH
             // 
-            this.cboNewRH.Location = new System.Drawing.Point(286, 459);
+            this.cboNewRH.Location = new System.Drawing.Point(286, 431);
             this.cboNewRH.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboNewRH.Name = "cboNewRH";
             this.cboNewRH.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1506,7 +1485,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboOldAbo
             // 
-            this.cboOldAbo.Location = new System.Drawing.Point(524, 459);
+            this.cboOldAbo.Location = new System.Drawing.Point(524, 431);
             this.cboOldAbo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboOldAbo.Name = "cboOldAbo";
             this.cboOldAbo.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1528,7 +1507,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboOldRH
             // 
-            this.cboOldRH.Location = new System.Drawing.Point(712, 459);
+            this.cboOldRH.Location = new System.Drawing.Point(712, 431);
             this.cboOldRH.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cboOldRH.Name = "cboOldRH";
             this.cboOldRH.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -1550,7 +1529,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboSaltEnvi
             // 
-            this.cboSaltEnvi.Location = new System.Drawing.Point(382, 515);
+            this.cboSaltEnvi.Location = new System.Drawing.Point(382, 487);
             this.cboSaltEnvi.Margin = new System.Windows.Forms.Padding(4);
             this.cboSaltEnvi.MenuManager = this.barManager1;
             this.cboSaltEnvi.Name = "cboSaltEnvi";
@@ -1569,7 +1548,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboAntiGlobulin
             // 
-            this.cboAntiGlobulin.Location = new System.Drawing.Point(666, 515);
+            this.cboAntiGlobulin.Location = new System.Drawing.Point(666, 487);
             this.cboAntiGlobulin.Margin = new System.Windows.Forms.Padding(4);
             this.cboAntiGlobulin.MenuManager = this.barManager1;
             this.cboAntiGlobulin.Name = "cboAntiGlobulin";
@@ -1588,7 +1567,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboSaltEnviTwo
             // 
-            this.cboSaltEnviTwo.Location = new System.Drawing.Point(382, 543);
+            this.cboSaltEnviTwo.Location = new System.Drawing.Point(382, 515);
             this.cboSaltEnviTwo.Margin = new System.Windows.Forms.Padding(4);
             this.cboSaltEnviTwo.MenuManager = this.barManager1;
             this.cboSaltEnviTwo.Name = "cboSaltEnviTwo";
@@ -1607,7 +1586,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboAntiGlobulinTwo
             // 
-            this.cboAntiGlobulinTwo.Location = new System.Drawing.Point(665, 543);
+            this.cboAntiGlobulinTwo.Location = new System.Drawing.Point(665, 515);
             this.cboAntiGlobulinTwo.Margin = new System.Windows.Forms.Padding(4);
             this.cboAntiGlobulinTwo.MenuManager = this.barManager1;
             this.cboAntiGlobulinTwo.Name = "cboAntiGlobulinTwo";
@@ -1626,7 +1605,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboAC
             // 
-            this.cboAC.Location = new System.Drawing.Point(949, 515);
+            this.cboAC.Location = new System.Drawing.Point(949, 487);
             this.cboAC.Margin = new System.Windows.Forms.Padding(4);
             this.cboAC.MenuManager = this.barManager1;
             this.cboAC.Name = "cboAC";
@@ -1654,7 +1633,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             // cboAC2
             // 
-            this.cboAC2.Location = new System.Drawing.Point(948, 543);
+            this.cboAC2.Location = new System.Drawing.Point(948, 515);
             this.cboAC2.Margin = new System.Windows.Forms.Padding(4);
             this.cboAC2.MenuManager = this.barManager1;
             this.cboAC2.Name = "cboAC2";
@@ -1680,9 +1659,38 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.gridView1.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView1.OptionsView.ShowGroupPanel = false;
             // 
+            // dtDefrostTime
+            // 
+            this.dtDefrostTime.EditValue = null;
+            this.dtDefrostTime.Location = new System.Drawing.Point(108, 571);
+            this.dtDefrostTime.Name = "dtDefrostTime";
+            this.dtDefrostTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.dtDefrostTime.Properties.CalendarTimeEditing = DevExpress.Utils.DefaultBoolean.True;
+            this.dtDefrostTime.Properties.CalendarTimeProperties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton()});
+            this.dtDefrostTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtDefrostTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtDefrostTime.Properties.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
+            this.dtDefrostTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.dtDefrostTime.Properties.Mask.EditMask = "dd/MM/yyyy HH:mm";
+            this.dtDefrostTime.Size = new System.Drawing.Size(456, 22);
+            this.dtDefrostTime.StyleController = this.layoutControl1;
+            this.dtDefrostTime.TabIndex = 21;
+            // 
+            // txtNote
+            // 
+            this.txtNote.Location = new System.Drawing.Point(665, 571);
+            this.txtNote.Name = "txtNote";
+            this.txtNote.Properties.MaxLength = 1000;
+            this.txtNote.Size = new System.Drawing.Size(603, 22);
+            this.txtNote.StyleController = this.layoutControl1;
+            this.txtNote.TabIndex = 22;
+            // 
             // cboXNHH
             // 
-            this.cboXNHH.Location = new System.Drawing.Point(949, 487);
+            this.cboXNHH.Location = new System.Drawing.Point(949, 459);
             this.cboXNHH.MenuManager = this.barManager1;
             this.cboXNHH.Name = "cboXNHH";
             this.cboXNHH.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -1725,6 +1733,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciAntiGlobulinTwo,
             this.lciScangelGelcard,
             this.lciCoombs,
+            this.lciDefrostTime,
+            this.lciNote,
             this.lciPuc,
             this.layoutControlItem70,
             this.layoutControlItem10,
@@ -1745,13 +1755,13 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciTestTube.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTestTube.Control = this.txtTestTube;
             this.lciTestTube.CustomizationFormText = "Phản ứng chéo:";
-            this.lciTestTube.Location = new System.Drawing.Point(0, 512);
+            this.lciTestTube.Location = new System.Drawing.Point(0, 484);
             this.lciTestTube.Name = "lciTestTube";
             this.lciTestTube.OptionsToolTip.ToolTip = "Phương pháp ống nghiệm 1";
             this.lciTestTube.Size = new System.Drawing.Size(284, 28);
             this.lciTestTube.Text = "Ống nghiệm 1:";
             this.lciTestTube.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciTestTube.TextSize = new System.Drawing.Size(90, 13);
+            this.lciTestTube.TextSize = new System.Drawing.Size(100, 13);
             this.lciTestTube.TextToControlDistance = 5;
             // 
             // layoutControlItem4
@@ -1769,19 +1779,19 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciNewAbo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciNewAbo.Control = this.cboNewAbo;
             this.lciNewAbo.CustomizationFormText = "Nhóm máu BN:";
-            this.lciNewAbo.Location = new System.Drawing.Point(0, 456);
+            this.lciNewAbo.Location = new System.Drawing.Point(0, 428);
             this.lciNewAbo.Name = "lciNewAbo";
             this.lciNewAbo.Size = new System.Drawing.Size(283, 28);
             this.lciNewAbo.Text = "Nhóm máu BN:";
             this.lciNewAbo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciNewAbo.TextSize = new System.Drawing.Size(90, 20);
+            this.lciNewAbo.TextSize = new System.Drawing.Size(100, 20);
             this.lciNewAbo.TextToControlDistance = 5;
             // 
             // lciNewRH
             // 
             this.lciNewRH.Control = this.cboNewRH;
             this.lciNewRH.CustomizationFormText = "Rh:";
-            this.lciNewRH.Location = new System.Drawing.Point(283, 456);
+            this.lciNewRH.Location = new System.Drawing.Point(283, 428);
             this.lciNewRH.Name = "lciNewRH";
             this.lciNewRH.Size = new System.Drawing.Size(143, 28);
             this.lciNewRH.Text = "Rh:";
@@ -1794,7 +1804,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciOldAbo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciOldAbo.Control = this.cboOldAbo;
             this.lciOldAbo.CustomizationFormText = "Abo:";
-            this.lciOldAbo.Location = new System.Drawing.Point(426, 456);
+            this.lciOldAbo.Location = new System.Drawing.Point(426, 428);
             this.lciOldAbo.Name = "lciOldAbo";
             this.lciOldAbo.Size = new System.Drawing.Size(283, 28);
             this.lciOldAbo.Text = "Theo Hồ sơ:";
@@ -1806,7 +1816,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.lciOldRH.Control = this.cboOldRH;
             this.lciOldRH.CustomizationFormText = "Rh:";
-            this.lciOldRH.Location = new System.Drawing.Point(709, 456);
+            this.lciOldRH.Location = new System.Drawing.Point(709, 428);
             this.lciOldRH.Name = "lciOldRH";
             this.lciOldRH.Size = new System.Drawing.Size(142, 28);
             this.lciOldRH.Text = "Rh:";
@@ -1820,7 +1830,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciSaltEnvi.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSaltEnvi.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSaltEnvi.Control = this.cboSaltEnvi;
-            this.lciSaltEnvi.Location = new System.Drawing.Point(284, 512);
+            this.lciSaltEnvi.Location = new System.Drawing.Point(284, 484);
             this.lciSaltEnvi.Name = "lciSaltEnvi";
             this.lciSaltEnvi.OptionsToolTip.ToolTip = "Môi trường muối 1";
             this.lciSaltEnvi.Size = new System.Drawing.Size(284, 28);
@@ -1834,7 +1844,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciAntiGlobulin.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAntiGlobulin.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAntiGlobulin.Control = this.cboAntiGlobulin;
-            this.lciAntiGlobulin.Location = new System.Drawing.Point(568, 512);
+            this.lciAntiGlobulin.Location = new System.Drawing.Point(568, 484);
             this.lciAntiGlobulin.Name = "lciAntiGlobulin";
             this.lciAntiGlobulin.OptionsToolTip.ToolTip = "Anti globulin 1";
             this.lciAntiGlobulin.Size = new System.Drawing.Size(283, 28);
@@ -1848,13 +1858,13 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciTestTubeTwo.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciTestTubeTwo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciTestTubeTwo.Control = this.txtTestTubeTwo;
-            this.lciTestTubeTwo.Location = new System.Drawing.Point(0, 540);
+            this.lciTestTubeTwo.Location = new System.Drawing.Point(0, 512);
             this.lciTestTubeTwo.Name = "lciTestTubeTwo";
             this.lciTestTubeTwo.OptionsToolTip.ToolTip = "Phương pháp ống nghiệm 2";
             this.lciTestTubeTwo.Size = new System.Drawing.Size(284, 28);
             this.lciTestTubeTwo.Text = "Ống nghiệm 2:";
             this.lciTestTubeTwo.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciTestTubeTwo.TextSize = new System.Drawing.Size(90, 20);
+            this.lciTestTubeTwo.TextSize = new System.Drawing.Size(100, 20);
             this.lciTestTubeTwo.TextToControlDistance = 5;
             // 
             // lciSaltEnviTwo
@@ -1862,7 +1872,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciSaltEnviTwo.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciSaltEnviTwo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciSaltEnviTwo.Control = this.cboSaltEnviTwo;
-            this.lciSaltEnviTwo.Location = new System.Drawing.Point(284, 540);
+            this.lciSaltEnviTwo.Location = new System.Drawing.Point(284, 512);
             this.lciSaltEnviTwo.Name = "lciSaltEnviTwo";
             this.lciSaltEnviTwo.OptionsToolTip.ToolTip = "Môi trường muối 2";
             this.lciSaltEnviTwo.Size = new System.Drawing.Size(283, 28);
@@ -1876,7 +1886,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciAntiGlobulinTwo.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciAntiGlobulinTwo.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciAntiGlobulinTwo.Control = this.cboAntiGlobulinTwo;
-            this.lciAntiGlobulinTwo.Location = new System.Drawing.Point(567, 540);
+            this.lciAntiGlobulinTwo.Location = new System.Drawing.Point(567, 512);
             this.lciAntiGlobulinTwo.Name = "lciAntiGlobulinTwo";
             this.lciAntiGlobulinTwo.OptionsToolTip.ToolTip = "Anti globulin 2";
             this.lciAntiGlobulinTwo.Size = new System.Drawing.Size(283, 28);
@@ -1891,13 +1901,13 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciScangelGelcard.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciScangelGelcard.Control = this.txtScangelGelcard;
             this.lciScangelGelcard.CustomizationFormText = "Phản ứng chéo:";
-            this.lciScangelGelcard.Location = new System.Drawing.Point(0, 568);
+            this.lciScangelGelcard.Location = new System.Drawing.Point(0, 540);
             this.lciScangelGelcard.Name = "lciScangelGelcard";
             this.lciScangelGelcard.OptionsToolTip.ToolTip = "Scangel/Gelcard";
             this.lciScangelGelcard.Size = new System.Drawing.Size(567, 28);
             this.lciScangelGelcard.Text = "Scangel/Gelcard:";
             this.lciScangelGelcard.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciScangelGelcard.TextSize = new System.Drawing.Size(90, 13);
+            this.lciScangelGelcard.TextSize = new System.Drawing.Size(100, 13);
             this.lciScangelGelcard.TextToControlDistance = 5;
             // 
             // lciCoombs
@@ -1906,7 +1916,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciCoombs.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciCoombs.Control = this.txtCoombs;
             this.lciCoombs.CustomizationFormText = "Phản ứng chéo:";
-            this.lciCoombs.Location = new System.Drawing.Point(567, 568);
+            this.lciCoombs.Location = new System.Drawing.Point(567, 540);
             this.lciCoombs.Name = "lciCoombs";
             this.lciCoombs.OptionsToolTip.ToolTip = "Kết quả nghiệm pháp Coombs";
             this.lciCoombs.Size = new System.Drawing.Size(704, 28);
@@ -1915,18 +1925,46 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.lciCoombs.TextSize = new System.Drawing.Size(90, 13);
             this.lciCoombs.TextToControlDistance = 5;
             // 
+            // lciDefrostTime
+            // 
+            this.lciDefrostTime.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciDefrostTime.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciDefrostTime.Control = this.dtDefrostTime;
+            this.lciDefrostTime.Location = new System.Drawing.Point(0, 568);
+            this.lciDefrostTime.Name = "lciDefrostTime";
+            this.lciDefrostTime.OptionsToolTip.ToolTip = "Thời gian rã đông";
+            this.lciDefrostTime.Size = new System.Drawing.Size(567, 28);
+            this.lciDefrostTime.Text = "Thời gian rã đông:";
+            this.lciDefrostTime.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciDefrostTime.TextSize = new System.Drawing.Size(100, 13);
+            this.lciDefrostTime.TextToControlDistance = 5;
+            // 
+            // lciNote
+            // 
+            this.lciNote.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciNote.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciNote.Control = this.txtNote;
+            this.lciNote.Location = new System.Drawing.Point(567, 568);
+            this.lciNote.Name = "lciNote";
+            this.lciNote.OptionsToolTip.ToolTip = "Ghi chú";
+            this.lciNote.Size = new System.Drawing.Size(704, 28);
+            this.lciNote.Text = "Ghi chú:";
+            this.lciNote.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciNote.TextSize = new System.Drawing.Size(90, 13);
+            this.lciNote.TextToControlDistance = 5;
+            // 
             // lciPuc
             // 
             this.lciPuc.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciPuc.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciPuc.Control = this.txtPuc;
-            this.lciPuc.Location = new System.Drawing.Point(0, 484);
+            this.lciPuc.Location = new System.Drawing.Point(0, 456);
             this.lciPuc.Name = "lciPuc";
             this.lciPuc.OptionsToolTip.ToolTip = "Phản ứng chéo";
             this.lciPuc.Size = new System.Drawing.Size(851, 28);
             this.lciPuc.Text = "Phản ứng chéo:";
             this.lciPuc.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.lciPuc.TextSize = new System.Drawing.Size(90, 13);
+            this.lciPuc.TextSize = new System.Drawing.Size(100, 13);
             this.lciPuc.TextToControlDistance = 5;
             // 
             // layoutControlItem70
@@ -1934,7 +1972,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.layoutControlItem70.Control = this.treeListExpBlood;
             this.layoutControlItem70.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem70.Name = "layoutControlItem70";
-            this.layoutControlItem70.Size = new System.Drawing.Size(1271, 456);
+            this.layoutControlItem70.Size = new System.Drawing.Size(1271, 428);
             this.layoutControlItem70.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem70.TextVisible = false;
             // 
@@ -1943,7 +1981,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.layoutControlItem10.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem10.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem10.Control = this.cboAC;
-            this.layoutControlItem10.Location = new System.Drawing.Point(851, 512);
+            this.layoutControlItem10.Location = new System.Drawing.Point(851, 484);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Size = new System.Drawing.Size(420, 28);
             this.layoutControlItem10.Text = "Tự chứng AC:";
@@ -1956,7 +1994,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.layoutControlItem12.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem12.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem12.Control = this.cboAC2;
-            this.layoutControlItem12.Location = new System.Drawing.Point(850, 540);
+            this.layoutControlItem12.Location = new System.Drawing.Point(850, 512);
             this.layoutControlItem12.Name = "layoutControlItem12";
             this.layoutControlItem12.Size = new System.Drawing.Size(421, 28);
             this.layoutControlItem12.Text = "Tự chứng AC2:";
@@ -1984,7 +2022,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // emptySpaceItem11
             // 
             this.emptySpaceItem11.AllowHotTrack = false;
-            this.emptySpaceItem11.Location = new System.Drawing.Point(851, 456);
+            this.emptySpaceItem11.Location = new System.Drawing.Point(851, 428);
             this.emptySpaceItem11.Name = "emptySpaceItem11";
             this.emptySpaceItem11.Size = new System.Drawing.Size(420, 28);
             this.emptySpaceItem11.TextSize = new System.Drawing.Size(0, 0);
@@ -1994,13 +2032,41 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.layoutControlItem1.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem1.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem1.Control = this.cboXNHH;
-            this.layoutControlItem1.Location = new System.Drawing.Point(851, 484);
+            this.layoutControlItem1.Location = new System.Drawing.Point(851, 456);
             this.layoutControlItem1.Name = "layoutControlItem1";
             this.layoutControlItem1.Size = new System.Drawing.Size(420, 28);
             this.layoutControlItem1.Text = "XN Hòa hợp:";
             this.layoutControlItem1.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem1.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem1.TextToControlDistance = 5;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1271, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 629);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1271, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 629);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1271, 0);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 629);
             // 
             // dxValidationProvider1
             // 
@@ -2118,7 +2184,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit1.AutoHeight = false;
             this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject337, serializableAppearanceObject338, serializableAppearanceObject339, serializableAppearanceObject340, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit1.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
             this.repositoryItemButtonEdit1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2148,7 +2214,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit2.AutoHeight = false;
             this.repositoryItemButtonEdit2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit2.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject501, serializableAppearanceObject502, serializableAppearanceObject503, serializableAppearanceObject504, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit2.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.repositoryItemButtonEdit2.Name = "repositoryItemButtonEdit2";
             this.repositoryItemButtonEdit2.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2156,7 +2222,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit3.AutoHeight = false;
             this.repositoryItemButtonEdit3.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit3.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject505, serializableAppearanceObject506, serializableAppearanceObject507, serializableAppearanceObject508, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit3.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
             this.repositoryItemButtonEdit3.Name = "repositoryItemButtonEdit3";
             this.repositoryItemButtonEdit3.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2164,7 +2230,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit4.AutoHeight = false;
             this.repositoryItemButtonEdit4.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit4.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject509, serializableAppearanceObject510, serializableAppearanceObject511, serializableAppearanceObject512, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit4.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
             this.repositoryItemButtonEdit4.Name = "repositoryItemButtonEdit4";
             this.repositoryItemButtonEdit4.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2369,7 +2435,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit5.AutoHeight = false;
             this.repositoryItemButtonEdit5.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit5.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject513, serializableAppearanceObject514, serializableAppearanceObject515, serializableAppearanceObject516, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit5.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "", null, null, true)});
             this.repositoryItemButtonEdit5.Name = "repositoryItemButtonEdit5";
             this.repositoryItemButtonEdit5.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2399,7 +2465,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit6.AutoHeight = false;
             this.repositoryItemButtonEdit6.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit6.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject517, serializableAppearanceObject518, serializableAppearanceObject519, serializableAppearanceObject520, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit6.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject21, serializableAppearanceObject22, serializableAppearanceObject23, serializableAppearanceObject24, "", null, null, true)});
             this.repositoryItemButtonEdit6.Name = "repositoryItemButtonEdit6";
             this.repositoryItemButtonEdit6.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2407,7 +2473,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit7.AutoHeight = false;
             this.repositoryItemButtonEdit7.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit7.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject521, serializableAppearanceObject522, serializableAppearanceObject523, serializableAppearanceObject524, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit7.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "", null, null, true)});
             this.repositoryItemButtonEdit7.Name = "repositoryItemButtonEdit7";
             this.repositoryItemButtonEdit7.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2415,7 +2481,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit8.AutoHeight = false;
             this.repositoryItemButtonEdit8.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit8.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject525, serializableAppearanceObject526, serializableAppearanceObject527, serializableAppearanceObject528, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit8.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject29, serializableAppearanceObject30, serializableAppearanceObject31, serializableAppearanceObject32, "", null, null, true)});
             this.repositoryItemButtonEdit8.Name = "repositoryItemButtonEdit8";
             this.repositoryItemButtonEdit8.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2620,7 +2686,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit9.AutoHeight = false;
             this.repositoryItemButtonEdit9.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit9.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject529, serializableAppearanceObject530, serializableAppearanceObject531, serializableAppearanceObject532, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit9.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject33, serializableAppearanceObject34, serializableAppearanceObject35, serializableAppearanceObject36, "", null, null, true)});
             this.repositoryItemButtonEdit9.Name = "repositoryItemButtonEdit9";
             this.repositoryItemButtonEdit9.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2650,7 +2716,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit10.AutoHeight = false;
             this.repositoryItemButtonEdit10.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit10.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject533, serializableAppearanceObject534, serializableAppearanceObject535, serializableAppearanceObject536, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit10.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject37, serializableAppearanceObject38, serializableAppearanceObject39, serializableAppearanceObject40, "", null, null, true)});
             this.repositoryItemButtonEdit10.Name = "repositoryItemButtonEdit10";
             this.repositoryItemButtonEdit10.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2658,7 +2724,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit11.AutoHeight = false;
             this.repositoryItemButtonEdit11.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit11.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject537, serializableAppearanceObject538, serializableAppearanceObject539, serializableAppearanceObject540, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit11.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject41, serializableAppearanceObject42, serializableAppearanceObject43, serializableAppearanceObject44, "", null, null, true)});
             this.repositoryItemButtonEdit11.Name = "repositoryItemButtonEdit11";
             this.repositoryItemButtonEdit11.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2666,7 +2732,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit12.AutoHeight = false;
             this.repositoryItemButtonEdit12.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit12.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject541, serializableAppearanceObject542, serializableAppearanceObject543, serializableAppearanceObject544, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit12.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject45, serializableAppearanceObject46, serializableAppearanceObject47, serializableAppearanceObject48, "", null, null, true)});
             this.repositoryItemButtonEdit12.Name = "repositoryItemButtonEdit12";
             this.repositoryItemButtonEdit12.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -2990,7 +3056,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit15.AutoHeight = false;
             this.repositoryItemButtonEdit15.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit15.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject545, serializableAppearanceObject546, serializableAppearanceObject547, serializableAppearanceObject548, "Chọn túi máu để xuất", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit15.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject49, serializableAppearanceObject50, serializableAppearanceObject51, serializableAppearanceObject52, "Chọn túi máu để xuất", null, null, true)});
             this.repositoryItemButtonEdit15.Name = "repositoryItemButtonEdit15";
             this.repositoryItemButtonEdit15.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -3149,7 +3215,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit16.AutoHeight = false;
             this.repositoryItemButtonEdit16.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit16.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject549, serializableAppearanceObject550, serializableAppearanceObject551, serializableAppearanceObject552, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit16.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject53, serializableAppearanceObject54, serializableAppearanceObject55, serializableAppearanceObject56, "Xóa", null, null, true)});
             this.repositoryItemButtonEdit16.Name = "repositoryItemButtonEdit16";
             this.repositoryItemButtonEdit16.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -3598,7 +3664,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit13.AutoHeight = false;
             this.repositoryItemButtonEdit13.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject553, serializableAppearanceObject554, serializableAppearanceObject555, serializableAppearanceObject556, "Thêm thuốc", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject57, serializableAppearanceObject58, serializableAppearanceObject59, serializableAppearanceObject60, "Thêm thuốc", null, null, true)});
             this.repositoryItemButtonEdit13.Name = "repositoryItemButtonEdit13";
             this.repositoryItemButtonEdit13.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -3868,7 +3934,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemGridLookUpEdit2.AutoHeight = false;
             this.repositoryItemGridLookUpEdit2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject557, serializableAppearanceObject558, serializableAppearanceObject559, serializableAppearanceObject560, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject61, serializableAppearanceObject62, serializableAppearanceObject63, serializableAppearanceObject64, "", null, null, true)});
             this.repositoryItemGridLookUpEdit2.Name = "repositoryItemGridLookUpEdit2";
             this.repositoryItemGridLookUpEdit2.ReadOnly = true;
             this.repositoryItemGridLookUpEdit2.View = this.gridView10;
@@ -3977,7 +4043,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit14.AutoHeight = false;
             this.repositoryItemButtonEdit14.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject397, serializableAppearanceObject398, serializableAppearanceObject399, serializableAppearanceObject400, "Thêm vật tư", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject65, serializableAppearanceObject66, serializableAppearanceObject67, serializableAppearanceObject68, "Thêm vật tư", null, null, true)});
             this.repositoryItemButtonEdit14.Name = "repositoryItemButtonEdit14";
             this.repositoryItemButtonEdit14.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4229,7 +4295,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemGridLookUpEdit4.AutoHeight = false;
             this.repositoryItemGridLookUpEdit4.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject561, serializableAppearanceObject562, serializableAppearanceObject563, serializableAppearanceObject564, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject69, serializableAppearanceObject70, serializableAppearanceObject71, serializableAppearanceObject72, "", null, null, true)});
             this.repositoryItemGridLookUpEdit4.Name = "repositoryItemGridLookUpEdit4";
             this.repositoryItemGridLookUpEdit4.ReadOnly = true;
             this.repositoryItemGridLookUpEdit4.View = this.gridView13;
@@ -4414,7 +4480,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit17.AutoHeight = false;
             this.repositoryItemButtonEdit17.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit17.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject401, serializableAppearanceObject402, serializableAppearanceObject403, serializableAppearanceObject404, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit17.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject73, serializableAppearanceObject74, serializableAppearanceObject75, serializableAppearanceObject76, "", null, null, true)});
             this.repositoryItemButtonEdit17.Name = "repositoryItemButtonEdit17";
             this.repositoryItemButtonEdit17.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4444,7 +4510,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit18.AutoHeight = false;
             this.repositoryItemButtonEdit18.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit18.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject565, serializableAppearanceObject566, serializableAppearanceObject567, serializableAppearanceObject568, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit18.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject77, serializableAppearanceObject78, serializableAppearanceObject79, serializableAppearanceObject80, "", null, null, true)});
             this.repositoryItemButtonEdit18.Name = "repositoryItemButtonEdit18";
             this.repositoryItemButtonEdit18.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4452,7 +4518,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit19.AutoHeight = false;
             this.repositoryItemButtonEdit19.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit19.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject569, serializableAppearanceObject570, serializableAppearanceObject571, serializableAppearanceObject572, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit19.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject81, serializableAppearanceObject82, serializableAppearanceObject83, serializableAppearanceObject84, "", null, null, true)});
             this.repositoryItemButtonEdit19.Name = "repositoryItemButtonEdit19";
             this.repositoryItemButtonEdit19.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4460,7 +4526,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit20.AutoHeight = false;
             this.repositoryItemButtonEdit20.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit20.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject573, serializableAppearanceObject574, serializableAppearanceObject575, serializableAppearanceObject576, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit20.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject85, serializableAppearanceObject86, serializableAppearanceObject87, serializableAppearanceObject88, "", null, null, true)});
             this.repositoryItemButtonEdit20.Name = "repositoryItemButtonEdit20";
             this.repositoryItemButtonEdit20.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4656,7 +4722,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit21.AutoHeight = false;
             this.repositoryItemButtonEdit21.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit21.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject577, serializableAppearanceObject578, serializableAppearanceObject579, serializableAppearanceObject580, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit21.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "", null, null, true)});
             this.repositoryItemButtonEdit21.Name = "repositoryItemButtonEdit21";
             this.repositoryItemButtonEdit21.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4686,7 +4752,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit22.AutoHeight = false;
             this.repositoryItemButtonEdit22.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit22.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject581, serializableAppearanceObject582, serializableAppearanceObject583, serializableAppearanceObject584, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit22.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject93, serializableAppearanceObject94, serializableAppearanceObject95, serializableAppearanceObject96, "", null, null, true)});
             this.repositoryItemButtonEdit22.Name = "repositoryItemButtonEdit22";
             this.repositoryItemButtonEdit22.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4694,7 +4760,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit23.AutoHeight = false;
             this.repositoryItemButtonEdit23.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit23.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject585, serializableAppearanceObject586, serializableAppearanceObject587, serializableAppearanceObject588, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit23.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject97, serializableAppearanceObject98, serializableAppearanceObject99, serializableAppearanceObject100, "", null, null, true)});
             this.repositoryItemButtonEdit23.Name = "repositoryItemButtonEdit23";
             this.repositoryItemButtonEdit23.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4702,7 +4768,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit24.AutoHeight = false;
             this.repositoryItemButtonEdit24.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit24.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject589, serializableAppearanceObject590, serializableAppearanceObject591, serializableAppearanceObject592, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit24.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject101, serializableAppearanceObject102, serializableAppearanceObject103, serializableAppearanceObject104, "", null, null, true)});
             this.repositoryItemButtonEdit24.Name = "repositoryItemButtonEdit24";
             this.repositoryItemButtonEdit24.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4915,7 +4981,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit25.AutoHeight = false;
             this.repositoryItemButtonEdit25.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit25.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject593, serializableAppearanceObject594, serializableAppearanceObject595, serializableAppearanceObject596, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit25.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject105, serializableAppearanceObject106, serializableAppearanceObject107, serializableAppearanceObject108, "", null, null, true)});
             this.repositoryItemButtonEdit25.Name = "repositoryItemButtonEdit25";
             this.repositoryItemButtonEdit25.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4945,7 +5011,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit26.AutoHeight = false;
             this.repositoryItemButtonEdit26.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit26.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject597, serializableAppearanceObject598, serializableAppearanceObject599, serializableAppearanceObject600, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit26.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject109, serializableAppearanceObject110, serializableAppearanceObject111, serializableAppearanceObject112, "", null, null, true)});
             this.repositoryItemButtonEdit26.Name = "repositoryItemButtonEdit26";
             this.repositoryItemButtonEdit26.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4953,7 +5019,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit27.AutoHeight = false;
             this.repositoryItemButtonEdit27.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit27.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject601, serializableAppearanceObject602, serializableAppearanceObject603, serializableAppearanceObject604, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit27.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject113, serializableAppearanceObject114, serializableAppearanceObject115, serializableAppearanceObject116, "", null, null, true)});
             this.repositoryItemButtonEdit27.Name = "repositoryItemButtonEdit27";
             this.repositoryItemButtonEdit27.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -4961,7 +5027,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit28.AutoHeight = false;
             this.repositoryItemButtonEdit28.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit28.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject605, serializableAppearanceObject606, serializableAppearanceObject607, serializableAppearanceObject608, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit28.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject117, serializableAppearanceObject118, serializableAppearanceObject119, serializableAppearanceObject120, "", null, null, true)});
             this.repositoryItemButtonEdit28.Name = "repositoryItemButtonEdit28";
             this.repositoryItemButtonEdit28.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -5283,7 +5349,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit29.AutoHeight = false;
             this.repositoryItemButtonEdit29.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit29.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject609, serializableAppearanceObject610, serializableAppearanceObject611, serializableAppearanceObject612, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit29.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject121, serializableAppearanceObject122, serializableAppearanceObject123, serializableAppearanceObject124, "", null, null, true)});
             this.repositoryItemButtonEdit29.Name = "repositoryItemButtonEdit29";
             this.repositoryItemButtonEdit29.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -5313,7 +5379,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit30.AutoHeight = false;
             this.repositoryItemButtonEdit30.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit30.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject613, serializableAppearanceObject614, serializableAppearanceObject615, serializableAppearanceObject616, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit30.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject125, serializableAppearanceObject126, serializableAppearanceObject127, serializableAppearanceObject128, "", null, null, true)});
             this.repositoryItemButtonEdit30.Name = "repositoryItemButtonEdit30";
             this.repositoryItemButtonEdit30.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -5321,7 +5387,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit31.AutoHeight = false;
             this.repositoryItemButtonEdit31.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit31.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject617, serializableAppearanceObject618, serializableAppearanceObject619, serializableAppearanceObject620, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit31.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject129, serializableAppearanceObject130, serializableAppearanceObject131, serializableAppearanceObject132, "", null, null, true)});
             this.repositoryItemButtonEdit31.Name = "repositoryItemButtonEdit31";
             this.repositoryItemButtonEdit31.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -5329,7 +5395,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit32.AutoHeight = false;
             this.repositoryItemButtonEdit32.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit32.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject621, serializableAppearanceObject622, serializableAppearanceObject623, serializableAppearanceObject624, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit32.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject133, serializableAppearanceObject134, serializableAppearanceObject135, serializableAppearanceObject136, "", null, null, true)});
             this.repositoryItemButtonEdit32.Name = "repositoryItemButtonEdit32";
             this.repositoryItemButtonEdit32.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -5637,7 +5703,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit33.AutoHeight = false;
             this.repositoryItemButtonEdit33.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit33.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject625, serializableAppearanceObject626, serializableAppearanceObject627, serializableAppearanceObject628, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit33.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject137, serializableAppearanceObject138, serializableAppearanceObject139, serializableAppearanceObject140, "", null, null, true)});
             this.repositoryItemButtonEdit33.Name = "repositoryItemButtonEdit33";
             this.repositoryItemButtonEdit33.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -5667,7 +5733,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit34.AutoHeight = false;
             this.repositoryItemButtonEdit34.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit34.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject629, serializableAppearanceObject630, serializableAppearanceObject631, serializableAppearanceObject632, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit34.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject141, serializableAppearanceObject142, serializableAppearanceObject143, serializableAppearanceObject144, "", null, null, true)});
             this.repositoryItemButtonEdit34.Name = "repositoryItemButtonEdit34";
             this.repositoryItemButtonEdit34.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -5675,7 +5741,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit35.AutoHeight = false;
             this.repositoryItemButtonEdit35.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit35.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject633, serializableAppearanceObject634, serializableAppearanceObject635, serializableAppearanceObject636, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit35.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject145, serializableAppearanceObject146, serializableAppearanceObject147, serializableAppearanceObject148, "", null, null, true)});
             this.repositoryItemButtonEdit35.Name = "repositoryItemButtonEdit35";
             this.repositoryItemButtonEdit35.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -5683,7 +5749,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit36.AutoHeight = false;
             this.repositoryItemButtonEdit36.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit36.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject637, serializableAppearanceObject638, serializableAppearanceObject639, serializableAppearanceObject640, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit36.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject149, serializableAppearanceObject150, serializableAppearanceObject151, serializableAppearanceObject152, "", null, null, true)});
             this.repositoryItemButtonEdit36.Name = "repositoryItemButtonEdit36";
             this.repositoryItemButtonEdit36.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -6093,7 +6159,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit39.AutoHeight = false;
             this.repositoryItemButtonEdit39.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit39.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject641, serializableAppearanceObject642, serializableAppearanceObject643, serializableAppearanceObject644, "Chọn túi máu để xuất", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit39.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject153, serializableAppearanceObject154, serializableAppearanceObject155, serializableAppearanceObject156, "Chọn túi máu để xuất", null, null, true)});
             this.repositoryItemButtonEdit39.Name = "repositoryItemButtonEdit39";
             this.repositoryItemButtonEdit39.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -6252,7 +6318,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit40.AutoHeight = false;
             this.repositoryItemButtonEdit40.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit40.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject645, serializableAppearanceObject646, serializableAppearanceObject647, serializableAppearanceObject648, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEdit40.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject157, serializableAppearanceObject158, serializableAppearanceObject159, serializableAppearanceObject160, "Xóa", null, null, true)});
             this.repositoryItemButtonEdit40.Name = "repositoryItemButtonEdit40";
             this.repositoryItemButtonEdit40.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -6701,7 +6767,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit37.AutoHeight = false;
             this.repositoryItemButtonEdit37.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject649, serializableAppearanceObject650, serializableAppearanceObject651, serializableAppearanceObject652, "Thêm thuốc", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject161, serializableAppearanceObject162, serializableAppearanceObject163, serializableAppearanceObject164, "Thêm thuốc", null, null, true)});
             this.repositoryItemButtonEdit37.Name = "repositoryItemButtonEdit37";
             this.repositoryItemButtonEdit37.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -6971,7 +7037,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemGridLookUpEdit6.AutoHeight = false;
             this.repositoryItemGridLookUpEdit6.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject653, serializableAppearanceObject654, serializableAppearanceObject655, serializableAppearanceObject656, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject165, serializableAppearanceObject166, serializableAppearanceObject167, serializableAppearanceObject168, "", null, null, true)});
             this.repositoryItemGridLookUpEdit6.Name = "repositoryItemGridLookUpEdit6";
             this.repositoryItemGridLookUpEdit6.ReadOnly = true;
             this.repositoryItemGridLookUpEdit6.View = this.gridView23;
@@ -7080,7 +7146,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemButtonEdit38.AutoHeight = false;
             this.repositoryItemButtonEdit38.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject493, serializableAppearanceObject494, serializableAppearanceObject495, serializableAppearanceObject496, "Thêm vật tư", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject169, serializableAppearanceObject170, serializableAppearanceObject171, serializableAppearanceObject172, "Thêm vật tư", null, null, true)});
             this.repositoryItemButtonEdit38.Name = "repositoryItemButtonEdit38";
             this.repositoryItemButtonEdit38.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             // 
@@ -7332,7 +7398,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             // 
             this.repositoryItemGridLookUpEdit8.AutoHeight = false;
             this.repositoryItemGridLookUpEdit8.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject657, serializableAppearanceObject658, serializableAppearanceObject659, serializableAppearanceObject660, "", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo, "", -1, false, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject173, serializableAppearanceObject174, serializableAppearanceObject175, serializableAppearanceObject176, "", null, null, true)});
             this.repositoryItemGridLookUpEdit8.Name = "repositoryItemGridLookUpEdit8";
             this.repositoryItemGridLookUpEdit8.ReadOnly = true;
             this.repositoryItemGridLookUpEdit8.View = this.gridView26;
@@ -7470,6 +7536,9 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboAC2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDefrostTime.Properties.CalendarTimeProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtDefrostTime.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtNote.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboXNHH.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView36)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -7486,6 +7555,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             ((System.ComponentModel.ISupportInitialize)(this.lciAntiGlobulinTwo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciScangelGelcard)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciCoombs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciDefrostTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciNote)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciPuc)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem70)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
@@ -8104,6 +8175,10 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
         private DevExpress.XtraLayout.LayoutControlItem lciTestTube;
         private DevExpress.XtraLayout.LayoutControlItem lciScangelGelcard;
         private DevExpress.XtraLayout.LayoutControlItem lciCoombs;
+        private DevExpress.XtraEditors.DateEdit dtDefrostTime;
+        private DevExpress.XtraEditors.TextEdit txtNote;
+        private DevExpress.XtraLayout.LayoutControlItem lciDefrostTime;
+        private DevExpress.XtraLayout.LayoutControlItem lciNote;
         private DevExpress.XtraLayout.LayoutControl layoutControl24;
         private DevExpress.XtraLayout.LayoutControl layoutControl25;
         private DevExpress.XtraLayout.LayoutControl layoutControl26;
