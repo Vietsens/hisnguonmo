@@ -356,12 +356,9 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                 }
 
                 UpdateDTOFromDataForm(ref updateDTO, ref updateBank);
-                string name = "";
-
-                this.txtReceiver.Text = name;
-
+                var name = (this.txtReceiver.Text ?? string.Empty).Trim();
                 updateDTO.IS_CHECK = IsCheckOk ? (short?)1 : null;
-                updateDTO.PAYEE_NAME = name;
+                updateDTO.PAYEE_NAME = name; 
 
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
@@ -381,7 +378,7 @@ namespace HIS.Desktop.Plugins.HisPatientBankAccount.HisPatientBankAccount
                     }
                 }
                 else
-                {
+                { 
                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_PATIENT_BANK_ACCOUNT>(
                         HisRequestUriStore.UPDATE,
                         ApiConsumers.MosConsumer,
