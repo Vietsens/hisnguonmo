@@ -2251,9 +2251,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             try
             {
                 isCheckAssignServiceSimultaneityOption = false;
-                if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2") ||
-            cboUser.EditValue == null || intructionTimeSelecteds == null || intructionTimeSelecteds.Count == 0)
-                    return check;
+                if ((HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "1" && HisConfigCFG.ASSIGN_SERVICE_SIMULTANEITY_OPTION != "2"))
+                    return true;
 
 
                 bool hasError = false;
@@ -7574,6 +7573,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                 ValidConsultationReqiured(serviceCheckeds__Send, this.treatmentId);
                 isValid = isValid && this.CheckAssignServiceSimultaneityOption(serviceCheckeds__Send);
+                Inventec.Common.Logging.LogSystem.Debug("Valid15__CheckAssignServiceSimultaneityOption:" + isValid);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceCheckeds__Send), serviceCheckeds__Send));
                 if (isValid)
                 {
