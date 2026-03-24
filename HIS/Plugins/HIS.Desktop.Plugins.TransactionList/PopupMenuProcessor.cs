@@ -319,7 +319,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
                 else if (this._Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU)
                 {
-                    //Phiếu tạm ứng
+                    //Phiếu tạm ứng 
                     BarButtonItem bbtnPhieuHoanUng = new BarButtonItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_PHIEUHOANUNG", Base.ResourceLangManager.LanguageFrmTransactionList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 0);
                     bbtnPhieuHoanUng.Tag = ItemType.PhieuHoanUng;
                     bbtnPhieuHoanUng.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
@@ -344,7 +344,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                             this._PopupMenu.AddItem(bbtnHoanTienNganHang);
                         }
                         else
-                        {
+                        { 
                             BarSubItem subCongKhai = new BarSubItem(this._BarManager, "Hoàn tiền ngân hàng", 2);
                             foreach (var item in HisConfigCFG.RefundConfig)
                             {
