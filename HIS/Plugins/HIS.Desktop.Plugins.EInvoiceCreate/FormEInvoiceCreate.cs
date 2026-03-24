@@ -16,7 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Repository;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -27,6 +29,7 @@ using HIS.Desktop.Plugins.EInvoiceCreate.Config;
 using HIS.Desktop.Plugins.EInvoiceCreate.Resources;
 using HIS.Desktop.Plugins.Library.ElectronicBill;
 using HIS.Desktop.Plugins.Library.ElectronicBill.Base;
+using HIS.Desktop.Utilities.Extensions;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
 using Inventec.Common.Controls.EditorLoader;
@@ -72,6 +75,11 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
         private List<V_HIS_TRANSACTION> ListTransactionTotal = new List<V_HIS_TRANSACTION>();
         private List<HIS_SERE_SERV_BILL> ListSereServBillTotal = new List<HIS_SERE_SERV_BILL>();
         private List<V_HIS_SERE_SERV_5> ListSereServTotal = new List<V_HIS_SERE_SERV_5>();
+        private List<HIS_TREATMENT_TYPE> lstTreatmentType;
+        private List<TreatmentTypeADO> lstTreatmentTypeAdo;
+        private const long TREATMENT_TYPE_ALL_ID = -1;
+        private bool _keepTreatmentTypePopupOpen = false;
+        private bool _isTreatmentTypeUpdating = false;
 
         public FormEInvoiceCreate()
         {
@@ -265,7 +273,12 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
                     filter.KEY_WORD = txtKeyWord.Text.Trim();
                 }
 
-                filter.TDL_TREATMENT_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM;
+                //filter.TDL_TREATMENT_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM;
+                var treatmentTypeIds = GetSelectedTreatmentTypeIds();
+                if (treatmentTypeIds != null && treatmentTypeIds.Count > 0)
+                {
+                    filter.TDL_TREATMENT_TYPE_IDs = treatmentTypeIds;
+                }
                 filter.IS_NEED_INVOICE = true;
                 //filter.IS_ACTIVE
             }
@@ -405,6 +418,8 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
                 datas.Add(new TypeADO(2, "Đang điều trị"));
 
                 LoadCombo(cboEndType, datas, "ID", "", "NAME");
+
+                InitTreatmentType();
             }
             catch (Exception ex)
             {
@@ -1028,6 +1043,7 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
                     if (chkIsSplitByCashierDeposit.Checked)
                         sdo.IsSplitByCashierDeposit = true;
                     CommonParam param = new CommonParam();
+                    Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                     var apiResult = new BackendAdapter(param).Post<List<HisTransactionBillResultSDO>>("api/HisTransaction/BillByDeposit", ApiConsumers.MosConsumer, sdo, param);
                     if (apiResult != null && apiResult.Count > 0)
                     {
@@ -1336,5 +1352,285 @@ namespace HIS.Desktop.Plugins.EInvoiceCreate
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+        private void InitTreatmentType()
+        {
+            try
+            {
+                //lstTreatmentType = BackendDataWorker.Get<HIS_TREATMENT_TYPE>()
+                //    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                //    .ToList();
+
+                //lstTreatmentTypeAdo = new List<TreatmentTypeADO>();
+                //lstTreatmentTypeAdo.Add(new TreatmentTypeADO
+                //{
+                //    ID = TREATMENT_TYPE_ALL_ID,
+                //    TREATMENT_TYPE_NAME = "Tất cả",
+                //    IS_ALL = true
+                //});
+
+                //lstTreatmentTypeAdo.AddRange(lstTreatmentType.Select(o => new TreatmentTypeADO
+                //{
+                //    ID = o.ID,
+                //    TREATMENT_TYPE_NAME = o.TREATMENT_TYPE_NAME,
+                //    IS_ALL = false
+                //}).ToList());
+
+                //InitComboTreatmentType(lstTreatmentTypeAdo);
+                //InitComboTreatmentTypeCheck();
+                lstTreatmentType = BackendDataWorker.Get<HIS_TREATMENT_TYPE>()
+            .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+            .ToList();
+
+                lstTreatmentTypeAdo = new List<TreatmentTypeADO>();
+
+                lstTreatmentTypeAdo.Add(new TreatmentTypeADO
+                {
+                    ID = TREATMENT_TYPE_ALL_ID,
+                    TREATMENT_TYPE_NAME = "Tất cả",
+                    IS_ALL = true,
+                    IS_SELECTED = true
+                });
+
+                lstTreatmentTypeAdo.AddRange(lstTreatmentType.Select(o => new TreatmentTypeADO
+                {
+                    ID = o.ID,
+                    TREATMENT_TYPE_NAME = o.TREATMENT_TYPE_NAME,
+                    IS_ALL = false,
+                    IS_SELECTED = true
+                }).ToList());
+
+                InitComboTreatmentType(lstTreatmentTypeAdo);
+                cboTreatmentType.Refresh();
+                cboTreatmentType.Invalidate();
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private void InitComboTreatmentType(List<TreatmentTypeADO> listADO)
+        {
+            try
+            {
+                cboTreatmentType.Properties.DataSource = listADO;
+                cboTreatmentType.Properties.DisplayMember = "TREATMENT_TYPE_NAME";
+                cboTreatmentType.Properties.ValueMember = "ID";
+                cboTreatmentType.Properties.NullText = "";
+                cboTreatmentType.Properties.PopupFormSize = new Size(300, 250);
+                cboTreatmentType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+
+                cboTreatmentType.CustomDisplayText -= cboTreatmentType_CustomDisplayText;
+                cboTreatmentType.CustomDisplayText += cboTreatmentType_CustomDisplayText;
+
+                cboTreatmentType.ButtonClick -= cboTreatmentType_ButtonClick;
+                cboTreatmentType.ButtonClick += cboTreatmentType_ButtonClick;
+
+                cboTreatmentType.QueryCloseUp -= cboTreatmentType_QueryCloseUp;
+                cboTreatmentType.QueryCloseUp += cboTreatmentType_QueryCloseUp;
+
+                var view = cboTreatmentType.Properties.View;
+                view.Columns.Clear();
+                view.OptionsView.ShowColumnHeaders = false;
+                view.OptionsView.ShowIndicator = false;
+                view.OptionsView.ShowGroupPanel = false;
+                view.OptionsView.ShowAutoFilterRow = false;
+
+                // Quan trọng: không edit trực tiếp trong grid popup nữa
+                view.OptionsBehavior.Editable = false;
+                view.OptionsSelection.EnableAppearanceFocusedCell = false;
+                view.FocusRectStyle = DrawFocusRectStyle.RowFocus;
+
+                RepositoryItemCheckEdit repoCheck = new RepositoryItemCheckEdit();
+                repoCheck.ValueChecked = true;
+                repoCheck.ValueUnchecked = false;
+                repoCheck.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+                repoCheck.ReadOnly = true;
+
+                if (view.GridControl != null)
+                {
+                    view.GridControl.RepositoryItems.Add(repoCheck);
+                }
+
+                var colCheck = view.Columns.AddField("IS_SELECTED");
+                colCheck.Visible = true;
+                colCheck.VisibleIndex = 0;
+                colCheck.Width = 35;
+                colCheck.ColumnEdit = repoCheck;
+                colCheck.OptionsColumn.AllowEdit = false;
+                colCheck.OptionsColumn.AllowFocus = false;
+
+                var colName = view.Columns.AddField("TREATMENT_TYPE_NAME");
+                colName.Visible = true;
+                colName.VisibleIndex = 1;
+                colName.Width = 230;
+                colName.OptionsColumn.AllowEdit = false;
+
+                view.RowCellClick -= viewTreatmentType_RowCellClick;
+                view.RowCellClick += viewTreatmentType_RowCellClick;
+
+                // bỏ cách cũ
+
+                view.RefreshData();
+                cboTreatmentType.Refresh();
+                cboTreatmentType.Invalidate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboTreatmentType_QueryCloseUp(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if (_keepTreatmentTypePopupOpen)
+                {
+                    e.Cancel = true;
+                    _keepTreatmentTypePopupOpen = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void viewTreatmentType_RowCellClick(object sender, RowCellClickEventArgs e)
+        {
+            try
+            {
+                if (_isTreatmentTypeUpdating) return;
+                if (e.RowHandle < 0) return;
+
+                // Cho phép click cả vào ô tick hoặc tên để toggle
+                if (e.Column.FieldName != "IS_SELECTED" && e.Column.FieldName != "TREATMENT_TYPE_NAME")
+                    return;
+
+                var view = sender as GridView;
+                if (view == null || lstTreatmentTypeAdo == null || lstTreatmentTypeAdo.Count == 0) return;
+
+                var row = view.GetRow(e.RowHandle) as TreatmentTypeADO;
+                if (row == null) return;
+
+                _isTreatmentTypeUpdating = true;
+
+                bool newValue = !row.IS_SELECTED;
+
+                if (row.IS_ALL)
+                {
+                    foreach (var item in lstTreatmentTypeAdo)
+                    {
+                        item.IS_SELECTED = newValue;
+                    }
+                }
+                else
+                {
+                    row.IS_SELECTED = newValue;
+
+                    var allRow = lstTreatmentTypeAdo.FirstOrDefault(o => o.IS_ALL);
+                    if (allRow != null)
+                    {
+                        var normalItems = lstTreatmentTypeAdo.Where(o => !o.IS_ALL).ToList();
+                        allRow.IS_SELECTED = normalItems.Count > 0 && normalItems.All(o => o.IS_SELECTED);
+                    }
+                }
+
+                view.RefreshData();
+                cboTreatmentType.Refresh();
+                cboTreatmentType.Invalidate();
+
+                // Giữ popup mở sau khi click
+                _keepTreatmentTypePopupOpen = true;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            finally
+            {
+                _isTreatmentTypeUpdating = false;
+            }
+        }
+
+
+        private List<long> GetSelectedTreatmentTypeIds()
+        {
+            try
+            {
+                if (lstTreatmentTypeAdo != null)
+                {
+                    return lstTreatmentTypeAdo
+                        .Where(o => !o.IS_ALL && o.IS_SELECTED)
+                        .Select(o => o.ID)
+                        .Distinct()
+                        .ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return new List<long>();
+        }
+
+        private void cboTreatmentType_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                if (lstTreatmentTypeAdo == null || lstTreatmentTypeAdo.Count == 0)
+                {
+                    e.DisplayText = "";
+                    return;
+                }
+
+                var allRow = lstTreatmentTypeAdo.FirstOrDefault(o => o.IS_ALL);
+                if (allRow != null && allRow.IS_SELECTED)
+                {
+                    e.DisplayText = "Tất cả";
+                    return;
+                }
+
+                var selectedNames = lstTreatmentTypeAdo
+                    .Where(o => !o.IS_ALL && o.IS_SELECTED)
+                    .Select(o => o.TREATMENT_TYPE_NAME)
+                    .ToList();
+
+                e.DisplayText = selectedNames.Count > 0 ? string.Join(", ", selectedNames) : "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboTreatmentType_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    if (lstTreatmentTypeAdo != null && lstTreatmentTypeAdo.Count > 0)
+                    {
+                        foreach (var item in lstTreatmentTypeAdo)
+                        {
+                            item.IS_SELECTED = true;
+                        }
+
+                        cboTreatmentType.Properties.View.RefreshData();
+                        cboTreatmentType.Refresh();
+                        cboTreatmentType.Invalidate();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+
+
     }
 }

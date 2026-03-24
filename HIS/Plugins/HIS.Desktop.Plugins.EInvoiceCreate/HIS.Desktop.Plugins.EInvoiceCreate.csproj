@@ -100,6 +100,9 @@
     <Reference Include="Inventec.Desktop.Core">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Core\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Inventec.Desktop.CustomControl">
+      <HintPath>..\..\..\Common\Inventec.Desktop\Inventec.Desktop.CustomControl\obj\Debug\Inventec.Desktop.CustomControl.dll</HintPath>
+    </Reference>
     <Reference Include="Inventec.Token.ClientSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\LIB\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
@@ -134,6 +137,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\TreatmentTypeADO.cs" />
     <Compile Include="ADO\TypeADO.cs" />
     <Compile Include="Config\HisConfigCFG.cs" />
     <Compile Include="EInvoiceCreateProcessor.cs" />
