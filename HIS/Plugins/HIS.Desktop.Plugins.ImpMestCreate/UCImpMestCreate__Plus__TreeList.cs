@@ -429,6 +429,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
 
                     this.currrentServiceAdo = new ADO.VHisServiceADO((V_HIS_MEDICINE_TYPE)data);
+                    if (dicServicePaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
+                    {
+                        foreach (var pa in dicServicePaty[this.currrentServiceAdo.SERVICE_ID])
+                        {
+                            pa.IsSetExpPrice = false;
+                        }
+                    }
                     this.currrentServiceAdo.ADJUST_AMOUNT = data.ADJUST_AMOUNT;
                     ChangeColorMedicine(this.currrentServiceAdo);
 
@@ -862,6 +869,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
 
                     this.currrentServiceAdo = new ADO.VHisServiceADO((V_HIS_MATERIAL_TYPE)data);
+                    if (dicServicePaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
+                    {
+                        foreach (var pa in dicServicePaty[this.currrentServiceAdo.SERVICE_ID])
+                        {
+                            pa.IsSetExpPrice = false;
+                        }
+                    }
                     this.currrentServiceAdo.ADJUST_AMOUNT = data.ADJUST_AMOUNT;
                     this.cboInformationBid.Enabled = true;
                     if (materialProcessor.GetBid(ucMaterialTypeTree) != null && dicBidMaterial.Count > 0 && dicBidMaterial.ContainsKey(Base.StaticMethod.GetTypeKey(data.ID, data.BidGroupCode)))
@@ -1140,7 +1154,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (data != null)
                     {
                         decimal? giaNhapLanTruoc = (data.LAST_IMP_PRICE ?? 0) * (1 + (data.LAST_IMP_VAT_RATIO ?? 0));
-                        spinEditGiaNhapLanTruoc.Value = giaNhapLanTruoc ?? 0;
+                        spinEditGiaNhapLanTruoc.Value = spinImpPriceVAT.Value = giaNhapLanTruoc ?? 0;
                         this.currrentServiceAdo.GiaBan = (data.LAST_EXP_PRICE ?? 0) * (1 + data.LAST_EXP_VAT_RATIO ?? 0);
 
                     }
@@ -1153,9 +1167,9 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     if (data != null)
                     {
                         decimal? giaNhapLanTruoc = (data.LAST_IMP_PRICE ?? 0) * (1 + (data.LAST_IMP_VAT_RATIO ?? 0));
-                        spinEditGiaNhapLanTruoc.Value = giaNhapLanTruoc ?? 0;
+                        spinEditGiaNhapLanTruoc.Value = spinImpPriceVAT.Value = giaNhapLanTruoc ?? 0;
                         this.currrentServiceAdo.GiaBan = (data.LAST_EXP_PRICE ?? 0) * (1 + data.LAST_EXP_VAT_RATIO ?? 0);
-
+                        
 
                     }
                 }
