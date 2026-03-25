@@ -2288,6 +2288,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 if (listTreatment != null && listTreatment.Count > 0)
                 {
                     var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(listTreatment, this.currentModule != null ? this.currentModule.RoomId : 0);
+                    PrintServiceReqProcessor.IsGroupTreatmentList = true;
                     PrintServiceReqProcessor.Print("Mps000276", false);
                 }
                 else
