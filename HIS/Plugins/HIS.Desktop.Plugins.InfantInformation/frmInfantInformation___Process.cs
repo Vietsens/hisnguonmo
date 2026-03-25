@@ -122,10 +122,15 @@ namespace HIS.Desktop.Plugins.InfantInformation
                 currentDTO.FatherIssuePlace = txtFatherCCCDPlace.Text;
 
 
-                if (!String.IsNullOrEmpty(cboHisBirthSertBook.Text))
-                {
-                    currentDTO.BirthCertBookID = Inventec.Common.TypeConvert.Parse.ToInt64(cboHisBirthSertBook.EditValue.ToString());  //Sổ chứng sinh
+                //if (!String.IsNullOrEmpty(cboHisBirthSertBook.Text))
+                //{
+                //    currentDTO.BirthCertBookID = Inventec.Common.TypeConvert.Parse.ToInt64(cboHisBirthSertBook.EditValue.ToString());  //Sổ chứng sinh
 
+                //}
+
+                if (cboHisBirthSertBook.EditValue != null)
+                {
+                    currentDTO.BirthCertBookID = Inventec.Common.TypeConvert.Parse.ToInt64(cboHisBirthSertBook.EditValue.ToString());
                 }
                 else
                 {

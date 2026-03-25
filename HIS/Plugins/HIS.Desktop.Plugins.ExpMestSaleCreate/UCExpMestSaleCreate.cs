@@ -520,13 +520,15 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 }
 
                 this.currentMediMateFocus = (MediMateTypeADO)treeListMediMate.GetDataRecordByNode(treeListMediMate.FocusedNode);
+                string typePrefix = this.currentMediMate.IsMedicine ? "MED" : (this.currentMediMate.IsMaterial ? "MAT" : "OTHER");
 
                 if (this.currentMediMateFocus != null)
                 {
                     this.currentMediMate.ClientSessionKey = this.currentMediMateFocus.ClientSessionKey;
                     this.currentMediMate.SERVICE_REQ_CODE = this.currentMediMateFocus.SERVICE_REQ_CODE;
                     this.currentMediMate.PARENT_ID__IN_SETY = this.currentMediMateFocus.SERVICE_REQ_CODE;
-                    this.currentMediMate.CONCRETE_ID__IN_SETY = this.currentMediMateFocus.SERVICE_REQ_CODE + "-" + this.currentMediMate.MEDI_MATE_TYPE_ID;
+                    //this.currentMediMate.CONCRETE_ID__IN_SETY = this.currentMediMateFocus.SERVICE_REQ_CODE + "-" + this.currentMediMate.MEDI_MATE_TYPE_ID;'
+                    this.currentMediMate.CONCRETE_ID__IN_SETY = this.currentMediMateFocus.SERVICE_REQ_CODE + "-" + typePrefix + "-" + this.currentMediMate.MEDI_MATE_TYPE_ID;
                     this.currentMediMate.EXP_MEST_ID = this.currentMediMateFocus.EXP_MEST_ID;
                     this.currentMediMate.EXP_MEST_CODE = this.currentMediMateFocus.EXP_MEST_CODE;
                     this.currentMediMate.TDL_PATIENT_NAME = this.currentMediMateFocus.TDL_PATIENT_NAME;
@@ -536,14 +538,20 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                     this.currentMediMate.ClientSessionKey = clientSessionKey;
                     this.currentMediMate.SERVICE_REQ_CODE = "000000000000";
                     this.currentMediMate.PARENT_ID__IN_SETY = this.currentMediMate.SERVICE_REQ_CODE;
-                    this.currentMediMate.CONCRETE_ID__IN_SETY = this.currentMediMate.SERVICE_REQ_CODE + "-" + this.currentMediMate.MEDI_MATE_TYPE_ID;
+                    //this.currentMediMate.CONCRETE_ID__IN_SETY = this.currentMediMate.SERVICE_REQ_CODE + "-" + this.currentMediMate.MEDI_MATE_TYPE_ID;
+                    this.currentMediMate.CONCRETE_ID__IN_SETY = this.currentMediMate.SERVICE_REQ_CODE + "-" + typePrefix + "-" + this.currentMediMate.MEDI_MATE_TYPE_ID;
                 }
 
                 decimal amount = spinAmount.Value;
                 List<long> beanIds = null;
                 if (dicMediMateAdo.ContainsKey(this.currentMediMate.MEDI_MATE_TYPE_ID))
                 {
-                    MediMateTypeADO mediMateTypeADO = dicMediMateAdo[this.currentMediMate.MEDI_MATE_TYPE_ID].FirstOrDefault(p => p.SERVICE_REQ_CODE == this.currentMediMate.SERVICE_REQ_CODE);
+                    // Tìm kiếm phần tử có cùng Service_Req_Code và phải CÙNG LOẠI (cùng cờ Thuốc/Vật tư)
+                    MediMateTypeADO mediMateTypeADO = dicMediMateAdo[this.currentMediMate.MEDI_MATE_TYPE_ID].FirstOrDefault(p =>
+                        p.SERVICE_REQ_CODE == this.currentMediMate.SERVICE_REQ_CODE &&
+                        p.IsMedicine == this.currentMediMate.IsMedicine &&
+                        p.IsMaterial == this.currentMediMate.IsMaterial);
+
                     if (mediMateTypeADO != null)
                     {
                         beanIds = mediMateTypeADO.BeanIds;
@@ -561,6 +569,7 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                         }
                     }
                 }
+            
 
                 if (this.currentMediMate.IsMedicine)
                 {
@@ -662,9 +671,15 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
 
                 if (dicMediMateAdo.ContainsKey(mediMate.MEDI_MATE_TYPE_ID))
                 {
-                    MediMateTypeADO mediMateTypeADO = dicMediMateAdo[mediMate.MEDI_MATE_TYPE_ID].FirstOrDefault(p => p.SERVICE_REQ_CODE == mediMate.SERVICE_REQ_CODE);
+                    // Bắt buộc so sánh CÙNG LOẠI ở đây để tránh ghi đè nhầm ID giữa thuốc và vật tư
+                    MediMateTypeADO mediMateTypeADO = dicMediMateAdo[mediMate.MEDI_MATE_TYPE_ID].FirstOrDefault(p =>
+                        p.SERVICE_REQ_CODE == mediMate.SERVICE_REQ_CODE &&
+                        p.IsMedicine == mediMate.IsMedicine &&
+                        p.IsMaterial == mediMate.IsMaterial);
+
                     if (mediMateTypeADO != null)
                     {
+                        // Chỉ gỡ dòng cũ khi nó trùng hoàn toàn cả ID và Loại (IsMedicine/IsMaterial)
                         dicMediMateAdo[mediMate.MEDI_MATE_TYPE_ID].Remove(mediMateTypeADO);
                     }
                     dicMediMateAdo[mediMate.MEDI_MATE_TYPE_ID].Add(mediMate);
