@@ -1297,14 +1297,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             if (previewType != null)
                             {
-                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : (PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode), printNow, previewType);
+                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : (PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode), printNow, previewType, lstserviceReqResult);
                             }
                             break;
                         case SAVETYPE.SAVE_PRINT_NOW:
-                            this.PrescriptionSavePrintShowHasClickSave(this.PrintPrescription, true, null);
+                            this.PrescriptionSavePrintShowHasClickSave(this.PrintPrescription, true, null, lstserviceReqResult);
                             break;
                         case SAVETYPE.SAVE_SHOW_PRINT_PREVIEW:
-                            this.PrescriptionSavePrintShowHasClickSave(PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null);
+                            this.PrescriptionSavePrintShowHasClickSave(PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null, lstserviceReqResult);
                             break;
                     }
 
