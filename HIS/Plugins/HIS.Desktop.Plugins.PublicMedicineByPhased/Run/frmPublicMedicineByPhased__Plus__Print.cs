@@ -569,126 +569,78 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                     List<long> distinctDates = ExpMestMediAndMateADOPrint
                         .Select(o => o.INTRUCTION_DATE)
                         .Distinct().OrderBy(t => t).ToList();
-                    //var sereServGroups = ExpMestMediAndMateADOPrint.GroupBy(p => new { p.SERVICE_ID, p.PRICE, p.CONCENTRA, p.INTRUCTION_DATE }).ToList();
 
-                    var sereServGroups = ExpMestMediAndMateADOPrint.GroupBy(p => new { p.MEDICINE_TYPE_ID, p.TUTORIAL, p.PRICE, p.Service_Type_Id, p.IS_EXPEND, p.INTRUCTION_DATE, p.VAT_RATIO }).ToList();
+                    // ✅ Bỏ INTRUCTION_DATE ra khỏi group key
+                    var sereServGroups = ExpMestMediAndMateADOPrint
+                        .GroupBy(p => new {
+                            p.MEDICINE_TYPE_ID,
+                            p.TUTORIAL,
+                            p.PRICE,
+                            p.Service_Type_Id,
+                            p.IS_EXPEND,
+                            p.VAT_RATIO
+                        }).ToList();
 
                     mps000088ADO = new List<MPS.Processor.Mps000088.PDO.Mps000088ADO>();
-                    int index = 0;
                     this.dayCountData = distinctDates.Count;
-                    int dayPageSize = (int)(Inventec.Common.Number.Convert.RoundUpValue(((double)this.dayCountData / (double)Config.Config.congKhaiThuoc_DaySize), 0));
-                   
+                    int dayPageSize = (int)(Inventec.Common.Number.Convert.RoundUpValue(
+                        ((double)this.dayCountData / (double)Config.Config.congKhaiThuoc_DaySize), 0));
 
-                    int indexYear = 0;
                     int d = 0;
                     for (int i = 1; i <= dayPageSize; i++)
                     {
-                        index = 0;
-                        indexYear = 0;
-                        List<long> distinctDatesInPage = distinctDates.Skip((i - 1) * Config.Config.congKhaiThuoc_DaySize).Take(Config.Config.congKhaiThuoc_DaySize).ToList();
+                        List<long> distinctDatesInPage = distinctDates
+                            .Skip((i - 1) * Config.Config.congKhaiThuoc_DaySize)
+                            .Take(Config.Config.congKhaiThuoc_DaySize)
+                            .ToList();
                         d++;
-                        #region ThuatToan
-                        //while (index < distinctDatesInPage.Count)
-                        //{
-                        MPS.Processor.Mps000088.PDO.Mps000088ADO sdo = new MPS.Processor.Mps000088.PDO.Mps000088ADO();
-                        #region ---Day---
 
+                        MPS.Processor.Mps000088.PDO.Mps000088ADO sdo = new MPS.Processor.Mps000088.PDO.Mps000088ADO();
+
+                        #region ---Day---
                         PropertyInfo[] ps = Inventec.Common.Repository.Properties.Get<MPS.Processor.Mps000088.PDO.Mps000088ADO>();
                         for (int j = 0; j < 60; j++)
                         {
                             PropertyInfo info = ps.FirstOrDefault(o => o.Name == string.Format("Day{0}", j + 1));
                             if (info != null)
                             {
-                                info.SetValue(sdo, j < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[j]) : "");
+                                info.SetValue(sdo, j < distinctDatesInPage.Count
+                                    ? TimeNumberToDateString(distinctDatesInPage[j])
+                                    : "");
                             }
                         }
-                       
                         #endregion
 
                         #region ---Day and year---
-
                         PropertyInfo[] py = Inventec.Common.Repository.Properties.Get<MPS.Processor.Mps000088.PDO.Mps000088ADO>();
                         for (int j = 0; j < 60; j++)
                         {
                             PropertyInfo info = py.FirstOrDefault(o => o.Name == string.Format("DayAndYear{0}", j + 1));
                             if (info != null)
                             {
-                                info.SetValue(sdo, j < distinctDatesInPage.Count ? TimeNumberToDateString(distinctDatesInPage[j]) : "");
+                                info.SetValue(sdo, j < distinctDatesInPage.Count
+                                    ? TimeNumberToDateString(distinctDatesInPage[j])
+                                    : "");
                             }
                         }
-                        //sdo.DayAndYear1 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear2 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear3 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear4 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear5 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear6 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear7 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear8 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear9 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear10 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear11 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear12 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear13 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear14 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear15 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear16 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear17 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear18 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear19 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear20 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear21 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear22 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear23 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear24 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear25 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear26 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear27 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear28 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear29 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear30 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear31 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear32 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear33 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear34 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear35 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear36 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear37 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear38 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear39 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear40 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear41 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear42 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear43 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear44 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear45 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear46 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear47 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear48 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear49 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear50 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear51 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear52 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear53 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear54 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear55 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear56 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear57 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear58 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear59 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
-                        //sdo.DayAndYear60 = indexYear < distinctDatesInPage.Count ? Inventec.Common.DateTime.Convert.TimeNumberToDateString(distinctDatesInPage[indexYear++]) : "";
                         #endregion
+
                         sdo.Mps000088ByMediEndMateADOs = new List<MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate>();
                         this._Mps000088ByMediEndMateADOs = new List<Mps000088ByMediEndMate>();
+
                         foreach (var group in sereServGroups)
                         {
+                            // Bỏ qua nếu không có amount trong trang hiện tại
                             if (group.ToList().Where(o => distinctDatesInPage.Contains(o.INTRUCTION_DATE)).Sum(o => o.AMOUNT) <= 0)
                                 continue;
 
-                            MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate sereServPrint = new MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate();
-                            List<ExpMestMediAndMateADO> sereServs = new List<ExpMestMediAndMateADO>();
-                            sereServs.AddRange(group.ToList());
-                            //Review gán lại từng dữ liệu
-                            sereServPrint.MEDICINE_TYPE_NAME = group.First().MEDICINE_TYPE_NAME;//Check
+                            MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate sereServPrint =
+                                new MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate();
+
+                            List<ExpMestMediAndMateADO> sereServs = group.ToList();
+
+                            // Gán thông tin chung
+                            sereServPrint.MEDICINE_TYPE_NAME = group.First().MEDICINE_TYPE_NAME;
                             sereServPrint.MEDICINE_TYPE_ID = group.First().MEDICINE_TYPE_ID;
                             sereServPrint.PRICE = group.First().PRICE;
                             sereServPrint.IS_EXPEND = group.First().IS_EXPEND;
@@ -700,127 +652,94 @@ namespace HIS.Desktop.Plugins.PublicMedicineByPhased
                             sereServPrint.MEDICINE_GROUP_NUM_ORDER = group.First().MEDICINE_GROUP_NUM_ORDER;
                             sereServPrint.MEDICINE_USE_FORM_NUM_ORDER = group.First().MEDICINE_USE_FORM_NUM_ORDER;
                             sereServPrint.NUM_ORDER = group.First().NUM_ORDER;
-
-                            //sereServPrint.NOON = group.First().NOON;
-                            //sereServPrint.AFTERNOON = group.First().AFTERNOON;
-                            //sereServPrint.EVENING = group.First().EVENING;
-                            //sereServPrint.MORNING = group.First().MORNING;
-                            //sereServPrint.REQUEST_DEPARTMENT_NAME = group.First().REQUEST_DEPARTMENT_NAME;
                             sereServPrint.TUTORIAL = group.First().TUTORIAL;
-                            //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("distinctDatesInPage_______", distinctDatesInPage));
-                            //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("group.ToList()_______", group.ToList()));
-                            sereServPrint.AMOUNT = group.ToList().Where(o => distinctDatesInPage.Contains(o.INTRUCTION_DATE)).Sum(o => o.AMOUNT);
+                            sereServPrint.CONCENTRA = group.First().CONCENTRA;
+
+                            // Tổng amount trong trang hiện tại
+                            sereServPrint.AMOUNT = group.ToList()
+                                .Where(o => distinctDatesInPage.Contains(o.INTRUCTION_DATE))
+                                .Sum(o => o.AMOUNT);
+
                             Inventec.Common.Logging.LogSystem.Info("Done!!!______");
                             sereServPrint.AMOUNT_STRING = sereServPrint.AMOUNT + "";
-                            sereServPrint.CONCENTRA = group.First().CONCENTRA;
-                            string amount = sereServPrint.AMOUNT + "";
-                            //sereServPrint.Day1 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day1).Any() ? amount : "";
-                            //sereServPrint.Day2 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day2).Any() ? amount : "";
-                            //sereServPrint.Day3 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day3).Any() ? amount : "";
-                            //sereServPrint.Day4 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day4).Any() ? amount : "";
-                            //sereServPrint.Day5 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day5).Any() ? amount : "";
-                            //sereServPrint.Day6 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day6).Any() ? amount : "";
-                            //sereServPrint.Day7 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day7).Any() ? amount : "";
-                            //sereServPrint.Day8 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day8).Any() ? amount : "";
-                            //sereServPrint.Day9 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day9).Any() ? amount : "";
-                            //sereServPrint.Day10 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day10).Any() ? amount : "";
-                            //sereServPrint.Day11 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day11).Any() ? amount : "";
-                            //sereServPrint.Day12 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day12).Any() ? amount : "";
-                            //sereServPrint.Day13 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day13).Any() ? amount : "";
-                            //sereServPrint.Day14 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day14).Any() ? amount : "";
-                            //sereServPrint.Day15 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day15).Any() ? amount : "";
-                            //sereServPrint.Day16 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day16).Any() ? amount : "";
-                            //sereServPrint.Day17 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day17).Any() ? amount : "";
-                            //sereServPrint.Day18 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day18).Any() ? amount : "";
-                            //sereServPrint.Day19 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day19).Any() ? amount : "";
-                            //sereServPrint.Day20 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day20).Any() ? amount : "";
-                            //sereServPrint.Day21 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day21).Any() ? amount : "";
-                            //sereServPrint.Day22 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day22).Any() ? amount : "";
-                            //sereServPrint.Day23 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day23).Any() ? amount : "";
-                            //sereServPrint.Day24 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day24).Any() ? amount : "";
-                            //sereServPrint.Day25 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day25).Any() ? amount : "";
-                            //sereServPrint.Day26 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day26).Any() ? amount : "";
-                            //sereServPrint.Day27 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day27).Any() ? amount : "";
-                            //sereServPrint.Day28 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day28).Any() ? amount : "";
-                            //sereServPrint.Day29 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day29).Any() ? amount : "";
-                            //sereServPrint.Day30 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day30).Any() ? amount : "";
-                            //sereServPrint.Day31 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day31).Any() ? amount : "";
-                            //sereServPrint.Day32 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day32).Any() ? amount : "";
-                            //sereServPrint.Day33 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day33).Any() ? amount : "";
-                            //sereServPrint.Day34 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day34).Any() ? amount : "";
-                            //sereServPrint.Day35 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day35).Any() ? amount : "";
-                            //sereServPrint.Day36 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day36).Any() ? amount : "";
-                            //sereServPrint.Day37 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day37).Any() ? amount : "";
-                            //sereServPrint.Day38 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day38).Any() ? amount : "";
-                            //sereServPrint.Day39 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day39).Any() ? amount : "";
-                            //sereServPrint.Day40 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day40).Any() ? amount : "";
-                            //sereServPrint.Day41 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day41).Any() ? amount : "";
-                            //sereServPrint.Day42 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day32).Any() ? amount : "";
-                            //sereServPrint.Day43 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day43).Any() ? amount : "";
-                            //sereServPrint.Day44 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day44).Any() ? amount : "";
-                            //sereServPrint.Day45 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day45).Any() ? amount : "";
-                            //sereServPrint.Day46 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day46).Any() ? amount : "";
-                            //sereServPrint.Day47 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day47).Any() ? amount : "";
-                            //sereServPrint.Day48 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day48).Any() ? amount : "";
-                            //sereServPrint.Day49 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day49).Any() ? amount : "";
-                            //sereServPrint.Day50 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day50).Any() ? amount : "";
-                            //sereServPrint.Day51 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day51).Any() ? amount : "";
-                            //sereServPrint.Day52 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day52).Any() ? amount : "";
-                            //sereServPrint.Day53 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day53).Any() ? amount : "";
-                            //sereServPrint.Day54 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day54).Any() ? amount : "";
-                            //sereServPrint.Day55 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day55).Any() ? amount : "";
-                            //sereServPrint.Day56 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day56).Any() ? amount : "";
-                            //sereServPrint.Day57 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day57).Any() ? amount : "";
-                            //sereServPrint.Day58 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day58).Any() ? amount : "";
-                            //sereServPrint.Day59 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day59).Any() ? amount : "";
-                            //sereServPrint.Day60 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day60).Any() ? amount : "";
 
+                            // ✅ Set Day columns: duyệt từng slot ngày, tìm item trong group khớp ngày đó
+                            PropertyInfo[] pp = Inventec.Common.Repository.Properties
+                                .Get<MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate>();
 
-                            PropertyInfo[] pp = Inventec.Common.Repository.Properties.Get<MPS.Processor.Mps000088.PDO.Mps000088ByMediEndMate>();
                             for (int j = 0; j < 60; j++)
                             {
+                                // Lấy giá trị ngày tại slot j từ sdo
                                 PropertyInfo infoSdo = ps.FirstOrDefault(o => o.Name == string.Format("Day{0}", j + 1));
-                                PropertyInfo info = pp.FirstOrDefault(o => o.Name == string.Format("Day{0}", j + 1));
+                                if (infoSdo == null) continue;
 
+                                string daySlotValue = (string)infoSdo.GetValue(sdo); // vd: "25/03/2026"
+
+                                // Tìm tất cả item trong group có ngày trùng slot này
+                                var itemsOnThisDay = sereServs
+                                    .Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == daySlotValue)
+                                    .ToList();
+
+                                // Day (amount)
+                                PropertyInfo info = pp.FirstOrDefault(o => o.Name == string.Format("Day{0}", j + 1));
                                 if (info != null)
                                 {
-                                    info.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? decimal.Parse(amount) : (decimal?)null);
+                                    decimal? dayAmount = itemsOnThisDay.Any()
+                                        ? (decimal?)itemsOnThisDay.Sum(o => o.AMOUNT)
+                                        : null;
+                                    info.SetValue(sereServPrint, dayAmount);
                                 }
+
+                                // MORNING
                                 PropertyInfo info2 = pp.FirstOrDefault(o => o.Name == string.Format("MORNING_Day{0}", j + 1));
                                 if (info2 != null)
                                 {
-                                    string text2 = group.ToList().Sum(s => FormatSessionOfDay(s.MORNING)).ToString();
-                                    info2.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? text2 : "");
+                                    string val = itemsOnThisDay.Any()
+                                        ? itemsOnThisDay.Sum(s => FormatSessionOfDay(s.MORNING)).ToString()
+                                        : "";
+                                    info2.SetValue(sereServPrint, val);
                                 }
+
+                                // NOON
                                 PropertyInfo info3 = pp.FirstOrDefault(o => o.Name == string.Format("NOON_Day{0}", j + 1));
                                 if (info3 != null)
                                 {
-                                    string text3 = group.ToList().Sum(s => FormatSessionOfDay(s.NOON)).ToString();
-                                    info3.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? text3 : "");
+                                    string val = itemsOnThisDay.Any()
+                                        ? itemsOnThisDay.Sum(s => FormatSessionOfDay(s.NOON)).ToString()
+                                        : "";
+                                    info3.SetValue(sereServPrint, val);
                                 }
+
+                                // AFTERNOON
                                 PropertyInfo info4 = pp.FirstOrDefault(o => o.Name == string.Format("AFTERNOON_Day{0}", j + 1));
                                 if (info4 != null)
                                 {
-                                    string text4 = group.ToList().Sum(s => FormatSessionOfDay(s.AFTERNOON)).ToString();
-                                    info4.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? text4 : "");
+                                    string val = itemsOnThisDay.Any()
+                                        ? itemsOnThisDay.Sum(s => FormatSessionOfDay(s.AFTERNOON)).ToString()
+                                        : "";
+                                    info4.SetValue(sereServPrint, val);
                                 }
+
+                                // EVENING
                                 PropertyInfo info5 = pp.FirstOrDefault(o => o.Name == string.Format("EVENING_Day{0}", j + 1));
                                 if (info5 != null)
                                 {
-                                    string text5 = group.ToList().Sum(s => FormatSessionOfDay(s.EVENING)).ToString();
-                                    info5.SetValue(sereServPrint, TimeNumberToDateString(group.Key.INTRUCTION_DATE) == (string)infoSdo.GetValue(sdo) ? text5 : "");
+                                    string val = itemsOnThisDay.Any()
+                                        ? itemsOnThisDay.Sum(s => FormatSessionOfDay(s.EVENING)).ToString()
+                                        : "";
+                                    info5.SetValue(sereServPrint, val);
                                 }
-
                             }
+
                             sdo.Mps000088ByMediEndMateADOs.Add(sereServPrint);
                             this._Mps000088ByMediEndMateADOs.Add(sereServPrint);
                         }
 
-                        sdo.Mps000088ByMediEndMateADOs = sdo.Mps000088ByMediEndMateADOs.OrderBy(p => p.MEDICINE_TYPE_NAME).ToList();
+                        sdo.Mps000088ByMediEndMateADOs = sdo.Mps000088ByMediEndMateADOs
+                            .OrderBy(p => p.MEDICINE_TYPE_NAME)
+                            .ToList();
 
                         this.mps000088ADO.Add(sdo);
-                        //}
-                        #endregion
                     }
                 }
             }
