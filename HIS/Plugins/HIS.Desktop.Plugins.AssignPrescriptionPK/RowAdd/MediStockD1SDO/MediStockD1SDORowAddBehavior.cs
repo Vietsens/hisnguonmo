@@ -153,7 +153,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
                         SetValidAmountError();
                         UpdateMediMatyByMedicineTypeCategory(medicineTypeSDO__Category__SameMediAcin);
                         // qtcode
-                        this.medicineTypeSDO.IsGuarantee = true;
+                        this.medicineTypeSDO.IsGuarantee = this.frmAssignPrescription.GetIsPatientHasGuarantee();
                         this.medicineTypeSDO.IsMultiDateState = this.IsMultiDateState;//TODO
                         this.medicineTypeSDO.IntructionTimeSelecteds = this.IntructionTimeSelecteds;//TODO
                         //qtcode 
@@ -171,7 +171,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add.MediStockD1SDO
                             if (!frmAssignPrescription.GetOverReason(medicineTypeSDO))
                                 return success;
                         }
-                        this.medicineTypeSDO.IsGuarantee = true;
+                        this.medicineTypeSDO.IsGuarantee = this.frmAssignPrescription.GetIsPatientHasGuarantee();
                         this.UpdateMedicinePackageInfoInDataRow(this.medicineTypeSDO);
                         this.UpdatePatientTypeInDataRow(this.medicineTypeSDO);
                         this.UpdateExpMestReasonInDataRow(this.medicineTypeSDO);

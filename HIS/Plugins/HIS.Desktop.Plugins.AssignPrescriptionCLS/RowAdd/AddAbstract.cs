@@ -242,7 +242,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.Add
 
         protected void SaveDataAndRefesh(MediMatyTypeADO mediMatyADO)
         {
-            mediMatyADO.IsGuarantee = true;
+            mediMatyADO.IsGuarantee = this.frmAssignPrescription.GetIsPatientHasGuarantee() ;
             frmAssignPrescription.mediMatyTypeADOs.Add(mediMatyADO);
             frmAssignPrescription.idRow += frmAssignPrescription.stepRow;
             

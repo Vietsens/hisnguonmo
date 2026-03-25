@@ -79,9 +79,8 @@
     <Reference Include="HIS.Desktop.Plugins.Library.FormMedicalRecord">
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.FormMedicalRecord\HIS.Desktop.Plugins.Library.FormMedicalRecord.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee\bin\Debug\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
+    <Reference Include="HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee">
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.MedicalExpenseGuarantee.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintBordereau">
       <HintPath>..\..\..\..\LIB\HIS\HIS.Desktop.Plugins.Library.PrintBordereau\HIS.Desktop.Plugins.Library.PrintBordereau.dll</HintPath>
@@ -93,7 +92,8 @@
     <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReq">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReq.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment">
+    <Reference Include="HIS.Desktop.Plugins.Library.PrintServiceReqTreatment, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.PrintTreatmentFinish, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

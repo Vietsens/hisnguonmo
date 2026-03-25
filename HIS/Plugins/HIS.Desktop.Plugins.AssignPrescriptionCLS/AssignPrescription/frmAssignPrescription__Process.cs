@@ -1291,7 +1291,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                     && !string.IsNullOrEmpty(this.Histreatment?.GUARANTEE_CODE)
                     && this.currentHisPatientTypeAlter?.PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT)
                 {
-                    this.currentMedicineTypeADOForEdit.IsGuarantee = true;
+                    this.currentMedicineTypeADOForEdit.IsGuarantee = GetIsPatientHasGuarantee();
                 }
 
                 HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.IAdd iAdd = HIS.Desktop.Plugins.AssignPrescriptionCLS.Add.AddFactory.MakeIAdd(
@@ -2632,7 +2632,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                 {
                     foreach (var item in this.mediMatyTypeADOs)
                     {
-                        item.IsGuarantee = true;
+                        item.IsGuarantee = this.GetIsPatientHasGuarantee();
                     }
                 }
 

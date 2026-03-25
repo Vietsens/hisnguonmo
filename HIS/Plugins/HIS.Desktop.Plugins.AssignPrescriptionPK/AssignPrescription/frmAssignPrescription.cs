@@ -1034,6 +1034,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         }
         #endregion
         #region Private method
+
+
         private void CheckAssignServiceSimultaneityOption()
         {
             try
@@ -11071,7 +11073,19 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         }
 
         #endregion
-
+        public bool GetIsPatientHasGuarantee()
+        {
+            try
+            {
+                return this.currentTreatment != null
+                    && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE)
+                    && this.currentTreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         void ServiceReqEyeUpdateInfo(HIS_SERVICE_REQ serviceReqEye)
         {
             this.ServiceReqEye = serviceReqEye;

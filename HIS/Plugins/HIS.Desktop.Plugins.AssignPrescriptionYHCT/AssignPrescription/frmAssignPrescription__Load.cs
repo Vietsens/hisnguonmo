@@ -2256,24 +2256,24 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
 
-        private void VisibleGuarantee()
-        {
-            try
-            {
-                if (this.currentTreatmentWithPatientType != null && !string.IsNullOrEmpty(this.currentTreatmentWithPatientType.GUARANTEE_CODE))
-                {
-                    lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                }
-                else
-                {
-                    lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
+        //private void VisibleGuarantee()
+        //{
+        //    try
+        //    {
+        //        if (this.currentTreatmentWithPatientType != null && !string.IsNullOrEmpty(this.currentTreatmentWithPatientType.GUARANTEE_CODE))
+        //        {
+        //            lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+        //        }
+        //        else
+        //        {
+        //            lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Inventec.Common.Logging.LogSystem.Warn(ex);
+        //    }
+        //}
 
         private decimal GetTotalSelectedGuaranteePrice()
         {

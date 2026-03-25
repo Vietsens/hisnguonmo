@@ -350,7 +350,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Add
 
         protected void SaveDataAndRefesh(MediMatyTypeADO mediMatyADO)
         {
-            mediMatyADO.IsGuarantee = true; 
+            //mediMatyADO.IsGuarantee = true; 
             frmAssignPrescription.mediMatyTypeADOs.Add(mediMatyADO);
             frmAssignPrescription.idRow += frmAssignPrescription.stepRow;
             frmAssignPrescription.ProcessMediStock(frmAssignPrescription.mediMatyTypeADOs);
