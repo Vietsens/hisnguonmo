@@ -66,6 +66,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using EMR.WCF.DCO;
+using Newtonsoft.Json.Linq;
 
 namespace HIS.Desktop.Plugins.HisService
 {
@@ -109,6 +110,8 @@ namespace HIS.Desktop.Plugins.HisService
         private System.Windows.Forms.SaveFileDialog SaveFileExportExcel = new SaveFileDialog();
         private System.Windows.Forms.SaveFileDialog SaveFileExportXmlTT12 = new SaveFileDialog();
         SettingSignADO settingSignADO;
+        private static readonly string settingSignFilePath = System.IO.Path.Combine(
+            System.Windows.Forms.Application.StartupPath, "Temp", "SettingSign_HisService.json");
         private bool isNotLoadWhileChangeControlStateInFirst = false;
 
         public class CauHinhItem
@@ -183,6 +186,7 @@ namespace HIS.Desktop.Plugins.HisService
             try
             {
                 SetDefaultControlsProperties();
+                LoadSettingSign();
                 MeShow();
             }
             catch (Exception ex)
@@ -8075,18 +8079,22 @@ namespace HIS.Desktop.Plugins.HisService
 
                 if (chkKy.Checked == true)
                 {
+                    LoadSettingSign();
                     frmSetting frm = new frmSetting(settingSignADO, (result) =>
                     {
                         settingSignADO = (SettingSignADO)result;
+                        SaveSettingSign();
                     });
                     frm.ShowDialog();
 
                     if (settingSignADO == null || string.IsNullOrEmpty(settingSignADO.SerialNumber))
                         chkKy.Checked = false;
+                    else
+                        SaveSettingSign();
                 }
                 else
                 {
-                    settingSignADO = null;
+                    SaveSettingSign(false);
                 }
             }
             catch (Exception ex)
@@ -8205,6 +8213,51 @@ namespace HIS.Desktop.Plugins.HisService
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        private void SaveSettingSign(bool? isChecked = null)
+        {
+            try
+            {
+                string dir = System.IO.Path.GetDirectoryName(settingSignFilePath);
+                if (!System.IO.Directory.Exists(dir))
+                    System.IO.Directory.CreateDirectory(dir);
+                var data = new
+                {
+                    IsChkKyChecked = isChecked ?? chkKy.Checked,
+                    Setting = settingSignADO
+                };
+                System.IO.File.WriteAllText(settingSignFilePath,
+                    JsonConvert.SerializeObject(data), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadSettingSign()
+        {
+            try
+            {
+                if (System.IO.File.Exists(settingSignFilePath))
+                {
+                    string json = System.IO.File.ReadAllText(settingSignFilePath, Encoding.UTF8);
+                    var obj = Newtonsoft.Json.Linq.JObject.Parse(json);
+                    if (obj["Setting"] != null && obj["Setting"].Type != Newtonsoft.Json.Linq.JTokenType.Null)
+                        settingSignADO = obj["Setting"].ToObject<SettingSignADO>();
+                    if (obj["IsChkKyChecked"] != null && obj["IsChkKyChecked"].Value<bool>())
+                    {
+                        isNotLoadWhileChangeControlStateInFirst = true;
+                        chkKy.Checked = true;
+                        isNotLoadWhileChangeControlStateInFirst = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private string ReadFileContent(string filePath)
