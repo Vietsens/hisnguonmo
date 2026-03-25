@@ -718,7 +718,7 @@ namespace HIS.UC.UCServiceRoomInfo
                 bool isOutOfHour = CheckIsOutOfHoursTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)intructionTimeSelected));
                 var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().Where(o => o.IS_ACTIVE == 1 && o.PATIENT_TYPE_CODE == "OT").FirstOrDefault();
                 // ✅ Nếu thỏa điều kiện → Set OT
-                if (isOutOfHour && (!this.isEmergency && preExamId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU.ToString()))
+                if (isOutOfHour && (!this.isEmergency && preExamId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM.ToString()))
                 {
                     if (CboPatientTypePrimary.EditValue == null || CboPatientTypePrimary.EditValue == "")
                         CboPatientTypePrimary.EditValue = patientType.ID;

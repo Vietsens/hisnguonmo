@@ -107,16 +107,7 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 StartTimer(GetModuleLink(), "timerInitForm");
                 LoadPayForm();
                 InitInvoiceCheckStates();
-                if (!string.IsNullOrEmpty(inputTransReq.BankName) && (inputTransReq.BankName == "CTG" || inputTransReq.BankName == "Vietinbank")
-                    && currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)
-                {
-                    layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    btnCheckTrans.Image = imageList1.Images[0];
-                }
-                else
-                {
-                    layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -1034,6 +1025,18 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             if (PosStatic.IsOpenPos())
                                 PosStatic.SendData(null);
                         }
+                    }
+
+                    if (!string.IsNullOrEmpty(inputTransReq.BankName) && (inputTransReq.BankName == "CTG" || inputTransReq.BankName == "Vietinbank")
+                    && currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)  
+                    {
+                        layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        var img = imageList1.Images[0];
+                        btnCheckTrans.EditValue = imageList1.Images[0];
+                    }
+                    else
+                    {
+                        layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     }
                 }
             }
