@@ -57,6 +57,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
         private List<HIS_KSK_CONTRACT> _KskContract { get; set; } 
         private List<HIS_KSK_SERVICE> _KskService { get; set; }
         public MPS.ProcessorBase.PrintConfig.PreviewType? previewType { get; set; }
+        public bool IsGroupTreatmentList { get; set; }
         public PrintServiceReqTreatmentProcessor(List<V_HIS_SERVICE_REQ> _vhisServiceReqs, long roomId)
         {
             try
@@ -203,7 +204,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                     switch (printTypeCode)
                     {
                         case PrintTypeCodeStore.IN__HUONG_DAN_CLS__KHAM:
-                            new InCacPhieuChiDinh(printTypeCode, fileName, this._ServiceReqs, this._SereServs, this._ListTreatment, this._PatientTypeAlter, this._vHisRoom, printNow, ref result, lstConfig, transReq, DlgSendResultSigned, this.previewType, this._SereServExts, this._ServiceReqADO, this._Ksk,this._KskContract,this._KskService);
+                            new InCacPhieuChiDinh(printTypeCode, fileName, this._ServiceReqs, this._SereServs, this._ListTreatment, this._PatientTypeAlter, this._vHisRoom, printNow, ref result, lstConfig, transReq, DlgSendResultSigned, this.previewType, this._SereServExts, this._ServiceReqADO, this._Ksk,this._KskContract,this._KskService, this.IsGroupTreatmentList);
                             break;
 
                         default:
