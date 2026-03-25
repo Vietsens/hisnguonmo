@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
         private bool IsAutoSign;
         bool InChuyenDoi = false;
         VATType LoaiHoaDon = VATType.BanHang;
+        bool IsChangeInvoiceName = false;
 
         enum VATType
         {
@@ -121,6 +122,12 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                     {
                         if (configArr[9].Trim() == "1")
                             this.LoaiHoaDon = VATType.GiaTriGiaTang;
+                    }
+                    if (configArr.Count() > 10)
+                    {
+                        if (configArr[10].Trim() == "1")
+                            this.IsChangeInvoiceName = true;
+                        else this.IsChangeInvoiceName = false;
                     }
 
                     string[] accountConfigArr = accountConfig.Split('|');
@@ -307,6 +314,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
                 Inventec.Common.ElectronicBill.Misa.Model.Response responsePreview = null;
                 login.DataCreate = new List<CreateInvoiceV2>() { invoices };
                 login.DataPreview = invoices;
+                login.IsChangeInvoiceName = this.IsChangeInvoiceName;
 
                 var eMoit = new Inventec.Common.ElectronicBill.Misa.ElectronicBillMisaManager(login);
                 if (eMoit != null)

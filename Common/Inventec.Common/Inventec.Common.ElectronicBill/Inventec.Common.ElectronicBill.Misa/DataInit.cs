@@ -44,5 +44,7 @@ namespace Inventec.Common.ElectronicBill.Misa
         public object DataSign { get; set; }
 
         public object DataRelease { get; set; }
+        // qtcode
+        public bool IsChangeInvoiceName { get; set; }
     }
 }
