@@ -36,6 +36,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.Validtion
             bool valid = false;
             try
             {
+                if (gridLockup == null)
+                    return true;
+
                 if (gridLockup.EditValue == null)
                 {
                     //this.ErrorText = MessageUtil.GetMessage(HIS.Desktop.LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
