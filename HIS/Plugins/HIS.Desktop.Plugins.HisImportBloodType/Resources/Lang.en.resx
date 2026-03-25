@@ -243,4 +243,7 @@
   <data name="KhongDongThoiCoCacThongTin" xml:space="preserve">
     <value>Only enter {0} or {1}</value>
   </data>
+  <data name="HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_TUBE_SLOT" xml:space="preserve">
+    <value>Tube slot</value>
+  </data>
 </root>

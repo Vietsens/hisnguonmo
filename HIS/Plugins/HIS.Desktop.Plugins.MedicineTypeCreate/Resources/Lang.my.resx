@@ -1,0 +1,2220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="frmDieuChinhLieu.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmDieuChinhLieu.bbtnItemAdd.Caption" xml:space="preserve">
+    <value>ထည့်ပါ (Ctrl A)</value>
+  </data>
+  <data name="frmDieuChinhLieu.bbtnItemSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmDieuChinhLieu.btnAdd.Text" xml:space="preserve">
+    <value>ထည့်ပါ (Ctrl A)</value>
+  </data>
+  <data name="frmDieuChinhLieu.btnAdd2.Text" xml:space="preserve">
+    <value>ထည့်ပါ (Ctrl A)</value>
+  </data>
+  <data name="frmDieuChinhLieu.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmDieuChinhLieu.chkCrCl.Properties.Caption" xml:space="preserve">
+    <value>CrCl</value>
+  </data>
+  <data name="frmDieuChinhLieu.chkeGFR.Properties.Caption" xml:space="preserve">
+    <value>eGFR</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn1.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn10.Caption" xml:space="preserve">
+    <value>စမ်းသပ်မှုရလဒ်များ</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn11.Caption" xml:space="preserve">
+    <value>စမ်းသပ်မှုရလဒ်များရောက်ရှိလာသည်။</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn12.Caption" xml:space="preserve">
+    <value>တစ်နေ့လျှင် ပေးသောဆေးအရေအတွက်</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn13.Caption" xml:space="preserve">
+    <value>ရောက်ရှိလာသည့်နေ့တွင် သတ်မှတ်ထားသော ဆေးအရေအတွက်</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn14.Caption" xml:space="preserve">
+    <value>အကြောင်းအရာ</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn15.Caption" xml:space="preserve">
+    <value>ရောဂါအမည်</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn16.Caption" xml:space="preserve">
+    <value>ရောဂါရှာဖွေရေးကုဒ်</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn17.Caption" xml:space="preserve">
+    <value>စမ်းသပ်မှု အညွှန်းအမည်</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn2.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn3.Caption" xml:space="preserve">
+    <value>သံလိုက်ကျောက်ကပ်လုပ်ငန်းဆောင်တာညွှန်းကိန်း</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn4.Caption" xml:space="preserve">
+    <value>မရှိ</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn5.Caption" xml:space="preserve">
+    <value>ဖျက်ပါ။</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn6.Caption" xml:space="preserve">
+    <value>ကျောက်ကပ်လုပ်ဆောင်မှု အညွှန်းကိန်း ထွက်လာပါသည်။</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn7.Caption" xml:space="preserve">
+    <value>တစ်နေ့လျှင် ပေးသောဆေးအရေအတွက်</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn8.Caption" xml:space="preserve">
+    <value>ရောက်ရှိလာသည့်နေ့တွင် သတ်မှတ်ထားသော ဆေးအရေအတွက်</value>
+  </data>
+  <data name="frmDieuChinhLieu.gridColumn9.Caption" xml:space="preserve">
+    <value>အကြောင်းအရာ</value>
+  </data>
+  <data name="frmDieuChinhLieu.label1.Text" xml:space="preserve">
+    <value>သတိပေးချက် အခြေအနေများ</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၃</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၄</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem10.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျောက်ကပ်လုပ်ဆောင်မှု အညွှန်းကိန်းသည် ကြေညာတန်ဖိုးထက် ကြီးသည် သို့မဟုတ် ညီမျှသည်။</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem10.Text" xml:space="preserve">
+    <value>ကျောက်ကပ်လုပ်ငန်းဆောင်တာ အညွှန်းကိန်း:</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem11.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျောက်ကပ်လုပ်ဆောင်မှုအညွှန်းကိန်းသည် သတ်မှတ်ထားသောတန်ဖိုးထက်နည်းသည်။</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem11.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem12.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နေ့စဥ်သတ်မှတ်ထားသော စုစုပေါင်းဆေးပမာဏသည် ကြေညာထားသည့်တန်ဖိုးထက် ပိုများနေသည်။</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem12.Text" xml:space="preserve">
+    <value>တစ်နေ့လျှင် သတ်မှတ်ထားသော ဆေးဝါးအရေအတွက်-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem13.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တစ်နေ့တာအတွက် သတ်မှတ်ထားသော ဆေးဝါးစုစုပေါင်းပမာဏသည် ကြေညာထားသောတန်ဖိုးထက် နည်းသည် သို့မဟုတ် ညီမျှသည်။</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem13.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem14.Text" xml:space="preserve">
+    <value>သတိပေးချက် အကြောင်းအရာ-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem17.Text" xml:space="preserve">
+    <value>ရောဂါရှာဖွေခြင်း-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem18.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem19.Text" xml:space="preserve">
+    <value>စမ်းသပ်မှု အညွှန်း-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem20.Text" xml:space="preserve">
+    <value>စမ်းသပ်မှုရလဒ်များ-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem21.Text" xml:space="preserve">
+    <value>တစ်နေ့လျှင် သတ်မှတ်ထားသော ဆေးဝါးအရေအတွက်-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem22.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem23.Text" xml:space="preserve">
+    <value>ရောက်သည်-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem24.Text" xml:space="preserve">
+    <value>သတိပေးချက် အကြောင်းအရာ-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem6.Text" xml:space="preserve">
+    <value>တွက်ချက်မှုဖော်မြူလာ-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem7.Text" xml:space="preserve">
+    <value>ဝန်ဆောင်မှု-</value>
+  </data>
+  <data name="frmDieuChinhLieu.layoutControlItem8.Text" xml:space="preserve">
+    <value>စမ်းသပ်မှု အညွှန်း-</value>
+  </data>
+  <data name="frmDieuChinhLieu.Text" xml:space="preserve">
+    <value>ဆေးပမာဏကို ချိန်ညှိပါ။</value>
+  </data>
+  <data name="frmDieuChinhLieu.txtIcdName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရောဂါကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmDieuChinhLieu.xtraTabPage1.Text" xml:space="preserve">
+    <value>ကျောက်ကပ်လုပ်ငန်းဆောင်တာအရ သောက်သုံးပါ။</value>
+  </data>
+  <data name="frmDieuChinhLieu.xtraTabPage2.Text" xml:space="preserve">
+    <value>စမ်းသပ်ခြင်းဝန်ဆောင်မှု</value>
+  </data>
+  <data name="frmMedicineTypeCreate.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.barButtonItem1.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.barButtonItem2.Caption" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.bbtnReset.Caption" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.bbtnSave.Caption" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.bbtnServicePaty.Caption" xml:space="preserve">
+    <value>စျေးနှုန်းမူဝါဒ (Ctrl G)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnCancelHDSD.Text" xml:space="preserve">
+    <value>ကျော်သွားပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnContentWarning.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnContraindication.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnDepartmentPatientType.Text" xml:space="preserve">
+    <value>သင်ကြားရေးဌာန</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnDieuChinhLieu.Text" xml:space="preserve">
+    <value>ဆေးပမာဏကို ချိန်ညှိပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnGiaTran.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ၏ မျက်နှာကြက် ဈေးနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnHDSD.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnMemoDistributedAmount.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnMemoDosageForm.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnMemoUsedPart.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnNote.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnOKHDSD.Text" xml:space="preserve">
+    <value>သဘောတူသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnRefresh.Text" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnSave.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnServicePaty.Text" xml:space="preserve">
+    <value>စျေးနှုန်းမူဝါဒ (Ctrl G)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.btnTCCL.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.cboImpUnit.ToolTip" xml:space="preserve">
+    <value>ပေးသွင်းသူထံမှ ဆေးဝါးလက်ခံရရှိမှုတွင် တွက်ချက်မှုယူနစ်၊ ကာလအစ၊ စာရင်းဇယား၊ အခြား</value>
+  </data>
+  <data name="frmMedicineTypeCreate.checkEdit67.Properties.Caption" xml:space="preserve">
+    <value>: offset ကို ခွဲလိုက်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.chkAllowMissingInfoPkg.ToolTip" xml:space="preserve">
+    <value>အတွဲနံပါတ် သို့မဟုတ် သက်တမ်းကုန်ဆုံးရက်ကို ထည့်သွင်းရန် မလိုအပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.chkIS_DRUG_STORE.Properties.Caption" xml:space="preserve">
+    <value> </value>
+  </data>
+  <data name="frmMedicineTypeCreate.chkIS_DRUG_STORE.ToolTip" xml:space="preserve">
+    <value>ဂိုဒေါင်တွင်အသုံးပြုသောဆေးဝါးများသည် \</value>
+  </data>
+  <data name="frmMedicineTypeCreate.chkIsOutHospital.ToolTip" xml:space="preserve">
+    <value>ဆေးဝါးသည် ဆေးဆိုင် သို့မဟုတ် ဆေးဆိုင်၏ ဆေးစာရင်းတွင် မပါဝင်ပါ။ အရောင်းဆိုင်မှ ဆေးဝါးများ ညွှန်ကြားရာတွင် ဆရာဝန်များကို ကူညီရန်သာ ကြေငြာပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.dateEdit4.ToolTip" xml:space="preserve">
+    <value>မကြာသေးမီက တင်သွင်းထားသော အတွဲများ၏ သက်တမ်းကုန်ဆုံးရက်စွဲ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.dateEdit6.ToolTip" xml:space="preserve">
+    <value>မကြာသေးမီက တင်သွင်းထားသော အတွဲများ၏ သက်တမ်းကုန်ဆုံးရက်စွဲ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.dateEdit8.ToolTip" xml:space="preserve">
+    <value>မကြာသေးမီက တင်သွင်းထားသော အတွဲများ၏ သက်တမ်းကုန်ဆုံးရက်စွဲ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.dtHSD.ToolTip" xml:space="preserve">
+    <value>မကြာသေးမီက တင်သွင်းထားသော အတွဲများ၏ သက်တမ်းကုန်ဆုံးရက်စွဲ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdColAdd.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdColPatientType.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdColPrice.Caption" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdColVat.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.grdViewHisServicePaty.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>သော့ချက်စာလုံးများကို ရှာဖွေပါ...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridBreanch.Caption" xml:space="preserve">
+    <value>ကိုင်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn1.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn10.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn11.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn12.Caption" xml:space="preserve">
+    <value>ကိုင်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn13.Caption" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn14.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn15.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn16.Caption" xml:space="preserve">
+    <value>လျှောက်ထားရန်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn17.Caption" xml:space="preserve">
+    <value>မှလျှောက်ထားပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn2.Caption" xml:space="preserve">
+    <value>ကိုင်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn3.Caption" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn4.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn5.Caption" xml:space="preserve">
+    <value>ဇယားကွက် ၁</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn6.Caption" xml:space="preserve">
+    <value>ငွေပေးချေမှု ရှိကြပါတယ်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn7.Caption" xml:space="preserve">
+    <value>ကိုင်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn8.Caption" xml:space="preserve">
+    <value>စျေးနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridColumn9.Caption" xml:space="preserve">
+    <value>VAT (%)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridView18.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>သော့ချက်စာလုံးများကို ရှာဖွေပါ...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridView30.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>သော့ချက်စာလုံးများကို ရှာဖွေပါ...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.gridView43.OptionsFind.FindNullPrompt" xml:space="preserve">
+    <value>သော့ချက်စာလုံးများကို ရှာဖွေပါ...</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox1.Text" xml:space="preserve">
+    <value>ယေဘုယျသတင်းအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox10.Text" xml:space="preserve">
+    <value>ယေဘုယျသတင်းအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox11.Text" xml:space="preserve">
+    <value>စျေးနှုန်းအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox12.Text" xml:space="preserve">
+    <value>ဖွဲ့စည်းမှုအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox13.Text" xml:space="preserve">
+    <value>ယေဘုယျသတင်းအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox2.Text" xml:space="preserve">
+    <value>စျေးနှုန်းအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox3.Text" xml:space="preserve">
+    <value>ဖွဲ့စည်းမှုအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox4.Text" xml:space="preserve">
+    <value>စျေးနှုန်းအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox5.Text" xml:space="preserve">
+    <value>စျေးနှုန်းအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox6.Text" xml:space="preserve">
+    <value>ဖွဲ့စည်းမှုအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox7.Text" xml:space="preserve">
+    <value>ယေဘုယျသတင်းအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox8.Text" xml:space="preserve">
+    <value>စျေးနှုန်းအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.groupBox9.Text" xml:space="preserve">
+    <value>ဖွဲ့စည်းမှုအချက်အလက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl1.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl10.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl2.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl3.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl4.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl5.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl6.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl7.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl8.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.labelControl9.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl10.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်မှု ၁၀</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl11.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်မှု ၁၀</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl12.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl13.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၈</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl14.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl15.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl16.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl17.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl18.Text" xml:space="preserve">
+    <value>အပြင်အဆင် ထိန်းချုပ်မှု ၁၀</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl19.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl2.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl20.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၈</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl21.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl22.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl23.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl24.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl25.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁၀</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl26.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl27.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၈</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl28.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl29.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl3.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl30.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl4.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၂</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl5.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၅</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl6.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၆</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl7.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၇</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl8.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၈</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControl9.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem10.Text" xml:space="preserve">
+    <value>မိဘအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem102.Text" xml:space="preserve">
+    <value>လက်လီ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem103.Text" xml:space="preserve">
+    <value>ဆေးဝါးထုတ်လုပ်ရန် ကုန်ကြမ်းအဖြစ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem104.Text" xml:space="preserve">
+    <value>အလိုအလျောက် စွန့်ပစ်ပစ္စည်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem105.Text" xml:space="preserve">
+    <value>ကာကွယ်ဆေးအဖြစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem106.Text" xml:space="preserve">
+    <value>ဗီတာမင် A အဖြစ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem107.Text" xml:space="preserve">
+    <value>ကာကွယ်ဆေးထိုးရန် အသုံးပြုပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem108.Text" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem11.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်ဟောင်းစျေးနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem111.Text" xml:space="preserve">
+    <value>အဆင့်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem112.Text" xml:space="preserve">
+    <value>မဖြစ်မနေစီစဉ်ခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem113.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ စျေးနှုန်း သတ်မှတ်ချက်သည် MOS.BHYT.NO_LIMIT_MEDICINE_MATERIAL_PRICE__PREFIX သတ်မှတ်ပုံစံ တဂ်တွင် ဖော်ပြထားသော အထူး ကတ်ခေါင်းစီးများနှင့် မသက်ဆိုင်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem113.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ စျေးနှုန်း အနိမ့်အမြင့် အကျုံးဝင်ခြင်း မရှိပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem114.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>0 ထက်ကြီးသောအသက်ကိုထည့်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem114.Text" xml:space="preserve">
+    <value>အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem115.Text" xml:space="preserve">
+    <value>ရောက်ရှိလာသည့် အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem118.Text" xml:space="preserve">
+    <value>ဖော်ပြပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem119.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem119.Text" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem12.Text" xml:space="preserve">
+    <value>တက်ကြွပါဝင်ပစ္စည်းများ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem120.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ အဟောင်းနှုန်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem121.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem122.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံဝင်ခွင့်ရက်စွဲပေါ်မူတည်၍ ကျန်းမာရေးအာမခံနှုန်းထားအသစ်များကို လျှောက်ထားပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem122.Text" xml:space="preserve">
+    <value>AD ကျန်းမာရေးအာမခံနှုန်းထားအသစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem123.Text" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem124.Text" xml:space="preserve">
+    <value>အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem125.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem126.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သက်တမ်းကုန်ဆုံးရက်သတိပေးချက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem126.Text" xml:space="preserve">
+    <value>HSD သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem128.Text" xml:space="preserve">
+    <value>အများဆုံး/တစ်ခုတည်း SL-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem129.Text" xml:space="preserve">
+    <value>ရောက်ရှိလာသည့် အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem13.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ နှုန်းထား အဟောင်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem130.Text" xml:space="preserve">
+    <value>တင်သွင်းမှုကို ရပ်ရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem131.Text" xml:space="preserve">
+    <value>အထုပ်ပြင်ပ ကုန်ကျစရိတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem132.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သက်တမ်းကုန်ဆုံးရက်ကို ထည့်သွင်းရပါမည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem132.Text" xml:space="preserve">
+    <value>HSD ကို ထည့်သွင်းရမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem133.Text" xml:space="preserve">
+    <value>လက်လီရောင်းချရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem134.Text" xml:space="preserve">
+    <value>ကြိုတင်မျှော်လင့်ထားရမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem135.Text" xml:space="preserve">
+    <value>အလိုအလျောက် စွန့်ပစ်ပစ္စည်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem136.Text" xml:space="preserve">
+    <value>လက်လီတင်ပို့မှုအတွက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem137.Text" xml:space="preserve">
+    <value>ကျောက်ကပ်ဆေးခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem138.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အခြားငွေပေးချေမှု အရင်းအမြစ်များ ရှိပါသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem138.Text" xml:space="preserve">
+    <value>CNCTK-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem139.Text" xml:space="preserve">
+    <value>ဝင်ကြေး-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem14.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်စျေးနှုန်းအသစ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem140.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ဆင်ရေးပစ္စည်းများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem140.Text" xml:space="preserve">
+    <value>NLBC-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem141.Text" xml:space="preserve">
+    <value>အဆင့်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem142.Text" xml:space="preserve">
+    <value>စာရင်းသတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem144.Text" xml:space="preserve">
+    <value>စျေးနှုန်းမူဝါဒ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem145.Text" xml:space="preserve">
+    <value>TT30 အရ မျက်နှာကျက်ဖိအား</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem147.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အထူးကတ်များပေါ်တွင် မျက်နှာကျက်များ မကပ်ပါနှင့်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem147.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်မရှိ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem15.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံနှုန်းထားအသစ် (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem150.Text" xml:space="preserve">
+    <value>ကုဒ်/အမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem152.Text" xml:space="preserve">
+    <value>ဆေးလိုင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem153.Text" xml:space="preserve">
+    <value>ယူနစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem155.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအဖွဲ့</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem155.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem156.Text" xml:space="preserve">
+    <value>မိဘအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem158.Text" xml:space="preserve">
+    <value>တက်ကြွပါဝင်ပစ္စည်းများ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem160.Text" xml:space="preserve">
+    <value>အသုံးပြုမှုလမ်းကြောင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem162.Text" xml:space="preserve">
+    <value>မှတ်ပုံတင်နံပါတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem163.Text" xml:space="preserve">
+    <value>အကြောင်းအရာ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem164.Text" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးအုပ်စု-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem165.Text" xml:space="preserve">
+    <value>ထုတ်လုပ်သူ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem167.Text" xml:space="preserve">
+    <value>သတ်မှတ်ချက်/အထုပ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem168.Text" xml:space="preserve">
+    <value>STT(TT30):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem169.Text" xml:space="preserve">
+    <value>STT(TT40):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem170.Text" xml:space="preserve">
+    <value>လက်ရှိအခြေအနေ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem171.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem171.Text" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem172.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အသုံးပြုရန်လမ်းညွှန်ချက်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem172.Text" xml:space="preserve">
+    <value>အသုံးပြုသူလက်စွဲ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem173.Text" xml:space="preserve">
+    <value>မှတ်ချက် -</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem174.Text" xml:space="preserve">
+    <value>ဓာတုဗေဒ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem175.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အလုပ်လုပ်တဲ့အစားအစာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem175.Text" xml:space="preserve">
+    <value>အစားအသောက် ဖြည့်စွက်စာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem176.Text" xml:space="preserve">
+    <value>အမှတ်အသားပြုထားသော ဆေးဝါးများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem177.Text" xml:space="preserve">
+    <value>ကာကွယ်ဆေးများ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem178.Text" xml:space="preserve">
+    <value>ဗီတာမင် A</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem179.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တိုးချဲ့ကာကွယ်ဆေးထိုး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem179.Text" xml:space="preserve">
+    <value>TCMR-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem181.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ၏တက်ကြွသောပါဝင်ပစ္စည်းများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem181.Text" xml:space="preserve">
+    <value>H/C ကျန်းမာရေးအာမခံ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem183.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem184.Text" xml:space="preserve">
+    <value>တားမြစ်ချက်များ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem185.Text" xml:space="preserve">
+    <value>ACT ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem187.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>မကြာသေးမီက တင်သွင်းထားသော အတွဲများ၏ သက်တမ်းကုန်ဆုံးရက်စွဲ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem187.Text" xml:space="preserve">
+    <value>HSD-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem188.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စာရင်းကိုင်အကောင့်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem188.Text" xml:space="preserve">
+    <value>ငွေကြေးဆိုင်ရာ စည်းကမ်းချက်များ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem196.Text" xml:space="preserve">
+    <value>သော့မခတ်ထားသော ဆေးရုံအခကြေးငွေ မှတ်တမ်းများကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem197.Text" xml:space="preserve">
+    <value>အားလုံးကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem198.Text" xml:space="preserve">
+    <value>ဆေးကိုရွေးချယ်ပါ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem2.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အထုပ်ပြင်ပကုန်ကျစရိတ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem2.Text" xml:space="preserve">
+    <value>CPNG-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem20.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အထူးကတ်များပေါ်တွင် မျက်နှာကျက်များ မကပ်ပါနှင့်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem20.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်မရှိ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem201.Text" xml:space="preserve">
+    <value>တင်သွင်း VAT (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem202.Text" xml:space="preserve">
+    <value>အတွင်းပိုင်းစျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem203.Text" xml:space="preserve">
+    <value>သွင်းကုန်စျေးနှုန်းဖြင့်ရောင်းချ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem204.Text" xml:space="preserve">
+    <value>စျေးနှုန်းမူဝါဒ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem205.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်ဆုံးရောင်းဈေး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem205.Text" xml:space="preserve">
+    <value>စျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem206.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်ဆုံးရောင်းချမှု VAT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem206.Text" xml:space="preserve">
+    <value>အရောင်း VAT (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem207.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံနှုန်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem208.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ အဟောင်းနှုန်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem209.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံဝင်ခွင့်ရက်စွဲပေါ်မူတည်၍ ကျန်းမာရေးအာမခံနှုန်းထားအသစ်များကို လျှောက်ထားပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem209.Text" xml:space="preserve">
+    <value>AD ကျန်းမာရေးအာမခံနှုန်းထားအသစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem21.Text" xml:space="preserve">
+    <value>သော့မခတ်ထားသော ဆေးရုံအခကြေးငွေ မှတ်တမ်းများကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem210.Text" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem211.Text" xml:space="preserve">
+    <value>အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem212.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem213.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သက်တမ်းကုန်ဆုံးရက်သတိပေးချက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem213.Text" xml:space="preserve">
+    <value>HSD သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem214.Text" xml:space="preserve">
+    <value>အများဆုံး/တစ်ခုတည်း SL-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem215.Text" xml:space="preserve">
+    <value>ရောက်ရှိလာသည့် အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem216.Text" xml:space="preserve">
+    <value>တင်သွင်းမှုကို ရပ်ရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem217.Text" xml:space="preserve">
+    <value>အထုပ်ပြင်ပ ကုန်ကျစရိတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem218.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သက်တမ်းကုန်ဆုံးရက်ကို ထည့်သွင်းရပါမည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem218.Text" xml:space="preserve">
+    <value>HSD ကို ထည့်သွင်းရမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem219.Text" xml:space="preserve">
+    <value>လက်လီရောင်းချရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem22.Text" xml:space="preserve">
+    <value>အားလုံးကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem220.Text" xml:space="preserve">
+    <value>ကြိုတင်မျှော်လင့်ထားရမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem221.Text" xml:space="preserve">
+    <value>သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem222.Text" xml:space="preserve">
+    <value>လက်လီတင်ပို့မှုအတွက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem223.Text" xml:space="preserve">
+    <value>ကျောက်ကပ်ဆေးခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem224.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အခြားငွေပေးချေမှု အရင်းအမြစ်များ ရှိပါသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem224.Text" xml:space="preserve">
+    <value>CNCTK-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem225.Text" xml:space="preserve">
+    <value>လုပ်ငန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem226.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ဆင်ရေးပစ္စည်းများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem226.Text" xml:space="preserve">
+    <value>NLBC-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem227.Text" xml:space="preserve">
+    <value>အဆင့်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem228.Text" xml:space="preserve">
+    <value>စာရင်းသတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem23.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်ဆုံးရောင်းချမှု VAT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem23.Text" xml:space="preserve">
+    <value>အရောင်း VAT (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem230.Text" xml:space="preserve">
+    <value>TT30 အရ မျက်နှာကျက်ဖိအား</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem232.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အထူးကတ်များပေါ်တွင် မျက်နှာကျက်များ မကပ်ပါနှင့်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem232.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်မရှိ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem233.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုသရေးစာရွက်တွင် ဖော်ပြရန် ဆေးဝါးအသုံးပြုသည့် ရက်အရေအတွက် ရှိပါသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem233.Text" xml:space="preserve">
+    <value>အသုံးပြုသည့်ရက်ရေတွက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem234.Text" xml:space="preserve">
+    <value>ဆရာမများအတွက် ထုတ်ပေးမှုကို ပိတ်ဆို့သည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem237.Text" xml:space="preserve">
+    <value>ကုဒ်/အမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem239.Text" xml:space="preserve">
+    <value>ဆေးလိုင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem24.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>၎င်းသည် စီးပွားဖြစ်ဆေးဖြစ်သည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem24.Text" xml:space="preserve">
+    <value>ထုတ်လုပ်သူ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem240.Text" xml:space="preserve">
+    <value>ယူနစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem242.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအဖွဲ့</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem242.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem243.Text" xml:space="preserve">
+    <value>မိဘအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem245.Text" xml:space="preserve">
+    <value>တက်ကြွပါဝင်ပစ္စည်းများ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem247.Text" xml:space="preserve">
+    <value>အသုံးပြုမှုလမ်းကြောင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem249.Text" xml:space="preserve">
+    <value>မှတ်ပုံတင်နံပါတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem25.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်ဈေးနဲ့ရောင်းတယ်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem250.Text" xml:space="preserve">
+    <value>အကြောင်းအရာ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem251.Text" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးအုပ်စု-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem252.Text" xml:space="preserve">
+    <value>ထုတ်လုပ်သူ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem254.Text" xml:space="preserve">
+    <value>သတ်မှတ်ချက်/အထုပ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem255.Text" xml:space="preserve">
+    <value>STT(TT30):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem256.Text" xml:space="preserve">
+    <value>STT(TT40):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem257.Text" xml:space="preserve">
+    <value>လက်ရှိအခြေအနေ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem258.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem258.Text" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem259.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အသုံးပြုရန်လမ်းညွှန်ချက်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem259.Text" xml:space="preserve">
+    <value>အသုံးပြုသူလက်စွဲ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem26.Text" xml:space="preserve">
+    <value>ဝင်ကြေး-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem260.Text" xml:space="preserve">
+    <value>မှတ်ချက် -</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem261.Text" xml:space="preserve">
+    <value>ဓာတုဗေဒ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem262.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အလုပ်လုပ်တဲ့အစားအစာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem262.Text" xml:space="preserve">
+    <value>အစားအသောက် ဖြည့်စွက်စာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem263.Text" xml:space="preserve">
+    <value>အမှတ်အသားပြုထားသော ဆေးဝါးများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem264.Text" xml:space="preserve">
+    <value>ကာကွယ်ဆေးများ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem265.Text" xml:space="preserve">
+    <value>ဗီတာမင် A</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem266.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တိုးချဲ့ကာကွယ်ဆေးထိုး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem266.Text" xml:space="preserve">
+    <value>TCMR-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem268.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ၏တက်ကြွသောပါဝင်ပစ္စည်းများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem268.Text" xml:space="preserve">
+    <value>H/C ကျန်းမာရေးအာမခံ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem27.Text" xml:space="preserve">
+    <value>တင်သွင်း VAT (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem270.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem271.Text" xml:space="preserve">
+    <value>တားမြစ်ချက်များ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem272.Text" xml:space="preserve">
+    <value>ACT ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem274.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>မကြာသေးမီက တင်သွင်းထားသော အတွဲများ၏ သက်တမ်းကုန်ဆုံးရက်စွဲ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem274.Text" xml:space="preserve">
+    <value>HSD-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem275.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စာရင်းကိုင်အကောင့်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem275.Text" xml:space="preserve">
+    <value>ငွေကြေးဆိုင်ရာ စည်းကမ်းချက်များ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem283.Text" xml:space="preserve">
+    <value>သော့မခတ်ထားသော ဆေးရုံအခကြေးငွေ မှတ်တမ်းများကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem284.Text" xml:space="preserve">
+    <value>အားလုံးကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem285.Text" xml:space="preserve">
+    <value>ဆေးကိုရွေးချယ်ပါ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem288.Text" xml:space="preserve">
+    <value>ပိတ်ဆို့ခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem290.Text" xml:space="preserve">
+    <value>ဝင်ကြေး-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem291.Text" xml:space="preserve">
+    <value>တင်သွင်း VAT (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem292.Text" xml:space="preserve">
+    <value>အတွင်းပိုင်းစျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem293.Text" xml:space="preserve">
+    <value>သွင်းကုန်စျေးနှုန်းဖြင့်ရောင်းချ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem294.Text" xml:space="preserve">
+    <value>စျေးနှုန်းမူဝါဒ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem295.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်ဆုံးရောင်းဈေး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem295.Text" xml:space="preserve">
+    <value>စျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem296.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်ဆုံးရောင်းချမှု VAT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem296.Text" xml:space="preserve">
+    <value>အရောင်း VAT (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem297.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံနှုန်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem298.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ အဟောင်းနှုန်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem299.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံဝင်ခွင့်ရက်စွဲပေါ်မူတည်၍ ကျန်းမာရေးအာမခံနှုန်းထားအသစ်များကို လျှောက်ထားပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem299.Text" xml:space="preserve">
+    <value>AD ကျန်းမာရေးအာမခံနှုန်းထားအသစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem3.Text" xml:space="preserve">
+    <value>BB သည် HSD ဝင်လာသည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem30.Text" xml:space="preserve">
+    <value>ဖွဲ့စည်းမှု-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem300.Text" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem301.Text" xml:space="preserve">
+    <value>အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem302.Text" xml:space="preserve">
+    <value>လ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem303.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သက်တမ်းကုန်ဆုံးရက်သတိပေးချက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem303.Text" xml:space="preserve">
+    <value>HSD သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem304.Text" xml:space="preserve">
+    <value>အများဆုံး/တစ်ခုတည်း SL-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem305.Text" xml:space="preserve">
+    <value>ရောက်ရှိလာသည့် အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem306.Text" xml:space="preserve">
+    <value>တင်သွင်းမှုကို ရပ်ရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem308.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သက်တမ်းကုန်ဆုံးရက်ကို ထည့်သွင်းရပါမည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem308.Text" xml:space="preserve">
+    <value>HSD ကို ထည့်သွင်းရမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem309.Text" xml:space="preserve">
+    <value>လက်လီရောင်းချရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem31.Text" xml:space="preserve">
+    <value>ပေးသွင်းသူ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem310.Text" xml:space="preserve">
+    <value>ကြိုတင်မျှော်လင့်ထားရမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem311.Text" xml:space="preserve">
+    <value>အလိုအလျောက် စွန့်ပစ်ပစ္စည်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem312.Text" xml:space="preserve">
+    <value>ကျောက်ကပ်ဆေးခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem313.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အခြားငွေပေးချေမှု အရင်းအမြစ်များ ရှိပါသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem313.Text" xml:space="preserve">
+    <value>CNCTK-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem314.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ဆင်ရေးပစ္စည်းများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem314.Text" xml:space="preserve">
+    <value>NLBC-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem315.Text" xml:space="preserve">
+    <value>အဆင့်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem316.Text" xml:space="preserve">
+    <value>စာရင်းသတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem318.Text" xml:space="preserve">
+    <value>TT30 အရ မျက်နှာကျက်ဖိအား</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem32.Text" xml:space="preserve">
+    <value>မှတ်ချက် -</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem320.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အထူးကတ်များပေါ်တွင် မျက်နှာကျက်များ မကပ်ပါနှင့်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem320.Text" xml:space="preserve">
+    <value>မျက်နှာကျက်မရှိ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem321.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုသရေးစာရွက်တွင် ဖော်ပြရန် ဆေးဝါးအသုံးပြုသည့် ရက်အရေအတွက် ရှိပါသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem321.Text" xml:space="preserve">
+    <value>အသုံးပြုသည့်ရက်ရေတွက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem322.Text" xml:space="preserve">
+    <value>ဆရာမများအတွက် ထုတ်ပေးမှုကို ပိတ်ဆို့သည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem323.Text" xml:space="preserve">
+    <value>နံပါတ် သို့မဟုတ် ဝေါဟာရကို ထည့်ရန် မလိုအပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem324.Text" xml:space="preserve">
+    <value>သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem325.Text" xml:space="preserve">
+    <value>ပိတ်ဆို့ခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem327.Text" xml:space="preserve">
+    <value>လက်လီတင်ပို့မှုအတွက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem328.Text" xml:space="preserve">
+    <value>လုပ်ငန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem33.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>လေလံအချက်အလက်သည် XML ကို ဆောင်ရွက်ပေးသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem33.Text" xml:space="preserve">
+    <value>လေလံအချက်အလက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem331.Text" xml:space="preserve">
+    <value>ကုဒ်/အမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem333.Text" xml:space="preserve">
+    <value>ဆေးလိုင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem334.Text" xml:space="preserve">
+    <value>ယူနစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem336.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအဖွဲ့</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem336.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem337.Text" xml:space="preserve">
+    <value>မိဘအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem339.Text" xml:space="preserve">
+    <value>တက်ကြွပါဝင်ပစ္စည်းများ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem34.Text" xml:space="preserve">
+    <value>အတွင်းပိုင်းစျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem341.Text" xml:space="preserve">
+    <value>အသုံးပြုမှုလမ်းကြောင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem343.Text" xml:space="preserve">
+    <value>မှတ်ပုံတင်နံပါတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem344.Text" xml:space="preserve">
+    <value>အကြောင်းအရာ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem345.Text" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးအုပ်စု-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem346.Text" xml:space="preserve">
+    <value>ထုတ်လုပ်သူ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem348.Text" xml:space="preserve">
+    <value>သတ်မှတ်ချက်/အထုပ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem349.Text" xml:space="preserve">
+    <value>STT(TT30):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem35.Text" xml:space="preserve">
+    <value>သွင်းကုန်စျေးနှုန်းဖြင့်ရောင်းချ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem350.Text" xml:space="preserve">
+    <value>STT(TT40):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem351.Text" xml:space="preserve">
+    <value>လက်ရှိအခြေအနေ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem352.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem352.Text" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem353.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အသုံးပြုရန်လမ်းညွှန်ချက်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem353.Text" xml:space="preserve">
+    <value>အသုံးပြုသူလက်စွဲ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem354.Text" xml:space="preserve">
+    <value>မှတ်ချက် -</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem355.Text" xml:space="preserve">
+    <value>ဓာတုဗေဒ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem356.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အလုပ်လုပ်တဲ့အစားအစာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem356.Text" xml:space="preserve">
+    <value>အစားအသောက် ဖြည့်စွက်စာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem357.Text" xml:space="preserve">
+    <value>အမှတ်အသားပြုထားသော ဆေးဝါးများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem358.Text" xml:space="preserve">
+    <value>ကာကွယ်ဆေးများ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem359.Text" xml:space="preserve">
+    <value>ဗီတာမင် A</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem36.Text" xml:space="preserve">
+    <value>စျေးနှုန်းမူဝါဒ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem360.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တိုးချဲ့ကာကွယ်ဆေးထိုး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem360.Text" xml:space="preserve">
+    <value>TCMR-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem362.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ၏တက်ကြွသောပါဝင်ပစ္စည်းများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem362.Text" xml:space="preserve">
+    <value>H/C ကျန်းမာရေးအာမခံ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem364.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem365.Text" xml:space="preserve">
+    <value>တားမြစ်ချက်များ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem366.Text" xml:space="preserve">
+    <value>ACT ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem368.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>မကြာသေးမီက တင်သွင်းထားသော အတွဲများ၏ သက်တမ်းကုန်ဆုံးရက်စွဲ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem368.Text" xml:space="preserve">
+    <value>HSD-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem369.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စာရင်းကိုင်အကောင့်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem369.Text" xml:space="preserve">
+    <value>ငွေကြေးဆိုင်ရာ စည်းကမ်းချက်များ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem37.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်ဆုံးရောင်းဈေး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem37.Text" xml:space="preserve">
+    <value>စျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem370.Text" xml:space="preserve">
+    <value>အောက်ဆီဂျင်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem378.Text" xml:space="preserve">
+    <value>သော့မခတ်ထားသော ဆေးရုံအခကြေးငွေ မှတ်တမ်းများကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem379.Text" xml:space="preserve">
+    <value>အားလုံးကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem38.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>တိုးချဲ့ကာကွယ်ဆေးထိုး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem38.Text" xml:space="preserve">
+    <value>TCMR-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem380.Text" xml:space="preserve">
+    <value>ဆေးကိုရွေးချယ်ပါ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem384.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သိုလှောင်မှုအခြေအနေများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem384.Text" xml:space="preserve">
+    <value>သိုလှောင်မှုအခြေအနေများ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem385.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>contraindication ၏အမှု၌</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem385.Text" xml:space="preserve">
+    <value>CC တွင်၊</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem386.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပေးသွင်းသူထံမှ ဆေးဝါးလက်ခံရရှိမှုတွင် တွက်ချက်မှုယူနစ်၊ ကာလအစ၊ စာရင်းဇယား၊ အခြား</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem386.Text" xml:space="preserve">
+    <value>ထည့်သွင်းယူနစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem387.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်ယူနစ်မှ စီမံခန့်ခွဲမှုယူနစ်သို့ ပြောင်းလဲနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem387.Text" xml:space="preserve">
+    <value>တပ်မ တော် အချိုး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem391.Text" xml:space="preserve">
+    <value>အသုံးပြုရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem393.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးဝန်ကြီးဌာနက ထုတ်ပြန်တဲ့ DRG စာရင်းအပြင်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem393.Text" xml:space="preserve">
+    <value>DRG ပြင်ပ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem394.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးဝါးသည် ဆေးဆိုင် သို့မဟုတ် ဆေးဆိုင်၏ ဆေးစာရင်းတွင် မပါဝင်ပါ။ အရောင်းဆိုင်မှ ဆေးဝါးများ ညွှန်ကြားရာတွင် ဆရာဝန်များကို ကူညီရန်သာ ကြေငြာပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem394.Text" xml:space="preserve">
+    <value>ပြင်ပလူနာဆေး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem395.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဤဝန်ဆောင်မှုကိုအသုံးပြုသည့်အခါ အခြားငွေပေးချေမှုရင်းမြစ်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem395.Text" xml:space="preserve">
+    <value>CTK အရင်းအမြစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem396.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အခြားငွေပေးချေမှုရင်းမြစ်များက လက်ခံနိုင်သောရောဂါများအတွက် ကော်မာ-ခြားထားသော ICD ကုဒ်များကို ထည့်သွင်းပါ။ သင်သည် မည်သည့်ရောဂါကုဒ်ကိုမျှ မထည့်ပါက၊ အရင်းအမြစ်သည် ရောဂါအခြေအနေအားလုံးအတွက် ငွေပေးချေမှုကို လက်ခံသည်ဟု နားလည်ထားသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem396.Text" xml:space="preserve">
+    <value>ပံ့ပိုးထားသောရောဂါများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem398.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဂိုဒေါင်တွင်အသုံးပြုသောဆေးဝါးများသည် \</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem398.Text" xml:space="preserve">
+    <value>ဆေးဆိုင် ဆေးဝါး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem399.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>Circular 20/2022/TT-BHYT အရ အမှတ်စဉ်နံပါတ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem399.Text" xml:space="preserve">
+    <value>STT (TT20):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem4.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်ဆုံးရောင်းဈေး</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem4.Text" xml:space="preserve">
+    <value>စျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem400.Text" xml:space="preserve">
+    <value>လက်လီသတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem401.Text" xml:space="preserve">
+    <value>ပိတ်ဆို့ခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem402.Text" xml:space="preserve">
+    <value>သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem405.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကော်မာများဖြင့် ခြားထားသော ကတ်ကုဒ်များကို ကြေညာပါ။ မကြေငြာပါက၊ ကတ်ကုဒ်များအားလုံးတွင် သက်ရောက်သည်ဟု နားလည်ပါသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem405.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကတ်ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem407.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ထုတ်ကုန်အချက်အလက်ကို တည်းဖြတ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem407.Text" xml:space="preserve">
+    <value>ထုတ်ကုန်အချက်အလက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem408.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အများဆုံးပမာဏ / ကုသမှုသင်တန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem408.Text" xml:space="preserve">
+    <value>အများဆုံး SL/ကုသမှုကာလ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem409.Text" xml:space="preserve">
+    <value>သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem41.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>နောက်ဆုံးရောင်းချမှု VAT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem41.Text" xml:space="preserve">
+    <value>အရောင်း VAT (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem410.Text" xml:space="preserve">
+    <value>ပိတ်ဆို့ခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem412.Text" xml:space="preserve">
+    <value>ဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem42.Text" xml:space="preserve">
+    <value>ဝင်ကြေး-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem43.Text" xml:space="preserve">
+    <value>တင်သွင်း VAT(%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem44.Text" xml:space="preserve">
+    <value>စျေးနှုန်းဟောင်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem45.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ နှုန်းထား အဟောင်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem46.Text" xml:space="preserve">
+    <value>သတ်မှတ်ရက်အလိုက် လျှောက်လွှာတင်ချိန်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem47.Text" xml:space="preserve">
+    <value>ဆေးရုံဝင်ခွင့်ရက်စွဲအလိုက် လျှောက်လွှာတင်ချိန်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem48.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံနှုန်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem49.Text" xml:space="preserve">
+    <value>အတွင်းပိုင်းစျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem50.Text" xml:space="preserve">
+    <value>စျေးနှုန်းအသစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem51.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံနှုန်းထားအသစ် (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem52.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်ဈေးနဲ့ရောင်းတယ်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem52.Text" xml:space="preserve">
+    <value>BBGN-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem53.Text" xml:space="preserve">
+    <value>ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem54.Text" xml:space="preserve">
+    <value>အမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem55.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးစာ 1 တွင် အများဆုံးပမာဏ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem55.Text" xml:space="preserve">
+    <value>အများဆုံး Sl / 1 တစ်ခုတည်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem57.Text" xml:space="preserve">
+    <value>အဖေ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem59.Text" xml:space="preserve">
+    <value>စာရင်းသတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem6.Text" xml:space="preserve">
+    <value>TT30 အရ မျက်နှာကျက်ဖိအား</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem61.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ဆေးရုံဝင်ခွင့်ရက်စွဲပေါ်မူတည်၍ ကျန်းမာရေးအာမခံနှုန်းထားအသစ်များကို လျှောက်ထားပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem61.Text" xml:space="preserve">
+    <value>AD ကျန်းမာရေးအာမခံနှုန်းထားအသစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem62.Text" xml:space="preserve">
+    <value>လိင်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem63.Text" xml:space="preserve">
+    <value>သတ်မှတ်ချက်/အထုပ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem65.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem68.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem69.Text" xml:space="preserve">
+    <value>ကုန်အမှတ်တံဆိပ်အမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem7.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem70.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem71.Text" xml:space="preserve">
+    <value>ပါဝင်ပစ္စည်းကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem72.Text" xml:space="preserve">
+    <value>ပါဝင်ပစ္စည်းအမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem73.Text" xml:space="preserve">
+    <value>ဝှက်ထားသောဆေးဝါး *(၅၅၆)။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem74.Text" xml:space="preserve">
+    <value>HSD သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem75.Text" xml:space="preserve">
+    <value>H/quantity n/degree-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem76.Text" xml:space="preserve">
+    <value>ယူနစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem77.Text" xml:space="preserve">
+    <value>ခန့်မှန်းအချိန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem78.Text" xml:space="preserve">
+    <value>အသုံးပြုပုံ လမ်းညွှန်ချက်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem79.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ အမှတ်စဉ်နံပါတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem81.Text" xml:space="preserve">
+    <value>အသုံးပြုမှုပုံစံ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem83.Text" xml:space="preserve">
+    <value>Circular 30 အရ STT</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem84.Text" xml:space="preserve">
+    <value>Circular 40 အရ STT-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem85.Text" xml:space="preserve">
+    <value>ထုတ်လုပ်သူ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem87.Text" xml:space="preserve">
+    <value>လက်ရှိအခြေအနေ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem88.Text" xml:space="preserve">
+    <value>မှတ်ပုံတင်နံပါတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem89.Text" xml:space="preserve">
+    <value>သော့မခတ်ထားသော ဆေးရုံအခကြေးငွေ မှတ်တမ်းများကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem9.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem90.Text" xml:space="preserve">
+    <value>အားလုံးကို အပ်ဒိတ်လုပ်ပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem91.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>၎င်းသည် စီးပွားဖြစ်ဆေးဖြစ်သည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem91.Text" xml:space="preserve">
+    <value>ဆေးဖက်ဝင်ဆေးအဖြစ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem93.Text" xml:space="preserve">
+    <value>လက်လီတင်ပို့ခွင့်ပြုပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem94.Text" xml:space="preserve">
+    <value>တင်သွင်းမှုကို ရပ်ရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem95.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အထုပ်ပြင်ပကုန်ကျစရိတ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem95.Text" xml:space="preserve">
+    <value>CPNG-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem96.Text" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးအုပ်စု-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem98.Text" xml:space="preserve">
+    <value>BB သည် HSD ဝင်လာသည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem99.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အလုပ်လုပ်တဲ့အစားအစာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.layoutControlItem99.Text" xml:space="preserve">
+    <value>အစားအသောက် ဖြည့်စွက်စာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcACT.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကမ္ဘာ့ကျန်းမာရေးအဖွဲ့ (ခန္ဓာဗေဒဆိုင်ရာ ကုထုံးဓာတုကုဒ်) အရ ဆေးဝါးတစ်ခုစီအား ပေးထားသည့် ကုဒ်တစ်ခုဖြစ်သည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcACT.Text" xml:space="preserve">
+    <value>ATC ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAgeFrom.Text" xml:space="preserve">
+    <value>အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAgeTo.Text" xml:space="preserve">
+    <value>ရောက်ရှိလာသည့် အသက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAlertExpiredDate.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သက်တမ်းကုန်ဆုံးရက်သတိပေးချက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAlertExpiredDate.Text" xml:space="preserve">
+    <value>HSD သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcAlertMinInStock.Text" xml:space="preserve">
+    <value>စာရင်းသတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcATCGroup.Text" xml:space="preserve">
+    <value>ATC အဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcCPNG.Text" xml:space="preserve">
+    <value>အထုပ်ပြင်ပ ကုန်ကျစရိတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcHeinLimitRatio.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံနှုန်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcHeinLimitRatioOld.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ အဟောင်းနှုန်း (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciActiveIngrBhytCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ၏တက်ကြွသောပါဝင်ပစ္စည်းများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciActiveIngrBhytCode.Text" xml:space="preserve">
+    <value>H/C ကျန်းမာရေးအာမခံ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciActiveIngrBhytName.Text" xml:space="preserve">
+    <value>ပါဝင်ပစ္စည်းအမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciBiologic.Text" xml:space="preserve">
+    <value>ဇီဝထုတ်ကုန်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciBlockDepartment.Text" xml:space="preserve">
+    <value>ဆရာမများအတွက် ထုတ်ပေးမှုကို ပိတ်ဆို့သည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcichkIsAddictive.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcichkIsAddictive.Text" xml:space="preserve">
+    <value>TGN-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciChkIsAntibiotic.Text" xml:space="preserve">
+    <value>ပဋိဇီဝဆေး-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciChkIsStarMark.Text" xml:space="preserve">
+    <value>အမှတ်အသားပြုထားသော ဆေးဝါးများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciChkIsStopImp.Text" xml:space="preserve">
+    <value>တင်သွင်းမှုကို ရပ်ရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciConcentra.Text" xml:space="preserve">
+    <value>အကြောင်းအရာ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciContraindication.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>contraindications သတိပြုပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciContraindication.Text" xml:space="preserve">
+    <value>CCD မှတ်စုများ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDescription.Text" xml:space="preserve">
+    <value>ဖော်ပြပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDistributedAmount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ခွဲဝေပေးသည့် ပမာဏ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDistributedAmount.Text" xml:space="preserve">
+    <value>ခွဲဝေခြင်း SL-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDosageForm.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သောက်သုံးသောပုံစံ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciDosageForm.Text" xml:space="preserve">
+    <value>BC ပုံစံ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciGayTe.Text" xml:space="preserve">
+    <value>မေ့ဆေး-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciGenneric.Text" xml:space="preserve">
+    <value>ယေဘူယျ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHeinOrder.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံ အမှတ်စဉ်နံပါတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHeinServiceType.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအဖွဲ့</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHeinServiceType.Text" xml:space="preserve">
+    <value>ကျန်းမာရေးအာမခံအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHSD.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>မကြာသေးမီက တင်သွင်းထားသော အတွဲများ၏ သက်တမ်းကုန်ဆုံးရက်စွဲ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciHSD.Text" xml:space="preserve">
+    <value>HSD-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciImpPrice.Text" xml:space="preserve">
+    <value>ဝင်ကြေး-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciImpVatRatio.Text" xml:space="preserve">
+    <value>တင်သွင်း VAT(%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciInternalPrice.Text" xml:space="preserve">
+    <value>အတွင်းပိုင်းစျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsAllowOdd.Text" xml:space="preserve">
+    <value>လက်လီ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsKedney.Text" xml:space="preserve">
+    <value>ကျောက်ကပ်ဆေးများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsNotTreatmentDayCount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုသမှုစာရွက်တွင် အသုံးပြုသည့်ရက်ကို မရေတွက်ပါနှင့်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsNotTreatmentDayCount.Text" xml:space="preserve">
+    <value>အသုံးပြုသည့်ရက်အရေအတွက်ကို မရေတွက်ပါနှင့်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsOtherSourcePaid.Text" xml:space="preserve">
+    <value>CNCTK-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsOxygen.Text" xml:space="preserve">
+    <value>အောက်ဆီဂျင်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsTreatmentCount.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ကုသရေးစာရွက်တွင် ဖော်ပြရန် ဆေးဝါးအသုံးပြုသည့် ရက်အရေအတွက် ရှိပါသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciIsTreatmentCount.Text" xml:space="preserve">
+    <value>အသုံးပြုသည့်ရက်ရေတွက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciManufacture.Text" xml:space="preserve">
+    <value>ထုတ်လုပ်သူ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineGroup.Text" xml:space="preserve">
+    <value>မူးယစ်ဆေးဝါးအုပ်စု-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineLine.Text" xml:space="preserve">
+    <value>ဆေးလိုင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineNationalCode.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineNationalCode.Text" xml:space="preserve">
+    <value>အမျိုးသားဆေးဆိုင်ကုဒ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineTypeCode.Text" xml:space="preserve">
+    <value>ကုဒ်/အမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineTypeParent.Text" xml:space="preserve">
+    <value>မိဘအဖွဲ့-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineTypeProprietaryName.Text" xml:space="preserve">
+    <value>ကုန်အမှတ်တံဆိပ်အမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciMedicineUseForm.Text" xml:space="preserve">
+    <value>အသုံးပြုမှုလမ်းကြောင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcImpPrice.Text" xml:space="preserve">
+    <value>ဝင်ကြေး-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcImpVatRatio.Text" xml:space="preserve">
+    <value>တင်သွင်း VAT (%)-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciNational.Text" xml:space="preserve">
+    <value>လူမျိုး-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciNguonGoc.Text" xml:space="preserve">
+    <value>အရင်းအမြစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcInternalPrice.Text" xml:space="preserve">
+    <value>အတွင်းပိုင်းစျေးနှုန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciOriginal.Text" xml:space="preserve">
+    <value>မူရင်းအမှတ်တံဆိပ်အမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciPackingType.Text" xml:space="preserve">
+    <value>သတ်မှတ်ချက်/အထုပ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciPreprocessing.Text" xml:space="preserve">
+    <value>ပဏာမလုပ်ဆောင်ခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciProcessing.Text" xml:space="preserve">
+    <value>တားမြစ်ချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsAllowExportOdd.Text" xml:space="preserve">
+    <value>လက်လီတင်ပို့မှုအတွက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsAllowOdd.Text" xml:space="preserve">
+    <value>လက်လီရောင်းချရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsBusiness.Text" xml:space="preserve">
+    <value>လုပ်ငန်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciScientificName.Text" xml:space="preserve">
+    <value>သိပ္ပံအမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciServiceUnitCode.Text" xml:space="preserve">
+    <value>ယူနစ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExpend.Text" xml:space="preserve">
+    <value>အလိုအလျောက် စွန့်ပစ်ပစ္စည်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExpend1.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အတွဲနံပါတ် သို့မဟုတ် သက်တမ်းကုန်ဆုံးရက်ကို ထည့်သွင်းရန် မလိုအပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExpend1.Text" xml:space="preserve">
+    <value>နံပါတ်ထည့်ရန်မလိုပါ၊ သက်တမ်းကုန်ဆုံးရက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExprireDate.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>သက်တမ်းကုန်ဆုံးရက်ကို ထည့်သွင်းရပါမည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsExprireDate.Text" xml:space="preserve">
+    <value>HSD ကို ထည့်သွင်းရမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsKedney.Text" xml:space="preserve">
+    <value>ကျောက်ကပ်ဆေးခြင်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsMustPrepare.Text" xml:space="preserve">
+    <value>ကြိုတင်မျှော်လင့်ထားရမည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciSpinAlertExpiredDate.Text" xml:space="preserve">
+    <value>HSD သတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcispinAlertMinInStock.Text" xml:space="preserve">
+    <value>စာရင်းသတိပေးချက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciSpinEstimanteDuration.Text" xml:space="preserve">
+    <value>ခန့်မှန်းအချိန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciSpinNumOrder.Text" xml:space="preserve">
+    <value>လက်ရှိအခြေအနေ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciSpinUseOnDay.Text" xml:space="preserve">
+    <value>အများဆုံး Sl / 1 တစ်ခုတည်း-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsRaw.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြင်ဆင်ရေးပစ္စည်းများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsRaw.Text" xml:space="preserve">
+    <value>NLBC-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsSaleEqualImpPrice.Text" xml:space="preserve">
+    <value>သွင်းကုန်စျေးနှုန်းဖြင့်ရောင်းချ:</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcIsStopImp.Text" xml:space="preserve">
+    <value>တင်သွင်းမှုကို ရပ်ရန်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTCCL.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အရည်အသွေးစံနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTCCL.Text" xml:space="preserve">
+    <value>TCCL-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTutorial.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အသုံးပြုရန်လမ်းညွှန်ချက်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTutorial.Text" xml:space="preserve">
+    <value>အသုံးပြုသူလက်စွဲ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTxtBytNumOrder.Text" xml:space="preserve">
+    <value>STT(TT40):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTxtRegisterNumber.Text" xml:space="preserve">
+    <value>မှတ်ပုံတင်နံပါတ်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciTxtTcyNumOrder.Text" xml:space="preserve">
+    <value>STT(TT30):</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciUsedPart.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အသုံးပြုထားသော အစိတ်အပိုင်းများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lciUsedPart.Text" xml:space="preserve">
+    <value>BP အသုံးပြုသည်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcMedicineType.Text" xml:space="preserve">
+    <value>ဆေးကိုရွေးချယ်ပါ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcRank.Text" xml:space="preserve">
+    <value>အဆင့်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcRecordTransaction.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>စာရင်းကိုင်အကောင့်များ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcRecordTransaction.Text" xml:space="preserve">
+    <value>ငွေကြေးဆိုင်ရာ စည်းကမ်းချက်များ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcsOtherSourcePaid.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အခြားငွေပေးချေမှု အရင်းအမြစ်များ ရှိပါသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcsOtherSourcePaid.Text" xml:space="preserve">
+    <value>CNCTK-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcTachPhanBu.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အတွင်းလူနာဆေးစာများတွင် ကုသမှုစာရွက်တွင် မပါဝင်သည့်အခါ အလှည့်အပြောင်းကို ခွဲထုတ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcTachPhanBu.Text" xml:space="preserve">
+    <value>အော့ဖ်ဆက်ကို ခွဲပါ-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcUseInDay.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အများဆုံးပမာဏ/ရက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcUseInDay.Text" xml:space="preserve">
+    <value>အများဆုံး SL/ရက်-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lcUseOnDay.Text" xml:space="preserve">
+    <value>အများဆုံး/တစ်ခုတည်း SL-</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lkIsFood.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>အလုပ်လုပ်တဲ့အစားအစာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.lkIsFood.Text" xml:space="preserve">
+    <value>အစားအသောက် ဖြည့်စွက်စာများ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton1.Text" xml:space="preserve">
+    <value>ကျွန်ုပ်၏စက်ပစ္စည်း ကက်ရှ်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton10.Text" xml:space="preserve">
+    <value>ကျွန်ုပ်၏စက်ပစ္စည်း ကက်ရှ်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton11.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton12.Text" xml:space="preserve">
+    <value>workstation cache တစ်ခုလုံးကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton13.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ၏ မျက်နှာကြက် ဈေးနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton14.Text" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton15.Text" xml:space="preserve">
+    <value>ကျွန်ုပ်၏စက်ပစ္စည်း ကက်ရှ်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton16.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton17.Text" xml:space="preserve">
+    <value>workstation cache တစ်ခုလုံးကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton18.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ၏ မျက်နှာကြက် ဈေးနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton19.Text" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton2.Text" xml:space="preserve">
+    <value>workstation cache တစ်ခုလုံးကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton20.Text" xml:space="preserve">
+    <value>ကျွန်ုပ်၏စက်ပစ္စည်း ကက်ရှ်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton21.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton22.Text" xml:space="preserve">
+    <value>workstation cache တစ်ခုလုံးကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton23.Text" xml:space="preserve">
+    <value>ကျန်းမာရေး အာမခံ၏ မျက်နှာကြက် ဈေးနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton3.Text" xml:space="preserve">
+    <value>workstation cache တစ်ခုလုံးကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton4.Text" xml:space="preserve">
+    <value>ကျွန်ုပ်၏စက်ပစ္စည်း ကက်ရှ်ကို အပ်ဒိတ်လုပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton5.Text" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton6.Text" xml:space="preserve">
+    <value>စျေးနှုန်းမူဝါဒ (Ctrl G)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton7.Text" xml:space="preserve">
+    <value>ပါဝင်ပစ္စည်း (Ctrl H)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton8.Text" xml:space="preserve">
+    <value>Save (Ctrl S)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.simpleButton9.Text" xml:space="preserve">
+    <value>ပြန်လုပ်ပါ (Ctrl R)</value>
+  </data>
+  <data name="frmMedicineTypeCreate.spUnitConvertRatio.ToolTip" xml:space="preserve">
+    <value>သွင်းကုန်ယူနစ်မှ စီမံခန့်ခွဲမှုယူနစ်သို့ ပြောင်းလဲနှုန်း</value>
+  </data>
+  <data name="frmMedicineTypeCreate.Text" xml:space="preserve">
+    <value>ဆေးအမျိုးအစား</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtACT_Code.ToolTip" xml:space="preserve">
+    <value>ကမ္ဘာ့ကျန်းမာရေးအဖွဲ့ (ခန္ဓာဗေဒဆိုင်ရာ ကုထုံးဓာတုကုဒ်) အရ ဆေးဝါးတစ်ခုစီအား ပေးထားသည့် ကုဒ်တစ်ခုဖြစ်သည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtContentWarning.Properties.NullValuePrompt" xml:space="preserve">
+    <value>သီးခြားစာရင်းပြုစုသည့်အခါ သတိပေးချက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtContentWarning.ToolTip" xml:space="preserve">
+    <value>သီးခြားစာရင်းပြုစုသည့်အခါ သတိပေးချက်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtPreprocessingName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>လုပ်ဆောင်ခြင်းနည်းလမ်းကို ရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtProcessingName.Properties.NullValuePrompt" xml:space="preserve">
+    <value>ရှုပ်ထွေးသောနည်းလမ်းကိုရွေးချယ်ရန် F1 ကိုနှိပ်ပါ။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtSttTT20.ToolTip" xml:space="preserve">
+    <value>Circular 20/2022/TT-BHYT အရ အမှတ်စဉ်နံပါတ်</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtTTThau.ToolTip" xml:space="preserve">
+    <value>လေလံအချက်အလက်သည် XML ကို ဆောင်ရွက်ပေးသည်။</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtVolume.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>ပြုတ်ရည်ပမာဏ</value>
+  </data>
+  <data name="frmMedicineTypeCreate.txtVolume.Text" xml:space="preserve">
+    <value>စွမ်းရည်(ml):</value>
+  </data>
+  <data name="frmProcessingMethod.bar1.Text" xml:space="preserve">
+    <value>ကိရိယာများ</value>
+  </data>
+  <data name="frmProcessingMethod.barButtonItem1.Caption" xml:space="preserve">
+    <value>သိမ်းဆည်းပါ။</value>
+  </data>
+  <data name="frmProcessingMethod.btnSave.Text" xml:space="preserve">
+    <value>(Ctrl S) ကို ရွေးပါ</value>
+  </data>
+  <data name="frmProcessingMethod.gridColumn1.Caption" xml:space="preserve">
+    <value>ကုတ်</value>
+  </data>
+  <data name="frmProcessingMethod.gridColumn2.Caption" xml:space="preserve">
+    <value>နာမည်</value>
+  </data>
+  <data name="frmProcessingMethod.layoutControl1.Text" xml:space="preserve">
+    <value>အပြင်အဆင်ထိန်းချုပ်မှု ၁</value>
+  </data>
+  <data name="frmProcessingMethod.Text" xml:space="preserve">
+    <value>လုပ်ဆောင်ခြင်းနည်းလမ်း</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__MEDICINE_TYPE_CREAT__SOURCE_MEDICINE" xml:space="preserve">
+    <value>အရင်းအမြစ်</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__MEDICINE_TYPE_CREAT__SOURCE_MEDICINE_THUOCBAC" xml:space="preserve">
+    <value>တိုင်းရင်းဆေး</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__MEDICINE_TYPE_CREAT__SOURCE_MEDICINE_THUOCNAM" xml:space="preserve">
+    <value>တောင်ပိုင်းဆေးပညာ</value>
+  </data>
+</root>

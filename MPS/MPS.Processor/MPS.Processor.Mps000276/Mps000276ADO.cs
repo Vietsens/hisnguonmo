@@ -32,6 +32,7 @@ namespace MPS.Processor.Mps000276
         public string CashierRoomName { get; set; }
         public string CashierRoomAddress { get; set; }
 
+        public long? ParentServiceNumOrder { get; set; }
         public long? ParentServiceId { get; set; }
         public string ParentServiceCode { get; set; }
         public string ParentServiceName { get; set; }
@@ -63,9 +64,10 @@ namespace MPS.Processor.Mps000276
         public string ResultDeskName { get; set; }
 
         public bool IsResultInDiffDay { get; set; }
-         
-        public long ServiceReqNumOrder { get; set; }        
+
+        public long ServiceReqNumOrder { get; set; }
         public long? ServiceNumOrder { get; set; }
+        public long? ServiceTypeNumOrder { get; set; }
         public long? ExecuteNumOrder { get; set; }
 
         public long InstructionTime { get; set; }
@@ -80,5 +82,15 @@ namespace MPS.Processor.Mps000276
         public string ASSIGN_TURN_CODE { get; set; }
         public string Note { get; set; }
         public Mps000276ADO() { }
+    }
+
+    public class TreatmentADO : HIS_TREATMENT
+    {
+        public Inventec.Common.BarcodeLib.Barcode BC_TR_CODE { get; set; }
+        public Inventec.Common.BarcodeLib.Barcode BC_PA_CODE { get; set; }
+        public long INTRUCTION_TIME { get; set; }
+        public int RowNum { get; set; }
+        public int NextRowNum { get; set; }
+        public TreatmentADO() { }
     }
 }

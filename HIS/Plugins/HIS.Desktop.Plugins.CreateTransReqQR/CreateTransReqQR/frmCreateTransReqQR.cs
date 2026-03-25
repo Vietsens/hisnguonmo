@@ -103,10 +103,11 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 loadCauHinhIn();
                 this.InitSereServTree();
                 LoadTreatment();
-                RegisterTimer(GetModuleLink(), "timerInitForm", timerInitForm.Interval, timerInitForm_Tick);
+                RegisterTimer(GetModuleLink(), "timerInitForm", timerInitForm.Interval, timerInitForm_Tick); 
                 StartTimer(GetModuleLink(), "timerInitForm");
                 LoadPayForm();
                 InitInvoiceCheckStates();
+                
             }
             catch (Exception ex)
             {
@@ -1024,6 +1025,18 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                             if (PosStatic.IsOpenPos())
                                 PosStatic.SendData(null);
                         }
+                    }
+
+                    if (!string.IsNullOrEmpty(inputTransReq.BankName) && (inputTransReq.BankName == "CTG" || inputTransReq.BankName == "Vietinbank")
+                    && currentTransReq.TRANS_REQ_STT_ID == IMSys.DbConfig.HIS_RS.HIS_TRANS_REQ_STT.ID__REQUEST)  
+                    {
+                        layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                        var img = imageList1.Images[0];
+                        btnCheckTrans.EditValue = imageList1.Images[0];
+                    }
+                    else
+                    {
+                        layoutControlItem20.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     }
                 }
             }
@@ -3438,6 +3451,29 @@ namespace HIS.Desktop.Plugins.CreateTransReqQR.CreateTransReqQR
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
 
+        }
+
+        private void btnCheckTrans_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                var tran = new Inventec.Common.Adapter.BackendAdapter(param).Post<List<HIS_TRANSACTION>>("api/HisTransReq/CheckQrStatus", ApiConsumers.MosConsumer, currentTransReq.ID, param);
+
+                if (tran != null)
+                {
+                    LogSystem.Info("gọi api HisTransReq/CheckQrStatus thàng công");
+                }
+                else
+                {
+                    XtraMessageBox.Show("Giao dịch chưa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
     public class ComQR

@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 ﻿using Inventec.Core;
+=======
+﻿using HIS.Desktop.Common;
+using Inventec.Core;
+>>>>>>> Nampp
 using Inventec.Desktop.Core;
 using Inventec.Desktop.Core.Tools;
 using MOS.EFMODEL.DataModels;
@@ -34,6 +39,10 @@ namespace HIS.Desktop.Plugins.RefundByTransfer.RefundByTransfer
                 HIS_TREATMENT treatment = null;
                 HIS_TRANSACTION transaction = null;
                 string bankCode = "";
+<<<<<<< HEAD
+=======
+                RefeshReference refresh = null;
+>>>>>>> Nampp
                 if (entity.GetType() == typeof(object[]))
                 {
                     if (entity != null && entity.Count() > 0)
@@ -56,11 +65,22 @@ namespace HIS.Desktop.Plugins.RefundByTransfer.RefundByTransfer
                             {
                                 bankCode = (string)entity[i];
                             }
+<<<<<<< HEAD
+=======
+                            else if (entity[i] is HIS.Desktop.Common.RefeshReference)
+                            {
+                                refresh = (HIS.Desktop.Common.RefeshReference)entity[i];
+                            }
+>>>>>>> Nampp
                         }
                     }
                 }
 
+<<<<<<< HEAD
                 return new FormRefundByTransfer(moduleData, bankCode, treatment, transaction);
+=======
+                return new FormRefundByTransfer(moduleData, bankCode, treatment, transaction, refresh);
+>>>>>>> Nampp
             }
             catch (Exception ex)
             {

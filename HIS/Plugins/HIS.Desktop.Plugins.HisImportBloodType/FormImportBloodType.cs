@@ -151,6 +151,8 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
 
                 this.Gc_CPNG.Caption = GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_CPNG");
                 this.Gc_NumOrder.Caption = GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_NUM_ORDER");
+                var tubeSlotCap = GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_TUBE_SLOT");
+                if (!string.IsNullOrEmpty(tubeSlotCap)) this.Gc_TubeSlot.Caption = tubeSlotCap;
             }
             catch (Exception ex)
             {
@@ -739,6 +741,27 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
                             }
                         }
 
+                        ado.TUBE_SLOT_STR = item.TUBE_SLOT_STR;
+                        if (!string.IsNullOrEmpty(item.TUBE_SLOT_STR))
+                        {
+                            if (Inventec.Common.Number.Check.IsNumber(item.TUBE_SLOT_STR))
+                            {
+                                var tubeSlot = Inventec.Common.TypeConvert.Parse.ToInt64(item.TUBE_SLOT_STR);
+                                if (tubeSlot == 1 || tubeSlot == 2)
+                                {
+                                    ado.TUBE_SLOT = tubeSlot;
+                                }
+                                else
+                                {
+                                    errors.Add(string.Format(Resources.ResourceLanguageManager.KhongHopLe, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_TUBE_SLOT")));
+                                }
+                            }
+                            else
+                            {
+                                errors.Add(string.Format(Resources.ResourceLanguageManager.KhongHopLe, GetLanguageControl("HIS_DESKTOP_PLUGINS_HIS_IMPORT_BLOOD_TPYE__GC_TUBE_SLOT")));
+                            }
+                        }
+
                         ado.ERROR = string.Join(";", errors);
                         ListDataImport.Add(ado);
                     }
@@ -834,6 +857,7 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
                     ser.ID = 0;
                     ser.PARENT_ID = null;
                     medi.TDL_SERVICE_UNIT_ID = item.SERVICE_UNIT_ID;
+                    medi.TUBE_SLOT = item.TUBE_SLOT;
                     medi.HIS_SERVICE = ser;
                     medi.ID = 0;
                     listblood.Add(medi);
@@ -959,7 +983,7 @@ namespace HIS.Desktop.Plugins.HisImportBloodType
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);
+                Inventec.Common.Logging.LogSystem.Error(ex); 
             }
         }
 

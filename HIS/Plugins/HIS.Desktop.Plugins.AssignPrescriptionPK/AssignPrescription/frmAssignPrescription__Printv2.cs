@@ -94,7 +94,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 menuPrintADO__CacDonThuoc.PrintTypeCode = PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_YEU_CAU_IN_DON_THUOC__MPS000044;
                 menuPrintADO__CacDonThuoc.Tag = PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_YEU_CAU_IN_DON_THUOC__MPS000044;
                 menuPrintADOs.Add(menuPrintADO__CacDonThuoc);
-                
+
                 HIS.UC.MenuPrint.ADO.MenuPrintADO menuPrintADO__YHocCoTruyen = new HIS.UC.MenuPrint.ADO.MenuPrintADO();
                 menuPrintADO__YHocCoTruyen.EventHandler = new EventHandler(OnClickPrintWithPrintTypeCfg);
                 menuPrintADO__YHocCoTruyen.PrintTypeCode = PrintTypeCodeStore.PRINT_TYPE_CODE__BIEUMAU__PHIEU_YEU_CAU_IN_DON_THUOC_Y_HOC_CO_TRUYEN__MPS000050;
@@ -340,7 +340,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             LogTheadInSessionInfo(() => PrintWithPrintTypeCfg(sender, e), !GlobalStore.IsCabinet ? "PrintPresciption" : "PrintMedicalStore");
         }
 
-        private void PrintWithPrintTypeCfg(object sender, EventArgs e) 
+        private void PrintWithPrintTypeCfg(object sender, EventArgs e)
         {
             try
             {
@@ -379,7 +379,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     if (moduleData != null)
                     {
                         var allowedModules = HisConfigCFG.MODULELINKS.Split(',');
-                             
+
                         if (allowedModules.Contains(moduleData.ModuleLink))
                         {
                             PrescriptionSavePrintShowHasClickSave(printTypeCode, false, MPS.ProcessorBase.PrintConfig.PreviewType.EmrSignAndPrintNow);
@@ -545,9 +545,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
         private async Task PrescriptionSavePrintShowHasClickSave(string printTypeCode, bool isPrintNow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null)
         {
-            try  
+            try
             {
                 var IsNotShow = lstConfig.Exists(o => o.IsChecked && o.ID == (int)ConfigADO.RowConfigID.KhongHienThiDonKhongLayODonThuocTH);
+
+                var PrintMps234 = lstConfig.Exists(o => o.IsChecked && o.ID == (int)ConfigADO.RowConfigID.InDonThuocGop) ? "Mps000234" : null;
                 Inventec.Common.Logging.LogSystem.Debug("PrescriptionSavePrintShowHasClickSave.1____"
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => printTypeCode), printTypeCode)
                     + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => isPrintNow), isPrintNow)
@@ -580,19 +582,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     }
                 }
                 else
-                {   
+                {
                     this.lstMatePrintMps494 = new List<HIS_EXP_MEST_MATERIAL>();
                     HIS.Desktop.Plugins.Library.PrintPrescription.PrintPrescriptionProcessor printPrescriptionProcessor;
                     List<OutPatientPresResultSDO> OutPatientPresResultSDOForPrints = new List<OutPatientPresResultSDO>();
                     OutPatientPresResultSDO OutPatientPresResultSDO = new OutPatientPresResultSDO();
-           
+
                     List<HIS_EXP_MEST> expMestPrintPlus = new List<HIS_EXP_MEST>();
                     List<HIS_SERVICE_REQ> serviceReqPrintPlus = new List<HIS_SERVICE_REQ>();
                     List<HIS_EXP_MEST_MEDICINE> expMestMedicinePrintPlus = new List<HIS_EXP_MEST_MEDICINE>();
                     List<HIS_EXP_MEST_MATERIAL> expMestMaterialPrintPlus = new List<HIS_EXP_MEST_MATERIAL>();
 
                     var hisConfigCFGprintTypeCode = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(HisConfigCFG.SAVE_PRINT_MPS_DEFAULT);
-                    Inventec.Common.Logging.LogSystem.Info("GlobalStore.IsTreatmentIn " + GlobalStore.IsTreatmentIn + " !GlobalStore.IsCabinet " + !GlobalStore.IsCabinet);     
+                    Inventec.Common.Logging.LogSystem.Info("GlobalStore.IsTreatmentIn " + GlobalStore.IsTreatmentIn + " !GlobalStore.IsCabinet " + !GlobalStore.IsCabinet);
                     if (GlobalStore.IsTreatmentIn && !GlobalStore.IsCabinet)
                     {
                         //List<InPatientPresResultSDO> InPatientPresResultSDOForPrints = new List<InPatientPresResultSDO>();
@@ -671,7 +673,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 TREATMENT_ID = this.treatmentId,
                                 SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
                             };
-
+                            if (!string.IsNullOrEmpty(PrintMps234) && oldServiceReq != null)
+                            {
+                                serviceReqFilter.ID = oldServiceReq.ID;
+                            }
                             var serviceReqPrintAlls = new BackendAdapter(param)
                                 .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>(
                                     "api/HisServiceReq/Get", ApiConsumers.MosConsumer, serviceReqFilter, param);
@@ -916,10 +921,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             else
                                 printPrescriptionProcessor.Print(printTypeCode, isPrintNow, previewType);
                         }
-                        
+
                     }
                 }
-                    
+
                 Inventec.Common.Logging.LogSystem.Debug("PrescriptionSavePrintShowHasClickSave.2");
             }
             catch (Exception ex)
@@ -979,7 +984,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     var te = mate.FirstOrDefault(o => o.ID == m.MATERIAL_ID);
                     if (te != null)
                     {
-                        ado.NEXT_REUSABLE_NUMBER = ((te.MAX_REUSE_COUNT ?? 0) - (m.REMAIN_REUSE_COUNT ?? 0)+ 2).ToString();
+                        ado.NEXT_REUSABLE_NUMBER = ((te.MAX_REUSE_COUNT ?? 0) - (m.REMAIN_REUSE_COUNT ?? 0) + 2).ToString();
                         ado.SIZE = te.MATERIAL_SIZE;
                         if (Int32.Parse(ado.NEXT_REUSABLE_NUMBER) > (te.MAX_REUSE_COUNT ?? 0))
                             continue;

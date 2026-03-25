@@ -1245,4 +1245,10 @@
   <data name="UC_HisService.layoutControlItem90.Text" xml:space="preserve">
     <value>ĐTCT áp dụng:</value>
   </data>
+	<data name="UC_HisService.btnXuatXmlTT12.Text" xml:space="preserve">
+    <value>Xuất XML TT12</value>
+  </data>
+	<data name="UC_HisService.chkKy.Properties.Caption" xml:space="preserve">
+    <value>Ký</value>
+  </data>
 </root>

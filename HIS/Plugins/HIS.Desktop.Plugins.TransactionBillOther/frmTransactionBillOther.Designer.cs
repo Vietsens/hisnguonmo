@@ -318,10 +318,6 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barBtnSaveAndPrint,
@@ -420,8 +416,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1067, 29);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Size = new System.Drawing.Size(1067, 0);
             // 
             // barDockControlBottom
             // 
@@ -510,6 +506,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             this.spinSwipe.Size = new System.Drawing.Size(54, 20);
             this.spinSwipe.StyleController = this.layoutControl2;
             this.spinSwipe.TabIndex = 42;
+            this.spinSwipe.EditValueChanged += new System.EventHandler(this.spinSwipe_EditValueChanged);
             this.spinSwipe.Validating += new System.ComponentModel.CancelEventHandler(this.spinSwipe_Validating);
             // 
             // spinTransfer
@@ -527,6 +524,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             this.spinTransfer.Size = new System.Drawing.Size(54, 20);
             this.spinTransfer.StyleController = this.layoutControl2;
             this.spinTransfer.TabIndex = 41;
+            this.spinTransfer.EditValueChanged += new System.EventHandler(this.spinTransfer_EditValueChanged);
             this.spinTransfer.Validating += new System.ComponentModel.CancelEventHandler(this.spinTransfer_Validating);
             // 
             // lblCanThu
@@ -1112,6 +1110,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             // 
             // layoutControlItem6
             // 
+            this.layoutControlItem6.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem6.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem6.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem6.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem6.Control = this.spinTransfer;
@@ -1125,6 +1125,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             // 
             // layoutControlItem7
             // 
+            this.layoutControlItem7.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.layoutControlItem7.AppearanceItemCaption.Options.UseForeColor = true;
             this.layoutControlItem7.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem7.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem7.Control = this.spinSwipe;

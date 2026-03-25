@@ -141,7 +141,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     //qtcode
                     if (String.IsNullOrWhiteSpace(this._Transaction.INVOICE_CODE)
                          && this._Transaction.IS_CANCEL != 1)
-                    // && (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0))
+                        // && (this._Transaction.AMOUNT - (this._Transaction.EXEMPTION ?? 0) - (this._Transaction.TDL_BILL_FUND_AMOUNT ?? 0) > 0))
                     {
                         //xuất hóa đơn điện tủ
                         BarButtonItem btnHoaDonDienTu = new BarButtonItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_HOADONDIENTU", Base.ResourceLangManager.LanguageFrmTransactionList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 5);
@@ -319,7 +319,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
                 else if (this._Transaction.TRANSACTION_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TRANSACTION_TYPE.ID__HU)
                 {
-                    //Phiếu tạm ứng
+                    //Phiếu tạm ứng 
                     BarButtonItem bbtnPhieuHoanUng = new BarButtonItem(this._BarManager, Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__FRM_TRANSACTION_LIST__POPUP_MENU__ITEM_PHIEUHOANUNG", Base.ResourceLangManager.LanguageFrmTransactionList, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), 0);
                     bbtnPhieuHoanUng.Tag = ItemType.PhieuHoanUng;
                     bbtnPhieuHoanUng.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
@@ -329,7 +329,9 @@ namespace HIS.Desktop.Plugins.TransactionList
                     bbtnPhieuHoanUngDichVu.Tag = ItemType.PhieuHoanUngDichVu;
                     bbtnPhieuHoanUngDichVu.ItemClick += new ItemClickEventHandler(this._MouseRightClick);
 
-                    if (HisConfigCFG.RefundConfig != null && HisConfigCFG.RefundConfig.Count > 0)
+
+
+                    if (HisConfigCFG.RefundConfig != null && HisConfigCFG.RefundConfig.Count > 0 && _Transaction.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && _Transaction.IS_CANCEL != 1)
                     {
                         if (HisConfigCFG.RefundConfig.Count == 1)
                         {
@@ -342,7 +344,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                             this._PopupMenu.AddItem(bbtnHoanTienNganHang);
                         }
                         else
-                        {
+                        { 
                             BarSubItem subCongKhai = new BarSubItem(this._BarManager, "Hoàn tiền ngân hàng", 2);
                             foreach (var item in HisConfigCFG.RefundConfig)
                             {
@@ -356,7 +358,6 @@ namespace HIS.Desktop.Plugins.TransactionList
                             this._PopupMenu.AddItem(subCongKhai);
                         }
                     }
-
                     this._PopupMenu.AddItems(new BarItem[] { bbtnPhieuHoanUng, bbtnPhieuHoanUngDichVu });
                 }
 
@@ -399,7 +400,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                 }
 
 
-                if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null && this._Transaction.INVOICE_CODE != null && this._Transaction.IS_ADJUSTMENT != 1 && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047"))
+                 if (this._Transaction.TRANSACTION_TYPE_ID == 3 && this._Transaction.IS_CANCEL != 1 && this._Transaction.ORIGINAL_TRANSACTION_ID == null && this._Transaction.INVOICE_CODE != null && this._Transaction.IS_ADJUSTMENT != 1 && frmTransactionList.controlAcs != null && frmTransactionList.controlAcs.Exists(o => o.CONTROL_CODE == "HIS000047"))
                 {
 
 

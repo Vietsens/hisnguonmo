@@ -84,6 +84,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool isNotLoadWhileChangeControlStateInFirst;
         bool isCheckPayForm = false;
+        long payFormId = 0;
         public frmTransactionBillOther(Module moduleData)
             : base(moduleData)
         {
@@ -452,8 +453,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 ValidControlSoTienCk();
                 if (isCheckPayForm)
                 {
-                    ValidControlSoTienCkNew();
                     ValidControlSoTienQT();
+                    ValidControlSoTienCK();
                 }
                 
             }
@@ -1263,12 +1264,13 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             }
         }
 
-        private void ValidControlSoTienCkNew()
+
+        private void ValidControlSoTienCK()
         {
             try
             {
-                SpinToTalAmountValidationRule rule = new SpinToTalAmountValidationRule();
-                rule.spinTotalAmount = spinTotalAmount;
+                SpinTransferAmountValidationRule rule = new SpinTransferAmountValidationRule();
+                rule.spinTransferAmount = this.spinTransfer;
                 rule.cboPayForm = cboPayForm;
                 dxValidationProvider2.SetValidationRule(spinTransfer, rule);
             }
@@ -1282,8 +1284,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         {
             try
             {
-                SpinToTalAmountValidationRule rule = new SpinToTalAmountValidationRule();
-                rule.spinTotalAmount = spinTotalAmount;
+                SpinSwipeAmountValidationRule rule = new SpinSwipeAmountValidationRule();
+                rule.spinSwipeAmount = this.spinSwipe;
                 rule.cboPayForm = cboPayForm;
                 dxValidationProvider2.SetValidationRule(spinSwipe, rule);
             }
@@ -1298,9 +1300,22 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             try
             {
                 decimal soTienCk = spinSoTienCK.Value;
-                decimal canThu = spinTotalAmount.Value - soTienCk;
-                if (canThu < 0) canThu = 0;
-                lblCanThu.Text = canThu.ToString("#,0.##");
+                decimal soTienCkNew = spinTransfer.Value;
+                decimal soTienQT = spinSwipe.Value;
+                decimal canThu = 0; //spinTotalAmount.Value - soTienCk;
+                
+                if (this.payFormId == 9)
+                {
+                    canThu = spinTotalAmount.Value - soTienCkNew - soTienQT;
+                    if (canThu < 0) canThu = 0;
+                    lblCanThu.Text = canThu.ToString("#,0.##");
+                }
+                else
+                {
+                    canThu = spinTotalAmount.Value - soTienCk;
+                    if (canThu < 0) canThu = 0;
+                    lblCanThu.Text = canThu.ToString("#,0.##");
+                }
             }
             catch (Exception ex)
             {
@@ -3163,7 +3178,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         {
             try
             {
-                long payFormId = Convert.ToInt64(cboPayForm.EditValue);
+                this.payFormId = Convert.ToInt64(cboPayForm.EditValue);
 
                 if (payFormId == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
                 {
@@ -3197,8 +3212,8 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     this.layoutControlItem6.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     this.layoutControlItem7.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
 
-                    ValidControlSoTienCkNew();
                     ValidControlSoTienQT();
+                    ValidControlSoTienCK();
                 }
                 else
                 {
@@ -3259,6 +3274,16 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
             {
                 spinSwipe.Value = 0;
             }
+        }
+
+        private void spinTransfer_EditValueChanged(object sender, EventArgs e)
+        {
+            UpdateCanThu();
+        }
+
+        private void spinSwipe_EditValueChanged(object sender, EventArgs e)
+        {
+            UpdateCanThu();
         }
     }
 }

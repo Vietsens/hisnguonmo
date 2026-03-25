@@ -37,7 +37,12 @@ namespace MPS.Processor.Mps000276
 
         private List<Mps000276ADO> _ListCashierRoom = new List<Mps000276ADO>();
         private List<Mps000276ADO> _ListSereServ = new List<Mps000276ADO>();
+        private List<Mps000276ADO> _ListSereServKsk = new List<Mps000276ADO>();
+        private List<Mps000276ADO> _ListSereServNonKsk = new List<Mps000276ADO>();
+        private List<Mps000276ADO> _ListSereServGroupKsk;
+        private List<Mps000276ADO> _ListSereServGroupNonKsk;
         private List<ServiceNumOderAdo> _ListServiceNumOder = new List<ServiceNumOderAdo>();
+        private List<TreatmentADO> _ListTreatment = new List<TreatmentADO>();
         public Mps000276Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -117,10 +122,30 @@ namespace MPS.Processor.Mps000276
                 objectTag.AddObjectData(store, "ServiceReqs", rdo._vServiceReqs);
                 objectTag.AddObjectData(store, "CashierRooms", this._ListCashierRoom);
                 objectTag.AddObjectData(store, "SereServs", this._ListSereServ);
+
+                objectTag.AddObjectData(store, "Treatments", _ListTreatment ?? new List<TreatmentADO>());
+                objectTag.AddObjectData(store, "PatientTypeAlters", rdo._PatientTypeAlterList ?? new List<V_HIS_PATIENT_TYPE_ALTER>());
+                objectTag.AddObjectData(store, "SereServKsks", this._ListSereServKsk);
+                objectTag.AddObjectData(store, "SereServNonKsks", this._ListSereServNonKsk);
+
+                objectTag.AddObjectData(store, "SereServGroupKsks", this._ListSereServGroupKsk);
+                objectTag.AddObjectData(store, "SereServGroupNonKsks", this._ListSereServGroupNonKsk);
+
+                objectTag.AddRelationship(store, "Treatments", "SereServKsks", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "Treatments", "SereServNonKsks", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "Treatments", "SereServGroupKsks", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "Treatments", "SereServGroupNonKsks", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "SereServGroupKsks", "SereServKsks", "ParentServiceCode", "ParentServiceCode");
+                objectTag.AddRelationship(store, "SereServGroupNonKsks", "SereServNonKsks", "ParentServiceCode", "ParentServiceCode");
+
                 objectTag.AddObjectData(store, "ServiceNumOrder", this._ListServiceNumOder.Distinct().ToList());
 
                 objectTag.AddRelationship(store, "CashierRooms", "SereServs", "CashierRoomId", "CashierRoomId");
+                objectTag.AddRelationship(store, "CashierRooms", "SereServKsks", "CashierRoomId", "CashierRoomId");
+                objectTag.AddRelationship(store, "CashierRooms", "SereServNonKsks", "CashierRoomId", "CashierRoomId");
                 objectTag.AddRelationship(store, "ServiceNumOrder", "SereServs", "SERVICE_CODE", "ParentServiceCode");
+                objectTag.AddRelationship(store, "ServiceNumOrder", "SereServKsks", "SERVICE_CODE", "ParentServiceCode");
+                objectTag.AddRelationship(store, "ServiceNumOrder", "SereServNonKsks", "SERVICE_CODE", "ParentServiceCode");
 
                 objectTag.SetUserFunction(store, "FuncPerviousRowNum", new TFlexCelUFPerviousRowNum());
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());
@@ -156,7 +181,7 @@ namespace MPS.Processor.Mps000276
                     return;
                 }
                 var Groups = rdo._vServiceReqs.GroupBy(g => g.CASHIER_ROOM_ID ?? 0).ToList();
-
+                var ServiceTypeS = HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_SERVICE_TYPE>();
                 long maxStt = (rdo._ServiceNumOrder != null && rdo._ServiceNumOrder.Count > 0) ? rdo._ServiceNumOrder.Max(m => m.NUM_ORDER) : 0;
                 foreach (var group in Groups)
                 {
@@ -222,14 +247,21 @@ namespace MPS.Processor.Mps000276
 
                         ado.CallSampleOrder = sr.CALL_SAMPLE_ORDER;
                         ado.SampleRoomCode = sr.SAMPLE_ROOM_CODE;
-                        ado.SampleRoomName = sr.SAMPLE_ROOM_NAME; 
+                        ado.SampleRoomName = sr.SAMPLE_ROOM_NAME;
                         ado.ASSIGN_TURN_CODE = sr.ASSIGN_TURN_CODE;
                         ado.Note = !string.IsNullOrWhiteSpace(ext?.INSTRUCTION_NOTE) ? ext.INSTRUCTION_NOTE : "";
+
+                        var serviceType = ServiceTypeS.FirstOrDefault(o => o.ID == ss.TDL_SERVICE_TYPE_ID);
+                        if (serviceType != null)
+                        {
+                            ado.ServiceTypeNumOrder = serviceType.NUM_ORDER;
+                        }
                         if (parent != null)
                         {
 
                             ado.ParentServiceCode = parent.SERVICE_CODE;
                             ado.ParentServiceId = parent.ID;
+                            ado.ParentServiceNumOrder = parent.NUM_ORDER;
                             ado.ParentServiceName = parent.SERVICE_NAME;
                             if (exeNumOrder != null)
                             {
@@ -240,6 +272,15 @@ namespace MPS.Processor.Mps000276
                                 serviceNumOderAdo.SERVICE_TYPE_CODE = parent.SERVICE_TYPE_CODE;
                                 serviceNumOderAdo.ASSIGN_TURN_CODE = sr.ASSIGN_TURN_CODE;
                                 serviceNumOderAdo.SERVICE_REQ_CODE = sr.SERVICE_REQ_CODE;
+                            }
+                        }
+                        else
+                        {
+                            if (service != null)
+                            {
+                                ado.ParentServiceNumOrder = ado.ServiceTypeNumOrder;
+                                ado.ParentServiceCode = service.SERVICE_TYPE_CODE;
+                                ado.ParentServiceName = service.SERVICE_TYPE_NAME;
                             }
                         }
                         ado.RequestRoomAddress = sr.REQUEST_ROOM_ADDRESS;
@@ -315,7 +356,7 @@ namespace MPS.Processor.Mps000276
                 // minhnq
                 if (_ListServiceNumOder.Count() > 0)
                 {
-                    this._ListServiceNumOder = this._ListServiceNumOder.OrderBy(o => o.NUM_ORDER).ThenBy(o=>o.SERVICE_ID).ToList();
+                    this._ListServiceNumOder = this._ListServiceNumOder.OrderBy(o => o.NUM_ORDER).ThenBy(o => o.SERVICE_ID).ToList();
                     Dictionary<long, int> numRanks = _ListServiceNumOder
                         .GroupBy(i => i.NUM_ORDER)
                         .OrderBy(g => g.First().NUM_ORDER)
@@ -328,10 +369,252 @@ namespace MPS.Processor.Mps000276
                     }
                 }
 
+                // Tách danh sách theo KSK
+                SplitSereServByKsk();
+
+                // Gắn dữ liệu RowNum, NextRowNum cho _ListTreatment
+                ProcessTreatmentRowNum();
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        void SplitSereServByKsk()
+        {
+            try
+            {
+                if (this._ListSereServ == null || this._ListSereServ.Count <= 0)
+                    return;
+
+                // Lấy danh sách SERVICE_ID thuộc KSK dựa vào Treatment.TDL_KSK_CONTRACT_ID
+                List<long> kskServiceIds = new List<long>();
+                if (rdo._Treatment != null
+                    && rdo._Treatment.TDL_KSK_CONTRACT_ID.HasValue
+                    && rdo._Ksk != null && rdo._Ksk.Count > 0
+                    && rdo._KskServices != null && rdo._KskServices.Count > 0)
+                {
+                    var kskIds = rdo._Ksk
+                        .Where(k => k.KSK_CONTRACT_ID == rdo._Treatment.TDL_KSK_CONTRACT_ID.Value)
+
+                        .Select(k => k.ID)
+                        .ToList();
+
+                    kskServiceIds = rdo._KskServices
+                        .Where(ks => kskIds.Contains(ks.KSK_ID))
+                        .Select(ks => ks.SERVICE_ID)
+                        .Distinct()
+                        .ToList();
+                }
+
+                this._ListSereServKsk = this._ListSereServ.Where(o => kskServiceIds.Contains(o.SERVICE_ID)).ToList();
+                this._ListSereServNonKsk = this._ListSereServ.Where(o => !kskServiceIds.Contains(o.SERVICE_ID)).ToList();
+
+                // Gom nhóm theo parent service và thêm parent vào danh sách
+                this._ListSereServGroupKsk = GroupByParentService(this._ListSereServKsk);
+                this._ListSereServGroupNonKsk = GroupByParentService(this._ListSereServNonKsk);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        void ProcessTreatmentRowNum()
+        {
+            try
+            {
+                if (rdo._TreatmentList == null || rdo._TreatmentList.Count <= 0)
+                    return;
+
+                _ListTreatment = new List<TreatmentADO>();
+                foreach (var treatment in rdo._TreatmentList)
+                {
+                    TreatmentADO ado = new TreatmentADO();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<TreatmentADO>(ado, treatment);
+
+                    if (!string.IsNullOrWhiteSpace(treatment.TREATMENT_CODE))
+                    {
+                        Inventec.Common.BarcodeLib.Barcode bcTrCode = new Inventec.Common.BarcodeLib.Barcode(treatment.TREATMENT_CODE);
+                        bcTrCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+                        bcTrCode.IncludeLabel = true;
+                        bcTrCode.Width = 120;
+                        bcTrCode.Height = 40;
+                        bcTrCode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+                        bcTrCode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+                        bcTrCode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+                        ado.BC_TR_CODE = bcTrCode;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(treatment.TDL_PATIENT_CODE))
+                    {
+                        Inventec.Common.BarcodeLib.Barcode bcPaCode = new Inventec.Common.BarcodeLib.Barcode(treatment.TDL_PATIENT_CODE);
+                        bcPaCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+                        bcPaCode.IncludeLabel = true;
+                        bcPaCode.Width = 120;
+                        bcPaCode.Height = 40;
+                        bcPaCode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+                        bcPaCode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+                        bcPaCode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+                        ado.BC_PA_CODE = bcPaCode;
+                    }
+
+                    _ListTreatment.Add(ado);
+                }
+
+                int currentRow = 1;
+                foreach (var treatment in _ListTreatment)
+                {
+                    bool hasKsk = _ListSereServKsk != null && _ListSereServKsk.Any(s => s.TDL_TREATMENT_ID == treatment.ID);
+                    bool hasNonKsk = _ListSereServNonKsk != null && _ListSereServNonKsk.Any(s => s.TDL_TREATMENT_ID == treatment.ID);
+
+                    if (hasKsk)
+                    {
+                        treatment.RowNum = currentRow;
+                        if (hasNonKsk)
+                        {
+                            treatment.NextRowNum = currentRow + 1;
+                            currentRow = treatment.NextRowNum + 1;
+                        }
+                        else
+                        {
+                            treatment.NextRowNum = currentRow;
+                            currentRow++;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        List<Mps000276ADO> GroupByParentService(List<Mps000276ADO> listSereServ)
+        {
+            try
+            {
+                if (listSereServ == null || listSereServ.Count <= 0)
+                    return listSereServ;
+
+                List<Mps000276ADO> result = new List<Mps000276ADO>();
+
+                // Nhóm theo ParentServiceCode
+                var groupedByParent = listSereServ
+                    .Where(o => !string.IsNullOrWhiteSpace(o.ParentServiceCode))
+                    .GroupBy(o => o.ParentServiceCode)
+                    .ToList();
+
+                // Danh sách các dịch vụ không có parent - sẽ gom theo ServiceTypeName
+                var noParentServices = listSereServ
+                    .Where(o => string.IsNullOrWhiteSpace(o.ParentServiceCode))
+                    .ToList();
+
+                // Xử lý các dịch vụ không có parent - gom theo ServiceTypeName
+
+                var groupedByServiceType = noParentServices
+                    .GroupBy(o => new { o.ServiceTypeName })
+                    .ToList();
+
+                foreach (var group in groupedByServiceType)
+                {
+                    var services = group.ToList();
+
+                    var firstService = services.First();
+                    Mps000276ADO serviceTypeAdo = new Mps000276ADO();
+
+                    serviceTypeAdo.ParentServiceName = firstService.ServiceTypeName;
+                    serviceTypeAdo.ParentServiceCode = firstService.ServiceTypeCode;
+                    serviceTypeAdo.ParentServiceNumOrder = firstService.ServiceNumOrder;
+                    serviceTypeAdo.ServiceTypeName = firstService.ServiceTypeName;
+                    serviceTypeAdo.ServiceTypeCode = firstService.ServiceTypeCode;
+
+                    serviceTypeAdo.ExecuteRoomId = firstService.ExecuteRoomId;
+                    serviceTypeAdo.ExecuteRoomCode = firstService.ExecuteRoomCode;
+                    serviceTypeAdo.ExecuteRoomName = firstService.ExecuteRoomName;
+                    serviceTypeAdo.ExecuteRoomAddress = firstService.ExecuteRoomAddress;
+
+                    serviceTypeAdo.CashierRoomId = firstService.CashierRoomId;
+                    serviceTypeAdo.CashierRoomCode = firstService.CashierRoomCode;
+                    serviceTypeAdo.CashierRoomName = firstService.CashierRoomName;
+                    serviceTypeAdo.CashierRoomAddress = firstService.CashierRoomAddress;
+
+                    serviceTypeAdo.RequestRoomId = firstService.RequestRoomId;
+                    serviceTypeAdo.RequestRoomCode = firstService.RequestRoomCode;
+                    serviceTypeAdo.RequestRoomName = firstService.RequestRoomName;
+                    serviceTypeAdo.RequestRoomAddress = firstService.RequestRoomAddress;
+
+                    serviceTypeAdo.InstructionDate = firstService.InstructionDate;
+                    serviceTypeAdo.InstructionTime = firstService.InstructionTime;
+                    serviceTypeAdo.ExecuteNumOrder = firstService.ExecuteNumOrder;
+                    serviceTypeAdo.ServiceReqNumOrder = firstService.ServiceReqNumOrder;
+
+                    // Thêm header ServiceType vào đầu nhóm
+                    result.Add(serviceTypeAdo);
+
+                }
+
+                // Xử lý từng nhóm parent
+                foreach (var group in groupedByParent)
+                {
+                    var childServices = group.ToList();
+
+                    // Nếu cùng 1 phòng xử lý, tạo ADO cho parent service
+                    var firstChild = childServices.First();
+                    Mps000276ADO parentAdo = new Mps000276ADO();
+
+                    parentAdo.ParentServiceCode = firstChild.ParentServiceCode;
+                    parentAdo.ParentServiceId = firstChild.ParentServiceId;
+                    parentAdo.ParentServiceName = firstChild.ParentServiceName;
+                    parentAdo.ParentServiceNumOrder = firstChild.ParentServiceNumOrder;
+                    parentAdo.ServiceCode = firstChild.ParentServiceCode;
+                    parentAdo.ServiceName = firstChild.ParentServiceName;
+                    parentAdo.ServiceId = firstChild.ParentServiceId ?? 0;
+
+                    parentAdo.ExecuteRoomId = firstChild.ExecuteRoomId;
+                    parentAdo.ExecuteRoomCode = firstChild.ExecuteRoomCode;
+                    parentAdo.ExecuteRoomName = firstChild.ExecuteRoomName;
+                    parentAdo.ExecuteRoomAddress = firstChild.ExecuteRoomAddress;
+
+                    parentAdo.CashierRoomId = firstChild.CashierRoomId;
+                    parentAdo.CashierRoomCode = firstChild.CashierRoomCode;
+                    parentAdo.CashierRoomName = firstChild.CashierRoomName;
+                    parentAdo.CashierRoomAddress = firstChild.CashierRoomAddress;
+
+                    parentAdo.RequestRoomId = firstChild.RequestRoomId;
+                    parentAdo.RequestRoomCode = firstChild.RequestRoomCode;
+                    parentAdo.RequestRoomName = firstChild.RequestRoomName;
+                    parentAdo.RequestRoomAddress = firstChild.RequestRoomAddress;
+
+                    parentAdo.InstructionDate = firstChild.InstructionDate;
+                    parentAdo.InstructionTime = firstChild.InstructionTime;
+                    parentAdo.ExecuteNumOrder = firstChild.ExecuteNumOrder;
+                    parentAdo.ServiceReqNumOrder = firstChild.ServiceReqNumOrder;
+
+                    // Thêm parent vào đầu nhóm
+                    result.Add(parentAdo);
+
+                }
+
+                // Sắp xếp lại theo thứ tự
+                result = result.OrderBy(t => t.ParentServiceNumOrder).ThenBy(t => t.ServiceNumOrder).ToList();
+
+                // Cập nhật lại RowNum
+                int currStt = 0;
+                foreach (var item in result)
+                {
+                    item.RowNum = currStt;
+                    currStt++;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return listSereServ;
             }
         }
         private void SetSingleKeyQrCode()
@@ -451,7 +734,7 @@ namespace MPS.Processor.Mps000276
                 try
                 {
                     string serviceName = parameters[0].ToString();
-                    if (serviceName != null )
+                    if (serviceName != null)
                     {
                         if (this.sampleRoom == serviceName)
                         {

@@ -301,7 +301,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 LogSystem.Debug("LoadDataEmr. 2.1.5");
 
                 #region ------- ThongTinDieuTri
-                ThongTinDieuTri _ThongTinDieuTri = new ThongTinDieuTri();
+                EmrMainADO _ThongTinDieuTri = new EmrMainADO();
                 if (_Baby != null)
                 {
                     _ThongTinDieuTri.LucVaoDe = "";
@@ -1901,7 +1901,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 }
 
                 _ERMADO._HanhChinhBenhNhan_s = new HanhChinhBenhNhan();
-                _ERMADO._ThongTinDieuTri_s = new ThongTinDieuTri();
+                _ERMADO._ThongTinDieuTri_s = new EmrMainADO();
                 _ERMADO._LoaiBenhAnEMR_s = new LoaiBenhAnEMR();
                 if (_TYpe != 0)
                 {

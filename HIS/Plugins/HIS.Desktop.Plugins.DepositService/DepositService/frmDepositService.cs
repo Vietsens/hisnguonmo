@@ -378,6 +378,8 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     lciTranferAmount.Enabled = false;
                 }
                 spinTransferAmount.EditValue = 0;
+                spinTransferNew.EditValue = 0;
+                spinSwipeNew.EditValue = 0;
             }
             catch (Exception ex)
             {
@@ -1871,11 +1873,27 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                         }
                     }
                 }
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+        private void CalcuCanThu()
+        {
+
+            try
+            {
+                lblReceiveAmount.Tag = Convert.ToInt64(totalAmountDeposit) - spinTransferAmount.Value - spinSwipeNew.Value - spinTransferNew.Value;
+                lblReceiveAmount.Text = (Convert.ToInt64(totalAmountDeposit) - spinTransferAmount.Value - spinSwipeNew.Value - spinTransferNew.Value).ToString();
+                this.lblReceiveAmount.Text = string.Format("{0:#,##0}", double.Parse(this.lblReceiveAmount.Text));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+
         }
 
         //mặc định sổ mới nhất
@@ -3419,6 +3437,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
             try
             {
                 FormatSpint(spinTransferAmount);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
@@ -3436,6 +3455,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     spinTransferNew.Value = 0;
                 }
                 FormatSpint(spinTransferNew);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {
@@ -3452,6 +3472,7 @@ namespace HIS.Desktop.Plugins.DepositService.DepositService
                     spinSwipeNew.Value = 0;
                 }
                 FormatSpint(spinSwipeNew);
+                CalcuCanThu();
             }
             catch (Exception ex)
             {

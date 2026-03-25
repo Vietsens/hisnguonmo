@@ -93,5 +93,6 @@ namespace MPS.Processor.Mps000234
         internal const string CLS_SERVICE_NAME = "CLS_SERVICE_NAMES";
         internal const string PART_EXAM_HOLE_GLASS_LEFT_STR = "PART_EXAM_HOLE_GLASS_LEFT_STR";
         internal const string PART_EXAM_HOLE_GLASS_RIGHT_STR = "PART_EXAM_HOLE_GLASS_RIGHT_STR";
+
     }
 }

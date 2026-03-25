@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     switch (type)
                     {
 
-
+                        
                         case PopupMenuProcessor.ItemType.PhieuThuThanhToan:
                             this.PrintPhieuThuThanhToan();
                             break;
@@ -126,10 +126,10 @@ namespace HIS.Desktop.Plugins.TransactionList
                                 if (selectedRow != null)
                                 {
                                     var accountBookCode = gridView.GetFocusedRowCellValue("ACCOUNT_BOOK_CODE")?.ToString();
-                                    if (!string.IsNullOrWhiteSpace(accountBookCode) && accountBookCode == ACCOUNT_BOOK_CODE_VN)
+                                    if(!string.IsNullOrWhiteSpace(accountBookCode) && accountBookCode == ACCOUNT_BOOK_CODE_VN)
                                     {
                                         MessageBox.Show("Tính năng này chưa được hỗ trợ. Vui lòng lên website để thực hiện.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                        break;
+                                        break; 
                                     }
                                 }
                             }
@@ -210,13 +210,16 @@ namespace HIS.Desktop.Plugins.TransactionList
                 listArgs.Add(treatment);
                 listArgs.Add(transaction);
                 listArgs.Add(hint);
+                listArgs.Add((HIS.Desktop.Common.RefeshReference)(FillDataToGrid));
                 HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.RefundByTransfer", currentModule.RoomId, currentModule.RoomTypeId, listArgs);
+
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
+
 
         private bool DeletegatePrintTemplate(string printCode, string fileName)
         {
@@ -725,7 +728,7 @@ namespace HIS.Desktop.Plugins.TransactionList
                     MessageBox.Show("Tính năng đang phát triển, vui lòng thử lại sau!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                else if (this.transactionPrint.TREATMENT_ID.HasValue)
+                else if(this.transactionPrint.TREATMENT_ID.HasValue)
                 {
                     List<object> listArgs = new List<object>();
                     listArgs.Add(this.transactionPrint);
@@ -809,7 +812,7 @@ namespace HIS.Desktop.Plugins.TransactionList
         {
             try
             {
-                if (this.transactionPrint == null)
+                if (this.transactionPrint == null )
                     return;
 
                 List<object> listArgs = new List<object>();

@@ -1263,7 +1263,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         }
         private void VisibleGuarantee()
         {
-            try 
+            try
             {
                 //lblTotalGuarantee.Visible = false;
                 if (this.currentTreatment != null && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
@@ -1281,11 +1281,11 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     gridViewServiceProcess.Columns["IsGuarantee"].Visible = false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
-            
+
         }
         private async Task LoadGuaranteeInfo()
         {
@@ -12897,7 +12897,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
-                List<string> ListName = new List<string>() { "Không hiển thị đơn không lấy ở đơn thuốc TH" };
+                List<string> ListName = new List<string>() { "Không hiển thị đơn không lấy ở đơn thuốc TH","In gộp đơn thuốc" };
                 lstConfig = new List<ConfigADO>();
                 for (int i = 0; i < ListName.Count; i++)
                 {
@@ -12946,7 +12946,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
         {
             try
             {
-                btnConfig.Enabled = lciPrintAssignPrescription.Enabled;
+                btnConfig.Enabled = true;// lciPrintAssignPrescription.Enabled;
             }
             catch (Exception ex)
             {

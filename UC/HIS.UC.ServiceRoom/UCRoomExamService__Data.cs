@@ -440,7 +440,7 @@ namespace HIS.UC.ServiceRoom
                         {
                             bool isOutOfHour = CheckIsOutOfHoursTime(Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime((long)_intructionTimes));
                             // ✅ Nếu thỏa điều kiện → Set OT
-                            if (isOutOfHour && (!this._isEmergency && _treatmentTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__DTNOITRU.ToString()))
+                            if (isOutOfHour && (!this._isEmergency && _treatmentTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM.ToString()))
                             {
                                 if(cboSurcharge.EditValue == null || cboSurcharge.EditValue == "")
                                     valueToSet = patientType.ID;

@@ -95,7 +95,8 @@
     <Reference Include="HIS.Desktop.LocalStorage.Location">
       <HintPath>..\..\HIS.Desktop.LocalStorage.Location\bin\Debug\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
-    <Reference Include="HIS.Desktop.Plugins.Library.BankHub">
+    <Reference Include="HIS.Desktop.Plugins.Library.BankHub, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\HIS\HIS.Desktop.Plugins.Library.BankHub\HIS.Desktop.Plugins.Library.BankHub.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.EmrGenerate">
@@ -242,6 +243,7 @@
     <EmbeddedResource Include="HisPatientBankAccount\frmHisPatientBankAccount.resx">
       <DependentUpon>frmHisPatientBankAccount.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

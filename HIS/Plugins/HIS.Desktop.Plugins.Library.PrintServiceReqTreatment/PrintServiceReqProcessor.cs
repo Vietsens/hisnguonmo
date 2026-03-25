@@ -53,7 +53,11 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
         private HIS_TRANS_REQ transReq { get; set; }
         private List<HIS_SERE_SERV_EXT> _SereServExts { get; set; }
         ServiceReqADO _ServiceReqADO { get; set; }
-        MPS.ProcessorBase.PrintConfig.PreviewType? previewType { get; set; }
+        private List<HIS_KSK> _Ksk { get; set; }
+        private List<HIS_KSK_CONTRACT> _KskContract { get; set; } 
+        private List<HIS_KSK_SERVICE> _KskService { get; set; }
+        public MPS.ProcessorBase.PrintConfig.PreviewType? previewType { get; set; }
+        public bool IsGroupTreatmentList { get; set; }
         public PrintServiceReqTreatmentProcessor(List<V_HIS_SERVICE_REQ> _vhisServiceReqs, long roomId)
         {
             try
@@ -200,7 +204,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                     switch (printTypeCode)
                     {
                         case PrintTypeCodeStore.IN__HUONG_DAN_CLS__KHAM:
-                            new InCacPhieuChiDinh(printTypeCode, fileName, this._ServiceReqs, this._SereServs, this._ListTreatment, this._PatientTypeAlter, this._vHisRoom, printNow, ref result, lstConfig, transReq, DlgSendResultSigned, this.previewType, this._SereServExts, this._ServiceReqADO);
+                            new InCacPhieuChiDinh(printTypeCode, fileName, this._ServiceReqs, this._SereServs, this._ListTreatment, this._PatientTypeAlter, this._vHisRoom, printNow, ref result, lstConfig, transReq, DlgSendResultSigned, this.previewType, this._SereServExts, this._ServiceReqADO, this._Ksk,this._KskContract,this._KskService, this.IsGroupTreatmentList);
                             break;
 
                         default:
@@ -233,8 +237,8 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                     var apiResult = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT>>("api/HisTreatment/Get", ApiConsumer.ApiConsumers.MosConsumer, treatmentFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
                     if (apiResult != null && apiResult.Count > 0)
                     {
-                        _ListTreatment.Add(apiResult.FirstOrDefault());
-
+                        var Treatment = apiResult.FirstOrDefault();
+                        _ListTreatment.Add(Treatment);
                         HisPatientTypeAlterViewAppliedFilter _patientTypeAlterFilter = new HisPatientTypeAlterViewAppliedFilter();
                         _patientTypeAlterFilter.TreatmentId = this._TreatmentId;
                         _patientTypeAlterFilter.InstructionTime = Inventec.Common.DateTime.Get.Now() ?? 0;
@@ -337,7 +341,7 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
                                 .FirstOrDefault();
                 var lastWeight = lastDhst?.WEIGHT;
 
-                var req = _ServiceReqs.FirstOrDefault();
+                var req = _ServiceReqs?.FirstOrDefault();
                 ServiceReqADO serviceReqADO = null;
 
                 if (req != null)
@@ -370,8 +374,19 @@ namespace HIS.Desktop.Plugins.Library.PrintServiceReqTreatment
 
                 this._ServiceReqADO = serviceReqADO;
 
-
-
+                var KskContractIds = _ListTreatment.Select(t => t.TDL_KSK_CONTRACT_ID).Where(id => id.HasValue).Select(id => id.Value).ToList();
+                if (KskContractIds != null && KskContractIds.Count > 0)
+                {
+                    _Ksk = BackendDataWorker.Get<HIS_KSK>().ToList();
+                    MOS.Filter.HisKskContractFilter contractFilter = new MOS.Filter.HisKskContractFilter();
+                    contractFilter.IDs = KskContractIds;
+                    _KskContract = new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HIS_KSK_CONTRACT>>("api/HisKskContract/Get", ApiConsumer.ApiConsumers.MosConsumer, contractFilter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, null);
+                    if (_KskContract != null && _KskContract.Count > 0)
+                    {
+                        _Ksk = _Ksk.Where(k => _KskContract.Exists(p => p.ID == k.KSK_CONTRACT_ID)).ToList();
+                        _KskService = BackendDataWorker.Get<HIS_KSK_SERVICE>().Where(k => _Ksk.Exists(p => p.ID == k.KSK_ID)).ToList();
+                    }
+                }
 
                 if (this._ServiceReqs != null && this._ServiceReqs.Count > 0)
                 {

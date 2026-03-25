@@ -866,79 +866,86 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                             var materialTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
                             DateTime nowDate = DateTime.Today;
 
-                            lstMateInStocks = lstMateInStocks
-                                // flatten
-                                .SelectMany(stockList => stockList)
-                                .Where(material =>
-                                {
-                                    if (material.EXPIRED_DATE == null)
-                                        return false;
+                            var newGroupedList = new List<List<HisMaterialInStockSDO>>();
+                            var finalVisibleTypeIds = new HashSet<long>();
 
-                                    var materialType = materialTypes
-                                        .FirstOrDefault(mt => mt.ID == material.MATERIAL_TYPE_ID);
-
-                                    if (materialType == null || materialType.ALERT_EXPIRED_DATE == null)
-                                        return false;
-
-                                    string expDateStr = material.EXPIRED_DATE.Value.ToString();
-                                    if (expDateStr.Length < 8)
-                                        return false;
-
-                                    expDateStr = expDateStr.Substring(0, 8);
-
-                                    if (!DateTime.TryParseExact(
-                                            expDateStr,
-                                            "yyyyMMdd",
-                                            null,
-                                            System.Globalization.DateTimeStyles.None,
-                                            out DateTime expDate))
-                                        return false;
-
-                                    int daysRemaining = (expDate - nowDate).Days;
-
-                                    return materialType.ALERT_EXPIRED_DATE.Value >= daysRemaining;
-                                })
-
-                                // tránh trùng vật tư
-                                .GroupBy(x => x.ID)
-                                .Select(g => g.First())
-
-                                // group lại theo EXPIRED_DATE để build tree node cha (GIỐNG THUỐC)
-                                .GroupBy(x => x.EXPIRED_DATE)
-                                .Select(g => g.ToList())
-                                .ToList();
-
-                            // MaterialTypeIds cho node cha
-                            _MaterialTypeIds = lstMateInStocks
-                                .SelectMany(x => x)
-                                .Select(x => x.MATERIAL_TYPE_ID)
-                                .Distinct()
-                                .ToList();
-                        }
-
-
-                        if (lstMateInStocks != null && lstMateInStocks.Count > 0)
-                        {
-                            var dataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS == 1).ToList();
-                            if (dataMediStocks != null && dataMediStocks.Count == this.mediStockIds.Count)
+                            foreach (var group in lstMateInStocks)
                             {
-                                var dataMateTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>().Where(p => p.IS_BUSINESS == 1).ToList();
-                                if (dataMateTypes != null && dataMateTypes.Count > 0)
+                                if (group == null || group.Count == 0) continue;
+
+                                var validLeavesInGroup = new List<HisMaterialInStockSDO>();
+                                foreach (var stock in group)
                                 {
-                                    // lstMateInStocks = lstMateInStocks.Where(p => dataMateTypes.Select(o => o.ID).Distinct().ToList().Contains(p.MATERIAL_TYPE_ID)).ToList();
-                                    _MaterialTypeIds = dataMateTypes.Select(o => o.ID).Distinct().ToList();
+                                    if (string.IsNullOrWhiteSpace(stock.MATERIAL_TYPE_NAME) || stock.EXPIRED_DATE == null) continue;
+                                    var type = materialTypes.FirstOrDefault(mt => mt.ID == stock.MATERIAL_TYPE_ID);
+
+                                    if (type != null && type.ALERT_EXPIRED_DATE != null && type.IS_LEAF == 1)
+                                    {
+                                        string expDateStr = stock.EXPIRED_DATE.Value.ToString();
+                                        if (expDateStr.Length >= 8)
+                                        {
+                                            DateTime expDate;
+                                            if (DateTime.TryParseExact(expDateStr.Substring(0, 8), "yyyyMMdd", null, System.Globalization.DateTimeStyles.None, out expDate))
+                                            {
+                                                int daysRemaining = (expDate - nowDate).Days;
+
+                                                if (type.ALERT_EXPIRED_DATE.Value >= daysRemaining)
+                                                {
+                                                    validLeavesInGroup.Add(stock);
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                                else
+
+                                if (validLeavesInGroup.Count == 0) continue;
+
+                                var neededTypeIds = new HashSet<long>();
+                                foreach (var leaf in validLeavesInGroup)
                                 {
-                                    lstMateInStocks = new List<List<HisMaterialInStockSDO>>();
+                                    neededTypeIds.Add(leaf.MATERIAL_TYPE_ID);
+                                    var currentType = materialTypes.FirstOrDefault(mt => mt.ID == leaf.MATERIAL_TYPE_ID);
+                                    while (currentType != null && currentType.PARENT_ID != null)
+                                    {
+                                        neededTypeIds.Add(currentType.PARENT_ID.Value);
+                                        currentType = materialTypes.FirstOrDefault(x => x.ID == currentType.PARENT_ID);
+                                    }
+                                    if (currentType != null) neededTypeIds.Add(currentType.ID);
+                                }
+
+                                var filteredGroup = new List<HisMaterialInStockSDO>();
+
+                                filteredGroup.AddRange(validLeavesInGroup);
+
+                                foreach (var stock in group)
+                                {
+                                    if (validLeavesInGroup.Contains(stock)) continue;
+
+                                    var type = materialTypes.FirstOrDefault(mt => mt.ID == stock.MATERIAL_TYPE_ID);
+
+                                    if (type != null && neededTypeIds.Contains(type.ID) && type.IS_LEAF != 1)
+                                    {
+                                        filteredGroup.Add(stock);
+                                    }
+                                }
+
+                                if (filteredGroup.Count > 0)
+                                {
+                                    newGroupedList.Add(filteredGroup);
+                                    foreach (var item in filteredGroup) finalVisibleTypeIds.Add(item.MATERIAL_TYPE_ID);
                                 }
                             }
-                            else
+                            lstMateInStocks = newGroupedList;
+                            _MaterialTypeIds = finalVisibleTypeIds.ToList();
+                        }
+                        else
+                        {
+                            if (lstMateInStocks != null && lstMateInStocks.Count > 0)
                             {
-                                var dataMediStocksBUSINESS = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS != 1).ToList();
-                                if (dataMediStocksBUSINESS != null && dataMediStocksBUSINESS.Count == this.mediStockIds.Count)
+                                var dataMediStocks = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS == 1).ToList();
+                                if (dataMediStocks != null && dataMediStocks.Count == this.mediStockIds.Count)
                                 {
-                                    var dataMateTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>().Where(p => p.IS_BUSINESS != 1).ToList();
+                                    var dataMateTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>().Where(p => p.IS_BUSINESS == 1).ToList();
                                     if (dataMateTypes != null && dataMateTypes.Count > 0)
                                     {
                                         _MaterialTypeIds = dataMateTypes.Select(o => o.ID).Distinct().ToList();
@@ -948,9 +955,24 @@ namespace HIS.Desktop.Plugins.MediStockSummaryByExpireDate
                                         lstMateInStocks = new List<List<HisMaterialInStockSDO>>();
                                     }
                                 }
+                                else
+                                {
+                                    var dataMediStocksBUSINESS = BackendDataWorker.Get<V_HIS_MEDI_STOCK>().Where(p => this.mediStockIds.Contains(p.ID) && p.IS_BUSINESS != 1).ToList();
+                                    if (dataMediStocksBUSINESS != null && dataMediStocksBUSINESS.Count == this.mediStockIds.Count)
+                                    {
+                                        var dataMateTypes = BackendDataWorker.Get<HIS_MATERIAL_TYPE>().Where(p => p.IS_BUSINESS != 1).ToList();
+                                        if (dataMateTypes != null && dataMateTypes.Count > 0)
+                                        {
+                                            _MaterialTypeIds = dataMateTypes.Select(o => o.ID).Distinct().ToList();
+                                        }
+                                        else
+                                        {
+                                            lstMateInStocks = new List<List<HisMaterialInStockSDO>>();
+                                        }
+                                    }
+                                }
                             }
                         }
-
 
                         List<List<HisMaterialInStockSDO>> lstParent = new List<List<HisMaterialInStockSDO>>();
                         if (lstMateInStocks != null && lstMateInStocks.Count > 0)

@@ -1240,6 +1240,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     //+ Nếu checkbox "Ký" không được check, thì thực hiện tự động hiển thị màn hình print preview đơn thuốc trên HIS
                     MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null;
                     bool printNow = (isSaveAndPrint || chkPrint.Checked);
+                    var PrintMps234 = lstConfig.Exists(o => o.IsChecked && o.ID == (int)ConfigADO.RowConfigID.InDonThuocGop) ? "Mps000234" : null;
                     switch (saveType)
                     {
                         case SAVETYPE.SAVE:
@@ -1296,14 +1297,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             if (previewType != null)
                             {
-                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, printNow, previewType);
+                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : (PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode), printNow, previewType);
                             }
                             break;
                         case SAVETYPE.SAVE_PRINT_NOW:
                             this.PrescriptionSavePrintShowHasClickSave(this.PrintPrescription, true, null);
                             break;
                         case SAVETYPE.SAVE_SHOW_PRINT_PREVIEW:
-                            this.PrescriptionSavePrintShowHasClickSave(MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null);
+                            this.PrescriptionSavePrintShowHasClickSave(PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null);
                             break;
                     }
 
