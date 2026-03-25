@@ -948,6 +948,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
+                rowSample = (SampleListViewADO)gridViewSample.GetFocusedRow(); // cap nhat dong hien tai
                 onClickBtnPrintBarCode();
             }
             catch (Exception ex)

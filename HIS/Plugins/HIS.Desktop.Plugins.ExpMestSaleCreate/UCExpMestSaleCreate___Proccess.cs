@@ -1616,18 +1616,28 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate
                 var idTmCk = BackendDataWorker.Get<HIS_PAY_FORM>().FirstOrDefault(o => o.PAY_FORM_CODE == "09");
                 if (payForm != null && (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK || payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK))
                 {
-                    ValidControlTransferAmount(true);
-
                     ValidControlTransferAmountNew(false);
                     ValidControlSwipeAmount(false);
                     lcTransferAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lcSwipeAmountNew.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     lciTranferAmount.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    //UpdateSpinTransferAmountControl(true);
+
                     dxValidationProvider_Save.RemoveControlError(spinTransferAmount);
-                    lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
                     lciTranferAmount.Enabled = true;
                     lciTranferAmount.Text = "Số tiền chuyển khoản:";
+
+                    // NẾU LÀ TIỀN MẶT + CHUYỂN KHOẢN: Bắt buộc nhập và bôi đỏ
+                    if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMCK)
+                    {
+                        ValidControlTransferAmount(true);
+                        lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Maroon;
+                    }
+                    // NẾU CHỈ LÀ CHUYỂN KHOẢN: Không bắt buộc và để chữ màu đen
+                    else if (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__CK)
+                    {
+                        ValidControlTransferAmount(false);
+                        lciTranferAmount.AppearanceItemCaption.ForeColor = Color.Black;
+                    }
                 }
                 else if (payForm != null && (payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__QUET_THE || payForm.ID == IMSys.DbConfig.HIS_RS.HIS_PAY_FORM.ID__TMQT))
                 {

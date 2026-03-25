@@ -117,7 +117,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
                     this.EXP_AMOUNT = mediTemp.AMOUNT;
                     this.SERVICE_REQ_CODE = "000000000000";
                     this.PARENT_ID__IN_SETY = this.SERVICE_REQ_CODE;
-                    this.CONCRETE_ID__IN_SETY = this.SERVICE_REQ_CODE + "_" + mediTemp.MEDICINE_TYPE_ID;
+                    //this.CONCRETE_ID__IN_SETY = this.SERVICE_REQ_CODE + "_" + mediTemp.MEDICINE_TYPE_ID;
+                    this.CONCRETE_ID__IN_SETY = this.SERVICE_REQ_CODE + "_MED_" + mediTemp.MEDICINE_TYPE_ID;
                     V_HIS_MEDICINE_TYPE medicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().FirstOrDefault(o => o.ID == mediTemp.MEDICINE_TYPE_ID);
                     if (medicineType != null)
                     {
@@ -218,7 +219,8 @@ namespace HIS.Desktop.Plugins.ExpMestSaleCreate.ADO
                     this.EXP_AMOUNT = mateTemp.AMOUNT;
                     this.SERVICE_REQ_CODE = "000000000000";
                     this.PARENT_ID__IN_SETY = this.SERVICE_REQ_CODE;
-                    this.CONCRETE_ID__IN_SETY = this.SERVICE_REQ_CODE + "_" + mateTemp.MATERIAL_TYPE_ID;
+                    //this.CONCRETE_ID__IN_SETY = this.SERVICE_REQ_CODE + "_" + mateTemp.MATERIAL_TYPE_ID;
+                    this.CONCRETE_ID__IN_SETY = this.SERVICE_REQ_CODE + "_MAT_" + mateTemp.MATERIAL_TYPE_ID;
                 }
             }
             catch (Exception ex)
