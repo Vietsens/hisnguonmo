@@ -97,6 +97,7 @@ namespace HIS.Desktop.Plugins.SampleCollectionRoom
         {
             try
             {
+                this.rowSample = null; //Xoa state cu
                 CommonParam param = new CommonParam();
                 LisSampleFilter sampleFilter = new LisSampleFilter();
                 sampleFilter.SERVICE_REQ_CODE__EXACT = this.txtBarcode.Text.Trim();
