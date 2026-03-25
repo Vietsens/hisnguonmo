@@ -47,21 +47,58 @@ namespace HIS.Desktop.Common.BankQrCode
                 bool IsGenQrBidvApi = false;
                 MOS.TDO.QrPaymentGenerateResultTDO QrBidv = null;
                 #region "BIDV"
-                if (configValue != null && configValue.Count > 0 && configValue.Exists(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", "BIDV")) > -1))
+                //if (configValue != null && configValue.Count > 0 && configValue.Exists(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", "BIDV")) > -1))
+                //{
+                //    var configBIDV = configValue.FirstOrDefault(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", "BIDV")) > -1);
+                //    if (configBIDV != null && !string.IsNullOrEmpty(configBIDV.VALUE) && configBIDV.VALUE.IndexOf("GenQrMethod") > -1)
+                //    {
+                //        JObject jsonObject = JObject.Parse(configBIDV.VALUE);
+                //        string genQrMethod = jsonObject["GenQrMethod"].ToString();
+                //        if (genQrMethod == "OPEN_API")
+                //        {
+                //            CommonParam param = new CommonParam();
+                //            MOS.TDO.QrPaymentGenerateTDO tdo = new MOS.TDO.QrPaymentGenerateTDO();
+                //            tdo.TransReqId = data.ID;
+                //            tdo.Bank = "BIDV";
+                //            tdo.BankConfig = configBIDV.VALUE;
+                //            QrBidv = new Inventec.Common.Adapter.BackendAdapter(param).Post<QrPaymentGenerateResultTDO>("api/HisTransReq/QrPaymentGenerateImg", ApiConsumers.MosConsumer, tdo, param);
+                //            if (QrBidv == null)
+                //            {
+                //                XtraMessageBox.Show(param.GetMessage());
+                //                return null;
+                //            }
+                //            else
+                //            {
+                //                IsGenQrBidvApi = true;
+                //            }
+                //        }
+                //    }
+                //}
+                if (configValue != null && configValue.Count > 0 && configValue.Exists(p => System.Text.RegularExpressions.Regex.IsMatch(p.KEY.Replace(" ", ""), @"\.[A-Z]+Info")))
                 {
-                    var configBIDV = configValue.FirstOrDefault(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", "BIDV")) > -1);
-                    if (configBIDV != null && !string.IsNullOrEmpty(configBIDV.VALUE) && configBIDV.VALUE.IndexOf("GenQrMethod") > -1)
+                    var configBank = configValue.FirstOrDefault(p => System.Text.RegularExpressions.Regex.IsMatch(p.KEY.Replace(" ", ""), @"\.[A-Z]+Info"));
+
+                    if (configBank != null && !string.IsNullOrEmpty(configBank.VALUE) && configBank.VALUE.IndexOf("GenQrMethod") > -1)
                     {
-                        JObject jsonObject = JObject.Parse(configBIDV.VALUE);
-                        string genQrMethod = jsonObject["GenQrMethod"].ToString();
+                        var match = System.Text.RegularExpressions.Regex.Match(configBank.KEY.Replace(" ", ""), @"\.([A-Z]+)Info");
+                        string bankName = match.Success ? match.Groups[1].Value : "UNKNOWN";
+
+                        JObject jsonObject = JObject.Parse(configBank.VALUE);
+                        string genQrMethod = jsonObject["GenQrMethod"]?.ToString(); 
+
                         if (genQrMethod == "OPEN_API")
                         {
                             CommonParam param = new CommonParam();
                             MOS.TDO.QrPaymentGenerateTDO tdo = new MOS.TDO.QrPaymentGenerateTDO();
                             tdo.TransReqId = data.ID;
-                            tdo.Bank = "BIDV";
-                            tdo.BankConfig = configBIDV.VALUE;
-                            QrBidv = new Inventec.Common.Adapter.BackendAdapter(param).Post<QrPaymentGenerateResultTDO>("api/HisTransReq/QrPaymentGenerateImg", ApiConsumers.MosConsumer, tdo, param);
+                            tdo.Bank = bankName;
+                            tdo.BankConfig = configBank.VALUE;
+
+                            QrBidv = new Inventec.Common.Adapter.BackendAdapter(param)
+                                .Post<QrPaymentGenerateResultTDO>(
+                                    "api/HisTransReq/QrPaymentGenerateImg",
+                                    ApiConsumers.MosConsumer, tdo, param);
+
                             if (QrBidv == null)
                             {
                                 XtraMessageBox.Show(param.GetMessage());
@@ -72,6 +109,7 @@ namespace HIS.Desktop.Common.BankQrCode
                                 IsGenQrBidvApi = true;
                             }
                         }
+
                     }
                 }
                 #endregion
@@ -122,6 +160,8 @@ namespace HIS.Desktop.Common.BankQrCode
                         IsQrDynamic = true;
                     }
                 }
+
+                
                 #endregion
 
                 if (configValue != null && configValue.Count > 0)
