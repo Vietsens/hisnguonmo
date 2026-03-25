@@ -4027,8 +4027,17 @@ namespace HIS.Desktop.Plugins.EmpUser
                 int count = 1;
                 foreach (var employee in listEmployees)
                 {
-                    var deptCodes = employee.DEPARTMENT_CODES.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                    var employeeDepartments = departments.Where(o => deptCodes.Contains(o.DEPARTMENT_CODE)) .ToList();
+                    List<HIS_DEPARTMENT> employeeDepartments;
+                    if (!string.IsNullOrEmpty(employee.DEPARTMENT_CODES))
+                    {
+                        var deptCodes = employee.DEPARTMENT_CODES.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        employeeDepartments = departments.Where(o => deptCodes.Contains(o.DEPARTMENT_CODE)).ToList();
+                    }
+                    else
+                    {
+                        var dept = departments.FirstOrDefault(o => o.ID == employee.DEPARTMENT_ID);
+                        employeeDepartments = dept != null ? new List<HIS_DEPARTMENT> { dept } : new List<HIS_DEPARTMENT>();
+                    }
                     var branch = branches.FirstOrDefault(o => o.ID == employee.BRANCH_ID);
                     var careerTitle = careerTitles.FirstOrDefault(o => o.ID == employee.CAREER_TITLE_ID);
 
