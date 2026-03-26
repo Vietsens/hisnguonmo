@@ -152,6 +152,11 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             {
                 this.tgExtendMonitor.Properties.OnText = "Bật màn hình mở rộng";
                 this.tgExtendMonitor.Properties.OffText = "Bật màn hình mở rộng";
+
+                this.txtSearch.Properties.NullValuePrompt = "Nhập từ khóa để tìm kiếm phòng thực hiện";
+                this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
+                this.txtSearch.Properties.ShowNullValuePromptWhenFocused = true;
+
             }
             catch (Exception ex)
             {
@@ -427,7 +432,7 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
                 sc = Screen.AllScreens;
                 if (sc.Length <= 1)
                 {
-                    DevExpress.XtraEditors.XtraMessageBox.Show("Không tìm thấy màn hình mở rộng");
+                    control.WindowState = FormWindowState.Maximized;
                     control.Show();
                 }
                 else

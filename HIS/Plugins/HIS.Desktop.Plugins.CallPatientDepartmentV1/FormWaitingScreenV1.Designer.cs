@@ -358,8 +358,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.Controls.Add(this.layoutControl1);
             this.Name = "FormWaitingScreenV1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Màn hình gọi số phòng khám";
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            this.Text = "Màn hình chờ theo khoa 1";
+            this.WindowState = System.Windows.Forms.FormWindowState.Normal;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormWaitingScreenV1_FormClosing);
             this.Load += new System.EventHandler(this.FormWaitingScreenV1_Load);
             this.Controls.SetChildIndex(this.layoutControl1, 0);

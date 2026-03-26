@@ -4,6 +4,7 @@ using HIS.Desktop.Controls.Session;
 using HIS.Desktop.LocalStorage.Location;
 using HIS.Desktop.Utility;
 using Inventec.Common.Adapter;
+using Inventec.Common.Logging;
 using Inventec.Core;
 using MOS.EFMODEL.DataModels;
 using System;
@@ -116,7 +117,7 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
                 if (LstRoom == null || LstRoom.Count == 0) return;
 
                 CommonParam param = new CommonParam();
-                MOS.Filter.HisRoomCounterLView3Filter filter = new MOS.Filter.HisRoomCounterLView3Filter();
+                MOS.Filter.HisRoomCounterLView3Filter filter = new MOS.Filter.HisRoomCounterLView3Filter ();
                 filter.ROOM_IDs = LstRoom.Select(o => o.ROOM_ID).ToList();
 
                 var result = new BackendAdapter(param).Get<List<L_HIS_ROOM_COUNTER_3>>("api/HisRoom/GetCounterLView3", ApiConsumers.MosConsumer, filter, param);
