@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,13 +9,17 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.ADOs
     public class TestHarmonyADO
     {
         public long SERE_SERV_ID { get; set; }
-        public long? RESULT_TIME { get; set; }
-        public string RESULT_TIME_STR
+
+        // Thời gian sửa MODIFY_TIME từ danh sách A (V_HIS_SERE_SERV_TEIN)
+        public long? MODIFY_TIME { get; set; }
+
+        public string MODIFY_TIME_STR
         {
             get
             {
-                return RESULT_TIME.HasValue ?
-                    Inventec.Common.DateTime.Convert.TimeNumberToTimeString(RESULT_TIME.Value) : "";
+                return MODIFY_TIME.HasValue
+                    ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(MODIFY_TIME.Value)
+                    : "";
             }
         }
 

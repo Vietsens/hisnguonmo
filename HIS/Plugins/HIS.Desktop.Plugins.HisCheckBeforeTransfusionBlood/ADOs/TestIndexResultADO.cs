@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,19 +16,16 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.ADOs
         public long SERE_SERV_ID { get; set; }
         public long TREATMENT_ID { get; set; }
 
-        // Thêm thuộc tính RESULT_TIME
-        public long? RESULT_TIME { get; set; }
+        // Thời gian sửa (MODIFY_TIME từ V_HIS_SERE_SERV_TEIN)
+        public long? MODIFY_TIME { get; set; }
 
-        // Thuộc tính hiển thị thời gian dạng chuỗi
-        public string RESULT_TIME_STR
+        public string MODIFY_TIME_STR
         {
             get
             {
-                if (RESULT_TIME.HasValue)
-                {
-                    return Inventec.Common.DateTime.Convert.TimeNumberToTimeString(RESULT_TIME.Value);
-                }
-                return "";
+                return MODIFY_TIME.HasValue
+                    ? Inventec.Common.DateTime.Convert.TimeNumberToTimeString(MODIFY_TIME.Value)
+                    : "";
             }
         }
     }
