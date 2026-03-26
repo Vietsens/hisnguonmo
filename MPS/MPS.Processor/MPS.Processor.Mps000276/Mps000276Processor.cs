@@ -391,14 +391,13 @@ namespace MPS.Processor.Mps000276
 
                 // Lấy danh sách SERVICE_ID thuộc KSK dựa vào Treatment.TDL_KSK_CONTRACT_ID
                 List<long> kskServiceIds = new List<long>();
-                if (rdo._Treatment != null
-                    && rdo._Treatment.TDL_KSK_CONTRACT_ID.HasValue
+                if (rdo._TreatmentList != null && rdo._TreatmentList.Count > 0
+                    && rdo._TreatmentList.Exists(o=>o.TDL_KSK_CONTRACT_ID.HasValue)
                     && rdo._Ksk != null && rdo._Ksk.Count > 0
                     && rdo._KskServices != null && rdo._KskServices.Count > 0)
                 {
                     var kskIds = rdo._Ksk
-                        .Where(k => k.KSK_CONTRACT_ID == rdo._Treatment.TDL_KSK_CONTRACT_ID.Value)
-
+                        .Where(k => rdo._TreatmentList.Exists(o=>(o.TDL_KSK_CONTRACT_ID ?? 0) == k.KSK_CONTRACT_ID))
                         .Select(k => k.ID)
                         .ToList();
 
@@ -434,56 +433,7 @@ namespace MPS.Processor.Mps000276
                 {
                     TreatmentADO ado = new TreatmentADO();
                     Inventec.Common.Mapper.DataObjectMapper.Map<TreatmentADO>(ado, treatment);
-
-                    if (!string.IsNullOrWhiteSpace(treatment.TREATMENT_CODE))
-                    {
-                        Inventec.Common.BarcodeLib.Barcode bcTrCode = new Inventec.Common.BarcodeLib.Barcode(treatment.TREATMENT_CODE);
-                        bcTrCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
-                        bcTrCode.IncludeLabel = true;
-                        bcTrCode.Width = 120;
-                        bcTrCode.Height = 40;
-                        bcTrCode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
-                        bcTrCode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
-                        bcTrCode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
-                        ado.BC_TR_CODE = bcTrCode;
-                    }
-
-                    if (!string.IsNullOrWhiteSpace(treatment.TDL_PATIENT_CODE))
-                    {
-                        Inventec.Common.BarcodeLib.Barcode bcPaCode = new Inventec.Common.BarcodeLib.Barcode(treatment.TDL_PATIENT_CODE);
-                        bcPaCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
-                        bcPaCode.IncludeLabel = true;
-                        bcPaCode.Width = 120;
-                        bcPaCode.Height = 40;
-                        bcPaCode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
-                        bcPaCode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
-                        bcPaCode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
-                        ado.BC_PA_CODE = bcPaCode;
-                    }
-
                     _ListTreatment.Add(ado);
-                }
-
-                int currentRow = 1;
-                foreach (var treatment in _ListTreatment)
-                {
-                    bool hasKsk = _ListSereServKsk != null && _ListSereServKsk.Any(s => s.TDL_TREATMENT_ID == treatment.ID);
-                    bool hasNonKsk = _ListSereServNonKsk != null && _ListSereServNonKsk.Any(s => s.TDL_TREATMENT_ID == treatment.ID);
-
-                    if (hasKsk)
-                    {
-                        treatment.RowNum = currentRow;
-                        if (hasNonKsk)
-                        {
-                            treatment.NextRowNum = currentRow + 1;
-                            currentRow = treatment.NextRowNum + 1;
-                        }
-                        else
-                        {
-                            treatment.NextRowNum = currentRow;
-                            currentRow++;
-                        }
-                    }
                 }
             }
             catch (Exception ex)
@@ -504,7 +454,7 @@ namespace MPS.Processor.Mps000276
                 // Nhóm theo ParentServiceCode
                 var groupedByParent = listSereServ
                     .Where(o => !string.IsNullOrWhiteSpace(o.ParentServiceCode))
-                    .GroupBy(o => o.ParentServiceCode)
+                    .GroupBy(o => new { o.ParentServiceCode,o.TDL_TREATMENT_ID })
                     .ToList();
 
                 // Danh sách các dịch vụ không có parent - sẽ gom theo ServiceTypeName
@@ -515,7 +465,7 @@ namespace MPS.Processor.Mps000276
                 // Xử lý các dịch vụ không có parent - gom theo ServiceTypeName
 
                 var groupedByServiceType = noParentServices
-                    .GroupBy(o => new { o.ServiceTypeName })
+                    .GroupBy(o => new { o.ServiceTypeName,o.TDL_TREATMENT_ID })
                     .ToList();
 
                 foreach (var group in groupedByServiceType)
@@ -524,7 +474,7 @@ namespace MPS.Processor.Mps000276
 
                     var firstService = services.First();
                     Mps000276ADO serviceTypeAdo = new Mps000276ADO();
-
+                    serviceTypeAdo.TDL_TREATMENT_ID = firstService.TDL_TREATMENT_ID;
                     serviceTypeAdo.ParentServiceName = firstService.ServiceTypeName;
                     serviceTypeAdo.ParentServiceCode = firstService.ServiceTypeCode;
                     serviceTypeAdo.ParentServiceNumOrder = firstService.ServiceNumOrder;
@@ -565,6 +515,7 @@ namespace MPS.Processor.Mps000276
                     var firstChild = childServices.First();
                     Mps000276ADO parentAdo = new Mps000276ADO();
 
+                    parentAdo.TDL_TREATMENT_ID = firstChild.TDL_TREATMENT_ID;
                     parentAdo.ParentServiceCode = firstChild.ParentServiceCode;
                     parentAdo.ParentServiceId = firstChild.ParentServiceId;
                     parentAdo.ParentServiceName = firstChild.ParentServiceName;

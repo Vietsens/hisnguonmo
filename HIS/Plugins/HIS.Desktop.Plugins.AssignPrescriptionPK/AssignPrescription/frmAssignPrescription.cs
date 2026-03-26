@@ -199,6 +199,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
         internal long oldExpMestId;
         internal HIS_EXP_MEST oldExpMest;
         internal HIS_SERVICE_REQ oldServiceReq;
+        internal List<HIS_SERVICE_REQ> resultServiceReq;
         internal HIS_SERVICE_REQ ServiceReqEye;
         List<MOS.EFMODEL.DataModels.V_HIS_MEDICINE_BEAN_1> listMedicineBeanForEdits = new List<V_HIS_MEDICINE_BEAN_1>();
         List<MOS.EFMODEL.DataModels.V_HIS_MATERIAL_BEAN_1> listMaterialBeanForEdits = new List<V_HIS_MATERIAL_BEAN_1>();

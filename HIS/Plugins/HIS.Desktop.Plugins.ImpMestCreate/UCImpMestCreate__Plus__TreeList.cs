@@ -646,6 +646,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         txtNationalMainText.Text = null;
                     }
                 }
+                GetLastImpPrice();
             }
             catch (Exception ex)
             {
@@ -793,6 +794,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         txtNationalMainText.Text = null;
                     }
                 }
+                GetLastImpPrice();
             }
             catch (Exception ex)
             {
@@ -970,8 +972,6 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             chkImprice.Checked = true;
                         }
                     }
-
-                    GetLastImpPrice();
 
                     ProcessBidByType();
 
@@ -1494,12 +1494,12 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             if (listMedcinePaty != null && listMedcinePaty.Count > 0)
                             {
                                 var dataMePaty = listMedcinePaty.Where(o => o.PATIENT_TYPE_ID == ado.PATIENT_TYPE_ID).ToList();
-                                ado.PRE_PRICE_Str = dataMePaty != null && dataMePaty.Count > 0 ? (dataMePaty.FirstOrDefault().EXP_PRICE) : 0;
+                                ado.PRE_PRICE_Str = dataMePaty != null && dataMePaty.Count > 0 ? (dataMePaty.FirstOrDefault().EXP_PRICE * (HisConfig.ApplyServicePatyPrice ? 1 : (1+ dataMePaty.FirstOrDefault().EXP_VAT_RATIO))) : 0;
                             }
                             if (listMaterialPaty != null && listMaterialPaty.Count > 0)
                             {
                                 var dataMaPaty = listMaterialPaty.Where(o => o.PATIENT_TYPE_ID == ado.PATIENT_TYPE_ID).ToList();
-                                ado.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE) : 0;
+                                ado.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE * (HisConfig.ApplyServicePatyPrice ? 1 : (1 + dataMaPaty.FirstOrDefault().EXP_VAT_RATIO))) : 0;
                             }
                             ado.ID = row;
                             row++;

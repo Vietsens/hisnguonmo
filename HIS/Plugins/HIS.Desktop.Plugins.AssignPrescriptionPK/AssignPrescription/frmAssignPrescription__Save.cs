@@ -1159,6 +1159,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     UpdateTotalPriceInRow(lstSereServ);
                     this.oldServiceReq = serviceReqResult;
+                    this.resultServiceReq = lstserviceReqResult;
                     this.oldExpMest = expMestResult;
                     this.oldExpMestId = this.oldExpMest != null ? this.oldExpMest.ID : 0;
                     if (assignPrescriptionEditADO != null && assignPrescriptionEditADO.DgRefeshData != null)
@@ -1297,14 +1298,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                             if (previewType != null)
                             {
-                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : (PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode), printNow, previewType, lstserviceReqResult);
+                                this.PrescriptionSavePrintShowHasClickSave(printNow ? "" : (PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode), printNow, previewType);
                             }
                             break;
                         case SAVETYPE.SAVE_PRINT_NOW:
-                            this.PrescriptionSavePrintShowHasClickSave(this.PrintPrescription, true, null, lstserviceReqResult);
+                            this.PrescriptionSavePrintShowHasClickSave(this.PrintPrescription, true, null);
                             break;
                         case SAVETYPE.SAVE_SHOW_PRINT_PREVIEW:
-                            this.PrescriptionSavePrintShowHasClickSave(PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null, lstserviceReqResult);
+                            this.PrescriptionSavePrintShowHasClickSave(PrintMps234 ?? MPS.Processor.Mps000118.PDO.Mps000118PDO.PrintTypeCode, false, null);
                             break;
                     }
 

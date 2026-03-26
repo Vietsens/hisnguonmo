@@ -86,8 +86,6 @@ namespace MPS.Processor.Mps000276
 
     public class TreatmentADO : HIS_TREATMENT
     {
-        public Inventec.Common.BarcodeLib.Barcode BC_TR_CODE { get; set; }
-        public Inventec.Common.BarcodeLib.Barcode BC_PA_CODE { get; set; }
         public long INTRUCTION_TIME { get; set; }
         public int RowNum { get; set; }
         public int NextRowNum { get; set; }

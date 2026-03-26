@@ -543,7 +543,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
             }
         }
 
-        private async Task PrescriptionSavePrintShowHasClickSave(string printTypeCode, bool isPrintNow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null, List<HIS_SERVICE_REQ> lstserviceReqResult = null)
+        private async Task PrescriptionSavePrintShowHasClickSave(string printTypeCode, bool isPrintNow, MPS.ProcessorBase.PrintConfig.PreviewType? previewType = null)
         {
             try
             {
@@ -673,9 +673,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                                 TREATMENT_ID = this.treatmentId,
                                 SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK
                             };
-                            if (!string.IsNullOrEmpty(PrintMps234) && lstserviceReqResult != null && lstserviceReqResult.Count > 0)
+                            if (!string.IsNullOrEmpty(PrintMps234) && resultServiceReq != null && resultServiceReq.Count > 0)
                             {
-                                serviceReqFilter.IDs = lstserviceReqResult.Select(o => o.ID).ToList();
+                                serviceReqFilter.IDs = resultServiceReq.Select(o => o.ID).ToList();
                             }
                             var serviceReqPrintAlls = new BackendAdapter(param)
                                 .Get<List<MOS.EFMODEL.DataModels.HIS_SERVICE_REQ>>(

@@ -384,7 +384,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             if (listMaterialPaty != null && listMaterialPaty.Count > 0)
                             {
                                 var dataMaPaty = listMaterialPaty.Where(o => o.PATIENT_TYPE_ID == patient.ID).ToList();
-                                serviceAdo.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE) : 0;
+                                serviceAdo.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE * (HisConfig.ApplyServicePatyPrice ? 1 : (1 + dataMaPaty.FirstOrDefault().EXP_VAT_RATIO))) : 0;
                             }
                             serviceAdo.IsNotSell = true;
                             serviceAdo.SERVICE_TYPE_ID = material.SERVICE_TYPE_ID;
@@ -600,7 +600,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             if (listMedcinePaty != null && listMedcinePaty.Count > 0)
                             {
                                 var dataMaPaty = listMedcinePaty.Where(o => o.PATIENT_TYPE_ID == patient.ID).ToList();
-                                serviceAdo.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE) : 0;
+                                serviceAdo.PRE_PRICE_Str = dataMaPaty != null && dataMaPaty.Count > 0 ? (dataMaPaty.FirstOrDefault().EXP_PRICE * (HisConfig.ApplyServicePatyPrice ? 1 : (1 + dataMaPaty.FirstOrDefault().EXP_VAT_RATIO))) : 0;
                             }
                             serviceAdo.SERVICE_TYPE_ID = medicine.SERVICE_TYPE_ID;
                             serviceAdo.SERVICE_ID = medicine.SERVICE_ID;
