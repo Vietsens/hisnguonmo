@@ -661,7 +661,8 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     new AMedicineTypeADO { ID = 10, NAME = "Gây tê" },
                     new AMedicineTypeADO { ID = 11, NAME = "Biệt dược gốc" },
                     new AMedicineTypeADO { ID = 12, NAME = "Thuốc chạy thận" },
-                    new AMedicineTypeADO { ID = 13, NAME = "Nguyên liệu điều chế" }
+                    new AMedicineTypeADO { ID = 13, NAME = "Nguyên liệu điều chế" },
+                    new AMedicineTypeADO { ID = 14, NAME = "Thực phẩm dinh dưỡng" }
 
                 };
                 return listADO;
@@ -1611,6 +1612,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                 if (hIS_MEDICINE_TYPE.IS_RAW_MEDICINE == 1)
                     arr.Add("Nguyên liệu điều chế");
+
+                if (hIS_MEDICINE_TYPE.IS_NUTRITION_FOOD == 1)
+                    arr.Add("Thực phẩm dinh dưỡng");
 
                 string listArrayMedicine = string.Join(", ", arr);
 
@@ -2897,6 +2901,9 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
 
                     if (lstMedicine.Any(x => x.ID == 13)) medicineType.IS_RAW_MEDICINE = 1;
                     else medicineType.IS_RAW_MEDICINE = null;
+
+                    if (lstMedicine.Any(x => x.ID == 14)) medicineType.IS_NUTRITION_FOOD = 1;
+                    else medicineType.IS_NUTRITION_FOOD = null;
                 }
                 #endregion
                 {
@@ -9102,7 +9109,11 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 
                 // UPDATE TEXT
                 this.cboLoaiThuoc.Text = sb.ToString();
-                
+
+                // Toggle bắt buộc "Dòng thuốc" nếu chọn "Thực phẩm dinh dưỡng"
+                bool isNutritionFood = this.lstMedicine != null && this.lstMedicine.Any(x => x.ID == 14);
+                ValidatecboMedicineLine(!isNutritionFood);
+
                 // Force refresh để update UI
                 if (cboLoaiThuoc.Properties.View != null)
                 {

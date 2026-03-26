@@ -8220,7 +8220,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             // 
             // lciDosageForm
             // 
-            this.lciDosageForm.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
+            this.lciDosageForm.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
             this.lciDosageForm.AppearanceItemCaption.Options.UseForeColor = true;
             this.lciDosageForm.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciDosageForm.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;

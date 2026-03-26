@@ -4874,11 +4874,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 string maCskcb = branch != null ? branch.HEIN_MEDI_ORG_CODE : "";
 
                 // Khởi tạo đối tượng gom dữ liệu C79
-                HSTHC79 hsthc79 = new HSTHC79();
-                hsthc79.DS_CHITIET = new DS_CHITIET();
-                hsthc79.DS_CHITIET.Id = "Id-" + Guid.NewGuid().ToString();
-                hsthc79.DS_CHITIET.DanhSachChiTiet = new List<C79_CHITIET>();
-                hsthc79.CHUKYDONVI = "";
+                HSTH01BH hsth01bh = new HSTH01BH();
+                hsth01bh.DS_CHITIET = new DS_CHITIET();
+                hsth01bh.DS_CHITIET.Id = "Id-" + Guid.NewGuid().ToString();
+                hsth01bh.DS_CHITIET.DanhSachChiTiet = new List<HSTH01BH_CHITIET>();
+                hsth01bh.CHUKYDONVI = "";
 
                 int stt = 1;
 
@@ -4908,7 +4908,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                         if (ado != null)
                         {
-                            C79_CHITIET itemC79 = new C79_CHITIET();
+                            HSTH01BH_CHITIET itemC79 = new HSTH01BH_CHITIET();
                             itemC79.STT = stt.ToString();
                             itemC79.HO_TEN = ado.hoTen;
                             itemC79.NGAY_SINH = ado.ngaySinh;
@@ -4940,13 +4940,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 itemC79.THANG_QT = DateTime.Now.Month.ToString();
                             }
 
-                            hsthc79.DS_CHITIET.DanhSachChiTiet.Add(itemC79);
+                            hsth01bh.DS_CHITIET.DanhSachChiTiet.Add(itemC79);
                             stt++;
                         }
                         else
                         {
-                            if (!DicErrorMess.ContainsKey("Lỗi sinh dữ liệu tính toán C79")) DicErrorMess["Lỗi sinh dữ liệu tính toán C79"] = new List<string>();
-                            DicErrorMess["Lỗi sinh dữ liệu tính toán C79"].Add(treatment.TREATMENT_CODE);
+                            if (!DicErrorMess.ContainsKey("Lỗi sinh dữ liệu tính toán HSTH01BH")) DicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"] = new List<string>();
+                            DicErrorMess["Lỗi sinh dữ liệu tính toán HSTH01BH"].Add(treatment.TREATMENT_CODE);
                         }
                     }
                     catch (Exception ex)
@@ -4958,12 +4958,12 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 }
 
                 // Xuất XML sau khi đã gom đủ dữ liệu vào list
-                if (hsthc79.DS_CHITIET.DanhSachChiTiet.Count > 0)
+                if (hsth01bh.DS_CHITIET.DanhSachChiTiet.Count > 0)
                 {
-                    string fullFileName = string.Format("C79_{0}.xml", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+                    string fullFileName = string.Format("HSTH01BH_{0}.xml", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
                     string saveFilePath = Path.Combine(this.savePathADO.pathXmlTT12, fullFileName);
 
-                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(HSTHC79));
+                    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(HSTH01BH));
                     using (MemoryStream ms = new MemoryStream())
                     {
                         System.Xml.XmlWriterSettings settings = new System.Xml.XmlWriterSettings();
@@ -4975,13 +4975,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             System.Xml.Serialization.XmlSerializerNamespaces ns = new System.Xml.Serialization.XmlSerializerNamespaces();
                             ns.Add("", ""); // Bỏ namespace rác
-                            serializer.Serialize(writer, hsthc79, ns);
+                            serializer.Serialize(writer, hsth01bh, ns);
                         }
 
                         File.WriteAllBytes(saveFilePath, ms.ToArray());
                     }
 
-                    // Gọi Ký số cho file C79
+                    // Gọi Ký số cho file CHSTH01BH
                     if (chkSignFileCertUtil.Checked)
                     {
                         if (SettingSignADO == null || string.IsNullOrEmpty(SettingSignADO.SerialNumber))
@@ -4993,8 +4993,8 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             bool signSuccess = SignXmlFileTT12(saveFilePath);
                             if (!signSuccess)
                             {
-                                if (!DicErrorMess.ContainsKey("Lỗi ký số XML C79")) DicErrorMess["Lỗi ký số XML C79"] = new List<string>();
-                                DicErrorMess["Lỗi ký số XML C79"].Add(fullFileName);
+                                if (!DicErrorMess.ContainsKey("Lỗi ký số XML HSTH01BH")) DicErrorMess["Lỗi ký số XML HSTH01BH"] = new List<string>();
+                                DicErrorMess["Lỗi ký số XML HSTH01BH"].Add(fullFileName);
 
                                 if (File.Exists(saveFilePath)) File.Delete(saveFilePath); // Xóa file nếu ký tạch
                             }

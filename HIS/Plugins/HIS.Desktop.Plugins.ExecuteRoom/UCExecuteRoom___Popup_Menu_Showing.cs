@@ -160,6 +160,38 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                         case ExecuteRoomPopupMenuProcessor.ModuleType.ChonMayXuLy:
                             FormMachine(this.serviceReqRightClick);
                             break;
+                        case ExecuteRoomPopupMenuProcessor.ModuleType.HisTransReqList:
+                            try
+                            {
+                                var moduleData = GlobalVariables.currentModuleRaws
+                                    .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.CreateTransReqQR");
+
+                                if (moduleData == null)
+                                    throw new NullReferenceException("Không tìm thấy module HIS.Desktop.Plugins.CreateTransReqQR");
+
+                                List<object> args = new List<object>();
+
+                                // truyền treatmentId
+                                args.Add(this.treatmentId);
+
+                                // truyền module theo phòng
+                                var moduleWithRoom = HIS.Desktop.Utility.PluginInstance
+                                    .GetModuleWithWorkingRoom(moduleData, this.currentModuleBase.RoomId, this.currentModuleBase.RoomTypeId);
+
+                                args.Add(moduleWithRoom);
+
+                                var instance = PluginInstance.GetPluginInstance(moduleWithRoom, args);
+
+                                if (instance == null)
+                                    throw new ArgumentNullException("Không khởi tạo được form Danh sách QR");
+
+                                ((Form)instance).ShowDialog();
+                            }
+                            catch (Exception ex)
+                            {
+                                Inventec.Common.Logging.LogSystem.Error(ex);
+                            }
+                            break;
                     }
                 }
             }

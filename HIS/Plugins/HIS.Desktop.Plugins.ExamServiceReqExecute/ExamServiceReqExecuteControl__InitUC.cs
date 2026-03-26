@@ -76,6 +76,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 DXPopupMenu menu = new DXPopupMenu();
+
+                DXMenuItem itemDanhSachQR = new DXMenuItem();
+                itemDanhSachQR.Caption = "Danh sách QR";
+                itemDanhSachQR.Click += ItemDanhSachQR_Click;
+                menu.Items.Add(itemDanhSachQR);
+
                 //DXMenuItem itemTruyenDich = new DXMenuItem("Truyền dịch", new EventHandler(onClickTruyenDich));
                 //menu.Items.Add(itemTruyenDich);
                 DXMenuItem itemOptometrist = new DXMenuItem("Đo thị lực", new EventHandler(onClickOptometrist));
