@@ -513,10 +513,13 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                                 adoBlood.SCANGEL_GELCARD = bl.SCANGEL_GELCARD;
                                 adoBlood.TEST_TUBE = bl.TEST_TUBE;
                                 adoBlood.TEST_TUBE_TWO = bl.TEST_TUBE_TWO;
+                                adoBlood.TUBE_SLOT = bl.TUBE_SLOT;
                                 adoBlood.AC_SELF_ENVIDENCE = bl.AC_SELF_ENVIDENCE;
                                 adoBlood.AC_SELF_ENVIDENCE_SECOND = bl.AC_SELF_ENVIDENCE_SECOND;
                                 adoBlood.PREPARATIONS_BLOOD_NAME = bl.PREPARATIONS_BLOOD_NAME;
                                 adoBlood.NUM_ORDER = bl.NUM_ORDER??0;
+                                adoBlood.DEFROST_TIME = bl.DEFROST_TIME;
+                                adoBlood.NOTE = bl.NOTE;
                                 datas.Add(adoBlood);
                             }
 
@@ -592,6 +595,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 ValidationControlMaxLength(txtTestTubeTwo, 100);
                 ValidationControlMaxLength(txtScangelGelcard, 100);
                 ValidationControlMaxLength(txtCoombs, 100);
+                ValidationControlMaxLength(txtNote, 1000);
             }
             catch (Exception ex)
             {
@@ -878,6 +882,15 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 data.AcSelfEnvidence = cboAC.EditValue != null ? (decimal?)cboAC.EditValue : null;
                 data.AcSelfEnvidenceSecond = cboAC2.EditValue != null ? (decimal?)cboAC2.EditValue : null;
                 currentDTO.ExpMestBloods.Add(data);
+                if (dtDefrostTime.EditValue != null && dtDefrostTime.DateTime != DateTime.MinValue)
+                {
+                    currentDTO.DefrostTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtDefrostTime.DateTime);
+                }
+                else
+                {
+                    currentDTO.DefrostTime = null;
+                }
+                currentDTO.Note = txtNote.Text;
 
             }
             catch (Exception ex)
@@ -929,6 +942,15 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
                     cboAC.EditValue = (decimal?)data.AC_SELF_ENVIDENCE;
                     cboAC2.EditValue = (decimal?)data.AC_SELF_ENVIDENCE_SECOND;
+                    if (data.DEFROST_TIME.HasValue)
+                    {
+                        dtDefrostTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.DEFROST_TIME.Value);
+                    }
+                    else
+                    {
+                        dtDefrostTime.EditValue = null;
+                    }
+                    txtNote.Text = data.NOTE ?? "";
                     if (data.BloodTypeId > 0)
                     {
                         var bloodType = BackendDataWorker.Get<HIS_BLOOD_TYPE>().Where(o => o.ID == data.BloodTypeId).FirstOrDefault();
@@ -1008,6 +1030,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     cboAntiGlobulinTwo.EditValue = null;
                     cboAC.EditValue = null;
                     cboAC2.EditValue = null;
+                    dtDefrostTime.EditValue = null;
+                    txtNote.Text = "";
 
 
                     txtTestTube.Enabled = true;
@@ -1030,21 +1054,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 if (data == null || testIndexProcessor == null || string.IsNullOrWhiteSpace(data.BLOOD_CODE))
                     return;
 
-                // Lấy TUBE_SLOT
-                long? tubeSlot = null;
-                if (data.ExpMestBloodId.HasValue)
-                {
-                    HisExpMestBloodViewFilter filter = new HisExpMestBloodViewFilter();
-                    filter.ID = data.ExpMestBloodId.Value;
-                    var expMestBloods = new BackendAdapter(new CommonParam())
-                        .Get<List<V_HIS_EXP_MEST_BLOOD>>("api/HisExpMestBlood/GetView",
-                            ApiConsumers.MosConsumer, filter, null);
-
-                    if (expMestBloods != null && expMestBloods.Count > 0)
-                    {
-                        tubeSlot = expMestBloods[0].TUBE_SLOT;
-                    }
-                }
+                // Lấy TUBE_SLOT từ ADO (đã load sẵn trong BuidTreeList)
+                long? tubeSlot = data.TUBE_SLOT;
 
                 // Kiểm tra TUBE_SLOT khác 1 và 2 thì kết thúc
                 if (!tubeSlot.HasValue || (tubeSlot != 1 && tubeSlot != 2))
@@ -2037,21 +2048,8 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
                 long sereServId = Convert.ToInt64(cboXNHH.EditValue);
 
-                // Lấy TUBE_SLOT từ túi máu hiện tại
-                long? tubeSlot = null;
-                if (this.curentSelect.ExpMestBloodId.HasValue)
-                {
-                    HisExpMestBloodViewFilter filter = new HisExpMestBloodViewFilter();
-                    filter.ID = this.curentSelect.ExpMestBloodId.Value;
-                    var expMestBloods = new BackendAdapter(new CommonParam())
-                        .Get<List<V_HIS_EXP_MEST_BLOOD>>("api/HisExpMestBlood/GetView",
-                            ApiConsumers.MosConsumer, filter, null);
-
-                    if (expMestBloods != null && expMestBloods.Count > 0)
-                    {
-                        tubeSlot = expMestBloods[0].TUBE_SLOT;
-                    }
-                }
+                // Lấy TUBE_SLOT từ ADO (đã load sẵn trong BuidTreeList)
+                long? tubeSlot = this.curentSelect.TUBE_SLOT;
 
                 // Lấy các chỉ số xét nghiệm theo SERE_SERV_ID
                 var saltIndex = testIndexProcessor.GetSaltEnviTestIndexBySereServId(sereServId);

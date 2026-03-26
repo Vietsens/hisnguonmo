@@ -136,22 +136,22 @@
   </data>
   <data name="btnCapLaiEdit.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        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
+        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
 </value>
   </data>
   <data name="btnGunLock.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

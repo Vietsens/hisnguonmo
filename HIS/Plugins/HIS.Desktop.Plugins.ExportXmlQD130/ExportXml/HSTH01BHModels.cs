@@ -1,8 +1,8 @@
 ﻿using System.Xml.Serialization;
 using System.Collections.Generic;
 
-[XmlRoot("HSTHC79")]
-public class HSTHC79
+[XmlRoot("HSTH01BH")]
+public class HSTH01BH
 {
     [XmlElement("DS_CHITIET")]
     public DS_CHITIET DS_CHITIET { get; set; }
@@ -17,10 +17,10 @@ public class DS_CHITIET
     public string Id { get; set; }
 
     [XmlElement("C79_CHITIET")]
-    public List<C79_CHITIET> DanhSachChiTiet { get; set; }
+    public List<HSTH01BH_CHITIET> DanhSachChiTiet { get; set; }
 }
 
-public class C79_CHITIET
+public class HSTH01BH_CHITIET
 {
     public string STT { get; set; }
     public string HO_TEN { get; set; }

@@ -429,6 +429,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
 
                     this.currrentServiceAdo = new ADO.VHisServiceADO((V_HIS_MEDICINE_TYPE)data);
+                    if (dicServicePaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
+                    {
+                        foreach (var pa in dicServicePaty[this.currrentServiceAdo.SERVICE_ID])
+                        {
+                            pa.IsSetExpPrice = false;
+                        }
+                    }
                     this.currrentServiceAdo.ADJUST_AMOUNT = data.ADJUST_AMOUNT;
                     ChangeColorMedicine(this.currrentServiceAdo);
 
@@ -862,6 +869,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
 
                     this.currrentServiceAdo = new ADO.VHisServiceADO((V_HIS_MATERIAL_TYPE)data);
+                    if (dicServicePaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
+                    {
+                        foreach (var pa in dicServicePaty[this.currrentServiceAdo.SERVICE_ID])
+                        {
+                            pa.IsSetExpPrice = false;
+                        }
+                    }
                     this.currrentServiceAdo.ADJUST_AMOUNT = data.ADJUST_AMOUNT;
                     this.cboInformationBid.Enabled = true;
                     if (materialProcessor.GetBid(ucMaterialTypeTree) != null && dicBidMaterial.Count > 0 && dicBidMaterial.ContainsKey(Base.StaticMethod.GetTypeKey(data.ID, data.BidGroupCode)))
@@ -1142,6 +1156,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         decimal? giaNhapLanTruoc = (data.LAST_IMP_PRICE ?? 0) * (1 + (data.LAST_IMP_VAT_RATIO ?? 0));
                         spinEditGiaNhapLanTruoc.Value = giaNhapLanTruoc ?? 0;
                         this.currrentServiceAdo.GiaBan = (data.LAST_EXP_PRICE ?? 0) * (1 + data.LAST_EXP_VAT_RATIO ?? 0);
+                        if (chkPreExpPrice.Checked)
+                            spinImpPriceVAT.Value = giaNhapLanTruoc ?? 0;
 
                     }
                 }
@@ -1155,6 +1171,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         decimal? giaNhapLanTruoc = (data.LAST_IMP_PRICE ?? 0) * (1 + (data.LAST_IMP_VAT_RATIO ?? 0));
                         spinEditGiaNhapLanTruoc.Value = giaNhapLanTruoc ?? 0;
                         this.currrentServiceAdo.GiaBan = (data.LAST_EXP_PRICE ?? 0) * (1 + data.LAST_EXP_VAT_RATIO ?? 0);
+                        if (chkPreExpPrice.Checked)
+                            spinImpPriceVAT.Value = giaNhapLanTruoc ?? 0;
 
 
                     }
@@ -1493,7 +1511,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         isEdit = true;
                         dicPaty = dicServicePaty[this.currrentServiceAdo.SERVICE_ID].ToDictionary(k => k.PATIENT_TYPE_ID, v => v);
                         if (dicAppliedPaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
-                            listServicePaty = dicAppliedPaty[this.currrentServiceAdo.SERVICE_ID];                     
+                            listServicePaty = dicAppliedPaty[this.currrentServiceAdo.SERVICE_ID];
                     }
                     if (listServicePaty != null && listServicePaty.Count > 0)
                     {
@@ -1525,10 +1543,10 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                     foreach (var item in listServicePatyAdo)
                     {
-                        if(!item.IsNotSell)
+                        if (!item.IsNotSell)
                         {
 
-                        }    
+                        }
                         if (this.currrentServiceAdo.IsServiceUnitPrimary)
                         {
                             item.VAT_RATIO = this.currrentServiceAdo.IMP_VAT_RATIO;
@@ -1550,7 +1568,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             else
                             {
                                 item.ExpPrice = item.PRICE;
-                                if(listServicePaty == null || listServicePaty.Count ==0 || !listServicePaty.Exists(o=>o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID))
+                                if (listServicePaty == null || listServicePaty.Count == 0 || !listServicePaty.Exists(o => o.PATIENT_TYPE_ID == item.PATIENT_TYPE_ID))
                                     item.PRICE = (1 + item.PercentProfit / 100) * item.ExpPriceVat;
                             }
                         }

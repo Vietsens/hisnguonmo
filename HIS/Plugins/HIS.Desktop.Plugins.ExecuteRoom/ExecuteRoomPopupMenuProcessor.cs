@@ -80,7 +80,8 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
             PhanLoaiBenhNhan,
             HivTreatment,
             ChonMayXuLy,
-            TuberclusisTreatment
+            TuberclusisTreatment,
+            HisTransReqList
         }
         internal ModuleType moduleType { get; set; }
 
@@ -210,6 +211,10 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                 BarButtonItem itemExecute = new BarButtonItem(barManager, Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnExecute.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture()), 2);
                 itemExecute.Tag = ModuleType.Execute;
                 itemExecute.ItemClick += new ItemClickEventHandler(executeRoomMouseRightClick);
+
+                BarButtonItem itemDanhSachQr = new BarButtonItem(barManager, "Danh sách Qr", 7);
+                itemDanhSachQr.Tag = ModuleType.HisTransReqList;
+                itemDanhSachQr.ItemClick += new ItemClickEventHandler(executeRoomMouseRightClick);
 
 
 
@@ -354,6 +359,7 @@ namespace Inventec.Desktop.Plugins.ExecuteRoom
                     menu.AddItems(new BarItem[] { itemKeThuocVatTu });
                     menu.AddItems(new BarItem[] { itemThietlapkhotieuhao });
                     menu.AddItems(new BarItem[] { itemHivTreatment });
+                    menu.AddItems(new BarItem[] { itemDanhSachQr });
                     menu.AddItems(new BarItem[] { itemBenhLao });
                     menu.AddItems(new BarItem[] { itemMachine });
                 }

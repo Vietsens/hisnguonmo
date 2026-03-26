@@ -1755,6 +1755,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 IsEditImpPrice = true;
                 if (this.currrentServiceAdo != null)
                     this.currrentServiceAdo.IMP_PRICE = spinImpPrice1.Value;
+                if (this.currrentServiceAdo != null && dicServicePaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
+                {
+                    foreach (var pa in dicServicePaty[this.currrentServiceAdo.SERVICE_ID])
+                    {
+                        pa.IsSetExpPrice = false;
+                    }
+                }
                 spinImpPriceVAT.Value = (spinImpPrice1.Value * (1 + spinImpVatRatio.Value / 100));
 
                 spinEditTTCoVAT.Value = Math.Round((spinImpAmount.Value * spinImpPrice1.Value * (1 + spinImpVatRatio.Value / 100)), ConfigApplications.NumberSeperator, MidpointRounding.AwayFromZero);
@@ -2455,7 +2462,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         TtThau = bidMediType.TT_THAU;
                     }
-                    
+
                     if (medicineType != null && medicineType.TT_THAU != null && string.IsNullOrEmpty(TtThau))
                     {
                         TtThau = medicineType.TT_THAU;
@@ -2522,7 +2529,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 if (mediPaty != null)
                                 {
-                                    mediPaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
+                                    mediPaty.EXP_PRICE = paty.ExpPrice;
 
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
@@ -2543,7 +2550,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
                                         mediPaty.EXP_VAT_RATIO = 0;
-                                        mediPaty.EXP_PRICE = paty.PRICE;
+                                        mediPaty.EXP_PRICE = paty.ExpPrice;
                                     }
                                     this.currrentServiceAdo.HisMedicinePatys.Add(mediPaty);
                                 }
@@ -2571,7 +2578,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
                                         mediPaty.EXP_VAT_RATIO = 0;
-                                        mediPaty.EXP_PRICE = paty.PRICE;
+                                        mediPaty.EXP_PRICE = paty.ExpPrice;
                                     }
                                     this.currrentServiceAdo.HisMedicinePatys.Add(mediPaty);
                                 }
@@ -2654,7 +2661,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         bidMateType = this._dicMaterialTypes[this.currentBid.ID].FirstOrDefault(p => p.MATERIAL_TYPE_ID == currrentServiceAdo.MEDI_MATE_ID && p.BID_GROUP_CODE == currrentServiceAdo.TDL_BID_GROUP_CODE);
                     }
 
-                    if (this.currrentServiceAdo.MAP_MEDI_MATE_ID.HasValue && this.currentBid != null &&  this._dicMaterialTypes != null && this._dicMaterialTypes.ContainsKey(this.currentBid.ID))
+                    if (this.currrentServiceAdo.MAP_MEDI_MATE_ID.HasValue && this.currentBid != null && this._dicMaterialTypes != null && this._dicMaterialTypes.ContainsKey(this.currentBid.ID))
                     {
                         bidMateType = this._dicMaterialTypes[this.currentBid.ID].FirstOrDefault(p => p.MATERIAL_TYPE_ID == currrentServiceAdo.MAP_MEDI_MATE_ID && p.BID_GROUP_CODE == this.currrentServiceAdo.TDL_BID_GROUP_CODE);
                     }
@@ -2664,16 +2671,16 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                         bidMateType = dicBidMaterial[Base.StaticMethod.GetTypeKey(this.currrentServiceAdo.MEDI_MATE_ID, this.currrentServiceAdo.TDL_BID_GROUP_CODE)];
                     }
 
-                    if(bidMateType != null && bidMateType.ID > 0)
+                    if (bidMateType != null && bidMateType.ID > 0)
                     {
                         TtThau = bidMateType.TT_THAU;
                     }
-                    
+
                     if (matedialType != null && matedialType.TT_THAU != null && string.IsNullOrEmpty(TtThau))
                     {
                         TtThau = matedialType.TT_THAU;
                     }
-                    else if(string.IsNullOrEmpty(TtThau))
+                    else if (string.IsNullOrEmpty(TtThau))
                     {
                         TtThau = this.currrentServiceAdo.HisMaterial.TT_THAU = this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 3 ? string.Format("{0}{1}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : this.currrentServiceAdo.HisMaterial.INFORMATION_BID == 4 ? string.Format("{0}{1}{2}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null) : string.Format("{0}{1}{2}{3}", !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_EXTRA_CODE) ? this.currrentServiceAdo.TDL_BID_EXTRA_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_PACKAGE_CODE) ? this.currrentServiceAdo.TDL_BID_PACKAGE_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_GROUP_CODE) ? this.currrentServiceAdo.TDL_BID_GROUP_CODE + ";" : null, !string.IsNullOrEmpty(this.currrentServiceAdo.TDL_BID_YEAR) ? this.currrentServiceAdo.TDL_BID_YEAR : null);
                     }
@@ -2681,7 +2688,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     {
                         this.currrentServiceAdo.TT_THAU = TtThau;
                     }
-                    
+
                     this.currrentServiceAdo.BidId = materialProcessor.GetBid(this.ucMaterialTypeTree);
                     if (this.currentBid != null && this.currrentServiceAdo.BidId == null)
                     {
@@ -2730,7 +2737,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 var matePaty = this.currrentServiceAdo.HisMaterialPatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
                                 if (matePaty != null)
                                 {
-                                    matePaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
+                                    matePaty.EXP_PRICE = paty.ExpPrice;
 
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
@@ -2751,7 +2758,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
                                         matePaty.EXP_VAT_RATIO = 0;
-                                        matePaty.EXP_PRICE = paty.PRICE;
+                                        matePaty.EXP_PRICE = paty.ExpPrice;
                                     }
                                     this.currrentServiceAdo.HisMaterialPatys.Add(matePaty);
                                 }
@@ -2761,7 +2768,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 var matePaty = this.currrentServiceAdo.HisMaterialPatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
                                 if (matePaty != null)
                                 {
-                                    matePaty.EXP_PRICE = (paty.IsReusable ? paty.PRICE * (1 + (paty.PercentProfit / (decimal)100)) : paty.ExpPrice);// * (1 + (paty.PercentProfit / (decimal)100));
+                                    matePaty.EXP_PRICE = paty.ExpPrice;
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
                                 else
@@ -2781,7 +2788,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     if (tp == 1 || tp == 2 || tp == 3)
                                     {
                                         matePaty.EXP_VAT_RATIO = 0;
-                                        matePaty.EXP_PRICE = paty.PRICE;
+                                        matePaty.EXP_PRICE = paty.ExpPrice;
                                     }
                                     this.currrentServiceAdo.HisMaterialPatys.Add(matePaty);
                                 }
@@ -3636,14 +3643,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             var mediPaty = this.currrentServiceAdo.HisMedicinePatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
                             if (mediPaty != null)
                             {
-                                mediPaty.EXP_PRICE = paty.PRICE / (1 + paty.VAT_RATIO); //nambg
+                                mediPaty.EXP_PRICE = paty.ExpPrice;
                                 mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                             }
                             else
                             {
                                 mediPaty = new HIS_MEDICINE_PATY();
                                 mediPaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                mediPaty.EXP_PRICE = paty.PRICE / (1 + paty.VAT_RATIO);
+                                mediPaty.EXP_PRICE = paty.ExpPrice;
                                 mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 this.currrentServiceAdo.HisMedicinePatys.Add(mediPaty);
                             }
@@ -3734,14 +3741,14 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             var matePaty = this.currrentServiceAdo.HisMaterialPatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
                             if (matePaty != null)
                             {
-                                matePaty.EXP_PRICE = paty.PRICE / (1 + paty.VAT_RATIO);
+                                matePaty.EXP_PRICE = paty.ExpPrice;
                                 matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                             }
                             else
                             {
                                 matePaty = new HIS_MATERIAL_PATY();
                                 matePaty.PATIENT_TYPE_ID = paty.PATIENT_TYPE_ID;
-                                matePaty.EXP_PRICE = paty.PRICE / (1 + paty.VAT_RATIO);
+                                matePaty.EXP_PRICE = paty.ExpPrice;
                                 matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 this.currrentServiceAdo.HisMaterialPatys.Add(matePaty);
                             }
@@ -4444,6 +4451,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                 IsEditImpPrice = true;
                 if (this.currrentServiceAdo != null)
                     this.currrentServiceAdo.IMP_PRICE = spinImpPrice.Value;
+                if (this.currrentServiceAdo != null && dicServicePaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
+                {
+                    foreach (var pa in dicServicePaty[this.currrentServiceAdo.SERVICE_ID])
+                    {
+                        pa.IsSetExpPrice = false;
+                    }
+                }
                 spinImpPriceVAT.Value = (spinImpPrice.Value * (1 + spinImpVatRatio.Value / 100));
 
                 spinEditTTCoVAT.Value = Math.Round((spinImpAmount.Value * spinImpPrice.Value * (1 + spinImpVatRatio.Value / 100)), ConfigApplications.NumberSeperator, MidpointRounding.AwayFromZero);
@@ -4507,6 +4521,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     this.currrentServiceAdo.IMP_VAT_RATIO = spinImpVatRatio.Value / 100;
                 if (this.currrentServiceAdo != null && this._currentImpMestUp != null && this._currentImpMestUp.ID > 0)
                     this.currrentServiceAdo.IMP_VAT_RATIO = spinImpVatRatio.Value / 100;
+                if (this.currrentServiceAdo != null && dicServicePaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
+                {
+                    foreach (var pa in dicServicePaty[this.currrentServiceAdo.SERVICE_ID])
+                    {
+                        pa.IsSetExpPrice = false;
+                    }
+                }
                 if (this.currentContract != null && this.currentContract.ID > 0)
                 {
                     if (spinImpPrice1.Enabled && spinImpPrice1.Visible)
@@ -5327,15 +5348,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                     }
                     else if (e.Column.FieldName == "PRICE")
                     {
+                        data.ExpPrice = data.PRICE;
                         if (data.ExpPriceVat > 0)
                         {
                             data.PercentProfit = 100 * (data.PRICE - data.ExpPriceVat) / data.ExpPriceVat;
-                            data.ExpPrice = data.PRICE;
                         }
                         else
                         {
-                            data.ExpPriceVat = data.PRICE / (decimal)((decimal)1 + (data.PercentProfit / (decimal)100));
-                            data.ExpPrice = data.ExpPriceVat / (decimal)((decimal)1 + data.VAT_RATIO);
+                            data.ExpPriceVat = data.PRICE / (decimal)((decimal)1 + (data.PercentProfit / (decimal)100)) * (1 + data.ExpVatRatio / 100);
+
                         }
                     }
                     else if (e.Column.FieldName == "IsNotSell")
@@ -6386,6 +6407,15 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
             try
             {
+                if (this.currrentServiceAdo != null && dicServicePaty.ContainsKey(this.currrentServiceAdo.SERVICE_ID))
+                {
+                    foreach (var pa in dicServicePaty[this.currrentServiceAdo.SERVICE_ID])
+                    {
+                        pa.IsSetExpPrice = false;
+                    }
+                }
+                if (spinEditGiaNhapLanTruoc.Value > 0)
+                    spinImpPriceVAT.Value = spinEditGiaNhapLanTruoc.Value;
                 LoadServicePatyByAdo();
             }
             catch (Exception ex)

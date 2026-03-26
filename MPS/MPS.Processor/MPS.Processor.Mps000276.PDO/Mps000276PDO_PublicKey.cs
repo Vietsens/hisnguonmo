@@ -46,6 +46,7 @@ namespace MPS.Processor.Mps000276.PDO
         public List<HIS_KSK> _Ksk { get; set; }
         public List<HIS_KSK_CONTRACT> _KskContract {get;set;}
         public List<HIS_TREATMENT> _TreatmentList { get; set; }
+        public List<V_HIS_PATIENT_TYPE_ALTER> _PatientTypeAlterList { get; set; }
     }
 
 }

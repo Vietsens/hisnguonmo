@@ -127,15 +127,24 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             }
         }
 
-        void ValidatecboMedicineLine()
+        void ValidatecboMedicineLine(bool isRequired = true)
         {
             try
             {
-                ValidateCombox vali = new ValidateCombox();
-                vali.gridLockup = cboMedicineLine;
-                vali.ErrorType = ErrorType.Warning;
-                vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
-                dxValidationMedicineType.SetValidationRule(cboMedicineLine, vali);
+                lciMedicineLine.AppearanceItemCaption.ForeColor = isRequired ? Color.Maroon : Color.Black;
+                if (isRequired)
+                {
+                    ValidateCombox vali = new ValidateCombox();
+                    vali.gridLockup = cboMedicineLine;
+                    vali.ErrorType = ErrorType.Warning;
+                    vali.ErrorText = MessageUtil.GetMessage(LibraryMessage.Message.Enum.TruongDuLieuBatBuoc);
+                    dxValidationMedicineType.SetValidationRule(cboMedicineLine, vali);
+                }
+                else
+                {
+                    dxValidationMedicineType.RemoveControlError(cboMedicineLine);
+                    dxValidationMedicineType.SetValidationRule(cboMedicineLine, new ValidateCombox());
+                }
             }
             catch (Exception ex)
             {

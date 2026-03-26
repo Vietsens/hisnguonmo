@@ -42,6 +42,7 @@ namespace MPS.Processor.Mps000276
         private List<Mps000276ADO> _ListSereServGroupKsk;
         private List<Mps000276ADO> _ListSereServGroupNonKsk;
         private List<ServiceNumOderAdo> _ListServiceNumOder = new List<ServiceNumOderAdo>();
+        private List<TreatmentADO> _ListTreatment = new List<TreatmentADO>();
         public Mps000276Processor(CommonParam param, PrintData printData)
             : base(param, printData)
         {
@@ -121,16 +122,23 @@ namespace MPS.Processor.Mps000276
                 objectTag.AddObjectData(store, "ServiceReqs", rdo._vServiceReqs);
                 objectTag.AddObjectData(store, "CashierRooms", this._ListCashierRoom);
                 objectTag.AddObjectData(store, "SereServs", this._ListSereServ);
+
+                objectTag.AddObjectData(store, "Treatments", _ListTreatment ?? new List<TreatmentADO>());
+                objectTag.AddObjectData(store, "PatientTypeAlters", rdo._PatientTypeAlterList ?? new List<V_HIS_PATIENT_TYPE_ALTER>());
                 objectTag.AddObjectData(store, "SereServKsks", this._ListSereServKsk);
                 objectTag.AddObjectData(store, "SereServNonKsks", this._ListSereServNonKsk);
 
                 objectTag.AddObjectData(store, "SereServGroupKsks", this._ListSereServGroupKsk);
                 objectTag.AddObjectData(store, "SereServGroupNonKsks", this._ListSereServGroupNonKsk);
-                objectTag.AddObjectData(store, "ServiceNumOrder", this._ListServiceNumOder.Distinct().ToList());
 
-
+                objectTag.AddRelationship(store, "Treatments", "SereServKsks", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "Treatments", "SereServNonKsks", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "Treatments", "SereServGroupKsks", "ID", "TDL_TREATMENT_ID");
+                objectTag.AddRelationship(store, "Treatments", "SereServGroupNonKsks", "ID", "TDL_TREATMENT_ID");
                 objectTag.AddRelationship(store, "SereServGroupKsks", "SereServKsks", "ParentServiceCode", "ParentServiceCode");
                 objectTag.AddRelationship(store, "SereServGroupNonKsks", "SereServNonKsks", "ParentServiceCode", "ParentServiceCode");
+
+                objectTag.AddObjectData(store, "ServiceNumOrder", this._ListServiceNumOder.Distinct().ToList());
 
                 objectTag.AddRelationship(store, "CashierRooms", "SereServs", "CashierRoomId", "CashierRoomId");
                 objectTag.AddRelationship(store, "CashierRooms", "SereServKsks", "CashierRoomId", "CashierRoomId");
@@ -364,6 +372,9 @@ namespace MPS.Processor.Mps000276
                 // Tách danh sách theo KSK
                 SplitSereServByKsk();
 
+                // Gắn dữ liệu RowNum, NextRowNum cho _ListTreatment
+                ProcessTreatmentRowNum();
+
             }
             catch (Exception ex)
             {
@@ -404,6 +415,76 @@ namespace MPS.Processor.Mps000276
                 // Gom nhóm theo parent service và thêm parent vào danh sách
                 this._ListSereServGroupKsk = GroupByParentService(this._ListSereServKsk);
                 this._ListSereServGroupNonKsk = GroupByParentService(this._ListSereServNonKsk);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        void ProcessTreatmentRowNum()
+        {
+            try
+            {
+                if (rdo._TreatmentList == null || rdo._TreatmentList.Count <= 0)
+                    return;
+
+                _ListTreatment = new List<TreatmentADO>();
+                foreach (var treatment in rdo._TreatmentList)
+                {
+                    TreatmentADO ado = new TreatmentADO();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<TreatmentADO>(ado, treatment);
+
+                    if (!string.IsNullOrWhiteSpace(treatment.TREATMENT_CODE))
+                    {
+                        Inventec.Common.BarcodeLib.Barcode bcTrCode = new Inventec.Common.BarcodeLib.Barcode(treatment.TREATMENT_CODE);
+                        bcTrCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+                        bcTrCode.IncludeLabel = true;
+                        bcTrCode.Width = 120;
+                        bcTrCode.Height = 40;
+                        bcTrCode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+                        bcTrCode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+                        bcTrCode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+                        ado.BC_TR_CODE = bcTrCode;
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(treatment.TDL_PATIENT_CODE))
+                    {
+                        Inventec.Common.BarcodeLib.Barcode bcPaCode = new Inventec.Common.BarcodeLib.Barcode(treatment.TDL_PATIENT_CODE);
+                        bcPaCode.Alignment = Inventec.Common.BarcodeLib.AlignmentPositions.CENTER;
+                        bcPaCode.IncludeLabel = true;
+                        bcPaCode.Width = 120;
+                        bcPaCode.Height = 40;
+                        bcPaCode.RotateFlipType = RotateFlipType.Rotate180FlipXY;
+                        bcPaCode.LabelPosition = Inventec.Common.BarcodeLib.LabelPositions.BOTTOMCENTER;
+                        bcPaCode.EncodedType = Inventec.Common.BarcodeLib.TYPE.CODE128;
+                        ado.BC_PA_CODE = bcPaCode;
+                    }
+
+                    _ListTreatment.Add(ado);
+                }
+
+                int currentRow = 1;
+                foreach (var treatment in _ListTreatment)
+                {
+                    bool hasKsk = _ListSereServKsk != null && _ListSereServKsk.Any(s => s.TDL_TREATMENT_ID == treatment.ID);
+                    bool hasNonKsk = _ListSereServNonKsk != null && _ListSereServNonKsk.Any(s => s.TDL_TREATMENT_ID == treatment.ID);
+
+                    if (hasKsk)
+                    {
+                        treatment.RowNum = currentRow;
+                        if (hasNonKsk)
+                        {
+                            treatment.NextRowNum = currentRow + 1;
+                            currentRow = treatment.NextRowNum + 1;
+                        }
+                        else
+                        {
+                            treatment.NextRowNum = currentRow;
+                            currentRow++;
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
