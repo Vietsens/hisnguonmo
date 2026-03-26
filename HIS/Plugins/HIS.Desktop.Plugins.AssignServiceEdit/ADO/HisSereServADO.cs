@@ -75,7 +75,7 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit.ADO
                 this.IsExpend = false;
                 this.IsNotUseBhyt = false;
                 this.SERVICE_CODE_HIDDEN = convertToUnSign3(this.SERVICE_CODE) + this.SERVICE_CODE;
-                this.SERVICE_NAME_HIDDEN = convertToUnSign3(this.SERVICE_CODE) + this.SERVICE_NAME;
+                this.SERVICE_NAME_HIDDEN = convertToUnSign3(this.SERVICE_NAME) + this.SERVICE_NAME;
                 if (sereServ.PACKAGE_ID.HasValue)
                 {
                     var package = BackendDataWorker.Get<HIS_PACKAGE>().FirstOrDefault(o => o.ID == sereServ.PACKAGE_ID);
