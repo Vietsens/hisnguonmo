@@ -650,7 +650,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 List<AMedicineTypeADO> listADO = new List<AMedicineTypeADO>()
                 {
                     new AMedicineTypeADO { ID = 1,  NAME = "Hóa chất" },
-                    new AMedicineTypeADO { ID = 2,  NAME = "Sản phẩm không phải là thuốc" },
+                    new AMedicineTypeADO { ID = 2,  NAME = "Sản phẩm không phải là thuốc(TPCN, mỹ phẩm,dinh dưỡng,....)" },
                     new AMedicineTypeADO { ID = 3,  NAME = "Thuốc dấu sao *" },
                     new AMedicineTypeADO { ID = 4,  NAME = "Generic" },
                     new AMedicineTypeADO { ID = 5,  NAME = "Vaccine" },
@@ -1587,7 +1587,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     arr.Add("Generic");
 
                 if (hIS_MEDICINE_TYPE.IS_FUNCTIONAL_FOOD == 1)
-                    arr.Add("Sản phẩm không phải là thuốc");
+                    arr.Add("Sản phẩm không phải là thuốc(TPCN, mỹ phẩm,dinh dưỡng,....)");
 
                 if (hIS_MEDICINE_TYPE.IS_VITAMIN_A == 1)
                     arr.Add("Vitamin A");
