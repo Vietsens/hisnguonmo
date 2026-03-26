@@ -3075,7 +3075,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 //Gắn biến tạm để không bị gấp đôi số lượng khi kiểm tra danh sách
                 var dataSourceTmp = mediMatyTypeADOs;
                 mediMatyTypeADOs = new List<MediMatyTypeADO>();
-                dataSourceTmp.ForEach(o => o.IsGuarantee = true); 
+                if (this.currentTreatment != null && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
+                    dataSourceTmp.ForEach(o => o.IsGuarantee = this.GetIsPatientHasGuarantee());
                 this.ProcessDataMediStock(dataSourceTmp);
 
                 if (!CheckMaterialReusableOrIdentityManager() || !CheckValidMaterial(true) || !CheckMedicineGroupTuberCulosis(true))
@@ -4090,7 +4091,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.mediMatyTypeADOs.ForEach(o => o.EXCEED_LIMIT_IN_DAY_REASON = null);
                     this.mediMatyTypeADOs.ForEach(o => o.EXCEED_LIMIT_IN_BATCH_REASON = null);
                     this.mediMatyTypeADOs.ForEach(o => o.ODD_PRES_REASON = null);
-                    this.mediMatyTypeADOs.ForEach(o => o.IsGuarantee = true);
+                    //if (this.currentTreatment != null && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE))
+                    this.mediMatyTypeADOs.ForEach(o => o.IsGuarantee = this.GetIsPatientHasGuarantee());
                 }
                 //Check trong kho
                 //Gắn biến tạm để không bị gấp đôi số lượng khi kiểm tra danh sách
@@ -4114,7 +4116,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         List<MediMatyTypeADO> mediMatycheck = new List<MediMatyTypeADO>();
                         foreach (var item in this.mediMatyTypeADOs)
                         {
-                            item.IsGuarantee = true; 
+                            item.IsGuarantee = this.GetIsPatientHasGuarantee();
                             if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC || item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU || item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                             {
                                 item.IS_SUB_PRES = 1;
@@ -4242,7 +4244,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
-        bool isWarning = false; 
+        bool isWarning = false;
         internal void SetTotalPrice__TrongDon()
         {
             try
@@ -4279,8 +4281,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         }
                     }
                 }
-                
-                this.totalGuarantee += this.totalGuaranteeOriginal; 
+
+                this.totalGuarantee += this.totalGuaranteeOriginal;
                 //this.lblTotalGuarantee.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(this.totalGuarantee, ConfigApplications.NumberSeperator);
                 this.lblPhatSinh.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPrice, ConfigApplications.NumberSeperator);
                 this.lblPhatSinh__BHYT.Text = Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPriceBHYT, ConfigApplications.NumberSeperator);
@@ -4294,7 +4296,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         "Cảnh báo",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
-                    this.isWarning = true; 
+                    this.isWarning = true;
                 }
             }
             catch (Exception ex)

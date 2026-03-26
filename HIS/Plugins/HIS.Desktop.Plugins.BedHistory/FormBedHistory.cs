@@ -3961,7 +3961,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     var row = (HisBedServiceTypeADO)gridViewBedServiceType.GetFocusedRow();
                     if (row != null)
                     {
-                        if (Base.GlobalStore.IsPrimaryPatientType == "2" && this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID > 0 && row.PRIMARY_PATIENT_TYPE_ID == this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID)
+                        if (Base.GlobalStore.IsPrimaryPatientType == "2" && Base.GlobalStore.IsServicePatyForServicePackage != "3" && this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID > 0 && row.PRIMARY_PATIENT_TYPE_ID == this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID)
                         {
                             row.PRIMARY_PATIENT_TYPE_ID = this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID;
                             var billPaty = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == row.PRIMARY_PATIENT_TYPE_ID);
@@ -4054,7 +4054,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     var row = (HisBedServiceTypeADO)gridViewBedServiceType.GetFocusedRow();
                     if (row != null)
                     {
-                        if (Base.GlobalStore.IsPrimaryPatientType == "2" && this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID > 0 && row.PRIMARY_PATIENT_TYPE_ID == this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID)
+                        if (Base.GlobalStore.IsPrimaryPatientType == "2" && Base.GlobalStore.IsServicePatyForServicePackage != "3" && this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID > 0 && row.PRIMARY_PATIENT_TYPE_ID == this.CurrentTreatment.PRIMARY_PATIENT_TYPE_ID)
                         {
                             var billPaty = BackendDataWorker.Get<HIS_PATIENT_TYPE>().FirstOrDefault(o => o.ID == row.PRIMARY_PATIENT_TYPE_ID);
                             string patyName = billPaty != null ? billPaty.PATIENT_TYPE_NAME : "";

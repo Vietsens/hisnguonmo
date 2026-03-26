@@ -238,7 +238,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
                                             || ado.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU_TSD)
                                         {
                                             // Mặc định check = true khi sửa đơn
-                                            ado.IsGuarantee = true;
+                                            ado.IsGuarantee = this.GetIsPatientHasGuarantee();
                                         }
                                     }
                                 }

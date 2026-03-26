@@ -66,6 +66,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using EMR.WCF.DCO;
+using Newtonsoft.Json.Linq;
 
 namespace HIS.Desktop.Plugins.HisService
 {
@@ -109,6 +110,8 @@ namespace HIS.Desktop.Plugins.HisService
         private System.Windows.Forms.SaveFileDialog SaveFileExportExcel = new SaveFileDialog();
         private System.Windows.Forms.SaveFileDialog SaveFileExportXmlTT12 = new SaveFileDialog();
         SettingSignADO settingSignADO;
+        private static readonly string settingSignFilePath = System.IO.Path.Combine(
+            System.Windows.Forms.Application.StartupPath, "Temp", "SettingSign_HisService.json");
         private bool isNotLoadWhileChangeControlStateInFirst = false;
 
         public class CauHinhItem
@@ -183,6 +186,7 @@ namespace HIS.Desktop.Plugins.HisService
             try
             {
                 SetDefaultControlsProperties();
+                LoadSettingSign();
                 MeShow();
             }
             catch (Exception ex)
@@ -7883,13 +7887,14 @@ namespace HIS.Desktop.Plugins.HisService
 
                     // Lấy dữ liệu thuốc hao phí (V_HIS_SERVICE_METY) theo service IDs
                     List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY> listMety = GetServiceMetyList(serviceIds);
+                    List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY> listPaty = GetServicePatyList(serviceIds);
 
                     // Xuất XML
                     // ✅ Đúng — theo chi nhánh hiện tại
                     var branch = BackendDataWorker.Get<HIS_BRANCH>()
                         .FirstOrDefault(o => o.ID == BranchDataWorker.GetCurrentBranchId());
                     string maCskcb = branch?.HEIN_MEDI_ORG_CODE;
-                    string xmlContent = BuildXmlTT12(listVServiceExport, listMety, maCskcb);
+                    string xmlContent = BuildXmlTT12(listVServiceExport, listMety, listPaty, maCskcb);
                    System.IO.File.WriteAllText(savePath, xmlContent, new System.Text.UTF8Encoding(false));
 
                     // Ký số nếu chkKy đang tích
@@ -7948,20 +7953,54 @@ namespace HIS.Desktop.Plugins.HisService
             }
         }
 
+
+        private List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY> GetServicePatyList(List<long> serviceIds)
+        {
+            try
+            {
+                if (serviceIds == null || serviceIds.Count == 0)
+                    return new List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY>();
+
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisServicePatyFilter filter = new MOS.Filter.HisServicePatyFilter();
+                filter.SERVICE_IDs = serviceIds;
+                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+
+                var result = new BackendAdapter(param)
+                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY>>(
+                        "api/HisServicePaty/GetView",
+                        ApiConsumers.MosConsumer, filter, null);
+
+                return result ?? new List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY>();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                return new List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY>();
+            }
+        }
+
         private string BuildXmlTT12(
       List<MOS.EFMODEL.DataModels.V_HIS_SERVICE> services,
       List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY> listMety,
+      List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY> listPaty,
       string maCskcb)
         {
             var sb = new StringBuilder();
             sb.AppendLine("<HSDANHMUC xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
             sb.AppendLine("  <DANHSACH_DMDICHVUKBCB Id=\"Id-" + Guid.NewGuid() + "\">");
-
+            List<V_HIS_MEDICINE_TYPE> lstMedicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().ToList();
             int stt = 1;
+            V_HIS_SERVICE_PATY paty = new V_HIS_SERVICE_PATY();
+            
             foreach (var svc in services)
             {
                 var metyOfSvc = listMety.Where(m => m.SERVICE_ID == svc.ID).ToList();
-
+                paty = listPaty
+                        .Where(p => p.SERVICE_ID == svc.ID && p.PATIENT_TYPE_ID == 1)
+                        .OrderByDescending(p => p.MODIFY_TIME ?? p.CREATE_TIME)
+                        .FirstOrDefault();
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("paty:", paty));
                 decimal sumThuoc = metyOfSvc.Sum(m =>
                 {
                     if (m.LIEU_BQ_PX != null && m.LIEU_BQ_PX != 0 && m.TL_THUCTE_BQ_PX != null && m.TL_THUCTE_BQ_PX != 0)
@@ -7970,21 +8009,35 @@ namespace HIS.Desktop.Plugins.HisService
                         return (m.EXPEND_PRICE ?? 0) * (m.DM_THUCTE_CDD ?? 0);
                     return 0;
                 });
-
+                decimal giaTT = 0;
                 decimal donGia = svc.HEIN_LIMIT_PRICE ?? svc.HEIN_LIMIT_PRICE_OLD ?? 0;
-                decimal giaTT = svc.HEIN_LIMIT_PRICE ?? svc.HEIN_LIMIT_PRICE_OLD ?? 0;
-
-                string tuNgay = (svc.HEIN_LIMIT_PRICE != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
-                                 ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME) : null;
-                string denNgay = (svc.HEIN_LIMIT_PRICE_OLD != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
-                                 ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME) : null;
+                if (svc.HEIN_LIMIT_PRICE.HasValue && svc.HEIN_LIMIT_PRICE.Value > 0)
+                {
+                    giaTT = svc.HEIN_LIMIT_PRICE.Value;
+                }
+                else if (svc.HEIN_LIMIT_PRICE_OLD.HasValue && svc.HEIN_LIMIT_PRICE_OLD.Value > 0)
+                {
+                    giaTT = svc.HEIN_LIMIT_PRICE_OLD.Value;
+                }
+                else if (paty != null)
+                {
+                        giaTT = paty.PRICE; 
+                }
+                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("paty:", giaTT));
+                string tuNgay = ""; 
+                tuNgay = (svc.HEIN_LIMIT_PRICE != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
+                                 ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME) : (paty != null ? FormatTimeNumber(paty.FROM_TIME) : "");
+                //if (string.IsNullOrEmpty(tuNgay)) FormatTimeNumber(paty.TREATMENT_FROM_TIME);
+                string denNgay = ""; 
+                denNgay = (svc.HEIN_LIMIT_PRICE_OLD != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
+                                 ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME) : (paty != null ? FormatTimeNumber(paty.TO_TIME) : "");
 
                 sb.AppendLine("    <DMDICHVUKBCB>");
                 sb.AppendLine(X("STT", stt.ToString(), 6));
                 sb.AppendLine(X("MA_DICH_VU", svc.HEIN_SERVICE_BHYT_CODE, 6));
                 sb.AppendLine(X("TEN_DICH_VU", svc.HEIN_SERVICE_BHYT_NAME, 6));
                 sb.AppendLine(X("TEN_DVKT_GIA", svc.TEN_DVKT_GIA, 6));
-                sb.AppendLine(X("DON_GIA", donGia.ToString("F0"), 6));
+                sb.AppendLine(X("DON_GIA", (giaTT - sumThuoc).ToString("F0"), 6));
                 sb.AppendLine(X("QUY_TRINH", svc.PROCESS_CODE, 6));
                 sb.AppendLine(X("SO_LUONG_CGKT", svc.SO_LUONG_CGKT?.ToString(), 6));
                 sb.AppendLine(X("CSKCB_CGKT", svc.CSKCB_CGKT, 6));
@@ -8012,7 +8065,7 @@ namespace HIS.Desktop.Plugins.HisService
                     sb.AppendLine(X("MA_THUOC", mety.MEDICINE_TYPE_CODE, 10));
                     sb.AppendLine(X("TEN_THUOC", mety.MEDICINE_TYPE_NAME, 10));
                     sb.AppendLine(X("SO_DANG_KY", mety.REGISTER_NUMBER, 10));
-                    sb.AppendLine(X("DON_VI_TINH", mety.SERVICE_UNIT_CODE, 10));
+                    sb.AppendLine(X("DON_VI_TINH", lstMedicineType != null ? lstMedicineType.FirstOrDefault(o=> o.ID == mety.MEDICINE_TYPE_ID).SERVICE_UNIT_CODE : "" , 10));
                     sb.AppendLine(X("TT_THAU", mety.TT_THAU, 10));
                     sb.AppendLine(X("DON_GIA_THUOC", mety.EXPEND_PRICE?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
                     sb.AppendLine(X("DM_NSX_CDD", mety.DM_NSX_CDD?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
@@ -8075,18 +8128,22 @@ namespace HIS.Desktop.Plugins.HisService
 
                 if (chkKy.Checked == true)
                 {
+                    LoadSettingSign();
                     frmSetting frm = new frmSetting(settingSignADO, (result) =>
                     {
                         settingSignADO = (SettingSignADO)result;
+                        SaveSettingSign();
                     });
                     frm.ShowDialog();
 
                     if (settingSignADO == null || string.IsNullOrEmpty(settingSignADO.SerialNumber))
                         chkKy.Checked = false;
+                    else
+                        SaveSettingSign();
                 }
                 else
                 {
-                    settingSignADO = null;
+                    SaveSettingSign(false);
                 }
             }
             catch (Exception ex)
@@ -8205,6 +8262,51 @@ namespace HIS.Desktop.Plugins.HisService
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
             return result;
+        }
+
+        private void SaveSettingSign(bool? isChecked = null)
+        {
+            try
+            {
+                string dir = System.IO.Path.GetDirectoryName(settingSignFilePath);
+                if (!System.IO.Directory.Exists(dir))
+                    System.IO.Directory.CreateDirectory(dir);
+                var data = new
+                {
+                    IsChkKyChecked = isChecked ?? chkKy.Checked,
+                    Setting = settingSignADO
+                };
+                System.IO.File.WriteAllText(settingSignFilePath,
+                    JsonConvert.SerializeObject(data), Encoding.UTF8);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadSettingSign()
+        {
+            try
+            {
+                if (System.IO.File.Exists(settingSignFilePath))
+                {
+                    string json = System.IO.File.ReadAllText(settingSignFilePath, Encoding.UTF8);
+                    var obj = Newtonsoft.Json.Linq.JObject.Parse(json);
+                    if (obj["Setting"] != null && obj["Setting"].Type != Newtonsoft.Json.Linq.JTokenType.Null)
+                        settingSignADO = obj["Setting"].ToObject<SettingSignADO>();
+                    if (obj["IsChkKyChecked"] != null && obj["IsChkKyChecked"].Value<bool>())
+                    {
+                        isNotLoadWhileChangeControlStateInFirst = true;
+                        chkKy.Checked = true;
+                        isNotLoadWhileChangeControlStateInFirst = false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private string ReadFileContent(string filePath)

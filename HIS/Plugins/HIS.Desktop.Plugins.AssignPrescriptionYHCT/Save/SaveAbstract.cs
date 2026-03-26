@@ -169,7 +169,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     this.IcdTextYHCT = ((SecondaryIcdDataADO)subIcd).ICD_TEXT;
                 }
             }
-            if(frmAssignPrescription.TIME_TO != null && frmAssignPrescription.TIME_TO > 0)
+            if (frmAssignPrescription.TIME_TO != null && frmAssignPrescription.TIME_TO > 0)
             {
                 TIME_TO = frmAssignPrescription.TIME_TO;
             }
@@ -231,7 +231,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     {
                         pres.MedicineBeanIds = item.BeanIds;
                     }
-                    pres.IsGuaranteed = item.IS_GUARANTEED == 1;
+                    if (this.frmAssignPrescription.GetIsPatientHasGuarantee())
+                        pres.IsGuaranteed = item.IS_GUARANTEED == 1;
                     pres.Amount = item.AMOUNT ?? 0;
                     pres.MedicineTypeId = item.ID;
                     pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
@@ -290,7 +291,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                     {
                         pres.MaterialBeanIds = item.BeanIds;
                     }
-                    pres.IsGuaranteed = item.IS_GUARANTEED == 1;
+                    if (this.frmAssignPrescription.GetIsPatientHasGuarantee())
+                        pres.IsGuaranteed = item.IS_GUARANTEED == 1;
                     pres.Amount = item.AMOUNT ?? 0;
                     pres.MaterialTypeId = item.ID;
                     pres.PatientTypeId = item.PATIENT_TYPE_ID ?? 0;
@@ -423,7 +425,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                 if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.THUOC)
                 {
                     PresMedicineSDO pres = new PresMedicineSDO();
-                    pres.IsGuaranteed = item.IS_GUARANTEED == 1;
+                    if (this.frmAssignPrescription.GetIsPatientHasGuarantee())
+                        pres.IsGuaranteed = item.IS_GUARANTEED == 1;
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
                     pres.Amount = item.AMOUNT ?? 0;
                     pres.MedicineTypeId = item.ID;
@@ -479,7 +482,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.Save
                 else if (item.DataType == HIS.Desktop.LocalStorage.BackendData.ADO.MedicineMaterialTypeComboADO.VATTU)
                 {
                     PresMaterialSDO pres = new PresMaterialSDO();
-                    pres.IsGuaranteed = item.IS_GUARANTEED == 1;
+                    if (this.frmAssignPrescription.GetIsPatientHasGuarantee())
+                        pres.IsGuaranteed = item.IS_GUARANTEED == 1;
                     pres.InstructionTimes = item.IntructionTimeSelecteds;
                     pres.Amount = item.AMOUNT ?? 0;
                     pres.MaterialTypeId = item.ID;

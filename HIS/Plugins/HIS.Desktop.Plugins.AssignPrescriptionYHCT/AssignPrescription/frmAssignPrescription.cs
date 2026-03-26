@@ -683,6 +683,35 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+        private void VisibleGuarantee()
+        {
+            try
+            {
+                //lblTotalGuarantee.Visible = false;
+                if (this.Histreatment != null && !string.IsNullOrEmpty(this.Histreatment.GUARANTEE_CODE))
+                {
+                    lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    //lciTotalGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lblGuarantee.Visible = true;
+                    gridViewServiceProcess.Columns["grcGuarantee"].Visible = true;
+                }
+                else
+                {
+                    lciGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    //lciTotalGuarantee.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lblGuarantee.Visible = false;
+                    gridViewServiceProcess.Columns["grcGuarantee"].Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+        }
+
+
         List<HIS_SERE_SERV> ss = new List<HIS_SERE_SERV>(); 
         private void RefeshSereServInTreatmentData()
         {
@@ -4074,6 +4103,21 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionYHCT.AssignPrescription
             }
         }
         #endregion
+
+
+        public bool GetIsPatientHasGuarantee()
+        {
+            try
+            {
+                return this.Histreatment != null
+                    && !string.IsNullOrEmpty(this.Histreatment.GUARANTEE_CODE)
+                    && this.Histreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         private void cboNhaThuoc_EditValueChanged(object sender, EventArgs e)
         {

@@ -4897,7 +4897,19 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             }
         }
         #endregion
-
+        public bool GetIsPatientHasGuarantee()
+        {
+            try
+            {
+                return this.Histreatment != null
+                    && !string.IsNullOrEmpty(this.Histreatment.GUARANTEE_CODE)
+                    && this.Histreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         private void cboExpMestReason_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
             try
