@@ -161,6 +161,8 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                 {
                     btnBoSungPhacDo.Enabled = false;
                 }
+                Gc_ServiceName.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
+                Gc_ServiceCode.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.True;
                 GridViewService.Focus();
                 //txtServiceName_Search.Width = Gc_ServiceName.Width - 10;
                 //txtServiceCode_Search.Width = Gc_ServiceCode.VisibleWidth - 2;
@@ -1595,7 +1597,15 @@ namespace HIS.Desktop.Plugins.AssignServiceEdit
                     if (((IList)((BaseView)sender).DataSource) != null && ((IList)((BaseView)sender).DataSource).Count > 0)
                     {
                         ADO.HisSereServADO data_ServiceSDO = (ADO.HisSereServADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
-                        if (data_ServiceSDO != null && data_ServiceSDO.IsChecked == true)
+                        if (e.Column.FieldName == "SERVICE_NAMEUnb")
+                        {
+                            e.Value = data_ServiceSDO != null ? data_ServiceSDO.SERVICE_NAME_HIDDEN : null;
+                        }
+                        else if (e.Column.FieldName == "SERVICE_CODEUnb")
+                        {
+                            e.Value = data_ServiceSDO != null ? data_ServiceSDO.SERVICE_CODE_HIDDEN : null;
+                        }
+                        else if (data_ServiceSDO != null && data_ServiceSDO.IsChecked == true)
                         {
                             if (e.Column.FieldName == "PRICE_DISPLAY")
                             {
