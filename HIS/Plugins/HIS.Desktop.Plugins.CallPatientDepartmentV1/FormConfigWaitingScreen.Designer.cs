@@ -64,32 +64,36 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.layoutControl1.Controls.Add(this.spinReloadTime);
             this.layoutControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutControl1.Location = new System.Drawing.Point(0, 0);
+            this.layoutControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.layoutControl1.Name = "layoutControl1";
             this.layoutControl1.Root = this.layoutControlGroup1;
-            this.layoutControl1.Size = new System.Drawing.Size(550, 400);
+            this.layoutControl1.Size = new System.Drawing.Size(733, 492);
             this.layoutControl1.TabIndex = 0;
             this.layoutControl1.Text = "layoutControl1";
             // 
             // tgExtendMonitor
             // 
-            this.tgExtendMonitor.Location = new System.Drawing.Point(303, 374);
+            this.tgExtendMonitor.Location = new System.Drawing.Point(404, 463);
+            this.tgExtendMonitor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tgExtendMonitor.Name = "tgExtendMonitor";
             this.tgExtendMonitor.Properties.OffText = "Bật màn hình mở rộng";
             this.tgExtendMonitor.Properties.OnText = "Bật màn hình mở rộng";
-            this.tgExtendMonitor.Size = new System.Drawing.Size(245, 24);
+            this.tgExtendMonitor.Size = new System.Drawing.Size(326, 26);
             this.tgExtendMonitor.StyleController = this.layoutControl1;
             this.tgExtendMonitor.TabIndex = 6;
             this.tgExtendMonitor.Toggled += new System.EventHandler(this.tgExtendMonitor_Toggled);
             // 
             // gridControl1
             // 
-            this.gridControl1.Location = new System.Drawing.Point(2, 49);
+            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.gridControl1.Location = new System.Drawing.Point(3, 61);
             this.gridControl1.MainView = this.gridView1;
+            this.gridControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.gridControl1.Name = "gridControl1";
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.repositoryItemCheckRoom,
             this.repositoryItemSpinOrder});
-            this.gridControl1.Size = new System.Drawing.Size(546, 321);
+            this.gridControl1.Size = new System.Drawing.Size(727, 396);
             this.gridControl1.TabIndex = 5;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -171,19 +175,22 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             // 
             this.LblRoom.Appearance.Font = new System.Drawing.Font("Tahoma", 12F);
             this.LblRoom.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.LblRoom.Location = new System.Drawing.Point(2, 2);
+            this.LblRoom.Location = new System.Drawing.Point(3, 3);
+            this.LblRoom.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LblRoom.Name = "LblRoom";
-            this.LblRoom.Size = new System.Drawing.Size(546, 19);
+            this.LblRoom.Size = new System.Drawing.Size(727, 24);
             this.LblRoom.StyleController = this.layoutControl1;
             this.LblRoom.TabIndex = 4;
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(2, 25);
+            this.txtSearch.Location = new System.Drawing.Point(3, 33);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Properties.NullValuePrompt = "Nhập từ khóa để tìm kiếm phòng thực hiện";
             this.txtSearch.Properties.NullValuePromptShowForEmptyValue = true;
-            this.txtSearch.Size = new System.Drawing.Size(546, 20);
+            this.txtSearch.Properties.ShowNullValuePromptWhenFocused = true;
+            this.txtSearch.Size = new System.Drawing.Size(727, 22);
             this.txtSearch.StyleController = this.layoutControl1;
             this.txtSearch.TabIndex = 7;
             this.txtSearch.EditValueChanged += new System.EventHandler(this.txtSearch_EditValueChanged);
@@ -195,7 +202,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             0,
             0,
             0});
-            this.spinReloadTime.Location = new System.Drawing.Point(111, 374);
+            this.spinReloadTime.Location = new System.Drawing.Point(136, 463);
+            this.spinReloadTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.spinReloadTime.Name = "spinReloadTime";
             this.spinReloadTime.Properties.IsFloatValue = false;
             this.spinReloadTime.Properties.MaxValue = new decimal(new int[] {
@@ -203,12 +211,7 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             0,
             0,
             0});
-            this.spinReloadTime.Properties.MinValue = new decimal(new int[] {
-            0,
-            0,
-            0,
-            0});
-            this.spinReloadTime.Size = new System.Drawing.Size(95, 20);
+            this.spinReloadTime.Size = new System.Drawing.Size(138, 22);
             this.spinReloadTime.StyleController = this.layoutControl1;
             this.spinReloadTime.TabIndex = 8;
             this.spinReloadTime.EditValueChanged += new System.EventHandler(this.spinReloadTime_EditValueChanged);
@@ -226,7 +229,7 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.emptySpaceItem1});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
-            this.layoutControlGroup1.Size = new System.Drawing.Size(550, 400);
+            this.layoutControlGroup1.Size = new System.Drawing.Size(733, 492);
             this.layoutControlGroup1.TextVisible = false;
             // 
             // layoutControlItem1
@@ -234,62 +237,63 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.layoutControlItem1.Control = this.LblRoom;
             this.layoutControlItem1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(550, 23);
+            this.layoutControlItem1.Size = new System.Drawing.Size(733, 30);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.txtSearch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 23);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 30);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(550, 24);
+            this.layoutControlItem3.Size = new System.Drawing.Size(733, 28);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // layoutControlItem2
             // 
             this.layoutControlItem2.Control = this.gridControl1;
-            this.layoutControlItem2.Location = new System.Drawing.Point(0, 47);
+            this.layoutControlItem2.Location = new System.Drawing.Point(0, 58);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(550, 325);
+            this.layoutControlItem2.Size = new System.Drawing.Size(733, 402);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem4
             // 
-            this.layoutControlItem4.Control = this.spinReloadTime;
-            this.layoutControlItem4.Location = new System.Drawing.Point(0, 372);
-            this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(208, 28);
             this.layoutControlItem4.AppearanceItemCaption.ForeColor = System.Drawing.Color.Maroon;
             this.layoutControlItem4.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutControlItem4.Control = this.spinReloadTime;
+            this.layoutControlItem4.Location = new System.Drawing.Point(0, 460);
+            this.layoutControlItem4.Name = "layoutControlItem4";
+            this.layoutControlItem4.Size = new System.Drawing.Size(277, 32);
             this.layoutControlItem4.Text = "Thời gian tải lại (giây):";
-            this.layoutControlItem4.TextSize = new System.Drawing.Size(106, 13);
+            this.layoutControlItem4.TextSize = new System.Drawing.Size(130, 16);
             // 
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.tgExtendMonitor;
-            this.layoutControlItem5.Location = new System.Drawing.Point(301, 372);
+            this.layoutControlItem5.Location = new System.Drawing.Point(401, 460);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(249, 28);
+            this.layoutControlItem5.Size = new System.Drawing.Size(332, 32);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(208, 372);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(277, 460);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(93, 28);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(124, 32);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // FormConfigWaitingScreen
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 400);
+            this.ClientSize = new System.Drawing.Size(733, 492);
             this.Controls.Add(this.layoutControl1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormConfigWaitingScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Thiết lập màn hình chờ";

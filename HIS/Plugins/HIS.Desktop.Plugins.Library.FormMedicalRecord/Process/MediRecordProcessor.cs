@@ -604,6 +604,10 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 LogSystem.Debug("LoadDataEmr. 2.5");
                 if (_Treatment.TREATMENT_RESULT_ID > 0)
                     _ThongTinDieuTri.KetQuaDieuTri = _Treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__CHET ? KetQuaDieuTri.TuVong : _Treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__DO ? KetQuaDieuTri.GiamDo : _Treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__KHOI ? KetQuaDieuTri.Khoi : _Treatment.TREATMENT_RESULT_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_RESULT.ID__NANG ? KetQuaDieuTri.NangHon : KetQuaDieuTri.KhongThayDoi;
+                if (_Treatment.DEATH_TIME > 0 || _Treatment.DEATH_CAUSE_ID > 0 || _Treatment.DEATH_WITHIN_ID > 0)
+                {
+                    _ThongTinDieuTri.KetQuaDieuTri = KetQuaDieuTri.TuVong;
+                }
                 _ThongTinDieuTri.GiaiPhauBenh = 0;
                 if (_Treatment.DEATH_TIME > 0)
                     _ThongTinDieuTri.NgayTuVong = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTimeUTC(_Treatment.DEATH_TIME ?? 0);
@@ -676,7 +680,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 if (!string.IsNullOrEmpty(_Treatment.ICD_TEXT))
                 {
                     _ThongTinDieuTri.BenhKemTheo = _Treatment.ICD_TEXT;
-                    _ThongTinDieuTri.MaICD_BenhKemTheo = _Treatment.ICD_SUB_CODE ;
+                    _ThongTinDieuTri.MaICD_BenhKemTheo = _Treatment.ICD_SUB_CODE;
                 }
 
                 _ThongTinDieuTri.ChanDoan_KKB_CapCuu = Ten_KKB_CapCuu;
@@ -686,7 +690,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 _ThongTinDieuTri.LyDoVaoVien = _Treatment.HOSPITALIZATION_REASON;
 
                 _ThongTinDieuTri.ChanDoanVaoVien = _Treatment.IN_ICD_NAME;
-                _ThongTinDieuTri.MaICD_ChanDoanVaoVien = _Treatment.IN_ICD_CODE ;
+                _ThongTinDieuTri.MaICD_ChanDoanVaoVien = _Treatment.IN_ICD_CODE;
                 _ThongTinDieuTri.DienDieuTri = int.Parse((_Treatment.TDL_TREATMENT_TYPE_ID ?? 0).ToString());
 
                 #endregion
@@ -859,7 +863,7 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     var emrDocumentGroups = BackendDataWorker.Get<EMR_DOCUMENT_GROUP>()
                         .Where(g => g.IS_ACTIVE == 1)
                         .ToList();
-                    var groupdict = emrDocumentGroups.ToDictionary(g => g.ID, g => g.MEDIA_DOC_TYPE_ID??0);
+                    var groupdict = emrDocumentGroups.ToDictionary(g => g.ID, g => g.MEDIA_DOC_TYPE_ID ?? 0);
 
                     _HoSo.XQuang = emrDocuments.Count(d =>
                         checkDocument(groupdict, d.DOCUMENT_GROUP_ID, IMSys.DbConfig.EMR_RS.EMR_MEDIA_DOC_TYPE.XQ));
@@ -1065,11 +1069,15 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                 }
                 else if (_TYpe == LoaiBenhAnEMR.MatChanThuong)
                 {
-                    #region ----Mắt_chấn thương
-                    BenhAnMatChanThuong _BenhAnMatChanThuong = new BenhAnMatChanThuong();
-                    Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnMatChanThuong>(_BenhAnMatChanThuong, _BenhAnCommonADO);
-                    json = Newtonsoft.Json.JsonConvert.SerializeObject(_BenhAnMatChanThuong);
-                    #endregion
+                    BenhAnMatChanThuong benhAn = new BenhAnMatChanThuong();
+                    Inventec.Common.Mapper.DataObjectMapper.Map<BenhAnMatChanThuong>(benhAn, _BenhAnCommonADO);
+
+                    var jObj = Newtonsoft.Json.Linq.JObject.FromObject(benhAn);
+
+                    jObj["XuatHuyet_MP"] = benhAn.XuatHuyet_MP ? 1 : 0;
+                    jObj["XuatHuyet_MT"] = benhAn.XuatHuyet_MT ? 1 : 0;
+
+                    json = jObj.ToString(Newtonsoft.Json.Formatting.None);
                 }
                 else if (_TYpe == LoaiBenhAnEMR.MatDayMat)
                 {

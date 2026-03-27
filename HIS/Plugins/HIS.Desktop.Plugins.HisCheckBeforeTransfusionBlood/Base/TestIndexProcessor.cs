@@ -113,7 +113,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
                     VALUE = o.VALUE,
                     SERE_SERV_ID = o.SERE_SERV_ID,
                     TREATMENT_ID = o.TDL_TREATMENT_ID ?? 0,
-                    RESULT_TIME = o.RESULT_TIME
+                    MODIFY_TIME = o.MODIFY_TIME
                 }).ToList();
 
                 // Phân loại theo config
@@ -165,18 +165,29 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood.Base
                     var saltIndex = SaltEnviTestIndexList.FirstOrDefault(o => o.SERE_SERV_ID == sereServId);
                     var antiGlobulinIndex = AntiGlobulinTestIndexList.FirstOrDefault(o => o.SERE_SERV_ID == sereServId);
 
+                    string bloodValue = bloodIndex != null ? bloodIndex.VALUE : "";
+                    string saltValue = saltIndex != null ? saltIndex.VALUE : "";
+                    string antiGlobulinValue = antiGlobulinIndex != null ? antiGlobulinIndex.VALUE : "";
+
+                    // Chỉ thêm vào danh sách nếu có ít nhất 1 giá trị có dữ liệu
+                    if (string.IsNullOrWhiteSpace(bloodValue)
+                        && string.IsNullOrWhiteSpace(saltValue)
+                        && string.IsNullOrWhiteSpace(antiGlobulinValue))
+                        continue;
+
                     TestHarmonyADO ado = new TestHarmonyADO();
                     ado.SERE_SERV_ID = sereServId;
-                    ado.RESULT_TIME = bloodIndex != null ? bloodIndex.RESULT_TIME : null;
-                    ado.BLOOD_VALUE = bloodIndex != null ? bloodIndex.VALUE : "";
-                    ado.SALT_VALUE = saltIndex != null ? saltIndex.VALUE : "";
-                    ado.ANTI_GLOBULIN_VALUE = antiGlobulinIndex != null ? antiGlobulinIndex.VALUE : "";
+                    // Lấy MODIFY_TIME từ danh sách A (chỉ số túi máu)
+                    ado.MODIFY_TIME = bloodIndex != null ? bloodIndex.MODIFY_TIME : null;
+                    ado.BLOOD_VALUE = bloodValue;
+                    ado.SALT_VALUE = saltValue;
+                    ado.ANTI_GLOBULIN_VALUE = antiGlobulinValue;
 
                     TestHarmonyList.Add(ado);
                 }
 
-                // Sắp xếp theo thời gian trả kết quả giảm dần
-                TestHarmonyList = TestHarmonyList.OrderByDescending(o => o.RESULT_TIME ?? 0).ToList();
+                // Sắp xếp theo MODIFY_TIME giảm dần (mới nhất lên trên)
+                TestHarmonyList = TestHarmonyList.OrderByDescending(o => o.MODIFY_TIME ?? 0).ToList();
             }
             catch (Exception ex)
             {
