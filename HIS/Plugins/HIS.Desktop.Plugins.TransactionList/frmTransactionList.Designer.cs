@@ -320,11 +320,11 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem24 = new DevExpress.XtraLayout.LayoutControlItem();
-<<<<<<< .mine
+
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
-=======
-            this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
->>>>>>> .theirs
+
+           // this.layoutControlItem25 = new DevExpress.XtraLayout.LayoutControlItem();
+
             this.popupMenu1 = new DevExpress.XtraBars.PopupMenu(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
@@ -443,7 +443,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
+            //((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -2647,7 +2647,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             this.layoutControlItem24.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem24.TextVisible = false;
             // 
-<<<<<<< .mine
+
             // popupMenu1
             // 
             this.popupMenu1.Manager = this.barManager1;
@@ -2657,17 +2657,17 @@ namespace HIS.Desktop.Plugins.TransactionList
 
 
 
-=======
+
             // layoutControlItem25
             // 
-            this.layoutControlItem25.Control = this.btnRepayCheck;
-            this.layoutControlItem25.Location = new System.Drawing.Point(0, 652);
-            this.layoutControlItem25.Name = "layoutControlItem25";
-            this.layoutControlItem25.Size = new System.Drawing.Size(261, 26);
-            this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
-            this.layoutControlItem25.TextVisible = false;
+            //this.layoutControlItem25.Control = this.btnRepayCheck;
+            //this.layoutControlItem25.Location = new System.Drawing.Point(0, 652);
+            //this.layoutControlItem25.Name = "layoutControlItem25";
+            //this.layoutControlItem25.Size = new System.Drawing.Size(261, 26);
+            //this.layoutControlItem25.TextSize = new System.Drawing.Size(0, 0);
+            //this.layoutControlItem25.TextVisible = false;
             // 
->>>>>>> .theirs
+
             // popupMenu1
             // 
             this.popupMenu1.Manager = this.barManager1;
@@ -2810,7 +2810,7 @@ namespace HIS.Desktop.Plugins.TransactionList
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem24)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
+            //((System.ComponentModel.ISupportInitialize)(this.layoutControlItem25)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.popupMenu1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
