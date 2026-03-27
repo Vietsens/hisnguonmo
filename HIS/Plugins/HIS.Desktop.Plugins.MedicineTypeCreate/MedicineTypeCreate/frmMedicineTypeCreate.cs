@@ -1992,6 +1992,15 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     gridCheck.SelectionChanged += Event_Check_1; // Đăng ký lại event
                 }
 
+
+                // ✅ Sau khi lstConfig đã được fill đầy đủ, kiểm tra ID=15
+                bool hasKD = lstConfig != null && lstConfig.Any(o => o.ID == 15);
+                if (hasKD)
+                {
+                    chkIsSaleEqualImpPrice.Enabled = false;
+                    chkIsSaleEqualImpPrice.Checked = false;
+                }
+
             }
             catch (Exception ex)
             {

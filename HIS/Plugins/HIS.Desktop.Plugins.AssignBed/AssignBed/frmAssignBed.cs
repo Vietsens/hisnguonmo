@@ -235,7 +235,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
         bool IsSaveAndShowMps000102 = true;
         MPS.ProcessorBase.PrintConfig.PreviewType? PreviewTypeMps000102 = null;
         DataGridAdo currentRowSereServADO;
-
+        List<V_HIS_BED_LOG> lstBedLog; 
         bool IsAcceptWordNotInData = false;
 
 
@@ -320,6 +320,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     this.LoadTreatmentInfo__PatientType();
                     this.LoadDataDhst();
                     this.LoadDataToGridParticipants();
+                    this.GetHisBedLog(this.treatmentId);
                 }   
 
                 this.InitComboUser();
@@ -343,7 +344,33 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        public List<V_HIS_BED_LOG> GetHisBedLog(long treatmentId)
+        {
+            this.lstBedLog = new List<V_HIS_BED_LOG>();
+            try
+            {
+                CommonParam param = new CommonParam();
+                MOS.Filter.HisBedLogViewFilter bedLogViewFilter = new MOS.Filter.HisBedLogViewFilter();
+                bedLogViewFilter.TREATMENT_ID = treatmentId;
 
+                var bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
+
+                if (bedLogs == null || bedLogs.Count <= 0)
+                {
+                    return this.lstBedLog = null;
+                }
+                else
+                {
+                    this.lstBedLog = bedLogs.OrderByDescending(o => o.START_TIME).ToList();
+                }
+                return this.lstBedLog;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                return this.lstBedLog = null;
+            }
+        }
         private static void EnableDoubleBuffering(Control control)
         {
             if (control == null) return;
@@ -524,42 +551,38 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         else
                             e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
 
-                        //if (data.PATIENT_TYPE_CODE == HisConfigs.Get<string>("MOS.HIS_PATIENT_TYPE.PATIENT_TYPE_CODE.KSK"))
-                        //{
-                        //    e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
-                        //}
-                        //else
-                        //{
-                        //    bool isEditCtrol = data.IS_ENABLE_ASSIGN_PRICE == 1;
-                        //    isEditCtrol = isEditCtrol && IsAllowShowEditPrice(e.RowHandle);
-                        //    if (data != null && !isEditCtrol)
-                        //        e.RepositoryItem = repositoryItemTxtReadOnly;
-                        //    else
-                        //        e.RepositoryItem = repositoryItembtnEditDonGia_TextDisable;
-                        //}
                     }
                     else if (e.Column.FieldName == "TIME_FROM")
                     {
-                        // Kiểm tra row có được tích chọn không (MultiSelect)
                         bool isSelected = view.IsRowSelected(e.RowHandle);
 
                         if (isSelected)
                         {
-                            // Lấy giá trị TIME_FROM hiện tại của row
                             var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
-
-                            // Nếu chưa có giá trị, set giá trị mặc định
                             if (timeFromValue == null || timeFromValue == DBNull.Value)
                             {
                                 DateTime valueToSet;
+                                if (this.lstBedLog != null)
+                                {
+                                    var lstStartTime = this.lstBedLog.Select(o => o.START_TIME).FirstOrDefault();
 
-                                // Kiểm tra currentTreatment.IN_TIME
-                                if (currentTreatment != null && currentTreatment.IN_TIME != null)
+                                    DateTime inTime = Inventec.Common.DateTime.Convert
+                                        .TimeNumberToSystemDateTime(lstStartTime) ?? DateTime.Now;
+
+                                    if (inTime.Date == DateTime.Now.Date)
+                                    {
+                                        valueToSet = inTime;
+                                    }
+                                    else
+                                    {
+                                        valueToSet = DateTime.Now.Date;
+                                    }
+                                }
+                                else if (currentTreatment != null && currentTreatment.CLINICAL_IN_TIME != null)
                                 {
                                     DateTime inTime = Inventec.Common.DateTime.Convert
-                                        .TimeNumberToSystemDateTime(currentTreatment.IN_TIME) ?? DateTime.Now;
+                                        .TimeNumberToSystemDateTime(currentTreatment.CLINICAL_IN_TIME ?? 0) ?? DateTime.Now;
 
-                                    // Kiểm tra IN_TIME có phải ngày hôm nay không
                                     if (inTime.Date == DateTime.Now.Date)
                                     {
                                         valueToSet = inTime;
@@ -579,15 +602,12 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                 repositoryItemDateEditTimeFrom.EditFormat.FormatType = DevExpress.Utils.FormatType.DateTime;
                                 repositoryItemDateEditTimeFrom.EditFormat.FormatString = "dd/MM/yyyy HH:mm";
 
-                                // QUAN TRỌNG NHẤT
                                 repositoryItemDateEditTimeFrom.Mask.EditMask = "dd/MM/yyyy HH:mm";
                                 repositoryItemDateEditTimeFrom.Mask.UseMaskAsDisplayFormat = true;
 
-                                // Set giá trị cho cell
                                 view.SetRowCellValue(e.RowHandle, "TIME_FROM", valueToSet);
                             }
 
-                            // Sử dụng repository mặc định
                             e.RepositoryItem = repositoryItemDateEditTimeFrom;
                         }
                         else
@@ -597,15 +617,12 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     }
                     else if (e.Column.FieldName == "QUANTITY")
                     {
-                        // Kiểm tra xem dòng có được tích chọn không
                         bool isSelected = view.IsRowSelected(e.RowHandle);
 
                         if (isSelected)
                         {
-                            // Lấy giá trị QUANTITY hiện tại
                             var quantityValue = view.GetRowCellValue(e.RowHandle, "QUANTITY");
 
-                            // Nếu chưa có giá trị, set giá trị mặc định là 1
                             if (quantityValue == null || quantityValue == DBNull.Value)
                             {
                                 view.SetRowCellValue(e.RowHandle, "QUANTITY", 1);
@@ -623,14 +640,11 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     }
                     else if (e.Column.FieldName == "TIME_TO")
                     {
-                        // Kiểm tra xem dòng có được tích chọn không
                         bool isSelected = view.IsRowSelected(e.RowHandle);
 
                         if (isSelected)
                         {
-                            // Lấy giá trị TIME_FROM
                             var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
-                            // Lấy giá trị QUANTITY
                             var quantityValue = view.GetRowCellValue(e.RowHandle, "QUANTITY");
 
                             if (timeFromValue != null && timeFromValue != DBNull.Value &&
@@ -650,11 +664,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                                 if (decimal.TryParse(quantityValue.ToString(), out quantity))
                                 {
-                                    // Tính TIME_TO = TIME_FROM + QUANTITY (số ngày)
                                     int daysToAdd = Math.Max(0, (int)quantity - 1);
                                     DateTime timeTo = timeFrom.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
 
-                                    // Cập nhật giá trị TIME_TO vào cell
                                     view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
                                 }
                             }
@@ -673,10 +685,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     }
                     else if (e.Column.FieldName == "BED_CODE")
                     {
-                        // Chỉ gán RepositoryItem để grid biết dùng editor nào khi hiển thị.
-                        // Việc load dữ liệu giường (LoadBedDataByServiceId) được thực hiện trong
-                        // CustomRowCellEditForEditing — event chỉ bắn khi thực sự mở editor,
-                        // tránh overwrite datasource dùng chung mỗi lần grid render lại các row.
                         bool isSelected = view != null && view.IsRowSelected(e.RowHandle);
                         if (isSelected)
                             e.RepositoryItem = repositoryItemGridLookUpEditBed;
@@ -700,12 +708,18 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             e.RepositoryItem = this.repositoryItemcboExcuteRoom_TabService;
                         }
                     }
-                    else if (e.Column.FieldName == "ShareCount")
-                    {
-                        long serviceReqTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewServiceProcess.GetRowCellValue(e.RowHandle, "TDL_SERVICE_TYPE_ID") ?? "").ToString());
-                        e.RepositoryItem = this.repositoryItemcboShareCount;
-                        //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqTypeId), serviceReqTypeId) + "____" + Inventec.Common.Logging.LogUtil.TraceData("IMSys.DbConfig.HIS_RS.TDL_SERVICE_TYPE_ID.ID__G", IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G));
-                    }
+                    //else if (e.Column.FieldName == "ShareCount")
+                    //{
+                    //    bool isSelected = view != null && view.IsRowSelected(e.RowHandle);
+                    //    var Bed = view.GetRowCellValue(e.RowHandle, "BED_CODE");
+                    //    if (isSelected && Bed != null && Bed != DBNull.Value)
+                    //    {
+                    //        e.RepositoryItem = null;
+                    //    }
+                    //    //long serviceReqTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((gridViewServiceProcess.GetRowCellValue(e.RowHandle, "TDL_SERVICE_TYPE_ID") ?? "").ToString());
+                    //    //e.RepositoryItem = this.repositoryItemcboShareCount;
+                    //    //Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqTypeId), serviceReqTypeId) + "____" + Inventec.Common.Logging.LogUtil.TraceData("IMSys.DbConfig.HIS_RS.TDL_SERVICE_TYPE_ID.ID__G", IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__G));
+                    //}
                 }
             }
             catch (Exception ex)
@@ -3126,7 +3140,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 {
                     serviceIdClick = sereServADO.SERVICE_ID;
 
-                    // Nếu thay đổi cột IsChecked thì cập nhật giá trị đúng với checkbox
                     if (e.Column.FieldName == "IsChecked")
                     {
                         bool isChecked = false;
@@ -3137,13 +3150,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         sereServADO.IsChecked = isChecked;
                     }
 
-                    // Nếu bỏ tích thì clear các dữ liệu ĐTTT / phòng xử lý / ĐT phụ thu (tránh còn hiển thị trên grid)
                     if (e.Column.FieldName == "IsChecked" && !sereServADO.IsChecked)
                     {
                         this.ResetOneService(sereServADO);
-                        // KHÔNG dùng SetRowCellValue ở đây vì nó trigger CellValueChanged đệ quy:
-                        // lần gọi lồng đó thấy view.IsRowSelected = true nên chạy ChoosePatientTypeDefaultlService
-                        // và fill lại dữ liệu vừa xóa. RefreshRow đủ để grid re-render từ object đã reset.
                             if (e.RowHandle >= 0)
                             view?.RefreshRow(e.RowHandle);
                             else
@@ -3161,8 +3170,6 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                             sereServADO.IsChecked = false;
                         }
 
-                        // Trường hợp vừa tích nhưng người dùng chọn "Không" ở cảnh báo => IsChecked bị trả về false
-                        // cần clear dữ liệu để không còn hiển thị ĐTTT / phòng xử lý / ĐT phụ thu trên grid.
                         if (e.Column.FieldName == "IsChecked" && !sereServADO.IsChecked)
                         {
                             this.ResetOneService(sereServADO);
@@ -3209,6 +3216,38 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     if (isSelected)
                     {
                         this.SetAssignNumOrder(sereServADO, isSelected);
+                    }
+                    if (e.Column.FieldName == "BED_CODE")
+                    {
+                        long bedId = 0;
+                        if (e.Value != null && e.Value != DBNull.Value)
+                            long.TryParse(e.Value.ToString(), out bedId);
+
+                        if (bedId > 0)
+                        {
+                            var bedList = this.repositoryItemGridLookUpEditBed.DataSource as List<HisBedADO>;
+                            if (bedList != null)
+                            {
+                                var selectedBed = bedList.FirstOrDefault(b => b.ID == bedId);
+                                if (selectedBed != null)
+                                {
+                                    TryParseBedAmountStr(selectedBed.AMOUNT_STR, out int? usedCount, out int? maxCount);
+                                    sereServADO.ShareCount = (usedCount + 1) ?? null;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            sereServADO.ShareCount = null;
+                        }
+
+                        if (e.RowHandle >= 0)
+                            this.gridViewServiceProcess.RefreshRow(e.RowHandle);
+                        else
+                            this.gridViewServiceProcess.RefreshData();
+
+                        this.SetDefaultSerServTotalPrice();
+                        return;
                     }
                     if (e.Column.FieldName == "TIME_FROM"
                         || e.Column.FieldName == "QUANTITY"
@@ -4768,10 +4807,22 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     // get bedLog
                     if (this.currentHisTreatment != null && this.serviceReqComboResultSDO != null && this.serviceReqComboResultSDO.ServiceReqs != null && this.serviceReqComboResultSDO.ServiceReqs.Count > 0)
                     {
-                        MOS.Filter.HisBedLogViewFilter bedLogViewFilter = new MOS.Filter.HisBedLogViewFilter();
-                        bedLogViewFilter.TREATMENT_ID = currentHisTreatment.ID;
-                        bedLogViewFilter.DEPARTMENT_IDs = this.serviceReqComboResultSDO.ServiceReqs.Select(o => o.REQUEST_DEPARTMENT_ID).Distinct().ToList();
-                        bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
+                        if (this.lstBedLog != null)
+                        {
+                            var filtered = this.serviceReqComboResultSDO.ServiceReqs.Select(o => o.REQUEST_DEPARTMENT_ID).Distinct().ToList();
+                            bedLogs = this.lstBedLog.Where(o => filtered.Contains(o.DEPARTMENT_ID)).ToList();
+                        }
+                        else
+                        {
+                            MOS.Filter.HisBedLogViewFilter bedLogViewFilter = new MOS.Filter.HisBedLogViewFilter();
+                            bedLogViewFilter.TREATMENT_ID = currentHisTreatment.ID;
+                            bedLogViewFilter.DEPARTMENT_IDs = this.serviceReqComboResultSDO.ServiceReqs.Select(o => o.REQUEST_DEPARTMENT_ID).Distinct().ToList();
+                            bedLogs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumer.ApiConsumers.MosConsumer, bedLogViewFilter, param);
+                        }
+                    }
+                    else
+                    {
+
                     }
                     var PrintServiceReqProcessor = previewType != null ? new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0), previewType.Value, GetDocmentSigned)
                         : new Library.PrintServiceReq.PrintServiceReqProcessor(serviceReqComboResultSDO, currentHisTreatment, bedLogs, (currentModule != null ? currentModule.RoomId : 0));

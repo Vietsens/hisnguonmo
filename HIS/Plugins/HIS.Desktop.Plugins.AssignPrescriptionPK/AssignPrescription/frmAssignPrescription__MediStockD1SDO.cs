@@ -719,6 +719,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.btnAdd.Enabled = true;
                     this.btnAddTutorial.Enabled = true;
                     this.txtMediMatyForPrescription.Text = this.currentMedicineTypeADOForEdit.MEDICINE_TYPE_NAME;
+                    if (this.spinSoNgay.Value > 0 && this.spinSoLuongNgay.Value <= 0)
+                        this.spinSoLuongNgay.Value = this.spinSoNgay.Value;
                     if (this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC)
                     {
                         var metyAlls = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
@@ -758,9 +760,6 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                             this.lciTocDoTruyen.Enabled = true;
 
                         //nếu không có ngày theo HDSD thì gán theo số ngày đơn
-                        if (this.spinSoNgay.Value > 0 && this.spinSoLuongNgay.Value <= 0)
-                            this.spinSoLuongNgay.Value = this.spinSoNgay.Value;
-
                         this.FillDataIntoMedicineUseFormAndTutorial(currentMedicineTypeADOForEdit.ID);
 
                         //Neu la thuoc thi kiem tra co mẫu HDSD chưa, có thì focus vào nút "Bổ sung"
@@ -923,9 +922,9 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         {
                             cboPatientType.EditValue = patientType.ID;
                         }
-                        else
+                        else 
                         {
-                            cboPatientType.EditValue = listSourcePatientType.FirstOrDefault().ID;
+                            cboPatientType.EditValue = (listSourcePatientType != null && listSourcePatientType.Count > 0) ? (object)listSourcePatientType.FirstOrDefault().ID : null;
                         }
                     }
                     else
@@ -968,7 +967,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.actionBosung = GlobalVariables.ActionAdd;
                     this.VisibleButton(this.actionBosung);
                     this.btnAdd.Enabled = true;
-                    //this.btnAddTutorial.Enabled = true;
+                    //this.btnAddTutorial.Enabled = true; 
                     if (lciTocDoTruyen.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
                         this.lciTocDoTruyen.Enabled = false;
 
@@ -980,7 +979,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
 
                     this.btnAdd.Focus();
 
-                    Inventec.Common.Logging.LogSystem.Warn("MaterialTypeTSD_RowClick");
+                    Inventec.Common.Logging.LogSystem.Warn("MaterialTypeTSD_RowClick"); 
                     //this.currentMedicineTypeADOForEdit.IsAllowOdd = this.GetIsAllowOdd(this.currentMedicineTypeADOForEdit.ID, this.currentMedicineTypeADOForEdit.SERVICE_TYPE_ID);
 
                     ///Khoi tao cbo PatientType va set gia tri mac dinh theo service
