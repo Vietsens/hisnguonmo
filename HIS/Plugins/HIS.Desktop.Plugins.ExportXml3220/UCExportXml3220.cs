@@ -73,6 +73,7 @@ using System.Xml;
 using GlobalConfigStore = His.Bhyt.ExportXml.XML3220.GlobalConfigStore;
 using HIS_TREATMENT_TYPE = MOS.EFMODEL.DataModels.HIS_TREATMENT_TYPE;
 using InputADO = His.Bhyt.ExportXml.XML3220.InputADO;
+using ServerInfo = His.Bhyt.ExportXml.XML3220.ServerInfo;
 using SyncResultADO = His.Bhyt.ExportXml.XML3220.SyncResultADO;
 
 namespace HIS.Desktop.Plugins.ExportXml3220
@@ -87,7 +88,7 @@ namespace HIS.Desktop.Plugins.ExportXml3220
         private bool isInit = true;
         public SavePathADO savePathADO;
         int rowCount = 0;
-        int dataTotal = 0;
+        int dataTotal = 0; 
         int start = 0;
         int limit = 0;
         bool isNotLoadWhileChangeControlStateInFirst;
@@ -1699,7 +1700,7 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
+         
         private void btnAutoSync_Click(object sender, EventArgs e)
         {
             try
@@ -1828,6 +1829,12 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                 else
                 {
                     listTreatmentSync = this.GetTreatment();
+                }
+
+                if (listTreatmentSync != null && listTreatmentSync.Count > 0 && listSelection != null && listSelection.Count > 0)
+                {
+                    var selectedIds = listSelection.Select(o => o.ID).ToList();
+                    listTreatmentSync = listTreatmentSync.Where(o => selectedIds.Contains(o.ID)).ToList();
                 }
 
                 if (this.configSync.isXML3176 && !backgroundWorker1.IsBusy)
@@ -2000,15 +2007,21 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                         var ado = new InputADO
                         {
                             Treatment = treat,
-                            Employees = BackendDataWorker.Get<HIS_EMPLOYEE>(), 
+                            Employees = BackendDataWorker.Get<HIS_EMPLOYEE>(),
                             Branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(b => b.ID == treat.BRANCH_ID),
-                            AcsUsers = BackendDataWorker.Get<ACS_USER>(), 
+                            AcsUsers = BackendDataWorker.Get<ACS_USER>(),
                             Babys = BackendDataWorker.Get<V_HIS_BABY>().Where(b => b.TREATMENT_ID == treat.ID).ToList(),
                             PatientTypeAlter = resultPatientTypeAlter
                                 .Where(p => p.TREATMENT_ID == treat.ID)
                                 .OrderByDescending(p => p.LOG_TIME)
                                 .ThenByDescending(p => p.ID)
-                                .FirstOrDefault()
+                                .FirstOrDefault(),
+                            serverInfo = new ServerInfo
+                            {
+                                Address = address,
+                                Username = username,
+                                Password = password
+                            }
                         };
                         #endregion
                         His.Bhyt.ExportXml.XML3220.CreateXmlMain xmlMain = new His.Bhyt.ExportXml.XML3220.CreateXmlMain(ado);
@@ -2069,6 +2082,23 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                                             }
                                         }
                                         return;
+                                    }
+                                }
+                                else
+                                {
+                                    if (configSync != null && !configSync.dontSend)
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Info("Gui file khong ky so. Path: " + saveFilePathXml);
+                                        SyncResultADO syncResultADO = null;
+                                        Task task = Task.Run(async () =>
+                                            syncResultADO = await xmlMain.SendXml3220(saveFilePathXml)
+                                        );
+                                        task.Wait();
+                                        syncResult = syncResultADO;
+                                        if (syncResult == null || !syncResult.Success)
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Warn("Gui file khong ky so that bai: " + syncResult?.Message);
+                                        }
                                     }
                                 }
                             }
