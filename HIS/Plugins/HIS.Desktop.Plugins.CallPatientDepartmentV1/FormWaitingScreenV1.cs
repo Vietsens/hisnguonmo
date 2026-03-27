@@ -56,7 +56,12 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             {
                 SetFromConfigToControl();
 
-                FillDataToGridControl();
+                // ✅ Load data async, form hiện ra ngay không bị trắng
+                Task.Factory.StartNew(() =>
+                {
+                    System.Threading.Thread.Sleep(300); // chờ form show xong
+                    FillDataToGridControl();
+                });
 
                 timerReload.Interval = reloadTimeInSeconds * 1000;
                 timerReload.Enabled = true;
@@ -67,6 +72,18 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
                 timerScroll.Start();
 
                 this.WindowState = FormWindowState.Maximized;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // ✅ Thêm event Shown — chạy SAU khi form hiển thị hoàn toàn
+        private void FormWaitingScreenV1_Shown(object sender, EventArgs e)
+        {
+            try
+            {
                 this.BringToFront();
                 this.Focus();
             }

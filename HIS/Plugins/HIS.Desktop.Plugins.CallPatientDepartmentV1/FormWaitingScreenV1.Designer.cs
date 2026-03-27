@@ -39,6 +39,7 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
+            this.Shown += new System.EventHandler(this.FormWaitingScreenV1_Shown);
             this.SuspendLayout();
             //
             // layoutControl1
@@ -128,7 +129,7 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.gcRoomName.AppearanceHeader.Options.UseTextOptions = true;
             this.gcRoomName.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.gcRoomName.Caption = "Tên phòng";
-            this.gcRoomName.FieldName = "EXECUTE_ROOM_CODE";
+            this.gcRoomName.FieldName = "EXECUTE_ROOM_NAME";
             this.gcRoomName.Name = "gcRoomName";
             this.gcRoomName.OptionsColumn.AllowEdit = false;
             this.gcRoomName.OptionsColumn.AllowFocus = false;
@@ -153,6 +154,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.gcNextCallNumber.AppearanceHeader.Options.UseForeColor = true;
             this.gcNextCallNumber.AppearanceHeader.Options.UseTextOptions = true;
             this.gcNextCallNumber.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gcNextCallNumber.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gcNextCallNumber.DisplayFormat.FormatString = "{0:N0}";
             this.gcNextCallNumber.Caption = "STT tiếp theo";
             this.gcNextCallNumber.FieldName = "NEXT_CALL_NUMBER";
             this.gcNextCallNumber.Name = "gcNextCallNumber";
@@ -179,6 +182,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.gcMaxNumOrder.AppearanceHeader.Options.UseForeColor = true;
             this.gcMaxNumOrder.AppearanceHeader.Options.UseTextOptions = true;
             this.gcMaxNumOrder.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gcMaxNumOrder.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gcMaxNumOrder.DisplayFormat.FormatString = "{0:N0}";
             this.gcMaxNumOrder.Caption = "STT lớn nhất";
             this.gcMaxNumOrder.FieldName = "MAX_NUM_ORDER";
             this.gcMaxNumOrder.Name = "gcMaxNumOrder";
@@ -205,6 +210,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.gcCurrentCallNumber.AppearanceHeader.Options.UseForeColor = true;
             this.gcCurrentCallNumber.AppearanceHeader.Options.UseTextOptions = true;
             this.gcCurrentCallNumber.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gcCurrentCallNumber.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gcCurrentCallNumber.DisplayFormat.FormatString = "{0:N0}";
             this.gcCurrentCallNumber.Caption = "STT vừa gọi";
             this.gcCurrentCallNumber.FieldName = "CURRENT_CALL_NUMBER";
             this.gcCurrentCallNumber.Name = "gcCurrentCallNumber";
@@ -231,6 +238,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.gcTotal.AppearanceHeader.Options.UseForeColor = true;
             this.gcTotal.AppearanceHeader.Options.UseTextOptions = true;
             this.gcTotal.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gcTotal.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gcTotal.DisplayFormat.FormatString = "{0:N0}";
             this.gcTotal.Caption = "Tổng";
             this.gcTotal.FieldName = "TOTAL_TODAY_SERVICE_REQ";
             this.gcTotal.Name = "gcTotal";
@@ -257,6 +266,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.gcNewCount.AppearanceHeader.Options.UseForeColor = true;
             this.gcNewCount.AppearanceHeader.Options.UseTextOptions = true;
             this.gcNewCount.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gcNewCount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gcNewCount.DisplayFormat.FormatString = "{0:N0}";
             this.gcNewCount.Caption = "Chưa khám";
             this.gcNewCount.FieldName = "TOTAL_NEW_SERVICE_REQ";
             this.gcNewCount.Name = "gcNewCount";
@@ -283,6 +294,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.gcProcCount.AppearanceHeader.Options.UseForeColor = true;
             this.gcProcCount.AppearanceHeader.Options.UseTextOptions = true;
             this.gcProcCount.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gcProcCount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gcProcCount.DisplayFormat.FormatString = "{0:N0}";
             this.gcProcCount.Caption = "Đang khám";
             this.gcProcCount.FieldName = "TOTAL_PROC_SERVICE_REQ";
             this.gcProcCount.Name = "gcProcCount";
@@ -309,6 +322,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
             this.gcEndCount.AppearanceHeader.Options.UseForeColor = true;
             this.gcEndCount.AppearanceHeader.Options.UseTextOptions = true;
             this.gcEndCount.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            this.gcEndCount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.gcEndCount.DisplayFormat.FormatString = "{0:N0}";
             this.gcEndCount.Caption = "Khám xong";
             this.gcEndCount.FieldName = "TOTAL_END_SERVICE_REQ";
             this.gcEndCount.Name = "gcEndCount";
