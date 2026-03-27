@@ -8050,31 +8050,40 @@ namespace HIS.Desktop.Plugins.HisService
                 sb.AppendLine(X("MA_CSKCB", maCskcb, 6));
                 sb.AppendLine(X("GIA_THANH_TOAN", giaTT == 0 ? null : giaTT.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 6));
 
+                // Luôn mở thẻ DS_THUOCPX
                 sb.AppendLine("      <DS_THUOCPX>");
-                int sttThuoc = 1;
-                foreach (var mety in metyOfSvc)
-                {
-                    decimal thanhTien = 0;
-                    if (mety.LIEU_BQ_PX != null && mety.LIEU_BQ_PX != 0 && mety.TL_THUCTE_BQ_PX != null && mety.TL_THUCTE_BQ_PX != 0)
-                        thanhTien = (mety.EXPEND_PRICE ?? 0) * (mety.LIEU_BQ_PX ?? 0) / (mety.TL_THUCTE_BQ_PX ?? 1);
-                    else if (mety.DM_THUCTE_CDD != null)
-                        thanhTien = (mety.EXPEND_PRICE ?? 0) * (mety.DM_THUCTE_CDD ?? 0);
 
-                    sb.AppendLine("        <TT_THUOCPX>");
-                    sb.AppendLine(X("STT", sttThuoc.ToString(), 10));
-                    sb.AppendLine(X("MA_THUOC", mety.MEDICINE_TYPE_CODE, 10));
-                    sb.AppendLine(X("TEN_THUOC", mety.MEDICINE_TYPE_NAME, 10));
-                    sb.AppendLine(X("SO_DANG_KY", mety.REGISTER_NUMBER, 10));
+                if (metyOfSvc.Count > 0)
+                {
+                    int sttThuoc = 1;
+                    foreach (var mety in metyOfSvc)
+                    {
+                        decimal thanhTien = 0;
+                        if (mety.LIEU_BQ_PX != null && mety.LIEU_BQ_PX != 0 && mety.TL_THUCTE_BQ_PX != null && mety.TL_THUCTE_BQ_PX != 0)
+                            thanhTien = (mety.EXPEND_PRICE ?? 0) * (mety.LIEU_BQ_PX ?? 0) / (mety.TL_THUCTE_BQ_PX ?? 1);
+                        else if (mety.DM_THUCTE_CDD != null)
+                            thanhTien = (mety.EXPEND_PRICE ?? 0) * (mety.DM_THUCTE_CDD ?? 0);
+
+                        sb.AppendLine("        <TT_THUOCPX>");
+                        sb.AppendLine(X("STT", sttThuoc.ToString(), 10));
+                        sb.AppendLine(X("MA_THUOC", mety.MEDICINE_TYPE_CODE, 10));
+                        sb.AppendLine(X("TEN_THUOC", mety.MEDICINE_TYPE_NAME, 10));
+                        sb.AppendLine(X("SO_DANG_KY", mety.REGISTER_NUMBER, 10));
                     sb.AppendLine(X("DON_VI_TINH", lstMedicineType != null ? lstMedicineType.FirstOrDefault(o=> o.ID == mety.MEDICINE_TYPE_ID).SERVICE_UNIT_CODE : "" , 10));
-                    sb.AppendLine(X("TT_THAU", mety.TT_THAU, 10));
-                    sb.AppendLine(X("DON_GIA_THUOC", mety.EXPEND_PRICE?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
-                    sb.AppendLine(X("DM_NSX_CDD", mety.DM_NSX_CDD?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
-                    sb.AppendLine(X("DM_THUCTE_CDD", mety.DM_THUCTE_CDD?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
-                    sb.AppendLine(X("LIEU_BQ_PX", mety.LIEU_BQ_PX?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
-                    sb.AppendLine(X("TL_THUCTE_BQ_PX", mety.TL_THUCTE_BQ_PX?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
-                    sb.AppendLine(X("THANH_TIEN_THUOC", thanhTien == 0 ? null : thanhTien.ToString("F0"), 10));
-                    sb.AppendLine("        </TT_THUOCPX>");
-                    sttThuoc++;
+                        sb.AppendLine(X("TT_THAU", mety.TT_THAU, 10));
+                        sb.AppendLine(X("DON_GIA_THUOC", mety.EXPEND_PRICE?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                        sb.AppendLine(X("DM_NSX_CDD", mety.DM_NSX_CDD?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                        sb.AppendLine(X("DM_THUCTE_CDD", mety.DM_THUCTE_CDD?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                        sb.AppendLine(X("LIEU_BQ_PX", mety.LIEU_BQ_PX?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                        sb.AppendLine(X("TL_THUCTE_BQ_PX", mety.TL_THUCTE_BQ_PX?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
+                        sb.AppendLine(X("THANH_TIEN_THUOC", thanhTien == 0 ? null : thanhTien.ToString("F0"), 10));
+                        sb.AppendLine("        </TT_THUOCPX>");
+                        sttThuoc++;
+                    }
+                }
+                else
+                {
+                    sb.AppendLine("        <TT_THUOCPX/>");
                 }
                 sb.AppendLine("      </DS_THUOCPX>");
                 sb.AppendLine("    </DMDICHVUKBCB>");
