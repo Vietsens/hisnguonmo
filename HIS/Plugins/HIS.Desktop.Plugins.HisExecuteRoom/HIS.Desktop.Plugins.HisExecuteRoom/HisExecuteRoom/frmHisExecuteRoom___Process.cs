@@ -185,6 +185,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 room.IS_RESTRICT_REQ_SERVICE = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsRestrictReqService);
                 room.IS_ALLOW_NO_ICD = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsAllowNoICD);
                 room.IS_BLOCK_NUM_ORDER = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsBlockNumOrder);
+                room.IS_SPLIT_BY_PRIORITY = SelectedOptions.Any(RoomConfigOption.RoomConfigOption.Option.IsSplitByPriority);
                 if (spHoldOrder.EditValue != null)
                 {
                     room.HOLD_ORDER = (long)spHoldOrder.Value;

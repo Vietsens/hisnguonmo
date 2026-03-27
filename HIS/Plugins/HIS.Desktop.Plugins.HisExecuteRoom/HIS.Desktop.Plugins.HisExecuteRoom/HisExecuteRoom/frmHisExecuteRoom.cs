@@ -1145,6 +1145,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                             {
                                 txtHein_card_number.Text = "";
                             }
+                            selectedOptions.Add(Option.IsSplitByPriority, bhyt.IS_SPLIT_BY_PRIORITY);
+
                         }
                         else
                         {

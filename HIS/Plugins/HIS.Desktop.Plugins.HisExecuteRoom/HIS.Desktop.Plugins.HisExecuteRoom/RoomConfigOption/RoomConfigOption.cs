@@ -83,7 +83,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.RoomConfigOption
             IsSurgery,                  // Là phòng mổ.
             [Description("Phải duyệt mổ")]
             [ToolTipOption("Chỉ chọn được khi đã chọn <b>Là phòng mổ<b>")]
-            MustBeApprovedSurgery       // Phải duyệt mổ. chỉ enable nếu chọn "Là phòng mổ". Lưu thông tin vào MUST_BE_APPROVED_SURGERY
+            MustBeApprovedSurgery,      // Phải duyệt mổ. chỉ enable nếu chọn "Là phòng mổ". Lưu thông tin vào MUST_BE_APPROVED_SURGERY
+            [Description("Tách dãy ưu tiên")]
+            IsSplitByPriority           // Tách dãy ưu tiên. Lưu thông tin vào IS_SPLIT_BY_PRIORITY
         }
         private static string Description(this Enum value)
         {
