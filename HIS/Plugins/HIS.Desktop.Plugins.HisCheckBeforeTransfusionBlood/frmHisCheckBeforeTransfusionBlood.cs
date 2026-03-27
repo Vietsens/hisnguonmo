@@ -863,22 +863,10 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 data.TestTube = txtTestTube.Text;
                 data.TestTubeTwo = txtTestTubeTwo.Text;
 
-                if (cboSaltEnvi.EditValue != null)
-                {
-                    data.SaltEnvironment = Convert.ToInt64(cboSaltEnvi.EditValue);
-                }
-                if (cboAntiGlobulin.EditValue != null)
-                {
-                    data.AntiGlobulinEnvironment = Convert.ToInt64(cboAntiGlobulin.EditValue);
-                }
-                if (cboSaltEnviTwo.EditValue != null)
-                {
-                    data.SaltEnvironmentTwo = Convert.ToInt64(cboSaltEnviTwo.EditValue);
-                }
-                if (cboAntiGlobulinTwo.EditValue != null)
-                {
-                    data.AntiGlobulinEnvironmentTwo = Convert.ToInt64(cboAntiGlobulinTwo.EditValue);
-                }
+                data.SaltEnvironment = cboSaltEnvi.EditValue != null ? Convert.ToInt64(cboSaltEnvi.EditValue) : (long)0;
+                data.AntiGlobulinEnvironment = cboAntiGlobulin.EditValue != null ? Convert.ToInt64(cboAntiGlobulin.EditValue) : (long)0;
+                data.SaltEnvironmentTwo = cboSaltEnviTwo.EditValue != null ? Convert.ToInt64(cboSaltEnviTwo.EditValue) : (long)0;
+                data.AntiGlobulinEnvironmentTwo = cboAntiGlobulinTwo.EditValue != null ? Convert.ToInt64(cboAntiGlobulinTwo.EditValue) : (long)0;
                 data.AcSelfEnvidence = cboAC.EditValue != null ? (decimal?)cboAC.EditValue : null;
                 data.AcSelfEnvidenceSecond = cboAC2.EditValue != null ? (decimal?)cboAC2.EditValue : null;
                 currentDTO.ExpMestBloods.Add(data);
@@ -911,32 +899,37 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     txtScangelGelcard.Text = data.SCANGEL_GELCARD ?? "";
                     txtCoombs.Text = data.COOMBS ?? "";
 
-                    if (!String.IsNullOrWhiteSpace(data.TEST_TUBE)
-                        || !String.IsNullOrWhiteSpace(data.TEST_TUBE_TWO)
-                        || data.SALT_ENVI.HasValue
-                        || data.SALT_ENVI_TWO.HasValue
-                        || data.ANTI_GLOBULIN.HasValue
-                        || data.ANTI_GLOBULIN_TWO.HasValue)
+                    txtTestTube.Text = data.TEST_TUBE ?? "";
+                    txtTestTubeTwo.Text = data.TEST_TUBE_TWO ?? "";
+
+                    if (data.TUBE_SLOT == 1 || data.TUBE_SLOT == 2)
                     {
-                        txtTestTube.Text = data.TEST_TUBE ?? "";
-                        cboSaltEnvi.EditValue = data.SALT_ENVI ?? 0;
-                        cboAntiGlobulin.EditValue = data.ANTI_GLOBULIN ?? 0;
-
-
-                        txtTestTubeTwo.Text = data.TEST_TUBE_TWO ?? "";
-                        cboSaltEnviTwo.EditValue = data.SALT_ENVI_TWO ?? 0;
-                        cboAntiGlobulinTwo.EditValue = data.ANTI_GLOBULIN_TWO ?? 0;
+                        if (!String.IsNullOrWhiteSpace(data.TEST_TUBE)
+                            || !String.IsNullOrWhiteSpace(data.TEST_TUBE_TWO)
+                            || data.SALT_ENVI.HasValue
+                            || data.SALT_ENVI_TWO.HasValue
+                            || data.ANTI_GLOBULIN.HasValue
+                            || data.ANTI_GLOBULIN_TWO.HasValue)
+                        {
+                            cboSaltEnvi.EditValue = data.SALT_ENVI ?? 0;
+                            cboAntiGlobulin.EditValue = data.ANTI_GLOBULIN ?? 0;
+                            cboSaltEnviTwo.EditValue = data.SALT_ENVI_TWO ?? 0;
+                            cboAntiGlobulinTwo.EditValue = data.ANTI_GLOBULIN_TWO ?? 0;
+                        }
+                        else
+                        {
+                            cboSaltEnvi.EditValue = (long)5;
+                            cboAntiGlobulin.EditValue = (long)5;
+                            cboSaltEnviTwo.EditValue = (long)5;
+                            cboAntiGlobulinTwo.EditValue = (long)5;
+                        }
                     }
                     else
                     {
-                        txtTestTube.Text = data.TEST_TUBE ?? "";
-                        cboSaltEnvi.EditValue = (long)5;
-                        cboAntiGlobulin.EditValue = (long)5;
-
-
-                        txtTestTubeTwo.Text = data.TEST_TUBE_TWO ?? "";
-                        cboSaltEnviTwo.EditValue = (long)5;
-                        cboAntiGlobulinTwo.EditValue = (long)5;
+                        cboSaltEnvi.EditValue = null;
+                        cboAntiGlobulin.EditValue = null;
+                        cboSaltEnviTwo.EditValue = null;
+                        cboAntiGlobulinTwo.EditValue = null;
                     }
 
 
@@ -1436,6 +1429,75 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                 if (e.Button.Kind == ButtonPredefines.Delete)
                 {
                     cboAntiGlobulinTwo.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private bool IsTubeSlotValid()
+        {
+            return this.curentSelect != null && (this.curentSelect.TUBE_SLOT == 1 || this.curentSelect.TUBE_SLOT == 2);
+        }
+
+        private void cboSaltEnvi_QueryPopUp(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if (!IsTubeSlotValid())
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Chưa xác định được vị trí ống", "Thông báo");
+                    e.Cancel = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboAntiGlobulin_QueryPopUp(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if (!IsTubeSlotValid())
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Chưa xác định được vị trí ống", "Thông báo");
+                    e.Cancel = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboSaltEnviTwo_QueryPopUp(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if (!IsTubeSlotValid())
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Chưa xác định được vị trí ống", "Thông báo");
+                    e.Cancel = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboAntiGlobulinTwo_QueryPopUp(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if (!IsTubeSlotValid())
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Chưa xác định được vị trí ống", "Thông báo");
+                    e.Cancel = true;
                 }
             }
             catch (Exception ex)
@@ -2096,6 +2158,22 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
 
         #endregion
 
+        private void cboXNHH_QueryPopUp(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                if (!IsTubeSlotValid())
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Chưa xác định được vị trí ống", "Thông báo");
+                    e.Cancel = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void cboXNHH_EditValueChanged(object sender, EventArgs e)
         {
             try
@@ -2138,31 +2216,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
                     else
                         cboAntiGlobulinTwo.EditValue = null;
                 }
-                else
-                {
-                    // Không xác định được tube_slot → fill tất cả 4 combo
-                    if (saltIndex != null && !string.IsNullOrWhiteSpace(saltIndex.VALUE))
-                    {
-                        SetComboEnviValue(cboSaltEnvi, saltIndex.VALUE);
-                        SetComboEnviValue(cboSaltEnviTwo, saltIndex.VALUE);
-                    }
-                    else
-                    {
-                        cboSaltEnvi.EditValue = null;
-                        cboSaltEnviTwo.EditValue = null;
-                    }
-
-                    if (antiGlobulinIndex != null && !string.IsNullOrWhiteSpace(antiGlobulinIndex.VALUE))
-                    {
-                        SetComboEnviValue(cboAntiGlobulin, antiGlobulinIndex.VALUE);
-                        SetComboEnviValue(cboAntiGlobulinTwo, antiGlobulinIndex.VALUE);
-                    }
-                    else
-                    {
-                        cboAntiGlobulin.EditValue = null;
-                        cboAntiGlobulinTwo.EditValue = null;
-                    }
-                }
+                // tubeSlot không phải 1 hoặc 2 → không fill 4 combo
             }
             catch (Exception ex)
             {
