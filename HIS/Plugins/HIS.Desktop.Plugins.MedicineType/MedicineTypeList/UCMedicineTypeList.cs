@@ -135,7 +135,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
                     "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO",
-                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME", "DOSAGE_FORM", "DESCRIPTION", "IS_STOP_IMP"};
+                    "IS_LEAF", "IS_ACTIVE" ,"IS_BUSINESS", "IS_DRUG_STORE","LOCKING_REASON", "ALERT_EXPIRED_DATE", "ALERT_MIN_IN_STOCK", "PACKING_TYPE_NAME", "MEDICINE_LINE_NAME", "DOSAGE_FORM", "DESCRIPTION", "IS_STOP_IMP", "IS_NUTRITION_FOOD"};
                 filter.ColumnParams = ColnParams;
 
                 this.medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
@@ -183,7 +183,7 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                     "ACTIVE_INGR_BHYT_CODE", "CONCENTRA","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME" ,"REGISTER_NUMBER", "NATIONAL_NAME", "MANUFACTURER_NAME",
                     "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO", "LAST_EXP_PRICE", "LAST_EXP_VAT_RATIO", "PARENT_ID","MEDICINE_USE_FORM_CODE","MEDICINE_USE_FORM_NAME",
                     "MEDICINE_GROUP_NAME","BYT_NUM_ORDER", "HEIN_SERVICE_TYPE_NAME", "ATC_CODES", "HEIN_LIMIT_RATIO","IS_BUSINESS", "IS_DRUG_STORE", "DOSAGE_FORM", "DESCRIPTION",
-                    "IS_LEAF", "IS_ACTIVE", "IS_STOP_IMP" };
+                    "IS_LEAF", "IS_ACTIVE", "IS_STOP_IMP", "IS_NUTRITION_FOOD" };
                 filter.ColumnParams = colunmParam;
                 var medicineTypes = new BackendAdapter(param).Get<List<V_HIS_MEDICINE_TYPE>>(HisRequestUri.HIS_MEDICINE_TYPE_GetViewDynamic, ApiConsumers.MosConsumer, filter, param);
                 if (mediStock != null && mediStock.IS_BUSINESS == 1 && mediStock.IS_SHOW_DRUG_STORE == 1)
@@ -422,65 +422,71 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                 medicineGroupNameCol.VisibleIndex = 11;
                 ado.MedicineTypeColumns.Add(medicineGroupNameCol);
 
+                //Column thuc pham dinh duong
+                MedicineTypeColumn nutritionFoodCol = new MedicineTypeColumn("Th\u1ef1c ph\u1ea9m dinh d\u01b0\u1ee1ng", "IS_NUTRITION_FOOD_BOOL", 120, false);
+                nutritionFoodCol.VisibleIndex = 12;
+                nutritionFoodCol.UnboundColumnType = DevExpress.XtraTreeList.Data.UnboundColumnType.Boolean;
+                ado.MedicineTypeColumns.Add(nutritionFoodCol);
+
                 //Column STT(TT40)
                 MedicineTypeColumn bytNumOrderCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_BYT_NUM_ORDER2", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "BYT_NUM_ORDER", 100, false);
-                bytNumOrderCol.VisibleIndex = 12;
+                bytNumOrderCol.VisibleIndex = 13;
                 ado.MedicineTypeColumns.Add(bytNumOrderCol);
 
                 //Column nhóm BHYT
                 MedicineTypeColumn heinServiceBHYTNameCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_HEIN_SERVICE_TYPE_NAME", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "HEIN_SERVICE_TYPE_NAME", 130, false);
-                heinServiceBHYTNameCol.VisibleIndex = 13;
+                heinServiceBHYTNameCol.VisibleIndex = 14;
                 ado.MedicineTypeColumns.Add(heinServiceBHYTNameCol);
 
                 //Column mã ATC
                 MedicineTypeColumn atcCodesCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_ATC_CODES", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ATC_CODES", 70, false);
-                atcCodesCol.VisibleIndex = 14;
+                atcCodesCol.VisibleIndex = 15;
                 ado.MedicineTypeColumns.Add(atcCodesCol);
 
                 //Column tỷ lệ BHYT
                 MedicineTypeColumn heinLimitRatioCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_HEIN_LIMIT_RATIO", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "HEIN_LIMIT_RATIO_STR", 120, false);
-                heinLimitRatioCol.VisibleIndex = 15;
+                heinLimitRatioCol.VisibleIndex = 16;
                 ado.MedicineTypeColumns.Add(heinLimitRatioCol);
 
 
                 //Column số đăng ký
                 MedicineTypeColumn registerNumberNameCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_REGISTER_NUMBER", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "REGISTER_NUMBER", 120, false);
-                registerNumberNameCol.VisibleIndex = 16;
+                registerNumberNameCol.VisibleIndex = 17;
                 ado.MedicineTypeColumns.Add(registerNumberNameCol);
 
                 //Column dạng bào chế
                 MedicineTypeColumn DosageForm = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_DOSAGE_FORM", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "DOSAGE_FORM", 120, false);
-                DosageForm.VisibleIndex = 17;
+                DosageForm.VisibleIndex = 18;
                 ado.MedicineTypeColumns.Add(DosageForm);
 
                 //Column quốc gia
                 MedicineTypeColumn nationalNameCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_NATIONAL_NAME", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "NATIONAL_NAME", 100, false);
-                nationalNameCol.VisibleIndex = 18;
+                nationalNameCol.VisibleIndex = 19;
                 ado.MedicineTypeColumns.Add(nationalNameCol);
 
                 //Column hãng sản xuất
                 MedicineTypeColumn manufacturerNameCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_MANUFACTURER_NAME", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MANUFACTURER_NAME", 120, false);
-                manufacturerNameCol.VisibleIndex = 19;
+                manufacturerNameCol.VisibleIndex = 20;
                 ado.MedicineTypeColumns.Add(manufacturerNameCol);
 
                 //Column ghi chú
                 MedicineTypeColumn Description = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_DESCRIPTION", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "DESCRIPTION", 120, false);
-                Description.VisibleIndex = 20;
+                Description.VisibleIndex = 21;
                 ado.MedicineTypeColumns.Add(Description);
 
                 //Column Lý do khóa
                 MedicineTypeColumn lockingReasonCol = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_LOOKINGREASON", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "LOCKING_REASON", 120, false);
-                lockingReasonCol.VisibleIndex = 21;
+                lockingReasonCol.VisibleIndex = 22;
                 ado.MedicineTypeColumns.Add(lockingReasonCol);
                 //Column giá nhập
 
                 MedicineTypeColumn importPrice = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_IMPORT_PRICE", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IMPORT_PRICE", 100, false);
-                importPrice.VisibleIndex = 22;
+                importPrice.VisibleIndex = 23;
                 importPrice.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TOOLTIP1", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.MedicineTypeColumns.Add(importPrice);
                 //Column giá bán
                 MedicineTypeColumn exportPrice = new MedicineTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_EXPORT_PRICE", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "EXPORT_PRICE", 100, false);
-                exportPrice.VisibleIndex = 23;
+                exportPrice.VisibleIndex = 24;
                 exportPrice.ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDICINE_TYPE__TREE_MEDICINE_TYPE__COLUMN_TOOLTIP2", ResourceLangManager.LanguageUCMedicineType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 ado.MedicineTypeColumns.Add(exportPrice);
 
@@ -581,6 +587,11 @@ namespace HIS.Desktop.Plugins.MedicineType.MedicineTypeList
                                 e.Value = data.HEIN_LIMIT_RATIO * 100;
 
                             }
+                        }
+                        if (e.Column.FieldName == "IS_NUTRITION_FOOD_BOOL")
+                        {
+                            if (data == null) return;
+                            e.Value = (data.IS_NUTRITION_FOOD == 1);
                         }
                     }
                 }
