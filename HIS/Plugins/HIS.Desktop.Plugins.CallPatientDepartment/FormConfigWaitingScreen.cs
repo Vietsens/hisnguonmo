@@ -125,11 +125,12 @@ namespace HIS.Desktop.Plugins.CallPatientDepartment
                                     ado.ROOM_CODE = item.BED_ROOM_CODE;
                                     ado.ROOM_NAME = item.BED_ROOM_NAME;
                                     ado.ID = item.ROOM_ID;
+                                    ado.CategoryChoose = 1;
 
                                     if (item.ROOM_ID == currentRoom.ID)
                                     {
                                         ado.IsCheck = true;
-                                        ado.CategoryChoose = 1;
+                                        
                                         ListRoom.Insert(index, ado);
                                         index++;
                                     }
@@ -146,10 +147,11 @@ namespace HIS.Desktop.Plugins.CallPatientDepartment
                                 ado.ROOM_CODE = item.EXECUTE_ROOM_CODE;
                                 ado.ROOM_NAME = item.EXECUTE_ROOM_NAME;
                                 ado.ID = item.ROOM_ID;
+                                ado.CategoryChoose = 2;
                                 if (item.ROOM_ID == currentRoom.ID)
                                 {
                                     ado.IsCheck = true;
-                                    ado.CategoryChoose = 2;
+                                    
                                     ListRoom.Insert(index, ado);
                                     index++;
                                 }

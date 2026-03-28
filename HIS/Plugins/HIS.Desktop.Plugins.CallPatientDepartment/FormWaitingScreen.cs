@@ -80,6 +80,11 @@ namespace HIS.Desktop.Plugins.CallPatientDepartment
                 //  InitColumn();
                 SetFromConfigToControl();
 
+                //cac cot duoc phep an
+                foreach (DevExpress.XtraGrid.Columns.GridColumn col in gridView1.Columns)
+                {
+                    col.OptionsColumn.AllowShowHide = true;
+                }
                 FillDataToGridControl();
 
                 //timerReload.Interval = 30000;
