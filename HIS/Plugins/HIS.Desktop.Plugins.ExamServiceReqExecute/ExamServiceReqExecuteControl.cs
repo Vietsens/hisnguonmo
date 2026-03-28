@@ -3479,6 +3479,16 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         totalSubIcd.AddRange(stringArray.Where(x => !string.IsNullOrEmpty(x)));
                     }
                 }
+                var duplicateIcds = totalIcd.Intersect(totalSubIcd).ToList();
+                if (duplicateIcds.Count > 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Mã chẩn đoán phụ không được trùng với mã chẩn đoán chính (" + string.Join(", ", duplicateIcds) + "). Vui lòng kiểm tra lại!",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return false;
+                }
                 //totalIcdScreen.Add(txtIcdCode.Text);
                 //totalIcdScreen.Add(txtIcdSubCode.Text);
                 //totalIcdScreen.Add(IcdCodeYHCT);
@@ -6706,6 +6716,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             try
             {
                 isNotProcessWhileChangedTextSubIcd = true;
+                List<string> mainIcdCodes = new List<string>();
+                if (!string.IsNullOrEmpty(txtIcdCode.Text))
+                {
+                    mainIcdCodes.AddRange(txtIcdCode.Text.Split(';').Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim().ToLower()));
+                }
                 // Tách danh sách hiện tại
                 List<string> oldCodes = txtIcdSubCode.Text?
                     .Split(new[] { IcdUtil.seperator }, StringSplitOptions.RemoveEmptyEntries).ToList()
@@ -6723,6 +6738,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     bool exists = oldCodes.Any(x => x.Equals(item.ICD_CODE, StringComparison.OrdinalIgnoreCase));
                     if (item.IsChecked)
                     {
+                        if (mainIcdCodes.Contains(item.ICD_CODE.ToLower()))
+                        {
+                            DevExpress.XtraEditors.XtraMessageBox.Show(string.Format("Mã chẩn đoán phụ ({0}) không được trùng với chẩn đoán chính. Vui lòng chọn mã khác!", item.ICD_CODE), "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            item.IsChecked = false; // Xóa tick
+                            continue;
+                        }
                         // Nếu tick → thêm vào cuối nếu chưa tồn tại
                         if (!exists)
                         {
