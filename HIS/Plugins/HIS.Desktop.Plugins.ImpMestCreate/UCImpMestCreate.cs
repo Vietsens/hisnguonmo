@@ -3882,7 +3882,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
         private void repositoryItemBtnEdit_ButtonClick(object sender, ButtonPressedEventArgs e)
         {
-            try
+            try 
             {
                 this.currrentServiceAdo = (VHisServiceADO)gridViewImpMestDetail.GetFocusedRow();
                 if (this.currrentServiceAdo != null)
@@ -4024,6 +4024,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
 
                                 V_HIS_BID_MEDICINE_TYPE bidMediType = new V_HIS_BID_MEDICINE_TYPE();
 
+                                
+
                                 if (this.currentBid != null && this._dicMedicineTypes != null && this._dicMedicineTypes.ContainsKey(this.currentBid.ID))
                                 {
                                     bidMediType = this._dicMedicineTypes[this.currentBid.ID].FirstOrDefault(p => p.MEDICINE_TYPE_ID == this.currrentServiceAdo.MEDI_MATE_ID && p.BID_GROUP_CODE == this.currrentServiceAdo.TDL_BID_GROUP_CODE);
@@ -4037,6 +4039,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 if (bidMediType != null && bidMediType.ID > 0)
                                 {
                                     spinCanImpAmount.Value = bidMediType.AMOUNT - (bidMediType.IN_AMOUNT ?? 0) + (bidMediType.AMOUNT * bidMediType.IMP_MORE_RATIO ?? 0) + (currrentServiceAdo.ADJUST_AMOUNT ?? 0);
+                                    txtTtthau.Text = bidMediType.TT_THAU ?? listMedicineType.FirstOrDefault(o => o.ID == bidMediType.MEDICINE_TYPE_ID)?.TT_THAU;
                                 }
                             }
                             else if (xtraTabControlMain.SelectedTabPage == xtraTabPageMaterial)
@@ -4047,11 +4050,13 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 materialProcessor.SetEditValueBid(this.ucMaterialTypeTree, this.currrentServiceAdo.BidId);
 
                                 V_HIS_BID_MATERIAL_TYPE bidMateType = new V_HIS_BID_MATERIAL_TYPE();
+
+                                
+
                                 if (this._dicMaterialTypes != null && this._dicMaterialTypes.ContainsKey(this.currentBid.ID))
                                 {
                                     bidMateType = this._dicMaterialTypes[this.currentBid.ID].FirstOrDefault(p => p.MATERIAL_TYPE_ID == currrentServiceAdo.MEDI_MATE_ID && p.BID_GROUP_CODE == currrentServiceAdo.TDL_BID_GROUP_CODE);
                                 }
-
                                 if (this.currrentServiceAdo.MAP_MEDI_MATE_ID.HasValue && this._dicMaterialTypes != null && this._dicMaterialTypes.ContainsKey(this.currentBid.ID))
                                 {
                                     bidMateType = this._dicMaterialTypes[this.currentBid.ID].FirstOrDefault(p => p.MATERIAL_TYPE_ID == currrentServiceAdo.MAP_MEDI_MATE_ID && p.BID_GROUP_CODE == this.currrentServiceAdo.TDL_BID_GROUP_CODE);
@@ -4085,6 +4090,8 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                     }
 
                                 }
+
+                                txtTtthau.Text = bidMateType.TT_THAU ?? listMaterialType.FirstOrDefault(o => o.ID == bidMateType.MATERIAL_TYPE_ID)?.TT_THAU;
                             }
                         }
                         else
