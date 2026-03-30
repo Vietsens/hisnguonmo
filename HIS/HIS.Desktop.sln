@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36717.8 d17.14
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11312.210 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop", "HIS.Desktop\HIS.Desktop.csproj", "{8207ACB0-A325-42C6-97CB-FB54AE1AE6B8}"
 EndProject
@@ -1186,6 +1186,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.HisMaterialTypeMap", "Plugins\HIS.Desktop.Plugins.HisMaterialTypeMap\HIS.Desktop.Plugins.HisMaterialTypeMap.csproj", "{4F62882D-C0FF-4465-8074-F54FB527E83E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.HisMachineInspection", "Plugins\HIS.Desktop.Plugins.HisMachineInspection\HIS.Desktop.Plugins.HisMachineInspection.csproj", "{EB947B35-0656-44AF-A696-7369FE461E44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HIS.Desktop.Plugins.CallPatientDepartmentV1", "Plugins\HIS.Desktop.Plugins.CallPatientDepartmentV1\HIS.Desktop.Plugins.CallPatientDepartmentV1.csproj", "{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -4757,6 +4759,14 @@ Global
 		{EB947B35-0656-44AF-A696-7369FE461E44}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EB947B35-0656-44AF-A696-7369FE461E44}.Release|x86.ActiveCfg = Release|Any CPU
 		{EB947B35-0656-44AF-A696-7369FE461E44}.Release|x86.Build.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Debug|x86.Build.0 = Debug|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x86.ActiveCfg = Release|Any CPU
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -5339,6 +5349,7 @@ Global
 		{BE07BB42-C0A4-4F56-AF4F-B15BCC357831} = {F0A3A437-E7FB-45E6-82EB-5F8568460C1D}
 		{4F62882D-C0FF-4465-8074-F54FB527E83E} = {5A9EE6FF-254D-45F0-A36E-394DB7CD61F3}
 		{EB947B35-0656-44AF-A696-7369FE461E44} = {5A9EE6FF-254D-45F0-A36E-394DB7CD61F3}
+		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890} = {BB1D5763-BBF0-48DD-AD7D-8C0544674941}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B8CBF9E-8615-4AF0-9894-C15CB4B6FC6B}
