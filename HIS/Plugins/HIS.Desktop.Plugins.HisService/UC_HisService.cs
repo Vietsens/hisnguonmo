@@ -7961,15 +7961,9 @@ namespace HIS.Desktop.Plugins.HisService
                 if (serviceIds == null || serviceIds.Count == 0)
                     return new List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY>();
 
-                CommonParam param = new CommonParam();
-                MOS.Filter.HisServicePatyFilter filter = new MOS.Filter.HisServicePatyFilter();
-                filter.SERVICE_IDs = serviceIds;
-                filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-
-                var result = new BackendAdapter(param)
-                    .Get<List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY>>(
-                        "api/HisServicePaty/GetView",
-                        ApiConsumers.MosConsumer, filter, null);
+                var result = BackendDataWorker.Get<V_HIS_SERVICE_PATY>()
+                    .Where(p => serviceIds.Contains(p.SERVICE_ID) && p.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
 
                 return result ?? new List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY>();
             }
@@ -7981,26 +7975,25 @@ namespace HIS.Desktop.Plugins.HisService
         }
 
         private string BuildXmlTT12(
-      List<MOS.EFMODEL.DataModels.V_HIS_SERVICE> services,
-      List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY> listMety,
-      List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY> listPaty,
-      string maCskcb)
+    List<MOS.EFMODEL.DataModels.V_HIS_SERVICE> services,
+    List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY> listMety,
+    List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_PATY> listPaty,
+    string maCskcb)
         {
             var sb = new StringBuilder();
             sb.AppendLine("<HSDANHMUC xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
             sb.AppendLine("  <DANHSACH_DMDICHVUKBCB Id=\"Id-" + Guid.NewGuid() + "\">");
             List<V_HIS_MEDICINE_TYPE> lstMedicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().ToList();
             int stt = 1;
-            V_HIS_SERVICE_PATY paty = new V_HIS_SERVICE_PATY();
-            
+
             foreach (var svc in services)
             {
                 var metyOfSvc = listMety.Where(m => m.SERVICE_ID == svc.ID).ToList();
-                paty = listPaty
-                        .Where(p => p.SERVICE_ID == svc.ID && p.PATIENT_TYPE_ID == 1)
-                        .OrderByDescending(p => p.MODIFY_TIME ?? p.CREATE_TIME)
-                        .FirstOrDefault();
-                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("paty:", paty));
+                var paty = listPaty
+                    .Where(p => p.SERVICE_ID == svc.ID && p.PATIENT_TYPE_ID == 1)
+                    .OrderByDescending(p => p.MODIFY_TIME ?? p.CREATE_TIME)
+                    .FirstOrDefault();
+
                 decimal sumThuoc = metyOfSvc.Sum(m =>
                 {
                     if (m.LIEU_BQ_PX != null && m.LIEU_BQ_PX != 0 && m.TL_THUCTE_BQ_PX != null && m.TL_THUCTE_BQ_PX != 0)
@@ -8009,34 +8002,28 @@ namespace HIS.Desktop.Plugins.HisService
                         return (m.EXPEND_PRICE ?? 0) * (m.DM_THUCTE_CDD ?? 0);
                     return 0;
                 });
+
                 decimal giaTT = 0;
-                decimal donGia = svc.HEIN_LIMIT_PRICE ?? svc.HEIN_LIMIT_PRICE_OLD ?? 0;
                 if (svc.HEIN_LIMIT_PRICE.HasValue && svc.HEIN_LIMIT_PRICE.Value > 0)
-                {
                     giaTT = svc.HEIN_LIMIT_PRICE.Value;
-                }
                 else if (svc.HEIN_LIMIT_PRICE_OLD.HasValue && svc.HEIN_LIMIT_PRICE_OLD.Value > 0)
-                {
                     giaTT = svc.HEIN_LIMIT_PRICE_OLD.Value;
-                }
                 else if (paty != null)
-                {
-                        giaTT = paty.PRICE; 
-                }
-                Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("paty:", giaTT));
-                string tuNgay = ""; 
-                tuNgay = (svc.HEIN_LIMIT_PRICE != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
-                                 ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME) : (paty != null ? FormatTimeNumber(paty.FROM_TIME) : "");
-                //if (string.IsNullOrEmpty(tuNgay)) FormatTimeNumber(paty.TREATMENT_FROM_TIME);
-                string denNgay = ""; 
-                denNgay = (svc.HEIN_LIMIT_PRICE_OLD != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
-                                 ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME) : (paty != null ? FormatTimeNumber(paty.TO_TIME) : "");
+                    giaTT = paty.PRICE;
+
+                string tuNgay = (svc.HEIN_LIMIT_PRICE != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
+                    ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME)
+                    : (paty != null ? FormatTimeNumber(paty.FROM_TIME) : "");
+
+                string denNgay = (svc.HEIN_LIMIT_PRICE_OLD != null && svc.HEIN_LIMIT_PRICE_IN_TIME != null)
+                    ? FormatTimeNumber(svc.HEIN_LIMIT_PRICE_IN_TIME)
+                    : (paty != null ? FormatTimeNumber(paty.TO_TIME) : "");
 
                 sb.AppendLine("    <DMDICHVUKBCB>");
                 sb.AppendLine(X("STT", stt.ToString(), 6));
                 sb.AppendLine(X("MA_DICH_VU", svc.HEIN_SERVICE_BHYT_CODE, 6));
                 sb.AppendLine(X("TEN_DICH_VU", svc.HEIN_SERVICE_BHYT_NAME, 6));
-                sb.AppendLine(X("TEN_DVKT_GIA", svc.TEN_DVKT_GIA, 6));
+                sb.AppendLine(X("TEN_DVKT_GIA", !string.IsNullOrEmpty(svc.TEN_DVKT_GIA) ? svc.TEN_DVKT_GIA : svc.HEIN_SERVICE_BHYT_NAME, 6));
                 sb.AppendLine(X("DON_GIA", (giaTT - sumThuoc).ToString("F0"), 6));
                 sb.AppendLine(X("QUY_TRINH", svc.PROCESS_CODE, 6));
                 sb.AppendLine(X("SO_LUONG_CGKT", svc.SO_LUONG_CGKT?.ToString(), 6));
@@ -8050,9 +8037,7 @@ namespace HIS.Desktop.Plugins.HisService
                 sb.AppendLine(X("MA_CSKCB", maCskcb, 6));
                 sb.AppendLine(X("GIA_THANH_TOAN", giaTT == 0 ? null : giaTT.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 6));
 
-                // Luôn mở thẻ DS_THUOCPX
                 sb.AppendLine("      <DS_THUOCPX>");
-
                 if (metyOfSvc.Count > 0)
                 {
                     int sttThuoc = 1;
@@ -8064,12 +8049,15 @@ namespace HIS.Desktop.Plugins.HisService
                         else if (mety.DM_THUCTE_CDD != null)
                             thanhTien = (mety.EXPEND_PRICE ?? 0) * (mety.DM_THUCTE_CDD ?? 0);
 
+                        // Fix: thêm ?. tránh NullReferenceException khi không tìm thấy medicine type
+                        string donViTinh = lstMedicineType?.FirstOrDefault(o => o.ID == mety.MEDICINE_TYPE_ID)?.SERVICE_UNIT_CODE ?? "";
+
                         sb.AppendLine("        <TT_THUOCPX>");
                         sb.AppendLine(X("STT", sttThuoc.ToString(), 10));
                         sb.AppendLine(X("MA_THUOC", mety.MEDICINE_TYPE_CODE, 10));
                         sb.AppendLine(X("TEN_THUOC", mety.MEDICINE_TYPE_NAME, 10));
                         sb.AppendLine(X("SO_DANG_KY", mety.REGISTER_NUMBER, 10));
-                    sb.AppendLine(X("DON_VI_TINH", lstMedicineType != null ? lstMedicineType.FirstOrDefault(o=> o.ID == mety.MEDICINE_TYPE_ID).SERVICE_UNIT_CODE : "" , 10));
+                        sb.AppendLine(X("DON_VI_TINH", donViTinh, 10));
                         sb.AppendLine(X("TT_THAU", mety.TT_THAU, 10));
                         sb.AppendLine(X("DON_GIA_THUOC", mety.EXPEND_PRICE?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
                         sb.AppendLine(X("DM_NSX_CDD", mety.DM_NSX_CDD?.ToString("F0", System.Globalization.CultureInfo.InvariantCulture), 10));
