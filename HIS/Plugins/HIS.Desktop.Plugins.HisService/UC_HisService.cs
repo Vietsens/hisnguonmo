@@ -7981,6 +7981,7 @@ namespace HIS.Desktop.Plugins.HisService
     string maCskcb)
         {
             var sb = new StringBuilder();
+            sb.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
             sb.AppendLine("<HSDANHMUC xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">");
             sb.AppendLine("  <DANHSACH_DMDICHVUKBCB Id=\"Id-" + Guid.NewGuid() + "\">");
             List<V_HIS_MEDICINE_TYPE> lstMedicineType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().ToList();
@@ -8071,6 +8072,19 @@ namespace HIS.Desktop.Plugins.HisService
                 }
                 else
                 {
+                    sb.AppendLine("        <TT_THUOCPX>");
+                    sb.AppendLine(X("STT", null, 10));
+                    sb.AppendLine(X("MA_THUOC", null, 10));
+                    sb.AppendLine(X("TEN_THUOC", null, 10));
+                    sb.AppendLine(X("SO_DANG_KY", null, 10));
+                    sb.AppendLine(X("DON_VI_TINH", null, 10));
+                    sb.AppendLine(X("TT_THAU", null, 10));
+                    sb.AppendLine(X("DON_GIA_THUOC", null, 10));
+                    sb.AppendLine(X("DM_NSX_CDD", null, 10));
+                    sb.AppendLine(X("DM_THUCTE_CDD", null, 10));
+                    sb.AppendLine(X("LIEU_BQ_PX", null, 10));
+                    sb.AppendLine(X("TL_THUCTE_BQ_PX", null, 10));
+                    sb.AppendLine(X("THANH_TIEN_THUOC", null, 10));
                     sb.AppendLine("        <TT_THUOCPX/>");
                 }
                 sb.AppendLine("      </DS_THUOCPX>");
