@@ -21,6 +21,7 @@ using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Base;
+using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using HIS.Desktop.ADO;
 using HIS.Desktop.ApiConsumer;
@@ -196,6 +197,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.3");
                 InitTypeFind();
                 InitComboSucKhoe();
+                InitComboWorkShift();
                 LoadActionButtonRefesh(true);
                 Inventec.Common.Logging.LogSystem.Debug("UCExecuteRoom_Load.4");
                 this.InitControlState();
@@ -3442,6 +3444,55 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 }
             }
         }
+
+        private void cboWorkShift_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)
+        {
+            try
+            {
+                var gridView = cboWorkShift.Properties.View as GridView;
+                if (gridView == null) return;
+
+                int[] selectedRows = gridView.GetSelectedRows();
+
+                // Không chọn gì → "Tất cả"
+                if (selectedRows == null || selectedRows.Length == 0)
+                {
+                    e.DisplayText = "Tất cả";
+                    return;
+                }
+
+                var dataSource = cboWorkShift.Properties.DataSource as List<WorkingShiftADO>;
+                if (dataSource == null) return;
+
+                // Chọn tất cả → "Tất cả"
+                if (selectedRows.Length == dataSource.Count)
+                {
+                    e.DisplayText = "Tất cả";
+                    return;
+                }
+
+                // Hiển thị danh sách ca đã chọn
+                StringBuilder sb = new StringBuilder();
+                foreach (int rowHandle in selectedRows)
+                {
+                    if (rowHandle < 0) continue; // Skip group rows
+
+                    var shift = gridView.GetRow(rowHandle) as WorkingShiftADO;
+                    if (shift != null)
+                    {
+                        if (sb.Length > 0) sb.Append(", ");
+                        sb.Append(shift.WORKING_SHIFT_NAME);
+                    }
+                }
+
+                e.DisplayText = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
 
         private void txtTreatmentCode_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {

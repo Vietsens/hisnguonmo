@@ -1545,7 +1545,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.cboSaltEnvi.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboSaltEnvi_Closed);
             this.cboSaltEnvi.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboSaltEnvi_ButtonClick);
             this.cboSaltEnvi.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboSaltEnvi_PreviewKeyDown);
-            this.cboSaltEnvi.QueryPopUp += new System.ComponentModel.CancelEventHandler(this.cboSaltEnvi_QueryPopUp);
             //
             // cboAntiGlobulin
             // 
@@ -1565,7 +1564,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.cboAntiGlobulin.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboAntiGlobulin_Closed);
             this.cboAntiGlobulin.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboAntiGlobulin_ButtonClick);
             this.cboAntiGlobulin.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboAntiGlobulin_PreviewKeyDown);
-            this.cboAntiGlobulin.QueryPopUp += new System.ComponentModel.CancelEventHandler(this.cboAntiGlobulin_QueryPopUp);
             //
             // cboSaltEnviTwo
             // 
@@ -1585,7 +1583,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.cboSaltEnviTwo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboSaltEnviTwo_Closed);
             this.cboSaltEnviTwo.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboSaltEnviTwo_ButtonClick);
             this.cboSaltEnviTwo.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboSaltEnviTwo_PreviewKeyDown);
-            this.cboSaltEnviTwo.QueryPopUp += new System.ComponentModel.CancelEventHandler(this.cboSaltEnviTwo_QueryPopUp);
             //
             // cboAntiGlobulinTwo
             // 
@@ -1605,7 +1602,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.cboAntiGlobulinTwo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboAntiGlobulinTwo_Closed);
             this.cboAntiGlobulinTwo.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboAntiGlobulinTwo_ButtonClick);
             this.cboAntiGlobulinTwo.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboAntiGlobulinTwo_PreviewKeyDown);
-            this.cboAntiGlobulinTwo.QueryPopUp += new System.ComponentModel.CancelEventHandler(this.cboAntiGlobulinTwo_QueryPopUp);
             // 
             // cboAC
             // 
@@ -1711,7 +1707,6 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.cboXNHH.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboXNHH_ButtonClick);
             this.cboXNHH.EditValueChanged += new System.EventHandler(this.cboXNHH_EditValueChanged);
             this.cboXNHH.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboXNHH_PreviewKeyDown);
-            this.cboXNHH.QueryPopUp += new System.ComponentModel.CancelEventHandler(this.cboXNHH_QueryPopUp);
             // 
             // gridView36
             // 
