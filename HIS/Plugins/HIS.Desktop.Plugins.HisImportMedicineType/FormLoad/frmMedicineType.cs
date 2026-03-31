@@ -240,6 +240,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                                     && string.IsNullOrEmpty(item.PARENT_CODE)
                                     && string.IsNullOrEmpty(item.STAR_MARK)
                                     && string.IsNullOrEmpty(item.FUNCTIONAL_FOOD)
+                                    && string.IsNullOrEmpty(item.NUTRITION_FOOD)
                                     && string.IsNullOrEmpty(item.MEDICINE_TYPE_PROPRIETARY_NAME)
                                     && string.IsNullOrEmpty(item.TUTORIAL)
                                     && string.IsNullOrEmpty(item.ACTIVE_INGR_BHYT_CODE)
@@ -684,6 +685,17 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         catch (Exception ex)
                         {
                             Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay sua FUNCTIONAL_FOOD_STR", ex);
+                        }
+                    }
+                    else if (e.Column.FieldName == "IS_NUTRITION_FOOD_STR")
+                    {
+                        try
+                        {
+                            e.Value = pData.IS_NUTRITION_FOOD == 1 ? true : false;
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Warn("Loi set gia tri cho cot ngay sua IS_NUTRITION_FOOD", ex);
                         }
                     }
                     else if (e.Column.FieldName == "STAR_MARK_STR")
@@ -1325,6 +1337,19 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         {
                             error += string.Format(Message.MessageImport.KhongHopLe, "Là thực phẩm chức năng");
                             mediAdo.FUNCTIONAL_FOOD_ERROR = 1;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(item.NUTRITION_FOOD))
+                    {
+                        if (item.NUTRITION_FOOD.Trim().ToLower() == "x")
+                        {
+                            mediAdo.IS_NUTRITION_FOOD = 1;
+                        }
+                        else
+                        {
+                            error += string.Format(Message.MessageImport.KhongHopLe, "Là thực phẩm dinh dưỡng");
+                            mediAdo.NUTRITION_FOOD_ERROR = 1;
                         }
                     }
 
@@ -2236,6 +2261,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                         error += string.Format(Message.MessageImport.ThieuTruongDL, "Dạng dùng");
                         mediAdo.MEDICINE_USE_FORM_CODE_ERROR = 1;
                     }
+                    bool isNutritionFood = mediAdo.IS_NUTRITION_FOOD == 1;
 
                     if (!string.IsNullOrEmpty(item.MEDICINE_LINE_CODE))
                     {
@@ -2268,6 +2294,11 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.FormLoad
                             error += string.Format(Message.MessageImport.KhongHopLe, "Dòng thuốc");
                             mediAdo.MEDICINE_LINE_CODE_ERROR = 1;
                         }
+                    }
+                    else if (!isNutritionFood)
+                    {
+                        error += string.Format(Message.MessageImport.ThieuTruongDL, "Dòng thuốc");
+                        mediAdo.MEDICINE_LINE_CODE_ERROR = 1;
                     }
 
                     if (!string.IsNullOrEmpty(item.ALERT_MAX_IN_TREATMENT_STR))
