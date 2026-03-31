@@ -1545,7 +1545,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.cboSaltEnvi.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboSaltEnvi_Closed);
             this.cboSaltEnvi.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboSaltEnvi_ButtonClick);
             this.cboSaltEnvi.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboSaltEnvi_PreviewKeyDown);
-            // 
+            //
             // cboAntiGlobulin
             // 
             this.cboAntiGlobulin.Location = new System.Drawing.Point(666, 487);
@@ -1564,7 +1564,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.cboAntiGlobulin.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboAntiGlobulin_Closed);
             this.cboAntiGlobulin.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboAntiGlobulin_ButtonClick);
             this.cboAntiGlobulin.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboAntiGlobulin_PreviewKeyDown);
-            // 
+            //
             // cboSaltEnviTwo
             // 
             this.cboSaltEnviTwo.Location = new System.Drawing.Point(382, 515);
@@ -1583,7 +1583,7 @@ namespace HIS.Desktop.Plugins.HisCheckBeforeTransfusionBlood
             this.cboSaltEnviTwo.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboSaltEnviTwo_Closed);
             this.cboSaltEnviTwo.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboSaltEnviTwo_ButtonClick);
             this.cboSaltEnviTwo.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.cboSaltEnviTwo_PreviewKeyDown);
-            // 
+            //
             // cboAntiGlobulinTwo
             // 
             this.cboAntiGlobulinTwo.Location = new System.Drawing.Point(665, 515);

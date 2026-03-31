@@ -8308,6 +8308,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 // 2. Tự động mở popup ngay khi editor được activate (cả click chuột lẫn bàn phím).
                 //    Dùng ShownEditor thay vì ShowingEditor/MouseDown timer để chỉ mở đúng 1 lần.
                 this.gridViewServiceProcess.ShownEditor += gridViewServiceProcess_ShownEditor;
+
+                // 3. Sau khi chọn giường xong, tự động focus vào cột ShareCount để ô số nằm ghép hiển thị luôn.
+                this.repositoryItemGridLookUpEditBed.Closed += repositoryItemGridLookUpEditBed_Closed;
             }
             catch (Exception ex)
             {
@@ -9579,6 +9582,47 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemGridLookUpEditBed_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                // Chỉ xử lý khi user thực sự chọn một giá trị
+                if (e.CloseMode != DevExpress.XtraEditors.PopupCloseMode.Normal
+                    && e.CloseMode != DevExpress.XtraEditors.PopupCloseMode.Immediate)
+                    return;
+
+                int rowHandle = this.gridViewServiceProcess.FocusedRowHandle;
+                if (rowHandle < 0) return;
+
+                // BeginInvoke để đợi grid commit BED_CODE xong rồi mới chuyển focus
+                this.BeginInvoke(new Action(() =>
+                {
+                    try
+                    {
+                        if (this.IsDisposed || this.gridViewServiceProcess == null) return;
+
+                        var shareCountCol = this.gridViewServiceProcess.Columns["ShareCount"];
+                        if (shareCountCol == null || !shareCountCol.Visible) return;
+
+                        if (this.gridViewServiceProcess.IsEditing)
+                            this.gridViewServiceProcess.CloseEditor();
+
+                        this.gridViewServiceProcess.FocusedRowHandle = rowHandle;
+                        this.gridViewServiceProcess.FocusedColumn = shareCountCol;
+                        this.gridViewServiceProcess.ShowEditor();
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+                }));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
     }

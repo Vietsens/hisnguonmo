@@ -1686,7 +1686,8 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 examServiceReqUpdateSDO.HospitalizationReason = !string.IsNullOrEmpty(txtHospitalizationReason.Text.Trim()) ? txtHospitalizationReason.Text.Trim() : null;
                 examServiceReqUpdateSDO.FullExam = !string.IsNullOrEmpty(txtKhamToanThan.Text.Trim()) ? txtKhamToanThan.Text.Trim() : null;
                 examServiceReqUpdateSDO.PartExam = !string.IsNullOrEmpty(txtKhamBoPhan.Text.Trim()) ? txtKhamBoPhan.Text.Trim() : null;
-                examServiceReqUpdateSDO.ProvisionalDiagnosis = !string.IsNullOrEmpty(txtProvisionalDianosis.Text.Trim()) ? txtProvisionalDianosis.Text.Trim() : null;
+                //examServiceReqUpdateSDO.ProvisionalDiagnosis = !string.IsNullOrEmpty(txtProvisionalDianosis.Text.Trim()) ? txtProvisionalDianosis.Text.Trim() : null;
+                examServiceReqUpdateSDO.ProvisionalDiagnosis = txtProvisionalDianosis.Text.Trim();
                 examServiceReqUpdateSDO.PartExamCirculation = !string.IsNullOrEmpty(txtTuanHoan.Text.Trim()) ? txtTuanHoan.Text.Trim() : null;
                 examServiceReqUpdateSDO.PartExamDigestion = !string.IsNullOrEmpty(txtTieuHoa.Text.Trim()) ? txtTieuHoa.Text.Trim() : null;
                 examServiceReqUpdateSDO.PartExamEar = !string.IsNullOrEmpty(txtTai.Text.Trim()) ? txtTai.Text.Trim() : null;//TODO
@@ -2299,35 +2300,42 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     }
 
+                    //if (serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                    //{
+                    //    if (currentTreatmentExt == null || string.IsNullOrEmpty(this.currentTreatmentExt.CLINICAL_NOTE))
+                    //    {
+                    //        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalSigns = txtPathologicalProcess.Text.Trim();
+                    //    }
+                    //    else
+                    //    {
+                    //        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalSigns = treatment.CLINICAL_SIGNS;
+                    //    }
+
+                    //    if (currentTreatmentExt == null || string.IsNullOrEmpty(this.currentTreatmentExt.SUBCLINICAL_RESULT))
+                    //    {
+                    //        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
+
+                    //    }
+                    //    else
+                    //    {
+                    //        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = this.currentTreatmentExt.SUBCLINICAL_RESULT;
+                    //    }
+
+                    //    if (string.IsNullOrEmpty(treatment.TREATMENT_METHOD))
+                    //    {
+                    //        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
+                    //    }
+                    //    else
+                    //    {
+                    //        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatment.TREATMENT_METHOD;
+                    //    }
+                    //}
+
                     if (serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentEndTypeId != IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
                     {
-                        if (currentTreatmentExt == null || string.IsNullOrEmpty(this.currentTreatmentExt.CLINICAL_NOTE))
-                        {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalSigns = txtPathologicalProcess.Text.Trim();
-                        }
-                        else
-                        {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalSigns = treatment.CLINICAL_SIGNS;
-                        }
-
-                        if (currentTreatmentExt == null || string.IsNullOrEmpty(this.currentTreatmentExt.SUBCLINICAL_RESULT))
-                        {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
-
-                        }
-                        else
-                        {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = this.currentTreatmentExt.SUBCLINICAL_RESULT;
-                        }
-
-                        if (string.IsNullOrEmpty(treatment.TREATMENT_METHOD))
-                        {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
-                        }
-                        else
-                        {
-                            serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = treatment.TREATMENT_METHOD;
-                        }
+                        serviceReqUpdateSDO.TreatmentFinishSDO.ClinicalSigns = txtPathologicalProcess.Text.Trim();
+                        serviceReqUpdateSDO.TreatmentFinishSDO.SubclinicalResult = txtSubclinical.Text.Trim();
+                        serviceReqUpdateSDO.TreatmentFinishSDO.TreatmentMethod = txtTreatmentInstruction.Text.Trim();
                     }
                 }
                 //else

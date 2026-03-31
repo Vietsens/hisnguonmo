@@ -93,16 +93,15 @@ namespace HIS.Desktop.Common.BankQrCode
                             {
                                 XtraMessageBox.Show(param.GetMessage());
                                 return null;
-                            }
-
+                            } 
                         }
-                    }
 
-                    if (data != null && !string.IsNullOrEmpty(data.QR_TEXT))
-                    {
-                        configValue = new List<HIS_CONFIG>();
-                        configValue.Add(new HIS_CONFIG() { KEY = "DYNAMIC", VALUE = data.QR_TEXT });
-                        IsQrDynamic = true;
+                        if (data != null && !string.IsNullOrEmpty(data.QR_TEXT))
+                        {
+                            configValue = new List<HIS_CONFIG>();
+                            configValue.Add(new HIS_CONFIG() { KEY = "DYNAMIC", VALUE = data.QR_TEXT });
+                            IsQrDynamic = true;
+                        }
                     }
                 }
                 #endregion

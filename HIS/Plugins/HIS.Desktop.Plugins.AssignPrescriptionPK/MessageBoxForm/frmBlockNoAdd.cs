@@ -93,6 +93,7 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.MessageBoxForm
             {
                 if(ActionContinue != null)
                 {
+                    this.Text = "Cảnh báo thận trọng";
                     layoutControlItem4.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     btnN.Text = "Không";
                 }

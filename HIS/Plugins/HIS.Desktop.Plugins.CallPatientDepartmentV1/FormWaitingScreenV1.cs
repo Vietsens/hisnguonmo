@@ -161,6 +161,8 @@ namespace HIS.Desktop.Plugins.CallPatientDepartmentV1
                         gridControl1.BeginUpdate();
                         gridControl1.DataSource = result;
                         gridControl1.EndUpdate();
+                        countOldList = result.Count;
+                        gridView1.RefreshData();    
                     }
                 }
 
