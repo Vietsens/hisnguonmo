@@ -114,5 +114,15 @@ namespace MPS.Processor.Mps000321
         internal const string TOTAL_PRICE_NT = "TOTAL_PRICE_NT";
         internal const string TOTAL_PRICE_NGT = "TOTAL_PRICE_NGT";
         internal const string TOTAL_PRICE_GUARANTEE = "TOTAL_PRICE_GUARANTEE";
+        internal const string TOTAL_PRICE_DISCOUNT = "TOTAL_PRICE_DISCOUNT";
+        internal const string TOTAL_PRICE_IN_PACKAGE = "TOTAL_PRICE_IN_PACKAGE";
+        internal const string TOTAL_PRICE_OUT_PACKAGE = "TOTAL_PRICE_OUT_PACKAGE";
+        internal const string TOTAL_REFUND_AMOUNT = "TOTAL_REFUND_AMOUNT";
+        internal const string TOTAL_REFUND_AMOUNT_TEXT = "TOTAL_REFUND_AMOUNT_TEXT";
+        internal const string TOTAL_ADDITIONAL_PAYMENT = "TOTAL_ADDITIONAL_PAYMENT";
+        internal const string TOTAL_ADDITIONAL_PAYMENT_TEXT = "TOTAL_ADDITIONAL_PAYMENT_TEXT";
+        internal const string TOTAL_BALANCE = "TOTAL_BALANCE";
+        internal const string TOTAL_BALANCE_TEXT = "TOTAL_BALANCE_TEXT";
+        internal const string LABEL_BALANCE = "LABEL_BALANCE";
     }
 }
