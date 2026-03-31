@@ -28,6 +28,8 @@ using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
 using His.Bhyt.ExportXml.Base;
+using His.Bhyt.InsuranceExpertise;
+using His.Bhyt.InsuranceExpertise.LDO;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
@@ -67,6 +69,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -98,6 +101,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
 
         List<HIS_TREATMENT_TYPE> _DienDieuTriSelecteds;
         List<V_HIS_ROOM> _EndRoomSelecteds;
+        List<BatchCheckResult> _pendingBatchResults = null;
         List<HIS_DEPARTMENT> _EndDepartmentSelecteds;
         List<HIS_DEPARTMENT> DepartmentSelecteds;
         List<KieuBenhNhanADO> _KieuBenhNhanSelecteds;
@@ -191,6 +195,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 WaitingManager.Show();
                 HisConfigCFG.LoadConfig();
+                BHXHLoginCFG.LoadConfig();
                 isLoadForm = true;
                 SetCaptionByLanguageKey();
                 InitTypeFind();
@@ -3401,6 +3406,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                 }
                 var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(listTreatment, this.currentModule != null ? this.currentModule.RoomId : 0);
                 PrintServiceReqProcessor.previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                PrintServiceReqProcessor.IsGroupTreatmentList = true;
                 PrintServiceReqProcessor.Print("Mps000276", true);
             }
             catch (Exception ex)
@@ -3788,6 +3794,166 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private async void btnCheckHeinBatch_Click(object sender, EventArgs e)
+        {
+            var btn = sender as DevExpress.XtraEditors.SimpleButton;
+            string defaultText = btn != null ? btn.Text : "Kiểm tra BHYT";
+            try
+            {
+                if (string.IsNullOrWhiteSpace(BHXHLoginCFG.ADDRESS))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Chưa cấu hình địa chỉ cổng BHXH (HIS.CHECK_HEIN_CARD.BHXH__ADDRESS).", "Thông báo", MessageBoxButtons.OK);
+                    return;
+                }
+
+                var rowHandles = gridViewtreatmentList.GetSelectedRows();
+                if (rowHandles == null || rowHandles.Length == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Vui lòng chọn ít nhất 1 hồ sơ", "Thông báo", MessageBoxButtons.OK);
+                    return;
+                }
+
+                List<V_HIS_TREATMENT_4> selected = new List<V_HIS_TREATMENT_4>();
+                foreach (var i in rowHandles)
+                {
+                    var row = (V_HIS_TREATMENT_4)gridViewtreatmentList.GetRow(i);
+                    if (row != null) selected.Add(row);
+                }
+
+                var withCard = selected.Where(t => !string.IsNullOrWhiteSpace(t.TDL_HEIN_CARD_NUMBER)).ToList();
+                if (withCard == null || withCard.Count == 0)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Không có hồ sơ nào có thông tin thẻ BHYT", "Thông báo", MessageBoxButtons.OK);
+                    return;
+                }
+
+                var conf = DevExpress.XtraEditors.XtraMessageBox.Show(
+                    "Kiểm tra BHYT cho nhiều hồ sơ cùng lúc có thể bị khóa tài khoản kiểm tra trên cổng. Bạn có muốn tiếp tục?",
+                    "Xác nhận",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button2);
+                if (conf != DialogResult.Yes) return;
+
+                if (btn != null)
+                {
+                    btn.Enabled = false;
+                    btn.Text = $"Đang kiểm tra... (0/{withCard.Count})";
+                    btn.Refresh();
+                }
+
+                List<BatchCheckResult> results = new List<BatchCheckResult>();
+                ApiInsuranceExpertise apiInsuranceExpertise = new ApiInsuranceExpertise();
+                apiInsuranceExpertise.ApiEgw = BHXHLoginCFG.API_EGW;
+
+                int index = 0;
+                foreach (var treatment in withCard)
+                {
+                    index++;
+                    CheckHistoryLDO checkHistoryLDO = new CheckHistoryLDO();
+                    checkHistoryLDO.maThe = treatment.TDL_HEIN_CARD_NUMBER;
+                    checkHistoryLDO.hoTen = treatment.TDL_PATIENT_NAME;
+                    checkHistoryLDO.hoTenCb = !string.IsNullOrEmpty(BHXHLoginCFG.NAME_CB) ? BHXHLoginCFG.NAME_CB : this.loginName;
+                    checkHistoryLDO.cccdCb = BHXHLoginCFG.CCCD_CB ?? "";
+                    try
+                    {
+                        checkHistoryLDO.ngaySinh = Inventec.Common.DateTime.Convert.TimeNumberToDateString(treatment.TDL_PATIENT_DOB);
+                    }
+                    catch
+                    {
+                        checkHistoryLDO.ngaySinh = treatment.TDL_PATIENT_DOB.ToString();
+                    }
+
+                    ResultHistoryLDO re = null;
+                    string msg = "";
+                    string note = "";
+                    try
+                    {
+                        re = await apiInsuranceExpertise.CheckHistory(BHXHLoginCFG.USERNAME, BHXHLoginCFG.PASSWORD, BHXHLoginCFG.ADDRESS, checkHistoryLDO, BHXHLoginCFG.ADDRESS_OPTION);
+                        if (re != null)
+                        {
+                            msg = re.message ?? (re.success ? "Thẻ hợp lệ" : "Không hợp lệ");
+                            note = re.ghiChu ?? "";
+                        }
+                        else
+                        {
+                            msg = "Không có dữ liệu trả về từ cổng BHYT";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        msg = $"Lỗi: {ex.Message}";
+                        Inventec.Common.Logging.LogSystem.Warn(ex);
+                    }
+
+                    results.Add(new BatchCheckResult
+                    {
+                        ROWNUM = index,
+                        TREATMENT_CODE = treatment.TREATMENT_CODE,
+                        TDL_PATIENT_NAME = treatment.TDL_PATIENT_NAME,
+                        TDL_PATIENT_DOB = Inventec.Common.DateTime.Convert.TimeNumberToDateString(treatment.TDL_PATIENT_DOB),
+                        TDL_HEIN_CARD_NUMBER = treatment.TDL_HEIN_CARD_NUMBER,
+                        Message = msg,
+                        Note = note
+                    });
+
+                    // Cập nhật trực tiếp – sau await đã về UI thread, không cần BeginInvoke
+                    if (btn != null)
+                    {
+                        btn.Text = $"Đang kiểm tra... ({index}/{withCard.Count})";
+                        btn.Refresh();
+                    }
+
+                    await Task.Delay(50);
+                }
+
+                if (btn != null)
+                {
+                    btn.Enabled = true;
+                    btn.Text = defaultText;
+                    btn.Refresh();
+                }
+
+                ShowBatchResults(results);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                if (btn != null) { btn.Enabled = true; btn.Text = defaultText; btn.Refresh(); }
+                DevExpress.XtraEditors.XtraMessageBox.Show("Xử lý thất bại: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void ShowBatchResults(List<BatchCheckResult> results)
+        {
+            if (!this.Visible)
+            {
+                _pendingBatchResults = results;
+                this.VisibleChanged += UCTreatmentList_VisibleChanged_BatchResult;
+                return;
+            }
+            try
+            {
+                using (var frm = new Popup.frmCheckBHYT(results))
+                {
+                    frm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+                DevExpress.XtraEditors.XtraMessageBox.Show("Không thể hiển thị kết quả: " + ex.Message);
+            }
+        }
+
+        private void UCTreatmentList_VisibleChanged_BatchResult(object sender, EventArgs e)
+        {
+            if (!this.Visible) return;
+            this.VisibleChanged -= UCTreatmentList_VisibleChanged_BatchResult;
+            var results = _pendingBatchResults;
+            _pendingBatchResults = null;
+            if (results != null) ShowBatchResults(results);
         }
     }
 }
