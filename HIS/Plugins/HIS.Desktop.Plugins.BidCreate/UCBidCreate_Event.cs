@@ -327,6 +327,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.bidModel.HIS_BID_MATERIAL_TYPE = new List<MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE>();
                 this.bidModel.HIS_BID_MEDICINE_TYPE = new List<MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE>();
                 this.bidModel.BID_NAME = txtBidName.Text.Trim();
+                //long selectedBidTypeId = Inventec.Common.TypeConvert.Parse.ToInt64(cboBidType.EditValue.ToString());
                 if (cboBidForm.EditValue != null)
                     this.bidModel.BID_FORM_ID = Int64.Parse(cboBidForm.EditValue.ToString());
                 this.bidModel.BID_EXTRA_CODE = txtBID.Text.Trim();
@@ -1066,6 +1067,16 @@ namespace HIS.Desktop.Plugins.BidCreate
                             (o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64((cboBidType.EditValue ?? 0).ToString()));
                         if (data != null)
                         {
+                            //long bidTypeId = data.ID;
+                            //if (bidTypeId == 3 || bidTypeId == 4 || bidTypeId == 5 || bidTypeId == 7)
+                            //{
+                            //    cboBidForm.EditValue = null;
+                            //    cboBidForm.Enabled = false;
+                            //}
+                            //else
+                            //{
+                            //    cboBidForm.Enabled = true;
+                            //}
                             txtBidYear.Focus();
                             txtBidYear.SelectAll();
                         }

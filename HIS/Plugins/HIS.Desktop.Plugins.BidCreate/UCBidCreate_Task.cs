@@ -79,7 +79,10 @@ namespace HIS.Desktop.Plugins.BidCreate
 					lstBidForm.Add(new ADO.BidFormADO() { ID = 3, CODE = "03", NAME = "Chỉ định thầu" });
 					lstBidForm.Add(new ADO.BidFormADO() { ID = 4, CODE = "04", NAME = "Chào hàng cạnh tranh" });
 					lstBidForm.Add(new ADO.BidFormADO() { ID = 5, CODE = "05", NAME = "Mua sắm trực tiếp" });
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 6, CODE = "06", NAME = "Khác" });
+					lstBidForm.Add(new ADO.BidFormADO() { ID = 6, CODE = "06", NAME = "Lựa chọn nhà thầu trong trường hợp đặc biệt" });
+					lstBidForm.Add(new ADO.BidFormADO() { ID = 7, CODE = "07", NAME = "Đàm phán giá" });
+					lstBidForm.Add(new ADO.BidFormADO() { ID = 8, CODE = "08", NAME = "Chào giá trực tuyến" });
+					lstBidForm.Add(new ADO.BidFormADO() { ID = 9, CODE = "09", NAME = "Mua sắm trực tuyến" });
 				};
 				Task task = new Task(myaction);
 				task.Start();

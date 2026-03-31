@@ -56,6 +56,15 @@ namespace HIS.Desktop.Plugins.BidCreate
                             {
                                 cboBidType.EditValue = bidType.ID;
                             }
+                            var bidFormCode = ImpMestListProcessor.First().BID_FORM_CODE;
+                            if (!string.IsNullOrWhiteSpace(bidFormCode))
+                            {
+                                var bidForm = lstBidForm.FirstOrDefault(o => o.CODE == bidFormCode.Trim());
+                                if (bidForm != null)
+                                {
+                                    cboBidForm.EditValue = bidForm.ID;
+                                }
+                            }
                             this.ListMedicineTypeAdoProcess = new List<ADO.MedicineTypeADO>();
                             var listMedicine = ImpMestListProcessor.Where(o => !String.IsNullOrWhiteSpace(o.IS_MEDICINE) && o.IS_MEDICINE.Trim().ToLower() == Base.GlobalConfig.IsMedicine.ToLower()).ToList();
                             var listMaterial = ImpMestListProcessor.Where(o => String.IsNullOrWhiteSpace(o.IS_MEDICINE)&&o.IsNotNullRow).ToList();
