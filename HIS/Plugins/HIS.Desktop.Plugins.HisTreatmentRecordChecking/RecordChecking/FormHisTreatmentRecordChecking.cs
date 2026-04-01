@@ -18,7 +18,9 @@
 using ACS.EFMODEL.DataModels;
 using DevExpress.Data;
 using DevExpress.Utils;
+using DevExpress.XtraBars;
 using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraGrid.Views.Base;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Views.Grid.ViewInfo;
@@ -54,6 +56,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 
 namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
 {
@@ -99,6 +102,9 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
         public static HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         public static List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         bool IsLoadFirstForm = true;
+
+        List<V_EMR_SIGN> lstVEmrSign = new List<V_EMR_SIGN>();
+        Dictionary<long, V_EMR_SIGN> dicVEmrSign = new Dictionary<long, V_EMR_SIGN>();
         #endregion
 
         public FormHisTreatmentRecordChecking()
@@ -874,9 +880,33 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => ListTypeId), ListTypeId)
                         + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => documents), documents));
 
+                List<long> Id = documents.Select(s => s.ID).ToList();
+                this.GetDicEmrSign(Id);
+
                 Gc_EmrDocument.BeginUpdate();
                 Gc_EmrDocument.DataSource = documents;
                 Gc_EmrDocument.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void GetDicEmrSign(List<long> lstDocumentId)
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                EmrSignViewFilter filter = new EmrSignViewFilter();
+
+                filter.DOCUMENT_IDs = lstDocumentId;
+                var datas = new BackendAdapter(paramCommon).Get<List<V_EMR_SIGN>>("api/EmrSign/GetView", ApiConsumers.EmrConsumer, filter, paramCommon) ?? new List<V_EMR_SIGN>();
+
+                if (datas != null && datas.Count > 0)
+                {
+                    dicVEmrSign = datas.ToDictionary(x => x.ID, x => x);
+                }
             }
             catch (Exception ex)
             {
@@ -1126,7 +1156,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                         inputADO.DocumentName = row.DOCUMENT_NAME;//Tên văn bản cần tạo
 
                         inputADO.DlgOpenModuleConfig = OpenSignConfig;
-                        if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))
+                        if (!String.IsNullOrWhiteSpace(temFile) && System.IO.File.Exists(temFile))
                         {
                             libraryProcessor.ShowPopup(temFile, inputADO);
                             BtnSearch_Click(null,null);
@@ -1136,7 +1166,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                             XtraMessageBox.Show("Không xác định được văn bản ký");
                         }
 
-                        if (File.Exists(temFile)) File.Delete(temFile);
+                        if (System.IO.File.Exists(temFile)) System.IO.File.Delete(temFile);
                     }
                     else
                     {
@@ -1281,7 +1311,7 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                             try
                             {
                                 int index = item.LastIndexOf("#@!@#");
-                                signer = item.Substring(index + 5, 10) + " - bệnh nhân ký";//Mã bệnh nhân
+                                signer = item.Substring(index + 5, 10) + " - bệnh nhân ký";//Mã bệnh nhân 
                             }
                             catch (Exception)
                             {
@@ -1292,7 +1322,14 @@ namespace HIS.Desktop.Plugins.HisTreatmentRecordChecking.RecordChecking
                         else
                         {
                             var user = BackendDataWorker.Get<ACS.EFMODEL.DataModels.ACS_USER>().Where(o => o.LOGINNAME.Trim() == item.Trim()).FirstOrDefault();
-                            signer = String.Format("{0}{1}", item, user != null ? (" - " + user.USERNAME) : "");
+                            if (user != null)
+                            {
+                                signer = String.Format("{0}{1}", item, user != null ? (" - " + user.USERNAME) : "");
+                            }
+                            else
+                            {
+                                signer = dicVEmrSign[long.Parse(item)].FLOW_CODE + " - " + dicVEmrSign[long.Parse(item)].FLOW_NAME;
+                            }
                         }
                         listStr.Add(signer);
                     }

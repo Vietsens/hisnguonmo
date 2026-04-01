@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.Patient
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCListPatient));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -160,12 +161,12 @@ namespace HIS.Desktop.Plugins.Patient
             this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.txtCCCD = new DevExpress.XtraEditors.TextEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
-            this.imageCollection2 = new DevExpress.Utils.ImageCollection();
+            this.imageCollection2 = new DevExpress.Utils.ImageCollection(this.components);
             this.cboCSTheoDoi = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtPatientName = new DevExpress.XtraEditors.TextEdit();
@@ -429,7 +430,6 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn1.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.gridColumn1.Caption = "STT";
             this.gridColumn1.FieldName = "STT";
-            //this.gridColumn1.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn1.ImageAlignment = System.Drawing.StringAlignment.Far;
             this.gridColumn1.Name = "gridColumn1";
             this.gridColumn1.OptionsColumn.AllowEdit = false;
@@ -443,7 +443,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn2.Caption = "Xem thông tin thẻ BHYT";
             this.gridColumn2.ColumnEdit = this.ButtonEditHeinCardInfo;
-            //this.gridColumn2.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn2.Image = ((System.Drawing.Image)(resources.GetObject("gridColumn2.Image")));
             this.gridColumn2.ImageAlignment = System.Drawing.StringAlignment.Center;
             this.gridColumn2.Name = "gridColumn2";
@@ -465,7 +464,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn33.Caption = "Theo dõi";
             this.gridColumn33.FieldName = "FOLLOW_STR";
-            //this.gridColumn33.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn33.Name = "gridColumn33";
             this.gridColumn33.OptionsColumn.ShowCaption = false;
             this.gridColumn33.UnboundType = DevExpress.Data.UnboundColumnType.Object;
@@ -477,7 +475,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn23.Caption = "Sửa thông tin bệnh nhân";
             this.gridColumn23.ColumnEdit = this.btnGPatientEdit;
-            //this.gridColumn23.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn23.Image = ((System.Drawing.Image)(resources.GetObject("gridColumn23.Image")));
             this.gridColumn23.ImageAlignment = System.Drawing.StringAlignment.Center;
             this.gridColumn23.Name = "gridColumn23";
@@ -499,7 +496,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn27.Caption = "In thẻ bệnh nhân";
             this.gridColumn27.ColumnEdit = this.btnPrintPatientCard;
-            //this.gridColumn27.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn27.Name = "gridColumn27";
             this.gridColumn27.OptionsColumn.ShowCaption = false;
             this.gridColumn27.Visible = true;
@@ -519,7 +515,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn24.Caption = "Chương trình";
             this.gridColumn24.ColumnEdit = this.btnPatientProgram;
-            //this.gridColumn24.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn24.Image = ((System.Drawing.Image)(resources.GetObject("gridColumn24.Image")));
             this.gridColumn24.ImageAlignment = System.Drawing.StringAlignment.Center;
             this.gridColumn24.Name = "gridColumn24";
@@ -542,7 +537,6 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn32.Caption = "Thông tin bệnh nhân";
             this.gridColumn32.ColumnEdit = this.rbtnHisPatient;
             this.gridColumn32.FieldName = "HisPatient";
-            //this.gridColumn32.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn32.Name = "gridColumn32";
             this.gridColumn32.OptionsColumn.ShowCaption = false;
             this.gridColumn32.UnboundType = DevExpress.Data.UnboundColumnType.Object;
@@ -563,7 +557,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn34.Caption = "Cấp UUID thất bại";
             this.gridColumn34.FieldName = "IS_CREATE_UUID_FAIL_STR";
-            //this.gridColumn34.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn34.Name = "gridColumn34";
             this.gridColumn34.OptionsColumn.AllowEdit = false;
             this.gridColumn34.OptionsColumn.ShowCaption = false;
@@ -577,7 +570,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn35.Caption = "Cập nhật thẻ BHYT cho UUID thất bại";
             this.gridColumn35.FieldName = "IS_UPDATE_UUID_FAIL_STR";
-            //this.gridColumn35.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn35.Name = "gridColumn35";
             this.gridColumn35.OptionsColumn.AllowEdit = false;
             this.gridColumn35.OptionsColumn.ShowCaption = false;
@@ -591,7 +583,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn3.Caption = "Mã bệnh nhân";
             this.gridColumn3.FieldName = "PATIENT_CODE";
-            //this.gridColumn3.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn3.Name = "gridColumn3";
             this.gridColumn3.OptionsColumn.ReadOnly = true;
             this.gridColumn3.Visible = true;
@@ -602,7 +593,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn31.Caption = "Số lưu trữ";
             this.gridColumn31.FieldName = "PATIENT_STORE_CODE";
-            //this.gridColumn31.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn31.Name = "gridColumn31";
             this.gridColumn31.OptionsColumn.AllowEdit = false;
             this.gridColumn31.Visible = true;
@@ -613,7 +603,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn4.Caption = "Tên bệnh nhân";
             this.gridColumn4.FieldName = "VIR_PATIENT_NAME";
-            //this.gridColumn4.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn4.Name = "gridColumn4";
             this.gridColumn4.OptionsColumn.ReadOnly = true;
             this.gridColumn4.Visible = true;
@@ -624,7 +613,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn6.Caption = "Giới tính";
             this.gridColumn6.FieldName = "IS_MALE_DISPLAY1";
-            //this.gridColumn6.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn6.Name = "gridColumn6";
             this.gridColumn6.OptionsColumn.AllowEdit = false;
             this.gridColumn6.Visible = true;
@@ -635,7 +623,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn5.Caption = "Ngày sinh";
             this.gridColumn5.FieldName = "DOB_DISPLAY";
-            //this.gridColumn5.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn5.Name = "gridColumn5";
             this.gridColumn5.OptionsColumn.AllowEdit = false;
             this.gridColumn5.Visible = true;
@@ -646,7 +633,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn41.Caption = "CCCD/CMND/ Hộ chiếu";
             this.gridColumn41.FieldName = "CCCD_CMND_PASSPORT";
-            //this.gridColumn41.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn41.Name = "gridColumn41";
             this.gridColumn41.UnboundType = DevExpress.Data.UnboundColumnType.String;
             this.gridColumn41.Visible = true;
@@ -656,7 +642,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn42.Caption = "Ngày cấp";
             this.gridColumn42.FieldName = "CCCD_CMND_PASSPORT_DATE";
-            //this.gridColumn42.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn42.Name = "gridColumn42";
             this.gridColumn42.UnboundType = DevExpress.Data.UnboundColumnType.String;
             this.gridColumn42.Visible = true;
@@ -666,7 +651,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn43.Caption = "Nơi cấp";
             this.gridColumn43.FieldName = "CCCD_CMND_PASSPORT_PLACE";
-            //this.gridColumn43.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn43.Name = "gridColumn43";
             this.gridColumn43.UnboundType = DevExpress.Data.UnboundColumnType.String;
             this.gridColumn43.Visible = true;
@@ -676,7 +660,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn15.Caption = "Điện thoại";
             this.gridColumn15.FieldName = "PHONE";
-            //this.gridColumn15.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn15.Name = "gridColumn15";
             this.gridColumn15.OptionsColumn.AllowEdit = false;
             this.gridColumn15.Visible = true;
@@ -687,7 +670,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn40.Caption = "Số thẻ BHYT";
             this.gridColumn40.FieldName = "TDL_HEIN_CARD_NUMBER";
-            //this.gridColumn40.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn40.Name = "gridColumn40";
             this.gridColumn40.OptionsColumn.ReadOnly = true;
             this.gridColumn40.Visible = true;
@@ -698,7 +680,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn44.Caption = "Mã đăng ký KCB ban đầu";
             this.gridColumn44.FieldName = "TDL_HEIN_MEDI_ORG_CODE";
-            //this.gridColumn44.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn44.Name = "gridColumn44";
             this.gridColumn44.Visible = true;
             this.gridColumn44.VisibleIndex = 20;
@@ -707,7 +688,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn13.Caption = "Nghề nghiệp";
             this.gridColumn13.FieldName = "CAREER_NAME";
-            //this.gridColumn13.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn13.Name = "gridColumn13";
             this.gridColumn13.OptionsColumn.AllowEdit = false;
             this.gridColumn13.Visible = true;
@@ -718,7 +698,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn14.Caption = "Nơi làm việc";
             this.gridColumn14.FieldName = "WORK_PLACE_NAME";
-            //this.gridColumn14.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn14.Name = "gridColumn14";
             this.gridColumn14.Visible = true;
             this.gridColumn14.VisibleIndex = 22;
@@ -728,7 +707,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn10.Caption = "Địa chỉ";
             this.gridColumn10.FieldName = "VIR_ADDRESS";
-            //this.gridColumn10.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn10.Name = "gridColumn10";
             this.gridColumn10.OptionsColumn.ReadOnly = true;
             this.gridColumn10.Visible = true;
@@ -739,7 +717,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn9.Caption = "Xã phường";
             this.gridColumn9.FieldName = "COMMUNE_NAME";
-            //this.gridColumn9.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn9.Name = "gridColumn9";
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.Visible = true;
@@ -750,7 +727,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn7.Caption = "Tỉnh thành";
             this.gridColumn7.FieldName = "PROVINCE_NAME";
-            //this.gridColumn7.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn7.Name = "gridColumn7";
             this.gridColumn7.OptionsColumn.AllowEdit = false;
             this.gridColumn7.Visible = true;
@@ -761,7 +737,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn11.Caption = "Quốc tịch";
             this.gridColumn11.FieldName = "NATIONAL_NAME";
-            //this.gridColumn11.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn11.Name = "gridColumn11";
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.Visible = true;
@@ -772,7 +747,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn39.Caption = "Mã BHXH";
             this.gridColumn39.FieldName = "SOCIAL_INSURANCE_NUMBER_STR";
-            //this.gridColumn39.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn39.Name = "gridColumn39";
             this.gridColumn39.Visible = true;
             this.gridColumn39.VisibleIndex = 27;
@@ -782,7 +756,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn30.Caption = "Mã y tế";
             this.gridColumn30.FieldName = "PERSON_CODE";
-            //this.gridColumn30.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn30.Name = "gridColumn30";
             this.gridColumn30.OptionsColumn.AllowEdit = false;
             this.gridColumn30.UnboundType = DevExpress.Data.UnboundColumnType.Object;
@@ -794,7 +767,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn16.Caption = "Tên người thân";
             this.gridColumn16.FieldName = "RELATIVE_NAME";
-            //this.gridColumn16.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn16.Name = "gridColumn16";
             this.gridColumn16.OptionsColumn.AllowEdit = false;
             this.gridColumn16.Visible = true;
@@ -835,7 +807,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn25.Caption = "Danh sách yêu cầu";
             this.gridColumn25.ColumnEdit = this.btnListReq;
-            //this.gridColumn25.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn25.Name = "gridColumn25";
             this.gridColumn25.OptionsColumn.ShowCaption = false;
             this.gridColumn25.Width = 20;
@@ -854,7 +825,6 @@ namespace HIS.Desktop.Plugins.Patient
             this.gridColumn26.Caption = "Gán bệnh nhân chương trình";
             this.gridColumn26.ColumnEdit = this.btnCreatePatientProgram;
             this.gridColumn26.FieldName = "PATIENT_PROGRAM";
-            //this.gridColumn26.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn26.Name = "gridColumn26";
             this.gridColumn26.OptionsColumn.ShowCaption = false;
             this.gridColumn26.Width = 20;
@@ -872,7 +842,6 @@ namespace HIS.Desktop.Plugins.Patient
             // 
             this.gridColumn28.Caption = "Lịch sử tác động";
             this.gridColumn28.ColumnEdit = this.Btn_EvenLog;
-            //this.gridColumn28.Fixed = DevExpress.XtraGrid.Columns.FixedStyle.Left;
             this.gridColumn28.Name = "gridColumn28";
             this.gridColumn28.OptionsColumn.ShowCaption = false;
             this.gridColumn28.Width = 20;

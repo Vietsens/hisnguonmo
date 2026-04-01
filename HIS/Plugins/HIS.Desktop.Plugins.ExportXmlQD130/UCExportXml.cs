@@ -97,6 +97,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         List<HIS_EKIP_USER> ListEkipUser = new List<HIS_EKIP_USER>();
         List<V_HIS_BED_LOG> ListBedlog = new List<V_HIS_BED_LOG>();
         List<HIS_DEBATE> ListDebates = new List<HIS_DEBATE>();
+        List<HIS_EXP_MEDIMATE_USED> ListExpMedimateUsed = new List<HIS_EXP_MEDIMATE_USED>();
         List<TreatmentImportADO> listTreatmentImport;
 
         internal string filterType__IN = "Trong DS đầu thẻ BHYT sau:";
@@ -1083,6 +1084,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         ListMedicalAssessment = new List<V_HIS_MEDICAL_ASSESSMENT>();
                         ListHivTreatment = new List<HIS_HIV_TREATMENT>();
                         ListTuberculosisTreat = new List<HIS_TUBERCULOSIS_TREAT>();
+                        ListExpMedimateUsed = new List<HIS_EXP_MEDIMATE_USED>();
                         string message = "";
                         isExportXml = true;
                         //qtcode
@@ -1094,7 +1096,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         {
                             isNotFileSign = true;
                             //qtcode
-                            message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat, isXML3176);
+                            message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat, ListExpMedimateUsed, isXML3176);
                         }
                         else
                         {
@@ -1107,13 +1109,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 else
                                 {
                                     isNotFileSign = true;
-                                    message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat, isXML3176);
+                                    message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat, ListExpMedimateUsed, isXML3176);
                                 }
                             }
                             else
                             {
                                 isNotFileSign = false;
-                                message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat, isXML3176);
+                                message = ProcessExportXmlDetail(ref result, ref memoryStream, ref memoryStreamXml12, viewXml, xuatXmlTT, xuatXml12, HisTreatments, ListPatientTypeAlter, ListSereServ, ListDhst, HisSereServTeins, HisTrackings, HisSereServPttts, ListEkipUser, ListBedlog, ListDebates, ListBaby, ListMedicalAssessment, ListHivTreatment, HisSereServSuin, ListTuberculosisTreat, ListExpMedimateUsed, isXML3176);
                             }
                         }
                         if (!String.IsNullOrEmpty(message))
@@ -1157,6 +1159,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     ListMedicalAssessment = new List<V_HIS_MEDICAL_ASSESSMENT>();
                     ListHivTreatment = new List<HIS_HIV_TREATMENT>();
                     ListTuberculosisTreat = new List<HIS_TUBERCULOSIS_TREAT>();
+                    ListExpMedimateUsed = new List<HIS_EXP_MEDIMATE_USED>();
                     string message = "";
                     while (listSelection.Count - skip > 0)
                     {
@@ -1188,7 +1191,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         string ProcessExportXmlDetail(ref bool isSuccess, ref MemoryStream memoryStream, ref MemoryStream memoryStreamXml12, bool viewXml, bool XuatXmlTT, bool XuatXml12, List<V_HIS_TREATMENT_12> hisTreatments, List<V_HIS_PATIENT_TYPE_ALTER> hisPatientTypeAlters,
             List<V_HIS_SERE_SERV_2> ListSereServ, List<HIS_DHST> listDhst, List<V_HIS_SERE_SERV_TEIN> listSereServTein,
             List<HIS_TRACKING> hisTrackings, List<V_HIS_SERE_SERV_PTTT> hisSereServPttts, List<HIS_EKIP_USER> ListEkipUser,
-            List<V_HIS_BED_LOG> ListBedlog, List<HIS_DEBATE> listDebate, List<V_HIS_BABY> listBaby, List<V_HIS_MEDICAL_ASSESSMENT> listMedicalAssessment, List<HIS_HIV_TREATMENT> listHivTreatment, List<V_HIS_SERE_SERV_SUIN> listSereServSuin, List<HIS_TUBERCULOSIS_TREAT> lstTuberculosisTreat, bool isXML3176)
+            List<V_HIS_BED_LOG> ListBedlog, List<HIS_DEBATE> listDebate, List<V_HIS_BABY> listBaby, List<V_HIS_MEDICAL_ASSESSMENT> listMedicalAssessment, List<HIS_HIV_TREATMENT> listHivTreatment, List<V_HIS_SERE_SERV_SUIN> listSereServSuin, List<HIS_TUBERCULOSIS_TREAT> lstTuberculosisTreat, List<HIS_EXP_MEDIMATE_USED> listExpMedimateUsed, bool isXML3176)
         {
             string result = "";
             Dictionary<string, List<string>> DicErrorMess = new Dictionary<string, List<string>>();
@@ -1209,6 +1212,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 Dictionary<long, List<V_HIS_MEDICAL_ASSESSMENT>> dicMedicalAssessment = new Dictionary<long, List<V_HIS_MEDICAL_ASSESSMENT>>();
                 Dictionary<long, HIS_HIV_TREATMENT> dicHivTreatment = new Dictionary<long, HIS_HIV_TREATMENT>();
                 Dictionary<long, HIS_TUBERCULOSIS_TREAT> dicTuberculosisTreat = new Dictionary<long, HIS_TUBERCULOSIS_TREAT>();
+                Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByExpMestMedicineId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
+                Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByExpMestMaterialId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
+
                 if (lstTuberculosisTreat != null && lstTuberculosisTreat.Count > 0)
                 {
                     foreach (var item in lstTuberculosisTreat)
@@ -1387,6 +1393,28 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         dicDebate[item.TREATMENT_ID].Add(item);
                     }
                 }
+                if (listExpMedimateUsed != null && listExpMedimateUsed.Count > 0)
+                {
+                    foreach (var u in listExpMedimateUsed)
+                    {
+                        if (u.EXP_MEST_MEDICINE_ID.HasValue)
+                        {
+                            var k = u.EXP_MEST_MEDICINE_ID.Value;
+                            if (!dicExpUsedByExpMestMedicineId.ContainsKey(k))
+                                dicExpUsedByExpMestMedicineId[k] = new List<HIS_EXP_MEDIMATE_USED>();
+                            dicExpUsedByExpMestMedicineId[k].Add(u);
+                        }
+
+                        if (u.EXP_MEST_MATERIAL_ID.HasValue)
+                        {
+                            var k = u.EXP_MEST_MATERIAL_ID.Value;
+                            if (!dicExpUsedByExpMestMaterialId.ContainsKey(k))
+                                dicExpUsedByExpMestMaterialId[k] = new List<HIS_EXP_MEDIMATE_USED>();
+                            dicExpUsedByExpMestMaterialId[k].Add(u);
+                        }
+                    }
+                }
+
                 if (XuatXml12 && listMedicalAssessment != null && listMedicalAssessment.Count > 0)
                 {
                     foreach (var item in listMedicalAssessment)
@@ -1511,6 +1539,33 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                     ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                     ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                    var usedList = new List<HIS_EXP_MEDIMATE_USED>();
+
+                    if (ado.ListSereServ != null && ado.ListSereServ.Count > 0)
+                    {
+                        foreach (var ss in ado.ListSereServ)
+                        {
+                            if (ss.EXP_MEST_MEDICINE_ID.HasValue)
+                            {
+                                var k = ss.EXP_MEST_MEDICINE_ID.Value;
+                                if (dicExpUsedByExpMestMedicineId.TryGetValue(k, out var lst))
+                                    usedList.AddRange(lst);
+                            }
+
+                            if (ss.EXP_MEST_MATERIAL_ID.HasValue)
+                            {
+                                var k = ss.EXP_MEST_MATERIAL_ID.Value;
+                                if (dicExpUsedByExpMestMaterialId.TryGetValue(k, out var lst))
+                                    usedList.AddRange(lst);
+                            }
+                        }
+                    }
+
+                    ado.ListExpMedimateUsed = usedList
+                        .GroupBy(x => x.ID)  // hoặc khóa tự nhiên của used record
+                        .Select(g => g.First())
+                        .ToList();
+
                     if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
                     {
                         ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
@@ -1872,6 +1927,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                 ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                 ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                ado.ListExpMedimateUsed = ListExpMedimateUsed ?? new List<HIS_EXP_MEDIMATE_USED>();
                 if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
                 {
                     ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
@@ -2325,65 +2381,174 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
             try
             {
                 if (obj == null) return;
-                List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                //List<V_HIS_TREATMENT_1> listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                var listSelection = (List<V_HIS_TREATMENT_1>)obj;
+                if (listSelection.Count == 0) return;
+
+                // patient type TT ids dùng 1 lần
+                List<long> patientTypeTtIds = null;
+                if (isExportXml)
+                {
+                    if (this.patientTypeTTSelecteds != null && this.patientTypeTTSelecteds.Count > 0)
+                        patientTypeTtIds = this.patientTypeTTSelecteds.Select(o => o.ID).ToList();
+                }
+                else
+                {
+                    if (this.configSync?.patientTypeTTIds != null && this.configSync.patientTypeTTIds.Count > 0)
+                        patientTypeTtIds = this.configSync.patientTypeTTIds.ToList();
+                }
+
+                // cache tránh gọi used trùng
+                var loadedMedIds = new HashSet<long>();
+                var loadedMatIds = new HashSet<long>();
+                var usedById = new Dictionary<long, HIS_EXP_MEDIMATE_USED>();
+
 
                 var skip = 0;
                 while (listSelection.Count - skip > 0)
                 {
                     var limit = listSelection.Skip(skip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
-                    skip = skip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
+                    skip += GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
 
-                    CommonParam param = new CommonParam();
-                    HisSereServView2Filter ssFilter = new HisSereServView2Filter();
-                    ssFilter.TREATMENT_IDs = limit.Select(o => o.ID).ToList();
-                    if (isExportXml)
-                    {
-                        if (this.patientTypeTTSelecteds != null && this.patientTypeTTSelecteds.Count > 0)
-                        {
-                            ssFilter.PATIENT_TYPE_IDs = this.patientTypeTTSelecteds.Select(o => o.ID).ToList();
-                        }
-                    }
-                    else
-                    {
-                        if (this.configSync != null && this.configSync.patientTypeTTIds != null && this.configSync.patientTypeTTIds.Count > 0)
-                        {
-                            ssFilter.PATIENT_TYPE_IDs = this.configSync.patientTypeTTIds.ToList();
-                        }
-                    }
+                    var param = new CommonParam();
+                    var adapter = new Inventec.Common.Adapter.BackendAdapter(param);
 
-                    var resultSS = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_SERE_SERV_2>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW_2, ApiConsumers.MosConsumer, ssFilter, param);
+                    // ===== 1) SereServ2
+                    var ssFilter = new HisSereServView2Filter
+                    {
+                        TREATMENT_IDs = limit.Select(o => o.ID).ToList(),
+                        PATIENT_TYPE_IDs = (patientTypeTtIds != null && patientTypeTtIds.Count > 0) ? patientTypeTtIds : null
+                    };
+
+                    var resultSS = adapter.Get<List<V_HIS_SERE_SERV_2>>(
+                        HisRequestUriStore.HIS_SERE_SERV_GETVIEW_2,
+                        ApiConsumers.MosConsumer,
+                        ssFilter,
+                        param
+                    );
+
                     if (resultSS != null && resultSS.Count > 0)
                     {
                         ListSereServ.AddRange(resultSS);
 
+                        // ===== 2) Load HIS_EXP_MEDIMATE_USED (filter chỉ long? => gọi từng ID)
+                        try
+                        {
+                            // gom id mới (chưa load)
+                            var newMedIds = resultSS
+                                .Where(x => x.EXP_MEST_MEDICINE_ID.HasValue)
+                                .Select(x => x.EXP_MEST_MEDICINE_ID.Value)
+                                .Distinct()
+                                .Where(id => !loadedMedIds.Contains(id))
+                                .ToList();
+
+                            var newMatIds = resultSS
+                                .Where(x => x.EXP_MEST_MATERIAL_ID.HasValue)
+                                .Select(x => x.EXP_MEST_MATERIAL_ID.Value)
+                                .Distinct()
+                                .Where(id => !loadedMatIds.Contains(id))
+                                .ToList();
+
+                            // gọi theo từng ID (vì filter chỉ long?)
+                            foreach (var medId in newMedIds)
+                            {
+                                var usedFilter = new HisExpMedimateUsedFilter
+                                {
+                                    EXP_MEST_MEDICINE_ID = medId,
+                                    EXP_MEST_MATERIAL_ID = null
+                                };
+
+                                var usedRs = adapter.Get<List<HIS_EXP_MEDIMATE_USED>>(
+                                    "api/HisExpMedimateUsed/Get",
+                                    ApiConsumers.MosConsumer,
+                                    usedFilter,
+                                    param
+                                );
+
+                                loadedMedIds.Add(medId);
+
+                                if (usedRs != null && usedRs.Count > 0)
+                                {
+                                    foreach (var u in usedRs)
+                                    {
+                                        if (u == null) continue;
+                                        usedById[u.ID] = u;
+                                    }
+                                }
+                            }
+
+                            foreach (var matId in newMatIds)
+                            {
+                                var usedFilter = new HisExpMedimateUsedFilter
+                                {
+                                    EXP_MEST_MEDICINE_ID = null,
+                                    EXP_MEST_MATERIAL_ID = matId
+                                };
+
+                                var usedRs = adapter.Get<List<HIS_EXP_MEDIMATE_USED>>(
+                                    "api/HisExpMedimateUsed/Get",
+                                    ApiConsumers.MosConsumer,
+                                    usedFilter,
+                                    param
+                                );
+
+                                loadedMatIds.Add(matId);
+
+                                if (usedRs != null && usedRs.Count > 0)
+                                {
+                                    foreach (var u in usedRs)
+                                    {
+                                        if (u == null) continue;
+                                        usedById[u.ID] = u;
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception exUsed)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error("ThreadGetSereServ2 - Load HIS_EXP_MEDIMATE_USED error: " + exUsed);
+                        }
+
+                        // ===== 3) ekip user
                         var ekipIds = resultSS.Select(o => o.EKIP_ID ?? 0).Where(o => o != 0).Distinct().ToList();
-                        if (ekipIds != null && ekipIds.Count > 0)//null sẽ có 1 id bằng 0
+                        if (ekipIds.Count > 0)
                         {
                             int skipEkip = 0;
                             while (ekipIds.Count - skipEkip > 0)
                             {
                                 var limitLong = ekipIds.Skip(skipEkip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
-                                skipEkip = skipEkip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
-                                HisEkipUserFilter ekipFilter = new HisEkipUserFilter();
-                                ekipFilter.EKIP_IDs = limitLong;
-                                var resultEkip = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_EKIP_USER>>("api/HisEkipUser/Get", ApiConsumers.MosConsumer, ekipFilter, param);
+                                skipEkip += GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
+
+                                var ekipFilter = new HisEkipUserFilter { EKIP_IDs = limitLong };
+                                var resultEkip = adapter.Get<List<HIS_EKIP_USER>>(
+                                    "api/HisEkipUser/Get",
+                                    ApiConsumers.MosConsumer,
+                                    ekipFilter,
+                                    param
+                                );
+
                                 if (resultEkip != null && resultEkip.Count > 0)
-                                {
                                     ListEkipUser.AddRange(resultEkip);
-                                }
                             }
                         }
-
                     }
 
-                    HisBedLogViewFilter bedFilter = new HisBedLogViewFilter();
-                    bedFilter.TREATMENT_IDs = limit.Select(o => o.ID).ToList();
-                    var resultBed = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>("api/HisBedLog/GetView", ApiConsumers.MosConsumer, bedFilter, param);
+                    // ===== 4) Bedlog
+                    var bedFilter = new HisBedLogViewFilter { TREATMENT_IDs = limit.Select(o => o.ID).ToList() };
+                    var resultBed = adapter.Get<List<V_HIS_BED_LOG>>(
+                        "api/HisBedLog/GetView",
+                        ApiConsumers.MosConsumer,
+                        bedFilter,
+                        param
+                    );
+
                     if (resultBed != null && resultBed.Count > 0)
-                    {
                         ListBedlog.AddRange(resultBed);
-                    }
                 }
+
+                // add used 1 phát cuối, đã dedupe theo used.ID
+                if (usedById.Count > 0)
+                    ListExpMedimateUsed.AddRange(usedById.Values);
             }
             catch (Exception ex)
             {
@@ -3693,7 +3858,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             filter.HAS_IN_CODE = true;
                         }
                     }
-                    if (configSync.isCheckOutTime)
+                    if (!configSync.isCheckOutTime)
                     {
                         filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
                         filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -3975,6 +4140,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         ListMedicalAssessment = new List<V_HIS_MEDICAL_ASSESSMENT>();
                         ListHivTreatment = new List<HIS_HIV_TREATMENT>();
                         ListTuberculosisTreat = new List<HIS_TUBERCULOSIS_TREAT>();
+                        ListExpMedimateUsed = new List<HIS_EXP_MEDIMATE_USED>();
                         CreateThreadGetData(limit);
                         Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>> dicPatientTypeAlter = new Dictionary<long, List<V_HIS_PATIENT_TYPE_ALTER>>();
                         Dictionary<long, List<V_HIS_SERE_SERV_2>> dicSereServ = new Dictionary<long, List<V_HIS_SERE_SERV_2>>();
@@ -3990,6 +4156,33 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         Dictionary<long, List<V_HIS_MEDICAL_ASSESSMENT>> dicMedicalAssessment = new Dictionary<long, List<V_HIS_MEDICAL_ASSESSMENT>>();
                         Dictionary<long, HIS_HIV_TREATMENT> dicHivTreatment = new Dictionary<long, HIS_HIV_TREATMENT>();
                         Dictionary<long, HIS_TUBERCULOSIS_TREAT> dicTuberculosisTreat = new Dictionary<long, HIS_TUBERCULOSIS_TREAT>();
+                        Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByExpMestMedicineId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
+                        Dictionary<long, List<HIS_EXP_MEDIMATE_USED>> dicExpUsedByExpMestMaterialId = new Dictionary<long, List<HIS_EXP_MEDIMATE_USED>>();
+
+                        if (ListExpMedimateUsed != null && ListExpMedimateUsed.Count > 0)
+                        {
+                            foreach (var u in ListExpMedimateUsed)
+                            {
+                                if (u == null) continue;
+
+                                if (u.EXP_MEST_MEDICINE_ID.HasValue)
+                                {
+                                    var k = u.EXP_MEST_MEDICINE_ID.Value;
+                                    if (!dicExpUsedByExpMestMedicineId.ContainsKey(k))
+                                        dicExpUsedByExpMestMedicineId[k] = new List<HIS_EXP_MEDIMATE_USED>();
+                                    dicExpUsedByExpMestMedicineId[k].Add(u);
+                                }
+
+                                if (u.EXP_MEST_MATERIAL_ID.HasValue)
+                                {
+                                    var k = u.EXP_MEST_MATERIAL_ID.Value;
+                                    if (!dicExpUsedByExpMestMaterialId.ContainsKey(k))
+                                        dicExpUsedByExpMestMaterialId[k] = new List<HIS_EXP_MEDIMATE_USED>();
+                                    dicExpUsedByExpMestMaterialId[k].Add(u);
+                                }
+                            }
+                        }
+
                         if (ListTuberculosisTreat != null && ListTuberculosisTreat.Count > 0)
                         {
                             foreach (var item in ListTuberculosisTreat)
@@ -4224,6 +4417,33 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
                             ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
                             ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                            var usedList = new List<HIS_EXP_MEDIMATE_USED>();
+
+                            if (ado.ListSereServ != null && ado.ListSereServ.Count > 0)
+                            {
+                                foreach (var ss in ado.ListSereServ)
+                                {
+                                    if (ss.EXP_MEST_MEDICINE_ID.HasValue)
+                                    {
+                                        var k = ss.EXP_MEST_MEDICINE_ID.Value;
+                                        if (dicExpUsedByExpMestMedicineId.TryGetValue(k, out var lst))
+                                            usedList.AddRange(lst);
+                                    }
+
+                                    if (ss.EXP_MEST_MATERIAL_ID.HasValue)
+                                    {
+                                        var k = ss.EXP_MEST_MATERIAL_ID.Value;
+                                        if (dicExpUsedByExpMestMaterialId.TryGetValue(k, out var lst))
+                                            usedList.AddRange(lst);
+                                    }
+                                }
+                            }
+
+                            ado.ListExpMedimateUsed = usedList
+                                .GroupBy(x => x.ID)
+                                .Select(g => g.First())
+                                .ToList();
+
                             if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
                             {
                                 ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
