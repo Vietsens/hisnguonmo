@@ -74,6 +74,36 @@ namespace HIS.Desktop.Common.BankQrCode
                         }
                     }
                 }
+                else if (configValue != null && configValue.Count > 0 && configValue.Exists(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", "PVCB")) > -1))
+                {
+                    var configPVCB = configValue.FirstOrDefault(p => p.KEY.Replace(" ", "").IndexOf(string.Format(".{0}Info", "PVCB")) > -1);
+                    if (configPVCB != null && !string.IsNullOrEmpty(configPVCB.VALUE) && configPVCB.VALUE.IndexOf("GenQrMethod") > -1)
+                    {
+                        JObject jsonObject = JObject.Parse(configPVCB.VALUE);
+                        string genQrMethod = jsonObject["GenQrMethod"].ToString();
+                        if (genQrMethod == "OPEN_API")
+                        {
+                            CommonParam param = new CommonParam();
+                            MOS.TDO.QrPaymentGenerateTDO tdo = new MOS.TDO.QrPaymentGenerateTDO();
+                            tdo.TransReqId = data.ID;
+                            tdo.Bank = "PVCB";
+                            tdo.BankConfig = configPVCB.VALUE;
+                            data = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TRANS_REQ>("api/HisTransReq/QrPaymentGenerate", ApiConsumers.MosConsumer, tdo, param);
+                            if (data == null)
+                            {
+                                XtraMessageBox.Show(param.GetMessage());
+                                return null;
+                            }
+
+                            if (data != null && !string.IsNullOrEmpty(data.QR_TEXT))
+                            {
+                                configValue = new List<HIS_CONFIG>();
+                                configValue.Add(new HIS_CONFIG() { KEY = "DYNAMIC", VALUE = data.QR_TEXT });
+                                IsQrDynamic = true;
+                            }
+                        }
+                    }
+                }
                 #endregion
                 #region "MBB", "VCB", "CTG", "NAPAS", "SHB"
                 else
