@@ -1413,6 +1413,10 @@ namespace HIS.Desktop.Plugins.TreatmentList
                             e.RepositoryItem = ButtonEndInfoDisable;
                         }
                     }
+                    else if (e.Column.FieldName == "ViewMedicalRecord")
+                    {
+                        e.RepositoryItem = repositoryItembtnViewMedicalRecord;
+                    }
                 }
             }
             catch (Exception ex)
@@ -2006,6 +2010,32 @@ namespace HIS.Desktop.Plugins.TreatmentList
                                 {
                                     repositoryItembtnPaySereServ_Click(treatmentData);
                                 }
+                                #endregion
+                            }
+                            else if (hi.Column.FieldName == "ViewMedicalRecord")
+                            {
+                                #region ----- Chi tiết bệnh án -----
+                                if (treatmentData != null)
+                                {
+                                    try
+                                    {
+                                        WaitingManager.Show();
+                                        List<object> listObj = new List<object>();
+                                        listObj.Add(TreatmentCode);
+                                        HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule(
+                                            "HIS.Desktop.Plugins.EmrDocument",
+                                            this.currentModule.RoomId,
+                                            this.currentModule.RoomTypeId,
+                                            listObj);
+                                        WaitingManager.Hide();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        WaitingManager.Hide();
+                                        Inventec.Common.Logging.LogSystem.Error(ex);
+                                    }
+                                }
+
                                 #endregion
                             }
                             if (hi.Column.FieldName == "DeleteEndInfo")
@@ -3955,6 +3985,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
             var results = _pendingBatchResults;
             _pendingBatchResults = null;
             if (results != null) ShowBatchResults(results);
-        }
+        }      
     }
 }
