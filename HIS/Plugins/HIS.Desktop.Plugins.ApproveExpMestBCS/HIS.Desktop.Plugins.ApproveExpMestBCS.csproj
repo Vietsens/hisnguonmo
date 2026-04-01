@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\ReferencedAssemblies\AutoMapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -42,8 +42,9 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraPrinting.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
+    <Reference Include="IMSys.DbConfig.HIS_RS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.Adapter\Inventec.Common.Adapter.dll</HintPath>
@@ -110,8 +111,9 @@
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
-    <Reference Include="MOS.SDO">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
+    <Reference Include="MOS.SDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -124,7 +126,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADO\MaterialBeanADO.cs" />
     <Compile Include="ADO\MaterialTypeADO.cs" />
+    <Compile Include="ADO\MedicineBeanADO.cs" />
     <Compile Include="ADO\MedicineTypeADO.cs" />
     <Compile Include="ADO\MetyMatyTypeADO.cs" />
     <Compile Include="ApproveExpMestBCSProcessor.cs" />
@@ -137,6 +141,12 @@
     </Compile>
     <Compile Include="frmReplace.Designer.cs">
       <DependentUpon>frmReplace.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Popup\frmSelectLo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\frmSelectLo.Designer.cs">
+      <DependentUpon>frmSelectLo.cs</DependentUpon>
     </Compile>
     <Compile Include="Util\StringUtil.cs" />
     <Compile Include="frmApproveExpMestBCS.cs">
@@ -157,6 +167,9 @@
   <ItemGroup>
     <EmbeddedResource Include="frmApproveExpMestBCS.resx">
       <DependentUpon>frmApproveExpMestBCS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\frmSelectLo.resx">
+      <DependentUpon>frmSelectLo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmReplace.resx">
       <DependentUpon>frmReplace.cs</DependentUpon>

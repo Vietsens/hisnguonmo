@@ -49,6 +49,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public string ALLOW_ODD { get; set; }
         public string BUSINESS { get; set; }
         public string FUNCTIONAL_FOOD { get; set; }
+        public string NUTRITION_FOOD { get; set; }
         public string OUT_PARENT_FEE { get; set; }
         public string REQUIRE_HSD { get; set; }
         public string SALE_EQUAL_IMP_PRICE { get; set; }
@@ -78,6 +79,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public string SUPPLIER_NAMES { get; set; }
         public string SUPPLIER_IDS { get; set; }
         public int? SUPPLIER_CODE_ERROR { get; set; }
+        public int TT_THAU_ERROR { get; set; }
 
         public MedicineTypeImportADO()
         {
@@ -98,6 +100,7 @@ namespace HIS.Desktop.Plugins.HisImportMedicineType.ADO
         public int OUT_PARENT_FEE_ERROR { get; set; }
         public int STAR_MARK_ERROR { get; set; }
         public int FUNCTIONAL_FOOD_ERROR { get; set; }
+        public int NUTRITION_FOOD_ERROR { get; set; }
         public int SALE_EQUAL_IMP_PRICE_ERROR { get; set; }
         public int HEIN_SERVICE_TYPE_CODE_ERROR { get; set; }
         public int SERVICE_UNIT_CODE_ERROR { get; set; }

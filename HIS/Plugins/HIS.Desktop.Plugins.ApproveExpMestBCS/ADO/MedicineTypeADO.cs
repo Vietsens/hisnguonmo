@@ -51,6 +51,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS.ADO
         public bool IsCheck { get; set; }
 
         public List<HIS_EXP_MEST_METY_REQ> Requests { get; set; }
+        public List<MedicineBeanADO> SelectedBeans { get; set; }
 
         public MedicineTypeADO()
         {

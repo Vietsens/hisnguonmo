@@ -1155,6 +1155,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 GetLCounter1Async();
                 TimerGetDataGetLCounter1(); // 5 phút
                 this.SetDefaultData(true);
+                this.ApplyHighPriorityRoomDefault();
                 if (this.treatmentId > 0)
                 {
                     this.FillAllPatientInfoSelectedInForm();
@@ -1253,6 +1254,34 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
             catch (Exception ex)
             {
                 WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ApplyHighPriorityRoomDefault()
+        {
+            try
+            {
+                if (currentWorkingRoom == null || string.IsNullOrWhiteSpace(currentWorkingRoom.ROOM_CODE))
+                    return;
+
+                if (string.IsNullOrWhiteSpace(HisConfigCFG.HighPriorityRoomCode))
+                    return;
+
+                var roomCodes = HisConfigCFG.HighPriorityRoomCode
+                    .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(o => o.Trim().ToUpper())
+                    .Where(o => !string.IsNullOrWhiteSpace(o))
+                    .ToList();
+
+                if (roomCodes.Contains(currentWorkingRoom.ROOM_CODE.Trim().ToUpper()))
+                {
+                    chkPriority.Checked = true;
+                    chkIsEmergency.Checked = true;
+                }
+            }
+            catch (Exception ex)
+            {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -6208,6 +6237,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                 this.SetDefaultData();
                 this.LoadIcdDefault();
                 this.DisablecheckEmergencyPriorityByConfig();
+                this.ApplyHighPriorityRoomDefault();
                 this.treeService.UncheckAll();
                 this.isPrinted = false;
                 foreach (var item in this.ServiceIsleafADOs)

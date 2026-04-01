@@ -80,6 +80,8 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                 this.LoadDataMedicine();
                 this.LoadDataMaterial();
                 this.LoadDataAutoReplace();
+                gridControlMedicine.MouseDown += new MouseEventHandler(gridControlMedicine_MouseDown);
+                gridControlMaterial.MouseDown += new MouseEventHandler(gridControlMaterial_MouseDown);
                 if (medicineAdos != null && medicineAdos.Count > 0)
                 {
                     this.xtraTabControl.SelectedTabPageIndex = 0;
@@ -1012,32 +1014,63 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                     List<HIS_EXP_MEST_METY_REQ> metyReqs = metyReqAlls.Where(o => medicine.Requests.Any(a => a.ID == o.ID)).ToList();
 
                     metyReqs = metyReqs.OrderBy(o => o.AMOUNT).ToList();
-                    foreach (var req in metyReqs)
+
+                    if (medicine.SelectedBeans != null && medicine.SelectedBeans.Count > 0)
                     {
-                        decimal availAmount = req.AMOUNT - (req.DD_AMOUNT ?? 0);
-                        if (availAmount <= 0) continue;
-                        if (ycdAmount <= 0) break;
-                        if (availAmount >= ycdAmount)
+                        // Có chọn lô: phân bổ theo từng lô, mỗi lô tạo SDO riêng với MedicineId
+                        decimal remainingYcd = ycdAmount;
+                        foreach (var bean in medicine.SelectedBeans)
                         {
-                            ExpMedicineTypeSDO sdo = new ExpMedicineTypeSDO();
-                            sdo.Amount = ycdAmount;
-                            sdo.ExpMestMetyReqId = req.ID;
-                            sdo.MedicineTypeId = medicine.MEDICINE_TYPE_ID;
-                            sdo.TreatmentId = req.TREATMENT_ID;
-                            req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + ycdAmount;
-                            ycdAmount = 0;
-                            data.Medicines.Add(sdo);
+                            if (remainingYcd <= 0) break;
+                            decimal beanYcd = Math.Min(bean.AMOUNT, remainingYcd);
+                            foreach (var req in metyReqs)
+                            {
+                                if (beanYcd <= 0) break;
+                                decimal reqAvail = req.AMOUNT - (req.DD_AMOUNT ?? 0);
+                                if (reqAvail <= 0) continue;
+                                decimal distAmount = Math.Min(reqAvail, beanYcd);
+                                ExpMedicineTypeSDO sdo = new ExpMedicineTypeSDO();
+                                sdo.Amount = distAmount;
+                                sdo.ExpMestMetyReqId = req.ID;
+                                sdo.MedicineTypeId = medicine.MEDICINE_TYPE_ID;
+                                sdo.TreatmentId = req.TREATMENT_ID;
+                                sdo.MedicineId = bean.MEDICINE_ID;
+                                req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + distAmount;
+                                beanYcd -= distAmount;
+                                remainingYcd -= distAmount;
+                                data.Medicines.Add(sdo);
+                            }
                         }
-                        else
+                    }
+                    else
+                    {
+                        foreach (var req in metyReqs)
                         {
-                            ExpMedicineTypeSDO sdo = new ExpMedicineTypeSDO();
-                            sdo.Amount = availAmount;
-                            sdo.ExpMestMetyReqId = req.ID;
-                            sdo.MedicineTypeId = medicine.MEDICINE_TYPE_ID;
-                            sdo.TreatmentId = req.TREATMENT_ID;
-                            req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + availAmount;
-                            ycdAmount = ycdAmount - availAmount;
-                            data.Medicines.Add(sdo);
+                            decimal availAmount = req.AMOUNT - (req.DD_AMOUNT ?? 0);
+                            if (availAmount <= 0) continue;
+                            if (ycdAmount <= 0) break;
+                            if (availAmount >= ycdAmount)
+                            {
+                                ExpMedicineTypeSDO sdo = new ExpMedicineTypeSDO();
+                                sdo.Amount = ycdAmount;
+                                sdo.ExpMestMetyReqId = req.ID;
+                                sdo.MedicineTypeId = medicine.MEDICINE_TYPE_ID;
+                                sdo.TreatmentId = req.TREATMENT_ID;
+                                req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + ycdAmount;
+                                ycdAmount = 0;
+                                data.Medicines.Add(sdo);
+                            }
+                            else
+                            {
+                                ExpMedicineTypeSDO sdo = new ExpMedicineTypeSDO();
+                                sdo.Amount = availAmount;
+                                sdo.ExpMestMetyReqId = req.ID;
+                                sdo.MedicineTypeId = medicine.MEDICINE_TYPE_ID;
+                                sdo.TreatmentId = req.TREATMENT_ID;
+                                req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + availAmount;
+                                ycdAmount = ycdAmount - availAmount;
+                                data.Medicines.Add(sdo);
+                            }
                         }
                     }
                 }
@@ -1138,35 +1171,66 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
                         return false;
                     }
 
-                    List<HIS_EXP_MEST_MATY_REQ> matyReqs = matyReqAlls.Where(o => material.Requests.Any(a => a.ID == o.ID)).ToList(); ;
+                    List<HIS_EXP_MEST_MATY_REQ> matyReqs = matyReqAlls.Where(o => material.Requests.Any(a => a.ID == o.ID)).ToList();
 
                     matyReqs = matyReqs.OrderBy(o => o.AMOUNT).ToList();
-                    foreach (var req in matyReqs)
+
+                    if (material.SelectedBeans != null && material.SelectedBeans.Count > 0)
                     {
-                        decimal availAmount = req.AMOUNT - (req.DD_AMOUNT ?? 0);
-                        if (availAmount <= 0) continue;
-                        if (ycdAmount <= 0) break;
-                        if (availAmount >= ycdAmount)
+                        // Có chọn lô: phân bổ theo từng lô, mỗi lô tạo SDO riêng với MaterialId
+                        decimal remainingYcd = ycdAmount;
+                        foreach (var bean in material.SelectedBeans)
                         {
-                            ExpMaterialTypeSDO sdo = new ExpMaterialTypeSDO();
-                            sdo.Amount = ycdAmount;
-                            sdo.ExpMestMatyReqId = req.ID;
-                            sdo.MaterialTypeId = material.MATERIAL_TYPE_ID;
-                            sdo.TreatmentId = req.TREATMENT_ID;
-                            req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + ycdAmount;
-                            ycdAmount = 0;
-                            data.Materials.Add(sdo);
+                            if (remainingYcd <= 0) break;
+                            decimal beanYcd = Math.Min(bean.AMOUNT, remainingYcd);
+                            foreach (var req in matyReqs)
+                            {
+                                if (beanYcd <= 0) break;
+                                decimal reqAvail = req.AMOUNT - (req.DD_AMOUNT ?? 0);
+                                if (reqAvail <= 0) continue;
+                                decimal distAmount = Math.Min(reqAvail, beanYcd);
+                                ExpMaterialTypeSDO sdo = new ExpMaterialTypeSDO();
+                                sdo.Amount = distAmount;
+                                sdo.ExpMestMatyReqId = req.ID;
+                                sdo.MaterialTypeId = material.MATERIAL_TYPE_ID;
+                                sdo.TreatmentId = req.TREATMENT_ID;
+                                // TODO: sdo.MaterialId = bean.MATERIAL_ID; // bật khi MOS.SDO.dll bổ sung ExpMaterialTypeSDO.MaterialId 
+                                req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + distAmount;
+                                beanYcd -= distAmount;
+                                remainingYcd -= distAmount;
+                                data.Materials.Add(sdo);
+                            }
                         }
-                        else
+                    }
+                    else
+                    {
+                        foreach (var req in matyReqs)
                         {
-                            ExpMaterialTypeSDO sdo = new ExpMaterialTypeSDO();
-                            sdo.Amount = availAmount;
-                            sdo.ExpMestMatyReqId = req.ID;
-                            sdo.MaterialTypeId = material.MATERIAL_TYPE_ID;
-                            sdo.TreatmentId = req.TREATMENT_ID;
-                            req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + availAmount;
-                            ycdAmount = ycdAmount - availAmount;
-                            data.Materials.Add(sdo);
+                            decimal availAmount = req.AMOUNT - (req.DD_AMOUNT ?? 0);
+                            if (availAmount <= 0) continue;
+                            if (ycdAmount <= 0) break;
+                            if (availAmount >= ycdAmount)
+                            {
+                                ExpMaterialTypeSDO sdo = new ExpMaterialTypeSDO();
+                                sdo.Amount = ycdAmount;
+                                sdo.ExpMestMatyReqId = req.ID;
+                                sdo.MaterialTypeId = material.MATERIAL_TYPE_ID;
+                                sdo.TreatmentId = req.TREATMENT_ID;
+                                req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + ycdAmount;
+                                ycdAmount = 0;
+                                data.Materials.Add(sdo);
+                            }
+                            else
+                            {
+                                ExpMaterialTypeSDO sdo = new ExpMaterialTypeSDO();
+                                sdo.Amount = availAmount;
+                                sdo.ExpMestMatyReqId = req.ID;
+                                sdo.MaterialTypeId = material.MATERIAL_TYPE_ID;
+                                sdo.TreatmentId = req.TREATMENT_ID;
+                                req.DD_AMOUNT = (req.DD_AMOUNT ?? 0) + availAmount;
+                                ycdAmount = ycdAmount - availAmount;
+                                data.Materials.Add(sdo);
+                            }
                         }
                     }
                 }
@@ -1423,6 +1487,74 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS
             {
                 gridViewMaterial.PostEditor();
                 gridControlMaterial.RefreshDataSource();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridControlMedicine_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (e.Button != MouseButtons.Right) return;
+                var hitInfo = gridViewMedicine.CalcHitInfo(e.Location);
+                if (!hitInfo.InRow || hitInfo.RowHandle < 0) return;
+                gridViewMedicine.FocusedRowHandle = hitInfo.RowHandle;
+                var data = (MedicineTypeADO)gridViewMedicine.GetRow(hitInfo.RowHandle);
+                if (data != null)
+                    OpenSelectLoForm(data);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridControlMaterial_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (e.Button != MouseButtons.Right) return;
+                var hitInfo = gridViewMaterial.CalcHitInfo(e.Location);
+                if (!hitInfo.InRow || hitInfo.RowHandle < 0) return;
+                gridViewMaterial.FocusedRowHandle = hitInfo.RowHandle;
+                var data = (MaterialTypeADO)gridViewMaterial.GetRow(hitInfo.RowHandle);
+                if (data != null)
+                    OpenSelectLoForm(data);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void OpenSelectLoForm(MedicineTypeADO ado)
+        {
+            try
+            {
+                frmSelectLo frm = new frmSelectLo(ado, this.mediStock.ID);
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    gridControlMedicine.RefreshDataSource();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void OpenSelectLoForm(MaterialTypeADO ado)
+        {
+            try
+            {
+                frmSelectLo frm = new frmSelectLo(ado, this.mediStock.ID);
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    gridControlMaterial.RefreshDataSource();
+                }
             }
             catch (Exception ex)
             {

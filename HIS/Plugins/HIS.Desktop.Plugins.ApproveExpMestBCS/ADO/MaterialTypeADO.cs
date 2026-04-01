@@ -50,6 +50,7 @@ namespace HIS.Desktop.Plugins.ApproveExpMestBCS.ADO
         public bool IsCheck { get; set; }
 
         public List<HIS_EXP_MEST_MATY_REQ> Requests { get; set; }
+        public List<MaterialBeanADO> SelectedBeans { get; set; }
 
         public MaterialTypeADO()
         {

@@ -104,6 +104,8 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         private const string KEY_ASSIGN_ROOM_BY_PATIENT_TYPE = "MOS.HIS_SERVICE_REQ.ASSIGN_ROOM_BY_PATIENT_TYPE";
         private const string IS_ALLOW_SIGN_NATURE_PRINT = "HIS.Desktop.Plugins.IsAllowSignaturePrint.ModuleLinks";
         internal const string CONFIG_KEY__SuggestAssignServicesInfo = "HIS.Desktop.AI.SuggestAssignServicesInfo";
+        internal const string CONFIG_KEY__HighPriorityRoomCode = "HIS.Desktop.Plugins.AssignService.HighPriorityRoomCodes";
+        internal static string HighPriorityRoomCode;
         internal static bool IsAssignRoomByPatientType;
         internal static string GuaranteeConnectionInfo;
         internal static string ASSIGN_SERVICE_SIMULTANEITY_OPTION;
@@ -227,6 +229,7 @@ namespace HIS.Desktop.Plugins.AssignService.Config
         {
             try
             {
+                HighPriorityRoomCode = GetValue(CONFIG_KEY__HighPriorityRoomCode);
                 GuaranteeConnectionInfo = GetValue(MOS_HIS_TREATMENT_GUARANTEE_CONNECTION_INFO);
                 ServicePatyForServicePackage = GetValue(CONFIG_KEY__PATY_FOR_PACKAGE);
                 UsageCheckInterval = GetValue(CONFIG_KEY__USAGE_CHECK_INTERVAL);
