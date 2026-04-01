@@ -8085,7 +8085,7 @@ namespace HIS.Desktop.Plugins.HisService
                     sb.AppendLine(X("LIEU_BQ_PX", null, 10));
                     sb.AppendLine(X("TL_THUCTE_BQ_PX", null, 10));
                     sb.AppendLine(X("THANH_TIEN_THUOC", null, 10));
-                    sb.AppendLine("        <TT_THUOCPX/>");
+                    sb.AppendLine("        </TT_THUOCPX>");
                 }
                 sb.AppendLine("      </DS_THUOCPX>");
                 sb.AppendLine("    </DMDICHVUKBCB>");
@@ -8232,6 +8232,7 @@ namespace HIS.Desktop.Plugins.HisService
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+                return false;
             }
             return true;
         }
