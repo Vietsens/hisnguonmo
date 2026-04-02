@@ -67,35 +67,45 @@ namespace HIS.Desktop.Plugins.BidCreate
 				Inventec.Common.Logging.LogSystem.Error(ex);
 			}
 		}
-		private async Task GetBidForm()
-		{
-			try
-			{
-				Action myaction = () =>
-				{
-					lstBidForm = new List<ADO.BidFormADO>();
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 1, CODE = "01", NAME = "Đấu thầu rộng rãi" });
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 2, CODE = "02", NAME = "Đấu thầu hạn chế" });
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 3, CODE = "03", NAME = "Chỉ định thầu" });
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 4, CODE = "04", NAME = "Chào hàng cạnh tranh" });
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 5, CODE = "05", NAME = "Mua sắm trực tiếp" });
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 6, CODE = "06", NAME = "Lựa chọn nhà thầu trong trường hợp đặc biệt" });
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 7, CODE = "07", NAME = "Đàm phán giá" });
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 8, CODE = "08", NAME = "Chào giá trực tuyến" });
-					lstBidForm.Add(new ADO.BidFormADO() { ID = 9, CODE = "09", NAME = "Mua sắm trực tuyến" });
-				};
-				Task task = new Task(myaction);
-				task.Start();
+        private async Task GetBidForm()
+        {
+            try
+            {
+                Action myaction = () =>
+                {
+                    MOS.Filter.HisBidFormFilter bidFormFilter = new MOS.Filter.HisBidFormFilter();
+                    var result = new Inventec.Common.Adapter.BackendAdapter(new Inventec.Core.CommonParam())
+                        .Get<List<MOS.EFMODEL.DataModels.HIS_BID_FORM>>(
+                            "/api/HisBidForm/Get",
+                            ApiConsumer.ApiConsumers.MosConsumer,
+                            bidFormFilter,
+                            HIS.Desktop.Controls.Session.SessionManager.ActionLostToken,
+                            null);
 
-				await task;
-				LoadDataToCboBidForm();
-			}
-			catch (Exception ex)
-			{
-				Inventec.Common.Logging.LogSystem.Error(ex);
-			}
-		}
-		private async Task GetSupplier()
+                    if (result != null)
+                    {
+                        lstBidForm = result
+                            .Where(o => o.IS_ACTIVE == (short)1) 
+                            .Select(o => new ADO.BidFormADO()
+                            {
+                                ID = (int)o.ID,
+                                CODE = o.BID_FORM_CODE,
+                                NAME = o.BID_FORM_NAME
+                            }).ToList();
+                    }
+                };
+                Task task = new Task(myaction);
+                task.Start();
+
+                await task;
+                LoadDataToCboBidForm();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+        private async Task GetSupplier()
 		{
 			try
 			{
