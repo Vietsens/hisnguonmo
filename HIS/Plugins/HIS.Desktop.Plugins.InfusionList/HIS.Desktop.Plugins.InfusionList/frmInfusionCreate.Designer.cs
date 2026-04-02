@@ -137,6 +137,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             this.cboSpeedUnit = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView3 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.dtNgayChidinh = new DevExpress.XtraEditors.DateEdit();
+            this.cboTimeType = new DevExpress.XtraEditors.ComboBoxEdit();
             this.panelControlUCUnitService = new DevExpress.XtraEditors.PanelControl();
             this.dtExpiredDate = new DevExpress.XtraEditors.DateEdit();
             this.txtPackageNumber = new DevExpress.XtraEditors.TextEdit();
@@ -173,6 +174,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem20 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItemCboTimeType = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem21 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem22 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem23 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -240,6 +242,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtNgayChidinh.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtNgayChidinh.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTimeType.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlUCUnitService)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtExpiredDate.Properties.CalendarTimeProperties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtExpiredDate.Properties)).BeginInit();
@@ -277,6 +280,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemCboTimeType)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).BeginInit();
@@ -789,6 +793,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             this.layoutControl4.Controls.Add(this.spinEditVolumn);
             this.layoutControl4.Controls.Add(this.cboSpeedUnit);
             this.layoutControl4.Controls.Add(this.dtNgayChidinh);
+            this.layoutControl4.Controls.Add(this.cboTimeType);
             this.layoutControl4.Controls.Add(this.panelControlUCUnitService);
             this.layoutControl4.Controls.Add(this.dtExpiredDate);
             this.layoutControl4.Controls.Add(this.txtPackageNumber);
@@ -1275,7 +1280,23 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             this.dtNgayChidinh.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtNgayChidinh_Closed);
             this.dtNgayChidinh.TextChanged += new System.EventHandler(this.dtNgayChidinh_TextChanged);
             this.dtNgayChidinh.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dtNgayChidinh_KeyDown);
-            // 
+            //
+            // cboTimeType
+            //
+            this.cboTimeType.Location = new System.Drawing.Point(2, 2);
+            this.cboTimeType.MenuManager = this.barManager1;
+            this.cboTimeType.Name = "cboTimeType";
+            this.cboTimeType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboTimeType.Properties.Items.AddRange(new object[] {
+            "Thời gian chỉ định",
+            "Thời gian dự trù"});
+            this.cboTimeType.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.cboTimeType.Size = new System.Drawing.Size(150, 20);
+            this.cboTimeType.StyleController = this.layoutControl4;
+            this.cboTimeType.TabIndex = 37;
+            this.cboTimeType.SelectedIndexChanged += new System.EventHandler(this.cboTimeType_SelectedIndexChanged);
+            //
             // panelControlUCUnitService
             // 
             this.panelControlUCUnitService.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
@@ -1540,6 +1561,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             this.layoutControlItem17,
             this.layoutControlItem18,
             this.layoutControlItem19,
+            this.layoutControlItemCboTimeType,
             this.layoutControlItem20,
             this.layoutControlItem21,
             this.layoutControlItem22,
@@ -1758,20 +1780,25 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             this.layoutControlItem19.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem19.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem19.TextVisible = false;
-            // 
+            //
+            // layoutControlItemCboTimeType
+            //
+            this.layoutControlItemCboTimeType.Control = this.cboTimeType;
+            this.layoutControlItemCboTimeType.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItemCboTimeType.Name = "layoutControlItemCboTimeType";
+            this.layoutControlItemCboTimeType.Size = new System.Drawing.Size(175, 24);
+            this.layoutControlItemCboTimeType.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItemCboTimeType.TextVisible = false;
+            //
             // layoutControlItem20
-            // 
-            this.layoutControlItem20.AppearanceItemCaption.Options.UseTextOptions = true;
-            this.layoutControlItem20.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            //
             this.layoutControlItem20.Control = this.dtNgayChidinh;
-            this.layoutControlItem20.Location = new System.Drawing.Point(0, 0);
+            this.layoutControlItem20.Location = new System.Drawing.Point(175, 0);
             this.layoutControlItem20.Name = "layoutControlItem20";
-            this.layoutControlItem20.Size = new System.Drawing.Size(527, 24);
-            this.layoutControlItem20.Text = "Thời gian kê đơn:";
-            this.layoutControlItem20.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
-            this.layoutControlItem20.TextSize = new System.Drawing.Size(120, 20);
-            this.layoutControlItem20.TextToControlDistance = 5;
-            // 
+            this.layoutControlItem20.Size = new System.Drawing.Size(352, 24);
+            this.layoutControlItem20.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem20.TextVisible = false;
+            //
             // layoutControlItem21
             // 
             this.layoutControlItem21.Control = this.cboSpeedUnit;
@@ -1998,6 +2025,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             ((System.ComponentModel.ISupportInitialize)(this.gridView3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtNgayChidinh.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtNgayChidinh.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboTimeType.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControlUCUnitService)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtExpiredDate.Properties.CalendarTimeProperties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtExpiredDate.Properties)).EndInit();
@@ -2035,6 +2063,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem20)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItemCboTimeType)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem21)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem22)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem23)).EndInit();
@@ -2130,6 +2159,8 @@ namespace HIS.Desktop.Plugins.InfusionCreate
     private DevExpress.XtraEditors.PanelControl panelControlUCUnitService;
     private DevExpress.XtraLayout.LayoutControlItem layoutControlItem19;
     private DevExpress.XtraEditors.DateEdit dtNgayChidinh;
+    private DevExpress.XtraEditors.ComboBoxEdit cboTimeType;
+    private DevExpress.XtraLayout.LayoutControlItem layoutControlItemCboTimeType;
     private DevExpress.XtraLayout.LayoutControlItem layoutControlItem20;
     private DevExpress.XtraEditors.SpinEdit spinEditConvertVolumnRatio;
     private DevExpress.XtraEditors.SpinEdit spinEditVolumn;

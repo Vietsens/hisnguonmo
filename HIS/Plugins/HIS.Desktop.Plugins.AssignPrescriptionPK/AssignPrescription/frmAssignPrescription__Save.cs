@@ -1196,7 +1196,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                         this.ChangeLockButtonWhileProcess(true);
                         this.NoEdit = true;
                         this.btnNew.Enabled = true;
-                        this.InitComboNhaThuoc();
+                        if (GetSelectedOpionGroup() == 2)
+                        {
+                            this.InitComboNhaThuoc();
+                        }
                     }
                     else
                     {
