@@ -401,6 +401,7 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                                                                           ICD_NAME = ret.ICD_NAME,
                                                                           ICD_SUB_CODE = ret.ICD_SUB_CODE,
                                                                           ICD_TEXT = ret.ICD_TEXT,
+                                                                          MEDICAL_INSTRUCTION = currentHisServiceReq.MEDICAL_INSTRUCTION,
                                                                           SERVICE = string.Join(Environment.NewLine, s.Where(w => !string.IsNullOrEmpty(w.SERVICE_NAME))
                                                                           .Select(ss => ss.SERVICE_REQ_CODE + " - " + ss.SERVICE_NAME + " x " + ss.AMOUNT + " " + ss.SERVICE_UNIT_NAME))
                                                                       };
@@ -686,7 +687,33 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ApprovaleDebate
                 SessionManager.ProcessTokenLost(param);
                 if (rs != null)
                 {
-                    this.Close();
+                    try
+                    {
+                        var existingData = ucAll.treeSereServ.DataSource as BindingList<TrackingListADO>;
+                        if (existingData != null && existingData.Count > 0)
+                        {
+                            // update dòng đầu tiên (do đang ORDER_DIRECTION = DESC, dòng đầu là mới nhất)
+                            existingData[0].CONTENT = this.txtDienBien.Text.Trim();
+                            existingData[0].MEDICAL_INSTRUCTION = this.txtPPXuLy.Text.Trim();
+
+                            existingData[0].ICD_CODE = this.txtICD_YHCT.Text;
+                            existingData[0].ICD_NAME = this.cboICD_YHCT.Text;
+                            existingData[0].ICD_SUB_CODE = this.txtICDsub.Text;
+                            existingData[0].ICD_TEXT = this.txtICDsubName.Text;
+
+                            ucAll.treeSereServ.RefreshDataSource();
+                            ucAll.treeSereServ.Refresh();
+                        }
+
+                        tabToDieuTri.PageVisible = true;
+                        xtraTabControl1.SelectedTabPage = tabToDieuTri;
+                        this.btnSave.Enabled = false;
+                        if (this.bbtnSave != null) this.bbtnSave.Enabled = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error(ex);
+                    }
                 }
             }
             catch (Exception ex)
