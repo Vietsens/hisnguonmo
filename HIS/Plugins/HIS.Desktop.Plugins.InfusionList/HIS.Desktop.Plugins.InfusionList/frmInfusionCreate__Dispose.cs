@@ -94,6 +94,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 this.cboSpeedUnit.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboSpeedUnit_Closed);
                 this.cboSpeedUnit.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboSpeedUnit_ButtonClick);
                 this.cboSpeedUnit.KeyDown -= new System.Windows.Forms.KeyEventHandler(this.cboSpeedUnit_KeyDown);
+                this.cboTimeType.SelectedIndexChanged -= new System.EventHandler(this.cboTimeType_SelectedIndexChanged);
                 this.dtNgayChidinh.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.dtNgayChidinh_Closed);
                 this.dtNgayChidinh.TextChanged -= new System.EventHandler(this.dtNgayChidinh_TextChanged);
                 this.dtNgayChidinh.KeyDown -= new System.Windows.Forms.KeyEventHandler(this.dtNgayChidinh_KeyDown);
@@ -198,6 +199,8 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 spinEditVolumn = null;
                 spinEditConvertVolumnRatio = null;
                 layoutControlItem20 = null;
+                layoutControlItemCboTimeType = null;
+                cboTimeType = null;
                 dtNgayChidinh = null;
                 layoutControlItem19 = null;
                 panelControlUCUnitService = null;
