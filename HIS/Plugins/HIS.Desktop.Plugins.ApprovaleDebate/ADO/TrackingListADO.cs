@@ -18,5 +18,6 @@ namespace HIS.Desktop.Plugins.ApprovaleDebate.ADO
         public string ICD_NAME { get; set; }
         public string ICD_SUB_CODE { get; set; }
         public string ICD_TEXT { get; set; }
+        public string MEDICAL_INSTRUCTION {  get; set; }
     }
 }
