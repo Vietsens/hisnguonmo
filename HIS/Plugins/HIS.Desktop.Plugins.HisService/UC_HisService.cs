@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -113,6 +113,13 @@ namespace HIS.Desktop.Plugins.HisService
         private static readonly string settingSignFilePath = System.IO.Path.Combine(
             System.Windows.Forms.Application.StartupPath, "Temp", "SettingSign_HisService.json");
         private bool isNotLoadWhileChangeControlStateInFirst = false;
+        private bool isCheckAll = false;
+        private bool isBatchChecking = false;
+        private Rectangle headerCheckBoxBounds = Rectangle.Empty;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit headerCheckEdit;
+        private DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo headerCheckInfo;
+        private DevExpress.XtraEditors.Drawing.CheckEditPainter headerCheckPainter;
+        private HashSet<long> checkedServiceIds = new HashSet<long>();
 
         public class CauHinhItem
         {
@@ -4054,13 +4061,30 @@ namespace HIS.Desktop.Plugins.HisService
         {
             try
             {
+                if (e.IsSetData && e.Column.FieldName == "CHECK_SELECT" && !e.Node.HasChildren)
+                {
+                    V_HIS_SERVICE sData = (V_HIS_SERVICE)e.Row;
+                    if (sData != null)
+                    {
+                        bool isChecked = e.Value != null && (bool)e.Value;
+                        if (isChecked) checkedServiceIds.Add(sData.ID);
+                        else checkedServiceIds.Remove(sData.ID);
+                    }
+                }
                 if (e.IsGetData)
                 {
                     V_HIS_SERVICE pData = (V_HIS_SERVICE)e.Row;
                     short status = Inventec.Common.TypeConvert.Parse.ToInt16((pData.IS_ACTIVE ?? -1).ToString());
                     if (pData == null || this.treeList1 == null) return;
 
-                    if (e.Column.FieldName == "CREATE_TIME_STR")
+                    if (e.Column.FieldName == "CHECK_SELECT")
+                    {
+                        if (!e.Node.HasChildren)
+                            e.Value = checkedServiceIds.Contains(pData.ID);
+                        else
+                            e.Value = false;
+                    }
+                    else if (e.Column.FieldName == "CREATE_TIME_STR")
                     {
                         try
                         {
@@ -4304,6 +4328,42 @@ namespace HIS.Desktop.Plugins.HisService
                 listVServiceExport = new List<V_HIS_SERVICE>();
                 listVServiceExport.AddRange(currentDataStore);
 
+                // Bo sung node cha/con bi thieu khi tim kiem
+                if (!string.IsNullOrWhiteSpace(txtKeyword.Text) && currentDataStore.Count > 0)
+                {
+                    var allServices = BackendDataWorker.Get<V_HIS_SERVICE>();
+                    if (allServices != null)
+                    {
+                        var existingIds = new HashSet<long>(currentDataStore.Select(o => o.ID));
+                        // Them node cha bi thieu
+                        var missingParents = new List<V_HIS_SERVICE>();
+                        foreach (var svc in currentDataStore)
+                        {
+                            if (svc.PARENT_ID.HasValue && !existingIds.Contains(svc.PARENT_ID.Value))
+                            {
+                                var parent = allServices.FirstOrDefault(o => o.ID == svc.PARENT_ID.Value);
+                                if (parent != null && !existingIds.Contains(parent.ID))
+                                {
+                                    missingParents.Add(parent);
+                                    existingIds.Add(parent.ID);
+                                }
+                            }
+                        }
+                        currentDataStore.AddRange(missingParents);
+                        // Them node con bi thieu
+                        var missingChildren = new List<V_HIS_SERVICE>();
+                        foreach (var svc in currentDataStore.ToList())
+                        {
+                            var children = allServices.Where(o => o.PARENT_ID == svc.ID && !existingIds.Contains(o.ID)).ToList();
+                            foreach (var child in children)
+                            {
+                                missingChildren.Add(child);
+                                existingIds.Add(child.ID);
+                            }
+                        }
+                        currentDataStore.AddRange(missingChildren);
+                    }
+                }
                 treeList1.KeyFieldName = "ID";
                 treeList1.ParentFieldName = "PARENT_ID";
                 treeList1.DataSource = currentDataStore;
@@ -5664,6 +5724,179 @@ namespace HIS.Desktop.Plugins.HisService
             }
         }
 
+
+        private void treeList1_CellValueChanged(object sender, DevExpress.XtraTreeList.CellValueChangedEventArgs e)
+        {
+            try
+            {
+                if (e.Column != null && e.Column.FieldName == "CHECK_SELECT")
+                {
+                    treeList1.PostEditor();
+                    UpdateCheckAllState();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+
+        private void repositoryItemCheckEditSelect_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                treeList1.PostEditor();
+                UpdateCheckAllState();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void treeList1_CustomDrawColumnHeader(object sender, DevExpress.XtraTreeList.CustomDrawColumnHeaderEventArgs e)
+        {
+            try
+            {
+                if (e.Column != null && e.Column.FieldName == "CHECK_SELECT")
+                {
+                    e.DefaultDraw();
+                    if (headerCheckEdit == null)
+                    {
+                        headerCheckEdit = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
+                        headerCheckInfo = headerCheckEdit.CreateViewInfo() as DevExpress.XtraEditors.ViewInfo.CheckEditViewInfo;
+                        headerCheckPainter = headerCheckEdit.CreatePainter() as DevExpress.XtraEditors.Drawing.CheckEditPainter;
+                    }
+                    Rectangle checkBoxRect = new Rectangle(
+                        e.Bounds.X + (e.Bounds.Width - 14) / 2,
+                        e.Bounds.Y + (e.Bounds.Height - 14) / 2,
+                        14, 14);
+                    headerCheckBoxBounds = e.Bounds;
+                    headerCheckInfo.EditValue = isCheckAll;
+                    headerCheckInfo.Bounds = checkBoxRect;
+                    headerCheckInfo.CalcViewInfo(e.Graphics);
+                    using (var cache = new DevExpress.Utils.Drawing.GraphicsCache(e.Graphics))
+                    {
+                        var args = new DevExpress.XtraEditors.Drawing.ControlGraphicsInfoArgs(headerCheckInfo, cache, checkBoxRect);
+                        headerCheckPainter.Draw(args);
+                    }
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void treeList1_MouseDown_CheckAll(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (headerCheckBoxBounds != Rectangle.Empty && headerCheckBoxBounds.Contains(e.Location))
+                {
+                    isCheckAll = !isCheckAll;
+                    isBatchChecking = true;
+                    treeList1.BeginUpdate();
+                    try
+                    {
+                        CheckAllNodes(treeList1.Nodes, isCheckAll);
+                    }
+                    finally
+                    {
+                        treeList1.EndUpdate();
+                        isBatchChecking = false;
+                    }
+                    treeList1.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void CheckAllNodes(DevExpress.XtraTreeList.Nodes.TreeListNodes nodes, bool check)
+        {
+            foreach (DevExpress.XtraTreeList.Nodes.TreeListNode node in nodes)
+            {
+                if (node.HasChildren)
+                {
+                    CheckAllNodes(node.Nodes, check);
+                }
+                else
+                {
+                    var data = treeList1.GetDataRecordByNode(node) as V_HIS_SERVICE;
+                    if (data != null)
+                    {
+                        if (check) checkedServiceIds.Add(data.ID);
+                        else checkedServiceIds.Remove(data.ID);
+                    }
+                }
+            }
+        }
+
+        private void UpdateCheckAllState()
+        {
+            try
+            {
+                if (isBatchChecking) return;
+                bool allChecked = HasLeafNodes(treeList1.Nodes);
+                if (allChecked) allChecked = AreAllLeavesChecked(treeList1.Nodes);
+                isCheckAll = allChecked;
+                treeList1.InvalidateColumnHeader(treeListColumnCheck);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private bool HasLeafNodes(DevExpress.XtraTreeList.Nodes.TreeListNodes nodes)
+        {
+            foreach (DevExpress.XtraTreeList.Nodes.TreeListNode node in nodes)
+            {
+                if (!node.HasChildren) return true;
+                if (HasLeafNodes(node.Nodes)) return true;
+            }
+            return false;
+        }
+
+        private bool AreAllLeavesChecked(DevExpress.XtraTreeList.Nodes.TreeListNodes nodes)
+        {
+            foreach (DevExpress.XtraTreeList.Nodes.TreeListNode node in nodes)
+            {
+                if (node.HasChildren)
+                {
+                    if (!AreAllLeavesChecked(node.Nodes)) return false;
+                }
+                else
+                {
+                    var data = treeList1.GetDataRecordByNode(node) as V_HIS_SERVICE;
+                    if (data != null && !checkedServiceIds.Contains(data.ID)) return false;
+                }
+            }
+            return true;
+        }
+
+        public List<V_HIS_SERVICE> GetCheckedServices()
+        {
+            List<V_HIS_SERVICE> checkedList = new List<V_HIS_SERVICE>();
+            try
+            {
+                var dataSource = treeList1.DataSource as List<V_HIS_SERVICE>;
+                if (dataSource != null)
+                {
+                    checkedList = dataSource.Where(s => checkedServiceIds.Contains(s.ID)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return checkedList;
+        }
         private void treeList1_PopupMenuShowing(object sender, DevExpress.XtraTreeList.PopupMenuShowingEventArgs e)
         {
             try
@@ -7863,7 +8096,10 @@ namespace HIS.Desktop.Plugins.HisService
         {
             try
             {
-                if (listVServiceExport == null || listVServiceExport.Count == 0)
+                var checkedList = GetCheckedServices();
+                var exportList = checkedList.Count > 0 ? checkedList : listVServiceExport;
+
+                if (exportList == null || exportList.Count == 0)
                 {
                     DevExpress.XtraEditors.XtraMessageBox.Show(
                         "Không có dữ liệu dịch vụ để xuất. Vui lòng tìm kiếm trước.",
@@ -7883,7 +8119,7 @@ namespace HIS.Desktop.Plugins.HisService
                 try
                 {
                     // Lấy danh sách SERVICE_ID đang hiển thị trên màn hình
-                    List<long> serviceIds = listVServiceExport.Select(o => o.ID).ToList();
+                    List<long> serviceIds = exportList.Select(o => o.ID).ToList();
 
                     // Lấy dữ liệu thuốc hao phí (V_HIS_SERVICE_METY) theo service IDs
                     List<MOS.EFMODEL.DataModels.V_HIS_SERVICE_METY> listMety = GetServiceMetyList(serviceIds);
@@ -7894,7 +8130,7 @@ namespace HIS.Desktop.Plugins.HisService
                     var branch = BackendDataWorker.Get<HIS_BRANCH>()
                         .FirstOrDefault(o => o.ID == BranchDataWorker.GetCurrentBranchId());
                     string maCskcb = branch?.HEIN_MEDI_ORG_CODE;
-                    string xmlContent = BuildXmlTT12(listVServiceExport, listMety, listPaty, maCskcb);
+                    string xmlContent = BuildXmlTT12(exportList, listMety, listPaty, maCskcb);
                    System.IO.File.WriteAllText(savePath, xmlContent, new System.Text.UTF8Encoding(false));
 
                     // Ký số nếu chkKy đang tích
@@ -8085,7 +8321,7 @@ namespace HIS.Desktop.Plugins.HisService
                     sb.AppendLine(X("LIEU_BQ_PX", null, 10));
                     sb.AppendLine(X("TL_THUCTE_BQ_PX", null, 10));
                     sb.AppendLine(X("THANH_TIEN_THUOC", null, 10));
-                    sb.AppendLine("        <TT_THUOCPX/>");
+                    sb.AppendLine("        </TT_THUOCPX>");
                 }
                 sb.AppendLine("      </DS_THUOCPX>");
                 sb.AppendLine("    </DMDICHVUKBCB>");
@@ -8105,6 +8341,21 @@ namespace HIS.Desktop.Plugins.HisService
                 : pad + "<" + tag + ">" + XmlEscape(value) + "</" + tag + ">";
         }
 
+        //private string XmlEscape(string value)
+        //{
+        //    if (string.IsNullOrEmpty(value)) return "";
+        //    var result = value
+        //        .Replace("&", "&amp;")
+        //        .Replace("<", "&lt;")
+        //        .Replace(">", "&gt;")
+        //        .Replace("\"", "&quot;")
+        //        .Replace("'", "&apos;")
+        //        .Replace("\r\n", " ")
+        //        .Replace("\r", " ")
+        //        .Replace("\n", " ")
+        //        .Replace("\t", " ").Trim();
+        //    return System.Text.RegularExpressions.Regex.Replace(result, @"\s{2,}", " ");
+        //}
         private string XmlEscape(string value)
         {
             if (string.IsNullOrEmpty(value)) return "";
@@ -8115,7 +8366,6 @@ namespace HIS.Desktop.Plugins.HisService
                 .Replace("\"", "&quot;")
                 .Replace("'", "&apos;");
         }
-
         private string FormatTimeNumber(long? timeNumber)
         {
             try
@@ -8189,7 +8439,16 @@ namespace HIS.Desktop.Plugins.HisService
                         Inventec.Common.Logging.LogSystem.Warn("Ký HSM thất bại");
                         return false;
                     }
-                    var xmlBytes = Convert.FromBase64String(xmlBase64);
+                    byte[] xmlBytes = null;
+                    try
+                    {
+                        xmlBytes = Convert.FromBase64String(xmlBase64);
+                    }
+                    catch (FormatException)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn("HSM ky so tra ve du lieu khong hop le (khong phai Base64): " + (xmlBase64 != null ? xmlBase64.Substring(0, System.Math.Min(200, xmlBase64.Length)) : "null"));
+                        return false;
+                    }
                     System.IO.File.WriteAllBytes(tempFilePath, xmlBytes);
                     pathAfterFileSign = tempFilePath;
                 }
