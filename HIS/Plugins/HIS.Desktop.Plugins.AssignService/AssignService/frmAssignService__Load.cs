@@ -2033,7 +2033,7 @@ namespace HIS.Desktop.Plugins.AssignService.AssignService
                         bool isOutOfHour = false;
                         if (intructionTimeSelected.Count == 1)
                             isOutOfHour = CheckIsOutOfHoursTime(intructionTimeSelected.FirstOrDefault());
-                        if (HisConfigCFG.IsSetPrimaryPatientType != "0" && (currentHisTreatment.TDL_PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT ? sereServADO.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH : true) && isOutOfHour && currentHisTreatment.IS_EMERGENCY != 1 && primaryPatientTypeTemps.Any(o=>o.PATIENT_TYPE_CODE == "OT"))
+                        if (HisConfigCFG.IsSetPrimaryPatientType != "0" && (currentHisTreatment.TDL_PATIENT_TYPE_ID == HisConfigCFG.PatientTypeId__BHYT ? sereServADO.TDL_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__KH : true) && currentHisTreatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM && isOutOfHour && currentHisTreatment.IS_EMERGENCY != 1 && primaryPatientTypeTemps.Any(o=>o.PATIENT_TYPE_CODE == "OT"))
                         {
                             var patientType = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_PATIENT_TYPE>().FirstOrDefault(o => o.PATIENT_TYPE_CODE == "OT");
                             sereServADO.PRIMARY_PATIENT_TYPE_ID = patientType.ID;
