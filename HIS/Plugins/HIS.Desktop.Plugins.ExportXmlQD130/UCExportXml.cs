@@ -3858,7 +3858,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             filter.HAS_IN_CODE = true;
                         }
                     }
-                    if (configSync.isCheckOutTime)
+                    if (!configSync.isCheckOutTime)
                     {
                         filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
                         filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));

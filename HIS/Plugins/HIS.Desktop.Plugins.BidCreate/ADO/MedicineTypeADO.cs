@@ -42,6 +42,7 @@ namespace HIS.Desktop.Plugins.BidCreate.ADO
         public string BID_NAME { get; set; }
         public string BID_NUMBER { get; set; }
         public string BID_TYPE_CODE { get; set; }
+        public string BID_FORM_CODE { get; set; }
         public string BID_GROUP_CODE { get; set; }
         public string BID_PACKAGE_CODE { get; set; }
         public string BID_YEAR { get; set; }

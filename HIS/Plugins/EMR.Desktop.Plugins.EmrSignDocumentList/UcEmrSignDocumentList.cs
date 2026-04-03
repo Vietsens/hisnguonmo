@@ -600,6 +600,23 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                 {
                     V_EMR_DOCUMENT data = (V_EMR_DOCUMENT)gridViewDocument.GetRow(e.RowHandle);
                     if (data == null) return;
+
+                    bool checkUnSigners = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Contains(LoggingName);
+
+                    if (!checkUnSigners)
+                    {
+                        CommonParam paramCommon = new CommonParam();
+                        EmrSignViewFilter filter = new EmrSignViewFilter();
+                        var list = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => {long.TryParse(x.Trim(), out var result);return result;}).ToList();
+                        filter.IDs = list;
+                        var datas = new BackendAdapter(paramCommon).Get<List<V_EMR_SIGN>>("api/EmrSign/GetView", ApiConsumers.EmrConsumer, filter, paramCommon) ?? new List<V_EMR_SIGN>();
+                        if (datas != null)
+                        {
+                            checkUnSigners = true;
+                        }
+                        
+                    }
+
                     if (e.Column.FieldName == "SIGN")
                     {
                         if (
@@ -607,7 +624,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                                 data.NEXT_SIGNER == LoggingName
                                 || (data.NEXT_FLOW_ID.HasValue && this.emrFlowIds != null && this.emrFlowIds.Contains(data.NEXT_FLOW_ID.Value)
                                     && (String.IsNullOrWhiteSpace(data.NEXT_ROOM) || data.NEXT_ROOM == (room.ROOM_TYPE_CODE + "___" + room.ROOM_CODE)))
-                                || (data.IS_SIGN_PARALLEL == 1 && !String.IsNullOrEmpty(data.UN_SIGNERS) && data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Contains(LoggingName))
+                                || (data.IS_SIGN_PARALLEL == 1 && !String.IsNullOrEmpty(data.UN_SIGNERS) && checkUnSigners)
                             )
                             && String.IsNullOrWhiteSpace(data.REJECTER) && (data.COUNT_RESIGN_FAILED == null || data.COUNT_RESIGN_FAILED <= 0))
                         {

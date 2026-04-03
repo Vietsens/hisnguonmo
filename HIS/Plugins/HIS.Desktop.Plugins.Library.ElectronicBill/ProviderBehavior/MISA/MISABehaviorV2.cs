@@ -225,7 +225,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MISA
 
                 Inventec.Common.ElectronicBill.Misa.Model.Response response = null;
                 DataInit.DataGet = invoices;
-
+                DataInit.IsChangeInvoiceName = this.IsChangeInvoiceName; 
                 var eMoit = new Inventec.Common.ElectronicBill.Misa.ElectronicBillMisaManager(DataInit);
                 if (eMoit != null)
                 {

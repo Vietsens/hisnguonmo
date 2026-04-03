@@ -320,8 +320,16 @@ namespace MPS.Processor.Mps000321
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TREATMENT_CODE, rdo.Treatment.TREATMENT_CODE));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.IN_TIME, rdo.Treatment.IN_TIME));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.OUT_TIME, rdo.Treatment.OUT_TIME));
-                if (ListPayFormType != null && ListPayFormType.Count > 0)
-                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.BILL_AMOUNT, ListPayFormType[0].BILL_AMOUNT));
+                //decimal totalBillAmount = 0;
+                //if (ListPayFormType != null && ListPayFormType.Count > 0)
+                //{
+                //    totalBillAmount = ListPayFormType.Sum(x => x.BILL_AMOUNT);
+                //}
+                //// bill_amount ở đây so với total_bill_amount trong treatment_fee có sự khác nhau nếu giao dịch bị khóa thì sẽ k có trong total_bill_amount của hisTreatmentFee
+                //SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.BILL_AMOUNT,Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalBillAmount, 0)));
+
+
+            
 
                 if (rdo.CurrentPatyAlter != null)
                 {
@@ -582,6 +590,9 @@ namespace MPS.Processor.Mps000321
                 decimal thanhtien_tong = 0;
                 //qtcode
                 decimal thanhtien_baolanh = 0;
+                decimal thanhtien_miengiam = 0;
+                decimal thanhtien_tronggoi = 0;
+                decimal thanhtien_ngoaigoi = 0;
                 decimal thanhtienBH_tong = 0;
                 decimal bhytthanhtoan_tong = 0;
                 decimal nguonkhac_tong = 0;
@@ -608,6 +619,9 @@ namespace MPS.Processor.Mps000321
                         }
                     }
                     thanhtien_baolanh = sereServADOs.Where(o => o.IS_GUARANTEED == 1 && (o.IS_EXPEND != 1 || o.IS_EXPEND == null)).Sum(p => p.PRICE);
+                    thanhtien_miengiam = sereServADOs.Sum(o => o.DISCOUNT ?? 0); 
+                    thanhtien_tronggoi = sereServADOs.Where(o => o.PACKAGE_ID != null).Sum(o => o.PRICE);
+                    thanhtien_ngoaigoi = sereServADOs.Where(o => o.PACKAGE_ID == null).Sum(o => o.PRICE);
                     thanhtienBH_tong = sereServADOs.Sum(o => o.TOTAL_PRICE_BHYT);
                     thanhtien_tong = sereServADOs.Sum(o => o.VIR_TOTAL_PRICE_NO_EXPEND ?? 0);
                     bhytthanhtoan_tong = sereServADOs.Sum(o => o.VIR_TOTAL_HEIN_PRICE) ?? 0;
@@ -634,6 +648,9 @@ namespace MPS.Processor.Mps000321
 
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tong, 0)));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_GUARANTEE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_baolanh, 0)));
+                SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_DISCOUNT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_miengiam, 0)));
+                SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_IN_PACKAGE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_tronggoi, 0)));
+                SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_OUT_PACKAGE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(thanhtien_ngoaigoi, 0)));
                 switch (rdo.CurrentPatyAlter.TREATMENT_TYPE_ID)
                 {
                     case IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM:
@@ -664,15 +681,22 @@ namespace MPS.Processor.Mps000321
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_PATIENT_SELF_DV, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra_dv, 0)));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_PATIENT_SELF_TP, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra_vp, 0)));
                 SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_PRICE_PATIENT_SELF_DD, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tongtienbenhnhantutra_dd, 0)));
-
+                decimal totalDeposit = 0;
+                decimal totalHeinPrice = 0;
                 if (rdo.TreatmentFees != null)
                 {
-                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_DEPOSIT_AMOUNT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(rdo.TreatmentFees[0].TOTAL_DEPOSIT_AMOUNT ?? 0, 0)));
+                    if (rdo.TreatmentFees != null && rdo.TreatmentFees.Count > 0)
+                    {
+                        totalDeposit = rdo.TreatmentFees[0].TOTAL_DEPOSIT_AMOUNT ?? 0;
+                    }
+
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_DEPOSIT_AMOUNT,
+                        Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalDeposit, 0)));
 
                     decimal totalPrice = 0;
-                    decimal totalHeinPrice = 0;
+                    
                     decimal totalPatientPrice = 0;
-                    decimal totalDeposit = 0;
+                    //decimal totalDeposit = 0;
                     decimal totalBill = 0;
                     decimal totalBillTransferAmount = 0;
                     decimal totalRepay = 0;
@@ -683,7 +707,7 @@ namespace MPS.Processor.Mps000321
                     totalPrice = rdo.TreatmentFees[0].TOTAL_PRICE ?? 0; // tong tien
                     totalHeinPrice = rdo.TreatmentFees[0].TOTAL_HEIN_PRICE ?? 0;
                     totalPatientPrice = rdo.TreatmentFees[0].TOTAL_PATIENT_PRICE ?? 0; // bn tra
-                    totalDeposit = rdo.TreatmentFees[0].TOTAL_DEPOSIT_AMOUNT ?? 0;
+                    //totalDeposit = rdo.TreatmentFees[0].TOTAL_DEPOSIT_AMOUNT ?? 0;
                     totalBill = rdo.TreatmentFees[0].TOTAL_BILL_AMOUNT ?? 0;
                     totalBillTransferAmount = rdo.TreatmentFees[0].TOTAL_BILL_TRANSFER_AMOUNT ?? 0;
                     exemption = 0;// HospitalFeeSum[0].TOTAL_EXEMPTION ?? 0;
@@ -691,6 +715,32 @@ namespace MPS.Processor.Mps000321
                     total_obtained_price = (totalDeposit + totalBill - totalBillTransferAmount - totalRepay + exemption);//Da thu benh nhan
                     decimal transfer = totalPatientPrice - total_obtained_price;//Phai thu benh nhan
                     depositPlus = transfer;//Nop them
+
+                    decimal absDepositPlus = Math.Abs(depositPlus);
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_BALANCE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(absDepositPlus, 0)));
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_BALANCE_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(absDepositPlus).ToString())));
+                    decimal tienTraLai = 0; 
+                    decimal tienNopThem = 0; 
+                    if (depositPlus < 0)
+                    {
+                        tienTraLai = Math.Abs(depositPlus);
+                    }
+                    else if (depositPlus > 0)
+                    {
+                        tienNopThem = depositPlus;
+                    }
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_REFUND_AMOUNT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tienTraLai, 0)));
+                    Inventec.Common.Logging.LogSystem.Debug("tienTraLai: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", tienTraLai));
+
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_ADDITIONAL_PAYMENT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(tienNopThem, 0)));
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_REFUND_AMOUNT_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(tienTraLai).ToString())));
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TOTAL_ADDITIONAL_PAYMENT_TEXT, Inventec.Common.String.Convert.CurrencyToVneseString(Math.Round(tienNopThem).ToString())));
+
+                    string labelBalance = tienTraLai > 0? "Bệnh nhân được trả lại:" : "Bệnh nhân phải nộp:";
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.LABEL_BALANCE, labelBalance));
+
+
+                    SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.BILL_AMOUNT, Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalBill, 0)));
 
                     SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TREATMENT_FEE_TOTAL_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPrice, 0)));
                     SetSingleKey(new KeyValue(Mps000321ExtendSingleKey.TREATMENT_FEE_TOTAL_PATIENT_PRICE, Inventec.Common.Number.Convert.NumberToStringRoundAuto(totalPatientPrice, 0)));
