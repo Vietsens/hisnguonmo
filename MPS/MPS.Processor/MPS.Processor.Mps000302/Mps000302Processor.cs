@@ -174,7 +174,7 @@ namespace MPS.Processor.Mps000302
                 objectTag.AddRelationship(store, "PatyAlterBHYT", "Service", "KEY", "KEY_PATY_ALTER");
                 objectTag.AddRelationship(store, "PatyAlterBHYT", "ServiceSA", "KEY", "KEY_PATY_ALTER");
 
-                objectTag.AddRelationship(store, "HeinServiceType", "MedicineLine", "ID", "HEIN_SERVICE_TYPE_ID");
+                objectTag.AddRelationship(store, "HeinServiceType", "MedicineLine", new string[] { "ID", "KEY_PATY_ALTER" } , new string[] { "HEIN_SERVICE_TYPE_ID", "KEY_PATY_ALTER" });
                 objectTag.AddRelationship(store, "HeinServiceType", "HeinServiceTypeBed", "ID", "PARENT_ID");
                 objectTag.AddRelationship(store, "HeinServiceType", "Service", "ID", "HEIN_SERVICE_TYPE_ID");
                 objectTag.AddRelationship(store, "HeinServiceType", "ServiceSA", "ID", "HEIN_SERVICE_TYPE_ID");
