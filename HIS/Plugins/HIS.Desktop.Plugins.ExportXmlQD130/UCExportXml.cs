@@ -3786,9 +3786,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return;
                 }
                 timerTickIsRunning = true;
-
-                LogSystem.Info("Begin Run Thread Auto Sync");
-
                 if (this.configSync.isCheckCollinearXml)
                 {
                     listTreatmentSync = new List<V_HIS_TREATMENT_1>();
@@ -3858,9 +3855,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             filter.HAS_IN_CODE = true;
                         }
                     }
+                   
                     if (!configSync.isCheckOutTime)
                     {
-                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
+                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss")); 
                         filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                         filter.IS_PAUSE = true;
                     }
@@ -5096,7 +5094,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // Khởi tạo đối tượng gom dữ liệu C79
                 HSTH01BH hsth01bh = new HSTH01BH();
                 hsth01bh.DS_CHITIET = new DS_CHITIET();
-                hsth01bh.DS_CHITIET.Id = "Id-" + Guid.NewGuid().ToString();
+                //hsth01bh.DS_CHITIET.Id = "Id-" + Guid.NewGuid().ToString();
                 hsth01bh.DS_CHITIET.DanhSachChiTiet = new List<HSTH01BH_CHITIET>();
                 hsth01bh.CHUKYDONVI = "";
 

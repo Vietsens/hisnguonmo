@@ -201,7 +201,7 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
         {
             try
             {
-                if (patientTypeAlter == null) throw new ArgumentNullException("patientTypeAlter is null");
+                if (patientTypeAlter == null) throw new ArgumentNullException("patientTypeAlter is null"); 
 
                 this.txtSoThe.Text = patientTypeAlter.HEIN_CARD_NUMBER;
                 this.txtHeinCardFromTime.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(patientTypeAlter.HEIN_CARD_FROM_TIME ?? 0);

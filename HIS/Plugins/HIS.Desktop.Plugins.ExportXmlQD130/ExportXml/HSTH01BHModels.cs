@@ -13,9 +13,6 @@ public class HSTH01BH
 
 public class DS_CHITIET
 {
-    [XmlAttribute("Id")]
-    public string Id { get; set; }
-
     [XmlElement("CHITIET_HS01BH")]
     public List<HSTH01BH_CHITIET> DanhSachChiTiet { get; set; }
 }

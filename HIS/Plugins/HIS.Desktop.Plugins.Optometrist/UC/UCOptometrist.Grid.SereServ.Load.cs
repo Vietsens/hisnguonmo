@@ -27,11 +27,11 @@ namespace HIS.Desktop.Plugins.Optometrist.UC
                     (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_VIEX_GETVIEW, ApiConsumer.ApiConsumers.MosConsumer, filterViexView, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramViex)
                     ?? new List<V_HIS_SERE_SERV_VIEX>();
                 //Bổ sung dòng mới 
-                if (!allViex.Any(a => a.SERVICE_REQ_ID == currentSR.ID))
+                if (!allViex.Any(a => a.SERVICE_REQ_ID == currentSR.ID)) 
                 {
                     MOS.Filter.HisSereServFilter filter = new MOS.Filter.HisSereServFilter();
                     filter.SERVICE_REQ_ID = currentSR.ID;
-                    filter.TDL_SERVICE_TYPE_ID = currentSR.SERVICE_REQ_TYPE_ID;
+                    filter.TDL_SERVICE_REQ_TYPE_ID = currentSR.SERVICE_REQ_TYPE_ID;
                     filter.IS_ACTIVE = 1;
                     var apiResult = new BackendAdapter(paramViex).Get<List<HIS_SERE_SERV>>
                         (ApiConsumer.HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumer.ApiConsumers.MosConsumer, filter, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, paramViex);
