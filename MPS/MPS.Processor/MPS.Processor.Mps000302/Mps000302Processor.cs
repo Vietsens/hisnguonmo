@@ -15,21 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using FlexCel.Report;
+using HIS.Desktop.Common.BankQrCode;
+using Inventec.Common.Logging;
+using Inventec.Core;
+using MOS.EFMODEL.DataModels;
+using MPS.Processor.Mps000302.ADO;
+using MPS.Processor.Mps000302.PDO;
+using MPS.ProcessorBase;
+using MPS.ProcessorBase.Core;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MPS.ProcessorBase.Core;
-using Inventec.Core;
-using MOS.EFMODEL.DataModels;
-using MPS.Processor.Mps000302.PDO;
-using FlexCel.Report;
-using MPS.ProcessorBase;
-using MPS.Processor.Mps000302.ADO;
-using System.IO;
-using HIS.Desktop.Common.BankQrCode;
 
 namespace MPS.Processor.Mps000302
 {
@@ -174,7 +175,7 @@ namespace MPS.Processor.Mps000302
                 objectTag.AddRelationship(store, "PatyAlterBHYT", "Service", "KEY", "KEY_PATY_ALTER");
                 objectTag.AddRelationship(store, "PatyAlterBHYT", "ServiceSA", "KEY", "KEY_PATY_ALTER");
 
-                objectTag.AddRelationship(store, "HeinServiceType", "MedicineLine", new string[] { "ID", "KEY_PATY_ALTER" } , new string[] { "HEIN_SERVICE_TYPE_ID", "KEY_PATY_ALTER" });
+                objectTag.AddRelationship(store, "HeinServiceType", "MedicineLine", "ID", "HEIN_SERVICE_TYPE_ID");
                 objectTag.AddRelationship(store, "HeinServiceType", "HeinServiceTypeBed", "ID", "PARENT_ID");
                 objectTag.AddRelationship(store, "HeinServiceType", "Service", "ID", "HEIN_SERVICE_TYPE_ID");
                 objectTag.AddRelationship(store, "HeinServiceType", "ServiceSA", "ID", "HEIN_SERVICE_TYPE_ID");
@@ -283,6 +284,7 @@ namespace MPS.Processor.Mps000302
         {
             try
             {
+                // Build aggregated list from copies so AggregateTotals doesn't mutate original items
                 objectTag.AddObjectData(
                     store,
                     "HeinServiceTypeOnly",
@@ -291,8 +293,21 @@ namespace MPS.Processor.Mps000302
                         .Select(g =>
                         {
                             var first = g.First();
-                            AggregateTotals(g, first);
-                            return first;
+                            // create a shallow copy to avoid mutating the original collection
+                            var copy = new HeinServiceTypeADO();
+                            var props = typeof(HeinServiceTypeADO).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                                .Where(p => p.CanRead && p.CanWrite);
+                            foreach (var p in props)
+                            {
+                                try
+                                {
+                                    p.SetValue(copy, p.GetValue(first));
+                                }
+                                catch { }
+                            }
+
+                            AggregateTotals(g, copy);
+                            return copy;
                         })
                         .ToList()
                 );
