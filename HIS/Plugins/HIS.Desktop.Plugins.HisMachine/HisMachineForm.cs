@@ -2122,7 +2122,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                             ? "[" + machine.SOURCE_NAME + "]"
                             : string.Empty;
 
-                        maMay = String.Format("{0}.{1}{4}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER, sourceNamePart);
+                        maMay = String.Format("{0}.{1}{3}.{2}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, machine.SERIAL_NUMBER, sourceNamePart);
                     }
                     else
                     {
