@@ -5191,9 +5191,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                         using (System.Xml.XmlWriter writer = System.Xml.XmlWriter.Create(ms, settings))
                         {
-                            System.Xml.Serialization.XmlSerializerNamespaces ns = new System.Xml.Serialization.XmlSerializerNamespaces();
-                            ns.Add("", ""); // Bỏ namespace rác
-                            serializer.Serialize(writer, hsth01bh, ns);
+                            serializer.Serialize(writer, hsth01bh);
                         }
 
                         File.WriteAllBytes(saveFilePath, ms.ToArray());
