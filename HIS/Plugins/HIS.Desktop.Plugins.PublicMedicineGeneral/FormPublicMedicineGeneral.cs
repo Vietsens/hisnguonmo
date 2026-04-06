@@ -17,6 +17,7 @@
  */
 using AutoMapper;
 using DevExpress.Data;
+using DevExpress.XtraEditors;
 using DevExpress.XtraGrid.Views.Base;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
@@ -55,6 +56,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
         private Inventec.Desktop.Common.Modules.Module currentModule;
         int positionHandleLeft = -1;
         List<ExpMestMediAndMateADO> _ExpMestMediAndMateADOs = new List<ExpMestMediAndMateADO>();
+        private readonly object _lockExpMestADO = new object();
 
         List<PatientADO> lstPatient = new List<PatientADO>();
         List<Mps000177DAY> Mps000177DAY = new List<Mps000177DAY>();
@@ -190,7 +192,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                 layoutControlItem6.Visibility = IsVisible ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                 layoutControlItem3.Size = IsVisible ? new Size(width6, layoutControlItem3.Size.Height) : new Size(width6 + layoutControlItem3.Size.Width - 10, layoutControlItem3.Size.Height);
                 txtExpMestCode.Text = IsVisible ? txtExpMestCode.Text : null;
-                btnFind_Click(null,null);
+                btnFind_Click(null, null);
             }
             catch (Exception ex)
             {
@@ -256,6 +258,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
         {
             try
             {
+                cboTimeType.SelectedIndex = 0;
                 dtFromTime.DateTime = DateTime.Now;
                 dtToTime.DateTime = DateTime.Now;
                 txtExpMestCode.Text = "";
@@ -524,6 +527,8 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             try
             {
                 _ExpMestMediAndMateADOs = new List<ADO.ExpMestMediAndMateADO>();
+                dicExpMest = new Dictionary<long, HIS_EXP_MEST>();
+                bedRoomName = new Dictionary<long, V_HIS_TREATMENT_BED_ROOM>();
                 MOS.Filter.HisExpMestFilter filter = new MOS.Filter.HisExpMestFilter();
                 _ExpMests = new List<HIS_EXP_MEST>();
                 lstPatient = new List<PatientADO>();
@@ -550,17 +555,33 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
 
                 if (IsPrint)
                 {
+                    bool isUseDate = cboTimeType.SelectedIndex == 1;
                     if (!String.IsNullOrEmpty(txtPatientCode.Text))
                     {
                         filter.TDL_PATIENT_CODE__EXACT = txtPatientCode.Text;
-                        filter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT;//Review
+                        filter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT;
                         if (dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue)
-                            filter.TDL_INTRUCTION_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
-                                dtFromTime.DateTime.ToString("yyyyMMdd") + "000000");
-
+                        {
+                            if (isUseDate)
+                            {
+                                filter.TDL_USE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    dtFromTime.DateTime.ToString("yyyyMMdd") + "000000");
+                            }
+                            else
+                                filter.TDL_INTRUCTION_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    dtFromTime.DateTime.ToString("yyyyMMdd") + "000000");
+                        }
                         if (dtToTime.EditValue != null && dtToTime.DateTime != DateTime.MinValue)
-                            filter.TDL_INTRUCTION_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
-                                dtToTime.DateTime.ToString("yyyyMMdd") + "000000");
+                        {
+                            if (isUseDate)
+                            {
+                                filter.TDL_USE_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    dtToTime.DateTime.ToString("yyyyMMdd") + "235959");
+                            }
+                            else
+                                filter.TDL_INTRUCTION_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    dtToTime.DateTime.ToString("yyyyMMdd") + "235959");
+                        }
                     }
                     else if (!String.IsNullOrEmpty(txtExpMestCode.Text))
                     {
@@ -570,20 +591,54 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                     else
                     {
                         if (dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue)
-                            filter.TDL_INTRUCTION_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
-                                dtFromTime.DateTime.ToString("yyyyMMdd") + "000000");
-
+                        {
+                            if (isUseDate)
+                            {
+                                filter.TDL_USE_TIME_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    dtFromTime.DateTime.ToString("yyyyMMdd") + "000000");
+                            }
+                            else
+                                filter.TDL_INTRUCTION_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    dtFromTime.DateTime.ToString("yyyyMMdd") + "000000");
+                        }
                         if (dtToTime.EditValue != null && dtToTime.DateTime != DateTime.MinValue)
-                            filter.TDL_INTRUCTION_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
-                                dtToTime.DateTime.ToString("yyyyMMdd") + "000000");
+                        {
+                            if (isUseDate)
+                            {
+                                filter.TDL_USE_TIME_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    dtToTime.DateTime.ToString("yyyyMMdd") + "235959");
+                            }
+                            else
+                                filter.TDL_INTRUCTION_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    dtToTime.DateTime.ToString("yyyyMMdd") + "235959");
+                        }
                     }
                 }
                 else
                 {
+                    bool isUseDateSearch = cboTimeType.SelectedIndex == 1;
                     if (!String.IsNullOrEmpty(txtExpMestCode.Text))
                     {
                         filter.EXP_MEST_CODE__EXACT = txtExpMestCode.Text;
                         filter.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL;
+                    }
+                    if (dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue)
+                    {
+                        long dateFrom = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            dtFromTime.DateTime.ToString("yyyyMMdd") + "000000");
+                        if (isUseDateSearch)
+                            filter.TDL_USE_TIME_FROM = dateFrom;
+                        else
+                            filter.TDL_INTRUCTION_DATE_FROM = dateFrom;
+                    }
+                    if (dtToTime.EditValue != null && dtToTime.DateTime != DateTime.MinValue)
+                    {
+                        long dateTo = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            dtToTime.DateTime.ToString("yyyyMMdd") + "235959");
+                        if (isUseDateSearch)
+                            filter.TDL_USE_TIME_TO = dateTo;
+                        else
+                            filter.TDL_INTRUCTION_DATE_TO = dateTo;
                     }
                 }
                 if (currentRoom != null)
@@ -594,11 +649,61 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                 if (IsPrint)
                 {
                     CallApiExpMest(filter, true);
+
+                    if (cboTimeType.SelectedIndex == 1)
+                    {
+                        var useTimeResults = new Dictionary<long, HIS_EXP_MEST>();
+                        foreach (var item in _ExpMests)
+                        {
+                            if (!useTimeResults.ContainsKey(item.ID))
+                                useTimeResults[item.ID] = item;
+                        }
+
+                        MOS.Filter.HisExpMestFilter filterInstruction = new MOS.Filter.HisExpMestFilter();
+                        if (dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue)
+                            filterInstruction.TDL_INTRUCTION_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                dtFromTime.DateTime.ToString("yyyyMMdd") + "000000");
+                        if (dtToTime.EditValue != null && dtToTime.DateTime != DateTime.MinValue)
+                            filterInstruction.TDL_INTRUCTION_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                dtToTime.DateTime.ToString("yyyyMMdd") + "235959");
+                        if (currentRoom != null)
+                            filterInstruction.REQ_DEPARTMENT_ID = currentRoom.DEPARTMENT_ID;
+                        if (!String.IsNullOrEmpty(txtPatientCode.Text))
+                        {
+                            filterInstruction.TDL_PATIENT_CODE__EXACT = txtPatientCode.Text;
+                            filterInstruction.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__DDT;
+                        }
+                        else if (!String.IsNullOrEmpty(txtExpMestCode.Text))
+                        {
+                            filterInstruction.EXP_MEST_CODE__EXACT = txtExpMestCode.Text;
+                            filterInstruction.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL;
+                        }
+                        CallApiExpMest(filterInstruction, true);
+
+                        foreach (var item in _ExpMests)
+                        {
+                            if (!useTimeResults.ContainsKey(item.ID)
+                                && (!item.TDL_USE_TIME.HasValue || item.TDL_USE_TIME == 0))
+                            {
+                                useTimeResults[item.ID] = item;
+                            }
+                        }
+                        _ExpMests = useTimeResults.Values.ToList();
+
+                        foreach (var item in _ExpMests)
+                        {
+                            if (item.TDL_USE_TIME.HasValue && item.TDL_USE_TIME > 0)
+                            {
+                                item.TDL_INTRUCTION_TIME = item.TDL_USE_TIME;
+                                item.TDL_INTRUCTION_DATE = item.TDL_USE_TIME;
+                            }
+                        }
+                    }
+
                     foreach (var item in _ExpMests)
                     {
                         if (!dicExpMest.ContainsKey(item.ID))
                         {
-                            dicExpMest[item.ID] = new HIS_EXP_MEST();
                             dicExpMest[item.ID] = item;
                         }
                     }
@@ -613,18 +718,56 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
 
                         start += Base.GlobaStore.MAX_REQUEST_LENGTH_PARAM;
                         count -= Base.GlobaStore.MAX_REQUEST_LENGTH_PARAM;
-                        
                     }
-                    PrintProcess();
 
                     if (_ExpMests.Count == 0)
                     {
-                        DevExpress.XtraEditors.XtraMessageBox.Show(ResourceMessage.KhongCoDonThuoc, "Cảnh báo", MessageBoxButtons.OK);
+                        XtraMessageBox.Show(ResourceMessage.KhongCoDonThuoc, "Cảnh báo", MessageBoxButtons.OK);
+                    }
+                    else
+                    {
+                        PrintProcess();
                     }
                 }
                 else
                 {
                     CallApiExpMest(filter, false);
+
+                    if (cboTimeType.SelectedIndex == 1)
+                    {
+                        var useTimeResults = new Dictionary<long, HIS_EXP_MEST>();
+                        foreach (var item in _ExpMests)
+                        {
+                            if (!useTimeResults.ContainsKey(item.ID))
+                                useTimeResults[item.ID] = item;
+                        }
+
+                        MOS.Filter.HisExpMestFilter filterInstruction = new MOS.Filter.HisExpMestFilter();
+                        if (dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue)
+                            filterInstruction.TDL_INTRUCTION_DATE_FROM = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                dtFromTime.DateTime.ToString("yyyyMMdd") + "000000");
+                        if (dtToTime.EditValue != null && dtToTime.DateTime != DateTime.MinValue)
+                            filterInstruction.TDL_INTRUCTION_DATE_TO = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                dtToTime.DateTime.ToString("yyyyMMdd") + "235959");
+                        if (currentRoom != null)
+                            filterInstruction.REQ_DEPARTMENT_ID = currentRoom.DEPARTMENT_ID;
+                        if (!String.IsNullOrEmpty(txtExpMestCode.Text))
+                        {
+                            filterInstruction.EXP_MEST_CODE__EXACT = txtExpMestCode.Text;
+                            filterInstruction.EXP_MEST_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_EXP_MEST_TYPE.ID__PL;
+                        }
+                        CallApiExpMest(filterInstruction, false);
+
+                        foreach (var item in _ExpMests)
+                        {
+                            if (!useTimeResults.ContainsKey(item.ID)
+                                && (!item.TDL_USE_TIME.HasValue || item.TDL_USE_TIME == 0))
+                            {
+                                useTimeResults[item.ID] = item;
+                            }
+                        }
+                        _ExpMests = useTimeResults.Values.ToList();
+                    }
                 }
 
             }
@@ -771,7 +914,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                             expMedi.Service_Type_Id = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC;
                             expMedi.AMOUNT = itemGroups.Sum(p => p.AMOUNT - (p.TH_AMOUNT ?? 0));
                             expMedi.TREATMENT_ID = expMest.TDL_TREATMENT_ID ?? 0;
-                            _ExpMestMediAndMateADOs.Add(expMedi);
+                            lock (_lockExpMestADO) { _ExpMestMediAndMateADOs.Add(expMedi); }
                         }
 
                     }
@@ -840,7 +983,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                                 expMate.AMOUNT = itemGroups.Sum(p => p.AMOUNT - (p.TH_AMOUNT ?? 0));
                                 expMate.IS_CHEMICAL_SUBSTANCE = itemGroups[0].IS_CHEMICAL_SUBSTANCE;
                                 expMate.TREATMENT_ID = expMest.TDL_TREATMENT_ID ?? 0;
-                                _ExpMestMediAndMateADOs.Add(expMate);
+                                lock (_lockExpMestADO) { _ExpMestMediAndMateADOs.Add(expMate); }
                             }
                         }
                     }
@@ -902,7 +1045,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                                 expMestBlood.MEDICINE_TYPE_NAME = itemGroups[0].BLOOD_TYPE_NAME; ;
                                 expMestBlood.Service_Type_Id = IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__MAU;
                                 expMestBlood.TREATMENT_ID = expMest.TDL_TREATMENT_ID ?? 0;
-                                _ExpMestMediAndMateADOs.Add(expMestBlood);
+                                lock (_lockExpMestADO) { _ExpMestMediAndMateADOs.Add(expMestBlood); }
                             }
                         }
                     }
@@ -1136,8 +1279,8 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             }
             return result;
         }
-        
-            
+
+
         private void PrintMps486(string printTypeCode, string fileName, ref bool result)
         {
             try
@@ -1163,8 +1306,16 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                     HisServiceReqFilter filter = new HisServiceReqFilter();
                     filter.TREATMENT_IDs = listSub;
                     filter.SERVICE_REQ_TYPE_IDs = new List<long>() { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONTT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK };
-                    filter.INTRUCTION_DATE_FROM = ado.ADO_TIME_FROM;
-                    filter.INTRUCTION_DATE_TO = ado.ADO_TIME_TO;
+                    if (cboTimeType.SelectedIndex == 1)
+                    {
+                        filter.USE_TIME_FROM = ado.ADO_TIME_FROM;
+                        filter.USE_TIME_TO = ado.ADO_TIME_TO;
+                    }
+                    else
+                    {
+                        filter.INTRUCTION_DATE_FROM = ado.ADO_TIME_FROM;
+                        filter.INTRUCTION_DATE_TO = ado.ADO_TIME_TO;
+                    }
                     var serviceReqs = new Inventec.Common.Adapter.BackendAdapter(paramCommon).Get<List<HIS_SERVICE_REQ>>("api/HisServiceReq/Get", ApiConsumers.MosConsumer, filter, paramCommon);
                     if (serviceReqs != null && serviceReqs.Count > 0)
                     {
@@ -1283,7 +1434,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-        
+
         private void PrintMps177(string printTypeCode, string fileName, ref bool result)
         {
             try
@@ -1294,14 +1445,14 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                 List<V_HIS_EXP_MEST_MATERIAL> listExpMestMaterial = new List<V_HIS_EXP_MEST_MATERIAL>();
                 List<V_HIS_EXP_MEST_BLOOD> listExpMestBlood = new List<V_HIS_EXP_MEST_BLOOD>();
                 CommonParam param = new CommonParam();
-                var treatmentIds = bedRoomName.Select(s=>s.Value).Select(o=>o.TREATMENT_ID).ToList();
+                var treatmentIds = bedRoomName.Select(s => s.Value).Select(o => o.TREATMENT_ID).ToList();
 
                 if (chkMedicine.Checked)
                 {
-                    if(_ExpMestMediAndMateADOs != null)
+                    if (_ExpMestMediAndMateADOs != null)
                     {
                         var listThuoc = _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC).ToList();
-                        Mapper.CreateMap<ExpMestMediAndMateADO,V_HIS_EXP_MEST_MEDICINE >();
+                        Mapper.CreateMap<ExpMestMediAndMateADO, V_HIS_EXP_MEST_MEDICINE>();
                         listExpMestMedicine = Mapper.Map<List<ExpMestMediAndMateADO>, List<V_HIS_EXP_MEST_MEDICINE>>(listThuoc);
 
                         //Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MEDICINE>(listExpMestMedicine, _ExpMestMediAndMateADOs.Where(s=>s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC));
@@ -1312,7 +1463,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                     if (_ExpMestMediAndMateADOs != null)
                     {
                         var listThuoc = _ExpMestMediAndMateADOs.Where(s => s.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT).ToList();
-                        foreach(var expMaterial in listThuoc)
+                        foreach (var expMaterial in listThuoc)
                         {
                             V_HIS_EXP_MEST_MATERIAL expMate = new V_HIS_EXP_MEST_MATERIAL();
                             Inventec.Common.Mapper.DataObjectMapper.Map<V_HIS_EXP_MEST_MATERIAL>(expMate, expMaterial);
@@ -1323,7 +1474,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                             expMate.TDL_INTRUCTION_DATE = expMaterial.INTRUCTION_DATE;
                             expMate.TDL_INTRUCTION_TIME = expMaterial.INTRUCTION_TIME;
                             expMate.TDL_TREATMENT_ID = expMaterial.TREATMENT_ID;
-                            
+
                             listExpMestMaterial.Add(expMate);
                         }
                         //Mapper.CreateMap<ExpMestMediAndMateADO, V_HIS_EXP_MEST_MATERIAL>();
@@ -1343,7 +1494,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                             expMate.BLOOD_TYPE_NAME = expMaterial.MEDICINE_TYPE_NAME;
                             expMate.BLOOD_TYPE_CODE = expMaterial.MEDICINE_TYPE_CODE;
                             expMate.TDL_BLOOD_TYPE_ID = expMaterial.MEDICINE_TYPE_ID;
-                            expMate.BLOOD_ID = expMaterial.MEDICINE_ID??0;
+                            expMate.BLOOD_ID = expMaterial.MEDICINE_ID ?? 0;
                             expMate.TDL_INTRUCTION_DATE = expMaterial.INTRUCTION_DATE;
                             expMate.TDL_INTRUCTION_TIME = expMaterial.INTRUCTION_TIME;
                             expMate.TDL_TREATMENT_ID = expMaterial.TREATMENT_ID;
@@ -1354,7 +1505,7 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
                     }
                 }
                 long config_day_size = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<long>("HIS.PHIEU_CONG_KHAI_THUOC.DAY_SIZE"); //BackendDataWorker.Get<HIS_CONFIG>().Where(s => s.KEY == "HIS.PHIEU_CONG_KHAI_THUOC.DAY_SIZE").FirstOrDefault();
-                
+
                 Mps000177PDO pdo = new Mps000177PDO(
                     lstPatient,
                     Mps000177DAY,
@@ -1393,6 +1544,11 @@ namespace HIS.Desktop.Plugins.PublicMedicineGeneral
             {
                 if (_ExpMestMediAndMateADOs != null && _ExpMestMediAndMateADOs.Count > 0)
                 {
+                    _ExpMestMediAndMateADOs = _ExpMestMediAndMateADOs
+                        .OrderBy(o => o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__THUOC ? 0
+                                    : o.Service_Type_Id == IMSys.DbConfig.HIS_RS.HIS_SERVICE_TYPE.ID__VT ? 1 : 2)
+                        .ThenBy(o => o.MEDICINE_TYPE_NAME)
+                        .ToList();
                     var groups = _ExpMestMediAndMateADOs.GroupBy(g => new { g.TREATMENT_ID }).ToList();
                     Mps000177DAY = new List<Mps000177DAY>();
                     Mps000177MediMate = new List<Mps000177MediMate>();
