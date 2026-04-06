@@ -282,10 +282,10 @@ namespace HIS.Desktop.Plugins.HisImportServicePaty.FormLoad
 
                     if (!string.IsNullOrEmpty(item.SERVICE_CODE))
                     {
-                        if (item.SERVICE_CODE.Length > 25)
-                        {
-                            error += string.Format(Message.MessageImport.Maxlength, "Mã dịch vụ");
-                        }
+                        //if (item.SERVICE_CODE.Length > 25)
+                        //{
+                        //    error += string.Format(Message.MessageImport.Maxlength, "Mã dịch vụ");
+                        //}
 
                         //if (mateAdo.SERVICE_TYPE_ID > 0)
                         //{
