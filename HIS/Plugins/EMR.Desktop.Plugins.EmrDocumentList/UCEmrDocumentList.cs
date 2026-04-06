@@ -751,7 +751,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
                         }
                         else if (e.Column.FieldName == "STORE_TIME_STR")
                         {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)(data.STORE_TIME ?? 0));
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.STORE_TIME ?? 0);
                         }
                         else if (e.Column.FieldName == "DOB_STR")
                         {
