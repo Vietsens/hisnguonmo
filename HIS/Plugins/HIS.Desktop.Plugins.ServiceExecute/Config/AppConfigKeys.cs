@@ -224,19 +224,19 @@ namespace HIS.Desktop.Plugins.ServiceExecute.Config
             }
         }
 
-        internal static bool IsCheckSimulTaneityOption
+        internal static string IsCheckSimulTaneityOption
         {
             get
             {
-                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_SIMULTANEITY_OPTION) == "2";
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__CHECK_SIMULTANEITY_OPTION);
             }
         }
 
-        internal static bool IsAssignServiceSimulTaneityOption
+        internal static string IsAssignServiceSimulTaneityOption
         {
             get
             {
-                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION) == "2";
+                return HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__ASSIGN_SERVICE_SIMULTANEITY_OPTION);
             }
         }
         
