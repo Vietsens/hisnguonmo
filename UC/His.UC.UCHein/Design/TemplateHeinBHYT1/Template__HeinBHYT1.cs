@@ -239,18 +239,19 @@ namespace His.UC.UCHein.Design.TemplateHeinBHYT1
                         ).ToList();
                     }
 
-                    if (heinList.Count > 0)
+                    if (heinList.Count > 0 && this.HeinPatientCode == null)
                     {
                         var minItem = heinList.OrderBy(o => o.NUM_ORDER == null ? 1 : 0)
                                                                     .ThenBy(o => o.NUM_ORDER)
                                                                     .ThenByDescending(o => o.ID)
                                                                     .FirstOrDefault(); ;
-                        cboPatientCode.EditValue = minItem.HEIN_PATIENT_TYPE_CODE;
+                        cboPatientCode.EditValue = minItem.HEIN_PATIENT_TYPE_CODE; 
                     }
                     else
                     {
-                        cboPatientCode.EditValue = null;
-                    }
+                        cboPatientCode.EditValue = this.HeinPatientCode;
+                    } 
+                        
                 }
 
                 cboPatientCode.Properties.DataSource = heinData;

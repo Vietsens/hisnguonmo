@@ -72,6 +72,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
         List<HIS_DEPARTMENT> departmentSelecteds;
         List<EMR_DOCUMENT_TYPE> emrDocumentTypeSelecteds;
         bool isInitializeComponent = false;
+        Dictionary<long, V_EMR_SIGN> dicVEmrSign = new Dictionary<long, V_EMR_SIGN>();
         #endregion
 
         #region ctor
@@ -309,6 +310,9 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                     var data = apiResult.Data;
                     if (data != null && data.Count > 0)
                     {
+                        List<long> lstDocumentId = data.Select(o => o.ID).ToList();
+                        GetDicEmrSign(lstDocumentId);
+
                         gridControlDocument.DataSource = data;
                         rowCount = (data == null ? 0 : data.Count);
                         dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
@@ -337,6 +341,27 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
                 gridViewDocument.EndUpdate();
+            }
+        }
+
+        private void GetDicEmrSign(List<long> lstDocumentId)
+        {
+            try
+            {
+                CommonParam paramCommon = new CommonParam();
+                EmrSignViewFilter filter = new EmrSignViewFilter();
+
+                filter.DOCUMENT_IDs = lstDocumentId;
+                var datas = new BackendAdapter(paramCommon).Get<List<V_EMR_SIGN>>("api/EmrSign/GetView", ApiConsumers.EmrConsumer, filter, paramCommon) ?? new List<V_EMR_SIGN>();
+
+                if (datas != null && datas.Count > 0)
+                {
+                    dicVEmrSign = datas.ToDictionary(x => x.ID, x => x);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -605,17 +630,25 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
 
                     if (!checkUnSigners)
                     {
-                        CommonParam paramCommon = new CommonParam();
-                        EmrSignViewFilter filter = new EmrSignViewFilter();
-                        var list = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => {long.TryParse(x.Trim(), out var result);return result;}).ToList();
-                        filter.IDs = list;
-                        var datas = new BackendAdapter(paramCommon).Get<List<V_EMR_SIGN>>("api/EmrSign/GetView", ApiConsumers.EmrConsumer, filter, paramCommon) ?? new List<V_EMR_SIGN>();
-                        if (datas != null)
+                        var list = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => { long.TryParse(x.Trim(), out var result); return result; }).ToList();
+                        foreach (var item in list)
                         {
-                            checkUnSigners = true;
+                            if (dicVEmrSign[item].LOGINNAME == LoggingName)
+                            {
+                                checkUnSigners = true;
+                            }
                         }
-                        
-                    }
+
+                        //CommonParam paramCommon = new CommonParam();
+                        //EmrSignViewFilter filter = new EmrSignViewFilter();
+                        //var list = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => { long.TryParse(x.Trim(), out var result); return result; }).ToList();
+                        //filter.IDs = list;
+                        //var datas = new BackendAdapter(paramCommon).Get<List<V_EMR_SIGN>>("api/EmrSign/GetView", ApiConsumers.EmrConsumer, filter, paramCommon) ?? new List<V_EMR_SIGN>();
+                        //if (datas != null)
+                        //{
+                        //    checkUnSigners = true;
+                        //}
+                    } 
 
                     if (e.Column.FieldName == "SIGN")
                     {

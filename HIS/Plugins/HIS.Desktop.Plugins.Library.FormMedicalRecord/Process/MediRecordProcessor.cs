@@ -788,6 +788,10 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     {
                         _DauSinhTon.BMI = (double)_DHST.VIR_BMI;
                     }
+                    if(_DHST.SPO2 != null)
+                    {
+                        _DauSinhTon.SPO2 = (int)_DHST.SPO2;
+                    }
                 }
                 _ThongTinDieuTri.DauSinhTon = _DauSinhTon;
                 #endregion
@@ -823,6 +827,10 @@ namespace HIS.Desktop.Plugins.Library.FormMedicalRecord.Process
                     if (_DHSTMOI.VIR_BMI != null)
                     {
                         _DauHieuSinhTonMoi.BMI = (double)_DHSTMOI.VIR_BMI;
+                    }
+                    if(_DHSTMOI.SPO2 != null)
+                    {
+                        _DauHieuSinhTonMoi.SPO2 = (int)_DHSTMOI.SPO2;
                     }
                 }
                 #endregion

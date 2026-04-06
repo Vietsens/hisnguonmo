@@ -30,6 +30,7 @@ using MPS.ProcessorBase;
 using MPS.Processor.Mps000302.ADO;
 using MPS.Processor.Mps000302.PDO.Config;
 using Newtonsoft.Json;
+using Inventec.Common.Logging;
 
 namespace MPS.Processor.Mps000302
 {
@@ -107,7 +108,7 @@ namespace MPS.Processor.Mps000302
                     sereServADOs = sereServADOs.OrderBy(o => o.STENT_ORDER ?? 0).ThenBy(o => o.SERVICE_NAME).ToList();
                 });
                 taskall.Add(tsMain);
-
+                
                 #region Suất ăn
                 Task tsSuatAn = Task.Factory.StartNew(() =>
                 {
@@ -254,7 +255,6 @@ namespace MPS.Processor.Mps000302
                 this.patyAlterBHYTADOs = this.PatyAlterProcess(this.sereServADOs);
 
                 this.heinServiceTypeADOs = this.HeinServiceTypeProcess(this.sereServADOs);
-
                 this.sereServADOs.ForEach(o =>
                     {
                         if (o.HEIN_SERVICE_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_HEIN_SERVICE_TYPE.ID__GI_NGT
@@ -345,7 +345,6 @@ namespace MPS.Processor.Mps000302
             {
                 var sereServBHYTGroups = sereServAdos.OrderBy(o => o.HEIN_SERVICE_TYPE_NUM_ORDER ?? 99999999)
                     .ThenBy(o => o.TDL_INTRUCTION_TIME).GroupBy(o => new { o.HEIN_SERVICE_TYPE_ID, o.KEY_PATY_ALTER }).ToList();
-
                 List<long> parentIdVTs = sereServAdos.Where(o => (o.HEIN_SERVICE_TYPE_ID  ?? 99999999) == o.PARENT_ID).Select(p => p.PARENT_ID ?? 0).Distinct().ToList();
 
                 int indexGoiVatTuYTe = 1;
@@ -461,7 +460,7 @@ namespace MPS.Processor.Mps000302
                         heinServiceType.HEIN_SERVICE_TYPE_NAME = "Khác";
                     }
 
-                    heinServiceTypeADOs.Add(heinServiceType);
+                    heinServiceTypeADOs.Add(heinServiceType); 
                 }
             }
             catch (Exception ex)

@@ -258,6 +258,11 @@ namespace HIS.Desktop.Plugins.BidDetail
                 //Load du lieu
                 FillDataToGrid();
 
+                //Check all mặc định
+                gridViewMedicine.SelectAll();
+                gridViewMaterial.SelectAll();
+                gridViewBlood.SelectAll();
+
                 //Hien thi tab chua du lieu
                 ShowTab();
                 InitControlState();
@@ -1378,26 +1383,61 @@ namespace HIS.Desktop.Plugins.BidDetail
                 }
                 if (String.IsNullOrEmpty(savePath))
                     return;
-                WaitingManager.Show();                
+                WaitingManager.Show();
                 //string fullFileName = String.Format("ThuocVTMauTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
                 //string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
                 CommonParam param = new CommonParam();
-                InputTT12ADO listXmlAdos = new InputTT12ADO();
-                listXmlAdos.BloodTypes = bidBloodTypes;
-                listXmlAdos.MedicineTypes = bidMedicineTypes;
-                listXmlAdos.MaterialTypes = bidMaterialTypes;
 
-                CreateXmlTT12Main xmlMain = new CreateXmlTT12Main(listXmlAdos);
-
-                if((bidMedicineTypes != null && bidMedicineTypes.Count > 0) || (bidBloodTypes != null && bidBloodTypes.Count > 0))
+                //Lấy danh sách các dòng được check
+                var selectedMedicineTypes = new List<MOS.EFMODEL.DataModels.V_HIS_BID_MEDICINE_TYPE>();
+                for (int i = 0; i < gridViewMedicine.SelectedRowsCount; i++)
                 {
+                    var row = gridViewMedicine.GetSelectedRows()[i];
+                    if (row >= 0)
+                    {
+                        var data = gridViewMedicine.GetRow(row) as MOS.EFMODEL.DataModels.V_HIS_BID_MEDICINE_TYPE;
+                        if (data != null) selectedMedicineTypes.Add(data);
+                    }
+                }
+
+                var selectedMaterialTypes = new List<MOS.EFMODEL.DataModels.V_HIS_BID_MATERIAL_TYPE>();
+                for (int i = 0; i < gridViewMaterial.SelectedRowsCount; i++)
+                {
+                    var row = gridViewMaterial.GetSelectedRows()[i];
+                    if (row >= 0)
+                    {
+                        var data = gridViewMaterial.GetRow(row) as MOS.EFMODEL.DataModels.V_HIS_BID_MATERIAL_TYPE;
+                        if (data != null) selectedMaterialTypes.Add(data);
+                    }
+                }
+
+                var selectedBloodTypes = new List<MOS.EFMODEL.DataModels.V_HIS_BID_BLOOD_TYPE>();
+                for (int i = 0; i < gridViewBlood.SelectedRowsCount; i++)
+                {
+                    var row = gridViewBlood.GetSelectedRows()[i];
+                    if (row >= 0)
+                    {
+                        var data = gridViewBlood.GetRow(row) as MOS.EFMODEL.DataModels.V_HIS_BID_BLOOD_TYPE;
+                        if (data != null) selectedBloodTypes.Add(data);
+                    }
+                }
+
+                //Xuất Thuốc + Máu chung (RunMau03)
+                if((selectedMedicineTypes != null && selectedMedicineTypes.Count > 0) || (selectedBloodTypes != null && selectedBloodTypes.Count > 0))
+                {
+                    InputTT12ADO listXmlAdosMau03 = new InputTT12ADO();
+                    listXmlAdosMau03.MedicineTypes = selectedMedicineTypes;
+                    listXmlAdosMau03.BloodTypes = selectedBloodTypes;
+                    listXmlAdosMau03.MaterialTypes = null;
+                    CreateXmlTT12Main xmlMainMau03 = new CreateXmlTT12Main(listXmlAdosMau03);
+
                     string fullFileName = String.Format("ThuocMauTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
                     string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
-                    ResultADO result = xmlMain.RunMau03();
+                    ResultADO result = xmlMainMau03.RunMau03();
                     if (result.Success)
                     {
                         string xml = result.Data[0].ToString();
-                        var rs = xmlMain.RunMau03Stream();
+                        var rs = xmlMainMau03.RunMau03Stream();
                         if (rs != null)
                         {
                             FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);
@@ -1413,15 +1453,22 @@ namespace HIS.Desktop.Plugins.BidDetail
                     }
                 }
 
-                if (bidMaterialTypes != null && bidMaterialTypes.Count > 0)
+                //Xuất Vật tư riêng (RunMau04)
+                if (selectedMaterialTypes != null && selectedMaterialTypes.Count > 0)
                 {
+                    InputTT12ADO listXmlAdosMau04 = new InputTT12ADO();
+                    listXmlAdosMau04.MedicineTypes = null;
+                    listXmlAdosMau04.BloodTypes = null;
+                    listXmlAdosMau04.MaterialTypes = selectedMaterialTypes;
+                    CreateXmlTT12Main xmlMainMau04 = new CreateXmlTT12Main(listXmlAdosMau04);
+
                     string fullFileName = String.Format("VTTT12_{0}.xml", DateTime.Now.ToString("ddMMyyyy_HHmmss"));
                     string saveFilePath = String.Format("{0}/{1}", savePath, fullFileName);
-                    ResultADO result2 = xmlMain.RunMau04();
+                    ResultADO result2 = xmlMainMau04.RunMau04();
                     if (result2.Success)
                     {
                         string xml = result2.Data[0].ToString();
-                        var rs = xmlMain.RunMau04Stream();
+                        var rs = xmlMainMau04.RunMau04Stream();
                         if (rs != null)
                         {
                             FileStream file = new FileStream(saveFilePath, FileMode.Create, FileAccess.Write);

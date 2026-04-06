@@ -317,7 +317,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
             // gridColumn8
             // 
             this.gridColumn8.Caption = "Mã phòng";
-            this.gridColumn8.FieldName = "ROOM_IDS";
+            this.gridColumn8.FieldName = "ROOM_CODES";
             this.gridColumn8.Name = "gridColumn8";
             this.gridColumn8.OptionsColumn.AllowEdit = false;
             this.gridColumn8.ToolTip = "Danh sách mã phòng ngăn cách bằng dấu phẩy";

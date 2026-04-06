@@ -52,6 +52,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.ADO
         }
 
         public string ROOM_CODE { get; set; }
+        public string ROOM_CODES { get; set; }
         public long ROOM_TYPE_ID { get; set; }
         //public string ROOM_TYPE_CODE { get; set; }
         public string ERROR { get; set; }

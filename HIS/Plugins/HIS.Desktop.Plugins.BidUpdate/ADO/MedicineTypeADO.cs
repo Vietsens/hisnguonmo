@@ -36,6 +36,7 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
         public string SUPPLIER_NAME { get; set; }
         public string BID_NUM_ORDER { get; set; }
         public string IS_MEDICINE { get; set; }
+        public string BID_FORM_CODE { get; set; }
         public long BID_ID { get; set; }
         public long BID_MEDI_MATY_BLO_ID { get; set; }
         public decimal? ImpVatRatio { get; set; }
