@@ -383,7 +383,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         //{
                         //    medicineType.ErrorDescriptions.Add("Không có tên BHYT");
                         //}
-                        if (Encoding.UTF8.GetByteCount(medicineType.HEIN_SERVICE_BHYT_NAME) > 500)
+                        if (!String.IsNullOrWhiteSpace(medicineType.HEIN_SERVICE_BHYT_NAME) && Encoding.UTF8.GetByteCount(medicineType.HEIN_SERVICE_BHYT_NAME) > 500)
                         {
                             medicineType.ErrorDescriptions.Add("Tên BHYT vượt quá độ dài cho phép (500)");
                         }
@@ -393,7 +393,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         //{
                         //    medicineType.ErrorDescriptions.Add("Không có QCĐG");
                         //}
-                        if (Encoding.UTF8.GetByteCount(medicineType.PACKING_TYPE_NAME) > 300)
+                        if (!String.IsNullOrWhiteSpace(medicineType.PACKING_TYPE_NAME) && Encoding.UTF8.GetByteCount(medicineType.PACKING_TYPE_NAME) > 300)
                         {
                             medicineType.ErrorDescriptions.Add("QCĐG vượt quá độ dài cho phép (300)");
                         }
@@ -415,7 +415,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     //    medicineType.ErrorDescriptions.Add("Không có nồng độ/hàm lượng");
                     //}
                     //else 
-                        if (Encoding.UTF8.GetByteCount(medicineType.CONCENTRA) > 1000)
+                    if (!String.IsNullOrWhiteSpace(medicineType.CONCENTRA) && Encoding.UTF8.GetByteCount(medicineType.CONCENTRA) > 1000)
                     {
                         medicineType.ErrorDescriptions.Add("Nồng độ/hàm lượng vượt quá độ dài cho phép (1000)");
                     }
@@ -433,7 +433,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                             medicineType.NATIONAL_NAME = national.NATIONAL_NAME;
                         }
                     }
-                    else if (Encoding.UTF8.GetByteCount(medicineTypeImport.NATIONAL_NAME) > 100)
+                    else if (!String.IsNullOrWhiteSpace(medicineType.NATIONAL_NAME) && Encoding.UTF8.GetByteCount(medicineTypeImport.NATIONAL_NAME) > 100)
                     {
                         medicineType.ErrorDescriptions.Add("Nước sản xuất vượt quá độ dài cho phép (100)");
                     }
@@ -455,7 +455,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ tháng không hợp lệ.");
                         }
-                        if (Encoding.UTF8.GetByteCount(medicineType.MONTH_LIFESPAN.ToString()) > 19)
+                        if (!String.IsNullOrWhiteSpace(medicineType.MONTH_LIFESPAN.ToString()) && Encoding.UTF8.GetByteCount(medicineType.MONTH_LIFESPAN.ToString()) > 19)
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ tháng vượt quá độ dài cho phép (19)");
                         }
@@ -474,7 +474,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ ngày không hợp lệ.");
                         }
-                        if (Encoding.UTF8.GetByteCount(medicineType.DAY_LIFESPAN.ToString()) > 19)
+                        if (!String.IsNullOrWhiteSpace(medicineType.DAY_LIFESPAN.ToString()) && Encoding.UTF8.GetByteCount(medicineType.DAY_LIFESPAN.ToString()) > 19)
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ ngày vượt quá độ dài cho phép (19)");
                         }
@@ -493,7 +493,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ ngày không hợp lệ.");
                         }
-                        if (Encoding.UTF8.GetByteCount(medicineType.DAY_LIFESPAN.ToString()) > 19)
+                        if (!String.IsNullOrWhiteSpace(medicineType.DAY_LIFESPAN.ToString()) && Encoding.UTF8.GetByteCount(medicineType.DAY_LIFESPAN.ToString()) > 19)
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ ngày vượt quá độ dài cho phép (19)");
                         }
@@ -756,7 +756,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         //{
                         //    medicineType.ErrorDescriptions.Add("Không có mã trúng thầu");
                         //}
-                        if (Encoding.UTF8.GetByteCount(medicineType.BID_MATERIAL_TYPE_CODE) > 50)
+                        if (!String.IsNullOrWhiteSpace(medicineType.BID_MATERIAL_TYPE_CODE) && Encoding.UTF8.GetByteCount(medicineType.BID_MATERIAL_TYPE_CODE) > 50)
                         {
                             medicineType.ErrorDescriptions.Add("Mã trúng thầu vượt quá độ dài cho phép (50)");
                         }
@@ -766,7 +766,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         //{
                         //    medicineType.ErrorDescriptions.Add("Không có tên trúng thầu");
                         //}
-                        if (Encoding.UTF8.GetByteCount(medicineType.BID_MATERIAL_TYPE_NAME) > 500)
+                        if (!String.IsNullOrWhiteSpace(medicineType.BID_MATERIAL_TYPE_NAME) && Encoding.UTF8.GetByteCount(medicineType.BID_MATERIAL_TYPE_NAME) > 500)
                         {
                             medicineType.ErrorDescriptions.Add("Tên trúng thầu vượt quá độ dài cho phép (500)");
                         }
@@ -776,7 +776,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         //{
                         //    medicineType.ErrorDescriptions.Add("Không có mã dự thầu");
                         //}
-                        if (Encoding.UTF8.GetByteCount(medicineType.JOIN_BID_MATERIAL_TYPE_CODE) > 50)
+                        if (!String.IsNullOrWhiteSpace(medicineType.JOIN_BID_MATERIAL_TYPE_CODE) && Encoding.UTF8.GetByteCount(medicineType.JOIN_BID_MATERIAL_TYPE_CODE) > 50)
                         {
                             medicineType.ErrorDescriptions.Add("Mã dự thầu vượt quá độ dài cho phép (50)");
                         }
@@ -788,7 +788,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     //    medicineType.ErrorDescriptions.Add("Không có nồng độ/hàm lượng");
                     //}
                     //else
-                        if (Encoding.UTF8.GetByteCount(medicineType.CONCENTRA) > 1000)
+                    if (!String.IsNullOrWhiteSpace(medicineType.CONCENTRA) && Encoding.UTF8.GetByteCount(medicineType.CONCENTRA) > 1000)
                     {
                         medicineType.ErrorDescriptions.Add("Nồng độ/hàm lượng vượt quá độ dài cho phép (1000)");
                     }
@@ -806,7 +806,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                             medicineType.NATIONAL_NAME = national.NATIONAL_NAME;
                         }
                     }
-                    else if (Encoding.UTF8.GetByteCount(materialTypeImport.NATIONAL_NAME) > 100)
+                    else if (!String.IsNullOrWhiteSpace(medicineType.NATIONAL_NAME) && Encoding.UTF8.GetByteCount(materialTypeImport.NATIONAL_NAME) > 100)
                     {
                         medicineType.ErrorDescriptions.Add("Nước sản xuất vượt quá độ dài cho phép (100)");
                     }
@@ -828,7 +828,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ tháng không hợp lệ.");
                         }
-                        if (Encoding.UTF8.GetByteCount(medicineType.MONTH_LIFESPAN.ToString()) > 19)
+                        if (!String.IsNullOrWhiteSpace(medicineType.MONTH_LIFESPAN.ToString()) && Encoding.UTF8.GetByteCount(medicineType.MONTH_LIFESPAN.ToString()) > 19)
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ tháng vượt quá độ dài cho phép (19)");
                         }
@@ -847,7 +847,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ ngày không hợp lệ.");
                         }
-                        if (Encoding.UTF8.GetByteCount(medicineType.DAY_LIFESPAN.ToString()) > 19)
+                        if (!String.IsNullOrWhiteSpace(medicineType.DAY_LIFESPAN.ToString()) && Encoding.UTF8.GetByteCount(medicineType.DAY_LIFESPAN.ToString()) > 19)
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ ngày vượt quá độ dài cho phép (19)");
                         }
@@ -866,7 +866,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ ngày không hợp lệ.");
                         }
-                        if (Encoding.UTF8.GetByteCount(medicineType.DAY_LIFESPAN.ToString()) > 19)
+                        if (!String.IsNullOrWhiteSpace(medicineType.DAY_LIFESPAN.ToString()) && Encoding.UTF8.GetByteCount(medicineType.DAY_LIFESPAN.ToString()) > 19)
                         {
                             medicineType.ErrorDescriptions.Add("Tuổi thọ ngày vượt quá độ dài cho phép (19)");
                         }
