@@ -82,6 +82,10 @@ namespace HIS.Desktop.Plugins.HisService
         MOS.EFMODEL.DataModels.V_HIS_SERVICE currentData;
         List<string> arrControlEnableNotChange = new List<string>();
         Inventec.Desktop.Common.Modules.Module moduleData;
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        string moduleLink = "HIS.Desktop.Plugins.HisService";
+        bool isNotSaveControlState = false;
         List<HIS_ICD_CM> listIcdCm;
         List<HIS_PTTT_GROUP> listPtttGroup;
         List<HIS_RATION_GROUP> listRatioGroup;
@@ -192,6 +196,7 @@ namespace HIS.Desktop.Plugins.HisService
         {
             try
             {
+                InitControlState();
                 SetDefaultControlsProperties();
                 LoadSettingSign();
                 MeShow();
@@ -199,6 +204,29 @@ namespace HIS.Desktop.Plugins.HisService
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        void InitControlState()
+        {
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(moduleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == "chkUpdateOnly")
+                        {
+                            chkUpdateOnly.Checked = item.VALUE == "1";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -620,6 +648,7 @@ namespace HIS.Desktop.Plugins.HisService
         {
             try
             {
+                isNotSaveControlState = true;
                 //dangth
                 currentData = null;
                 this.ActionType = GlobalVariables.ActionAdd;
@@ -758,10 +787,11 @@ namespace HIS.Desktop.Plugins.HisService
                 txtQdDv.EditValue = null;
                 cboCskcbCls.EditValue = null;
 
-
+                isNotSaveControlState = false;
             }
             catch (Exception ex)
             {
+                isNotSaveControlState = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -2028,7 +2058,16 @@ namespace HIS.Desktop.Plugins.HisService
 
                     dtInTime.Enabled = true;
                     setEnableSpinHein(true);
-                    chkUpdateOnly.Checked = true;
+
+                    // Khôi phục trạng thái checkbox từ ControlState
+                    if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                    {
+                        var cs = this.currentControlStateRDO.Where(o => o.KEY == "chkUpdateOnly" && o.MODULE_LINK == moduleLink).FirstOrDefault();
+                        if (cs != null)
+                        {
+                            chkUpdateOnly.Checked = cs.VALUE == "1";
+                        }
+                    }
 
                     //Disable nút sửa nếu dữ liệu đã bị khóa
                     btnEdit.Enabled = (this.currentData.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
@@ -4998,6 +5037,26 @@ namespace HIS.Desktop.Plugins.HisService
                 if (chkUpdateOnly.Checked)
                 {
                     chkUpdateAll.Checked = false;
+                }
+
+                if (!isNotSaveControlState && this.controlStateWorker != null)
+                {
+                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "chkUpdateOnly" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                    if (csAddOrUpdate != null)
+                    {
+                        csAddOrUpdate.VALUE = (chkUpdateOnly.Checked ? "1" : "");
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = "chkUpdateOnly";
+                        csAddOrUpdate.VALUE = (chkUpdateOnly.Checked ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = moduleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
                 }
             }
             catch (Exception ex)

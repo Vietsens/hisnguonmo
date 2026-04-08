@@ -90,6 +90,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         string moduleLink = "HIS.Desktop.Plugins.MaterialTypeCreate";
+        bool isNotSaveControlState = false;
 
 
         //qtcode
@@ -229,6 +230,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                         {
                             chkVatTu.Checked = item.VALUE == "1";
                         }
+                        if (item.KEY == "rdoUpdateNotFee")
+                        {
+                            rdoUpdateNotFee.Checked = item.VALUE == "1";
+                        }
                     }
                 }
             }
@@ -346,7 +351,6 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 if (this.materialTypeId > 0 && this.ActionType == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.ActionEdit)
                 {
                     btnRefresh.Enabled = false;
-                    rdoUpdateNotFee.CheckState = CheckState.Checked;
                     CommonParam param = new CommonParam();
                     chkIsBusiness.Checked = false;
                     //Load Current materialType
@@ -3020,6 +3024,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
         {
             try
             {
+                isNotSaveControlState = true;
                 ResetControl(spinImpPrice);
                 ResetControl(spinLastExpPrice);
                 ResetControl(spinLastExpVatPrice);
@@ -3031,9 +3036,11 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 ResetControl(dtHSD);
                 rdoUpdateAll.Checked = false;
                 rdoUpdateNotFee.Checked = false;
+                isNotSaveControlState = false;
             }
             catch (Exception ex)
             {
+                isNotSaveControlState = false;
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
@@ -3073,6 +3080,26 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
             {
                 if (rdoUpdateNotFee.Checked)
                     rdoUpdateAll.Checked = false;
+
+                if (!isNotSaveControlState && this.controlStateWorker != null)
+                {
+                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "rdoUpdateNotFee" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                    if (csAddOrUpdate != null)
+                    {
+                        csAddOrUpdate.VALUE = (rdoUpdateNotFee.Checked ? "1" : "");
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = "rdoUpdateNotFee";
+                        csAddOrUpdate.VALUE = (rdoUpdateNotFee.Checked ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = moduleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
             }
             catch (Exception ex)
             {
