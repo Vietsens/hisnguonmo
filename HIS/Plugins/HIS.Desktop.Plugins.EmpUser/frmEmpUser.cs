@@ -76,7 +76,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             InitializeComponent();
             this.moduleData = moduleData;
             SetIcon();
-        }
+        } 
         #region global list
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckIsSelectedDisabled;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;

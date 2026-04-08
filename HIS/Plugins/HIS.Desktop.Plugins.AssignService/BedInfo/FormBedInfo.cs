@@ -446,8 +446,17 @@ namespace HIS.Desktop.Plugins.AssignService.BedInfo
                     return;
                 }
 
-                this.sereServADO.BedFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBedFinishTime.DateTime);
-                this.sereServADO.BedStartTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBedStartTime.DateTime);
+                var bedFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBedFinishTime.DateTime);
+                var bedStartTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBedStartTime.DateTime);
+
+                if (bedFinishTime.HasValue && bedStartTime.HasValue && bedFinishTime.Value <= bedStartTime.Value)
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Thời gian kết thúc phải lớn hơn thời gian bắt đầu", "Cảnh báo", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Warning);
+                    return;
+                }
+
+                this.sereServADO.BedFinishTime = bedFinishTime;
+                this.sereServADO.BedStartTime = bedStartTime;
                 this.sereServADO.BedId = Inventec.Common.TypeConvert.Parse.ToInt64(cboBed.EditValue.ToString());
                 if (spShareCount.Value > 0)
                 {
