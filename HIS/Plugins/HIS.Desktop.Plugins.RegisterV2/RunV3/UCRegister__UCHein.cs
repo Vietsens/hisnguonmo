@@ -99,8 +99,12 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                         dataAddressPatient.IsNoDistrict = data.IsNoDistrict;
                     }
                     dataAddressPatient.Address = heinCardData.Address;
-                    if((dt.HisPatientSDO == null || dt.HisPatientSDO.TreatmentId == null || dt.HisPatientSDO.TreatmentId <= 0))
+                    if(dt.HisPatientSDO != null && dt.HisPatientSDO.PHONE != null)
+                    {
                         dataAddressPatient.Phone = dt.HisPatientSDO.PHONE;
+                    }    
+                    //if((dt.HisPatientSDO != null || dt.HisPatientSDO.TreatmentId != null || dt.HisPatientSDO.TreatmentId <= 0))
+                        
                     this.ucAddressCombo1.SetValue(dataAddressPatient);
                     Inventec.Common.Logging.LogSystem.Debug("FillDataAfterSaerchPatientInUCPatientRaw.6");
                 }

@@ -66,7 +66,7 @@ using System.Xml;
 using System.Xml.Serialization;
 
 namespace HIS.Desktop.Plugins.EmpUser
-{
+{ 
     public partial class frmEmpUser : FormBase
     {
 
@@ -76,7 +76,7 @@ namespace HIS.Desktop.Plugins.EmpUser
             InitializeComponent();
             this.moduleData = moduleData;
             SetIcon();
-        }
+        } 
         #region global list
         private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckIsSelectedDisabled;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
@@ -1007,8 +1007,9 @@ namespace HIS.Desktop.Plugins.EmpUser
                 GridCheckMarksSelection gridCheckMark = sender as GridCheckMarksSelection;
                 if (gridCheckMark != null)
                 {
-                    foreach (HIS_SERVICE s in gridCheckMark.Selection)
+                    foreach (object item in gridCheckMark.Selection)
                     {
+                        HIS_SERVICE s = item as HIS_SERVICE;
                         if (s != null)
                         {
                             if (sb.Length > 0)
@@ -1508,6 +1509,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                 //// Dịch vụ khác
                 var services = BackendDataWorker.Get<HIS_SERVICE>().Where(o => o.IS_ACTIVE == 1).ToList();
                 InitComboOtherService(cboOtherService, services, "SERVICE_CODE", "SERVICE_NAME", "ID", "HEIN_SERVICE_BHYT_CODE", "Mã BHYT");
+                cboOtherService.Properties.View.OptionsView.ShowAutoFilterRow = true;
                 InitCheck(cboOtherService, SelectionGrid__OtherService);
 
                 // Cơ sở KCB CGKT (single-select)
@@ -1826,6 +1828,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                     col1.VisibleIndex = visibleIndex++;
                     col1.Width = 100;
                     col1.Caption = "Mã";
+                    col1.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
                 }
 
                 // Thêm cột bổ sung
@@ -1835,15 +1838,18 @@ namespace HIS.Desktop.Plugins.EmpUser
                     colAdditional.VisibleIndex = visibleIndex++;
                     colAdditional.Width = 150;
                     colAdditional.Caption = additionalColumnCaption;
+                    colAdditional.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
                 }
 
                 DevExpress.XtraGrid.Columns.GridColumn col2 = cbo.Properties.View.Columns.AddField(DisplayValue);
                 col2.VisibleIndex = visibleIndex;
                 col2.Width = 350;
                 col2.Caption = "Tên";
+                col2.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
 
                 cbo.Properties.PopupFormWidth = 700;
                 cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
+                cbo.Properties.View.OptionsView.ShowFilterPanelMode = DevExpress.XtraGrid.Views.Base.ShowFilterPanelMode.Never;
                 cbo.Properties.View.OptionsSelection.MultiSelect = true;
                 GridCheckMarksSelection gridCheckMark = cbo.Properties.Tag as GridCheckMarksSelection;
                 if (gridCheckMark != null)
@@ -4492,8 +4498,9 @@ namespace HIS.Desktop.Plugins.EmpUser
                 }
 
                 var codes = new List<string>();
-                foreach (HIS_SERVICE s in gridCheckMark.Selection)
+                foreach (object item in gridCheckMark.Selection)
                 {
+                    HIS_SERVICE s = item as HIS_SERVICE;
                     if (s != null && !string.IsNullOrEmpty(s.SERVICE_CODE))
                     {
                         codes.Add(s.SERVICE_CODE);

@@ -4388,8 +4388,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                     if (sereServExt != null)
                     {
-                        sereServExt.BEGIN_TIME = sereServExt.BEGIN_TIME != null ? sereServExt.BEGIN_TIME : Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
-                        sereServExt.END_TIME = sereServExt.END_TIME != null ? sereServExt.END_TIME : Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
+                        sereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
+                        sereServExt.END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
                         surgUpdate.SereServExt = sereServExt;
                     }
                     else

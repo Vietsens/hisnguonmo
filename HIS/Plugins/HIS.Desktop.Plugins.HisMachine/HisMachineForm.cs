@@ -2106,7 +2106,7 @@ namespace HIS.Desktop.Plugins.HisMachine
                                 maCSKCB = branch.HEIN_MEDI_ORG_CODE;
                         }
                     }
-                    xmlCLS.MaCoSoKCB = maCSKCB;
+                    xmlCLS.MaCoSoKCB = maCSKCB; 
                     xmlCLS.TenThietBi = machine.MACHINE_NAME;
                     xmlCLS.KyHieu = !String.IsNullOrEmpty(machine.SYMBOL) ? machine.SYMBOL : "";
                     xmlCLS.CongTySX = !String.IsNullOrEmpty(machine.MANUFACTURER_NAME) ? machine.MANUFACTURER_NAME : "";
@@ -2122,11 +2122,11 @@ namespace HIS.Desktop.Plugins.HisMachine
                             ? "[" + machine.SOURCE_NAME + "]"
                             : string.Empty;
 
-                        maMay = String.Format("{0}.{1}{3}.{2}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, machine.SERIAL_NUMBER, sourceNamePart);
+                        maMay = !string.IsNullOrEmpty(sourceNamePart) ? String.Format("{0}.{1}{3}.{2}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, machine.SERIAL_NUMBER, sourceNamePart) : String.Format("{0}.{1}.{2}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, machine.SERIAL_NUMBER);
                     }
                     else
                     {
-                        maMay = String.Format("{0}.{1}.{2}.{3}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, maCSKCB, machine.SERIAL_NUMBER);
+                        maMay = String.Format("{0}.{1}.{2}", machine.MACHINE_GROUP_CODE, machine.SOURCE_CODE, machine.SERIAL_NUMBER);
                     }
                     xmlCLS.MaMay = maMay;
 

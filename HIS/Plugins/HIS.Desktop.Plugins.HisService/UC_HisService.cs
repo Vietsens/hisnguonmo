@@ -8347,11 +8347,12 @@ namespace HIS.Desktop.Plugins.HisService
 
                         // Fix: thêm ?. tránh NullReferenceException khi không tìm thấy medicine type
                         string donViTinh = lstMedicineType?.FirstOrDefault(o => o.ID == mety.MEDICINE_TYPE_ID)?.SERVICE_UNIT_CODE ?? "";
-
+                        string maThuoc = lstMedicineType?.FirstOrDefault(o => o.ID == mety.MEDICINE_TYPE_ID)?.ACTIVE_INGR_BHYT_CODE ?? "";
+                        string tenThuoc = lstMedicineType?.FirstOrDefault(o => o.ID == mety.MEDICINE_TYPE_ID)?.ACTIVE_INGR_BHYT_NAME ?? "";
                         sb.AppendLine("        <TT_THUOCPX>");
                         sb.AppendLine(X("STT", sttThuoc.ToString(), 10));
-                        sb.AppendLine(X("MA_THUOC", mety.MEDICINE_TYPE_CODE, 10));
-                        sb.AppendLine(X("TEN_THUOC", mety.MEDICINE_TYPE_NAME, 10));
+                        sb.AppendLine(X("MA_THUOC", maThuoc, 10));
+                        sb.AppendLine(X("TEN_THUOC", tenThuoc, 10));
                         sb.AppendLine(X("SO_DANG_KY", mety.REGISTER_NUMBER, 10));
                         sb.AppendLine(X("DON_VI_TINH", donViTinh, 10));
                         sb.AppendLine(X("TT_THAU", mety.TT_THAU, 10));

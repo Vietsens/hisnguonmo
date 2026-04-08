@@ -248,10 +248,10 @@ namespace HIS.Desktop.Plugins.HisImportServiceRoom.FormLoad
 
                     if (!string.IsNullOrEmpty(item.SERVICE_CODE))
                     {
-                        if (item.SERVICE_CODE.Length > 25)
-                        {
-                            error += string.Format(Message.MessageImport.Maxlength, " mã dịch vụ ");
-                        }
+                        //if (item.SERVICE_CODE.Length > 25)
+                        //{
+                        //    error += string.Format(Message.MessageImport.Maxlength, " mã dịch vụ ");
+                        //}
                         var serviceGets = BackendDataWorker.Get<V_HIS_SERVICE>().Where(o => o.SERVICE_CODE == item.SERVICE_CODE);
                         if (serviceGets != null && serviceGets.Count() > 0)
                         {
