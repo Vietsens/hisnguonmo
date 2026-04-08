@@ -538,10 +538,10 @@ namespace MPS.Processor.Mps000044
                 {
                     AddObjectKeyIntoListkey(rdo.HisExpMest, false);
 
-                    string title = "C";
+                    string title = "c";
                     var expMestMedicine = rdo.expMestMedicines != null && rdo.expMestMedicines.Count() > 0 ? rdo.expMestMedicines.FirstOrDefault() : null;
-                    if (expMestMedicine != null && expMestMedicine.IS_NEUROLOGICAL == 1) title = "H";
-                    else if (expMestMedicine != null && expMestMedicine.IS_ADDICTIVE == 1) title = "N";
+                    if (expMestMedicine != null && expMestMedicine.IS_NEUROLOGICAL == 1) title = "h"; 
+                    else if (expMestMedicine != null && expMestMedicine.IS_ADDICTIVE == 1) title = "n";
                     string serviceReqCode = rdo.vHisPrescription5 != null ? (rdo.vHisPrescription5.SERVICE_REQ_CODE) : null;
                     string electronicExpMestCode = string.Format("{0}{1}-{2}", MPS.ProcessorBase.PrintConfig.MediOrgCode, HIS.ERXConnect.ERXCode.Encode(Convert.ToInt64(serviceReqCode)), title);
                     SetSingleKey(new KeyValue(Mps000044ExtendSingleKey.ELECTRONIC_EXP_MEST_CODE, electronicExpMestCode));
