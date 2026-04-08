@@ -477,10 +477,108 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
             {
                 var row = (EMR.EFMODEL.DataModels.V_EMR_DOCUMENT)gridView.GetFocusedRow();
                 if (row == null) return;
+                string fieldName = gridView.FocusedColumn?.FieldName;
+                if (row != null)
+                {
+                    if (fieldName == "DETAIL")
+                    {
+                        #region ----- DETAIL -----
+                        try
+                        {
+                            CommonParam param = new CommonParam();
+                            var apiResult = GetEmrDocumentFile(row.ID, false, null, false, ref param);
+                            if (apiResult != null && apiResult.Count > 0)
+                            {
+                                //goi tool view
+                                var temFile = System.IO.Path.Combine(Application.StartupPath + "\\temp\\");
+                                if (!Directory.Exists(temFile)) Directory.CreateDirectory(temFile);
 
-                List<object> listArgs = new List<object>();
-                listArgs.Add(row);
-                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.DispenseDetail", roomId, roomTypeId, listArgs);
+                                temFile = System.IO.Path.Combine(temFile, string.Format("{0}.pdf", Guid.NewGuid()));
+                                List<string> joinStreams = new List<string>();
+
+                                List<MemoryStream> documentData = new List<MemoryStream>();
+                                foreach (var item in apiResult)
+                                {
+                                    if (item.Extension.ToLower().Equals("pdf"))
+                                    {
+                                        string pdfAddFile = Utils.GenerateTempFileWithin();
+                                        Utils.ByteToFile(Utils.StreamToByte(new MemoryStream(Convert.FromBase64String(item.Base64Data))), pdfAddFile);
+                                        joinStreams.Add(pdfAddFile);
+                                    }
+                                }
+
+                                Stream currentStream = File.Open(temFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                                var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+
+                                var pages = new List<int>();
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("Đây là dữ liệu joinStreams: " + Inventec.Common.Logging.LogUtil.GetMemberName(() => joinStreams), joinStreams));
+
+                                foreach (var file in joinStreams)
+                                {
+                                    iTextSharp.text.pdf.PdfReader pdfReader = null;
+                                    pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                                    pages = new List<int>();
+                                    for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                                    {
+                                        pages.Add(i);
+                                    }
+                                    pdfReader.SelectPages(pages);
+                                    pdfConcat.AddPages(pdfReader);
+                                    pdfReader.Close();
+                                }
+                                try
+                                {
+                                    pdfConcat.Close();
+                                }
+                                catch { }
+
+                                foreach (var file in joinStreams)
+                                {
+                                    try
+                                    {
+                                        File.Delete(file);
+                                    }
+                                    catch { }
+                                }
+
+                                SignLibraryGUIProcessor libraryProcessor = new SignLibraryGUIProcessor();
+                                Inventec.Common.SignLibrary.ADO.InputADO inputADO = new HIS.Desktop.Plugins.Library.EmrGenerate.EmrGenerateProcessor().GenerateInputADO(row.TREATMENT_CODE, row.DOCUMENT_CODE, row.DOCUMENT_NAME, moduleData.RoomId);
+
+                                // truyền paper
+                                if (row.WIDTH != null && row.HEIGHT != null && row.RAW_KIND != null)
+                                {
+                                    inputADO.PaperSizeDefault = new System.Drawing.Printing.PaperSize(row.PAPER_NAME, (int)row.WIDTH, (int)row.HEIGHT);
+                                    if (row.RAW_KIND != null)
+                                    {
+                                        inputADO.PaperSizeDefault.RawKind = (int)row.RAW_KIND;
+                                    }
+                                }
+                                //qtcode
+                                inputADO.IsOutsideTreatment = row.IS_OUTSIDE_TREATMENT;
+                                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => inputADO.PaperSizeDefault), inputADO.PaperSizeDefault));
+
+                                if (!String.IsNullOrWhiteSpace(temFile) && File.Exists(temFile))
+                                    libraryProcessor.ShowPopup(temFile, inputADO);
+                                else
+                                {
+                                    XtraMessageBox.Show("Không tìm thấy được văn bản ký");
+                                }
+
+                                if (File.Exists(temFile)) File.Delete(temFile);
+                            }
+                            else
+                            {
+                                MessageManager.Show(this.ParentForm, param, false);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(ex);
+                        }
+                        #endregion
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -497,23 +595,22 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
                 var row = (EMR.EFMODEL.DataModels.V_EMR_DOCUMENT)gridView.GetFocusedRow();
                 if (row != null)
                 {
-
-
                     if (DevExpress.XtraEditors.XtraMessageBox.Show(
                     Resources.ResourceMessage.HeThongTBCuaSoThongBaoBanCoMuonXoaDuLieuKhong,
                     Resources.ResourceMessage.ThongBao,
                     MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
-                        HisDispenseDeleteSDO hisDispenseDeleteSDO = new HisDispenseDeleteSDO();
-                        hisDispenseDeleteSDO.Id = row.ID;
-                        hisDispenseDeleteSDO.RequestRoomId = this.roomId;
                         WaitingManager.Show();
-                        var apiresult = new Inventec.Common.Adapter.BackendAdapter
-                           (param).Post<bool>
-                           ("api/HisDispense/Delete", ApiConsumers.MosConsumer, hisDispenseDeleteSDO, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                        //var apiresult = new Inventec.Common.Adapter.BackendAdapter 
+                        //   (param).Post<bool>
+                        //   ("api/HisDispense/Delete", ApiConsumers.MosConsumer, row.ID, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+
+                        var data = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/EmrDocument/Delete", ApiConsumers.EmrConsumer, row.ID, param);
+                        
                         WaitingManager.Hide();
-                        if (apiresult)
+                        if (data)
                         {
+
                             success = true;
                             FillDataToGrid();
                         }
@@ -714,7 +811,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
                     {
                         try
                         {
-                            if (creator == LoggingName && isActive == 1 && isConfirm != 1)
+                            if (creator == LoggingName && isActive == 1 && isConfirm != 1 && data.IS_DELETE != 1)
                                 e.RepositoryItem = ButtonEditDelete;
                             else
                                 e.RepositoryItem = ButtonDeleteDisable;

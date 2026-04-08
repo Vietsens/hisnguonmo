@@ -48,13 +48,13 @@
       <HintPath>..\..\..\..\lib\WCF\EMR.WCF\EMR.WCF.DCO\EMR.WCF.DCO.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.TT12">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.TT12.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.TT12.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ModuleExt">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ModuleExt.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.PlusInfo">
-      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.UC.PlusInfo.dll</HintPath>
+      <HintPath>..\..\..\..\lib\HIS\HIS.UC.PlusInfo\HIS.UC.PlusInfo.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.SettingSignInfo">
       <HintPath>..\..\..\..\lib\HIS\HIS.UC.SettingSignInfo\HIS.UC.SettingSignInfo.dll</HintPath>

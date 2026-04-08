@@ -1,4 +1,4 @@
-/* IVT
+﻿/* IVT
  * @Project : hisnguonmo
  * Copyright (C) 2017 INVENTEC
  *  
@@ -131,6 +131,8 @@ namespace HIS.Desktop.Plugins.HisService
             this.cboSearchType = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView5 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.btnSearch = new DevExpress.XtraEditors.SimpleButton();
+            this.treeListColumnCheck = new DevExpress.XtraTreeList.Columns.TreeListColumn();
+            this.repositoryItemCheckEditSelect = new DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit();
             this.treeList1 = new DevExpress.XtraTreeList.TreeList();
             this.treeListColumn1 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
             this.treeListColumn2 = new DevExpress.XtraTreeList.Columns.TreeListColumn();
@@ -425,6 +427,7 @@ namespace HIS.Desktop.Plugins.HisService
             ((System.ComponentModel.ISupportInitialize)(this.treeList1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit_IsNotChangePaty)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditSelect)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LockT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.unLockT)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeleteD)).BeginInit();
@@ -801,6 +804,7 @@ namespace HIS.Desktop.Plugins.HisService
             // treeList1
             // 
             this.treeList1.Columns.AddRange(new DevExpress.XtraTreeList.Columns.TreeListColumn[] {
+            this.treeListColumnCheck,
             this.treeListColumn1,
             this.treeListColumn2,
             this.treeListColumn34,
@@ -866,16 +870,40 @@ namespace HIS.Desktop.Plugins.HisService
             this.btn_PhongXuLy_Disable,
             this.btn_ServiceRaty_Enable,
             this.btn_ServiceRaty_Disable,
-            this.repositoryItemCheckEdit_IsNotChangePaty});
+            this.repositoryItemCheckEdit_IsNotChangePaty,
+            this.repositoryItemCheckEditSelect});
             this.treeList1.Size = new System.Drawing.Size(1169, 932);
             this.treeList1.TabIndex = 6;
             this.treeList1.Tag = "51";
+            this.treeList1.CustomDrawColumnHeader += new DevExpress.XtraTreeList.CustomDrawColumnHeaderEventHandler(this.treeList1_CustomDrawColumnHeader);
+            this.treeList1.CellValueChanged += new DevExpress.XtraTreeList.CellValueChangedEventHandler(this.treeList1_CellValueChanged);
             this.treeList1.CustomNodeCellEdit += new DevExpress.XtraTreeList.GetCustomNodeCellEditEventHandler(this.treeList1_CustomNodeCellEdit);
             this.treeList1.NodeCellStyle += new DevExpress.XtraTreeList.GetCustomNodeCellStyleEventHandler(this.treeList1_NodeCellStyle);
             this.treeList1.CustomUnboundColumnData += new DevExpress.XtraTreeList.CustomColumnDataEventHandler(this.treeList1_CustomUnboundColumnData);
             this.treeList1.PopupMenuShowing += new DevExpress.XtraTreeList.PopupMenuShowingEventHandler(this.treeList1_PopupMenuShowing);
             this.treeList1.Click += new System.EventHandler(this.treeList1_Click);
+            this.treeList1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeList1_MouseDown_CheckAll);
             this.treeList1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.treeList1_KeyUp);
+            // 
+            // treeListColumnCheck
+            // 
+            this.treeListColumnCheck.Caption = " ";
+            this.treeListColumnCheck.ColumnEdit = this.repositoryItemCheckEditSelect;
+            this.treeListColumnCheck.FieldName = "CHECK_SELECT";
+            this.treeListColumnCheck.Fixed = DevExpress.XtraTreeList.Columns.FixedStyle.Left;
+            this.treeListColumnCheck.Name = "treeListColumnCheck";
+            this.treeListColumnCheck.OptionsColumn.AllowSort = false;
+            this.treeListColumnCheck.OptionsColumn.FixedWidth = true;
+            this.treeListColumnCheck.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Boolean;
+            this.treeListColumnCheck.Visible = true;
+            this.treeListColumnCheck.VisibleIndex = 0;
+            this.treeListColumnCheck.Width = 30;
+            // 
+            // repositoryItemCheckEditSelect
+            // 
+            this.repositoryItemCheckEditSelect.AutoHeight = false;
+            this.repositoryItemCheckEditSelect.Name = "repositoryItemCheckEditSelect";
+            this.repositoryItemCheckEditSelect.EditValueChanged += new System.EventHandler(this.repositoryItemCheckEditSelect_EditValueChanged);
             // 
             // treeListColumn1
             // 
@@ -885,7 +913,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn1.Name = "treeListColumn1";
             this.treeListColumn1.ToolTip = "Lock";
             this.treeListColumn1.Visible = true;
-            this.treeListColumn1.VisibleIndex = 0;
+            this.treeListColumn1.VisibleIndex = 1;
             this.treeListColumn1.Width = 20;
             // 
             // treeListColumn2
@@ -896,7 +924,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn2.Name = "treeListColumn2";
             this.treeListColumn2.ToolTip = "Xóa";
             this.treeListColumn2.Visible = true;
-            this.treeListColumn2.VisibleIndex = 1;
+            this.treeListColumn2.VisibleIndex = 2;
             this.treeListColumn2.Width = 20;
             // 
             // treeListColumn34
@@ -906,7 +934,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn34.Fixed = DevExpress.XtraTreeList.Columns.FixedStyle.Left;
             this.treeListColumn34.Name = "treeListColumn34";
             this.treeListColumn34.Visible = true;
-            this.treeListColumn34.VisibleIndex = 2;
+            this.treeListColumn34.VisibleIndex = 3;
             this.treeListColumn34.Width = 20;
             // 
             // treeListColumn33
@@ -916,7 +944,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn33.Fixed = DevExpress.XtraTreeList.Columns.FixedStyle.Left;
             this.treeListColumn33.Name = "treeListColumn33";
             this.treeListColumn33.Visible = true;
-            this.treeListColumn33.VisibleIndex = 3;
+            this.treeListColumn33.VisibleIndex = 4;
             this.treeListColumn33.Width = 20;
             // 
             // treeListColumn32
@@ -926,7 +954,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn32.Fixed = DevExpress.XtraTreeList.Columns.FixedStyle.Left;
             this.treeListColumn32.Name = "treeListColumn32";
             this.treeListColumn32.Visible = true;
-            this.treeListColumn32.VisibleIndex = 4;
+            this.treeListColumn32.VisibleIndex = 5;
             this.treeListColumn32.Width = 20;
             // 
             // treeListColumn38
@@ -936,7 +964,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn38.Fixed = DevExpress.XtraTreeList.Columns.FixedStyle.Left;
             this.treeListColumn38.Name = "treeListColumn38";
             this.treeListColumn38.Visible = true;
-            this.treeListColumn38.VisibleIndex = 5;
+            this.treeListColumn38.VisibleIndex = 6;
             this.treeListColumn38.Width = 20;
             // 
             // treeListColumn3
@@ -947,7 +975,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn3.OptionsColumn.AllowEdit = false;
             this.treeListColumn3.ToolTip = "Mã";
             this.treeListColumn3.Visible = true;
-            this.treeListColumn3.VisibleIndex = 6;
+            this.treeListColumn3.VisibleIndex = 7;
             this.treeListColumn3.Width = 92;
             // 
             // treeListColumn4
@@ -957,7 +985,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn4.Name = "treeListColumn4";
             this.treeListColumn4.OptionsColumn.AllowEdit = false;
             this.treeListColumn4.Visible = true;
-            this.treeListColumn4.VisibleIndex = 7;
+            this.treeListColumn4.VisibleIndex = 8;
             this.treeListColumn4.Width = 161;
             // 
             // treeListColumn5
@@ -967,7 +995,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn5.Name = "treeListColumn5";
             this.treeListColumn5.OptionsColumn.AllowEdit = false;
             this.treeListColumn5.Visible = true;
-            this.treeListColumn5.VisibleIndex = 8;
+            this.treeListColumn5.VisibleIndex = 9;
             this.treeListColumn5.Width = 80;
             // 
             // treeListColumn22
@@ -978,7 +1006,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn22.OptionsColumn.AllowEdit = false;
             this.treeListColumn22.ToolTip = "Loại DV";
             this.treeListColumn22.Visible = true;
-            this.treeListColumn22.VisibleIndex = 9;
+            this.treeListColumn22.VisibleIndex = 10;
             // 
             // treeListColumn6
             // 
@@ -987,7 +1015,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn6.Name = "treeListColumn6";
             this.treeListColumn6.OptionsColumn.AllowEdit = false;
             this.treeListColumn6.Visible = true;
-            this.treeListColumn6.VisibleIndex = 10;
+            this.treeListColumn6.VisibleIndex = 11;
             this.treeListColumn6.Width = 123;
             // 
             // treeListColumn44
@@ -996,7 +1024,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn44.FieldName = "HEIN_SERVICE_BHYT_CODE";
             this.treeListColumn44.Name = "treeListColumn44";
             this.treeListColumn44.Visible = true;
-            this.treeListColumn44.VisibleIndex = 11;
+            this.treeListColumn44.VisibleIndex = 12;
             // 
             // treeListColumn28
             // 
@@ -1006,7 +1034,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn28.OptionsColumn.AllowEdit = false;
             this.treeListColumn28.ToolTip = "STT BHYT";
             this.treeListColumn28.Visible = true;
-            this.treeListColumn28.VisibleIndex = 12;
+            this.treeListColumn28.VisibleIndex = 13;
             // 
             // treeListColumn31
             // 
@@ -1016,7 +1044,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn31.OptionsColumn.AllowEdit = false;
             this.treeListColumn31.ToolTip = "Mã chuyên khoa";
             this.treeListColumn31.Visible = true;
-            this.treeListColumn31.VisibleIndex = 13;
+            this.treeListColumn31.VisibleIndex = 14;
             this.treeListColumn31.Width = 100;
             // 
             // treeListColumn30
@@ -1028,7 +1056,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn30.ToolTip = "Tên gói";
             this.treeListColumn30.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn30.Visible = true;
-            this.treeListColumn30.VisibleIndex = 14;
+            this.treeListColumn30.VisibleIndex = 15;
             this.treeListColumn30.Width = 122;
             // 
             // treeListColumn29
@@ -1039,7 +1067,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn29.OptionsColumn.AllowEdit = false;
             this.treeListColumn29.ToolTip = "Giá gói";
             this.treeListColumn29.Visible = true;
-            this.treeListColumn29.VisibleIndex = 15;
+            this.treeListColumn29.VisibleIndex = 16;
             this.treeListColumn29.Width = 93;
             // 
             // treeListColumn15
@@ -1050,7 +1078,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn15.OptionsColumn.AllowEdit = false;
             this.treeListColumn15.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn15.Visible = true;
-            this.treeListColumn15.VisibleIndex = 16;
+            this.treeListColumn15.VisibleIndex = 17;
             this.treeListColumn15.Width = 129;
             // 
             // treeListColumn18
@@ -1062,7 +1090,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn18.ToolTip = "Nhóm PTTT";
             this.treeListColumn18.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn18.Visible = true;
-            this.treeListColumn18.VisibleIndex = 17;
+            this.treeListColumn18.VisibleIndex = 18;
             // 
             // treeListColumn19
             // 
@@ -1073,7 +1101,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn19.ToolTip = "Phương pháp PTTT";
             this.treeListColumn19.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn19.Visible = true;
-            this.treeListColumn19.VisibleIndex = 18;
+            this.treeListColumn19.VisibleIndex = 19;
             this.treeListColumn19.Width = 106;
             // 
             // treeListColumn20
@@ -1085,7 +1113,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn20.ToolTip = "ICD CM";
             this.treeListColumn20.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn20.Visible = true;
-            this.treeListColumn20.VisibleIndex = 19;
+            this.treeListColumn20.VisibleIndex = 20;
             // 
             // treeListColumn21
             // 
@@ -1095,7 +1123,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn21.OptionsColumn.AllowEdit = false;
             this.treeListColumn21.ToolTip = "Giá cũ";
             this.treeListColumn21.Visible = true;
-            this.treeListColumn21.VisibleIndex = 20;
+            this.treeListColumn21.VisibleIndex = 21;
             // 
             // treeListColumn27
             // 
@@ -1105,7 +1133,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn27.OptionsColumn.AllowEdit = false;
             this.treeListColumn27.ToolTip = "Giá mới";
             this.treeListColumn27.Visible = true;
-            this.treeListColumn27.VisibleIndex = 21;
+            this.treeListColumn27.VisibleIndex = 22;
             // 
             // treeListColumn26
             // 
@@ -1116,7 +1144,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn26.ToolTip = "Tỉ lệ trần cũ";
             this.treeListColumn26.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn26.Visible = true;
-            this.treeListColumn26.VisibleIndex = 22;
+            this.treeListColumn26.VisibleIndex = 23;
             // 
             // treeListColumn25
             // 
@@ -1127,7 +1155,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn25.ToolTip = "Tỉ lệ trần mới";
             this.treeListColumn25.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn25.Visible = true;
-            this.treeListColumn25.VisibleIndex = 23;
+            this.treeListColumn25.VisibleIndex = 24;
             // 
             // treeListColumn24
             // 
@@ -1138,7 +1166,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn24.ToolTip = "Thời gian theo ngày vào viện";
             this.treeListColumn24.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn24.Visible = true;
-            this.treeListColumn24.VisibleIndex = 24;
+            this.treeListColumn24.VisibleIndex = 25;
             this.treeListColumn24.Width = 156;
             // 
             // treeListColumn23
@@ -1150,7 +1178,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn23.ToolTip = "Thời gian theo ngày chỉ định";
             this.treeListColumn23.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn23.Visible = true;
-            this.treeListColumn23.VisibleIndex = 25;
+            this.treeListColumn23.VisibleIndex = 26;
             this.treeListColumn23.Width = 144;
             // 
             // treeListColumn16
@@ -1162,7 +1190,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn16.ToolTip = "Đối tượng phụ thu mặc định";
             this.treeListColumn16.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn16.Visible = true;
-            this.treeListColumn16.VisibleIndex = 26;
+            this.treeListColumn16.VisibleIndex = 27;
             this.treeListColumn16.Width = 120;
             // 
             // treeListColumn42
@@ -1179,7 +1207,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn42.ToolTip = "Không cho phép sửa đối tượng phụ thu mặc định lúc chỉ định dịch vụ";
             this.treeListColumn42.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn42.Visible = true;
-            this.treeListColumn42.VisibleIndex = 27;
+            this.treeListColumn42.VisibleIndex = 28;
             // 
             // repositoryItemCheckEdit_IsNotChangePaty
             // 
@@ -1196,7 +1224,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn17.ToolTip = "CP ngoài gói";
             this.treeListColumn17.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn17.Visible = true;
-            this.treeListColumn17.VisibleIndex = 28;
+            this.treeListColumn17.VisibleIndex = 29;
             // 
             // repositoryItemCheckEdit1
             // 
@@ -1211,7 +1239,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn7.Name = "treeListColumn7";
             this.treeListColumn7.OptionsColumn.AllowEdit = false;
             this.treeListColumn7.Visible = true;
-            this.treeListColumn7.VisibleIndex = 29;
+            this.treeListColumn7.VisibleIndex = 30;
             this.treeListColumn7.Width = 94;
             // 
             // treeListColumn8
@@ -1222,7 +1250,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn8.OptionsColumn.AllowEdit = false;
             this.treeListColumn8.ToolTip = "Thời gian dự kiến";
             this.treeListColumn8.Visible = true;
-            this.treeListColumn8.VisibleIndex = 30;
+            this.treeListColumn8.VisibleIndex = 31;
             this.treeListColumn8.Width = 96;
             // 
             // treeListColumn40
@@ -1232,7 +1260,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn40.Name = "treeListColumn40";
             this.treeListColumn40.OptionsColumn.AllowEdit = false;
             this.treeListColumn40.Visible = true;
-            this.treeListColumn40.VisibleIndex = 31;
+            this.treeListColumn40.VisibleIndex = 32;
             this.treeListColumn40.Width = 55;
             // 
             // treeListColumn39
@@ -1242,7 +1270,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn39.Name = "treeListColumn39";
             this.treeListColumn39.OptionsColumn.AllowEdit = false;
             this.treeListColumn39.Visible = true;
-            this.treeListColumn39.VisibleIndex = 32;
+            this.treeListColumn39.VisibleIndex = 33;
             this.treeListColumn39.Width = 61;
             // 
             // treeListColumn9
@@ -1254,7 +1282,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn9.SortOrder = System.Windows.Forms.SortOrder.Ascending;
             this.treeListColumn9.ToolTip = "STT";
             this.treeListColumn9.Visible = true;
-            this.treeListColumn9.VisibleIndex = 33;
+            this.treeListColumn9.VisibleIndex = 34;
             this.treeListColumn9.Width = 77;
             // 
             // treeListColumn41
@@ -1266,7 +1294,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn41.OptionsColumn.AllowSort = false;
             this.treeListColumn41.ToolTip = "Mã quy trình xử lý";
             this.treeListColumn41.Visible = true;
-            this.treeListColumn41.VisibleIndex = 34;
+            this.treeListColumn41.VisibleIndex = 35;
             // 
             // treeListColumn10
             // 
@@ -1287,7 +1315,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn11.ToolTip = "Thời gian tạo";
             this.treeListColumn11.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn11.Visible = true;
-            this.treeListColumn11.VisibleIndex = 39;
+            this.treeListColumn11.VisibleIndex = 40;
             this.treeListColumn11.Width = 120;
             // 
             // treeListColumn12
@@ -1298,7 +1326,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn12.OptionsColumn.AllowEdit = false;
             this.treeListColumn12.ToolTip = "Người tạo";
             this.treeListColumn12.Visible = true;
-            this.treeListColumn12.VisibleIndex = 40;
+            this.treeListColumn12.VisibleIndex = 41;
             this.treeListColumn12.Width = 100;
             // 
             // treeListColumn13
@@ -1310,7 +1338,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn13.ToolTip = "Thời gian sửa";
             this.treeListColumn13.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn13.Visible = true;
-            this.treeListColumn13.VisibleIndex = 41;
+            this.treeListColumn13.VisibleIndex = 42;
             this.treeListColumn13.Width = 120;
             // 
             // treeListColumn14
@@ -1321,7 +1349,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn14.OptionsColumn.AllowEdit = false;
             this.treeListColumn14.ToolTip = "Người sửa";
             this.treeListColumn14.Visible = true;
-            this.treeListColumn14.VisibleIndex = 42;
+            this.treeListColumn14.VisibleIndex = 43;
             this.treeListColumn14.Width = 100;
             // 
             // treeListColumn35
@@ -1332,7 +1360,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn35.OptionsColumn.AllowEdit = false;
             this.treeListColumn35.OptionsColumn.ReadOnly = true;
             this.treeListColumn35.Visible = true;
-            this.treeListColumn35.VisibleIndex = 35;
+            this.treeListColumn35.VisibleIndex = 36;
             // 
             // treeListColumn36
             // 
@@ -1342,7 +1370,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn36.OptionsColumn.AllowEdit = false;
             this.treeListColumn36.OptionsColumn.ReadOnly = true;
             this.treeListColumn36.Visible = true;
-            this.treeListColumn36.VisibleIndex = 36;
+            this.treeListColumn36.VisibleIndex = 37;
             // 
             // treeListColumn37
             // 
@@ -1350,7 +1378,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn37.FieldName = "NUMBER_OF_FILM ";
             this.treeListColumn37.Name = "treeListColumn37";
             this.treeListColumn37.Visible = true;
-            this.treeListColumn37.VisibleIndex = 37;
+            this.treeListColumn37.VisibleIndex = 38;
             // 
             // treeListColumn43
             // 
@@ -1360,7 +1388,7 @@ namespace HIS.Desktop.Plugins.HisService
             this.treeListColumn43.OptionsColumn.AllowEdit = false;
             this.treeListColumn43.UnboundType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
             this.treeListColumn43.Visible = true;
-            this.treeListColumn43.VisibleIndex = 38;
+            this.treeListColumn43.VisibleIndex = 39;
             // 
             // LockT
             // 
@@ -4651,6 +4679,7 @@ namespace HIS.Desktop.Plugins.HisService
             ((System.ComponentModel.ISupportInitialize)(this.treeList1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit_IsNotChangePaty)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEdit1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemCheckEditSelect)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LockT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.unLockT)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DeleteD)).EndInit();
@@ -4890,6 +4919,8 @@ namespace HIS.Desktop.Plugins.HisService
         private DevExpress.XtraGrid.Views.Grid.GridView gridView5;
         private DevExpress.XtraEditors.SimpleButton btnSearch;
         private DevExpress.XtraTreeList.TreeList treeList1;
+        private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumnCheck;
+        private DevExpress.XtraEditors.Repository.RepositoryItemCheckEdit repositoryItemCheckEditSelect;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn1;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn2;
         private DevExpress.XtraTreeList.Columns.TreeListColumn treeListColumn34;

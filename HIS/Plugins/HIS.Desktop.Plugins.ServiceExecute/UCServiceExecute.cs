@@ -163,7 +163,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
         private UcWords.UcTelerik UcTelerikDocument;
         private UcWords.UcTelerikFullWord UcTelerikFullDocument;
-
+        bool haveWarn = false;
         protected string currentBussinessCode;
 
         private string SelectedFolderForSaveImage;
@@ -4098,6 +4098,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
             {
                 if (!btnSave.Enabled) return;
                 btnSave.Focus();
+                haveWarn = false;
                 if (currentServiceReq == null || currentServiceReq.ID == 0)
                 {
                     MessageManager.Show("Chưa chọn hồ sơ nào");
@@ -4248,7 +4249,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
 
                 LogSystem.Debug("Cảnh báo 1");
-                if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsAssignServiceSimulTaneityOption)
+                if (!String.IsNullOrEmpty(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsAssignServiceSimulTaneityOption))
                 {
                     LogSystem.Debug("Cảnh báo 1.1");
                     HisSereServCheckExecuteTimesSDO inputSDO = new HisSereServCheckExecuteTimesSDO();
@@ -4335,16 +4336,23 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     else
                     {
-                        LogSystem.Debug("Cảnh báo 1.4");
-                        message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
-                        if (XtraMessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        haveWarn = true;
+                        if(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsAssignServiceSimulTaneityOption == "1")
+                        {
+                            MessageManager.Show(paramCheckEx, false);
                             return;
+                        }
+                        else if(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsAssignServiceSimulTaneityOption == "2")
+                        {
+                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
+                            if (XtraMessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                return;
+                        }
                     }
-
                 }
 
                 LogSystem.Debug("Cảnh báo 2");
-                if (HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption)
+                if (!String.IsNullOrEmpty(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption))
                 {
                     LogSystem.Debug("Cảnh báo 2.1");
                     HisSurgServiceReqUpdateListSDO InputSDO = new HisSurgServiceReqUpdateListSDO();
@@ -4380,8 +4388,8 @@ namespace HIS.Desktop.Plugins.ServiceExecute
 
                     if (sereServExt != null)
                     {
-                        sereServExt.BEGIN_TIME = sereServExt.BEGIN_TIME != null ? sereServExt.BEGIN_TIME : Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
-                        sereServExt.END_TIME = sereServExt.END_TIME != null ? sereServExt.END_TIME : Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
+                        sereServExt.BEGIN_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBeginTime.DateTime);
+                        sereServExt.END_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime);
                         surgUpdate.SereServExt = sereServExt;
                     }
                     else
@@ -4423,10 +4431,19 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                     }
                     else
                     {
-                        LogSystem.Debug("Cảnh báo 2.4");
-                        message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckSurg.GetMessage());
-                        if (XtraMessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        haveWarn = true;
+                        if(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption == "1")
+                        {
+                            MessageManager.Show(paramCheckSurg, false);
                             return;
+                        }
+                        else if(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption == "2")
+                        {
+                            message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckSurg.GetMessage());
+                            if (XtraMessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                return;
+                        }
+                        LogSystem.Debug("Cảnh báo 2.4");
                     }
                 }
 
@@ -5150,8 +5167,11 @@ namespace HIS.Desktop.Plugins.ServiceExecute
         {
             try
             {
+                if (haveWarn) return false;
                 CommonParam param = new CommonParam();
+                Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sdo), sdo));
                 var res = new Inventec.Common.Adapter.BackendAdapter(param).Post<bool>("api/HisSereServExt/CheckData", ApiConsumer.ApiConsumers.MosConsumer, sdo, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
+                LogSystem.Debug("Res: " + res);
                 if (!res)
                 {
                     Inventec.Desktop.Common.Message.WaitingManager.Hide();

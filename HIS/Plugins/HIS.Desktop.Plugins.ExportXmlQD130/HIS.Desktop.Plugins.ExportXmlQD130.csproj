@@ -106,7 +106,7 @@
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XML130.XML9.dll</HintPath>
     </Reference>
     <Reference Include="His.Bhyt.ExportXml.XMLTT12.XML01BH">
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XMLTT12.XML01BH.dll</HintPath>
+      <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\His.Bhyt.ExportXml.XMLTT12.XML01BH.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.ADO">
       <HintPath>..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.ADO.dll</HintPath>

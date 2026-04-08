@@ -74,6 +74,9 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
         const string moduleLink = "EMR.Desktop.Plugins.EmrDocumentListAll";
+
+        private ContextMenuStrip popupMenuGrid;
+        private V_EMR_DOCUMENT rightClickRowData;
         #endregion
 
         #region Construct
@@ -541,7 +544,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                         }
                         else if (e.Column.FieldName == "STORE_TIME_STR")
                         {
-                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.STORE_TIME ?? 0);
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)data.STORE_TIME);
                         }
                         else if (e.Column.FieldName == "DOB_STR")
                         {
@@ -645,6 +648,8 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
                 InitCombo(cboDepartment, GetDepartment(), "DEPARTMENT_NAME", "ID");
 
                 InitControlState();
+
+                InitPopupMenu();
 
                 //Load du lieu
                 FillDataToGrid();
@@ -988,6 +993,140 @@ namespace EMR.Desktop.Plugins.EmrDocumentListAll
         private void gridView1_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
 
+        }
+
+        private void InitPopupMenu()
+        {
+            try
+            {
+                popupMenuGrid = new ContextMenuStrip();
+                var menuItemDownload = new ToolStripMenuItem("Tải văn bản");
+                menuItemDownload.Click += MenuItemDownload_Click;
+                popupMenuGrid.Items.Add(menuItemDownload);
+
+                gridView1.MouseUp += gridView1_MouseUp;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void gridView1_MouseUp(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (e.Button == MouseButtons.Right)
+                {
+                    DevExpress.XtraGrid.Views.Grid.GridView view = sender as DevExpress.XtraGrid.Views.Grid.GridView;
+                    GridHitInfo hi = view.CalcHitInfo(e.Location);
+                    if (hi.InRowCell || hi.InRow)
+                    {
+                        var row = (V_EMR_DOCUMENT)view.GetRow(hi.RowHandle);
+                        if (row != null)
+                        {
+                            rightClickRowData = row;
+                            popupMenuGrid.Show(gridControl1, e.Location);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void MenuItemDownload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rightClickRowData == null) return;
+
+                CommonParam param = new CommonParam();
+                var apiResult = GetEmrDocumentFile(rightClickRowData.ID, false, null, false, ref param);
+                if (apiResult != null && apiResult.Count > 0)
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    string defaultFileName = !String.IsNullOrWhiteSpace(rightClickRowData.DOCUMENT_CODE)
+                        ? rightClickRowData.DOCUMENT_CODE
+                        : "EmrDocument";
+                    saveFileDialog.FileName = defaultFileName + ".pdf";
+                    saveFileDialog.Filter = "PDF files (*.pdf)|*.pdf";
+                    saveFileDialog.Title = "Tải văn bản";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        var temFile = System.IO.Path.Combine(Application.StartupPath + "\\temp\\");
+                        if (!Directory.Exists(temFile)) Directory.CreateDirectory(temFile);
+
+                        temFile = System.IO.Path.Combine(temFile, string.Format("{0}.pdf", Guid.NewGuid()));
+                        List<string> joinStreams = new List<string>();
+
+                        foreach (var item in apiResult)
+                        {
+                            if (item.Extension.ToLower().Equals("pdf"))
+                            {
+                                string pdfAddFile = Utils.GenerateTempFileWithin();
+                                Utils.ByteToFile(Utils.StreamToByte(new MemoryStream(Convert.FromBase64String(item.Base64Data))), pdfAddFile);
+                                joinStreams.Add(pdfAddFile);
+                            }
+                        }
+
+                        Stream currentStream = File.Open(temFile, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+                        var pdfConcat = new iTextSharp.text.pdf.PdfConcatenate(currentStream);
+                        var pages = new List<int>();
+
+                        foreach (var file in joinStreams)
+                        {
+                            iTextSharp.text.pdf.PdfReader pdfReader = null;
+                            pdfReader = new iTextSharp.text.pdf.PdfReader(file);
+                            pages = new List<int>();
+                            for (int i = 0; i <= pdfReader.NumberOfPages; i++)
+                            {
+                                pages.Add(i);
+                            }
+                            pdfReader.SelectPages(pages);
+                            pdfConcat.AddPages(pdfReader);
+                            pdfReader.Close();
+                        }
+                        try
+                        {
+                            pdfConcat.Close();
+                        }
+                        catch { }
+
+                        foreach (var file in joinStreams)
+                        {
+                            try
+                            {
+                                File.Delete(file);
+                            }
+                            catch { }
+                        }
+
+                        if (File.Exists(temFile))
+                        {
+                            File.Copy(temFile, saveFileDialog.FileName, true);
+                            File.Delete(temFile);
+                            XtraMessageBox.Show("Tải văn bản thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            XtraMessageBox.Show("Không tìm thấy được văn bản!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                }
+                else
+                {
+                    MessageManager.Show(this.ParentForm, param, false);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                XtraMessageBox.Show("Có lỗi xảy ra khi tải văn bản!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+            }
         }
 
         private void cboDepartment_CustomDisplayText(object sender, DevExpress.XtraEditors.Controls.CustomDisplayTextEventArgs e)

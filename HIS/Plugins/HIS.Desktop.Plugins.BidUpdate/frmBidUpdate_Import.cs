@@ -139,6 +139,10 @@ namespace HIS.Desktop.Plugins.BidUpdate
 
                     if (medicineTypeNotExist == null && bloodTypeNotExist == null) continue;
 
+                    if (!String.IsNullOrWhiteSpace(medicineTypeImport.BID_FORM_CODE))
+                    {
+                        medicineType.BID_FORM_CODE = medicineTypeImport.BID_FORM_CODE;
+                    }
                     if (medicineTypeNotExist != null)
                     {
                         medicineType.Type = Base.GlobalConfig.THUOC;
@@ -419,6 +423,11 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         && String.IsNullOrWhiteSpace(materialTypeImport.MATERIAL_TYPE_MAP_CODE))
                     {
                         continue;
+                    }
+
+                    if (!String.IsNullOrWhiteSpace(materialTypeImport.BID_FORM_CODE))
+                    {
+                        medicineType.BID_FORM_CODE = materialTypeImport.BID_FORM_CODE;
                     }
 
                     if (!String.IsNullOrWhiteSpace(materialTypeImport.MEDICINE_TYPE_CODE))

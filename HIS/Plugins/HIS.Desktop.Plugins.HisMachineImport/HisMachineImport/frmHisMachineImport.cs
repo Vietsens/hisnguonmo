@@ -200,7 +200,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
         && item.TO_TIME == null
         && string.IsNullOrEmpty(item.SERIAL_NUMBER)
         && string.IsNullOrEmpty(item.SOURCE_CODE)
-        && string.IsNullOrEmpty(item.ROOM_IDS)
+        && string.IsNullOrEmpty(item.ROOM_CODES)
         && string.IsNullOrEmpty(item.INTEGRATE_ADDRESS)
         && string.IsNullOrEmpty(item.SYMBOL)
         && string.IsNullOrEmpty(item.MACHINE_GROUP_CODE)
@@ -280,7 +280,7 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                                                             o.TO_TIME == item.TO_TIME &&
                                                             o.SERIAL_NUMBER == item.SERIAL_NUMBER && 
                                                             o.SOURCE_CODE == item.SOURCE_CODE && 
-                                                            o.ROOM_IDS == item.ROOM_IDS && 
+                                                            o.ROOM_CODES == item.ROOM_CODES &&
                                                             o.INTEGRATE_ADDRESS == item.INTEGRATE_ADDRESS && 
                                                             o.MAX_SERVICE_PER_DAY == item.MAX_SERVICE_PER_DAY && 
                                                             o.MACHINE_GROUP_CODE == item.MACHINE_GROUP_CODE &&
@@ -441,6 +441,20 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                             error += string.Format(Message.MessageImport.Maxlength, "Số lưu hành", 22);
                         }
                     }
+                    if (!string.IsNullOrEmpty(item.ROOM_CODES))
+                    {
+                        var roomCodes = item.ROOM_CODES.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                        var allRooms = BackendDataWorker.Get<V_HIS_ROOM>();
+                        foreach (var code in roomCodes)
+                        {
+                            var room = allRooms.FirstOrDefault(r => r.ROOM_CODE == code.Trim());
+                            if (room == null)
+                            {
+                                if (error != "") error += " | ";
+                                error += string.Format("Mã phòng '{0}' không tồn tại", code.Trim());
+                            }
+                        }
+                    }
 
                     machineAdo.ERROR = error;
                     machineAdo.ID = i;
@@ -523,7 +537,21 @@ namespace HIS.Desktop.Plugins.HisMachineImport.HisMachineImport
                         ado.TO_TIME = ConvertDateToHisTime(item.TO_TIME);
                         ado.SERIAL_NUMBER = item.SERIAL_NUMBER;
                         ado.SOURCE_CODE = item.SOURCE_CODE;
-                        ado.ROOM_IDS = item.ROOM_IDS;
+                        if (!string.IsNullOrEmpty(item.ROOM_CODES))
+                        {
+                            var roomCodes = item.ROOM_CODES.Split(new char[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                            var allRooms = BackendDataWorker.Get<V_HIS_ROOM>();
+                            var roomIds = new List<string>();
+                            foreach (var code in roomCodes)
+                            {
+                                var room = allRooms.FirstOrDefault(r => r.ROOM_CODE == code.Trim());
+                                if (room != null)
+                                {
+                                    roomIds.Add(room.ID.ToString());
+                                }
+                            }
+                            ado.ROOM_IDS = roomIds.Count > 0 ? string.Join(",", roomIds) : null;
+                        }
                         ado.INTEGRATE_ADDRESS = item.INTEGRATE_ADDRESS;
                         ado.MAX_SERVICE_PER_DAY = item.MAX_SERVICE_PER_DAY;
                         ado.MACHINE_GROUP_CODE = item.MACHINE_GROUP_CODE;

@@ -82,6 +82,10 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         HIS.UC.National.NationalProcessor nationalProcessor;
         UserControl ucNational;
         List<HIS_DOSAGE_FORM> dataDosageForm;
+        HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
+        List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO;
+        string moduleLink = "HIS.Desktop.Plugins.MedicineTypeCreate";
+        bool isNotSaveControlState = false;
         internal List<ADO.VHisServicePatyADO> lsVHisServicePaty { get; set; }
         internal List<ADO.VHisServicePatyADO> lsVHisServicePatyBegin = new List<VHisServicePatyADO>();
         internal List<HIS_SERVICE_PATY> ServicePatyCreate { get; set; }
@@ -197,6 +201,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     LogSystem.Warn(ex);
                 }
                 HisConfigCFG.LoadConfig();
+                InitControlState();
                 WaitingManager.Show(this);
                 dataDosageForm = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_DOSAGE_FORM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 InitUcNational();
@@ -265,7 +270,6 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         currentVHisServiceDTODefault = new BackendAdapter(pramservice).Get<List<V_HIS_SERVICE>>("api/HisService/GetView", ApiConsumers.MosConsumer, filter, pramservice).SingleOrDefault();
                         rdoUpdateAll.ReadOnly = false;
                         rdoUpdateNotFee.ReadOnly = false;
-                        rdoUpdateNotFee.CheckState = CheckState.Checked;
                         btnEditInfo.Enabled = true;
                         FillDataMedicineTypeToControl(currentVHisMedicineTypeDTODefault, currentVHisServiceDTODefault);
                         btnSave.Enabled = (currentVHisMedicineTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
@@ -1051,7 +1055,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                         currentVHisServiceDTODefault = new BackendAdapter(pramservice).Get<List<V_HIS_SERVICE>>("api/HisService/GetView", ApiConsumers.MosConsumer, filter, pramservice).SingleOrDefault();
                         rdoUpdateAll.ReadOnly = false;
                         rdoUpdateNotFee.ReadOnly = false;
-                        rdoUpdateNotFee.CheckState = CheckState.Checked;
+
                         FillDataMedicineTypeToControl(currentVHisMedicineTypeDTODefault, currentVHisServiceDTODefault);
                         btnSave.Enabled = (currentVHisMedicineTypeDTODefault.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE);
                     }
@@ -1070,6 +1074,29 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
             catch (Exception ex)
             {
                 LogSystem.Warn(ex);
+            }
+        }
+
+        void InitControlState()
+        {
+            try
+            {
+                this.controlStateWorker = new HIS.Desktop.Library.CacheClient.ControlStateWorker();
+                this.currentControlStateRDO = controlStateWorker.GetData(moduleLink);
+                if (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0)
+                {
+                    foreach (var item in this.currentControlStateRDO)
+                    {
+                        if (item.KEY == "rdoUpdateNotFee")
+                        {
+                            rdoUpdateNotFee.Checked = item.VALUE == "1";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -6552,6 +6579,26 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 if (this.rdoUpdateNotFee.Checked && this.rdoUpdateAll.Checked)
                 {
                     this.rdoUpdateAll.Checked = !this.rdoUpdateNotFee.Checked;
+                }
+
+                if (!isNotSaveControlState && this.controlStateWorker != null)
+                {
+                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "rdoUpdateNotFee" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                    if (csAddOrUpdate != null)
+                    {
+                        csAddOrUpdate.VALUE = (rdoUpdateNotFee.Checked ? "1" : "");
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = "rdoUpdateNotFee";
+                        csAddOrUpdate.VALUE = (rdoUpdateNotFee.Checked ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = moduleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
                 }
             }
             catch (Exception ex)

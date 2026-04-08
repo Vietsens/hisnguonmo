@@ -87,7 +87,7 @@ namespace MPS.Processor.Mps000165.PDO
                     this.TYPE_ID = 1;
                     this.MEDI_MATE_TYPE_CODE = listMedicine.First().MEDICINE_TYPE_CODE;
                     this.MEDI_MATE_TYPE_ID = listMedicine.First().MEDICINE_TYPE_ID;
-                    this.MEDI_MATE_TYPE_NAME = listMedicine.First().MEDICINE_TYPE_NAME;
+                    this.MEDI_MATE_TYPE_NAME = NormalizePrintText(listMedicine.First().MEDICINE_TYPE_NAME);
                     this.PACKAGE_NUMBER = listMedicine.First().PACKAGE_NUMBER;
                     this.REGISTER_NUMBER = listMedicine.First().REGISTER_NUMBER;
                     this.SERVICE_UNIT_CODE = listMedicine.First().SERVICE_UNIT_CODE;
@@ -134,7 +134,7 @@ namespace MPS.Processor.Mps000165.PDO
                     this.TYPE_ID = 2;
                     this.MEDI_MATE_TYPE_CODE = listMaterial.First().MATERIAL_TYPE_CODE;
                     this.MEDI_MATE_TYPE_ID = listMaterial.First().MATERIAL_TYPE_ID;
-                    this.MEDI_MATE_TYPE_NAME = listMaterial.First().MATERIAL_TYPE_NAME;
+                    this.MEDI_MATE_TYPE_NAME = NormalizePrintText(listMaterial.First().MATERIAL_TYPE_NAME);
                     this.PACKAGE_NUMBER = listMaterial.First().PACKAGE_NUMBER;
                     this.SERVICE_UNIT_CODE = listMaterial.First().SERVICE_UNIT_CODE;
                     this.SERVICE_UNIT_NAME = listMaterial.First().SERVICE_UNIT_NAME;
@@ -163,6 +163,18 @@ namespace MPS.Processor.Mps000165.PDO
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+        private string NormalizePrintText(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            return string.Join(" ",
+                input.Replace("\r\n", "\n")
+                     .Replace('\r', '\n')
+                     .Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                     .Select(s => s.Trim())
+                     .Where(s => !string.IsNullOrWhiteSpace(s)));
         }
     }
 }

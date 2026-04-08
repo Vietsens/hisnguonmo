@@ -221,7 +221,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                     {
                         medicineType.VALID_FROM_TIME = medicineTypeImport.VALID_FROM_TIME;
                     }
-                    if (Encoding.UTF8.GetByteCount(medicineType.TT_THAU) > 50)
+                    if (!string.IsNullOrWhiteSpace(medicineType.TT_THAU) &&  Encoding.UTF8.GetByteCount(medicineType.TT_THAU) > 50)
                     {
                         medicineType.ErrorDescriptions.Add("Thông tin thầu vượt quá 50 ký tự");
                     }
@@ -638,7 +638,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                             medicineType.ErrorDescriptions.Add("Thời gian từ không được lớn hơn thời gian đến");
                         }
                     }
-                    if (Encoding.UTF8.GetByteCount(medicineType.TT_THAU) > 50)
+                    if (!String.IsNullOrWhiteSpace(medicineType.TT_THAU) && Encoding.UTF8.GetByteCount(medicineType.TT_THAU) > 50)
                     {
                         medicineType.ErrorDescriptions.Add("Thông tin thầu vượt quá 50 ký tự");
                     }

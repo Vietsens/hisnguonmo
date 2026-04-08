@@ -109,18 +109,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     lblCalendaInput.Text = Inventec.Common.Resource.Get.Value("FormMultiChooseDate__CaptionCalendaInput", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     btnChoose.Text = Inventec.Common.Resource.Get.Value("FormMultiChooseDate__CaptionBtnChoose", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 }
-                else 
+                else
                 {
                     this.Text = Inventec.Common.Resource.Get.Value("frmAssignPrescription.lciTimeAssign.UseTime.Text", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                     lblCalendaInput.Text = Inventec.Common.Resource.Get.Value("FormMultiChooseDate__CaptionCalendaInput.UseTime", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    lblCalendaInputFromTo.Text = Inventec.Common.Resource.Get.Value("FormMultiChooseDate__CaptionCalendaInput.UseTime", Resources.ResourceLanguageManager.LanguagefrmAssignPrescription, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
 
-                    this.layoutControlItem7.Visibility = LayoutVisibility.Never;
-                    this.layoutControlItem6.Visibility = LayoutVisibility.Never;
                     this.layoutControlItem1.Visibility = LayoutVisibility.Never;
                     this.layoutControlItem2.Visibility = LayoutVisibility.Never;
-                    this.layoutControlItem8.Visibility = LayoutVisibility.Never;
-                    this.layoutControlItem9.Visibility = LayoutVisibility.Never;
-                    this.layoutControlItem10.Visibility = LayoutVisibility.Never;
                 }
             }
             catch (Exception ex)
@@ -268,7 +264,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     this.layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     this.layoutControlItem10.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
-                    this.Size = new Size(364, 161);
+                    if (this.notTime)
+                        this.Size = new Size(364, 135);
+                    else
+                        this.Size = new Size(364, 161);
                 }
                 else
                 {
@@ -277,12 +276,15 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.AssignPrescription
                     this.layoutControlItem8.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     this.layoutControlItem9.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     this.layoutControlItem10.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
-                    this.Size = new Size(364, 388);
+                    if (this.notTime)
+                        this.Size = new Size(364, 365);
+                    else
+                        this.Size = new Size(364, 388);
                 }
             }
             catch (Exception ex)
             {
-                Inventec.Common.Logging.LogSystem.Error(ex);                
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 

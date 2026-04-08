@@ -285,12 +285,7 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 if (dtDateInfusion.EditValue != null)
                 {
                     long ngayKeDon = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtDateInfusion.DateTime.Date) ?? 0;
-                    if (cboTimeType != null && cboTimeType.SelectedIndex == 1)
-                    {
-                        DS1Filter.TDL_USE_TIME_FROM = ngayKeDon;
-                        DS1Filter.TDL_USE_TIME_TO = ngayKeDon + 235959;
-                    }
-                    else
+                    if (cboTimeType == null || cboTimeType.SelectedIndex != 1)
                     {
                         DS1Filter.TDL_INTRUCTION_DATE__EQUAL = ngayKeDon;
                     }
@@ -298,13 +293,15 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("DS1Filter____________________", DS1Filter));
                 var lstExpMestMedicine6 = new BackendAdapter(new CommonParam()).Get<List<V_HIS_EXP_MEST_MEDICINE_6>>("api/HisExpMestMedicine/GetView6", ApiConsumers.MosConsumer, DS1Filter, null);
 
-                // Client-side filter by TDL_USE_TIME for "Thời gian dự trù"
                 if (cboTimeType != null && cboTimeType.SelectedIndex == 1 && dtDateInfusion.EditValue != null && lstExpMestMedicine6 != null)
                 {
                     long ngayDuTru = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtDateInfusion.DateTime.Date) ?? 0;
                     if (ngayDuTru > 0)
                     {
-                        lstExpMestMedicine6 = lstExpMestMedicine6.Where(o => o.TDL_USE_TIME.HasValue && o.TDL_USE_TIME.Value >= ngayDuTru && o.TDL_USE_TIME.Value <= ngayDuTru + 235959).ToList();
+                        lstExpMestMedicine6 = lstExpMestMedicine6.Where(o =>
+                            (o.TDL_USE_TIME.HasValue && o.TDL_USE_TIME.Value >= ngayDuTru && o.TDL_USE_TIME.Value <= ngayDuTru + 235959)
+                            || (!o.TDL_USE_TIME.HasValue && o.TDL_INTRUCTION_TIME.HasValue && o.TDL_INTRUCTION_TIME.Value >= ngayDuTru && o.TDL_INTRUCTION_TIME.Value <= ngayDuTru + 235959)
+                        ).ToList();
                     }
                 }
 
@@ -583,40 +580,25 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                 if (dtNgayChidinh.EditValue != null)
                 {
                     long ngayChiDinh = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtNgayChidinh.DateTime.Date) ?? 0;
-                    if (cboTimeType != null && cboTimeType.SelectedIndex == 1)
-                    {
-                        filter.TDL_USE_TIME_FROM = ngayChiDinh;
-                        filter.TDL_USE_TIME_TO = ngayChiDinh + 235959;
-                    }
-                    else
+                    if (cboTimeType == null || cboTimeType.SelectedIndex != 1)
                     {
                         filter.TDL_INTRUCTION_DATE_FROM = ngayChiDinh;
                         filter.TDL_INTRUCTION_DATE_TO = ngayChiDinh;
                     }
                 }
-                else
-                {
-                    if (cboTimeType != null && cboTimeType.SelectedIndex == 1)
-                    {
-                        filter.TDL_USE_TIME_FROM = null;
-                        filter.TDL_USE_TIME_TO = null;
-                    }
-                    else
-                    {
-                        filter.TDL_INTRUCTION_DATE_FROM = null;
-                        filter.TDL_INTRUCTION_DATE_TO = null;
-                    }
-                }
 
                 lstExpMestMedicine6 = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_EXP_MEST_MEDICINE_6>>("api/HisExpMestMedicine/GetView6", ApiConsumers.MosConsumer, filter, null);
 
-                // Client-side filter by TDL_USE_TIME for "Thời gian dự trù"
+                // Client-side filter for "Thời gian dự trù": lấy theo USE_TIME, nếu không có thì fallback theo INTRUCTION_TIME
                 if (cboTimeType != null && cboTimeType.SelectedIndex == 1 && dtNgayChidinh.EditValue != null && lstExpMestMedicine6 != null)
                 {
                     long ngayDuTru = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtNgayChidinh.DateTime.Date) ?? 0;
                     if (ngayDuTru > 0)
                     {
-                        lstExpMestMedicine6 = lstExpMestMedicine6.Where(o => o.TDL_USE_TIME.HasValue && o.TDL_USE_TIME.Value >= ngayDuTru && o.TDL_USE_TIME.Value <= ngayDuTru + 235959).ToList();
+                        lstExpMestMedicine6 = lstExpMestMedicine6.Where(o =>
+                            (o.TDL_USE_TIME.HasValue && o.TDL_USE_TIME.Value >= ngayDuTru && o.TDL_USE_TIME.Value <= ngayDuTru + 235959)
+                            || (!o.TDL_USE_TIME.HasValue && o.TDL_INTRUCTION_TIME.HasValue && o.TDL_INTRUCTION_TIME.Value >= ngayDuTru && o.TDL_INTRUCTION_TIME.Value <= ngayDuTru + 235959)
+                        ).ToList();
                     }
                 }
 
@@ -662,13 +644,16 @@ namespace HIS.Desktop.Plugins.InfusionCreate
                     hisExpMestMedicineView6Filter2.PRESCRIPTION_IDs = glstMetyReq.Select(s => s.SERVICE_REQ_ID).Distinct().ToList();
                     outMestMedicines = new BackendAdapter(this.param).Get<List<V_HIS_EXP_MEST_MEDICINE_6>>("api/HisExpMestMedicine/GetView6", ApiConsumers.MosConsumer, hisExpMestMedicineView6Filter2, null);
 
-                    // Client-side filter by TDL_USE_TIME for "Thời gian dự trù"
+                    // Client-side filter for "Thời gian dự trù": lấy theo USE_TIME, nếu không có thì fallback theo INTRUCTION_TIME
                     if (cboTimeType != null && cboTimeType.SelectedIndex == 1 && dtNgayChidinh.EditValue != null && outMestMedicines != null)
                     {
                         long ngayDuTru2 = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtNgayChidinh.DateTime.Date) ?? 0;
                         if (ngayDuTru2 > 0)
                         {
-                            outMestMedicines = outMestMedicines.Where(o => o.TDL_USE_TIME.HasValue && o.TDL_USE_TIME.Value >= ngayDuTru2 && o.TDL_USE_TIME.Value <= ngayDuTru2 + 235959).ToList();
+                            outMestMedicines = outMestMedicines.Where(o =>
+                                (o.TDL_USE_TIME.HasValue && o.TDL_USE_TIME.Value >= ngayDuTru2 && o.TDL_USE_TIME.Value <= ngayDuTru2 + 235959)
+                                || (!o.TDL_USE_TIME.HasValue && o.TDL_INTRUCTION_TIME.HasValue && o.TDL_INTRUCTION_TIME.Value >= ngayDuTru2 && o.TDL_INTRUCTION_TIME.Value <= ngayDuTru2 + 235959)
+                            ).ToList();
                         }
                     }
                 }

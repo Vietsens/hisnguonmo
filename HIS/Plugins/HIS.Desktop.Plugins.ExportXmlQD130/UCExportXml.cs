@@ -2411,96 +2411,33 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     skip += GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
 
                     var param = new CommonParam();
-                    var adapter = new Inventec.Common.Adapter.BackendAdapter(param);
-
-                    // ===== 1) SereServ2
                     var ssFilter = new HisSereServView2Filter
                     {
                         TREATMENT_IDs = limit.Select(o => o.ID).ToList(),
                         PATIENT_TYPE_IDs = (patientTypeTtIds != null && patientTypeTtIds.Count > 0) ? patientTypeTtIds : null
                     };
 
-                    var resultSS = adapter.Get<List<V_HIS_SERE_SERV_2>>(
-                        HisRequestUriStore.HIS_SERE_SERV_GETVIEW_2,
-                        ApiConsumers.MosConsumer,
-                        ssFilter,
-                        param
-                    );
+                    var resultSS = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_SERE_SERV_2>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW_2,ApiConsumers.MosConsumer, ssFilter, param);
 
                     if (resultSS != null && resultSS.Count > 0)
                     {
                         ListSereServ.AddRange(resultSS);
 
-                        // ===== 2) Load HIS_EXP_MEDIMATE_USED (filter chỉ long? => gọi từng ID)
                         try
                         {
-                            // gom id mới (chưa load)
-                            var newMedIds = resultSS
-                                .Where(x => x.EXP_MEST_MEDICINE_ID.HasValue)
-                                .Select(x => x.EXP_MEST_MEDICINE_ID.Value)
-                                .Distinct()
-                                .Where(id => !loadedMedIds.Contains(id))
-                                .ToList();
-
-                            var newMatIds = resultSS
-                                .Where(x => x.EXP_MEST_MATERIAL_ID.HasValue)
-                                .Select(x => x.EXP_MEST_MATERIAL_ID.Value)
-                                .Distinct()
-                                .Where(id => !loadedMatIds.Contains(id))
-                                .ToList();
-
-                            // gọi theo từng ID (vì filter chỉ long?)
-                            foreach (var medId in newMedIds)
+                            var usedFilter = new HisExpMedimateUsedFilter
                             {
-                                var usedFilter = new HisExpMedimateUsedFilter
-                                {
-                                    EXP_MEST_MEDICINE_ID = medId,
-                                    EXP_MEST_MATERIAL_ID = null
-                                };
+                                TDL_TREATMENT_ID = this.currentTreatment.ID,
+                            };
 
-                                var usedRs = adapter.Get<List<HIS_EXP_MEDIMATE_USED>>(
-                                    "api/HisExpMedimateUsed/Get",
-                                    ApiConsumers.MosConsumer,
-                                    usedFilter,
-                                    param
-                                );
+                            var usedRs = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_EXP_MEDIMATE_USED>>("api/HisExpMedimateUsed/Get", ApiConsumers.MosConsumer, usedFilter, param);
 
-                                loadedMedIds.Add(medId);
-
-                                if (usedRs != null && usedRs.Count > 0)
-                                {
-                                    foreach (var u in usedRs)
-                                    {
-                                        if (u == null) continue;
-                                        usedById[u.ID] = u;
-                                    }
-                                }
-                            }
-
-                            foreach (var matId in newMatIds)
+                            if (usedRs != null && usedRs.Count > 0)
                             {
-                                var usedFilter = new HisExpMedimateUsedFilter
+                                foreach (var u in usedRs)
                                 {
-                                    EXP_MEST_MEDICINE_ID = null,
-                                    EXP_MEST_MATERIAL_ID = matId
-                                };
-
-                                var usedRs = adapter.Get<List<HIS_EXP_MEDIMATE_USED>>(
-                                    "api/HisExpMedimateUsed/Get",
-                                    ApiConsumers.MosConsumer,
-                                    usedFilter,
-                                    param
-                                );
-
-                                loadedMatIds.Add(matId);
-
-                                if (usedRs != null && usedRs.Count > 0)
-                                {
-                                    foreach (var u in usedRs)
-                                    {
-                                        if (u == null) continue;
-                                        usedById[u.ID] = u;
-                                    }
+                                    if (u == null) continue;
+                                    usedById[u.ID] = u;
                                 }
                             }
                         }
@@ -2520,7 +2457,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                 skipEkip += GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
 
                                 var ekipFilter = new HisEkipUserFilter { EKIP_IDs = limitLong };
-                                var resultEkip = adapter.Get<List<HIS_EKIP_USER>>(
+                                var resultEkip = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_EKIP_USER>>(
                                     "api/HisEkipUser/Get",
                                     ApiConsumers.MosConsumer,
                                     ekipFilter,
@@ -2533,9 +2470,9 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                     }
 
-                    // ===== 4) Bedlog
+                    // ===== 4) Bedlog 
                     var bedFilter = new HisBedLogViewFilter { TREATMENT_IDs = limit.Select(o => o.ID).ToList() };
-                    var resultBed = adapter.Get<List<V_HIS_BED_LOG>>(
+                    var resultBed = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_BED_LOG>>(
                         "api/HisBedLog/GetView",
                         ApiConsumers.MosConsumer,
                         bedFilter,
@@ -3786,9 +3723,6 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     return;
                 }
                 timerTickIsRunning = true;
-
-                LogSystem.Info("Begin Run Thread Auto Sync");
-
                 if (this.configSync.isCheckCollinearXml)
                 {
                     listTreatmentSync = new List<V_HIS_TREATMENT_1>();
@@ -3858,9 +3792,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             filter.HAS_IN_CODE = true;
                         }
                     }
+                   
                     if (!configSync.isCheckOutTime)
                     {
-                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss"));
+                        filter.OUT_TIME_FROM = Convert.ToInt64(DateTime.Today.AddDays(-1).ToString("yyyyMMddHHmmss")); 
                         filter.OUT_TIME_TO = Convert.ToInt64(DateTime.Now.ToString("yyyyMMddHHmmss"));
                         filter.IS_PAUSE = true;
                     }
@@ -5096,7 +5031,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 // Khởi tạo đối tượng gom dữ liệu C79
                 HSTH01BH hsth01bh = new HSTH01BH();
                 hsth01bh.DS_CHITIET = new DS_CHITIET();
-                hsth01bh.DS_CHITIET.Id = "Id-" + Guid.NewGuid().ToString();
+                //hsth01bh.DS_CHITIET.Id = "Id-" + Guid.NewGuid().ToString();
                 hsth01bh.DS_CHITIET.DanhSachChiTiet = new List<HSTH01BH_CHITIET>();
                 hsth01bh.CHUKYDONVI = "";
 
@@ -5193,9 +5128,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
 
                         using (System.Xml.XmlWriter writer = System.Xml.XmlWriter.Create(ms, settings))
                         {
-                            System.Xml.Serialization.XmlSerializerNamespaces ns = new System.Xml.Serialization.XmlSerializerNamespaces();
-                            ns.Add("", ""); // Bỏ namespace rác
-                            serializer.Serialize(writer, hsth01bh, ns);
+                            serializer.Serialize(writer, hsth01bh);
                         }
 
                         File.WriteAllBytes(saveFilePath, ms.ToArray());
