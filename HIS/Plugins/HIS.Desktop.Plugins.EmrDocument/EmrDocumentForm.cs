@@ -695,6 +695,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     filter.ORDER_FIELD3 = "DOCUMENT_TIME";
                     filter.ORDER_DIRECTION4 = "ASC";
                     filter.ORDER_FIELD4 = "CREATE_TIME";
+                    
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
 
@@ -744,7 +745,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     string documentTypeCodeKXD = "____KXD____";
                     string documentGroupCodeKXD = "__KXD__";
 
-                    listData = apiResult.Data;
+                    listData = apiResult.Data.Where(o=> o.IS_OUTSIDE_TREATMENT != 1).ToList();
 
                     long order = 1;
 
@@ -1061,11 +1062,11 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                     if (LstDataNew != null && LstDataNew.Count > 0)
                     {
-                        records = new BindingList<EmrDocumentADO>(LstDataNew);
+                        records = new BindingList<EmrDocumentADO>(LstDataNew.Where(o=> o.IS_OUTSIDE_TREATMENT != 1).ToList());
                     }
                     else if (listData != null && listData.Count > 0)
                     {
-                        records = new BindingList<EmrDocumentADO>(listData);
+                        records = new BindingList<EmrDocumentADO>(listData.Where(o => o.IS_OUTSIDE_TREATMENT != 1).ToList());
                     }
                     treeListDocument.DataSource = records;
 
@@ -2267,7 +2268,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                 if (data != null && data.ID > 0)
                 {
                     string creator = data.CREATOR;
-                    long storeTime = (data.STORE_TIME ?? 0);
+                    long storeTime = ((long)data.STORE_TIME);
                     if (e.Column.FieldName == "DELETE")
                     {
                         if (this.isStore)
