@@ -98,6 +98,7 @@ namespace HIS.Desktop.Plugins.BidUpdate
         int positionHandleLeft = -1, positionHandleRight = -1;
 
         List<MOS.EFMODEL.DataModels.HIS_BID_TYPE> bidTypes;
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProviderDate = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
 
         HIS.Desktop.Library.CacheClient.ControlStateWorker controlStateWorker;
         List<HIS.Desktop.Library.CacheClient.ControlStateRDO> currentControlStateRDO__Create;
@@ -810,6 +811,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 Inventec.Common.Logging.LogAction.Info(this.Module.ModuleLink + ": [StartTimer - Load data tab loai thuoc]");
                 this.isInit = false;
                 spinGiaTran.EditValue = null;
+                dtBidItemFromTime.EditValue = null;
+                dtBidItemToTime.EditValue = null;
             }
             catch (Exception ex)
             {
@@ -1123,6 +1126,22 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 txtTTThau.Text = data.TT_THAU;
                 txtBatchDivisionCode.Text = data.BATCH_DIVISION_CODE;
                 spinGiaTran.EditValue = data.HEIN_LIMIT_PRICE ?? null;
+                if (data.FROM_TIME.HasValue)
+                {
+                    dtBidItemFromTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.FROM_TIME.Value);
+                }
+                else
+                {
+                    dtBidItemFromTime.EditValue = null;
+                }
+                if (data.TO_TIME.HasValue)
+                {
+                    dtBidItemToTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(data.TO_TIME.Value);
+                }
+                else
+                {
+                    dtBidItemToTime.EditValue = null;
+                }
                 if (!string.IsNullOrEmpty(data.BID_GROUP_CODE))
                 {
                     txtBidGroupCode.Text = data.BID_GROUP_CODE;
@@ -1449,6 +1468,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 spinDayLifeSpan.EditValue = null;
                 spinHourLifeSpan.EditValue = null;
                 txtBatchDivisionCode.Text = "";
+                dtBidItemFromTime.EditValue = null;
+                dtBidItemToTime.EditValue = null;
 
                 dxValidationProviderLeft.RemoveControlError(spinImpPrice);
                 dxValidationProviderLeft.RemoveControlError(spinAmount);
@@ -1962,6 +1983,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 txtTTThau.Text = "";
                 txtNOTE.Text = null;
                 txtBatchDivisionCode.Text = "";
+                dtBidItemFromTime.EditValue = null;
+                dtBidItemToTime.EditValue = null;
                 txtMaDT.Text = "";
                 txtTenTT.Text = "";
                 txtMaTT.Text = "";
@@ -2159,7 +2182,15 @@ namespace HIS.Desktop.Plugins.BidUpdate
         {
             try
             {
-                this.medicineType.AllowDelete = true;
+                if (dtBidItemFromTime.EditValue != null && dtBidItemFromTime.DateTime != DateTime.MinValue
+                    && dtBidItemToTime.EditValue != null && dtBidItemToTime.DateTime != DateTime.MinValue
+                    && dtBidItemToTime.DateTime <= dtBidItemFromTime.DateTime)
+                {
+                    MessageBox.Show("Hi\u1ec7u l\u1ef1c \u0111\u1ebfn ph\u1ea3i l\u1edbn h\u01a1n hi\u1ec7u l\u1ef1c t\u1eeb", "Th\u00f4ng b\u00e1o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtBidItemToTime.Focus();
+                    return;
+                }
+
                 this.medicineType.IMP_PRICE = spinImpPrice.Value;
                 this.medicineType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.medicineType.TT_THAU = txtTTThau.Text;
@@ -2180,6 +2211,22 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 else
                 {
                     this.medicineType.HEIN_LIMIT_PRICE = null;
+                }
+                if (dtBidItemFromTime.EditValue != null && dtBidItemFromTime.DateTime != DateTime.MinValue)
+                {
+                    this.medicineType.FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBidItemFromTime.DateTime);
+                }
+                else
+                {
+                    this.medicineType.FROM_TIME = null;
+                }
+                if (dtBidItemToTime.EditValue != null && dtBidItemToTime.DateTime != DateTime.MinValue)
+                {
+                    this.medicineType.TO_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBidItemToTime.DateTime);
+                }
+                else
+                {
+                    this.medicineType.TO_TIME = null;
                 }
 
                 this.medicineType.IdRow = setIdRow(this.ListMedicineTypeAdoProcess);
@@ -2293,7 +2340,15 @@ namespace HIS.Desktop.Plugins.BidUpdate
         {
             try
             {
-                this.materialType.IMP_PRICE = spinImpPrice.Value;
+                if (dtBidItemFromTime.EditValue != null && dtBidItemFromTime.DateTime != DateTime.MinValue
+                    && dtBidItemToTime.EditValue != null && dtBidItemToTime.DateTime != DateTime.MinValue
+                    && dtBidItemToTime.DateTime <= dtBidItemFromTime.DateTime)
+                {
+                    MessageBox.Show("Hi\u1ec7u l\u1ef1c \u0111\u1ebfn ph\u1ea3i l\u1edbn h\u01a1n hi\u1ec7u l\u1ef1c t\u1eeb", "Th\u00f4ng b\u00e1o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtBidItemToTime.Focus();
+                    return;
+                }
+
                 this.materialType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.materialType.TT_THAU = txtTTThau.Text;
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
@@ -2313,6 +2368,22 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 if (!string.IsNullOrEmpty(txtBatchDivisionCode.Text))
                 {
                     this.materialType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+                }
+                if (dtBidItemFromTime.EditValue != null && dtBidItemFromTime.DateTime != DateTime.MinValue)
+                {
+                    this.materialType.FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBidItemFromTime.DateTime);
+                }
+                else
+                {
+                    this.materialType.FROM_TIME = null;
+                }
+                if (dtBidItemToTime.EditValue != null && dtBidItemToTime.DateTime != DateTime.MinValue)
+                {
+                    this.materialType.TO_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBidItemToTime.DateTime);
+                }
+                else
+                {
+                    this.materialType.TO_TIME = null;
                 }
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.MaterialTypeADO, ADO.MedicineTypeADO>();
@@ -2409,13 +2480,37 @@ namespace HIS.Desktop.Plugins.BidUpdate
         {
             try
             {
-                this.bloodType.IMP_PRICE = spinImpPrice.Value;
+                if (dtBidItemFromTime.EditValue != null && dtBidItemFromTime.DateTime != DateTime.MinValue
+                    && dtBidItemToTime.EditValue != null && dtBidItemToTime.DateTime != DateTime.MinValue
+                    && dtBidItemToTime.DateTime <= dtBidItemFromTime.DateTime)
+                {
+                    MessageBox.Show("Hi\u1ec7u l\u1ef1c \u0111\u1ebfn ph\u1ea3i l\u1edbn h\u01a1n hi\u1ec7u l\u1ef1c t\u1eeb", "Th\u00f4ng b\u00e1o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtBidItemToTime.Focus();
+                    return;
+                }
+
                 this.bloodType.BID_NUM_ORDER = txtBidNumOrder.Text;
                 this.bloodType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.bloodType.AMOUNT = spinAmount.Value;
                 if (!string.IsNullOrEmpty(txtBatchDivisionCode.Text))
                 {
                     this.bloodType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+                }
+                if (dtBidItemFromTime.EditValue != null && dtBidItemFromTime.DateTime != DateTime.MinValue)
+                {
+                    this.bloodType.FROM_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBidItemFromTime.DateTime);
+                }
+                else
+                {
+                    this.bloodType.FROM_TIME = null;
+                }
+                if (dtBidItemToTime.EditValue != null && dtBidItemToTime.DateTime != DateTime.MinValue)
+                {
+                    this.bloodType.TO_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtBidItemToTime.DateTime);
+                }
+                else
+                {
+                    this.bloodType.TO_TIME = null;
                 }
                 ADO.MedicineTypeADO aMedicineSdo = new ADO.MedicineTypeADO();
                 AutoMapper.Mapper.CreateMap<ADO.BloodTypeADO, ADO.MedicineTypeADO>();
@@ -2589,6 +2684,15 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 if (!dxValidationProviderRight.Validate())
                     return;
 
+                if (dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue
+                    && dtToTime.EditValue != null && dtToTime.DateTime != DateTime.MinValue
+                    && dtToTime.DateTime <= dtFromTime.DateTime)
+                {
+                    MessageBox.Show("Hiệu lực đến phải lớn hơn hiệu lực từ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtToTime.Focus();
+                    return;
+                }
+
                 if (CheckValidDataInGridService(ref paramCommon, ListMedicineTypeAdoProcess))
                 {
                     WaitingManager.Hide();
@@ -2698,6 +2802,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         spinImpMoreRatio.Value = 0;
                         txtBidNumOrder.Text = "";
                         txtTTThau.Text = "";
+                        dtBidItemFromTime.EditValue = null;
+                        dtBidItemToTime.EditValue = null;
                         txtMaTT.Text = "";
                         txtTenTT.Text = "";
                         txtMaDT.Text = "";
@@ -2832,6 +2938,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMedicineType.HEIN_SERVICE_BHYT_NAME = item.HEIN_SERVICE_BHYT_NAME ?? "";
                         bidMedicineType.PACKING_TYPE_NAME = item.PACKING_TYPE_NAME ?? "";
                         bidMedicineType.NOTE = item.NOTE ?? "";
+                        bidMedicineType.FROM_TIME = item.FROM_TIME;
+                        bidMedicineType.TO_TIME = item.TO_TIME;
                         this.bidModel.HIS_BID_MEDICINE_TYPE.Add(bidMedicineType);
                     }
                     else if (item.Type == Base.GlobalConfig.VATTU)
@@ -2884,6 +2992,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         bidMaterialType.BID_MATERIAL_TYPE_NAME = item.BID_MATERIAL_TYPE_NAME;
                         bidMaterialType.NOTE = item.NOTE ?? "";
                         bidMaterialType.INFORMATION_BID = item.INFORMATION_BID;
+                        bidMaterialType.FROM_TIME = item.FROM_TIME;
+                        bidMaterialType.TO_TIME = item.TO_TIME;
                         this.bidModel.HIS_BID_MATERIAL_TYPE.Add(bidMaterialType);
                     }
                     else if (item.Type == Base.GlobalConfig.MAU)
@@ -2901,6 +3011,8 @@ namespace HIS.Desktop.Plugins.BidUpdate
                         {
                             bidBloodType.BATCH_DIVISION_CODE = item.BATCH_DIVISION_CODE;
                         }
+                        bidBloodType.FROM_TIME = item.FROM_TIME;
+                        bidBloodType.TO_TIME = item.TO_TIME;
                         this.bidModel.HIS_BID_BLOOD_TYPE.Add(bidBloodType);
                     }
                 }
@@ -3790,6 +3902,27 @@ namespace HIS.Desktop.Plugins.BidUpdate
 
         #endregion
 
+        private void dtBidItemToTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dtBidItemToTime.EditValue != null && dtBidItemToTime.DateTime != DateTime.MinValue
+                    && dtBidItemFromTime.EditValue != null && dtBidItemFromTime.DateTime != DateTime.MinValue
+                    && dtBidItemToTime.DateTime <= dtBidItemFromTime.DateTime)
+                {
+                    dxErrorProviderDate.SetError(dtBidItemToTime, "Hiệu lực đến phải lớn hơn hiệu lực từ", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    dxErrorProviderDate.SetError(dtBidItemToTime, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void dtFromTime_KeyDown(object sender, KeyEventArgs e)
         {
             try
@@ -3798,6 +3931,27 @@ namespace HIS.Desktop.Plugins.BidUpdate
                 {
                     dtToTime.Focus();
                     e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void dtToTime_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dtToTime.EditValue != null && dtToTime.DateTime != DateTime.MinValue
+                    && dtFromTime.EditValue != null && dtFromTime.DateTime != DateTime.MinValue
+                    && dtToTime.DateTime <= dtFromTime.DateTime)
+                {
+                    dxErrorProviderDate.SetError(dtToTime, "Hi\u1ec7u l\u1ef1c \u0111\u1ebfn ph\u1ea3i l\u1edbn h\u01a1n hi\u1ec7u l\u1ef1c t\u1eeb", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    dxErrorProviderDate.SetError(dtToTime, "", DevExpress.XtraEditors.DXErrorProvider.ErrorType.None);
                 }
             }
             catch (Exception ex)
