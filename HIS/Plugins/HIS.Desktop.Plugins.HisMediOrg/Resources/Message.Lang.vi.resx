@@ -126,4 +126,7 @@
   <data name="Plugin_ChooseRoom__DuLieuPhongDangChonThuocNhieuChiNhanh" xml:space="preserve">
     <value>Dữ liệu phòng được chọn không được thuộc nhiều chi nhánh, vui lòng kiểm tra lại</value>
   </data>
+  <data name="Plugins_HisMediOrg__NhapQuaMaxlength" xml:space="preserve">
+    <value>Không được nhập quá {0} ký tự</value>
+  </data>
 </root>

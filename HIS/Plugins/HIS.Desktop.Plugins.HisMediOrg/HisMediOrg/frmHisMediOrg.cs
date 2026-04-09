@@ -85,6 +85,7 @@ namespace HIS.Desktop.Plugins.HisMediOrg
             try
             {
                 InitializeComponent();
+                txtLevelName.EditValueChanged += new System.EventHandler(txtLevelName_EditValueChanged);
 
                 pagingGrid = new PagingGrid();
                 this.moduleData = moduleData;
@@ -234,8 +235,9 @@ namespace HIS.Desktop.Plugins.HisMediOrg
                 dicOrderTabIndexControl.Add("txtCommune", 6);
                 dicOrderTabIndexControl.Add("cboCommune", 7);
                 dicOrderTabIndexControl.Add("txtAddress", 8);
-                dicOrderTabIndexControl.Add("txtRankCode", 9);
-                dicOrderTabIndexControl.Add("txtLevelCode", 10);
+                dicOrderTabIndexControl.Add("txtLevelName", 9);
+                dicOrderTabIndexControl.Add("txtRankCode", 10);
+                dicOrderTabIndexControl.Add("txtLevelCode", 11);
 
                 if (dicOrderTabIndexControl != null)
                 {
@@ -800,6 +802,7 @@ namespace HIS.Desktop.Plugins.HisMediOrg
                     cboCommune.EditValue = data.COMMUNE_CODE;
                     txtAddress.Text = data.ADDRESS;
                     txtLevelCode.Text = data.LEVEL_CODE;
+                    txtLevelName.Text = data.LEVEL_NAME;
                     txtRankCode.Text = data.RANK_CODE;
                     //spMaxCapacity.EditValue = data.MAX_CAPACITY;
 
@@ -1040,6 +1043,12 @@ namespace HIS.Desktop.Plugins.HisMediOrg
                 if (!dxValidationProviderEditorInfo.Validate())
                     return;
 
+                if (txtLevelName.Text != null && txtLevelName.Text.Length > 100)
+                {
+                    MessageBox.Show(string.Format(Resources.ResourceMessage.NhapQuaMaxlength, 100), "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 WaitingManager.Show();
                 MOS.EFMODEL.DataModels.HIS_MEDI_ORG updateDTO = new MOS.EFMODEL.DataModels.HIS_MEDI_ORG();
 
@@ -1137,6 +1146,7 @@ namespace HIS.Desktop.Plugins.HisMediOrg
                 currentDTO.COMMUNE_NAME = GetCommuneByCombo(cboCommune);
                 currentDTO.RANK_CODE = txtRankCode.Text.Trim();
                 currentDTO.LEVEL_CODE = txtLevelCode.Text.Trim();
+                currentDTO.LEVEL_NAME = txtLevelName.Text.Trim();
                 currentDTO.MEDI_ORG_NAME = txtMediOrgName.Text.Trim();
                 currentDTO.ADDRESS = txtAddress.Text.Trim();
 
@@ -1242,6 +1252,7 @@ namespace HIS.Desktop.Plugins.HisMediOrg
                 ValidationSingleControl(txtMediOrgCode);
                 ValidationSingleControl(txtMediOrgName);
                 ValidationSingleControl(txtLevelCode);
+                ValidationMaxLengthControl(txtLevelName, 100);
                 //ValidationSingleControl1();
 
 
@@ -1630,6 +1641,24 @@ namespace HIS.Desktop.Plugins.HisMediOrg
                 CommonParam param = new CommonParam();
                 BackendDataWorker.Reset<HIS_MEDI_ORG>();
                 MessageManager.Show(this, param, true);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ValidationMaxLengthControl(BaseEdit control, int maxLength)
+        {
+            try
+            {
+                ControlMaxLengthValidationRule validRule = new ControlMaxLengthValidationRule();
+                validRule.editor = control;
+                validRule.maxLength = maxLength;
+                validRule.IsRequired = false;
+                validRule.ErrorText = string.Format(Resources.ResourceMessage.NhapQuaMaxlength, maxLength);
+                validRule.ErrorType = ErrorType.Warning;
+                dxValidationProviderEditorInfo.SetValidationRule(control, validRule);
             }
             catch (Exception ex)
             {
@@ -2736,6 +2765,22 @@ namespace HIS.Desktop.Plugins.HisMediOrg
         private void txtMediOrgCode_EditValueChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void txtLevelName_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtLevelName.Text != null && txtLevelName.Text.Length > 100)
+                {
+                    dxErrorProvider.SetError(txtLevelName, string.Format(Resources.ResourceMessage.NhapQuaMaxlength, 100));
+                }
+                else
+                {
+                    dxErrorProvider.SetError(txtLevelName, "");
+                }
+            }
+            catch (Exception ex) { Inventec.Common.Logging.LogSystem.Warn(ex); }
         }
 
 
