@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Plugins_HisMediOrg__NhapQuaMaxlength" xml:space="preserve">
+    <value>Cannot enter more than {0} characters</value>
+  </data>
 </root>

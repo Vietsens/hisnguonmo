@@ -39,5 +39,20 @@ namespace HIS.Desktop.Plugins.HisMediOrg.Resources
                 return "";
             }
         }
+        internal static string NhapQuaMaxlength
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_HisMediOrg__NhapQuaMaxlength", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "Kh\u00f4ng đ\u01b0\u1ee3c nh\u1eadp qu\u00e1 {0} k\u00fd t\u1ef1";
+            }
+        }
     }
 }
