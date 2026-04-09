@@ -90,7 +90,6 @@ namespace MPS.Processor.Mps000011
             bool result = false;
             try
             {
-                SetBarcodeKey();
                 Inventec.Common.FlexCellExport.ProcessSingleTag singleTag = new Inventec.Common.FlexCellExport.ProcessSingleTag();
                 Inventec.Common.FlexCellExport.ProcessBarCodeTag barCodeTag = new Inventec.Common.FlexCellExport.ProcessBarCodeTag();
 
@@ -208,6 +207,15 @@ namespace MPS.Processor.Mps000011
                         if (transOut != null)
                         {
                             SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.TRANSFER_OUT_LEVEL_CODE, transOut.LEVEL_CODE));
+                            SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.MEDI_ORG_LEVEL_NAME, transOut.LEVEL_NAME));
+                        }
+                    }
+                    if (!String.IsNullOrWhiteSpace(this.rdo.currentTreatment.TDL_HEIN_MEDI_ORG_CODE))
+                    {
+                        HIS_MEDI_ORG heinMediOrg = rdo._MediOrgs != null ? rdo._MediOrgs.FirstOrDefault(o => o.MEDI_ORG_CODE == this.rdo.currentTreatment.TDL_HEIN_MEDI_ORG_CODE) : null;
+                        if (heinMediOrg != null)
+                        {
+                            SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.TDL_HEIN_MEDI_ORG_LEVEL_NAME, heinMediOrg.LEVEL_NAME));
                         }
                     }
                     SetSingleKey(new KeyValue(Mps000011ExtendSingleKey.DOCTOR_LOGINNAME, rdo.currentTreatment.DOCTOR_LOGINNAME));
