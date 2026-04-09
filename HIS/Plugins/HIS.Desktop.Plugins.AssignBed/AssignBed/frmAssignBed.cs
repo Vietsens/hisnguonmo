@@ -644,30 +644,34 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
 
                         if (isSelected)
                         {
-                            var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
-                            var quantityValue = view.GetRowCellValue(e.RowHandle, "QUANTITY");
-
-                            if (timeFromValue != null && timeFromValue != DBNull.Value &&
-                                quantityValue != null && quantityValue != DBNull.Value)
+                            var timeToCurrentValue = view.GetRowCellValue(e.RowHandle, "TIME_TO");
+                            if (timeToCurrentValue == null || timeToCurrentValue == DBNull.Value)
                             {
-                                DateTime timeFrom;
-                                decimal quantity;
+                                var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
+                                var quantityValue = view.GetRowCellValue(e.RowHandle, "QUANTITY");
 
-                                if (timeFromValue is DateTime)
+                                if (timeFromValue != null && timeFromValue != DBNull.Value &&
+                                    quantityValue != null && quantityValue != DBNull.Value)
                                 {
-                                    timeFrom = (DateTime)timeFromValue;
-                                }
-                                else
-                                {
-                                    timeFrom = DateTime.Now;
-                                }
+                                    DateTime timeFrom;
+                                    decimal quantity;
 
-                                if (decimal.TryParse(quantityValue.ToString(), out quantity))
-                                {
-                                    int daysToAdd = Math.Max(0, (int)quantity - 1);
-                                    DateTime timeTo = timeFrom.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
+                                    if (timeFromValue is DateTime)
+                                    {
+                                        timeFrom = (DateTime)timeFromValue;
+                                    }
+                                    else
+                                    {
+                                        timeFrom = DateTime.Now;
+                                    }
 
-                                    view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
+                                    if (decimal.TryParse(quantityValue.ToString(), out quantity))
+                                    {
+                                        int daysToAdd = Math.Max(0, (int)quantity - 1);
+                                        DateTime timeTo = timeFrom.Date.AddDays(daysToAdd).AddHours(23).AddMinutes(59);
+
+                                        view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
+                                    }
                                 }
                             }
 
@@ -1977,6 +1981,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     item.ErrorTypeAmount = ErrorType.None;
                     item.ErrorTypeIsAssignDay = ErrorType.None;
                     item.ErrorTypePatientTypeId = ErrorType.None;
+                    item.ErrorTypeTimeTo = ErrorType.None;
+                    item.ErrorMessageTimeTo = "";
                     item.PRIMARY_PATIENT_TYPE_ID = null;
                     item.IsNotChangePrimaryPaty = false;
                     item.BedFinishTime = null;
@@ -3140,6 +3146,24 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 {
                     serviceIdClick = sereServADO.SERVICE_ID;
 
+                    if (e.Column.FieldName == "TIME_TO")
+                    {
+                        var timeFromVal = view?.GetRowCellValue(e.RowHandle, "TIME_FROM");
+                        if (e.Value is DateTime timeTo && timeFromVal is DateTime timeFrom && timeTo <= timeFrom)
+                        {
+                            sereServADO.ErrorTypeTimeTo = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                            sereServADO.ErrorMessageTimeTo = "Ngày kết thúc giường phải lớn hơn ngày bắt đầu vào";
+                        }
+                        else
+                        {
+                            sereServADO.ErrorTypeTimeTo = DevExpress.XtraEditors.DXErrorProvider.ErrorType.None;
+                            sereServADO.ErrorMessageTimeTo = "";
+                        }
+                        if (e.RowHandle >= 0) view?.RefreshRow(e.RowHandle);
+                        else this.gridViewServiceProcess.RefreshData();
+                        return;
+                    }
+
                     if (e.Column.FieldName == "IsChecked")
                     {
                         bool isChecked = false;
@@ -3384,6 +3408,40 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void gridViewServiceProcess_CustomRowColumnError(object sender, Inventec.Desktop.CustomControl.RowColumnErrorEventArgs e)
+        {
+            try
+            {
+                var index = this.gridViewServiceProcess.GetDataSourceRowIndex(e.RowHandle);
+                if (index < 0)
+                {
+                    e.Info.ErrorType = ErrorType.None;
+                    e.Info.ErrorText = "";
+                    return;
+                }
+                var listDatas = this.gridViewServiceProcess.DataSource as List<DataGridAdo>;
+                if (listDatas == null || index >= listDatas.Count) return;
+                var row = listDatas[index];
+                if (e.ColumnName == "TIME_TO")
+                {
+                    if (row.ErrorTypeTimeTo == ErrorType.Warning)
+                    {
+                        e.Info.ErrorType = row.ErrorTypeTimeTo;
+                        e.Info.ErrorText = row.ErrorMessageTimeTo;
+                    }
+                    else
+                    {
+                        e.Info.ErrorType = ErrorType.None;
+                        e.Info.ErrorText = "";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
 
@@ -4035,6 +4093,19 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         sereServADO.ErrorMessageIsAssignDay = "";
                         sereServADO.ErrorTypeIsAssignDay = ErrorType.None;
                     }
+
+                    // Validate TIME_TO > TIME_FROM
+                    if (sereServADO.IsChecked && sereServADO.TIME_TO.HasValue && sereServADO.TIME_FROM.HasValue
+                        && sereServADO.TIME_TO.Value <= sereServADO.TIME_FROM.Value)
+                    {
+                        sereServADO.ErrorTypeTimeTo = ErrorType.Warning;
+                        sereServADO.ErrorMessageTimeTo = ResourceMessage.ThoiGianKetThucPhaiLonHonThoiGianBatDau;
+                    }
+                    else
+                    {
+                        sereServADO.ErrorTypeTimeTo = ErrorType.None;
+                        sereServADO.ErrorMessageTimeTo = "";
+                    }
                 }
             }
             catch (Exception ex)
@@ -4304,6 +4375,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 item.ErrorTypePatientTypeId = ErrorType.None;
                 item.ErrorMessageIsAssignDay = "";
                 item.ErrorTypeIsAssignDay = ErrorType.None;
+                item.ErrorTypeTimeTo = ErrorType.None;
+                item.ErrorMessageTimeTo = "";
                 item.IsNotUseBhyt = false;
                 item.TEST_SAMPLE_TYPE_ID = 0;
                 item.TEST_SAMPLE_TYPE_CODE = null;
@@ -5366,6 +5439,10 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     if (item.ErrorTypePatientTypeId == ErrorType.Warning)
                     {
                         WaringContinued += item.TDL_SERVICE_NAME + " " + item.ErrorMessagePatientTypeId + "; ";
+                    }
+                    if (item.ErrorTypeTimeTo == ErrorType.Warning)
+                    {
+                        WaringContinued += item.TDL_SERVICE_NAME + " " + item.ErrorMessageTimeTo + "; ";
                     }
                 }
 

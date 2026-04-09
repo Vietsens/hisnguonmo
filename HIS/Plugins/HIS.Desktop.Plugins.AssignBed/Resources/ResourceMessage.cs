@@ -974,6 +974,22 @@ namespace HIS.Desktop.Plugins.AssignBed.Resources
             }
         }
 
+        internal static string ThoiGianKetThucPhaiLonHonThoiGianBatDau
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugin_AssignBed__ThoiGianKetThucPhaiLonHonThoiGianBatDau", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string ThoiGianYLenhKhongThuocKhoangThoiGianTrongKhoa
         {
             get

@@ -114,9 +114,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 {
                     new ColumnInfo("BED_CODE", "", 50, 1),
                     new ColumnInfo("BED_NAME", "", 250, 2),
-                    new ColumnInfo("AMOUNT_STR", "", 50, 3)
+                    new ColumnInfo("AMOUNT_STR", "", 60, 3)
                 };
-                ControlEditorADO controlEditorADO = new ControlEditorADO("BED_NAME", "ID", columnInfos, false, 250);
+                ControlEditorADO controlEditorADO = new ControlEditorADO("BED_NAME", "ID", columnInfos, false, 370);
                 ControlEditorLoader.Load(repositoryItemGridLookUpEditBed, this.dataBedADOs, controlEditorADO);
             }
             catch (Exception ex)

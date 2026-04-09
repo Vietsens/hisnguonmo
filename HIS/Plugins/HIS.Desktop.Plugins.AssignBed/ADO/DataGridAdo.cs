@@ -20,5 +20,8 @@ namespace HIS.Desktop.Plugins.AssignBed.ADO
         public string TIME_FROM_STR => TIME_FROM?.ToString("dd/MM/yyyy HH:mm");
         public string TIME_TO_STR => TIME_TO?.ToString("dd/MM/yyyy HH:mm");
         public string QUANTITY_STR => QUANTITY?.ToString();
+
+        public new DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeTimeTo { get; set; }
+        public new string ErrorMessageTimeTo { get; set; }
     }
 }
