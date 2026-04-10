@@ -37,71 +37,72 @@
     <Reference Include="DevExpress.XtraGrid.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraLayout.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.XtraNavBar.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
+    <Reference Include="DevExpress.XtraTreeList.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="HIS.Desktop.Common">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.Desktop.Common.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Common.dll</HintPath>
     </Reference>
     <Reference Include="HIS.Desktop.LocalStorage.Location">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Plugins.EventLog\HIS.Desktop.LocalStorage.Location.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\IMSys.DbConfig.HIS_RS.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Adapter">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Adapter.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Adapter.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Controls.EditorLoader">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Controls.EditorLoader.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Controls.EditorLoader.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.DateTime">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.DateTime.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.DateTime.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.LocalStorage.SdaConfig">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.LocalStorage.SdaConfig.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Logging">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Logging.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Mapper">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Mapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Mapper.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.Resource">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.Resource.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.Resource.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.String">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.String.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.String.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.TypeConvert">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.TypeConvert.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.TypeConvert.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Common.WebApiClient">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Common.WebApiClient.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Desktop.Common.Controls.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.LanguageManager">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.LanguageManager.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Message">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Desktop.Common.Message.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Message.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Modules">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Desktop.Common.Modules.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Common.Modules.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Core">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.Desktop.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Paging">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\Inventec.UC.Paging.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="MOS.EFMODEL">
-      <HintPath>..\..\..\..\LIB\MOS\MOS.EFMODEL.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MOS\MOS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="MOS.Filter">
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
@@ -171,6 +172,9 @@
       <Project>{2aad22db-2166-4be8-ae52-335b21dc03fc}</Project>
       <Name>HIS.Desktop.Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Validation\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

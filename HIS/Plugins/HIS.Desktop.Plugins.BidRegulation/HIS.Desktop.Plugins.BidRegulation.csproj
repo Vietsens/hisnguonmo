@@ -67,7 +67,7 @@
       <HintPath>..\..\..\..\LIB\Inventec.Common\Inventec.Common.WebApiClient\Inventec.Common.WebApiClient.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Core">
-      <HintPath>..\..\..\..\LIB\MRS\Inventec.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\Inventec.Core.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Desktop.Common.Controls.ValidationRule">
       <HintPath>..\..\..\..\LIB\Inventec.Desktop\Inventec.Desktop.Common.Controls.ValidationRule\Inventec.Desktop.Common.Controls.ValidationRule.dll</HintPath>
@@ -103,7 +103,7 @@
       <HintPath>..\..\..\..\LIB\MOS\MOS.Filter.dll</HintPath>
     </Reference>
     <Reference Include="MOS.MANAGER">
-      <HintPath>..\..\..\..\LIB\MRSv3\MOS.MANAGER.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MRS\MOS.MANAGER.dll</HintPath>
     </Reference>
     <Reference Include="MOS.SDO">
       <HintPath>..\..\..\..\LIB\MOS\MOS.SDO.dll</HintPath>
@@ -141,7 +141,6 @@
     <EmbeddedResource Include="frmBidRegulation\frmBidRegulation.resx">
       <DependentUpon>frmBidRegulation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
