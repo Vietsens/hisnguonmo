@@ -163,6 +163,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Lang.en.resx">
       <SubType>Designer</SubType>
@@ -223,6 +224,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dieutiet.png" />
+    <None Include="Resources\y-lenh.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dieutiet1.png" />

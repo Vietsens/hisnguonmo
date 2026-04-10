@@ -203,6 +203,7 @@ namespace HIS.Desktop.Plugins.HisAtc
             {
                 dicOrderTabIndexControl.Add("txtAtcCode", 0);
                 dicOrderTabIndexControl.Add("txtAtcName", 1);
+                dicOrderTabIndexControl.Add("txtBhytCode", 2);
 
 
                 if (dicOrderTabIndexControl != null)
@@ -535,7 +536,8 @@ namespace HIS.Desktop.Plugins.HisAtc
                 {
                     txtAtcCode.Text = data.ATC_CODE;
                     txtAtcName.Text = data.ATC_NAME;
-    
+                    txtBhytCode.Text = data.BHYT_CODE;
+
 
                 }
             }
@@ -853,6 +855,7 @@ namespace HIS.Desktop.Plugins.HisAtc
             try
             {
                 currentDTO.ATC_CODE = txtAtcCode.Text.Trim();
+                currentDTO.BHYT_CODE = txtBhytCode.Text.Trim();
                 currentDTO.ATC_NAME = txtAtcName.Text.Trim();
 
             }
@@ -874,7 +877,8 @@ namespace HIS.Desktop.Plugins.HisAtc
                 ValidationControlMaxLength(txtAtcCode, 10,true);
                 ValidationSingleControl(txtAtcName);
                 ValidationControlMaxLength(txtAtcName, 100, true);
-                //ValidationSingleControl1();
+                ValidationSingleControl(txtBhytCode);
+                ValidationControlMaxLength(txtBhytCode, 50, true);
 
             }
             catch (Exception ex)
@@ -1247,23 +1251,32 @@ namespace HIS.Desktop.Plugins.HisAtc
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (e.KeyCode == Keys.Enter)
-                    {
-                        if (this.ActionType == GlobalVariables.ActionAdd)
-
-                            btnAdd.Focus();
-
-                        else
-                            btnEdit.Focus();
-
-                    }
+                    txtBhytCode.Focus();
+                    txtBhytCode.SelectAll();
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-            
+        }
+
+        private void txtBhytCode_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (this.ActionType == GlobalVariables.ActionAdd)
+                        btnAdd.Focus();
+                    else
+                        btnEdit.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
     }
 }

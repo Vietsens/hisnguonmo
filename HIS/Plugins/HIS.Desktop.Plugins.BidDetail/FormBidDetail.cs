@@ -73,7 +73,7 @@ namespace HIS.Desktop.Plugins.BidDetail
         Inventec.Desktop.Common.Modules.Module currentModule = null;
         long roomId = 0;
         long roomTypeId = 0;
-        decimal? adjustAmount;
+
         short? isActive ;
         bool isNotLoadWhileChangeControlStateInFirst;
         SettingSignADO SettingSignADO;
@@ -858,52 +858,6 @@ namespace HIS.Desktop.Plugins.BidDetail
                 //    }
 
                 //}
-                if (bidMedicineTypes != null && bidMedicineTypes.Count > 0)
-                {
-                    // Kiểm tra xem cột hiện tại có phải là "ADJUST_AMOUNTT" hay không
-                    if (e.Column.FieldName == "ADJUST_AMOUNTT")
-                    {
-                        // Lấy đối tượng dữ liệu tương ứng với dòng hiện tại
-                        var item = bidMedicineTypes[e.RowHandle];
-
-                        // Xóa văn bản và hình ảnh cũ trong ô hiện tại
-                        e.Graphics.FillRectangle(new SolidBrush(e.Appearance.BackColor), e.Bounds);
-
-                        // Lấy hình ảnh từ tài nguyên
-                        //Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
-
-                        //// Tính toán vị trí và kích thước của hình ảnh
-                        //int imageWidth = image.Width;
-                        //int imageHeight = image.Height;
-                        //int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
-                        //int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
-
-                        //// Vẽ hình ảnh vào ô trước khi vẽ văn bản
-                        //e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
-
-                        //// Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
-                        //image.Dispose();
-
-                        //Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
-                        //imageRectangles[e.RowHandle] = imageRect;
-
-                        // Vẽ văn bản vào ô hiện tại
-                        var adjustAmount = item.ADJUST_AMOUNT;
-                        string text = adjustAmount.HasValue ? adjustAmount.Value.ToString("N0") : "";
-                        SizeF textSize = e.Graphics.MeasureString(text, e.Appearance.Font);
-                        int textX = e.Bounds.Left; // Vị trí X của văn bản
-                        int textY = e.Bounds.Y + (e.Bounds.Height - (int)textSize.Height) / 2; // Vị trí Y của văn bản
-                        Rectangle textRect = new Rectangle(textX, textY, (int)textSize.Width, (int)textSize.Height);
-
-                        // Vẽ văn bản sau khi đã vẽ hình ảnh
-                        e.Appearance.DrawString(e.Cache, text, textRect);
-
-                        e.Handled = true;
-                    }
-                }
-
-                
-
             }
             catch (Exception ex)
             {
@@ -919,7 +873,6 @@ namespace HIS.Desktop.Plugins.BidDetail
             {
                 GridView view = sender as GridView;
                 GridHitInfo hitInfo = view.CalcHitInfo(e.Location);
-                Rectangle imageRect;
                 var rowMdc = (MOS.EFMODEL.DataModels.V_HIS_BID_MEDICINE_TYPE)gridViewMedicine.GetFocusedRow();
                 if (rowMdc.IS_ACTIVE == 0)
                 {
@@ -945,33 +898,6 @@ namespace HIS.Desktop.Plugins.BidDetail
                     GvMedicine_GcManufacturerName.OptionsColumn.AllowEdit = true;
                     GvMedicine_GcNationalName.OptionsColumn.AllowEdit = true;
                 }
-                  if (hitInfo.InRowCell && hitInfo.Column.FieldName == "ADJUST_AMOUNTT")
-                {
-                    if (imageRectangles.TryGetValue(hitInfo.RowHandle, out imageRect))
-                    {
-
-                        if (imageRect.Contains(e.Location))
-                        {
-                            if (rowMdc == null || rowMdc.IS_ACTIVE == 0)
-                            {
-                                return;
-                            }
-                           
-                            MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE dataMdc = new MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE();
-
-                            List<object> listArgs = new List<object>();
-                            if (rowMdc != null)
-                            {
-                                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE>(dataMdc, rowMdc);
-                                listArgs.Add(dataMdc);
-                                listArgs.Add((HIS.Desktop.Common.DelegateSelectData)GetAdjustAmount);
-                            }
-                            HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", roomId, roomTypeId, listArgs);
-                            FillDataToGrid();
-                        }
-                    }
-                }
-              
             }
             catch (Exception ex)
             {
@@ -979,9 +905,52 @@ namespace HIS.Desktop.Plugins.BidDetail
             }
         }
 
-        public void GetAdjustAmount(object data)
+        private void repositoryItemButtonEdit1_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
         {
-            adjustAmount = data as decimal?;
+            try
+            {
+                var rowMdc = (MOS.EFMODEL.DataModels.V_HIS_BID_MEDICINE_TYPE)gridViewMedicine.GetFocusedRow();
+                if (rowMdc == null || rowMdc.IS_ACTIVE == 0) return;
+
+                MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE dataMdc = new MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE();
+                List<object> listArgs = new List<object>();
+                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MEDICINE_TYPE>(dataMdc, rowMdc);
+                listArgs.Add(dataMdc);
+                listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
+                {
+                    rowMdc.ADJUST_AMOUNT = data as decimal?;
+                    gridControlMedicine.RefreshDataSource();
+                }));
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", roomId, roomTypeId, listArgs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void repositoryItemButtonEdit2_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var rowMtr = (MOS.EFMODEL.DataModels.V_HIS_BID_MATERIAL_TYPE)gridViewMaterial.GetFocusedRow();
+                if (rowMtr == null || rowMtr.IS_ACTIVE == 0) return;
+
+                MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE dataMtr = new MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE();
+                List<object> listArgs = new List<object>();
+                Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE>(dataMtr, rowMtr);
+                listArgs.Add(dataMtr);
+                listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
+                {
+                    rowMtr.ADJUST_AMOUNT = data as decimal?;
+                    gridControlMaterial.RefreshDataSource();
+                }));
+                HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", roomId, roomTypeId, listArgs);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
         }
 
         private void gridViewMaterial_CustomDrawCell(object sender, RowCellCustomDrawEventArgs e)
@@ -990,48 +959,39 @@ namespace HIS.Desktop.Plugins.BidDetail
             {
                 if (bidMaterialTypes != null && bidMaterialTypes.Count > 0)
                 {
-                    // Kiểm tra xem cột hiện tại có phải là "ADJUST_AMOUNTT" hay không
                     if (e.Column.FieldName == "ADJUST_AMOUNTT")
                     {
-                        // Lấy đối tượng dữ liệu tương ứng với dòng hiện tại
                         var item = bidMaterialTypes[e.RowHandle];
 
-                        // Xóa văn bản và hình ảnh cũ trong ô hiện tại
                         e.Graphics.FillRectangle(new SolidBrush(e.Appearance.BackColor), e.Bounds);
 
-                        // Lấy hình ảnh từ tài nguyên
-                        //Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
+                        Image image = HIS.Desktop.Plugins.BidDetail.Properties.Resources.dieutiet;
 
-                        //// Tính toán vị trí và kích thước của hình ảnh
-                        //int imageWidth = image.Width;
-                        //int imageHeight = image.Height;
-                        //int imageX = e.Bounds.Right - imageWidth; // Đặt ảnh bên phải của ô
-                        //int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2; // Đặt ảnh ở giữa theo chiều dọc
+                        int imageWidth = image.Width;
+                        int imageHeight = image.Height;
+                        int imageX = e.Bounds.Right - imageWidth;
+                        int imageY = e.Bounds.Y + (e.Bounds.Height - imageHeight) / 2;
 
-                        //// Vẽ hình ảnh vào ô trước khi vẽ văn bản
-                        //e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
+                        e.Graphics.DrawImage(image, imageX, imageY, imageWidth, imageHeight);
 
-                        //// Giải phóng tài nguyên hình ảnh sau khi đã sử dụng
-                        //image.Dispose();
+                        image.Dispose();
 
-                        //Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
-                        //imageRectangles[e.RowHandle] = imageRect;
+                        Rectangle imageRect = new Rectangle(imageX, imageY, imageWidth, imageHeight);
+                        imageRectangles[e.RowHandle] = imageRect;
 
-                        // Vẽ văn bản vào ô hiện tại
                         var adjustAmount = item.ADJUST_AMOUNT;
                         string text = adjustAmount.HasValue ? adjustAmount.Value.ToString("N0") : "";
                         SizeF textSize = e.Graphics.MeasureString(text, e.Appearance.Font);
-                        int textX = e.Bounds.Left; // Vị trí X của văn bản
-                        int textY = e.Bounds.Y + (e.Bounds.Height - (int)textSize.Height) / 2; // Vị trí Y của văn bản
+                        int textX = e.Bounds.Left;
+                        int textY = e.Bounds.Y + (e.Bounds.Height - (int)textSize.Height) / 2;
                         Rectangle textRect = new Rectangle(textX, textY, (int)textSize.Width, (int)textSize.Height);
 
-                        // Vẽ văn bản sau khi đã vẽ hình ảnh
                         e.Appearance.DrawString(e.Cache, text, textRect);
 
                         e.Handled = true;
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -1078,7 +1038,7 @@ namespace HIS.Desktop.Plugins.BidDetail
 
                         if (imageRect.Contains(e.Location))
                         {
-                           
+
                             if (rowMtr == null || rowMtr.IS_ACTIVE == 0)
                             {
                                 return;
@@ -1086,15 +1046,18 @@ namespace HIS.Desktop.Plugins.BidDetail
                             MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE dataMtr = new MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE();
 
                             List<object> listArgs = new List<object>();
-                          
+
                             if (rowMtr != null)
                             {
                                 Inventec.Common.Mapper.DataObjectMapper.Map<MOS.EFMODEL.DataModels.HIS_BID_MATERIAL_TYPE>(dataMtr, rowMtr);
                                 listArgs.Add(dataMtr);
-                                listArgs.Add((HIS.Desktop.Common.DelegateSelectData)GetAdjustAmount);
+                                listArgs.Add((HIS.Desktop.Common.DelegateSelectData)((data) =>
+                                {
+                                    rowMtr.ADJUST_AMOUNT = data as decimal?;
+                                    gridControlMaterial.RefreshDataSource();
+                                }));
                             }
                             HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.BidRegulation", roomId, roomTypeId, listArgs);
-                            FillDataToGrid();
                         }
                     }
                 }

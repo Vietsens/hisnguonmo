@@ -103,7 +103,7 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
             }
             catch (Exception ex)
             {
-                
+
                    Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
@@ -175,13 +175,28 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
             {
                 ValidationMaxLength(txtNote, 500,false);
                 ValidateTime();
-                //ValidateAmount();
+                ValidateSupplier();
 
             }
             catch (Exception ex)
             {
-                
+
                    Inventec.Common.Logging.LogSystem.Warn(ex);;
+            }
+        }
+        private void ValidateSupplier()
+        {
+            try
+            {
+                ControlEditValidationRule validRule = new ControlEditValidationRule();
+                validRule.editor = cbboSupplier;
+                validRule.ErrorText = "Trường dữ liệu bắt buộc";
+                validRule.ErrorType = DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning;
+                this.dxValidationProvider1.SetValidationRule(cbboSupplier, validRule);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -620,6 +635,7 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
                             if (result)
                             {
                                 success = true;
+
                                 FillDataToControl();
                             }
                         }
@@ -647,6 +663,7 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
                             if (result)
                             {
                                 success = true;
+
                                 FillDataToControl();
                             }
                             
@@ -795,6 +812,7 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
                         if (rs != null)
                         {
                             success = true;
+    
                             FillDataToControl();
                         }
                     }
@@ -829,6 +847,7 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
                         if (rs != null)
                         {
                             success = true;
+    
                             FillDataToControl();
                         }
                     }
@@ -875,6 +894,7 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
                     if (result != null)
                     {
                         success = true;
+
                         FillDataToControl();
                     }
                     
@@ -903,6 +923,7 @@ namespace HIS.Desktop.Plugins.BidRegulation.frmBidRegulation
                     if (result != null)
                     {
                         success = true;
+
                         FillDataToControl();
                     }
                     

@@ -63,6 +63,16 @@ namespace HIS.Desktop.Plugins.BidDetail.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dieutiet {
+            get {
+                object obj = ResourceManager.GetObject("dieutiet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap hmenu_lock {
             get {
                 object obj = ResourceManager.GetObject("hmenu-lock", resourceCulture);
@@ -70,6 +80,16 @@ namespace HIS.Desktop.Plugins.BidDetail.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap y_lenh {
+            get {
+                object obj = ResourceManager.GetObject("y-lenh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
