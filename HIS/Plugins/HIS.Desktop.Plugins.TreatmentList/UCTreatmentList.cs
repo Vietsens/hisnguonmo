@@ -3436,7 +3436,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
                     listTreatment.Add(treat);
                 }
                 var PrintServiceReqProcessor = new HIS.Desktop.Plugins.Library.PrintServiceReqTreatment.PrintServiceReqTreatmentProcessor(listTreatment, this.currentModule != null ? this.currentModule.RoomId : 0);
-                PrintServiceReqProcessor.previewType = MPS.ProcessorBase.PrintConfig.PreviewType.PrintNow;
+                PrintServiceReqProcessor.previewType = MPS.ProcessorBase.PrintConfig.PreviewType.ShowDialog;
                 PrintServiceReqProcessor.IsGroupTreatmentList = true;
                 PrintServiceReqProcessor.Print("Mps000276", true);
             }
@@ -3444,7 +3444,6 @@ namespace HIS.Desktop.Plugins.TreatmentList
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
-
         }
 
         private void gridView5_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
