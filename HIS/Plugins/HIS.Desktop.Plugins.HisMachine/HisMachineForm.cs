@@ -150,7 +150,7 @@ namespace HIS.Desktop.Plugins.HisMachine
             InitControlState();
             InitComboConfigTimeConflict();
             InitCheck(cboRoom, SelectionGrid__ROOM_NAME);
-            InitComboRoom(cboRoom, BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1 && o.BRANCH_ID == BranchDataWorker.GetCurrentBranchId() && o.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__XL).ToList(), "ROOM_NAME", "ROOM_CODE");
+            InitComboRoom(cboRoom, BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.IS_ACTIVE == 1 && o.BRANCH_ID == BranchDataWorker.GetCurrentBranchId() && o.ROOM_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_ROOM_TYPE.ID__XL).ToList(), "ROOM_NAME", "ID");
             SetDefaultValue();
 
             EnableControlChanged(this.ActionType);
@@ -664,8 +664,8 @@ namespace HIS.Desktop.Plugins.HisMachine
                         roomNew = roomString.Split(',');
                         for (int i = 0; i < roomNew.Count(); i++)
                         {
-                            string m = (roomNew[i]);
-                            listRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.ROOM_CODE == m).ToList();
+                            long m = Inventec.Common.TypeConvert.Parse.ToInt32(roomNew[i]);
+                            listRoom = BackendDataWorker.Get<V_HIS_ROOM>().Where(o => o.ID == m).ToList();
                         }
                     }
                 }
@@ -821,8 +821,8 @@ namespace HIS.Desktop.Plugins.HisMachine
                     if (roomNew.Count() == 1)
                     {
                         long idRoom = Inventec.Common.TypeConvert.Parse.ToInt32(roomNew.First());
-                        listRoomSelecteds = BackendDataWorker.Get<V_HIS_ROOM>().OrderByDescending(o => o.MODIFY_TIME).ThenBy(o => o.ROOM_NAME).Where(o => o.ROOM_CODE == (data.ROOM_IDS)).ToList();
-                        cboRoom.Text = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ROOM_CODE == (data.ROOM_IDS)).ROOM_NAME;
+                        listRoomSelecteds = BackendDataWorker.Get<V_HIS_ROOM>().OrderByDescending(o => o.MODIFY_TIME).ThenBy(o => o.ROOM_NAME).Where(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt32(data.ROOM_IDS)).ToList();
+                        cboRoom.Text = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt32(data.ROOM_IDS)).ROOM_NAME;
                     }
                     else
                     {
@@ -830,11 +830,11 @@ namespace HIS.Desktop.Plugins.HisMachine
                         for (int i = 0; i < roomNew.Count(); i++)
                         {
                             //int m = int.Parse(roomNew[i]);
-                            string m = (roomNew[i]);
+                            long m = Inventec.Common.TypeConvert.Parse.ToInt32(roomNew[i]);
                             List<V_HIS_ROOM> RoomLoad = new List<V_HIS_ROOM>();
-                            RoomLoad = BackendDataWorker.Get<V_HIS_ROOM>().OrderByDescending(o => o.MODIFY_TIME).ThenBy(o => o.ROOM_NAME).Where(o => o.ROOM_CODE == m).ToList();
+                            RoomLoad = BackendDataWorker.Get<V_HIS_ROOM>().OrderByDescending(o => o.MODIFY_TIME).ThenBy(o => o.ROOM_NAME).Where(o => o.ID == m).ToList();
                             if (cboRoomText.Length > 0)
-                                cboRoomText = cboRoomText + "," + BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ROOM_CODE == (data.ROOM_IDS)).ROOM_NAME;
+                                cboRoomText = cboRoomText + "," + BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt32(data.ROOM_IDS)).ROOM_NAME;
                             foreach (V_HIS_ROOM a in RoomLoad)
                             {
                                 listRoomSelecteds.Add(a);
@@ -947,8 +947,8 @@ namespace HIS.Desktop.Plugins.HisMachine
                 {
                     currentDTO.SOURCE_CODE = null;
                 }
-                //List<long> Rooms = listRoomSelecteds.Select(o => o.ID).ToList();
-                List<string> Rooms = listRoomSelecteds.Select(o => o.ROOM_CODE).ToList();
+                List<long> Rooms = listRoomSelecteds.Select(o => o.ID).ToList();
+                //List<string> Rooms = listRoomSelecteds.Select(o => o.ROOM_CODE).ToList();
                 currentDTO.ROOM_IDS = string.Join(",", Rooms);
 
                 if (dteContractFrom != null && dteContractFrom.DateTime != DateTime.MinValue)
@@ -1045,34 +1045,23 @@ namespace HIS.Desktop.Plugins.HisMachine
                     else if (e.Column.FieldName == "ROOM_CODES")
                     {
 
-                        //if (!String.IsNullOrWhiteSpace(pData.ROOM_IDS))
-                        //{
-                        //    List<V_HIS_ROOM> listRoom = BackendDataWorker.Get<V_HIS_ROOM>();
-                        //    string[] listRoomIds = pData.ROOM_IDS.Split(',');
-                        //    if (listRoomIds != null)
-                        //    {
-                        //        List<string> roomCodes = new List<string>();
-                        //        for (int i = 0; i < listRoomIds.Count(); i++)
-                        //        {
-                        //            long m = Inventec.Common.TypeConvert.Parse.ToInt32(listRoomIds[i]);
-                        //            V_HIS_ROOM ado = listRoom.FirstOrDefault(o => o.ID == m);
-                        //            if (ado != null)
-                        //                roomCodes.Add(ado.ROOM_CODE);
-                        //        }
-                        //        if (roomCodes != null && roomCodes.Count > 0)
-                        //            e.Value = String.Join(", ", roomCodes);
-                        //    }
-                        //}
                         if (!String.IsNullOrWhiteSpace(pData.ROOM_IDS))
                         {
-                            string[] listRoomCodes = pData.ROOM_IDS
-                                .Split(',')
-                                .Select(o => (o ?? "").Trim())
-                                .Where(o => !String.IsNullOrWhiteSpace(o))
-                                .ToArray();
-
-                            if (listRoomCodes.Length > 0)
-                                e.Value = String.Join(", ", listRoomCodes);
+                            List<V_HIS_ROOM> listRoom = BackendDataWorker.Get<V_HIS_ROOM>();
+                            string[] listRoomIds = pData.ROOM_IDS.Split(',');
+                            if (listRoomIds != null)
+                            {
+                                List<string> roomCodes = new List<string>();
+                                for (int i = 0; i < listRoomIds.Count(); i++)
+                                {
+                                    long m = Inventec.Common.TypeConvert.Parse.ToInt32(listRoomIds[i]);
+                                    V_HIS_ROOM ado = listRoom.FirstOrDefault(o => o.ID == m);
+                                    if (ado != null)
+                                        roomCodes.Add(ado.ROOM_CODE);
+                                }
+                                if (roomCodes != null && roomCodes.Count > 0)
+                                    e.Value = String.Join(", ", roomCodes);
+                            }
                         }
                     }
                     else if (e.Column.FieldName == "IS_ACTIVE_STR")
@@ -2019,8 +2008,8 @@ namespace HIS.Desktop.Plugins.HisMachine
                     string maCSKCB = "";
                     if (!String.IsNullOrEmpty(machine.ROOM_IDS))
                     {
-                        var roomCode = machine.ROOM_IDS.Split(',')[0];
-                        var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ROOM_CODE == roomCode);
+                        var roomId = machine.ROOM_IDS.Split(',')[0];
+                        var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(roomId));
                         if (room != null)
                         {
                             var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == room.BRANCH_ID);
@@ -2097,8 +2086,8 @@ namespace HIS.Desktop.Plugins.HisMachine
                     string maCSKCB = "";
                     if (!String.IsNullOrEmpty(machine.ROOM_IDS))
                     {
-                        var roomCode = machine.ROOM_IDS.Split(',')[0];
-                        var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ROOM_CODE == roomCode);
+                        var roomId = machine.ROOM_IDS.Split(',')[0];
+                        var room = BackendDataWorker.Get<V_HIS_ROOM>().FirstOrDefault(o => o.ID == Inventec.Common.TypeConvert.Parse.ToInt64(roomId));
                         if (room != null)
                         {
                             var branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(o => o.ID == room.BRANCH_ID);
