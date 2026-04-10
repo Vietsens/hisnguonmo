@@ -77,6 +77,8 @@ namespace MPS.Processor.Mps000011
 
         internal const string TRANSFER_IN_LEVEL_CODE = "TRANSFER_IN_LEVEL_CODE";
         internal const string TRANSFER_OUT_LEVEL_CODE = "TRANSFER_OUT_LEVEL_CODE";
+        internal const string MEDI_ORG_LEVEL_NAME = "MEDI_ORG_LEVEL_NAME";
+        internal const string TDL_HEIN_MEDI_ORG_LEVEL_NAME = "TDL_HEIN_MEDI_ORG_LEVEL_NAME";
 
         internal const string ICD_CODE_STR = "ICD_CODE_STR";
         internal const string ICD_NAME_STR = "ICD_NAME_STR";

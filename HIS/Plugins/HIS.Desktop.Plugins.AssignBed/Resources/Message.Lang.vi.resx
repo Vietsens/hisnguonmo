@@ -309,4 +309,7 @@
   <data name="AssignService_DichVuVuotQuaSoLuongThucHien" xml:space="preserve">
     <value>Dịch vụ {0} vượt quá số lượng thực hiện cho phép ({1})</value>
   </data>
+  <data name="Plugin_AssignBed__ThoiGianKetThucPhaiLonHonThoiGianBatDau" xml:space="preserve">
+    <value>Thời gian kết thúc phải lớn hơn thời gian bắt đầu</value>
+  </data>
 </root>

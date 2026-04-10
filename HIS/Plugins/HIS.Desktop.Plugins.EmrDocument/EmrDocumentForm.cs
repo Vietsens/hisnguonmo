@@ -745,6 +745,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     string documentGroupCodeKXD = "__KXD__";
 
                     listData = apiResult.Data;
+                    if (listData != null && listData.Count > 0)
+                    {
+                        listData = listData.Where(o => o.IS_OUTSIDE_TREATMENT != 1).ToList();
+                    }
 
                     long order = 1;
 
@@ -1118,7 +1122,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     treeListDocument.CollapseAll();
 
                     rowCount = (listData == null ? 0 : listData.Count);
-                    dataTotal = (apiResult.Param == null ? 0 : apiResult.Param.Count ?? 0);
+                    dataTotal = rowCount;
 
                     pictureEdit1.Image = imageCheck.Images[0];
                     Inventec.Common.Logging.LogSystem.Debug("LoadPaging.13");

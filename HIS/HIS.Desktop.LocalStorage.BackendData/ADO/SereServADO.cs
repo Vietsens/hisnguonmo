@@ -84,6 +84,8 @@ namespace HIS.Desktop.LocalStorage.BackendData.ADO
         public string ErrorMessagePatientTypeId { get; set; }
         public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeIsAssignDay { get; set; }
         public string ErrorMessageIsAssignDay { get; set; }
+        public DevExpress.XtraEditors.DXErrorProvider.ErrorType ErrorTypeTimeTo { get; set; }
+        public string ErrorMessageTimeTo { get; set; }
         public bool IsNotLoadDefaultPatientType { get; set; }
         public bool IsContainAppliedPatientType { get; set; }
         public long? DEFAULT_PATIENT_TYPE_ID { get; set; }

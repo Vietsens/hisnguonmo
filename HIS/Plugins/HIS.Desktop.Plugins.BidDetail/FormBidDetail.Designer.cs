@@ -365,7 +365,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcModifier});
             this.gridViewMedicine.GridControl = this.gridControlMedicine;
             this.gridViewMedicine.Name = "gridViewMedicine";
-            this.gridViewMedicine.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.Click;
+            this.gridViewMedicine.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDownFocused;
             this.gridViewMedicine.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
             this.gridViewMedicine.OptionsSelection.MultiSelect = true;
             this.gridViewMedicine.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
@@ -373,7 +373,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.gridViewMedicine.OptionsView.ColumnAutoWidth = false;
             this.gridViewMedicine.OptionsView.ShowGroupPanel = false;
             this.gridViewMedicine.OptionsView.ShowIndicator = false;
-            this.gridViewMedicine.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridViewMedicine_CustomDrawCell);
+            this.gridViewMedicine.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.gridViewMedicine.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewMedicine_CustomRowCellEdit);
             this.gridViewMedicine.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewMedicine_CustomUnboundColumnData);
             this.gridViewMedicine.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewMedicine_MouseDown);
@@ -521,12 +521,11 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMedicine_GcAdjustAmount.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.GvMedicine_GcAdjustAmount.Caption = "Điều tiết";
             this.GvMedicine_GcAdjustAmount.ColumnEdit = this.repositoryItemButtonEdit1;
-            this.GvMedicine_GcAdjustAmount.DisplayFormat.FormatString = "#,##0.0000";
+            this.GvMedicine_GcAdjustAmount.DisplayFormat.FormatString = "#,##0.00";
             this.GvMedicine_GcAdjustAmount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
-            this.GvMedicine_GcAdjustAmount.FieldName = "ADJUST_AMOUNTT";
+            this.GvMedicine_GcAdjustAmount.FieldName = "ADJUST_AMOUNT";
             this.GvMedicine_GcAdjustAmount.Name = "GvMedicine_GcAdjustAmount";
-            this.GvMedicine_GcAdjustAmount.OptionsColumn.AllowEdit = false;
-            this.GvMedicine_GcAdjustAmount.UnboundType = DevExpress.Data.UnboundColumnType.String;
+            this.GvMedicine_GcAdjustAmount.OptionsColumn.AllowEdit = true;
             this.GvMedicine_GcAdjustAmount.Visible = true;
             this.GvMedicine_GcAdjustAmount.VisibleIndex = 12;
             // 
@@ -534,8 +533,10 @@ namespace HIS.Desktop.Plugins.BidDetail
             // 
             this.repositoryItemButtonEdit1.AutoHeight = false;
             this.repositoryItemButtonEdit1.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleRight, global::HIS.Desktop.Plugins.BidDetail.Properties.Resources.y_lenh, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "", null, null, true)});
             this.repositoryItemButtonEdit1.Name = "repositoryItemButtonEdit1";
+            this.repositoryItemButtonEdit1.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.repositoryItemButtonEdit1.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEdit1_ButtonClick);
             // 
             // GvMedicine_GcTTThau
             // 
@@ -736,7 +737,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.gridColumn3});
             this.gridViewMaterial.GridControl = this.gridControlMaterial;
             this.gridViewMaterial.Name = "gridViewMaterial";
-            this.gridViewMaterial.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.Click;
+            this.gridViewMaterial.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDownFocused;
             this.gridViewMaterial.OptionsSelection.CheckBoxSelectorColumnWidth = 30;
             this.gridViewMaterial.OptionsSelection.MultiSelect = true;
             this.gridViewMaterial.OptionsSelection.MultiSelectMode = DevExpress.XtraGrid.Views.Grid.GridMultiSelectMode.CheckBoxRowSelect;
@@ -744,7 +745,7 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.gridViewMaterial.OptionsView.ColumnAutoWidth = false;
             this.gridViewMaterial.OptionsView.ShowGroupPanel = false;
             this.gridViewMaterial.OptionsView.ShowIndicator = false;
-            this.gridViewMaterial.CustomDrawCell += new DevExpress.XtraGrid.Views.Base.RowCellCustomDrawEventHandler(this.gridViewMaterial_CustomDrawCell);
+            this.gridViewMaterial.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
             this.gridViewMaterial.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewMaterial_CustomRowCellEdit);
             this.gridViewMaterial.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewMaterial_CustomUnboundColumnData);
             this.gridViewMaterial.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gridViewMaterial_MouseDown);
@@ -881,9 +882,11 @@ namespace HIS.Desktop.Plugins.BidDetail
             this.GvMaterial_GcAjustAmount.AppearanceHeader.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.GvMaterial_GcAjustAmount.Caption = "Điều tiết";
             this.GvMaterial_GcAjustAmount.ColumnEdit = this.repositoryItemButtonEdit2;
-            this.GvMaterial_GcAjustAmount.FieldName = "ADJUST_AMOUNTT";
+            this.GvMaterial_GcAjustAmount.DisplayFormat.FormatString = "#,##0.00";
+            this.GvMaterial_GcAjustAmount.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+            this.GvMaterial_GcAjustAmount.FieldName = "ADJUST_AMOUNT";
             this.GvMaterial_GcAjustAmount.Name = "GvMaterial_GcAjustAmount";
-            this.GvMaterial_GcAjustAmount.OptionsColumn.AllowEdit = false;
+            this.GvMaterial_GcAjustAmount.OptionsColumn.AllowEdit = true;
             this.GvMaterial_GcAjustAmount.Visible = true;
             this.GvMaterial_GcAjustAmount.VisibleIndex = 10;
             // 
@@ -891,8 +894,10 @@ namespace HIS.Desktop.Plugins.BidDetail
             // 
             this.repositoryItemButtonEdit2.AutoHeight = false;
             this.repositoryItemButtonEdit2.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton()});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleRight, global::HIS.Desktop.Plugins.BidDetail.Properties.Resources.y_lenh, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "", null, null, true)});
             this.repositoryItemButtonEdit2.Name = "repositoryItemButtonEdit2";
+            this.repositoryItemButtonEdit2.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.DisableTextEditor;
+            this.repositoryItemButtonEdit2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEdit2_ButtonClick);
             // 
             // GvMaterial_GcTTThau
             // 

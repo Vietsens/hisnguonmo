@@ -2529,7 +2529,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 if (mediPaty != null)
                                 {
-                                    mediPaty.EXP_PRICE = paty.ExpPrice;
+                                    mediPaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
 
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
@@ -2559,7 +2559,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                             {
                                 if (mediPaty != null)
                                 {
-                                    mediPaty.EXP_PRICE = paty.ExpPrice;// * (1 + (paty.PercentProfit / (decimal)100));
+                                    mediPaty.EXP_PRICE = paty.ExpPrice * (1 + (paty.PercentProfit / (decimal)100));
                                     mediPaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
                                 else
@@ -2737,7 +2737,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 var matePaty = this.currrentServiceAdo.HisMaterialPatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
                                 if (matePaty != null)
                                 {
-                                    matePaty.EXP_PRICE = paty.ExpPrice;
+                                    matePaty.EXP_PRICE = (paty.PRICE / (1 + paty.ExpVatRatio / 100));
 
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
@@ -2768,7 +2768,7 @@ namespace HIS.Desktop.Plugins.ImpMestCreate
                                 var matePaty = this.currrentServiceAdo.HisMaterialPatys.FirstOrDefault(o => o.PATIENT_TYPE_ID == paty.PATIENT_TYPE_ID);
                                 if (matePaty != null)
                                 {
-                                    matePaty.EXP_PRICE = paty.ExpPrice;
+                                    matePaty.EXP_PRICE = (paty.IsReusable ? paty.PRICE : paty.ExpPrice) / (1 + paty.ExpVatRatio / 100);
                                     matePaty.EXP_VAT_RATIO = paty.VAT_RATIO;
                                 }
                                 else

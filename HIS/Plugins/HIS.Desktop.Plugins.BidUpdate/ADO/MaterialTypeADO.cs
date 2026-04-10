@@ -44,5 +44,7 @@ namespace HIS.Desktop.Plugins.BidUpdate.ADO
 
         public string BID_MATERIAL_TYPE_CODE { get; set; }
         public string BID_MATERIAL_TYPE_NAME { get; set; }
+        public long? FROM_TIME { get; set; }
+        public long? TO_TIME { get; set; }
     }
 }

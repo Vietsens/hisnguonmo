@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HIS.Desktop.Plugins.BidDetail.Properties {
+namespace HIS.Desktop.Plugins.HisImportXmlAdjust.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace HIS.Desktop.Plugins.BidDetail.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HIS.Desktop.Plugins.BidDetail.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HIS.Desktop.Plugins.HisImportXmlAdjust.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,46 +57,6 @@ namespace HIS.Desktop.Plugins.BidDetail.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap dieutiet {
-            get {
-                object obj = ResourceManager.GetObject("dieutiet", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap hmenu_lock {
-            get {
-                object obj = ResourceManager.GetObject("hmenu-lock", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap y_lenh {
-            get {
-                object obj = ResourceManager.GetObject("y-lenh", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap hmenu_unlock {
-            get {
-                object obj = ResourceManager.GetObject("hmenu-unlock", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

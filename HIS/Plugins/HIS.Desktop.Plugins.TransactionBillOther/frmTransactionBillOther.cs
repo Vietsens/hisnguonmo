@@ -648,6 +648,14 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                     txtBuyerOrganization.Text = treatment.TDL_PATIENT_WORK_PLACE_NAME ?? treatment.TDL_PATIENT_WORK_PLACE ?? "";
                     txtBuyerAddress.Text = treatment.TDL_PATIENT_ADDRESS ?? "";
                     txtBuyerTaxCode.Text = treatment.TDL_PATIENT_TAX_CODE ?? "";
+                    if (!string.IsNullOrEmpty(treatment.TDL_PATIENT_BUD_REL_UNIT_CODE))
+                    {
+                        txtMaQH.Text = treatment.TDL_PATIENT_BUD_REL_UNIT_CODE;
+                    }
+                    else
+                    {
+                        txtMaQH.Text = "";
+                    }
                 }
                 else
                 {
@@ -1527,6 +1535,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 tranSdo.HisTransaction.BUYER_NAME = txtPatientName.Text;
                 tranSdo.HisTransaction.BUYER_ORGANIZATION = txtBuyerOrganization.Text;
                 tranSdo.HisTransaction.BUYER_TAX_CODE = txtBuyerTaxCode.Text;
+                tranSdo.HisTransaction.BUYER_SOCIAL_RELATIONS_CODE = txtMaQH.Text.Trim();
                 if (payFormId == 9)
                 {
                     tranSdo.HisTransaction.TRANSFER_AMOUNT = spinTransfer.Value;
@@ -1681,6 +1690,7 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
                 txtBuyerAccountNumber.Text = "";
                 txtBuyerOrganization.Text = "";
                 txtBuyerAddress.Text = "";
+                txtMaQH.Text = "";
                 txtDescription.Text = "";
                 chkCheckXD.Checked = false;
                 spinSoTienCK.Value = 0;
@@ -2284,6 +2294,22 @@ namespace HIS.Desktop.Plugins.TransactionBillOther
         }
 
         private void txtBuyerOrganization_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    txtMaQH.Focus();
+                    txtMaQH.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void txtMaQH_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
             {
