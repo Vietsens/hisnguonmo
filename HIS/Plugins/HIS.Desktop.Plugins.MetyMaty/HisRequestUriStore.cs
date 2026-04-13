@@ -29,6 +29,7 @@ namespace HIS.Desktop.Plugins.MetyMaty
         internal const string MOSHIS_METY_PRODUCT_UPDATE= "api/HisMetyProduct/Update";
         internal const string MOSHIS_METY_PRODUCT_CREATE = "api/HisMetyProduct/Create";
         internal const string MOSHIS_METY_PRODUCT_GET_VIEW = "api/HisMetyProduct/GetView";
+        internal const string MOSHIS_METY_PRODUCT_CHANGELOCK = "api/HisMetyProduct/ChangeLock";
         internal const string MOSHIS_MATERIAL_TYPE_GET = "api/HisMaterialType/Get";
         internal const string MOSHIS_MEDICINE_TYPE_GET = "api/HisMedicineType/Get";
 

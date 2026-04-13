@@ -394,6 +394,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                                 ado.SERVICE_TYPE_ID = item.TDL_SERVICE_TYPE_ID;
                                 ado.SERVICE_ID = item.SERVICE_ID;
                                 ado.PRICE = item.PRICE;
+                                ado.VIR_PRICE = item.VIR_PRICE;
                                 ado.AMOUNT = item.AMOUNT;
                                 ado.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                                 ado.REQUEST_DEPARTMENT_ID = item.TDL_REQUEST_DEPARTMENT_ID;
@@ -517,6 +518,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                                 Service_NT_ADO expMedi = new Service_NT_ADO();
                                 expMedi.DESCRIPTION = itemGroups[0].DESCRIPTION;
                                 expMedi.PRICE = itemGroups[0].PRICE;
+                                expMedi.VIR_PRICE = itemGroups[0].PRICE;
                                 expMedi.SERVICE_CODE = itemGroups[0].MEDICINE_TYPE_CODE;
                                 expMedi.SERVICE_ID = itemGroups[0].MEDICINE_TYPE_ID;
                                 expMedi.SERVICE_NAME = itemGroups[0].MEDICINE_TYPE_NAME;
@@ -579,6 +581,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                                 Service_NT_ADO expMate = new Service_NT_ADO();
                                 expMate.DESCRIPTION = itemGroups[0].DESCRIPTION;
                                 expMate.PRICE = itemGroups[0].PRICE;
+                                expMate.VIR_PRICE = itemGroups[0].PRICE;
                                 expMate.SERVICE_CODE = itemGroups[0].MATERIAL_TYPE_CODE;
                                 expMate.SERVICE_ID = itemGroups[0].MATERIAL_TYPE_ID;
                                 expMate.SERVICE_NAME = itemGroups[0].MATERIAL_TYPE_NAME;
@@ -644,6 +647,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                                 Service_NT_ADO expMate = new Service_NT_ADO();
                                 expMate.DESCRIPTION = itemGroups[0].DESCRIPTION;
                                 expMate.PRICE = itemGroups[0].PRICE;
+                                expMate.VIR_PRICE = itemGroups[0].PRICE;
                                 expMate.SERVICE_CODE = itemGroups[0].BLOOD_TYPE_CODE;
                                 expMate.SERVICE_ID = itemGroups[0].BLOOD_TYPE_ID;
                                 expMate.SERVICE_NAME = itemGroups[0].BLOOD_TYPE_NAME;
@@ -917,6 +921,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                             sereServPrint.AMOUNT = group.ToList().Where(o => distinctDatesInPage.Contains(o.INTRUCTION_DATE)).Sum(o => o.AMOUNT);
                             sereServPrint.AMOUNT_STRING = sereServPrint.AMOUNT + "";
                             sereServPrint.CONCENTRA = group.First().CONCENTRA;
+                            sereServPrint.VIR_PRICE = group.First().VIR_PRICE ?? 0;
                             string amount = sereServPrint.AMOUNT + "";
                             sereServPrint.Day1 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day1).Any() ? amount : "";
                             sereServPrint.Day2 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day2).Any() ? amount : "";
