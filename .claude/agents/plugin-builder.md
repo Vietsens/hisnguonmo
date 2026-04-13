@@ -1,7 +1,7 @@
 ---
 name: plugin-builder
 description: Chuyên gia thiết kế plugin — tư vấn kiến trúc, chọn UC/Library, thiết kế folder, inter-plugin, print, localization. Phân tích yêu cầu → thiết kế → khuyến nghị → chờ duyệt
-model: sonnet
+model: opus
 tools:
   - Read
   - Grep
