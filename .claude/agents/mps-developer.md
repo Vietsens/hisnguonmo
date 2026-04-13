@@ -1,7 +1,7 @@
 ---
 name: mps-developer
 description: Chuyên gia MPS Processor — tạo mới/sửa processor (AbstractProcessor → ProcessData), PDO (RDOBase), template keys, FlexCel/RichEditor. Đây là MPS-side
-model: sonnet
+model: opus
 tools:
   - Read
   - Grep

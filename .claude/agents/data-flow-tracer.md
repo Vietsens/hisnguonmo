@@ -1,7 +1,7 @@
 ---
 name: data-flow-tracer
 description: Trace luồng data end-to-end — từ UI control → ADO → API → EFMODEL → BackendDataWorker → Grid binding. Dùng khi cần hiểu "data này từ đâu ra"
-model: sonnet
+model: opus
 tools:
   - Read
   - Grep
