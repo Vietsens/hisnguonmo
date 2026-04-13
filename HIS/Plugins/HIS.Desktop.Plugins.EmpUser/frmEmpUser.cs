@@ -4113,7 +4113,7 @@ namespace HIS.Desktop.Plugins.EmpUser
                             if (!found) idx++;
                         }
                     }
-                    else
+                    else 
                     {
                         var dept = departments.FirstOrDefault(o => o.ID == employee.DEPARTMENT_ID);
                         employeeDepartments = dept != null ? new List<HIS_DEPARTMENT> { dept } : new List<HIS_DEPARTMENT>();
