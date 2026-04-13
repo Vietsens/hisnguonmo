@@ -50,6 +50,14 @@ namespace HIS.Desktop.Plugins.MetyMaty
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnAdd = new DevExpress.XtraEditors.SimpleButton();
             this.cboType = new DevExpress.XtraEditors.ComboBoxEdit();
@@ -100,6 +108,9 @@ namespace HIS.Desktop.Plugins.MetyMaty
             this.gridColumn16 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.grclDelete = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemButtonEditDelete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.grclLock = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.repositoryItemButtonEditLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItemButtonEditUnLock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.spAmount = new DevExpress.XtraEditors.SpinEdit();
             this.cboMedicineType = new Inventec.Desktop.CustomControl.CustomGridLookUpEditWithFilterMultiColumn();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -162,6 +173,8 @@ namespace HIS.Desktop.Plugins.MetyMaty
             ((System.ComponentModel.ISupportInitialize)(this.check)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEditAmount)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDelete)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditLock)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditUnLock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAmount.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
@@ -596,7 +609,9 @@ namespace HIS.Desktop.Plugins.MetyMaty
             this.gridControl1.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.check,
             this.repositoryItemButtonEditDelete,
-            this.repositoryItemSpinEditAmount});
+            this.repositoryItemSpinEditAmount,
+            this.repositoryItemButtonEditLock,
+            this.repositoryItemButtonEditUnLock});
             this.gridControl1.Size = new System.Drawing.Size(1002, 519);
             this.gridControl1.TabIndex = 4;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -613,7 +628,8 @@ namespace HIS.Desktop.Plugins.MetyMaty
             this.grclMedicineLine,
             this.grdclAmount,
             this.gridColumn16,
-            this.grclDelete});
+            this.grclDelete,
+            this.grclLock});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             this.gridView1.OptionsView.ShowGroupPanel = false;
@@ -745,7 +761,36 @@ namespace HIS.Desktop.Plugins.MetyMaty
             this.repositoryItemButtonEditDelete.Name = "repositoryItemButtonEditDelete";
             this.repositoryItemButtonEditDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemButtonEditDelete.Click += new System.EventHandler(this.repositoryItemButtonEditDelete_Click);
-            // 
+            //
+            // grclLock
+            //
+            this.grclLock.Caption = "Khóa";
+            this.grclLock.FieldName = "IS_LOCK";
+            this.grclLock.Name = "grclLock";
+            this.grclLock.OptionsColumn.ShowCaption = false;
+            this.grclLock.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.grclLock.Visible = true;
+            this.grclLock.VisibleIndex = 8;
+            this.grclLock.Width = 36;
+            //
+            // repositoryItemButtonEditLock
+            //
+            this.repositoryItemButtonEditLock.AutoHeight = false;
+            this.repositoryItemButtonEditLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "", null, null, true)});
+            this.repositoryItemButtonEditLock.Name = "repositoryItemButtonEditLock";
+            this.repositoryItemButtonEditLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonEditLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditLock_ButtonClick);
+            //
+            // repositoryItemButtonEditUnLock
+            //
+            this.repositoryItemButtonEditUnLock.AutoHeight = false;
+            this.repositoryItemButtonEditUnLock.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemButtonEditUnLock.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "", null, null, true)});
+            this.repositoryItemButtonEditUnLock.Name = "repositoryItemButtonEditUnLock";
+            this.repositoryItemButtonEditUnLock.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItemButtonEditUnLock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemButtonEditUnLock_ButtonClick);
+            //
             // spAmount
             // 
             this.spAmount.EditValue = new decimal(new int[] {
@@ -1197,6 +1242,8 @@ namespace HIS.Desktop.Plugins.MetyMaty
             ((System.ComponentModel.ISupportInitialize)(this.check)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemSpinEditAmount)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditDelete)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditLock)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButtonEditUnLock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spAmount.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
@@ -1290,6 +1337,9 @@ namespace HIS.Desktop.Plugins.MetyMaty
         private DevExpress.XtraGrid.Columns.GridColumn grdclAmount;
         private DevExpress.XtraGrid.Columns.GridColumn grclDelete;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditDelete;
+        private DevExpress.XtraGrid.Columns.GridColumn grclLock;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditLock;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemButtonEditUnLock;
         private DevExpress.XtraLayout.LayoutControlItem lciAmount;
         private DevExpress.XtraLayout.LayoutControlItem lciAdd;
         private DevExpress.XtraEditors.SpinEdit spAmount;
