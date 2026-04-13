@@ -370,7 +370,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
             }
         }
 
-        private void SetFilter(ref EMR.Filter.EmrDocumentViewFilter filter)
+        private void SetFilter(ref EMR.Filter.EmrDocumentViewFilter filter) 
         {
             try
             {
@@ -391,7 +391,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
                     {
                         filter.IS_NEXT_SIGNER_NOT_NULL = false;
                         filter.IS_REJECTER_NOT_NULL = false;
-                        filter.IS_DELETE = false;
+                        filter.IS_DELETE = false; 
                     }
                     else if (Stt == 2) // dang ky
                     {
@@ -402,7 +402,7 @@ namespace EMR.Desktop.Plugins.EmrDocumentList
                     else if (Stt == 3) // bi tu choi
                     {
                         filter.IS_REJECTER_NOT_NULL = true;
-                        filter.IS_DELETE = false;
+                        //filter.IS_DELETE = false;
                     }
                     else if (Stt == 4) // da xoa
                     {
