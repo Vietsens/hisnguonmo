@@ -3729,27 +3729,30 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     //lay ho so khoa bhyt
                     this.configSync.isCheckOutTime = true;
                     var listTreatmentLockBHYT = this.GetTreatment();
-                    listTreatmentSync.AddRange(listTreatmentLockBHYT);
+                    if (listTreatmentLockBHYT != null)
+                        listTreatmentSync.AddRange(listTreatmentLockBHYT);
                     //lay ho so ket thuc dieu tri
                     this.configSync.isCheckOutTime = false;
                     var listTreatmentEnd = this.GetTreatment();
-                    listTreatmentSync.AddRange(listTreatmentEnd);
+                    if (listTreatmentEnd != null)
+                        listTreatmentSync.AddRange(listTreatmentEnd);
                 }
                 else
                 {
                     listTreatmentSync = this.GetTreatment();
                 }
 
-                if (this.configSync.isXML3176 && !backgroundWorker1.IsBusy)
+                if (listTreatmentSync != null && listTreatmentSync.Count > 0)
                 {
-                    LogSystem.Info("Thread Auto Sync. isXML3176 ");
-                    backgroundWorker1.RunWorkerAsync();
-                }
-
-                if (listTreatmentSync != null && listTreatmentSync.Count > 0 && !backgroundWorker1.IsBusy)
-                {
-                    LogSystem.Info("Thread Auto Sync. TreatmentCount: " + listTreatmentSync.Count);
-                    backgroundWorker1.RunWorkerAsync();
+                    if (!backgroundWorker1.IsBusy)
+                    {
+                        LogSystem.Info("Thread Auto Sync. TreatmentCount: " + listTreatmentSync.Count);
+                        backgroundWorker1.RunWorkerAsync();
+                    }
+                    else
+                    {
+                        LogSystem.Info("BackgroundWorker dang ban, bo qua " + listTreatmentSync.Count + " ho so. Se thu lai lan tick tiep theo.");
+                    }
                 }
                 else
                 {
@@ -3897,18 +3900,30 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     if (XtraMessageBox.Show(String.Format("Các hồ sơ {0} đã gửi thành công bạn có muốn gửi lại?", String.Join(", ", listTreatmentxml3176.Select(o => o.TREATMENT_CODE).ToList())), Resources.ResourceMessageLang.ThongBao, MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
                 }
-                //isAutoSignXML3176 = false;
-                //showMessSusscess = true;
-                if (chkSignFileCertUtil.Checked == true)
+                
+                bool isCheckedSignSafe = false;
+                if (chkSignFileCertUtil.InvokeRequired)
+                {
+                    chkSignFileCertUtil.Invoke(new MethodInvoker(delegate { isCheckedSignSafe = chkSignFileCertUtil.Checked; }));
+                }
+                else
+                {
+                    isCheckedSignSafe = chkSignFileCertUtil.Checked;
+                }
+
+                if (isCheckedSignSafe)
                 {
                     if (SettingSignADO == null || (SettingSignADO != null && string.IsNullOrEmpty(SettingSignADO.SerialNumber)))
                     {
-                        MessageBox.Show("Không có thông tin Usb Token ký số");
+                        if (!isAutoSync)
+                            MessageBox.Show("Không có thông tin Usb Token ký số");
+                        else
+                            LogSystem.Info("Khong co thong tin Usb Token ky so. Bo qua.");
                         return;
                     }
                     else
                     {
-                        WaitingManager.Show();
+                        if (!isAutoSync) WaitingManager.Show();
                         callSyncSuccess = false;
                         isSendCollinearXml = false;
                         await ProcessSyncTreatment(listSelection);
@@ -3919,7 +3934,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     //qtcode
                     isNotFileSign = true;
                     //qtcode
-                    WaitingManager.Show();
+                    if (!isAutoSync) WaitingManager.Show();
                     callSyncSuccess = false;
                     isSendCollinearXml = false;
                     await ProcessSyncTreatment(listSelection);
@@ -4604,9 +4619,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                                         }
                                         else
                                         {
-                                            if (errorCode == "07" && isAutoSync) 
+                                            if (errorCode == "07" && isAutoSync)
                                             {
-                                                return;
+                                                LogSystem.Info("Error 07 - bo qua ho so: " + treatment.TREATMENT_CODE);
+                                                continue;
                                             }
 
                                             callSyncSuccess = true;
