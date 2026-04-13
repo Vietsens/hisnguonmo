@@ -185,7 +185,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
         private void frmEditInfoPatient_Load(object sender, EventArgs e)
         {
             try
-            {
+            { 
                 try
                 {
                     string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
@@ -2027,7 +2027,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     }
                     if (this.Acts != null)
                     {
-                        this.txtACT_Code.Text = string.Join(",", Acts.Select(o => o.ATC_CODE).ToList());
+                        this.txtACT_Code.Text = string.Join(",", Acts.Select(o => o.BHYT_CODE).ToList());
                         this.txtACT_Name.Text = string.Join(",", Acts.Select(o => o.ATC_NAME).ToList());
 
                         this.txtATCGroup_Code.Text = "";
@@ -3104,7 +3104,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                     medicineType.VOLUME = null;
                 }
 
-                medicineType.ATC_CODES = txtACT_Code.Text.Trim();
+                medicineType.ATC_CODES = this.Acts != null && this.Acts.Count > 0 ? string.Join(",", Acts.Select(o => o.ATC_CODE).ToList()) : "";
                 medicineType.ATC_GROUP_CODES = txtATCGroup_Code.Text.Trim();
                 medicineType.SCIENTIFIC_NAME = txtScientificName.Text.Trim();
                 medicineType.PREPROCESSING_CODE = txtPreprocessing.Text.Trim();
@@ -3184,7 +3184,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 btnACT_Click(null, null);
                 if (this.Acts != null)
                 {
-                    this.txtACT_Code.Text = string.Join(",", Acts.Select(o => o.ATC_CODE).ToList());
+                    this.txtACT_Code.Text = string.Join(",", Acts.Select(o => o.BHYT_CODE).ToList());
                     this.txtACT_Name.Text = string.Join(",", Acts.Select(o => o.ATC_NAME).ToList());
                     this.txtATCGroup_Code.Text = "";
                     this.txtATCGroup_Name.Text = "";
