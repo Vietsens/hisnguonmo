@@ -35,6 +35,6 @@ namespace HIS.Desktop.Plugins.EmrDocument.Base
         public long? EXAM_CATEGORY_NUM_ORDER { get; set; }
         public string EXAM_CATEGORY_NAME { get; set; }
         public string PAIR_KEY { get; set; }
-        public long? DOC_ROLE { get; set; }
+        public string DOC_ROLE { get; set; }
     }
 }
