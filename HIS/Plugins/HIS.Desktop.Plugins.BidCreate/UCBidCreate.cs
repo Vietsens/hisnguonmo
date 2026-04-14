@@ -1955,15 +1955,15 @@ namespace HIS.Desktop.Plugins.BidCreate
 
                         else if (e.Column.FieldName == "GV_HEIN_SERVICE_BHYT_NAME")
                         {
-                            if (data.Type == Base.GlobalConfig.THUOC)
-                            {
-                                e.Value = data.HEIN_SERVICE_BHYT_NAME;
-                            }
-                            else
-                            {
-                                e.Value = "";
-                            }
-
+                            //if (data.Type == Base.GlobalConfig.THUOC)
+                            //{
+                                
+                            //}
+                            //else
+                            //{
+                            //    e.Value = "";
+                            //}
+                            e.Value = data.HEIN_SERVICE_BHYT_NAME;
                         }
                         else if (e.Column.FieldName == "GV_PACKING_TYPE_NAME")
                         {
@@ -3289,8 +3289,6 @@ namespace HIS.Desktop.Plugins.BidCreate
                 e.Cancel = true;
             }
         }
-
-      
         private bool CheckBatchDivisionCodeAllRules(
             List<MedicineTypeADO> listThuoc,
             List<MedicineTypeADO> listVattu,
