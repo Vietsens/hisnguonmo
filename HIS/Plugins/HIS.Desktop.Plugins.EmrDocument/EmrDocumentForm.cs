@@ -3163,6 +3163,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         DocumentView.Text = "In";
                         Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
                         WaitingManager.Hide();
+
+                        foreach (var item in this.listDataTrue)
+                        {
+                            string message = "In chi tiết bệnh án. DOCUMENT_CODE: " + item.DOCUMENT_CODE + ". DOCUMENT_NAME: " + item.DOCUMENT_NAME + ". TREATMENT_CODE: " + item.TREATMENT_CODE + ". PATIENT_NAME: " + item.VIR_PATIENT_NAME + ". Thời gian xem: " + Inventec.Common.DateTime.Convert.SystemDateTimeToTimeSeparateString(DateTime.Now) + ". Người xem: " + Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                            His.EventLog.Logger.Log(GlobalVariables.APPLICATION_CODE, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), message, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress());
+                        }
+
                         DocumentView.ShowDialog();
                     }
                     else
@@ -3247,6 +3254,13 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         DocumentView.Text = "In";
                         Inventec.Common.Logging.LogSystem.Info("btnPrint_Click end");
                         WaitingManager.Hide();
+
+                        foreach (var item in this.listDataTrue)
+                        {
+                            string message = "In chi tiết bệnh án. DOCUMENT_CODE: " + item.DOCUMENT_CODE + ". DOCUMENT_NAME: " + item.DOCUMENT_NAME + ". TREATMENT_CODE: " + item.TREATMENT_CODE + ". PATIENT_NAME: " + item.VIR_PATIENT_NAME + ". Thời gian xem: " + Inventec.Common.DateTime.Convert.SystemDateTimeToTimeSeparateString(DateTime.Now) + ". Người xem: " + Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
+                            His.EventLog.Logger.Log(GlobalVariables.APPLICATION_CODE, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName(), message, Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginAddress());
+                        }
+
                         DocumentView.ShowDialog();
                     }
                     else
