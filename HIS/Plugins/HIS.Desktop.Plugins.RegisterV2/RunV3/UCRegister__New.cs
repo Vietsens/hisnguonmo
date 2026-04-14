@@ -63,15 +63,16 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.ucHeinInfo1.RefreshUserControl();
                 this.ucPatientRaw1.FocusUserControl();
 
-                if (this.ucPatientRaw1 != null && this.ucPatientRaw1.GetValue().PATIENTTYPE_ID > 0)
+                var patientRawVal = this.ucPatientRaw1 != null ? this.ucPatientRaw1.GetValue() : null;
+                if (patientRawVal != null && patientRawVal.PATIENTTYPE_ID > 0)
                 {
                     //if (AppConfigs.PatientIdIsNotRequireExamFee != null
                     //    && AppConfigs.PatientIdIsNotRequireExamFee.Count > 0
-                    //    && AppConfigs.PatientIdIsNotRequireExamFee.Contains(this.ucPatientRaw1.GetValue().PATIENTTYPE_ID))
+                    //    && AppConfigs.PatientIdIsNotRequireExamFee.Contains(patientRawVal.PATIENTTYPE_ID))
                     //{
-                    //    this.AutoSetDataForOtherServiceReqInfo(true, this.ucPatientRaw1.GetValue().PATIENTTYPE_ID);
+                    //    this.AutoSetDataForOtherServiceReqInfo(true, patientRawVal.PATIENTTYPE_ID);
                     //}
-                    this.ucOtherServiceReqInfo1.ChangePatientType(this.ucPatientRaw1.GetValue().PATIENTTYPE_ID);
+                    this.ucOtherServiceReqInfo1.ChangePatientType(patientRawVal.PATIENTTYPE_ID);
                 }
             }
             catch (Exception ex)
