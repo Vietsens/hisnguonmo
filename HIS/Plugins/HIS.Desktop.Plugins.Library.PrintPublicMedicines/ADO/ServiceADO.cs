@@ -33,6 +33,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines.ADO
         public long SERVICE_UNIT_ID { get; set; }
         public decimal AMOUNT { get; set; }
         public decimal? PRICE { get; set; }
+        public decimal? VIR_PRICE { get; set; }
         public string DESCRIPTION { get; set; }
         public long SERVICE_TYPE_ID { get; set; }
         public long INTRUCTION_DATE { get; set; }

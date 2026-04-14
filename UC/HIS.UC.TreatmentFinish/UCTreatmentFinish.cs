@@ -92,6 +92,7 @@ namespace HIS.UC.TreatmentFinish.Run
         HIS_TREATMENT HisTreatment = new HIS_TREATMENT();
         private List<AcsUserADO> lstReAcsUserADO;
         List<HIS_HEIN_PATIENT_TYPE> HisHeinPatientType;
+        private HIS_TREATMENT_EXT currentTreatmentExt;
         string PatientTypeBHYT { get; set; }
         /// <summary>
         ///  Cấu hình cho phép mở nhiều hồ sơ điều trị của cùng 1 bệnh nhân hay không.
@@ -1579,11 +1580,16 @@ namespace HIS.UC.TreatmentFinish.Run
                         treatmentFinishSDO.TransferOutMediOrgName = this.Treatment.MEDI_ORG_NAME;
                         HisTreatmentExtFilter filter = new HisTreatmentExtFilter();
                         filter.TREATMENT_ID = Treatment.ID;
-                        var treatmentExt = new BackendAdapter(new CommonParam()).Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
-                        if (treatmentExt != null)
+
+                        var treatmentExts = new BackendAdapter(new CommonParam())
+                            .Get<List<HIS_TREATMENT_EXT>>("api/HisTreatmentExt/Get", ApiConsumers.MosConsumer, filter, null);
+
+                        this.currentTreatmentExt = (treatmentExts != null && treatmentExts.Count > 0) ? treatmentExts[0] : null;
+
+                        if (this.currentTreatmentExt != null)
                         {
-                            treatmentFinishSDO.ClinicalNote = treatmentExt[0].CLINICAL_NOTE;
-                            treatmentFinishSDO.SubclinicalResult = treatmentExt[0].SUBCLINICAL_RESULT;
+                            treatmentFinishSDO.ClinicalNote = this.currentTreatmentExt.CLINICAL_NOTE;
+                            treatmentFinishSDO.SubclinicalResult = this.currentTreatmentExt.SUBCLINICAL_RESULT;
                         }
                         treatmentFinishSDO.PatientCondition = this.Treatment.PATIENT_CONDITION;
                         treatmentFinishSDO.TransportVehicle = this.Treatment.TRANSPORT_VEHICLE;
@@ -2186,6 +2192,18 @@ namespace HIS.UC.TreatmentFinish.Run
                 result.TranPatiTechId = (treatmentFinishSDO != null && treatmentFinishSDO.TranPatiTechId != null) ? treatmentFinishSDO.TranPatiTechId : null;
                 result.TransferOutMediOrgCode = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.TransferOutMediOrgCode)) ? treatmentFinishSDO.TransferOutMediOrgCode : null;
                 result.TransferOutMediOrgName = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.TransferOutMediOrgName)) ? treatmentFinishSDO.TransferOutMediOrgName : null;
+                if (treatmentFinishSDO == null) 
+                    treatmentFinishSDO = new HisTreatmentFinishSDO(); //lay SubClinicalResult và SubClinical_Note từ bang His_Treatment_EXT
+
+                if (string.IsNullOrWhiteSpace(treatmentFinishSDO.ClinicalNote) && this.currentTreatmentExt != null)
+                {
+                    treatmentFinishSDO.ClinicalNote = this.currentTreatmentExt.CLINICAL_NOTE;
+                }
+
+                if (string.IsNullOrWhiteSpace(treatmentFinishSDO.SubclinicalResult) && this.currentTreatmentExt != null)
+                {
+                    treatmentFinishSDO.SubclinicalResult = this.currentTreatmentExt.SUBCLINICAL_RESULT;
+                }
                 result.ClinicalNote = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.ClinicalNote)) ? treatmentFinishSDO.ClinicalNote : null;
                 result.SubclinicalResult = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.SubclinicalResult)) ? treatmentFinishSDO.SubclinicalResult : null;
                 result.PatientCondition = (treatmentFinishSDO != null && !string.IsNullOrEmpty(treatmentFinishSDO.PatientCondition)) ? treatmentFinishSDO.PatientCondition : null;

@@ -431,7 +431,6 @@ namespace HIS.Desktop.Plugins.BidCreate
                         bidMaterialType.EXPIRED_DATE = item.EXPIRED_DATE;
 
                         bidMaterialType.CONCENTRA = item.CONCENTRA;
-
                         bidMaterialType.MANUFACTURER_ID = item.MANUFACTURER_ID;
                         bidMaterialType.NATIONAL_NAME = item.NATIONAL_NAME;
 
@@ -1242,6 +1241,7 @@ namespace HIS.Desktop.Plugins.BidCreate
                 this.materialType.IMP_VAT_RATIO = spinImpVat.Value / 100;
                 this.materialType.AMOUNT = spinAmount.Value;
                 this.materialType.BATCH_DIVISION_CODE = txtBatchDivisionCode.Text;
+                this.materialType.HEIN_SERVICE_BHYT_NAME = txtTenBHYT.Text;
                 if (spinGiaTran.EditValue != null)
                 {
                     this.materialType.HEIN_LIMIT_PRICE = spinGiaTran.Value;

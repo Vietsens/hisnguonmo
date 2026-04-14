@@ -104,6 +104,7 @@ namespace MPS.Processor.Mps000235
                         REMEDY_COUNT = first.REMEDY_COUNT,
                         AMOUNT_REQUEST = totalSoLuongMoiThang,
                         PRICE = first.PRICE,
+                        TUTORIAL = first.TUTORIAL
                     };
                 }).ToList());
                 objectTag.SetUserFunction(store, "FuncMergeData11", new CalculateMergerData());

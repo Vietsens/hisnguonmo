@@ -1,0 +1,154 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(**/*.cs)",
+      "Read(**/*.vb)",
+      "Read(**/*.csproj)",
+      "Read(**/*.sln)",
+      "Read(**/*.config)",
+      "Read(**/*.json)",
+      "Read(**/*.xml)",
+      "Read(**/*.resx)",
+      "Read(**/*.sql)",
+      "Read(**/*.txt)",
+      "Read(**/*.md)",
+
+      "Read(../lib/**)",
+      "Read(../common/**)",
+      "Read(../docs/**)",
+
+      "Edit(**/*.cs)",
+      "Edit(**/*.vb)",
+      "Edit(**/*.csproj)",
+      "Edit(**/*.config)",
+      "Edit(**/*.json)",
+      "Edit(**/*.xml)",
+      "Edit(**/*.sql)",
+      "Edit(**/*.txt)",
+      "Edit(**/*.md)",
+
+      "Bash(MSBuild*:*)",
+      "Bash(*MSBuild.exe:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet test:*)",
+      "Bash(nuget restore:*)",
+
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)",
+      "Bash(git merge:*)",
+
+      "Bash(ls:*)",
+      "Bash(dir:*)",
+      "Bash(find:*)",
+      "Bash(tree:*)",
+      "Bash(mkdir:*)",
+      "Bash(type:*)",
+      "Bash(tasklist:*)"
+    ],
+
+    "deny": [
+      "Read(**/bin/**)",
+      "Read(**/obj/**)",
+      "Read(**/.vs/**)",
+      "Read(**/packages/**)",
+      "Read(**/Logs/**)",
+      "Read(**/node_modules/**)",
+      "Read(**/.git/**)",
+
+      "Edit(**/bin/**)",
+      "Edit(**/obj/**)",
+      "Edit(**/.vs/**)",
+      "Edit(**/packages/**)",
+      "Edit(**/Logs/**)",
+      "Edit(**/*.Designer.cs)",
+      "Edit(**/*.generated.cs)",
+      "Edit(**/*.g.cs)",
+
+      "Read(../histest/**)",
+      "Edit(../histest/**)",
+
+      "Bash(git push:*)",
+      "Bash(git reset:*)",
+      "Bash(git rebase:*)",
+      "Bash(git clean:*)",
+      "Bash(git cherry-pick:*)",
+      "Bash(git am:*)",
+
+      "Bash(del:*)",
+      "Bash(erase:*)",
+      "Bash(rd:*)",
+      "Bash(rmdir:*)",
+      "Bash(format:*)",
+      "Bash(shutdown:*)",
+      "Bash(restart:*)"
+    ],
+
+    "additionalDirectories": [
+      "../lib",
+      "../common",
+      "../docs"
+    ]
+  },
+
+  "env": {
+    "PROJECT_NAME": "HIS",
+    "PROJECT_TYPE": "HIS_DESKTOP_WINFORMS",
+    "FRAMEWORK": ".NET Framework 4.5",
+    "LANGUAGE": "C#",
+    "UI_LIBRARY": "DevExpress 15.2.9",
+    "DATABASE": "Oracle",
+    "ORM": "ADO.NET",
+
+    "DEFAULT_BRANCH": "develop",
+    "DEVELOPER_NAME": "Nampp",
+    "DEVELOPER_BRANCH": "Nampp",
+
+    "SOURCE_ROOT": "../",
+    "LIB_PATH": "../lib",
+    "COMMON_PATH": "../common",
+    "DOCS_PATH": "../docs",
+
+    "MSBUILD_PATH": "C:/Windows/Microsoft.NET/Framework64/v4.0.30319/MSBuild.exe",
+
+    "LANGUAGE_REQUIRED": "vi,en",
+    "RESPONSE_STYLE": "concise_safe_practical"
+  },
+
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo ==== Claude Edit Completed ===="
+          },
+          {
+            "type": "command",
+            "command": "echo Check rules: .claude/rules/coding_rules.md"
+          },
+          {
+            "type": "command",
+            "command": "echo Check build if needed."
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo Bash command executed."
+          }
+        ]
+      }
+    ]
+  }
+}

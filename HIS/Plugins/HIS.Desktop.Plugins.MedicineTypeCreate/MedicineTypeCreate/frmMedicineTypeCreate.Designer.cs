@@ -7863,7 +7863,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
     " của Tổ chức Y tế thế giới xây dựng (Anatomical therapeutic chemical code)";
             this.lcACT.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
             this.lcACT.Size = new System.Drawing.Size(240, 24);
-            this.lcACT.Text = "Mã ATC:";
+            this.lcACT.Text = "Mã phân biệt:";
             this.lcACT.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lcACT.TextSize = new System.Drawing.Size(92, 13);
             this.lcACT.TextToControlDistance = 5;

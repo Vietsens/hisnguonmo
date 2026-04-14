@@ -260,6 +260,11 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
                 spinWeight.EditValue = null;
                 //txtKeyword.Text = "";
                 spinSPO2.EditValue = null;
+                spinO2.EditValue = null;
+                spinFiO2.EditValue = null;
+                spinGcs.EditValue = null;
+                cboLoc.EditValue = null;
+                cboAvpu.EditValue = null;
                 dateExecuteTime.DateTime = DateTime.Now;
             }
             catch (Exception ex)
@@ -692,6 +697,27 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
                     {
                         spinSPO2.EditValue = null;
                     }
+                    // TODO: Bỏ comment khi MOS.EFMODEL có field O2, FIO2, GCS, LOC, AVPU
+                    //if (data.O2.HasValue)
+                    //    spinO2.EditValue = data.O2;
+                    //else
+                    //    spinO2.EditValue = null;
+                    //if (data.FIO2.HasValue)
+                    //    spinFiO2.EditValue = data.FIO2;
+                    //else
+                    //    spinFiO2.EditValue = null;
+                    //if (data.GCS.HasValue)
+                    //    spinGcs.EditValue = data.GCS;
+                    //else
+                    //    spinGcs.EditValue = null;
+                    //if (data.LOC.HasValue)
+                    //    cboLoc.SelectedIndex = (int)(data.LOC.Value) - 1;
+                    //else
+                    //    cboLoc.EditValue = null;
+                    //if (data.AVPU.HasValue)
+                    //    cboAvpu.SelectedIndex = (int)(data.AVPU.Value) - 1;
+                    //else
+                    //    cboAvpu.EditValue = null;
                     if (data.EXECUTE_TIME != null)
                     {
                         dateExecuteTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(data.EXECUTE_TIME));
@@ -1154,6 +1180,27 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
                 {
                     currentDTO.SPO2 = null;
                 }
+                // TODO: Bỏ comment khi MOS.EFMODEL có field O2, FIO2, GCS, LOC, AVPU
+                //if (spinO2.EditValue != null && Convert.ToDecimal(spinO2.EditValue) > 0)
+                //    currentDTO.O2 = Convert.ToDecimal(spinO2.EditValue);
+                //else
+                //    currentDTO.O2 = null;
+                //if (spinFiO2.EditValue != null && Convert.ToDecimal(spinFiO2.EditValue) > 0)
+                //    currentDTO.FIO2 = Convert.ToDecimal(spinFiO2.EditValue);
+                //else
+                //    currentDTO.FIO2 = null;
+                //if (spinGcs.EditValue != null && Convert.ToInt64(spinGcs.EditValue) >= 3)
+                //    currentDTO.GCS = Convert.ToInt64(spinGcs.EditValue);
+                //else
+                //    currentDTO.GCS = null;
+                //if (cboLoc.SelectedIndex >= 0)
+                //    currentDTO.LOC = cboLoc.SelectedIndex + 1;
+                //else
+                //    currentDTO.LOC = null;
+                //if (cboAvpu.SelectedIndex >= 0)
+                //    currentDTO.AVPU = cboAvpu.SelectedIndex + 1;
+                //else
+                //    currentDTO.AVPU = null;
                 if (!string.IsNullOrEmpty(txtNote.Text))
                 {
                     currentDTO.NOTE = txtNote.Text;
@@ -2049,14 +2096,84 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
             {
                 if (e.KeyCode == Keys.Enter)
                 {
-                    //if (btnAdd.Enabled)
-                    //{
-                    //    btnAdd.Focus();
-                    //}
-                    //else
-                    //{
-                    //    btnEdit.Focus();
-                    //}
+                    spinO2.Focus();
+                    spinO2.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinO2_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    spinFiO2.Focus();
+                    spinFiO2.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinFiO2_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    spinGcs.Focus();
+                    spinGcs.SelectAll();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void spinGcs_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboLoc.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboLoc_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    cboAvpu.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboAvpu_KeyDown(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
                     txtNote.Focus();
                 }
             }
@@ -2268,6 +2385,27 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
                         spinSPO2.Value = (data.SPO2.Value * 100);
                     else
                         spinSPO2.EditValue = null;
+                    // TODO: Bỏ comment khi MOS.EFMODEL có field O2, FIO2, GCS, LOC, AVPU
+                    //if (data.O2.HasValue)
+                    //    spinO2.EditValue = data.O2;
+                    //else
+                    //    spinO2.EditValue = null;
+                    //if (data.FIO2.HasValue)
+                    //    spinFiO2.EditValue = data.FIO2;
+                    //else
+                    //    spinFiO2.EditValue = null;
+                    //if (data.GCS.HasValue)
+                    //    spinGcs.EditValue = data.GCS;
+                    //else
+                    //    spinGcs.EditValue = null;
+                    //if (data.LOC.HasValue)
+                    //    cboLoc.SelectedIndex = (int)(data.LOC.Value) - 1;
+                    //else
+                    //    cboLoc.EditValue = null;
+                    //if (data.AVPU.HasValue)
+                    //    cboAvpu.SelectedIndex = (int)(data.AVPU.Value) - 1;
+                    //else
+                    //    cboAvpu.EditValue = null;
 
                     fillDataToBmiAndLeatherArea();
                 }

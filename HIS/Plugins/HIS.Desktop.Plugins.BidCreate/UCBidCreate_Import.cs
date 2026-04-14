@@ -804,6 +804,15 @@ namespace HIS.Desktop.Plugins.BidCreate
                     }
                     if (String.IsNullOrWhiteSpace(medicineType.IS_MEDICINE))
                     {
+                        medicineType.HEIN_SERVICE_BHYT_NAME = materialTypeImport.HEIN_SERVICE_BHYT_NAME;
+                        //if (String.IsNullOrWhiteSpace(medicineType.HEIN_SERVICE_BHYT_NAME))
+                        //{
+                        //    medicineType.ErrorDescriptions.Add("Không có tên BHYT");
+                        //}
+                        if (Encoding.UTF8.GetByteCount(medicineType.HEIN_SERVICE_BHYT_NAME) > 500)
+                        {
+                            medicineType.ErrorDescriptions.Add("Tên BHYT vượt quá độ dài cho phép (500)");
+                        }
                         medicineType.BID_MATERIAL_TYPE_CODE = materialTypeImport.BID_MATERIAL_TYPE_CODE;
                         //if (String.IsNullOrWhiteSpace(medicineType.BID_MATERIAL_TYPE_CODE))
                         //{
