@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADO\otherPaySourceDetailADO.cs" />
+    <Compile Include="ADO\otherPaySourceDetailADO2.cs" />
     <Compile Include="ADO\UCServiceReqInfoADO.cs" />
     <Compile Include="Config\HisConfig.cs" />
     <Compile Include="FUN\frmFun.cs">
