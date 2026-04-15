@@ -1,7 +1,7 @@
 ---
 name: bug-fixer
 description: Chuyên gia fix bug — nhận mô tả bug, trace root cause xuyên nhiều layers, đề xuất fix, kiểm tra side effects. KHÔNG tự sửa — trình bày trước, chờ duyệt
-model: sonnet
+model: opus
 tools:
   - Read
   - Grep

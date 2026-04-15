@@ -66,6 +66,29 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
         Dictionary<string, int> dicOrderTabIndexControl = new Dictionary<string, int>();
         int positionHandle = -1;
 
+        Dictionary<string, string> dicDocRoleDisplayToValue = new Dictionary<string, string>
+        {
+            { "Chỉ định", "order" },
+            { "Kết quả", "result" },
+            { "Khác", "other" }
+        };
+        Dictionary<string, string> dicDocRoleValueToDisplay = new Dictionary<string, string>
+        {
+            { "order", "Chỉ định" },
+            { "result", "Kết quả" },
+            { "other", "Khác" }
+        };
+        Dictionary<string, string> dicSortModeDisplayToValue = new Dictionary<string, string>
+        {
+            { "Ghép cặp", "PAIR" },
+            { "Thường", "NORMAL" }
+        };
+        Dictionary<string, string> dicSortModeValueToDisplay = new Dictionary<string, string>
+        {
+            { "PAIR", "Ghép cặp" },
+            { "NORMAL", "Thường" }
+        };
+
         #endregion
 
         public EmrDocumentTypeForm(Inventec.Desktop.Common.Modules.Module module, DelegateSelectData delegateData)
@@ -433,6 +456,17 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                 if (!dxValidationProvider1.Validate())
                     return;
 
+                if (cboSortMode.Text == "Ghép cặp")
+                {
+                    string docRole = cboDocRoleTag.SelectedIndex >= 0 ? cboDocRoleTag.Text : "";
+                    if (docRole != "Chỉ định" && docRole != "Kết quả")
+                    {
+                        MessageBox.Show("Chế độ sắp xếp 'Ghép cặp' chỉ cho phép khi vai trò văn bản là 'Chỉ định' hoặc 'Kết quả'", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        cboDocRoleTag.Focus();
+                        return;
+                    }
+                }
+
                 WaitingManager.Show();
                 EMR_DOCUMENT_TYPE updateDTO = new EMR_DOCUMENT_TYPE();
 
@@ -523,6 +557,8 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                 chkPatientMustSign.Checked = false;
                 cboPatientSignatureDisplayType.SelectedIndex = -1;
                 numFixZoom.EditValue = null;
+                cboDocRoleTag.SelectedIndex = -1;
+                cboSortMode.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -621,6 +657,11 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     long zoomValueLong = (long)numFixZoom.Value;
                     currentDTO.VIEW_ZOOM_PERCENT = zoomValueLong;
                 }
+
+                string roleDisplay = cboDocRoleTag.SelectedIndex >= 0 ? cboDocRoleTag.Text : "";
+                currentDTO.DOC_ROLE_TAG = dicDocRoleDisplayToValue.ContainsKey(roleDisplay) ? dicDocRoleDisplayToValue[roleDisplay] : "other";
+                string sortDisplay = cboSortMode.SelectedIndex >= 0 ? cboSortMode.Text : "";
+                currentDTO.SORT_MODE = dicSortModeDisplayToValue.ContainsKey(sortDisplay) ? dicSortModeDisplayToValue[sortDisplay] : "NORMAL";
             }
             catch (Exception ex)
             {
@@ -844,6 +885,18 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     chkIsRequiredToComplete.Checked = data.IS_REQUIRED_TO_COMPLETE == 1 ? true : false;
                     chkPatientMustSign.Checked = data.PATIENT_MUST_SIGN == 1 ? true : false;
                     cboPatientSignatureDisplayType.SelectedIndex = data.PATIENT_SIGNATURE_DISPLAY_TYPE.HasValue ? (int)data.PATIENT_SIGNATURE_DISPLAY_TYPE : -1;
+
+                    string roleDisplay = "";
+                    if (data.DOC_ROLE_TAG != null && dicDocRoleValueToDisplay.ContainsKey(data.DOC_ROLE_TAG))
+                        roleDisplay = dicDocRoleValueToDisplay[data.DOC_ROLE_TAG];
+                    int idxRole = cboDocRoleTag.Properties.Items.IndexOf(roleDisplay);
+                    cboDocRoleTag.SelectedIndex = idxRole >= 0 ? idxRole : -1;
+
+                    string sortDisplay = "";
+                    if (data.SORT_MODE != null && dicSortModeValueToDisplay.ContainsKey(data.SORT_MODE))
+                        sortDisplay = dicSortModeValueToDisplay[data.SORT_MODE];
+                    int idxSort = cboSortMode.Properties.Items.IndexOf(sortDisplay);
+                    cboSortMode.SelectedIndex = idxSort >= 0 ? idxSort : -1;
                 }
             }
             catch (Exception ex)
@@ -1329,6 +1382,45 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                 if (e.KeyCode == Keys.Enter)
                 {
                     chkIsAllowPatientIssue.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDocRoleTag_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string docRole = cboDocRoleTag.Text;
+                if (docRole != "Chỉ định" && docRole != "Kết quả")
+                {
+                    if (cboSortMode.Text == "Ghép cặp")
+                    {
+                        cboSortMode.SelectedIndex = cboSortMode.Properties.Items.IndexOf("Thường");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboSortMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cboSortMode.Text == "Ghép cặp")
+                {
+                    string docRole = cboDocRoleTag.SelectedIndex >= 0 ? cboDocRoleTag.Text : "";
+                    if (docRole != "Chỉ định" && docRole != "Kết quả")
+                    {
+                        MessageBox.Show("Chế độ sắp xếp 'Ghép cặp' chỉ cho phép khi vai trò văn bản là 'Chỉ định' hoặc 'Kết quả'", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        cboSortMode.SelectedIndex = cboSortMode.Properties.Items.IndexOf("Thường");
+                    }
                 }
             }
             catch (Exception ex)
