@@ -3185,15 +3185,15 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         {
             try
             {
-                if (deTimeFrom.EditValue != null && deTimeFrom.DateTime != DateTime.MinValue)
-                {
-                    deTimeTo.Enabled = false;
-                    deTimeTo.EditValue = null;
-                }
-                else
-                {
-                    deTimeTo.Enabled = true;
-                }
+                //if (deTimeFrom.EditValue != null && deTimeFrom.DateTime != DateTime.MinValue)
+                //{
+                //    deTimeTo.Enabled = false;
+                //    deTimeTo.EditValue = null;
+                //}
+                //else
+                //{
+                //    deTimeTo.Enabled = true;
+                //}
             }
             catch (Exception ex)
             {
@@ -3205,15 +3205,15 @@ namespace HIS.Desktop.Plugins.HisDepartment.HisDepartment
         {
             try
             {
-                if (deTimeTo.EditValue != null && deTimeTo.DateTime != DateTime.MinValue)
-                {
-                    deTimeFrom.Enabled = false;
-                    deTimeFrom.EditValue = null;
-                }
-                else
-                {
-                    deTimeFrom.Enabled = true;
-                }
+                //if (deTimeTo.EditValue != null && deTimeTo.DateTime != DateTime.MinValue)
+                //{
+                //    deTimeFrom.Enabled = false;
+                //    deTimeFrom.EditValue = null;
+                //}
+                //else
+                //{
+                //    deTimeFrom.Enabled = true;
+                //}
             }
             catch (Exception ex)
             {
