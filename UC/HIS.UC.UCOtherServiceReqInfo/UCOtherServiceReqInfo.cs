@@ -180,9 +180,14 @@ namespace HIS.UC.UCOtherServiceReqInfo
         }
         private string convertToUnSign3(string s)
         {
+            if (s == null)
+                return null;
+
             Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
             string temp = s.Normalize(NormalizationForm.FormD);
-            return regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D');
+            return regex.Replace(temp, String.Empty)
+                        .Replace('\u0111', 'd')
+                        .Replace('\u0110', 'D');
         }
 
         private void LoadNguonKhachCT()
@@ -265,42 +270,48 @@ namespace HIS.UC.UCOtherServiceReqInfo
 
         private void InitComboOtherDetail(List<otherPaySourceDetailADO> listADO)
         {
-            cboNguonKhachCT.Properties.DataSource = listADO;
-            cboNguonKhachCT.Properties.DisplayMember = "USERNAME";
-            cboNguonKhachCT.Properties.ValueMember = "LOGINNAME";
-            cboNguonKhachCT.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
-            cboNguonKhachCT.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
-            cboNguonKhachCT.Properties.View.OptionsView.ShowAutoFilterRow = true;
-            cboNguonKhachCT.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
-            cboNguonKhachCT.Properties.View.OptionsView.ShowDetailButtons = false;
-            cboNguonKhachCT.Properties.View.OptionsView.ShowGroupPanel = false;
-            cboNguonKhachCT.Properties.View.OptionsView.ShowIndicator = false;
-
+            try
+            {
+                cboNguonKhachCT.Properties.DataSource = listADO;
+                cboNguonKhachCT.Properties.DisplayMember = "USERNAME";
+                cboNguonKhachCT.Properties.ValueMember = "LOGINNAME";
+                cboNguonKhachCT.Properties.View.OptionsView.GroupDrawMode = DevExpress.XtraGrid.Views.Grid.GroupDrawMode.Office;
+                cboNguonKhachCT.Properties.View.OptionsView.HeaderFilterButtonShowMode = DevExpress.XtraEditors.Controls.FilterButtonShowMode.SmartTag;
+                cboNguonKhachCT.Properties.View.OptionsView.ShowAutoFilterRow = true;
+                cboNguonKhachCT.Properties.View.OptionsView.ShowButtonMode = DevExpress.XtraGrid.Views.Base.ShowButtonModeEnum.ShowAlways;
+                cboNguonKhachCT.Properties.View.OptionsView.ShowDetailButtons = false;
+                cboNguonKhachCT.Properties.View.OptionsView.ShowGroupPanel = false;
+                cboNguonKhachCT.Properties.View.OptionsView.ShowIndicator = false;
                 cboNguonKhachCT.Properties.View.Columns.Clear();
+                if (cboNguonKhachCT.Properties.View.Columns.Count == 0)
+                {
+                    var colLoginName = cboNguonKhachCT.Properties.View.Columns.AddField("LOGINNAME");
+                    colLoginName.Caption = "Mã";
+                    colLoginName.Visible = true;
+                    colLoginName.VisibleIndex = 1;
+                    colLoginName.Width = 60;
+                    colLoginName.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
+                    colLoginName.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Default;
 
-                DevExpress.XtraGrid.Columns.GridColumn column = cboNguonKhachCT.Properties.View.Columns.AddField("LOGINNAME");
-                column.Caption = "Mã";
-                column.Visible = true;
-                column.VisibleIndex = 1;
-                column.Width = 60;
-                column.OptionsFilter.AutoFilterCondition = DevExpress.XtraGrid.Columns.AutoFilterCondition.Contains;
-                column.OptionsFilter.FilterPopupMode = DevExpress.XtraGrid.Columns.FilterPopupMode.Default;
+                    var colUserName = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME");
+                    colUserName.Caption = "Tên";
+                    colUserName.Visible = true;
+                    colUserName.VisibleIndex = 2;
+                    colUserName.Width = 200;
 
-                DevExpress.XtraGrid.Columns.GridColumn columnCode = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME");
-                columnCode.Caption = "Tên";
-                columnCode.Visible = true;
-                columnCode.VisibleIndex = 2;
-                columnCode.Width = 200;
+                    var colUserNameUnsign = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME_UNSIGN");
+                    colUserNameUnsign.Visible = true;
+                    colUserNameUnsign.VisibleIndex = -1;
+                    colUserNameUnsign.Width = 0;
 
-                DevExpress.XtraGrid.Columns.GridColumn aColumnNameUnsign = cboNguonKhachCT.Properties.View.Columns.AddField("USERNAME_UNSIGN");
-                aColumnNameUnsign.Visible = true;
-                aColumnNameUnsign.VisibleIndex = -1;
-                aColumnNameUnsign.Width = 340;
-
-                cboNguonKhachCT.Properties.View.Columns["USERNAME_UNSIGN"].Width = 0;
-
-                cboNguonKhachCT.Properties.View.OptionsView.ShowColumnHeaders = true;
-                cboNguonKhachCT.Properties.View.OptionsSelection.MultiSelect = true;
+                    cboNguonKhachCT.Properties.View.OptionsView.ShowColumnHeaders = true;
+                    cboNguonKhachCT.Properties.View.OptionsSelection.MultiSelect = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogSystem.Error(ex);
+            }
         }
 
         private void UpdateComboOtherDetailDataSource(List<otherPaySourceDetailADO> listADO)
@@ -2130,8 +2141,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
                         
                         
                         // Cập nhật DataSource
-                        UpdateComboOtherDetailDataSource(listADO);
-                        
+                        InitComboOtherDetail(listADO);
+                        InitComboOtherDetailCheck(); 
+
                         // Tự động check các item mặc định (SỬ DỤNG gridCheckNCC đã tồn tại)
                         if (!string.IsNullOrEmpty(user.DEFAULT_DETAIL_LOGINNAMES) && gridCheckNCC != null)
                         {
@@ -2153,8 +2165,9 @@ namespace HIS.UC.UCOtherServiceReqInfo
                         Emp.USERNAME_UNSIGN = convertToUnSign3(item.USERNAME);
                         listADO.Add(Emp);
                     }
-                    
-                    UpdateComboOtherDetailDataSource(listADO);
+
+                    InitComboOtherDetail(listADO);
+                    InitComboOtherDetailCheck(); 
                 }
             }
             catch (Exception ex)
