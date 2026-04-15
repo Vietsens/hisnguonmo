@@ -565,23 +565,32 @@ namespace HIS.Desktop.Plugins.EmpUser
                 {
                     departmentSeleteds = new List<HIS_DEPARTMENT>();
                     cboDepartmentTT12.Text = "";
-                    SetValueDepartmentTT12(this.cboDepartmentTT12, this.departmentSeleteds, BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList());
                     string departmentCodes = data.DEPARTMENT_CODES;
-                    departmentNew = departmentCodes.Split(';');
+                    var allDepts = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.IS_ACTIVE == 1).ToList();
+                    string[] parts = departmentCodes.Split(';');
 
                     List<string> displayText = new List<string>();
-                    for (int i = 0; i < departmentNew.Count(); i++)
+                    int i = 0;
+                    while (i < parts.Length)
                     {
-                        string m = (departmentNew[i]);
-                        List<HIS_DEPARTMENT> deptLoad = new List<HIS_DEPARTMENT>();
-                        deptLoad = BackendDataWorker.Get<HIS_DEPARTMENT>().Where(o => o.DEPARTMENT_CODE == m && o.IS_ACTIVE == 1).ToList();
-                        foreach (HIS_DEPARTMENT a in deptLoad)
+                        bool found = false;
+                        for (int j = parts.Length - 1; j >= i; j--)
                         {
-                            displayText.Add(a.DEPARTMENT_CODE);
-                            departmentSeleteds.Add(a);
+                            string candidate = string.Join(";", parts, i, j - i + 1).Trim();
+                            var dept = allDepts.FirstOrDefault(o => o.DEPARTMENT_CODE == candidate);
+                            if (dept != null)
+                            {
+                                displayText.Add(dept.DEPARTMENT_CODE);
+                                departmentSeleteds.Add(dept);
+                                i = j + 1;
+                                found = true;
+                                break;
+                            }
                         }
+                        if (!found) i++;
                     }
 
+                    SetValueDepartmentTT12(this.cboDepartmentTT12, this.departmentSeleteds, allDepts);
                     cboDepartmentTT12.Text = string.Join(";", displayText);
 
                 }
@@ -4083,10 +4092,28 @@ namespace HIS.Desktop.Plugins.EmpUser
                     List<HIS_DEPARTMENT> employeeDepartments;
                     if (!string.IsNullOrEmpty(employee.DEPARTMENT_CODES))
                     {
-                        var deptCodes = employee.DEPARTMENT_CODES.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
-                        employeeDepartments = departments.Where(o => deptCodes.Contains(o.DEPARTMENT_CODE)).ToList();
+                        employeeDepartments = new List<HIS_DEPARTMENT>();
+                        string[] parts = employee.DEPARTMENT_CODES.Split(';');
+                        int idx = 0;
+                        while (idx < parts.Length)
+                        {
+                            bool found = false;
+                            for (int j = parts.Length - 1; j >= idx; j--)
+                            {
+                                string candidate = string.Join(";", parts, idx, j - idx + 1).Trim();
+                                var dept = departments.FirstOrDefault(o => o.DEPARTMENT_CODE == candidate);
+                                if (dept != null)
+                                {
+                                    employeeDepartments.Add(dept);
+                                    idx = j + 1;
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) idx++;
+                        }
                     }
-                    else
+                    else 
                     {
                         var dept = departments.FirstOrDefault(o => o.ID == employee.DEPARTMENT_ID);
                         employeeDepartments = dept != null ? new List<HIS_DEPARTMENT> { dept } : new List<HIS_DEPARTMENT>();

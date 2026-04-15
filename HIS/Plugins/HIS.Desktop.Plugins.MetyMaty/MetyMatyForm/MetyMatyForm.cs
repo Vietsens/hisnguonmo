@@ -26,7 +26,7 @@ using Inventec.Common.Controls.EditorLoader;
 using Inventec.Common.Logging;
 using Inventec.Core;
 using Inventec.Desktop.Common.Message;
-using Inventec.UC.Paging;
+using Inventec.UC.Paging; 
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Common;
 using HIS.Desktop.Controls.Session;
@@ -319,7 +319,6 @@ namespace HIS.Desktop.Plugins.MetyMaty
                 if (HaveData == 0)
                 {
                     HisMetyProductViewFilter filter = new HisMetyProductViewFilter();
-                    filter.IS_ACTIVE = 1;
                     SetFilterNavBar(ref filter);
                     filter.ORDER_DIRECTION = "DESC";
                     filter.ORDER_FIELD = "MODIFY_TIME";
@@ -343,6 +342,7 @@ namespace HIS.Desktop.Plugins.MetyMaty
                                 x.MEDICINE_LINE_NAME = item.MEDICINE_LINE_NAME;
                                 x.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                                 x.AMOUNT = item.AMOUNT;
+                                x.IS_ACTIVE = item.IS_ACTIVE;
                                 x.check = false;
                                 ListMetyProductADO.Add(x);
                             }
@@ -358,7 +358,6 @@ namespace HIS.Desktop.Plugins.MetyMaty
                 else
                 {
                     HisMetyProductViewFilter filter = new HisMetyProductViewFilter();
-                    filter.IS_ACTIVE = 1;
                     SetFilterNavBar(ref filter);
                     filter.ORDER_DIRECTION = "DESC";
                     filter.ORDER_FIELD = "MODIFY_TIME";
@@ -381,6 +380,7 @@ namespace HIS.Desktop.Plugins.MetyMaty
                             x.MEDICINE_LINE_NAME = data.FirstOrDefault().MEDICINE_LINE_NAME;
                             x.SERVICE_UNIT_NAME = data.FirstOrDefault().SERVICE_UNIT_NAME;
                             x.AMOUNT = data.FirstOrDefault().AMOUNT;
+                            x.IS_ACTIVE = data.FirstOrDefault().IS_ACTIVE;
                             x.check = true;
                             ListMetyProductADO.Add(x);
                         }
@@ -777,7 +777,7 @@ namespace HIS.Desktop.Plugins.MetyMaty
 
                 //mediFilter.MEDICINE_TYPE_IDs = medicineTypeIds;
 
-                var listMediType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>();
+                var listMediType = BackendDataWorker.Get<V_HIS_MEDICINE_TYPE>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 //new Inventec.Common.Adapter.BackendAdapter(new CommonParam()).Get<List<HisMedicineTypeInStockSDO>>("api/HisMedicineType/GetInStockMedicineType", ApiConsumers.MosConsumer, mediFilter, null);
 
                 foreach (var item in listMediType)
@@ -931,6 +931,10 @@ namespace HIS.Desktop.Plugins.MetyMaty
                     if (e.Column.FieldName == "check")
                     {
                         e.RepositoryItem = check;
+                    }
+                    else if (e.Column.FieldName == "IS_LOCK")
+                    {
+                        e.RepositoryItem = (data.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE ? repositoryItemButtonEditUnLock : repositoryItemButtonEditLock);
                     }
                 }
             }
@@ -1685,6 +1689,64 @@ namespace HIS.Desktop.Plugins.MetyMaty
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
 
+        }
+
+        private void repositoryItemButtonEditLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                var rowData = (MetyProductADO)gridView1.GetFocusedRow();
+                if (rowData != null)
+                {
+                    if (MessageBox.Show("Bạn có muốn mở khóa dữ liệu không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        WaitingManager.Show();
+                        var result = new BackendAdapter(param).Post<HIS_METY_PRODUCT>(HisRequestUriStore.MOSHIS_METY_PRODUCT_CHANGELOCK, ApiConsumers.MosConsumer, rowData.ID, param);
+                        WaitingManager.Hide();
+                        if (result != null)
+                        {
+                            FillDatagctFormListMedicine();
+                        }
+                        MessageManager.Show(this, param, result != null);
+                        SessionManager.ProcessTokenLost(param);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void repositoryItemButtonEditUnLock_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                CommonParam param = new CommonParam();
+                var rowData = (MetyProductADO)gridView1.GetFocusedRow();
+                if (rowData != null)
+                {
+                    if (MessageBox.Show("Bạn có muốn khóa dữ liệu không?", "Thông báo", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        WaitingManager.Show();
+                        var result = new BackendAdapter(param).Post<HIS_METY_PRODUCT>(HisRequestUriStore.MOSHIS_METY_PRODUCT_CHANGELOCK, ApiConsumers.MosConsumer, rowData.ID, param);
+                        WaitingManager.Hide();
+                        if (result != null)
+                        {
+                            FillDatagctFormListMedicine();
+                        }
+                        MessageManager.Show(this, param, result != null);
+                        SessionManager.ProcessTokenLost(param);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         private void repositoryItemSpinEditAmount_EditValueChanged(object sender, EventArgs e)

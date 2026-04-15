@@ -34,9 +34,9 @@ namespace HIS.Desktop.Plugins.AssignService.Validation
             bool valid = false;
             try
             {
-                if (dte1.EditValue !=null && dte1.DateTime != DateTime.MinValue && dte2.EditValue !=null && dte2.DateTime != DateTime.MinValue && dte1.DateTime > dte2.DateTime)
+                if (dte1.EditValue !=null && dte1.DateTime != DateTime.MinValue && dte2.EditValue !=null && dte2.DateTime != DateTime.MinValue && dte1.DateTime >= dte2.DateTime)
                 {
-                    ErrorText = "Thời gian bắt đầu không được lớn hơn thời gian kết thúc";
+                    ErrorText = "Thời gian kết thúc phải lớn hơn thời gian bắt đầu";
                     ErrorType = ErrorType.Warning;
                     return valid;
                 }

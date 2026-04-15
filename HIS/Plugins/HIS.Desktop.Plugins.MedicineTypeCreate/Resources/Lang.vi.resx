@@ -874,7 +874,7 @@
     <value>Chống chỉ định:</value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem185.Text" xml:space="preserve">
-    <value>Mã ACT:</value>
+    <value>Mã phân biệt: </value>
   </data>
   <data name="frmMedicineTypeCreate.layoutControlItem187.OptionsToolTip.ToolTip" xml:space="preserve">
     <value>Hạn sử dụng của lô nhập gần nhất</value>
@@ -1765,7 +1765,7 @@
     <value>Là một mã số đặt cho từng loại thuốc theo hệ thống Giải phẫu - Ðiều trị - Hoá học của Tổ chức Y tế thế giới xây dựng (Anatomical therapeutic chemical code)</value>
   </data>
   <data name="frmMedicineTypeCreate.lcACT.Text" xml:space="preserve">
-    <value>Mã ATC:</value>
+    <value>Mã phân biệt:</value>
   </data>
   <data name="frmMedicineTypeCreate.lcAgeFrom.Text" xml:space="preserve">
     <value>Tuổi từ:</value>

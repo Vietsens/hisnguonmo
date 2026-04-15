@@ -35,7 +35,7 @@ using Inventec.Desktop.Common.Modules;
 
 
 namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
-{
+{ 
     public partial class frmATCSetUp : HIS.Desktop.Utility.FormBase
     {
         #region ---Declate---

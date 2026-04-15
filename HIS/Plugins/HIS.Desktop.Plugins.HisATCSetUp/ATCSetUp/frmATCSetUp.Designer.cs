@@ -190,7 +190,7 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
             // 
             // grdATC_Code
             // 
-            this.grdATC_Code.Caption = "Mã ATC";
+            this.grdATC_Code.Caption = "Mã phân biệt";
             this.grdATC_Code.FieldName = "ATC_CODE";
             this.grdATC_Code.Name = "grdATC_Code";
             this.grdATC_Code.OptionsColumn.AllowEdit = false;
