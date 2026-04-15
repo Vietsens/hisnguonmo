@@ -221,6 +221,15 @@ namespace HIS.Desktop.Plugins.HisService
                         {
                             chkUpdateOnly.Checked = item.VALUE == "1";
                         }
+                        else if (item.KEY == "chkKy")
+                        {
+                            if (item.VALUE == "1")
+                            {
+                                isNotLoadWhileChangeControlStateInFirst = true;
+                                chkKy.Checked = true;
+                                isNotLoadWhileChangeControlStateInFirst = false;
+                            }
+                        }
                     }
                 }
             }
@@ -1624,8 +1633,8 @@ namespace HIS.Desktop.Plugins.HisService
 
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
                 columnInfos.Add(new ColumnInfo("EXE_SERVICE_MODULE_NAME", "", 250, 1, true));
-                columnInfos.Add(new ColumnInfo("MODULE_LINK", "", 250, 2, true));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("MODULE_LINK", "ID", columnInfos, false, 500);
+                columnInfos.Add(new ColumnInfo("MODULE_LINK", "", 850, 2, true));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("MODULE_LINK", "ID", columnInfos, false, 850);
                 ControlEditorLoader.Load(cboExeServiceModule, listExeServiceModules, controlEditorADO);
             }
             catch (Exception ex)
@@ -8466,10 +8475,42 @@ namespace HIS.Desktop.Plugins.HisService
                 {
                     SaveSettingSign(false);
                 }
+
+                SaveControlStateChkKy();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void SaveControlStateChkKy()
+        {
+            try
+            {
+                if (this.controlStateWorker != null)
+                {
+                    HIS.Desktop.Library.CacheClient.ControlStateRDO csAddOrUpdate = (this.currentControlStateRDO != null && this.currentControlStateRDO.Count > 0) ? this.currentControlStateRDO.Where(o => o.KEY == "chkKy" && o.MODULE_LINK == moduleLink).FirstOrDefault() : null;
+                    if (csAddOrUpdate != null)
+                    {
+                        csAddOrUpdate.VALUE = (chkKy.Checked ? "1" : "");
+                    }
+                    else
+                    {
+                        csAddOrUpdate = new HIS.Desktop.Library.CacheClient.ControlStateRDO();
+                        csAddOrUpdate.KEY = "chkKy";
+                        csAddOrUpdate.VALUE = (chkKy.Checked ? "1" : "");
+                        csAddOrUpdate.MODULE_LINK = moduleLink;
+                        if (this.currentControlStateRDO == null)
+                            this.currentControlStateRDO = new List<HIS.Desktop.Library.CacheClient.ControlStateRDO>();
+                        this.currentControlStateRDO.Add(csAddOrUpdate);
+                    }
+                    this.controlStateWorker.SetData(this.currentControlStateRDO);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
