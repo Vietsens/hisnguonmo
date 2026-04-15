@@ -45,6 +45,7 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.ucpagin = new Inventec.UC.Paging.UcPaging();
@@ -65,7 +66,7 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barButtonItem2 = new DevExpress.XtraBars.BarButtonItem();
@@ -189,8 +190,8 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
             // 
             // grdATC_Code
             // 
-            this.grdATC_Code.Caption = "Mã phân hiệu";
-            this.grdATC_Code.FieldName = "BHYT_CODE";
+            this.grdATC_Code.Caption = "Mã phân biệt";
+            this.grdATC_Code.FieldName = "ATC_CODE";
             this.grdATC_Code.Name = "grdATC_Code";
             this.grdATC_Code.OptionsColumn.AllowEdit = false;
             this.grdATC_Code.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
@@ -305,6 +306,10 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1,
@@ -343,8 +348,8 @@ namespace HIS.Desktop.Plugins.HisATCSetUp.ATCSetUp
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(625, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(625, 29);
             // 
             // barDockControlBottom
             // 
