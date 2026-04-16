@@ -201,7 +201,8 @@
     <Reference Include="MPS">
       <HintPath>D:\HISNGUONMO_BACKUP\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000507.PDO">
+    <Reference Include="MPS.Processor.Mps000507.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\MPS.Processor.Mps000507.PDO\bin\Debug\MPS.Processor.Mps000507.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">

@@ -48,6 +48,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 InitDoctorCombos();
                 LoadDiseaseDefinitionData();
                 Inventec.Common.Logging.LogSystem.Debug("KskOfficials: diseaseDetails.Count = " + (diseaseDetails != null ? diseaseDetails.Count.ToString() : "null"));
+                SetCheckboxCaptionsForMapping();
                 BuildDiseaseCheckMapping();
                 Inventec.Common.Logging.LogSystem.Debug("KskOfficials: diseaseCheckMapping.Count = " + diseaseCheckMapping.Count + ", diseaseTextMapping.Count = " + diseaseTextMapping.Count);
 
@@ -58,6 +59,69 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Set Caption cho các checkbox có Caption rỗng (PARENT_TYPE 3, 4, 5).
+        /// Caption khớp với NAME trong V_HIS_DISEASE_DETAIL để MapCheckboxesByCaption hoạt động.
+        /// </summary>
+        private void SetCheckboxCaptionsForMapping()
+        {
+            try
+            {
+                // PARENT_TYPE=3: Tiền sử gia đình (DISEASE_TYPE_ID=46)
+                chkFamilyHistoryTangHA.Properties.Caption = "Tăng HA";
+                chkFamilyHistoryBenhDMVanh.Properties.Caption = "Bệnh ĐM vành";
+                chkFamilyHistoryDaiThaoDuong.Properties.Caption = "Đái tháo đường";
+                chkFamilyHistoryLoetDaDay.Properties.Caption = "Loét dạ dày";
+                chkFamilyHistoryHen.Properties.Caption = "Hen";
+                chkFamilyHistoryLao.Properties.Caption = "Lao";
+                chkFamilyHistoryBenhThanKinh.Properties.Caption = "Bệnh về thần kinh";
+                chkFamilyHistoryRoiLoanTamThan.Properties.Caption = "Rối loạn tâm thần";
+                chkFamilyHistoryLoangXuong.Properties.Caption = "Loãng xương";
+                chkFamilyHistoryDiUng.Properties.Caption = "Dị ứng";
+                chkFamilyHistoryUngThu.Properties.Caption = "Ung thư";
+
+                // PARENT_TYPE=4: Triệu chứng cơ năng (DISEASE_TYPE_ID=47)
+                chkKhoTho.Properties.Caption = "Khó thở";
+                chkDanhTrongNguc.Properties.Caption = "Hồi hộp đánh trống ngực";
+                chkHo.Properties.Caption = "Ho";
+                chkKhanTieng.Properties.Caption = "Khàn tiếng";
+                chkUongNhieuDaiNhieu.Properties.Caption = "Uống nhiều, đái nhiều";
+                chkOHoi.Properties.Caption = "Ợ hơi";
+                chkOChua.Properties.Caption = "Ợ chua";
+                chkGiamTriNho.Properties.Caption = "Giảm trí nhớ";
+                chkMatNgu.Properties.Caption = "Mất ngủ";
+                chkHoaMatChongMat.Properties.Caption = "Hoa mắt, chóng mặt";
+                chkUtai.Properties.Caption = "Ù tai";
+                chkNgheKem.Properties.Caption = "Nghe kém";
+                chkDauHong.Properties.Caption = "Đau họng";
+                chkNuotKho.Properties.Caption = "Nuốt khó";
+                chkNhinMo.Properties.Caption = "Nhìn mờ";
+                chkDaiBuotDaiRat.Properties.Caption = "Đái buốt, đái rắt";
+                chkDaiTienNhay.Properties.Caption = "Đại tiện nhầy";
+                chkDaiTienMau.Properties.Caption = "Đại tiện máu";
+                chkTaoBon.Properties.Caption = "Táo bón";
+                chkRLKinhNguyet.Properties.Caption = "RL kinh nguyệt";
+
+                // PARENT_TYPE=5: Triệu chứng đau (DISEASE_TYPE_ID=48)
+                chkDau.Properties.Caption = "Đầu";
+                chkCo.Properties.Caption = "Cổ";
+                chkNguc.Properties.Caption = "Ngực";
+                chkBung.Properties.Caption = "Bụng";
+                chkThatLung.Properties.Caption = "Thắt lưng";
+                chkCacKhop.Properties.Caption = "Các khớp";
+                chkXuong.Properties.Caption = "Xương";
+                chkMuscle.Properties.Caption = "Cơ";
+                chkTai.Properties.Caption = "Tai";
+                chkMat.Properties.Caption = "Mắt";
+                chkRang.Properties.Caption = "Răng";
+                chkHong.Properties.Caption = "Họng";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -112,11 +176,22 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 // Other exam doctor
                 ControlEditorLoader.Load(cboExamOtherLoginName, acsUsers, controlEditorADO);
 
-                // Conclusion doctor
-                if (cboExamConcluderLoginName != null)
+                // Conclusion doctor (GridLookUpEdit với 2 cột Mã + Tên)
+                ControlEditorLoader.Load(cboExamConcluderLoginName, acsUsers, controlEditorADO);
+
+                // Gắn event Delete button cho tất cả combo bác sĩ
+                var doctorCombos = new GridLookUpEdit[]
                 {
-                    var loginNames = acsUsers.Select(o => o.LOGINNAME).ToList();
-                    cboExamConcluderLoginName.Properties.Items.AddRange(loginNames);
+                    cboExamCirculationLoginName, cboExamSurgeryLoginName,
+                    cboExamObstetricLoginName, cboExamDermatologyLoginName,
+                    cboExamStomatologyLoginName, cboExamENTLoginName,
+                    cboExamEyeLoginName, cboExamOtherLoginName,
+                    cboExamConcluderLoginName
+                };
+                foreach (var cbo in doctorCombos)
+                {
+                    if (cbo != null)
+                        cbo.Properties.ButtonClick += cboDoctor_Properties_ButtonClick;
                 }
 
                 // Health exam rank
@@ -160,11 +235,32 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
-                // cboConclusionTime is a GridLookUpEdit used as a date picker
-                // We initialize it for basic use
                 if (cboConclusionTime != null)
                 {
+                    cboConclusionTime.Properties.DisplayFormat.FormatString = "dd/MM/yyyy";
+                    cboConclusionTime.Properties.DisplayFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                    cboConclusionTime.Properties.EditFormat.FormatString = "dd/MM/yyyy";
+                    cboConclusionTime.Properties.EditFormat.FormatType = DevExpress.Utils.FormatType.Custom;
+                    cboConclusionTime.Properties.Mask.EditMask = "dd/MM/yyyy";
+                    cboConclusionTime.Properties.Mask.UseMaskAsDisplayFormat = true;
                     cboConclusionTime.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboDoctor_Properties_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    var editor = sender as GridLookUpEdit;
+                    if (editor != null)
+                        editor.EditValue = null;
                 }
             }
             catch (Exception ex)
@@ -258,7 +354,13 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 CommonParam param = new CommonParam();
                 var filter = new { KSK_GENERAL_ID = kskGeneralId };
                 var data = new BackendAdapter(param).Get<List<HIS_DISEASE_DETAIL_RESULT>>(HisRequestUriStore.MOS_HIS_DISEASE_DETAIL_RESULT_GET, ApiConsumers.MosConsumer, filter, param);
-                diseaseResults = data ?? new List<HIS_DISEASE_DETAIL_RESULT>();
+                // Filter đúng KSK_GENERAL_ID + dedup theo DISEASE_DETAIL_ID (giữ bản mới nhất)
+                diseaseResults = (data ?? new List<HIS_DISEASE_DETAIL_RESULT>())
+                    .Where(r => r.DISEASE_DETAIL_ID != null && r.KSK_GENERAL_ID == kskGeneralId)
+                    .GroupBy(r => r.DISEASE_DETAIL_ID)
+                    .Select(g => g.OrderByDescending(r => r.ID).First())
+                    .ToList();
+                Inventec.Common.Logging.LogSystem.Debug("LoadDiseaseResults: raw=" + (data != null ? data.Count : 0) + " filtered+dedup=" + diseaseResults.Count);
             }
             catch (Exception ex)
             {
@@ -271,131 +373,56 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
-                Inventec.Common.Logging.LogSystem.Debug("BuildDiseaseCheckMapping START - diseaseDetails.Count=" + diseaseDetails.Count);
                 diseaseCheckMapping.Clear();
                 diseaseTextMapping.Clear();
 
-                // PARENT_TYPE=1: Thói quen sinh hoạt (Habits)
-                // Checkboxes đã thiết kế sẵn trong panelControl5, map theo thứ tự DISEASE_TYPE_ID + NUM_ORDER_DETAIL
-                MapByOrder(1, new CheckEdit[]
-                {
-                    // DISEASE_TYPE_ID=23: Một ngày ngủ mấy tiếng
-                    chkLower5, chkLower7, chkLessOrEqual8, chkHigher8,
-                    // DISEASE_TYPE_ID=24: Đêm ngủ
-                    chkInsomnia, chkWakeup, chkWakeEarly, chkGoodSleep,
-                    // DISEASE_TYPE_ID=25: Chơi môn thể thao
-                    chkWalking, chkBadminton, chkSwiming, chkGolf,
-                    // DISEASE_TYPE_ID=26: Thời gian trung bình chơi thể thao -> no checkbox (text only)
-                    // DISEASE_TYPE_ID=27: Hút thuốc
-                    chkCigarette, chkCigars, chkNon_Smoker,
-                    // DISEASE_TYPE_ID=28: Uống rượu/bia
-                    chkNon_Beer, chkSometimeBeer, chkMuchBeer,
-                    // DISEASE_TYPE_ID=29: Ăn mặn
-                    chkVerySalty, chkSalty, chkBlandEnough, chkBland,
-                    // DISEASE_TYPE_ID=30: Ăn ngọt
-                    chkVerySweet, chkSweet, chkSweetEnough, chkNoSweet
-                },
-                new Dictionary<string, Control>
-                {
-                    // TextEdit cho IS_OTHER=1: map theo tên control -> DISEASE_TYPE_ID
-                    { "txtOtherSleep", txtOtherSleep },
-                    { "txtOtherNightSleep", txtOtherNightSleep },
-                    { "txtOtherSport", txtOtherSport },
-                    { "txtSportAverageTime", txtSportAverageTime },
-                    { "txtOtherCigarette", txtOtherCigarette },
-                    { "txtOtherBeer", txtOtherBeer },
-                    { "txtOtherSalty", txtOtherSalty },
-                    { "txtOtherSweet", txtOtherSweet }
-                });
+                // === CHECKBOX: Map bằng V_HIS_DISEASE_DETAIL.NAME ↔ CheckEdit.Caption ===
+                // Match theo từng PARENT_TYPE + container riêng biệt để tránh trùng tên
+                // ("Mất ngủ", "Tăng HA", "Khác"... xuất hiện ở nhiều PARENT_TYPE)
+                MapCheckboxesByCaption(1, layoutControl7);
+                MapCheckboxesByCaption(2, layoutControl9);
+                MapCheckboxesByCaption(3, layoutControl10);
+                MapCheckboxesByCaption(4, layoutControl12);
+                MapCheckboxesByCaption(5, layoutControl14);
 
-                // PARENT_TYPE=2: Tiền sử bệnh (Disease History)
-                MapByOrder(2, new CheckEdit[]
+                // === TEXT: Map bằng positional per PARENT_TYPE (IS_OTHER=1) ===
+                // Thứ tự PHẢI khớp sort NUM_ORDER_TYPE + NUM_ORDER_DETAIL trong DB
+                MapTextFieldsByOrder(1, new Control[]
                 {
-                    // DISEASE_TYPE_ID=31: Tim mạch
-                    chkHighBloodPressure, chkCoronaryArteries, chkHeartRhythmDisorders, chkHeartFailure,
-                    // DISEASE_TYPE_ID=32: Hô hấp
-                    chkTuberculosis, chkAsthma, chkLungDisease, chkPleuralEffusion,
-                    // DISEASE_TYPE_ID=33: Nội tiết
-                    chkDiabetes, chkHyperthyroidism, chkHypothyroidism, chkAdrenalInsufficiency,
-                    // DISEASE_TYPE_ID=34: Tiêu hóa
-                    chkStomachUlcers, chkGallstones, chkHepatitis, chkColitis,
-                    // DISEASE_TYPE_ID=35: Thận tiết niệu
-                    chkGlomerulonephritis, chkKidneyStones, chkKidneyFibroidsTLT, chkKidneyFailure,
-                    // DISEASE_TYPE_ID=36: Thần kinh, Tâm thần
-                    chkEpilepsy, chkParalysis, chkPsychosis, chkMemoryImpairment,
-                    // DISEASE_TYPE_ID=37: Xương khớp
-                    chkOsteoarthritis, chkGout, chkHerniatedDisc, chkHumpbackOrScoliosis,
-                    // DISEASE_TYPE_ID=38: Da liễu
-                    chkPsoriasis, chkLupus, chkUlcers, chkEczema,
-                    // DISEASE_TYPE_ID=39: Bệnh về máu
-                    chkAnemia, chkBoneMarrowFailure, chkLeukemia, chkThrombocytopenicPurpura,
-                    // DISEASE_TYPE_ID=40: RHM
-                    chkGingivitis, chkPeriperositis, chkDentalCaries,
-                    // DISEASE_TYPE_ID=41: TMH
-                    chkMiddleEarInfection, chkSinusitis, chkSoreThroat, chkTinnitus,
-                    // DISEASE_TYPE_ID=42: Mắt
-                    chkGlocom, chkCataract, chkEyeInjury, chkReflectiveError,
-                    // DISEASE_TYPE_ID=43: Sản phụ khoa
-                    chkMenstrualDisorders, chkCesareanSection, chkSterilization, chkInfertility,
-                    // DISEASE_TYPE_ID=44: Ung thư các cơ quan
-                    chkRespiratorySystem, chkDigestiveSystem, chkUrinarySystem, chkHematopoieticSystem
-                },
-                new Dictionary<string, Control>
-                {
-                    { "txtOtherHeart", txtOtherHeart },
-                    { "txtOtherRespiration", txtOtherRespiration },
-                    { "txtOtherEndocrineDisorders", txtOtherEndocrineDisorders },
-                    { "txtOtherDigestiveProblems", txtOtherDigestiveProblems },
-                    { "txtOtherUrinarySystemAndKidneys", txtOtherUrinarySystemAndKidneys },
-                    { "txtOtherNervousSystem", txtOtherNervousSystem },
-                    { "txtOtherJointAndBoneProblems", txtOtherJointAndBoneProblems },
-                    { "txtOtherDermatology", txtOtherDermatology },
-                    { "txtOtherBloodDisorders", txtOtherBloodDisorders },
-                    { "txtOtherDentalAndMaxillofacialProblems", txtOtherDentalAndMaxillofacialProblems },
-                    { "txtOtherEarNoseThroat", txtOtherEarNoseThroat },
-                    { "txtOtherEye", txtOtherEye },
-                    { "txtOtherObstetricsAndGynecology", txtOtherObstetricsAndGynecology },
-                    { "txtOtherDiseases", txtOtherDiseases }
+                    txtOtherSleep,          // TYPE=23, Khác
+                    txtOtherNightSleep,     // TYPE=24, Khác
+                    txtOtherSport,          // TYPE=25, Khác
+                    txtSportAverageTime,    // TYPE=26
+                    spYearsOfSmoke,         // TYPE=27, Số năm đã hút (NUM_ORDER_DETAIL=4)
+                    spAmountCigarette,      // TYPE=27, Số lượng điếu/ngày (NUM_ORDER_DETAIL=5)
+                    txtOtherCigarette,      // TYPE=27, Khác (NUM_ORDER_DETAIL=6)
+                    spYearsOfDrink,         // TYPE=28, Số năm đã uống (NUM_ORDER_DETAIL=4)
+                    txtOtherBeer,           // TYPE=28, Khác (NUM_ORDER_DETAIL=5)
+                    txtOtherSalty,          // TYPE=29, Khác
+                    txtOtherSweet           // TYPE=30, Khác
                 });
-
-                // PARENT_TYPE=3: Tiền sử gia đình (Family History)
-                MapByOrder(3, new CheckEdit[]
+                MapTextFieldsByOrder(2, new Control[]
                 {
-                    chkFamilyHistoryTangHA, chkFamilyHistoryBenhDMVanh, chkFamilyHistoryDaiThaoDuong,
-                    chkFamilyHistoryLoetDaDay, chkFamilyHistoryHen, chkFamilyHistoryLao,
-                    chkFamilyHistoryBenhThanKinh, chkFamilyHistoryRoiLoanTamThan, chkFamilyHistoryLoangXuong,
-                    chkFamilyHistoryDiUng, chkFamilyHistoryUngThu
-                },
-                new Dictionary<string, Control>
-                {
-                    { "txtFamilyHistoryKhac", txtFamilyHistoryKhac }
+                    txtOtherHeart,          // TYPE=31, Khác
+                    txtOtherRespiration,    // TYPE=32, Khác
+                    txtOtherEndocrineDisorders, // TYPE=33, Khác
+                    txtOtherDigestiveProblems,  // TYPE=34, Khác
+                    txtOtherUrinarySystemAndKidneys, // TYPE=35, Khác
+                    txtOtherNervousSystem,  // TYPE=36, Khác
+                    txtOtherJointAndBoneProblems, // TYPE=37, Khác
+                    txtOtherDermatology,    // TYPE=38, Khác
+                    txtOtherBloodDisorders, // TYPE=39, Khác
+                    spToothLoss,            // TYPE=40, Mất răng số lượng (NUM_ORDER_DETAIL=4)
+                    txtOtherDentalAndMaxillofacialProblems, // TYPE=40, Khác (NUM_ORDER_DETAIL=5)
+                    txtOtherEarNoseThroat,  // TYPE=41, Khác
+                    txtOtherEye,            // TYPE=42, Khác
+                    txtOtherObstetricsAndGynecology, // TYPE=43, Khác
+                    txtOtherCancer,         // TYPE=44, Khác (Ung thư các cơ quan)
+                    txtOtherDiseases        // TYPE=45, Bệnh khác
                 });
-
-                // PARENT_TYPE=4: Triệu chứng cơ năng (Functional Symptoms)
-                MapByOrder(4, new CheckEdit[]
-                {
-                    chkKhoTho, chkDanhTrongNguc, chkHo, chkKhanTieng,
-                    chkUongNhieuDaiNhieu, chkOHoi, chkOChua, chkGiamTriNho,
-                    chkMatNgu, chkHoaMatChongMat, chkUtai, chkNgheKem,
-                    chkDauHong, chkNuotKho, chkNhinMo, chkDaiBuotDaiRat,
-                    chkDaiTienNhay, chkDaiTienMau, chkTaoBon, chkRLKinhNguyet
-                },
-                new Dictionary<string, Control>
-                {
-                    { "txtTrieuChungCoNangKhac", txtTrieuChungCoNangKhac }
-                });
-
-                // PARENT_TYPE=5: Triệu chứng đau (Pain Symptoms)
-                MapByOrder(5, new CheckEdit[]
-                {
-                    chkDau, chkCo, chkNguc, chkBung,
-                    chkThatLung, chkCacKhop, chkXuong, chkMuscle,
-                    chkTai, chkMat, chkRang, chkHong
-                },
-                new Dictionary<string, Control>
-                {
-                    { "txtTrieuChungDauKhac", txtTrieuChungDauKhac }
-                });
+                MapTextFieldsByOrder(3, new Control[] { txtFamilyHistoryKhac });
+                MapTextFieldsByOrder(4, new Control[] { txtTrieuChungCoNangKhac });
+                MapTextFieldsByOrder(5, new Control[] { txtTrieuChungDauKhac });
 
                 Inventec.Common.Logging.LogSystem.Debug(
                     "BuildDiseaseCheckMapping END - diseaseCheckMapping.Count=" + diseaseCheckMapping.Count
@@ -408,41 +435,97 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         }
 
         /// <summary>
-        /// Map checkboxes theo thứ tự: lấy disease details có IS_CHECKBOX=1, sắp xếp theo NUM_ORDER_TYPE + NUM_ORDER_DETAIL,
-        /// rồi map 1-1 vào mảng checkboxes theo đúng thứ tự.
-        /// TextEdit IS_OTHER thì map theo thứ tự các disease detail có IS_OTHER=1.
+        /// Normalize text để so sánh: lowercase, bỏ space thừa, chuẩn hóa ký tự đặc biệt.
+        /// VD: "Cầu lông / Tennis" → "cầu lông/tennis", "≤ 8" → "≤8"
         /// </summary>
-        private void MapByOrder(long parentType, CheckEdit[] checkboxes, Dictionary<string, Control> otherTexts)
+        private string NormalizeForMatch(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return "";
+            return System.Text.RegularExpressions.Regex.Replace(text.Trim().ToLower(), @"\s+", "");
+        }
+
+        /// <summary>
+        /// Map checkbox cho 1 PARENT_TYPE cụ thể bằng cách so khớp NAME (DB) ↔ Caption (UI).
+        /// Normalize cả 2 bên (bỏ space, lowercase) để tránh lệch do format khác nhau.
+        /// Chỉ tìm checkbox trong container tương ứng để tránh trùng tên giữa các PARENT_TYPE.
+        /// </summary>
+        private void MapCheckboxesByCaption(long parentType, Control container)
         {
             try
             {
+                // Lấy tất cả CheckEdit trong container này, key = normalized caption
+                var checkEdits = GetAllCheckEdits(container);
+                var captionMap = new Dictionary<string, List<CheckEdit>>();
+                foreach (var chk in checkEdits)
+                {
+                    string key = NormalizeForMatch(chk.Properties.Caption);
+                    if (string.IsNullOrEmpty(key)) continue;
+                    if (!captionMap.ContainsKey(key))
+                        captionMap[key] = new List<CheckEdit>();
+                    captionMap[key].Add(chk);
+                }
+
+                // Lấy disease details có IS_CHECKBOX=1 cho PARENT_TYPE này
                 var details = diseaseDetails
-                    .Where(o => o.PARENT_TYPE == parentType)
+                    .Where(d => d.PARENT_TYPE == parentType && (d.IS_CHECKBOX ?? 0) == 1)
+                    .OrderBy(d => d.NUM_ORDER_TYPE)
+                    .ThenBy(d => d.NUM_ORDER_DETAIL)
+                    .ToList();
+
+                var usedCheckboxes = new HashSet<CheckEdit>();
+                int matched = 0;
+                var sbUnmatched = new System.Text.StringBuilder();
+
+                foreach (var detail in details)
+                {
+                    string key = NormalizeForMatch(detail.NAME);
+                    if (string.IsNullOrEmpty(key)) continue;
+
+                    List<CheckEdit> candidates;
+                    if (captionMap.TryGetValue(key, out candidates))
+                    {
+                        var chk = candidates.FirstOrDefault(c => !usedCheckboxes.Contains(c));
+                        if (chk != null)
+                        {
+                            diseaseCheckMapping[detail.ID] = chk;
+                            usedCheckboxes.Add(chk);
+                            matched++;
+                            continue;
+                        }
+                    }
+                    sbUnmatched.Append(string.Format("[ID={0},NAME={1}] ", detail.ID, detail.NAME));
+                }
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "MapCheckboxesByCaption PARENT_TYPE=" + parentType
+                    + " matched=" + matched + "/" + details.Count
+                    + " checkEditsInContainer=" + checkEdits.Count
+                    + (sbUnmatched.Length > 0 ? " UNMATCHED: " + sbUnmatched.ToString() : ""));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Map text fields (IS_OTHER=1) theo thứ tự positional trong 1 PARENT_TYPE.
+        /// </summary>
+        private void MapTextFieldsByOrder(long parentType, Control[] textControls)
+        {
+            try
+            {
+                var otherDetails = diseaseDetails
+                    .Where(o => o.PARENT_TYPE == parentType && (o.IS_OTHER ?? 0) == 1)
                     .OrderBy(o => o.NUM_ORDER_TYPE)
                     .ThenBy(o => o.NUM_ORDER_DETAIL)
                     .ToList();
 
-                Inventec.Common.Logging.LogSystem.Debug("KskOfficials MapByOrder: PARENT_TYPE=" + parentType + " details.Count=" + details.Count + " checkboxes.Length=" + checkboxes.Length);
-
-                // Map checkboxes: lọc ra các detail có IS_CHECKBOX=1, map theo thứ tự
-                var checkDetails = details.Where(o => (o.IS_CHECKBOX ?? 0) == 1).ToList();
-                Inventec.Common.Logging.LogSystem.Debug("KskOfficials MapByOrder: checkDetails.Count=" + checkDetails.Count);
-                for (int i = 0; i < checkDetails.Count && i < checkboxes.Length; i++)
+                for (int i = 0; i < otherDetails.Count && i < textControls.Length; i++)
                 {
-                    if (checkboxes[i] != null)
+                    if (textControls[i] != null)
                     {
-                        diseaseCheckMapping[checkDetails[i].ID] = checkboxes[i];
-                    }
-                }
-
-                // Map other text fields: lọc ra các detail có IS_OTHER=1, map theo thứ tự
-                var otherDetails = details.Where(o => (o.IS_OTHER ?? 0) == 1).ToList();
-                var otherTextList = new List<Control>(otherTexts.Values);
-                for (int i = 0; i < otherDetails.Count && i < otherTextList.Count; i++)
-                {
-                    if (otherTextList[i] != null)
-                    {
-                        diseaseTextMapping[otherDetails[i].ID] = otherTextList[i];
+                        diseaseTextMapping[otherDetails[i].ID] = textControls[i];
                     }
                 }
             }
@@ -588,9 +671,12 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 cboHealthExamRank.EditValue = ReadNullableLong(general, "HEALTH_EXAM_RANK_ID");
 
                 var conclusionTime = ReadNullableLong(general, "CONCLUSION_TIME");
-                if (conclusionTime.HasValue && cboConclusionTime != null)
+                if (cboConclusionTime != null)
                 {
-                    cboConclusionTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(conclusionTime.Value);
+                    if (conclusionTime.HasValue)
+                        cboConclusionTime.DateTime = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(conclusionTime.Value) ?? DateTime.Now;
+                    else
+                        cboConclusionTime.DateTime = DateTime.Now;
                 }
 
                 var concluderLoginName = ReadString(general, "CONCLUDER_LOGINNAME");
@@ -623,19 +709,29 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 }
 
                 // Apply saved results
+                var sbLoad = new System.Text.StringBuilder();
+                sbLoad.AppendLine("LoadDiseaseCheckStates: diseaseResults.Count=" + diseaseResults.Count);
                 foreach (var result in diseaseResults)
                 {
                     if (result.DISEASE_DETAIL_ID == null) continue;
                     long detailId = result.DISEASE_DETAIL_ID.Value;
+                    bool isCheck = (result.IS_CHECK ?? 0) == 1;
                     if (diseaseCheckMapping.ContainsKey(detailId))
                     {
-                        diseaseCheckMapping[detailId].Checked = (result.IS_CHECK ?? 0) == 1;
+                        var chk = diseaseCheckMapping[detailId];
+                        if (isCheck)
+                        {
+                            sbLoad.AppendLine(string.Format("  SET CHECKED: detailId={0}, IS_CHECK={1} -> {2} [{3}]",
+                                detailId, result.IS_CHECK, chk.Name, chk.Properties.Caption));
+                        }
+                        chk.Checked = isCheck;
                     }
                     if (diseaseTextMapping.ContainsKey(detailId))
                     {
                         diseaseTextMapping[detailId].Text = result.OTHER ?? string.Empty;
                     }
                 }
+                Inventec.Common.Logging.LogSystem.Debug(sbLoad.ToString());
             }
             catch (Exception ex)
             {
@@ -751,16 +847,26 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             {
                 currentDTO.RequestRoomId = this.moduleData.RoomId;
 
-                // KskGeneral: entity HIS_KSK_GENERAL (không phải HisKskGeneralSDO)
-                var kskGeneral = currentDTO.KskGeneral ?? new HIS_KSK_GENERAL();
+                // KskGeneral: dùng entity đã tồn tại (UPDATE) hoặc tạo mới (CREATE)
+                HIS_KSK_GENERAL kskGeneral;
+                if (currentData != null && currentData.KSK_GENERAL != null && currentData.KSK_GENERAL.ID > 0)
+                    kskGeneral = currentData.KSK_GENERAL;
+                else
+                    kskGeneral = new HIS_KSK_GENERAL();
                 currentDTO.KskGeneral = kskGeneral;
                 kskGeneral.SERVICE_REQ_ID = currentDTO.ServiceReqId;
 
-                // DHST: gán lên cả root DTO và navigation property trong KskGeneral
-                var dhst = currentDTO.Dhst ?? new HIS_DHST();
+                // DHST: dùng entity đã tồn tại hoặc tạo mới
+                HIS_DHST dhst;
+                if (kskGeneral.HIS_DHST != null && kskGeneral.HIS_DHST.ID > 0)
+                    dhst = kskGeneral.HIS_DHST;
+                else
+                {
+                    dhst = new HIS_DHST();
+                    if (currentData != null)
+                        dhst.TREATMENT_ID = currentData.TREATMENT_ID;
+                }
                 currentDTO.Dhst = dhst;
-                if (currentData != null)
-                    dhst.TREATMENT_ID = currentData.TREATMENT_ID;
                 kskGeneral.HIS_DHST = dhst;
 
                 // --- Tab 1: Tiền sử bệnh ---
@@ -850,16 +956,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 if (cboConclusionTime != null && cboConclusionTime.EditValue != null)
                 {
-                    try
-                    {
-                        var dt = Convert.ToDateTime(cboConclusionTime.EditValue);
-                        kskGeneral.CONCLUSION_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dt);
-                    }
-                    catch (Exception ex)
-                    {
-                        Inventec.Common.Logging.LogSystem.Warn(ex);
-                        kskGeneral.CONCLUSION_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(DateTime.Now);
-                    }
+                    kskGeneral.CONCLUSION_TIME = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(cboConclusionTime.DateTime);
                 }
                 else
                 {
@@ -881,7 +978,9 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 dhst.BLOOD_PRESSURE_MAX = decimal.TryParse(txtBloodPressureMax.Text, out bpMax) ? (long?)bpMax : null;
                 decimal bpMin;
                 dhst.BLOOD_PRESSURE_MIN = decimal.TryParse(txtBloodPressureMin.Text, out bpMin) ? (long?)bpMin : null;
-                dhst.BREATH_RATE = ParseNullableDecimal(ReadText(txtBreathRate));
+                string breathRateText = ReadText(txtBreathRate);
+                dhst.BREATH_RATE = ParseNullableDecimal(breathRateText);
+                Inventec.Common.Logging.LogSystem.Debug("SaveDhst: txtBreathRate.Text=[" + breathRateText + "] -> BREATH_RATE=" + dhst.BREATH_RATE);
                 dhst.HEART_RHYTHM = ReadText(txtHeartRhythm);
                 dhst.HEART_RATE = ReadText(txtHeartRate);
                 dhst.HEART_BEAT = ReadText(txtHeartBeat);
@@ -910,8 +1009,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 var rows = new List<HIS_DISEASE_DETAIL_RESULT>();
                 long? kskGeneralId = currentData != null && currentData.KSK_GENERAL != null ? (long?)currentData.KSK_GENERAL.ID : null;
 
-                // Theo thiết kế: chỉ lưu dòng khi user CÓ check (IS_CHECK=1) hoặc có nhập OTHER.
-                // Không check + không nhập gì → không lưu.
+                // Luôn tạo mới (ID=0) — BE sẽ INSERT. FE dedup khi load (lấy bản mới nhất).
                 int checkedCount = 0;
                 foreach (var kv in diseaseCheckMapping)
                 {
@@ -919,41 +1017,32 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                     string otherText = diseaseTextMapping.ContainsKey(kv.Key) && diseaseTextMapping[kv.Key] != null
                         ? (diseaseTextMapping[kv.Key].Text ?? string.Empty).Trim()
                         : null;
-                    bool hasOther = !string.IsNullOrEmpty(otherText);
-
-                    if (!isChecked && !hasOther) continue;
 
                     if (isChecked) checkedCount++;
-                    var row = new HIS_DISEASE_DETAIL_RESULT
+                    rows.Add(new HIS_DISEASE_DETAIL_RESULT
                     {
                         DISEASE_DETAIL_ID = kv.Key,
+                        KSK_GENERAL_ID = kskGeneralId,
                         IS_CHECK = (short)(isChecked ? 1 : 0),
-                        OTHER = hasOther ? otherText : null,
-                        KSK_GENERAL_ID = kskGeneralId
-                    };
-                    rows.Add(row);
+                        OTHER = !string.IsNullOrEmpty(otherText) ? otherText : null
+                    });
                 }
                 Inventec.Common.Logging.LogSystem.Debug(
                     "AttachDiseaseDetailResults - checkedCount=" + checkedCount
-                    + " rowsFromCheckboxes=" + rows.Count);
+                    + " totalRows=" + rows.Count);
 
-                // Collect text-only mappings (disease details với IS_OTHER nhưng không có IS_CHECKBOX)
-                // Chỉ lưu nếu user có nhập text
+                // Text-only mappings
                 foreach (var kv in diseaseTextMapping)
                 {
                     if (diseaseCheckMapping.ContainsKey(kv.Key)) continue;
-
                     string otherText = kv.Value != null ? (kv.Value.Text ?? string.Empty).Trim() : string.Empty;
-                    if (string.IsNullOrEmpty(otherText)) continue;
-
-                    var row = new HIS_DISEASE_DETAIL_RESULT
+                    rows.Add(new HIS_DISEASE_DETAIL_RESULT
                     {
                         DISEASE_DETAIL_ID = kv.Key,
+                        KSK_GENERAL_ID = kskGeneralId,
                         IS_CHECK = 0,
-                        OTHER = otherText,
-                        KSK_GENERAL_ID = kskGeneralId
-                    };
-                    rows.Add(row);
+                        OTHER = !string.IsNullOrEmpty(otherText) ? otherText : null
+                    });
                 }
 
                 rows = rows.GroupBy(o => o.DISEASE_DETAIL_ID).Select(g => g.Last()).ToList();

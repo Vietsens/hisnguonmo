@@ -101,7 +101,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 col2.VisibleIndex = isExamRoom ? 2 : 1;
                 col2.Width = isExamRoom ? 200 : 100;
                 col2.Caption = isExamRoom ? Resources.ResourceMessage.TenPhong : Resources.ResourceMessage.TatCa;
-                cbo.Properties.PopupFormWidth = 300;
+                cbo.Properties.PopupFormWidth = isExamRoom ? 450 : 300;
                 cbo.Properties.View.OptionsView.ShowColumnHeaders = true;
                 cbo.Properties.View.OptionsSelection.MultiSelect = true;
 
