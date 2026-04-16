@@ -234,4 +234,34 @@
   <data name="VuiLongNhapThongTinkipThucHien" xml:space="preserve">
     <value>Please enter crew information</value>
   </data>
+  <data name="ThoiGianYLenhVTYTKhongDuocDeTrong" xml:space="preserve">
+    <value>Material order ({0}): Material instruction time must not be empty when material requires time validation</value>
+  </data>
+  <data name="ThoiGianBatDauVTYTKhongDuocDeTrong" xml:space="preserve">
+    <value>Material order ({0}): Material start time must not be empty when material requires time validation</value>
+  </data>
+  <data name="ThoiGianKetThucVTYTKhongDuocDeTrong" xml:space="preserve">
+    <value>Material order ({0}): Material finish time must not be empty when material requires time validation</value>
+  </data>
+  <data name="ThoiGianYLenhVTYTPHaiSauThoiGianYLenhPT" xml:space="preserve">
+    <value>Material order ({0}): Material instruction time ({1}) must be after surgery instruction time ({2})</value>
+  </data>
+  <data name="ThoiGianYLenhVTYTPhaiTruocThoiGianBatDauPT" xml:space="preserve">
+    <value>Material order ({0}): Material instruction time ({1}) must be before surgery start time ({2})</value>
+  </data>
+  <data name="ThoiGianBatDauVTYTPhaiSauThoiGianBatDauPT" xml:space="preserve">
+    <value>Material order ({0}): Material start time ({1}) must be after surgery start time ({2})</value>
+  </data>
+  <data name="ThoiGianKetThucVTYTPhaiSauThoiGianBatDauVTYT" xml:space="preserve">
+    <value>Material order ({0}): Material finish time ({1}) must be after material start time ({2})</value>
+  </data>
+  <data name="ThoiGianKetThucVTYTPhaiTruocThoiGianKetThucPT" xml:space="preserve">
+    <value>Material order ({0}): Material finish time ({1}) must be before surgery finish time ({2})</value>
+  </data>
+  <data name="ThoiGianBatDauPTKhongHopLeVoiVTYTCon" xml:space="preserve">
+    <value>Start time is invalid compared to child material orders</value>
+  </data>
+  <data name="ThoiGianKetThucPTKhongHopLeVoiVTYTCon" xml:space="preserve">
+    <value>Finish time is invalid compared to child material orders</value>
+  </data>
 </root>

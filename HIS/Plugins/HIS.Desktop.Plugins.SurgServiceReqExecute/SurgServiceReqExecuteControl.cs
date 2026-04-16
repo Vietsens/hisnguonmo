@@ -1134,6 +1134,11 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                 {
                     return valid = false;
                 }
+                // vCong32463: Validate time chain between PT and child VTYT service requests
+                if (valid && !ValidateVtytTimeWithParentPT())
+                {
+                    return valid = false;
+                }
                 if (valid)
                 {
                     if (chkSaveGroup.Checked)

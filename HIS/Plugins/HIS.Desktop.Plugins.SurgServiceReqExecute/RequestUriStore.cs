@@ -50,5 +50,6 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
         internal const string HIS_SERE_SERV_FILE_UPDATE = "/api/HisSereServFile/Update";
 
         internal const string HIS_SERVICE_REQ__SURG_ASSIGN_AND_COPY = "api/HisServiceReq/SurgAssignAndCopy";
+        internal const string HIS_SERVICE_REQ_MATY_GET = "api/HisServiceReqMaty/Get";
     }
 }
