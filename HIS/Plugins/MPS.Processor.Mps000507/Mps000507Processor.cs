@@ -148,14 +148,8 @@ namespace MPS.Processor.Mps000507
                 {
                     AddObjectKeyIntoListkey<V_HIS_TREATMENT_4>(rdo.Treatment, false);
                 }
-                if (rdo.DiseaseDetailResults != null && rdo.DiseaseDetailResults.Count > 0)
-                {
-                    AddObjectKeyIntoListkey<HIS_DISEASE_DETAIL_RESULT>(rdo.DiseaseDetailResults.First(), false);
-                }
-                if (rdo.DiseaseDetails != null && rdo.DiseaseDetails.Count > 0)
-                {
-                    AddObjectKeyIntoListkey<V_HIS_DISEASE_DETAIL>(rdo.DiseaseDetails.First(), false);
-                }
+                // Key đơn cho TỪNG disease detail: {DD_<ID>_CHECK} = "X" hoặc "", {DD_<ID>_OTHER} = giá trị
+                SetDiseaseDetailSingleKeys();
 
                 // BMI
                 if (rdo.HisDhst != null && rdo.HisDhst.VIR_BMI != null)
@@ -208,6 +202,45 @@ namespace MPS.Processor.Mps000507
                 if (rdo.Treatment != null && !string.IsNullOrEmpty(rdo.Treatment.TDL_PATIENT_WORK_PLACE_NAME))
                 {
                     SetSingleKey(new KeyValue(Mps000507ExtendSingleKey.WORK_PLACE_NAME, rdo.Treatment.TDL_PATIENT_WORK_PLACE_NAME));
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Tạo key đơn cho TỪNG disease detail theo ID:
+        ///   {DD_<ID>_CHECK} = "X" nếu đã check, "" nếu không
+        ///   {DD_<ID>_OTHER} = giá trị nhập khác
+        ///   {DD_<ID>_NAME}  = tên disease detail
+        /// Ví dụ: {DD_1_CHECK} = "X", {DD_1_NAME} = "<5", {DD_5_CHECK} = "X", {DD_5_NAME} = "Mất ngủ"
+        /// </summary>
+        private void SetDiseaseDetailSingleKeys()
+        {
+            try
+            {
+                if (rdo.DiseaseDetails == null) return;
+
+                var results = rdo.DiseaseDetailResults ?? new List<HIS_DISEASE_DETAIL_RESULT>();
+                var resultDict = results
+                    .Where(r => r.DISEASE_DETAIL_ID != null)
+                    .GroupBy(r => r.DISEASE_DETAIL_ID.Value)
+                    .ToDictionary(g => g.Key, g => g.OrderByDescending(r => r.ID).First());
+
+                foreach (var detail in rdo.DiseaseDetails)
+                {
+                    string prefix = "DD_" + detail.ID + "_";
+                    HIS_DISEASE_DETAIL_RESULT matchResult;
+                    resultDict.TryGetValue(detail.ID, out matchResult);
+
+                    bool isChecked = matchResult != null && (matchResult.IS_CHECK ?? 0) == 1;
+                    string otherValue = matchResult != null ? (matchResult.OTHER ?? "") : "";
+
+                    SetSingleKey(new KeyValue(prefix + "CHECK", isChecked ? "X" : ""));
+                    SetSingleKey(new KeyValue(prefix + "OTHER", otherValue));
+                    SetSingleKey(new KeyValue(prefix + "NAME", detail.NAME ?? ""));
                 }
             }
             catch (Exception ex)
