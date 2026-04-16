@@ -1295,31 +1295,25 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
         private void EnableControlChanged(ServiceReqStatus serviceReqStatus)
         {
-            if (this.currentData == null)
+            try
             {
-                this.currentServiceReqSTT = ServiceReqStatus.Default;
-                serviceReqStatus = ServiceReqStatus.Default;
+                if (this.currentData == null)
+                {
+                    this.currentServiceReqSTT = ServiceReqStatus.Default;
+                    serviceReqStatus = ServiceReqStatus.Default;
+                }
+
+                bool isFinished = (serviceReqStatus == ServiceReqStatus.HoanThanh);
+
+                // Y lệnh hoàn thành → disable Lưu + Kết thúc, enable Hủy KT
+                // Y lệnh chưa hoàn thành → enable Lưu + Kết thúc, disable Hủy KT
+                btnSave.Enabled = !isFinished;
+                if (btnFinish != null) btnFinish.Enabled = !isFinished;
+                if (btnUnfinish != null) btnUnfinish.Enabled = isFinished;
             }
-            switch (serviceReqStatus)
+            catch (Exception ex)
             {
-                case ServiceReqStatus.ChuaXuLy:
-                    btnFinish.Enabled = true;
-                    btnUnfinish.Enabled = false;
-                    break;
-                case ServiceReqStatus.DaXuLy:
-                    btnFinish.Enabled = true;
-                    btnUnfinish.Enabled = false;
-                    break;
-                case ServiceReqStatus.HoanThanh:
-                    btnFinish.Enabled = false;
-                    btnUnfinish.Enabled = true;
-                    break;
-                case ServiceReqStatus.Default:
-                    btnFinish.Enabled = false;
-                    btnUnfinish.Enabled = false;
-                    break;
-                default:
-                    break;
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
         #endregion
@@ -1405,6 +1399,54 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
         #region Button-click
 
+        private void bbtnSearch_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                btnSearch_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void bbtnSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                btnSave_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void bbtnFinish_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                btnFinish_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void bbtnUnfinish_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            try
+            {
+                btnUnfinish_Click(null, null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void btnSearch_Click(object sender, EventArgs e)
         {
             try
@@ -1428,6 +1470,9 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
+
+
 
         private void btnFinish_Click(object sender, EventArgs e)
         {
@@ -2907,8 +2952,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 this.txtTreatmentCodeForSearch.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtTreatmentCodeForSearch_PreviewKeyDown);
                 this.chkIsFinish.CheckedChanged -= new System.EventHandler(this.chkIsFinish_CheckedChanged);
                 this.btnSave.Click -= new System.EventHandler(this.btnSave_Click);
-                this.btnFinish.Click -= new System.EventHandler(this.btnFinish_Click);
-                this.btnUnfinish.Click -= new System.EventHandler(this.btnUnfinish_Click);
                 this.btnPrint.Click -= new System.EventHandler(this.btnPrint_Click);
                 this.btnChooseResult.Click -= new System.EventHandler(this.btnChooseResult_Click);
                 this.xtraTabControl2.SelectedPageChanged -= new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl2_SelectedPageChanged);
@@ -3425,8 +3468,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 layoutControlItem12 = null;
                 layoutControlItem11 = null;
                 layoutControlItem10 = null;
-                layoutControlItem9 = null;
-                layoutControlItem8 = null;
                 emptySpaceItem3 = null;
                 layoutControlItem6 = null;
                 layoutControlItem5 = null;
@@ -3436,8 +3477,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 panelControl1 = null;
                 xtraTabControl1 = null;
                 btnPrint = null;
-                btnUnfinish = null;
-                btnFinish = null;
                 btnSave = null;
                 chkIsFinish = null;
                 txtTreatmentCodeForSearch = null;

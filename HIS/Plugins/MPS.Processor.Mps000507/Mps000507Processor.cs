@@ -47,12 +47,16 @@ namespace MPS.Processor.Mps000507
                 // Object data cho template
                 if (rdo.HisKskGeneral != null)
                     objectTag.AddObjectData(store, "KskGeneral", new List<HIS_KSK_GENERAL>() { rdo.HisKskGeneral });
+                if (rdo.HisServiceReq != null)
+                    objectTag.AddObjectData(store, "ServiceReq", new List<V_HIS_SERVICE_REQ>() { rdo.HisServiceReq });
                 if (rdo.Treatment != null)
                     objectTag.AddObjectData(store, "Treatment", new List<V_HIS_TREATMENT_4>() { rdo.Treatment });
                 if (rdo.HisDhst != null)
                     objectTag.AddObjectData(store, "Dhst", new List<HIS_DHST>() { rdo.HisDhst });
                 if (rdo.ExamRanks != null)
                     objectTag.AddObjectData(store, "ExamRank", rdo.ExamRanks);
+                if (rdo.DiseaseDetailResults != null)
+                    objectTag.AddObjectData(store, "DiseaseDetailResult", rdo.DiseaseDetailResults);
 
                 // Build disease detail ADO data
                 BuildDiseaseDetailData();
@@ -144,6 +148,14 @@ namespace MPS.Processor.Mps000507
                 {
                     AddObjectKeyIntoListkey<V_HIS_TREATMENT_4>(rdo.Treatment, false);
                 }
+                if (rdo.DiseaseDetailResults != null && rdo.DiseaseDetailResults.Count > 0)
+                {
+                    AddObjectKeyIntoListkey<HIS_DISEASE_DETAIL_RESULT>(rdo.DiseaseDetailResults.First(), false);
+                }
+                if (rdo.DiseaseDetails != null && rdo.DiseaseDetails.Count > 0)
+                {
+                    AddObjectKeyIntoListkey<V_HIS_DISEASE_DETAIL>(rdo.DiseaseDetails.First(), false);
+                }
 
                 // BMI
                 if (rdo.HisDhst != null && rdo.HisDhst.VIR_BMI != null)
@@ -164,12 +176,13 @@ namespace MPS.Processor.Mps000507
                     SetSingleKey(new KeyValue(Mps000507ExtendSingleKey.DHST_LOGINNAME, rdo.HisDhst.EXECUTE_LOGINNAME));
                 }
 
-                // Health Exam Rank Name
+                // Health Exam Rank
                 if (rdo.HisKskGeneral != null && rdo.HisKskGeneral.HEALTH_EXAM_RANK_ID != null && rdo.ExamRanks != null)
                 {
                     var rank = rdo.ExamRanks.FirstOrDefault(o => o.ID == rdo.HisKskGeneral.HEALTH_EXAM_RANK_ID);
                     if (rank != null)
                     {
+                        AddObjectKeyIntoListkey<HIS_HEALTH_EXAM_RANK>(rank, false);
                         SetSingleKey(new KeyValue(Mps000507ExtendSingleKey.HEALTH_EXAM_RANK_NAME, rank.HEALTH_EXAM_RANK_NAME));
                     }
                 }

@@ -234,4 +234,34 @@
   <data name="VuiLongNhapThongTinkipThucHien" xml:space="preserve">
     <value>Vui lòng nhập thông tin kíp thực hiện</value>
   </data>
+  <data name="ThoiGianYLenhVTYTKhongDuocDeTrong" xml:space="preserve">
+    <value>Y lệnh VTYT ({0}): Thời gian y lệnh VTYT không được để trống khi vật tư yêu cầu validate thời gian</value>
+  </data>
+  <data name="ThoiGianBatDauVTYTKhongDuocDeTrong" xml:space="preserve">
+    <value>Y lệnh VTYT ({0}): Thời gian bắt đầu thực hiện VTYT không được để trống khi vật tư yêu cầu validate thời gian</value>
+  </data>
+  <data name="ThoiGianKetThucVTYTKhongDuocDeTrong" xml:space="preserve">
+    <value>Y lệnh VTYT ({0}): Thời gian kết thúc VTYT không được để trống khi vật tư yêu cầu validate thời gian</value>
+  </data>
+  <data name="ThoiGianYLenhVTYTPHaiSauThoiGianYLenhPT" xml:space="preserve">
+    <value>Y lệnh VTYT ({0}): Thời gian y lệnh VTYT ({1}) phải sau thời gian y lệnh Phẫu thuật ({2})</value>
+  </data>
+  <data name="ThoiGianYLenhVTYTPhaiTruocThoiGianBatDauPT" xml:space="preserve">
+    <value>Y lệnh VTYT ({0}): Thời gian y lệnh VTYT ({1}) phải trước thời gian bắt đầu Phẫu thuật ({2})</value>
+  </data>
+  <data name="ThoiGianBatDauVTYTPhaiSauThoiGianBatDauPT" xml:space="preserve">
+    <value>Y lệnh VTYT ({0}): Thời gian bắt đầu VTYT ({1}) phải sau thời gian bắt đầu Phẫu thuật ({2})</value>
+  </data>
+  <data name="ThoiGianKetThucVTYTPhaiSauThoiGianBatDauVTYT" xml:space="preserve">
+    <value>Y lệnh VTYT ({0}): Thời gian kết thúc VTYT ({1}) phải sau thời gian bắt đầu VTYT ({2})</value>
+  </data>
+  <data name="ThoiGianKetThucVTYTPhaiTruocThoiGianKetThucPT" xml:space="preserve">
+    <value>Y lệnh VTYT ({0}): Thời gian kết thúc VTYT ({1}) phải trước thời gian kết thúc Phẫu thuật ({2})</value>
+  </data>
+  <data name="ThoiGianBatDauPTKhongHopLeVoiVTYTCon" xml:space="preserve">
+    <value>Thời gian bắt đầu không hợp lệ so với y lệnh VTYT con</value>
+  </data>
+  <data name="ThoiGianKetThucPTKhongHopLeVoiVTYTCon" xml:space="preserve">
+    <value>Thời gian kết thúc không hợp lệ so với y lệnh VTYT con</value>
+  </data>
 </root>

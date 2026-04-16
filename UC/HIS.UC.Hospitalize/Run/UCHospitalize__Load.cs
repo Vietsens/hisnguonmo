@@ -300,6 +300,8 @@ namespace HIS.UC.Hospitalize.Run
 				{
 					lblGiuongKeHoach.Text = ((long)(data.THEORY_PATIENT_COUNT == null ? 0 : data.THEORY_PATIENT_COUNT)).ToString();
 					lblGiuongThucKe.Text = ((long)(data.PATIENT_COUNT == null ? 0 : data.PATIENT_COUNT)).ToString();
+					lblGiuongThucKe.ForeColor = System.Drawing.Color.Black;
+					UpdateBedStatistics(data.ID);
 				}
 			}
 			catch (Exception ex)
@@ -307,6 +309,60 @@ namespace HIS.UC.Hospitalize.Run
 				Inventec.Common.Logging.LogSystem.Warn(ex);
 			}
 
+		}
+
+		private void UpdateBedStatistics(long selectedDepartmentId)
+		{
+			try
+			{
+				CommonParam param = new CommonParam();
+				HisBedRoomViewFilter filter = new HisBedRoomViewFilter();
+				filter.DEPARTMENT_ID = selectedDepartmentId;
+				filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+
+				var bedRooms = new BackendAdapter(param).Get<List<V_HIS_BED_ROOM>>(
+					HIS.Desktop.ApiConsumer.HisRequestUriStore.HIS_BED_ROOM_GETVIEW,
+					ApiConsumers.MosConsumer, filter, param);
+
+				if (bedRooms != null && bedRooms.Count > 0)
+				{
+					long totalBeds = 0;
+					long totalPatients = 0;
+					long occupiedBeds = 0;
+					long sharedBeds = 0;
+
+					foreach (var room in bedRooms)
+					{
+						long beds = (long)(room.BED_COUNT ?? 0);
+						long patients = (long)(room.PATIENT_COUNT ?? 0);
+						totalBeds += beds;
+						totalPatients += patients;
+						occupiedBeds += Math.Min(patients, beds);
+						sharedBeds += Math.Max(0, patients - beds);
+					}
+
+					long availableBeds = totalBeds - occupiedBeds;
+
+					string bedCountText = lblGiuongThucKe.Text;
+					string stats = string.Format("{0} \u2014 Đã có BN: {1}, Còn: {2} giường",
+						bedCountText, totalPatients, availableBeds);
+
+					if (sharedBeds > 0)
+					{
+						stats += string.Format(". Giường nằm ghép: {0}", sharedBeds);
+					}
+
+					lblGiuongThucKe.Text = stats;
+
+					lblGiuongThucKe.ForeColor = (availableBeds <= 0)
+						? System.Drawing.Color.Red
+						: System.Drawing.Color.Black;
+				}
+			}
+			catch (Exception ex)
+			{
+				Inventec.Common.Logging.LogSystem.Warn(ex);
+			}
 		}
 	}
 }

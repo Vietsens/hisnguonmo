@@ -83,7 +83,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                     ApiConsumer.ApiConsumers.SarConsumer,
                     HIS.Desktop.LocalStorage.ConfigSystem.ConfigSystems.URI_API_SAR,
                     Inventec.Desktop.Common.LanguageManager.LanguageManager.GetLanguage(),
-                    HIS.Desktop.LocalStorage.Location.PrintStoreLocation.ROOT_PATH);
+                    HIS.Desktop.LocalStorage.Location.PrintStoreLocation.PrintTemplatePath);
 
                 richEditor.RunPrintTemplate(mps000507Code, delegate (string printTypeCode507, string fileName507)
                 {

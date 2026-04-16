@@ -16,13 +16,14 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials.Resources
             {
                 try
                 {
-                    return Inventec.Common.Resource.Get.Value("TatCa", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    string val = Inventec.Common.Resource.Get.Value("TatCa", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                    if (!string.IsNullOrEmpty(val)) return val;
                 }
                 catch (Exception ex)
                 {
                     Inventec.Common.Logging.LogSystem.Warn(ex);
                 }
-                return "";
+                return "Tất cả";
             }
         }
 

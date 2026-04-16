@@ -455,6 +455,9 @@
     <Compile Include="SurgServiceReqExecuteControl___Process.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="SurgServiceReqExecuteControl___ValidateVtytTime.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SurgServiceReqExecuteProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="KeyboardWorker.cs" />
