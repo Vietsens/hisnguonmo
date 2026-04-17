@@ -1385,7 +1385,7 @@ namespace HIS.Desktop.Plugins.BidDetail
                     }
                 }
 
-                //Xuất Thuốc + Máu chung (RunMau03)
+                //Xuất Thuốc + Máu chung (RunMau03) 17-04-2026
                 if((selectedMedicineTypes != null && selectedMedicineTypes.Count > 0) || (selectedBloodTypes != null && selectedBloodTypes.Count > 0))
                 {
                     InputTT12ADO listXmlAdosMau03 = new InputTT12ADO();
@@ -1416,7 +1416,7 @@ namespace HIS.Desktop.Plugins.BidDetail
                     }
                 }
 
-                //Xuất Vật tư riêng (RunMau04)
+                //Xuất Vật tư riêng (RunMau04) 17-04-2026
                 if (selectedMaterialTypes != null && selectedMaterialTypes.Count > 0)
                 {
                     InputTT12ADO listXmlAdosMau04 = new InputTT12ADO();
