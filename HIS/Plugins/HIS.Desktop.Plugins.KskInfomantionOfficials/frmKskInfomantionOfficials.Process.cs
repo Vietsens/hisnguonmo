@@ -60,11 +60,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 {
                     success = true;
                     FillDataToGridControl();
-                    var dataSource = (gridViewServiceReq.DataSource as List<ServiceReqADO>);
-                    if (dataSource != null && dataSource.Count() > 0)
-                    {
-                        ChangedDataRow(dataSource.FirstOrDefault(o => o.ID == resultData.HisServiceReq.ID));
-                    }
                 }
 
                 if (success)
