@@ -763,6 +763,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.GestationalAge = data.GESTATIONAL_AGE;
                 currentTreatmentFinishSDO.PregnancyTerminationReason = data.PREGNANCY_TERMINATION_REASON;
                 currentTreatmentFinishSDO.PregnancyTerminationTime = data.PREGNANCY_TERMINATION_TIME;
+                currentTreatmentFinishSDO.CccdNumber = data.TDL_PATIENT_CCCD_NUMBER;
+                currentTreatmentFinishSDO.PassportNumber = data.TDL_PATIENT_PASSPORT_NUMBER;
+                currentTreatmentFinishSDO.CccdDate = data.TDL_PATIENT_CCCD_DATE;
+                currentTreatmentFinishSDO.PassportDate = data.TDL_PATIENT_PASSPORT_DATE;
                 if (!string.IsNullOrEmpty(data.APPOINTMENT_EXAM_ROOM_IDS))
                 {
                     string[] str = data.APPOINTMENT_EXAM_ROOM_IDS.Split(',');
