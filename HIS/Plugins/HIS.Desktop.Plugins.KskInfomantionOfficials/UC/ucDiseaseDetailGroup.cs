@@ -17,8 +17,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials.UC
     {
         #region Fields
         private const int MAX_COLUMNS = 5;
-        private const int ROW_HEIGHT = 26;
-        private const int TITLE_WIDTH = 180;
+        private const int ROW_HEIGHT = 30;
+        private const int TITLE_WIDTH = 260;
 
         private Dictionary<long, CheckEdit> checkMapping = new Dictionary<long, CheckEdit>();
         private Dictionary<long, Control> textMapping = new Dictionary<long, Control>();
