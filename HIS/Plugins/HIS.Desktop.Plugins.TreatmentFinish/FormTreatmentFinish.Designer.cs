@@ -152,6 +152,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.gridLookUpEdit2View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboResult = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboEmergencyClassify2 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewEmergencyClassify2 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.lciEmergencyClassify2 = new DevExpress.XtraLayout.LayoutControlItem();
             this.txtEndDepartment = new DevExpress.XtraEditors.TextEdit();
             this.txtNumberOfDays = new DevExpress.XtraEditors.TextEdit();
             this.dtEndTime = new DevExpress.XtraEditors.DateEdit();
@@ -325,6 +328,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboResult.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmergencyClassify2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewEmergencyClassify2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmergencyClassify2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEndDepartment.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfDays.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtEndTime.Properties.CalendarTimeProperties)).BeginInit();
@@ -509,6 +515,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.layoutControlMain.Controls.Add(this.txtMethod);
             this.layoutControlMain.Controls.Add(this.cboTreatmentEndType);
             this.layoutControlMain.Controls.Add(this.cboResult);
+            this.layoutControlMain.Controls.Add(this.cboEmergencyClassify2);
             this.layoutControlMain.Controls.Add(this.txtEndDepartment);
             this.layoutControlMain.Controls.Add(this.txtNumberOfDays);
             this.layoutControlMain.Controls.Add(this.dtEndTime);
@@ -1575,6 +1582,31 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.gridLookUpEdit1View.Name = "gridLookUpEdit1View";
             this.gridLookUpEdit1View.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridLookUpEdit1View.OptionsView.ShowGroupPanel = false;
+            //
+            // cboEmergencyClassify2
+            //
+            this.cboEmergencyClassify2.EnterMoveNextControl = true;
+            this.cboEmergencyClassify2.Location = new System.Drawing.Point(628, 231);
+            this.cboEmergencyClassify2.Name = "cboEmergencyClassify2";
+            this.cboEmergencyClassify2.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboEmergencyClassify2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboEmergencyClassify2.Properties.NullText = "";
+            this.cboEmergencyClassify2.Properties.PopupSizeable = false;
+            this.cboEmergencyClassify2.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
+            this.cboEmergencyClassify2.Properties.View = this.gridViewEmergencyClassify2;
+            this.cboEmergencyClassify2.Size = new System.Drawing.Size(156, 20);
+            this.cboEmergencyClassify2.StyleController = this.layoutControlMain;
+            this.cboEmergencyClassify2.TabIndex = 100;
+            this.cboEmergencyClassify2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboEmergencyClassify2_ButtonClick);
+            //
+            // gridViewEmergencyClassify2
+            //
+            this.gridViewEmergencyClassify2.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewEmergencyClassify2.Name = "gridViewEmergencyClassify2";
+            this.gridViewEmergencyClassify2.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewEmergencyClassify2.OptionsView.ShowGroupPanel = false;
             // 
             // txtEndDepartment
             // 
@@ -1842,6 +1874,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.lciCboDoctor,
             this.lciTypeOfDischarge,
             this.layoutControlItem11,
+            this.lciEmergencyClassify2,
             this.lciPatientProgram,
             this.layoutControlItem27,
             this.layoutControlItem21,
@@ -2622,7 +2655,22 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             this.layoutControlItem11.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem11.TextSize = new System.Drawing.Size(95, 20);
             this.layoutControlItem11.TextToControlDistance = 5;
-            // 
+            //
+            // lciEmergencyClassify2
+            //
+            this.lciEmergencyClassify2.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciEmergencyClassify2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciEmergencyClassify2.Control = this.cboEmergencyClassify2;
+            this.lciEmergencyClassify2.Location = new System.Drawing.Point(521, 229);
+            this.lciEmergencyClassify2.Name = "lciEmergencyClassify2";
+            this.lciEmergencyClassify2.Size = new System.Drawing.Size(265, 24);
+            this.lciEmergencyClassify2.Spacing = new DevExpress.XtraLayout.Utils.Padding(10, 0, 0, 0);
+            this.lciEmergencyClassify2.Text = "PL cấp cứu 2:";
+            this.lciEmergencyClassify2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciEmergencyClassify2.TextSize = new System.Drawing.Size(90, 20);
+            this.lciEmergencyClassify2.TextToControlDistance = 5;
+            this.lciEmergencyClassify2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            //
             // lciPatientProgram
             // 
             this.lciPatientProgram.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -3038,6 +3086,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit2View)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboResult.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridLookUpEdit1View)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmergencyClassify2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewEmergencyClassify2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciEmergencyClassify2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtEndDepartment.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNumberOfDays.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtEndTime.Properties.CalendarTimeProperties)).EndInit();
@@ -3160,6 +3211,9 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit2View;
         internal DevExpress.XtraEditors.GridLookUpEdit cboResult;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
+        internal DevExpress.XtraEditors.GridLookUpEdit cboEmergencyClassify2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewEmergencyClassify2;
+        private DevExpress.XtraLayout.LayoutControlItem lciEmergencyClassify2;
         private DevExpress.XtraEditors.TextEdit txtEndDepartment;
         private DevExpress.XtraEditors.TextEdit txtNumberOfDays;
         internal DevExpress.XtraEditors.DateEdit dtEndTime;

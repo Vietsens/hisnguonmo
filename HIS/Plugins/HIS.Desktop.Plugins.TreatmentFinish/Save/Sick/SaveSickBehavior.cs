@@ -69,6 +69,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Sick
 
                     result.ClinicalNote = this.ClinicalNote;
                     result.SubclinicalResult = this.Subclinical;
+                    result.EmergencyClassifyId2 = this.EmergencyClassifyId2;
 
                     //treatment sick
                     result.SickLeaveDay = hisTreatmentFinishSDO_process.SickLeaveDay;

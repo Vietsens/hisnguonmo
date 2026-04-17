@@ -63,6 +63,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Other
 
                 result.ClinicalNote = this.ClinicalNote;
                 result.SubclinicalResult = this.Subclinical;
+                result.EmergencyClassifyId2 = this.EmergencyClassifyId2;
 
                 result.DeathIdentityNumber = hisTreatmentFinishSDO_process.DeathIdentityNumber;
 

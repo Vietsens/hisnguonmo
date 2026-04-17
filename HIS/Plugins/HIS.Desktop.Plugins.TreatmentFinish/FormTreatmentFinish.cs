@@ -174,6 +174,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
         public bool KyPhieuHenKham { get; set; }
         bool isFinished = false;
 
+        // Emergency classify 2 (GP3 — PTTK_19083)
+        private List<HIS_PATIENT_CLASSIFY> emergencyClassifyList;
+        private bool isEmergencyClassifyEnabled = false;
+
         ///private const string KEY_PathologicalProcessOption = "HIS.Desktop.Plugins.TreatmentFinish.PathologicalProcessOption";
         /// <summary>
         /// internal static int PathologicalProcessOption;
@@ -572,6 +576,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 this.lciOutPatientDateFrom.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.lciOutPatientDateFrom.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciDoctorName.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.lciDoctorName.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciTypeOfDischarge.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.lciTypeOfDischarge.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.lciEmergencyClassify2.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.lciEmergencyClassify2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem13.OptionsToolTip.ToolTip = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.layoutControlItem11.OptionsToolTip.ToolTip", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.layoutControlItem11.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lciPatientProgram.Text = Inventec.Common.Resource.Get.Value("FormTreatmentFinish.lciPatientProgram.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
@@ -937,6 +942,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 LoadCboEndDeptSubsHead(listUser);
                 LoadCboHospSubsDirector(listUser);
                 LoadDataToCbo();
+                InitEmergencyClassify2();
             }
             catch (Exception ex)
             {
@@ -965,6 +971,80 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        /// <summary>
+        /// Init combobox "Phân loại cấp cứu 2" — GP3 PTTK_19083.
+        /// Show only when config MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY = 1
+        /// AND treatment is emergency (IS_EMERGENCY on room/treatment).
+        /// </summary>
+        private void InitEmergencyClassify2()
+        {
+            try
+            {
+                string configVal = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY");
+                bool isConfigEnabled = configVal == "1";
+
+                bool isEmergencyRoom = false;
+                if (WorkPlaceSDO != null)
+                {
+                    var executeRoom = BackendDataWorker.Get<V_HIS_EXECUTE_ROOM>()
+                        .FirstOrDefault(o => o.ROOM_ID == WorkPlaceSDO.RoomId);
+                    if (executeRoom != null && executeRoom.IS_EMERGENCY == 1)
+                    {
+                        isEmergencyRoom = true;
+                    }
+                }
+
+                isEmergencyClassifyEnabled = isConfigEnabled && isEmergencyRoom;
+                if (!isEmergencyClassifyEnabled)
+                {
+                    lciEmergencyClassify2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    return;
+                }
+
+                lciEmergencyClassify2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                // Load data: HIS_PATIENT_CLASSIFY with IS_EMERGENCY = 1
+                emergencyClassifyList = BackendDataWorker.Get<HIS_PATIENT_CLASSIFY>()
+                    .Where(o => o.IS_EMERGENCY == 1
+                        && o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                    .ToList();
+
+                string ma = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FIMISH_MA");
+                string ten = GetStringFromKey("IVT_LANGUAGE_KEY__FORM_TREATMENT_FIMISH_TEN");
+                Base.GlobalStore.LoadDataGridLookUpEdit(
+                    cboEmergencyClassify2,
+                    "PATIENT_CLASSIFY_CODE", ma,
+                    "PATIENT_CLASSIFY_NAME", ten,
+                    "ID",
+                    emergencyClassifyList);
+
+                // Load existing value from treatment
+                if (currentHisTreatment != null && currentHisTreatment.EMERGENCY_CLASSIFY_ID_2.HasValue)
+                {
+                    cboEmergencyClassify2.EditValue = currentHisTreatment.EMERGENCY_CLASSIFY_ID_2.Value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboEmergencyClassify2_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboEmergencyClassify2.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
