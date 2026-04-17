@@ -3878,9 +3878,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
         {
             try
             {
-                if (btnAutoSyncClick == true && configSync.isXML3176 == true)
+                if ((isAutoSync == true || btnAutoSyncClick == true) && configSync.isXML3176 == true) 
                 {
+                    LogSystem.Info("Check tự động ");
                     listSelection = this.GetTreatment();
+                    LogSystem.Info("Giá trị tự động: " + listSelection.Count());
                 }
                 if ((listSelection == null || listSelection.Count == 0) && isAutoSignXML3176 == false)
                 {
