@@ -939,6 +939,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.gridView23 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboExamEyeLoginName4 = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView22 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamRespiratoryLoginName4 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView96 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamNeurologicalLoginName4 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView97 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamMuscleBoneLoginName4 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView98 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamMentalLoginName4 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView99 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamOendLoginName4 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView100 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExamMaternityLoginName4 = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridView101 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtConclude4 = new DevExpress.XtraEditors.TextEdit();
             this.txtNoteSubclinical4 = new DevExpress.XtraEditors.TextEdit();
             this.label52 = new System.Windows.Forms.Label();
@@ -1136,6 +1148,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem452 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem453 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem454 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem675 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem676 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem677 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem678 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem679 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem680 = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem19 = new DevExpress.XtraLayout.EmptySpaceItem();
             this.layoutControlItem566 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem571 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -2389,6 +2407,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.gridView23)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamEyeLoginName4.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView22)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamRespiratoryLoginName4.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView96)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamNeurologicalLoginName4.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView97)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMuscleBoneLoginName4.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView98)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMentalLoginName4.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView99)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamOendLoginName4.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView100)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMaternityLoginName4.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView101)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtConclude4.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNoteSubclinical4.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamMaternityRank4.Properties)).BeginInit();
@@ -2561,6 +2591,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem452)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem453)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem454)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem675)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem676)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem677)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem678)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem679)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem680)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem19)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem566)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem571)).BeginInit();
@@ -12611,6 +12647,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControl10.Controls.Add(this.cboExamCardiovascularLoginName4);
             this.layoutControl10.Controls.Add(this.cboExamEntLoginName4);
             this.layoutControl10.Controls.Add(this.cboExamEyeLoginName4);
+            this.layoutControl10.Controls.Add(this.cboExamRespiratoryLoginName4);
+            this.layoutControl10.Controls.Add(this.cboExamNeurologicalLoginName4);
+            this.layoutControl10.Controls.Add(this.cboExamMuscleBoneLoginName4);
+            this.layoutControl10.Controls.Add(this.cboExamMentalLoginName4);
+            this.layoutControl10.Controls.Add(this.cboExamOendLoginName4);
+            this.layoutControl10.Controls.Add(this.cboExamMaternityLoginName4);
             this.layoutControl10.Controls.Add(this.txtConclude4);
             this.layoutControl10.Controls.Add(this.txtNoteSubclinical4);
             this.layoutControl10.Controls.Add(this.label52);
@@ -12836,7 +12878,151 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.gridView22.Name = "gridView22";
             this.gridView22.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView22.OptionsView.ShowGroupPanel = false;
-            // 
+            //
+            // cboExamRespiratoryLoginName4
+            //
+            this.cboExamRespiratoryLoginName4.Location = new System.Drawing.Point(1524, 376);
+            this.cboExamRespiratoryLoginName4.Margin = new System.Windows.Forms.Padding(4);
+            this.cboExamRespiratoryLoginName4.MenuManager = this.barManager1;
+            this.cboExamRespiratoryLoginName4.Name = "cboExamRespiratoryLoginName4";
+            this.cboExamRespiratoryLoginName4.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExamRespiratoryLoginName4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamRespiratoryLoginName4.Properties.NullText = "";
+            this.cboExamRespiratoryLoginName4.Properties.View = this.gridView96;
+            this.cboExamRespiratoryLoginName4.Size = new System.Drawing.Size(140, 22);
+            this.cboExamRespiratoryLoginName4.StyleController = this.layoutControl10;
+            this.cboExamRespiratoryLoginName4.TabIndex = 82;
+            this.cboExamRespiratoryLoginName4.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            //
+            // gridView96
+            //
+            this.gridView96.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView96.Name = "gridView96";
+            this.gridView96.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView96.OptionsView.ShowGroupPanel = false;
+            //
+            // cboExamNeurologicalLoginName4
+            //
+            this.cboExamNeurologicalLoginName4.Location = new System.Drawing.Point(1524, 50);
+            this.cboExamNeurologicalLoginName4.Margin = new System.Windows.Forms.Padding(4);
+            this.cboExamNeurologicalLoginName4.MenuManager = this.barManager1;
+            this.cboExamNeurologicalLoginName4.Name = "cboExamNeurologicalLoginName4";
+            this.cboExamNeurologicalLoginName4.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExamNeurologicalLoginName4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamNeurologicalLoginName4.Properties.NullText = "";
+            this.cboExamNeurologicalLoginName4.Properties.View = this.gridView97;
+            this.cboExamNeurologicalLoginName4.Size = new System.Drawing.Size(140, 22);
+            this.cboExamNeurologicalLoginName4.StyleController = this.layoutControl10;
+            this.cboExamNeurologicalLoginName4.TabIndex = 83;
+            this.cboExamNeurologicalLoginName4.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            //
+            // gridView97
+            //
+            this.gridView97.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView97.Name = "gridView97";
+            this.gridView97.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView97.OptionsView.ShowGroupPanel = false;
+            //
+            // cboExamMuscleBoneLoginName4
+            //
+            this.cboExamMuscleBoneLoginName4.Location = new System.Drawing.Point(1524, 404);
+            this.cboExamMuscleBoneLoginName4.Margin = new System.Windows.Forms.Padding(4);
+            this.cboExamMuscleBoneLoginName4.MenuManager = this.barManager1;
+            this.cboExamMuscleBoneLoginName4.Name = "cboExamMuscleBoneLoginName4";
+            this.cboExamMuscleBoneLoginName4.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExamMuscleBoneLoginName4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamMuscleBoneLoginName4.Properties.NullText = "";
+            this.cboExamMuscleBoneLoginName4.Properties.View = this.gridView98;
+            this.cboExamMuscleBoneLoginName4.Size = new System.Drawing.Size(140, 22);
+            this.cboExamMuscleBoneLoginName4.StyleController = this.layoutControl10;
+            this.cboExamMuscleBoneLoginName4.TabIndex = 84;
+            this.cboExamMuscleBoneLoginName4.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            //
+            // gridView98
+            //
+            this.gridView98.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView98.Name = "gridView98";
+            this.gridView98.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView98.OptionsView.ShowGroupPanel = false;
+            //
+            // cboExamMentalLoginName4
+            //
+            this.cboExamMentalLoginName4.Location = new System.Drawing.Point(1524, 22);
+            this.cboExamMentalLoginName4.Margin = new System.Windows.Forms.Padding(4);
+            this.cboExamMentalLoginName4.MenuManager = this.barManager1;
+            this.cboExamMentalLoginName4.Name = "cboExamMentalLoginName4";
+            this.cboExamMentalLoginName4.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExamMentalLoginName4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamMentalLoginName4.Properties.NullText = "";
+            this.cboExamMentalLoginName4.Properties.View = this.gridView99;
+            this.cboExamMentalLoginName4.Size = new System.Drawing.Size(140, 22);
+            this.cboExamMentalLoginName4.StyleController = this.layoutControl10;
+            this.cboExamMentalLoginName4.TabIndex = 85;
+            this.cboExamMentalLoginName4.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            //
+            // gridView99
+            //
+            this.gridView99.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView99.Name = "gridView99";
+            this.gridView99.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView99.OptionsView.ShowGroupPanel = false;
+            //
+            // cboExamOendLoginName4
+            //
+            this.cboExamOendLoginName4.Location = new System.Drawing.Point(1524, 432);
+            this.cboExamOendLoginName4.Margin = new System.Windows.Forms.Padding(4);
+            this.cboExamOendLoginName4.MenuManager = this.barManager1;
+            this.cboExamOendLoginName4.Name = "cboExamOendLoginName4";
+            this.cboExamOendLoginName4.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExamOendLoginName4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamOendLoginName4.Properties.NullText = "";
+            this.cboExamOendLoginName4.Properties.View = this.gridView100;
+            this.cboExamOendLoginName4.Size = new System.Drawing.Size(140, 22);
+            this.cboExamOendLoginName4.StyleController = this.layoutControl10;
+            this.cboExamOendLoginName4.TabIndex = 86;
+            this.cboExamOendLoginName4.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            //
+            // gridView100
+            //
+            this.gridView100.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView100.Name = "gridView100";
+            this.gridView100.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView100.OptionsView.ShowGroupPanel = false;
+            //
+            // cboExamMaternityLoginName4
+            //
+            this.cboExamMaternityLoginName4.Location = new System.Drawing.Point(1524, 460);
+            this.cboExamMaternityLoginName4.Margin = new System.Windows.Forms.Padding(4);
+            this.cboExamMaternityLoginName4.MenuManager = this.barManager1;
+            this.cboExamMaternityLoginName4.Name = "cboExamMaternityLoginName4";
+            this.cboExamMaternityLoginName4.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExamMaternityLoginName4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExamMaternityLoginName4.Properties.NullText = "";
+            this.cboExamMaternityLoginName4.Properties.View = this.gridView101;
+            this.cboExamMaternityLoginName4.Size = new System.Drawing.Size(140, 22);
+            this.cboExamMaternityLoginName4.StyleController = this.layoutControl10;
+            this.cboExamMaternityLoginName4.TabIndex = 87;
+            this.cboExamMaternityLoginName4.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.ClearData_ButtonClick);
+            //
+            // gridView101
+            //
+            this.gridView101.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView101.Name = "gridView101";
+            this.gridView101.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView101.OptionsView.ShowGroupPanel = false;
+            //
             // txtConclude4
             // 
             this.txtConclude4.Location = new System.Drawing.Point(591, 712);
@@ -14171,6 +14357,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem452,
             this.layoutControlItem453,
             this.layoutControlItem454,
+            this.layoutControlItem678,
+            this.layoutControlItem676,
+            this.layoutControlItem675,
+            this.layoutControlItem677,
+            this.layoutControlItem679,
+            this.layoutControlItem680,
             this.emptySpaceItem19,
             this.layoutControlItem566,
             this.layoutControlItem571,
@@ -14234,7 +14426,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem269.Control = this.txtExamMentalConclude4;
             this.layoutControlItem269.Location = new System.Drawing.Point(1121, 22);
             this.layoutControlItem269.Name = "layoutControlItem269";
-            this.layoutControlItem269.Size = new System.Drawing.Size(513, 28);
+            this.layoutControlItem269.Size = new System.Drawing.Size(292, 28);
             this.layoutControlItem269.Text = "Kết luận:";
             this.layoutControlItem269.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem269.TextSize = new System.Drawing.Size(90, 20);
@@ -14247,7 +14439,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem270.Control = this.txtNeurologicalConclude4;
             this.layoutControlItem270.Location = new System.Drawing.Point(1121, 50);
             this.layoutControlItem270.Name = "layoutControlItem270";
-            this.layoutControlItem270.Size = new System.Drawing.Size(513, 28);
+            this.layoutControlItem270.Size = new System.Drawing.Size(292, 28);
             this.layoutControlItem270.Text = "Kết luận:";
             this.layoutControlItem270.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem270.TextSize = new System.Drawing.Size(90, 20);
@@ -14256,7 +14448,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem271
             // 
             this.layoutControlItem271.Control = this.cboExamMentalRank4;
-            this.layoutControlItem271.Location = new System.Drawing.Point(1634, 22);
+            this.layoutControlItem271.Location = new System.Drawing.Point(1413, 22);
             this.layoutControlItem271.Name = "layoutControlItem271";
             this.layoutControlItem271.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem271.Size = new System.Drawing.Size(111, 28);
@@ -14266,7 +14458,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem272
             // 
             this.layoutControlItem272.Control = this.cboNeurologicalRank4;
-            this.layoutControlItem272.Location = new System.Drawing.Point(1634, 50);
+            this.layoutControlItem272.Location = new System.Drawing.Point(1413, 50);
             this.layoutControlItem272.Name = "layoutControlItem272";
             this.layoutControlItem272.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem272.Size = new System.Drawing.Size(111, 28);
@@ -14879,46 +15071,46 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem319.Control = this.txtExamRespiratoryConclude4;
             this.layoutControlItem319.Location = new System.Drawing.Point(1121, 376);
             this.layoutControlItem319.Name = "layoutControlItem319";
-            this.layoutControlItem319.Size = new System.Drawing.Size(513, 28);
+            this.layoutControlItem319.Size = new System.Drawing.Size(292, 28);
             this.layoutControlItem319.Text = "Kết luận:";
             this.layoutControlItem319.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem319.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem319.TextToControlDistance = 5;
-            // 
+            //
             // layoutControlItem320
-            // 
+            //
             this.layoutControlItem320.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem320.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem320.Control = this.txtExamMuscleBoneConclude4;
             this.layoutControlItem320.Location = new System.Drawing.Point(1121, 404);
             this.layoutControlItem320.Name = "layoutControlItem320";
-            this.layoutControlItem320.Size = new System.Drawing.Size(513, 28);
+            this.layoutControlItem320.Size = new System.Drawing.Size(292, 28);
             this.layoutControlItem320.Text = "Kết luận:";
             this.layoutControlItem320.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem320.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem320.TextToControlDistance = 5;
-            // 
+            //
             // layoutControlItem321
-            // 
+            //
             this.layoutControlItem321.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem321.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem321.Control = this.txtExamOendConclude4;
             this.layoutControlItem321.Location = new System.Drawing.Point(1121, 432);
             this.layoutControlItem321.Name = "layoutControlItem321";
-            this.layoutControlItem321.Size = new System.Drawing.Size(513, 28);
+            this.layoutControlItem321.Size = new System.Drawing.Size(292, 28);
             this.layoutControlItem321.Text = "Kết luận:";
             this.layoutControlItem321.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem321.TextSize = new System.Drawing.Size(90, 20);
             this.layoutControlItem321.TextToControlDistance = 5;
-            // 
+            //
             // layoutControlItem322
-            // 
+            //
             this.layoutControlItem322.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem322.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem322.Control = this.txtExamMaternityConclude4;
             this.layoutControlItem322.Location = new System.Drawing.Point(1121, 460);
             this.layoutControlItem322.Name = "layoutControlItem322";
-            this.layoutControlItem322.Size = new System.Drawing.Size(513, 28);
+            this.layoutControlItem322.Size = new System.Drawing.Size(292, 28);
             this.layoutControlItem322.Text = "Kết luận:";
             this.layoutControlItem322.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem322.TextSize = new System.Drawing.Size(90, 20);
@@ -14927,7 +15119,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem323
             // 
             this.layoutControlItem323.Control = this.cboExamRespiratoryRank4;
-            this.layoutControlItem323.Location = new System.Drawing.Point(1634, 376);
+            this.layoutControlItem323.Location = new System.Drawing.Point(1413, 376);
             this.layoutControlItem323.Name = "layoutControlItem323";
             this.layoutControlItem323.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem323.Size = new System.Drawing.Size(111, 28);
@@ -14937,7 +15129,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem324
             // 
             this.layoutControlItem324.Control = this.cboExamMuscleBoneRank4;
-            this.layoutControlItem324.Location = new System.Drawing.Point(1634, 404);
+            this.layoutControlItem324.Location = new System.Drawing.Point(1413, 404);
             this.layoutControlItem324.Name = "layoutControlItem324";
             this.layoutControlItem324.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem324.Size = new System.Drawing.Size(111, 28);
@@ -14947,7 +15139,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem325
             // 
             this.layoutControlItem325.Control = this.cboExamOendRank4;
-            this.layoutControlItem325.Location = new System.Drawing.Point(1634, 432);
+            this.layoutControlItem325.Location = new System.Drawing.Point(1413, 432);
             this.layoutControlItem325.Name = "layoutControlItem325";
             this.layoutControlItem325.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem325.Size = new System.Drawing.Size(111, 28);
@@ -14957,7 +15149,7 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             // layoutControlItem326
             // 
             this.layoutControlItem326.Control = this.cboExamMaternityRank4;
-            this.layoutControlItem326.Location = new System.Drawing.Point(1634, 460);
+            this.layoutControlItem326.Location = new System.Drawing.Point(1413, 460);
             this.layoutControlItem326.Name = "layoutControlItem326";
             this.layoutControlItem326.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
             this.layoutControlItem326.Size = new System.Drawing.Size(111, 28);
@@ -15145,7 +15337,85 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.layoutControlItem454.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem454.TextSize = new System.Drawing.Size(70, 20);
             this.layoutControlItem454.TextToControlDistance = 5;
-            // 
+            //
+            // layoutControlItem675
+            //
+            this.layoutControlItem675.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem675.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem675.Control = this.cboExamRespiratoryLoginName4;
+            this.layoutControlItem675.Location = new System.Drawing.Point(1524, 376);
+            this.layoutControlItem675.Name = "layoutControlItem675";
+            this.layoutControlItem675.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem675.Text = "Ng\u01B0\u1EDDi kh\u00E1m:";
+            this.layoutControlItem675.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem675.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem675.TextToControlDistance = 5;
+            //
+            // layoutControlItem676
+            //
+            this.layoutControlItem676.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem676.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem676.Control = this.cboExamNeurologicalLoginName4;
+            this.layoutControlItem676.Location = new System.Drawing.Point(1524, 50);
+            this.layoutControlItem676.Name = "layoutControlItem676";
+            this.layoutControlItem676.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem676.Text = "Ng\u01B0\u1EDDi kh\u00E1m:";
+            this.layoutControlItem676.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem676.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem676.TextToControlDistance = 5;
+            //
+            // layoutControlItem677
+            //
+            this.layoutControlItem677.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem677.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem677.Control = this.cboExamMuscleBoneLoginName4;
+            this.layoutControlItem677.Location = new System.Drawing.Point(1524, 404);
+            this.layoutControlItem677.Name = "layoutControlItem677";
+            this.layoutControlItem677.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem677.Text = "Ng\u01B0\u1EDDi kh\u00E1m:";
+            this.layoutControlItem677.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem677.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem677.TextToControlDistance = 5;
+            //
+            // layoutControlItem678
+            //
+            this.layoutControlItem678.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem678.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem678.Control = this.cboExamMentalLoginName4;
+            this.layoutControlItem678.Location = new System.Drawing.Point(1524, 22);
+            this.layoutControlItem678.Name = "layoutControlItem678";
+            this.layoutControlItem678.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem678.Text = "Ng\u01B0\u1EDDi kh\u00E1m:";
+            this.layoutControlItem678.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem678.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem678.TextToControlDistance = 5;
+            //
+            // layoutControlItem679
+            //
+            this.layoutControlItem679.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem679.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem679.Control = this.cboExamOendLoginName4;
+            this.layoutControlItem679.Location = new System.Drawing.Point(1524, 432);
+            this.layoutControlItem679.Name = "layoutControlItem679";
+            this.layoutControlItem679.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem679.Text = "Ng\u01B0\u1EDDi kh\u00E1m:";
+            this.layoutControlItem679.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem679.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem679.TextToControlDistance = 5;
+            //
+            // layoutControlItem680
+            //
+            this.layoutControlItem680.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem680.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem680.Control = this.cboExamMaternityLoginName4;
+            this.layoutControlItem680.Location = new System.Drawing.Point(1524, 460);
+            this.layoutControlItem680.Name = "layoutControlItem680";
+            this.layoutControlItem680.Size = new System.Drawing.Size(221, 28);
+            this.layoutControlItem680.Text = "Ng\u01B0\u1EDDi kh\u00E1m:";
+            this.layoutControlItem680.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem680.TextSize = new System.Drawing.Size(70, 20);
+            this.layoutControlItem680.TextToControlDistance = 5;
+            //
             // emptySpaceItem19
             // 
             this.emptySpaceItem19.AllowHotTrack = false;
@@ -22760,6 +23030,18 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.gridView23)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamEyeLoginName4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView22)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamRespiratoryLoginName4.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView96)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamNeurologicalLoginName4.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView97)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMuscleBoneLoginName4.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView98)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMentalLoginName4.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView99)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamOendLoginName4.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView100)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExamMaternityLoginName4.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView101)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtConclude4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtNoteSubclinical4.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboExamMaternityRank4.Properties)).EndInit();
@@ -22932,6 +23214,12 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem452)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem453)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem454)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem675)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem676)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem677)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem678)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem679)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem680)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem19)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem566)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem571)).EndInit();
@@ -24987,5 +25275,23 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem631;
         private System.Windows.Forms.Label label74;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem633;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamRespiratoryLoginName4;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView96;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamNeurologicalLoginName4;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView97;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamMuscleBoneLoginName4;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView98;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamMentalLoginName4;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView99;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamOendLoginName4;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView100;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExamMaternityLoginName4;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView101;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem675;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem676;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem677;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem678;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem679;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem680;
     }
 }

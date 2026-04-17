@@ -47,13 +47,12 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 if (!dxValidationProviderEditorInfo.Validate())
                     return;
 
+                if (this.currentData == null || this.currentData.ID <= 0)
+                    return;
+
                 WaitingManager.Show();
                 MOS.SDO.HisServiceReqKskOfficialsSDO updateDTO = new MOS.SDO.HisServiceReqKskOfficialsSDO();
-
-                if (this.currentData != null && this.currentData.ID > 0)
-                {
-                    LoadCurrent(this.currentData, ref updateDTO);
-                }
+                LoadCurrent(this.currentData, ref updateDTO);
                 UpdateOfficialsDTOFromDataForm(ref updateDTO);
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("updateDTO__:", updateDTO));
                 var resultData = new BackendAdapter(param).Post<MOS.SDO.KskOfficialsResultSDO>(HisRequestUriStore.MOS_HIS_SERVICE_REQ_KSK_OFFICIALS, ApiConsumers.MosConsumer, updateDTO, param);
@@ -61,11 +60,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 {
                     success = true;
                     FillDataToGridControl();
-                    var dataSource = (gridViewServiceReq.DataSource as List<ServiceReqADO>);
-                    if (dataSource != null && dataSource.Count() > 0)
-                    {
-                        ChangedDataRow(dataSource.FirstOrDefault(o => o.ID == resultData.HisServiceReq.ID));
-                    }
                 }
 
                 if (success)
@@ -104,7 +98,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             }
         }
 
-
         private void FinishProcess()
         {
             CommonParam param = new CommonParam();
@@ -116,14 +109,18 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 positionHandle = -1;
 
-                if (this.currentData == null || this.currentServiceReqSTT == ServiceReqStatus.HoanThanh || this.currentServiceReqSTT == ServiceReqStatus.Default)
+                if (this.currentData == null
+                    || this.currentServiceReqSTT == ServiceReqStatus.HoanThanh
+                    || this.currentServiceReqSTT == ServiceReqStatus.Default)
                 {
                     EnableControlChanged(this.currentServiceReqSTT);
                     return;
                 }
 
                 WaitingManager.Show();
-                var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SERVICE_REQ>(HisRequestUriStore.MOS_HIS_SERVICE_REQ_FINISH, ApiConsumers.MosConsumer, this.currentData.ID, param);
+                var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SERVICE_REQ>(
+                    HisRequestUriStore.MOS_HIS_SERVICE_REQ_FINISH,
+                    ApiConsumers.MosConsumer, this.currentData.ID, param);
                 if (result != null)
                 {
                     success = true;
@@ -140,14 +137,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 }
 
                 WaitingManager.Hide();
-
-                #region Hien thi message thong bao
                 MessageManager.Show(this, param, success);
-                #endregion
-
-                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
                 SessionManager.ProcessTokenLost(param);
-                #endregion
             }
             catch (Exception ex)
             {
@@ -167,14 +158,17 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
 
                 positionHandle = -1;
 
-                if (this.currentData == null || this.currentServiceReqSTT != ServiceReqStatus.HoanThanh)
+                if (this.currentData == null
+                    || this.currentServiceReqSTT != ServiceReqStatus.HoanThanh)
                 {
                     EnableControlChanged(this.currentServiceReqSTT);
                     return;
                 }
 
                 WaitingManager.Show();
-                var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SERVICE_REQ>(HisRequestUriStore.MOS_HIS_SERVICE_REQ_UNFINISH, ApiConsumers.MosConsumer, this.currentData.ID, param);
+                var result = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_SERVICE_REQ>(
+                    HisRequestUriStore.MOS_HIS_SERVICE_REQ_UNFINISH,
+                    ApiConsumers.MosConsumer, this.currentData.ID, param);
                 if (result != null)
                 {
                     success = true;
@@ -191,14 +185,8 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 }
 
                 WaitingManager.Hide();
-
-                #region Hien thi message thong bao
                 MessageManager.Show(this, param, success);
-                #endregion
-
-                #region Neu phien lam viec bi mat, phan mem tu dong logout va tro ve trang login
                 SessionManager.ProcessTokenLost(param);
-                #endregion
             }
             catch (Exception ex)
             {

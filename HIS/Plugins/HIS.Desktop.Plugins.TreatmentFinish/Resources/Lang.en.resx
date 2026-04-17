@@ -672,6 +672,9 @@
   <data name="FormTreatmentFinish.lciTypeOfDischarge.Text" xml:space="preserve">
     <value>Hospital discharge type:</value>
   </data>
+  <data name="FormTreatmentFinish.lciEmergencyClassify2.Text" xml:space="preserve">
+    <value>Emergency classify 2:</value>
+  </data>
   <data name="FormTreatmentFinish.Text" xml:space="preserve">
     <value>End of treatment</value>
   </data>

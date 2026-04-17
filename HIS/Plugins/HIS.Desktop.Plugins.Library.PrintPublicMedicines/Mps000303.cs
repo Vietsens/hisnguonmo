@@ -67,6 +67,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                         ado.AMOUNT = itemGroup.Sum(p => p.AMOUNT);
                         ado.TDL_SERVICE_NAME = itemGroup.FirstOrDefault().TDL_SERVICE_NAME;
                         ado.PRICE = itemGroup.FirstOrDefault().PRICE;
+                        ado.VIR_PRICE = itemGroup.FirstOrDefault().VIR_PRICE;
                         ado.SERVICE_UNIT_NAME = itemGroup.FirstOrDefault().SERVICE_UNIT_NAME;
                         ado.CONCENTRA = itemGroup.FirstOrDefault().CONCENTRA;
                         ado.TYPE_ID = itemGroup.FirstOrDefault().TYPE_ID;
@@ -395,6 +396,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                                 ado.SERVICE_ID = item.SERVICE_ID;
                                 ado.PRICE = item.PRICE;
                                 ado.VIR_PRICE = item.VIR_PRICE;
+                                Inventec.Common.Logging.LogSystem.Info("Mps000303 Service VIR_PRICE: SERVICE_ID=" + item.SERVICE_ID + ", PRICE=" + item.PRICE + ", VIR_PRICE=" + item.VIR_PRICE);
                                 ado.AMOUNT = item.AMOUNT;
                                 ado.SERVICE_UNIT_NAME = item.SERVICE_UNIT_NAME;
                                 ado.REQUEST_DEPARTMENT_ID = item.TDL_REQUEST_DEPARTMENT_ID;
@@ -403,6 +405,21 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                                 this._Datas.Add(ado);
                             }
                         }
+                    }
+
+                    // Load ALL V_HIS_SERE_SERV for VIR_PRICE lookup (thuốc/vật tư/máu)
+                    MOS.Filter.HisSereServViewFilter allSsFilter = new HisSereServViewFilter();
+                    allSsFilter.TREATMENT_ID = this._treatmentId;
+                    var allSereServs = new BackendAdapter(param).Get<List<V_HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GETVIEW, ApiConsumers.MosConsumer, allSsFilter, param);
+                    if (allSereServs != null && allSereServs.Count > 0)
+                    {
+                        foreach (var ss in allSereServs)
+                        {
+                            string key = ss.SERVICE_REQ_ID + "_" + ss.TDL_SERVICE_NAME;
+                            if (!dicVirPrice.ContainsKey(key))
+                                dicVirPrice[key] = ss.VIR_PRICE;
+                        }
+                        Inventec.Common.Logging.LogSystem.Info("Mps000303 dicVirPrice loaded: count=" + dicVirPrice.Count);
                     }
 
                     MOS.Filter.HisExpMestFilter expMestFilter = new HisExpMestFilter();
@@ -444,6 +461,7 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
 
         Dictionary<long, HIS_EXP_MEST> dicExpMest = new Dictionary<long, HIS_EXP_MEST>();
         Dictionary<long, HIS_SERVICE_REQ> dicServiceReq = new Dictionary<long, HIS_SERVICE_REQ>();
+        Dictionary<string, decimal?> dicVirPrice = new Dictionary<string, decimal?>();
 
         internal List<Service_NT_ADO> _Datas { get; set; }
         /// <summary>
@@ -518,7 +536,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                                 Service_NT_ADO expMedi = new Service_NT_ADO();
                                 expMedi.DESCRIPTION = itemGroups[0].DESCRIPTION;
                                 expMedi.PRICE = itemGroups[0].PRICE;
-                                expMedi.VIR_PRICE = itemGroups[0].PRICE;
+                                // Lookup VIR_PRICE từ V_HIS_SERE_SERV
+                                string virPriceKey = _expMest.SERVICE_REQ_ID + "_" + itemGroups[0].MEDICINE_TYPE_NAME;
+                                expMedi.VIR_PRICE = dicVirPrice.ContainsKey(virPriceKey) ? dicVirPrice[virPriceKey] : itemGroups[0].PRICE;
                                 expMedi.SERVICE_CODE = itemGroups[0].MEDICINE_TYPE_CODE;
                                 expMedi.SERVICE_ID = itemGroups[0].MEDICINE_TYPE_ID;
                                 expMedi.SERVICE_NAME = itemGroups[0].MEDICINE_TYPE_NAME;
@@ -581,7 +601,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                                 Service_NT_ADO expMate = new Service_NT_ADO();
                                 expMate.DESCRIPTION = itemGroups[0].DESCRIPTION;
                                 expMate.PRICE = itemGroups[0].PRICE;
-                                expMate.VIR_PRICE = itemGroups[0].PRICE;
+                                // Lookup VIR_PRICE từ V_HIS_SERE_SERV
+                                string virPriceKeyMate = _expMest.SERVICE_REQ_ID + "_" + itemGroups[0].MATERIAL_TYPE_NAME;
+                                expMate.VIR_PRICE = dicVirPrice.ContainsKey(virPriceKeyMate) ? dicVirPrice[virPriceKeyMate] : itemGroups[0].PRICE;
                                 expMate.SERVICE_CODE = itemGroups[0].MATERIAL_TYPE_CODE;
                                 expMate.SERVICE_ID = itemGroups[0].MATERIAL_TYPE_ID;
                                 expMate.SERVICE_NAME = itemGroups[0].MATERIAL_TYPE_NAME;
@@ -647,7 +669,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                                 Service_NT_ADO expMate = new Service_NT_ADO();
                                 expMate.DESCRIPTION = itemGroups[0].DESCRIPTION;
                                 expMate.PRICE = itemGroups[0].PRICE;
-                                expMate.VIR_PRICE = itemGroups[0].PRICE;
+                                // Lookup VIR_PRICE từ V_HIS_SERE_SERV
+                                string virPriceKeyBlood = _expMest.SERVICE_REQ_ID + "_" + itemGroups[0].BLOOD_TYPE_NAME;
+                                expMate.VIR_PRICE = dicVirPrice.ContainsKey(virPriceKeyBlood) ? dicVirPrice[virPriceKeyBlood] : itemGroups[0].PRICE;
                                 expMate.SERVICE_CODE = itemGroups[0].BLOOD_TYPE_CODE;
                                 expMate.SERVICE_ID = itemGroups[0].BLOOD_TYPE_ID;
                                 expMate.SERVICE_NAME = itemGroups[0].BLOOD_TYPE_NAME;
@@ -921,7 +945,9 @@ namespace HIS.Desktop.Plugins.Library.PrintPublicMedicines
                             sereServPrint.AMOUNT = group.ToList().Where(o => distinctDatesInPage.Contains(o.INTRUCTION_DATE)).Sum(o => o.AMOUNT);
                             sereServPrint.AMOUNT_STRING = sereServPrint.AMOUNT + "";
                             sereServPrint.CONCENTRA = group.First().CONCENTRA;
-                            sereServPrint.VIR_PRICE = group.First().VIR_PRICE ?? 0;
+                            sereServPrint.VIR_PRICE = Math.Round(group.First().VIR_PRICE ?? 0, 2);
+                           
+                            
                             string amount = sereServPrint.AMOUNT + "";
                             sereServPrint.Day1 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day1).Any() ? amount : "";
                             sereServPrint.Day2 = sereServs.Where(o => TimeNumberToDateString(o.INTRUCTION_DATE) == sdo.Day2).Any() ? amount : "";

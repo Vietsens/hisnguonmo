@@ -443,6 +443,57 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             return result;
         }
 
+        private string GetShortName(string fullName)
+        {
+            if (string.IsNullOrWhiteSpace(fullName)) return "";
+            return fullName.Trim().Split(' ').Last();
+        }
+
+        private string AppendRoleName(string currentValue, string newValue)
+        {
+            if (string.IsNullOrWhiteSpace(newValue))
+                return currentValue;
+
+            if (string.IsNullOrWhiteSpace(currentValue))
+                return newValue;
+
+            var existed = currentValue
+                .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(x => x.Trim());
+
+            if (existed.Contains(newValue))
+                return currentValue;
+
+            return currentValue + ", " + newValue;
+        }
+
+        private string AppendTooltip(string currentValue, string fullName, decimal? remunerationPrice)
+        {
+            if (string.IsNullOrWhiteSpace(fullName))
+                return currentValue;
+
+            string value = fullName;
+
+            // Chỉ ghép tiền khi có tiền > 0
+            if (remunerationPrice.HasValue && remunerationPrice.Value > 0)
+            {
+                value += " - " + Inventec.Common.Number.Convert.NumberToString(
+                    remunerationPrice.Value,
+                    ConfigApplications.NumberSeperator);
+            }
+
+            if (string.IsNullOrWhiteSpace(currentValue))
+                return value;
+
+            var exists = currentValue
+                .Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+                .Any(x => x.Trim().Equals(value, StringComparison.OrdinalIgnoreCase));
+
+            if (exists) return currentValue;
+
+            return currentValue + Environment.NewLine + value;
+        }
+
         private void ProcessRoleSereServADO(ADO.SereServADO ado, List<HIS_EKIP_USER> ekip)
         {
             try
@@ -458,44 +509,44 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
                     switch (DicMapData[item.EXECUTE_ROLE_ID])
                     {
                         case 1:
-                            ado.EXECUTE_ROLE_NAME_1 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_1 = item.USERNAME + " - " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_1 = AppendRoleName(ado.EXECUTE_ROLE_NAME_1, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_1 = AppendTooltip(ado.REMUNERATION_PRICE_1, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         case 2:
-                            ado.EXECUTE_ROLE_NAME_2 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_2 = item.USERNAME + " - " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_2 = AppendRoleName(ado.EXECUTE_ROLE_NAME_2, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_2 = AppendTooltip(ado.REMUNERATION_PRICE_2, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         case 3:
-                            ado.EXECUTE_ROLE_NAME_3 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_3 = item.USERNAME + " - " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_3 = AppendRoleName(ado.EXECUTE_ROLE_NAME_3, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_3 = AppendTooltip(ado.REMUNERATION_PRICE_3, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         case 4:
-                            ado.EXECUTE_ROLE_NAME_4 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_4 = item.USERNAME + " - " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_4 = AppendRoleName(ado.EXECUTE_ROLE_NAME_4, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_4 = AppendTooltip(ado.REMUNERATION_PRICE_4, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         case 5:
-                            ado.EXECUTE_ROLE_NAME_5 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_5 = item.USERNAME + " - " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_5 = AppendRoleName(ado.EXECUTE_ROLE_NAME_5, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_5 = AppendTooltip(ado.REMUNERATION_PRICE_5, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         case 6:
-                            ado.EXECUTE_ROLE_NAME_6 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_6 = item.USERNAME + " - " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_6 = AppendRoleName(ado.EXECUTE_ROLE_NAME_6, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_6 = AppendTooltip(ado.REMUNERATION_PRICE_6, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         case 7:
-                            ado.EXECUTE_ROLE_NAME_7 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_7 = item.USERNAME + " - " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_7 = AppendRoleName(ado.EXECUTE_ROLE_NAME_7, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_7 = AppendTooltip(ado.REMUNERATION_PRICE_7, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         case 8:
-                            ado.EXECUTE_ROLE_NAME_8 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_8 = item.USERNAME + " - " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_8 = AppendRoleName(ado.EXECUTE_ROLE_NAME_8, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_8 = AppendTooltip(ado.REMUNERATION_PRICE_8, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         case 9:
-                            ado.EXECUTE_ROLE_NAME_9 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_9 = item.USERNAME + " - " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_9 = AppendRoleName(ado.EXECUTE_ROLE_NAME_9, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_9 = AppendTooltip(ado.REMUNERATION_PRICE_9, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         case 10:
-                            ado.EXECUTE_ROLE_NAME_10 = item.USERNAME.Split(' ').Last();
-                            ado.REMUNERATION_PRICE_10 = item.USERNAME + "-  " + Inventec.Common.Number.Convert.NumberToString(item.REMUNERATION_PRICE ?? 0, ConfigApplications.NumberSeperator);
+                            ado.EXECUTE_ROLE_NAME_10 = AppendRoleName(ado.EXECUTE_ROLE_NAME_10, GetShortName(item.USERNAME));
+                            ado.REMUNERATION_PRICE_10 = AppendTooltip(ado.REMUNERATION_PRICE_10, item.USERNAME, item.REMUNERATION_PRICE);
                             break;
                         default:
                             break;
@@ -513,19 +564,59 @@ namespace HIS.Desktop.Plugins.SurgTreatmentList
             List<HIS_EKIP_USER> result = new List<HIS_EKIP_USER>();
             try
             {
-                if (ekipIds != null && ekipIds.Count > 0)
+                if (ekipIds == null || ekipIds.Count == 0)
+                    return result;
+
+                // Loại ID rác, tránh gọi thừa
+                var validEkipIds = ekipIds
+                    .Where(id => id > 0)
+                    .Distinct()
+                    .ToList();
+
+                if (validEkipIds.Count == 0)
+                    return result;
+
+                const int batchSize = 200; // có thể chỉnh 100 / 200 / 300 tùy thực tế
+
+                for (int i = 0; i < validEkipIds.Count; i += batchSize)
                 {
+                    var batchIds = validEkipIds
+                        .Skip(i)
+                        .Take(batchSize)
+                        .ToList();
+
                     CommonParam param = new CommonParam();
                     HisEkipUserFilter filter = new HisEkipUserFilter();
-                    filter.EKIP_IDs = ekipIds;
-                    result = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<HIS_EKIP_USER>>("api/HisEkipUser/Get", ApiConsumer.ApiConsumers.MosConsumer, filter, param);
+                    filter.EKIP_IDs = batchIds;
+
+                    var data = new Inventec.Common.Adapter.BackendAdapter(param)
+                        .Get<List<HIS_EKIP_USER>>(
+                            "api/HisEkipUser/Get",
+                            ApiConsumer.ApiConsumers.MosConsumer,
+                            filter,
+                            param
+                        );
+
+                    if (data != null && data.Count > 0)
+                    {
+                        result.AddRange(data);
+                    }
                 }
+
+                // Nếu sợ trùng dữ liệu thì distinct lại theo ID
+                result = result
+                    .GroupBy(o => o.ID)
+                    .Select(g => g.First())
+                    .ToList();
             }
             catch (Exception ex)
             {
-                result = null;
                 Inventec.Common.Logging.LogSystem.Error(ex);
+
+                // Không trả null để tránh lỗi Where(source == null)
+                return new List<HIS_EKIP_USER>();
             }
+
             return result;
         }
 

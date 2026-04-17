@@ -555,6 +555,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                 chkCancelSign.EditValue = false;
                 chkIsRequiredToComplete.Checked = false;
                 chkPatientMustSign.Checked = false;
+                chkIsAllowEditWhenStored.Checked = false;
                 cboPatientSignatureDisplayType.SelectedIndex = -1;
                 numFixZoom.EditValue = null;
                 cboDocRoleTag.SelectedIndex = -1;
@@ -639,6 +640,11 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     currentDTO.PATIENT_MUST_SIGN = (short)1;
                 else
                     currentDTO.PATIENT_MUST_SIGN = null;
+
+                if (chkIsAllowEditWhenStored.Checked)
+                    currentDTO.IS_ALLOW_EDIT_WHEN_STORED = (short)1;
+                else
+                    currentDTO.IS_ALLOW_EDIT_WHEN_STORED = null;
 
                 currentDTO.DOCUMENT_TYPE_CODE = txtCode.Text.Trim();
                 currentDTO.DOCUMENT_TYPE_NAME = txtName.Text.Trim();
@@ -884,6 +890,7 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
                     chkCancelSign.Checked = data.MUST_CANCEL_BEFORE_DELETE == 1 ? true : false;
                     chkIsRequiredToComplete.Checked = data.IS_REQUIRED_TO_COMPLETE == 1 ? true : false;
                     chkPatientMustSign.Checked = data.PATIENT_MUST_SIGN == 1 ? true : false;
+                    chkIsAllowEditWhenStored.Checked = data.IS_ALLOW_EDIT_WHEN_STORED == 1 ? true : false;
                     cboPatientSignatureDisplayType.SelectedIndex = data.PATIENT_SIGNATURE_DISPLAY_TYPE.HasValue ? (int)data.PATIENT_SIGNATURE_DISPLAY_TYPE : -1;
 
                     string roleDisplay = "";
@@ -1336,6 +1343,21 @@ namespace HIS.Desktop.Plugins.EmrDocumentType
         }
 
         private void chkPatientMustSign_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    chkIsAllowEditWhenStored.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void chkIsAllowEditWhenStored_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             try
             {

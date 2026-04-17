@@ -4334,14 +4334,14 @@ namespace HIS.Desktop.Plugins.EmpUser
         {
             try
             {
-                if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
-                {
-                    dtTimeTo.Enabled = false;
-                }
-                else
-                {
-                    dtTimeTo.Enabled = true;
-                }
+                //if (dtTimeFrom.EditValue != null && dtTimeFrom.DateTime != DateTime.MinValue)
+                //{
+                //    dtTimeTo.Enabled = false;
+                //}
+                //else
+                //{
+                //    dtTimeTo.Enabled = true;
+                //}
             }
             catch (Exception ex)
             {
@@ -4353,14 +4353,14 @@ namespace HIS.Desktop.Plugins.EmpUser
         {
             try
             {
-                if (dtTimeTo.EditValue != null && dtTimeTo.DateTime != DateTime.MinValue)
-                {
-                    dtTimeFrom.Enabled = false;
-                }
-                else
-                {
-                    dtTimeFrom.Enabled = true;
-                }
+                //if (dtTimeTo.EditValue != null && dtTimeTo.DateTime != DateTime.MinValue)
+                //{
+                //    dtTimeFrom.Enabled = false;
+                //}
+                //else
+                //{
+                //    dtTimeFrom.Enabled = true;
+                //}
             }
             catch (Exception ex)
             {

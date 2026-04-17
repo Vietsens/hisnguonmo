@@ -164,10 +164,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                             try
                             {
                                 var moduleData = GlobalVariables.currentModuleRaws
-                                    .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.CreateTransReqQR");
+                                    .FirstOrDefault(o => o.ModuleLink == "HIS.Desktop.Plugins.HisTransReqList");
 
                                 if (moduleData == null)
-                                    throw new NullReferenceException("Không tìm thấy module HIS.Desktop.Plugins.CreateTransReqQR");
+                                    throw new NullReferenceException("Không tìm thấy module HIS.Desktop.Plugins.HisTransReqList");
 
                                 List<object> args = new List<object>();
 

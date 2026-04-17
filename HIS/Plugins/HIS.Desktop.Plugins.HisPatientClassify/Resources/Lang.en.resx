@@ -217,4 +217,12 @@
     <value>Search</value>
     <comment>Từ khóa tìm kiếm</comment>
   </data>
+  <data name="frmHisPatientClassify.gridColumn13.Caption" xml:space="preserve">
+    <value>Emergency</value>
+    <comment>Cấp cứu</comment>
+  </data>
+  <data name="frmHisPatientClassify.layoutControlItem18.Text" xml:space="preserve">
+    <value>Emergency:</value>
+    <comment>Cấp cứu:</comment>
+  </data>
 </root>

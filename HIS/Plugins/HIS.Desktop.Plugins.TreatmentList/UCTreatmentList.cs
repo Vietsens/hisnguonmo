@@ -2047,6 +2047,15 @@ namespace HIS.Desktop.Plugins.TreatmentList
                                 }
                                 #endregion
                             }
+                            else if (hi.Column.FieldName == "TreatmentSummary")
+                            {
+                                #region ----- Lịch sử điều trị -----
+                                if (treatmentData != null)
+                                {
+                                    repositoryItembtnTreatmentSummery_Click(sender, e);
+                                }
+                                #endregion
+                            }
                         }
                     }
                 }
