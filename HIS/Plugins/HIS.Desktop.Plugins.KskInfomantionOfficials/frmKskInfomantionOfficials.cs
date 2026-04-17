@@ -1196,6 +1196,9 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 //Fill data into datasource combo
                 FillDataToControlsForm();
 
+                // Init disease controls gen dong — goi 1 lan khi mo form
+                InitializeOfficialsDesignIfNeeded();
+
                 //Gan gia tri mac dinh
                 SetDefaultValue();
 
@@ -2938,6 +2941,18 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 moduleData = null;
                 dicOrderTabIndexControl = null;
                 currentData = null;
+
+                // Cleanup disease data + unsubscribe grid events
+                diseaseDetails = null;
+                diseaseResults = null;
+                diseaseCheckMapping = null;
+                diseaseTextMapping = null;
+                diseaseGridParent3 = null;
+                diseaseGridParent4 = null;
+                diseaseGridParent5 = null;
+                UC.DiseaseDetailGridHelper.DetachEvents(gridView48);
+                UC.DiseaseDetailGridHelper.DetachEvents(gridView50);
+                UC.DiseaseDetailGridHelper.DetachEvents(gridView49);
                 serviceReqSttList = null;
                 serviceReqSttSelecteds = null;
                 moduleLink = null;

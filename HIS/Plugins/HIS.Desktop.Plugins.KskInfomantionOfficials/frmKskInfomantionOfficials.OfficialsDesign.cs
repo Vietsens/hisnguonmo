@@ -30,6 +30,13 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         // Mapping: DISEASE_DETAIL_ID -> TextEdit control (for IS_OTHER fields)
         private Dictionary<long, Control> diseaseTextMapping = new Dictionary<long, Control>();
 
+        // Grid data: PARENT_TYPE=3 (Tien su gia dinh) hien thi tren gridView48
+        private List<ADO.DiseaseDetailGridADO> diseaseGridParent3 = new List<ADO.DiseaseDetailGridADO>();
+        // Grid data: PARENT_TYPE=4 (Trieu chung co nang) hien thi tren gridView50
+        private List<ADO.DiseaseDetailGridADO> diseaseGridParent4 = new List<ADO.DiseaseDetailGridADO>();
+        // Grid data: PARENT_TYPE=5 (Trieu chung dau) hien thi tren gridView49
+        private List<ADO.DiseaseDetailGridADO> diseaseGridParent5 = new List<ADO.DiseaseDetailGridADO>();
+
         private void InitializeOfficialsDesignIfNeeded()
         {
             try
@@ -48,8 +55,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 InitDoctorCombos();
                 LoadDiseaseDefinitionData();
                 Inventec.Common.Logging.LogSystem.Debug("KskOfficials: diseaseDetails.Count = " + (diseaseDetails != null ? diseaseDetails.Count.ToString() : "null"));
-                SetCheckboxCaptionsForMapping();
-                BuildDiseaseCheckMapping();
+                GenerateDynamicDiseaseControls();
                 Inventec.Common.Logging.LogSystem.Debug("KskOfficials: diseaseCheckMapping.Count = " + diseaseCheckMapping.Count + ", diseaseTextMapping.Count = " + diseaseTextMapping.Count);
 
                 // Flag chỉ set khi đã build mappings thành công, tránh trường hợp
@@ -62,68 +68,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             }
         }
 
-        /// <summary>
-        /// Set Caption cho các checkbox có Caption rỗng (PARENT_TYPE 3, 4, 5).
-        /// Caption khớp với NAME trong V_HIS_DISEASE_DETAIL để MapCheckboxesByCaption hoạt động.
-        /// </summary>
-        private void SetCheckboxCaptionsForMapping()
-        {
-            try
-            {
-                // PARENT_TYPE=3: Tiền sử gia đình (DISEASE_TYPE_ID=46)
-                chkFamilyHistoryTangHA.Properties.Caption = "Tăng HA";
-                chkFamilyHistoryBenhDMVanh.Properties.Caption = "Bệnh ĐM vành";
-                chkFamilyHistoryDaiThaoDuong.Properties.Caption = "Đái tháo đường";
-                chkFamilyHistoryLoetDaDay.Properties.Caption = "Loét dạ dày";
-                chkFamilyHistoryHen.Properties.Caption = "Hen";
-                chkFamilyHistoryLao.Properties.Caption = "Lao";
-                chkFamilyHistoryBenhThanKinh.Properties.Caption = "Bệnh về thần kinh";
-                chkFamilyHistoryRoiLoanTamThan.Properties.Caption = "Rối loạn tâm thần";
-                chkFamilyHistoryLoangXuong.Properties.Caption = "Loãng xương";
-                chkFamilyHistoryDiUng.Properties.Caption = "Dị ứng";
-                chkFamilyHistoryUngThu.Properties.Caption = "Ung thư";
-
-                // PARENT_TYPE=4: Triệu chứng cơ năng (DISEASE_TYPE_ID=47)
-                chkKhoTho.Properties.Caption = "Khó thở";
-                chkDanhTrongNguc.Properties.Caption = "Hồi hộp đánh trống ngực";
-                chkHo.Properties.Caption = "Ho";
-                chkKhanTieng.Properties.Caption = "Khàn tiếng";
-                chkUongNhieuDaiNhieu.Properties.Caption = "Uống nhiều, đái nhiều";
-                chkOHoi.Properties.Caption = "Ợ hơi";
-                chkOChua.Properties.Caption = "Ợ chua";
-                chkGiamTriNho.Properties.Caption = "Giảm trí nhớ";
-                chkMatNgu.Properties.Caption = "Mất ngủ";
-                chkHoaMatChongMat.Properties.Caption = "Hoa mắt, chóng mặt";
-                chkUtai.Properties.Caption = "Ù tai";
-                chkNgheKem.Properties.Caption = "Nghe kém";
-                chkDauHong.Properties.Caption = "Đau họng";
-                chkNuotKho.Properties.Caption = "Nuốt khó";
-                chkNhinMo.Properties.Caption = "Nhìn mờ";
-                chkDaiBuotDaiRat.Properties.Caption = "Đái buốt, đái rắt";
-                chkDaiTienNhay.Properties.Caption = "Đại tiện nhầy";
-                chkDaiTienMau.Properties.Caption = "Đại tiện máu";
-                chkTaoBon.Properties.Caption = "Táo bón";
-                chkRLKinhNguyet.Properties.Caption = "RL kinh nguyệt";
-
-                // PARENT_TYPE=5: Triệu chứng đau (DISEASE_TYPE_ID=48)
-                chkDau.Properties.Caption = "Đầu";
-                chkCo.Properties.Caption = "Cổ";
-                chkNguc.Properties.Caption = "Ngực";
-                chkBung.Properties.Caption = "Bụng";
-                chkThatLung.Properties.Caption = "Thắt lưng";
-                chkCacKhop.Properties.Caption = "Các khớp";
-                chkXuong.Properties.Caption = "Xương";
-                chkMuscle.Properties.Caption = "Cơ";
-                chkTai.Properties.Caption = "Tai";
-                chkMat.Properties.Caption = "Mắt";
-                chkRang.Properties.Caption = "Răng";
-                chkHong.Properties.Caption = "Họng";
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
 
         #region Init
         private void InitNewTabEvents()
@@ -137,10 +81,7 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                 // Choose subclinical result button
                 btnChonKQ.Click += (s, e) => btnChonKQ_ClickHandler(s, e);
 
-                // Thêm border cho các scrollable control để dễ nhìn
-                DrawBorderAround(xtraScrollableControl4);
-                DrawBorderAround(xtraScrollableControl5);
-                DrawBorderAround(xtraScrollableControl1);
+                
             }
             catch (Exception ex)
             {
@@ -369,64 +310,71 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             }
         }
 
-        private void BuildDiseaseCheckMapping()
+        /// <summary>
+        /// Gen dong disease controls tu V_HIS_DISEASE_DETAIL.
+        /// - PARENT_TYPE=1 (Thoi quen sinh hoat) → xtraScrollableControl2
+        /// - PARENT_TYPE=2 (Tien su benh ban than) → xtraScrollableControl3
+        /// - PARENT_TYPE=3 (Tien su gia dinh) → gridView48 / gridControl1
+        /// </summary>
+        private void GenerateDynamicDiseaseControls()
         {
             try
             {
-                diseaseCheckMapping.Clear();
-                diseaseTextMapping.Clear();
+                if (diseaseDetails == null) return;
 
-                // === CHECKBOX: Map bằng V_HIS_DISEASE_DETAIL.NAME ↔ CheckEdit.Caption ===
-                // Match theo từng PARENT_TYPE + container riêng biệt để tránh trùng tên
-                // ("Mất ngủ", "Tăng HA", "Khác"... xuất hiện ở nhiều PARENT_TYPE)
-                MapCheckboxesByCaption(1, layoutControl7);
-                MapCheckboxesByCaption(2, layoutControl9);
-                MapCheckboxesByCaption(3, layoutControl10);
-                MapCheckboxesByCaption(4, layoutControl12);
-                MapCheckboxesByCaption(5, layoutControl14);
+                // PARENT_TYPE = 1: Thoi quen sinh hoat → xtraScrollableControl2
+                if (xtraScrollableControl2 != null)
+                {
+                    UC.ucDiseaseDetailContainer.Generate(
+                        xtraScrollableControl2,
+                        diseaseDetails,
+                        1,
+                        diseaseCheckMapping,
+                        diseaseTextMapping);
+                }
 
-                // === TEXT: Map bằng positional per PARENT_TYPE (IS_OTHER=1) ===
-                // Thứ tự PHẢI khớp sort NUM_ORDER_TYPE + NUM_ORDER_DETAIL trong DB
-                MapTextFieldsByOrder(1, new Control[]
+                // PARENT_TYPE = 2: Tien su benh ban than → xtraScrollableControl3
+                if (xtraScrollableControl3 != null)
                 {
-                    txtOtherSleep,          // TYPE=23, Khác
-                    txtOtherNightSleep,     // TYPE=24, Khác
-                    txtOtherSport,          // TYPE=25, Khác
-                    txtSportAverageTime,    // TYPE=26
-                    spYearsOfSmoke,         // TYPE=27, Số năm đã hút (NUM_ORDER_DETAIL=4)
-                    spAmountCigarette,      // TYPE=27, Số lượng điếu/ngày (NUM_ORDER_DETAIL=5)
-                    txtOtherCigarette,      // TYPE=27, Khác (NUM_ORDER_DETAIL=6)
-                    spYearsOfDrink,         // TYPE=28, Số năm đã uống (NUM_ORDER_DETAIL=4)
-                    txtOtherBeer,           // TYPE=28, Khác (NUM_ORDER_DETAIL=5)
-                    txtOtherSalty,          // TYPE=29, Khác
-                    txtOtherSweet           // TYPE=30, Khác
-                });
-                MapTextFieldsByOrder(2, new Control[]
+                    UC.ucDiseaseDetailContainer.Generate(
+                        xtraScrollableControl3,
+                        diseaseDetails,
+                        2,
+                        diseaseCheckMapping,
+                        diseaseTextMapping);
+                }
+
+                // PARENT_TYPE = 3: Tien su gia dinh → gridView48 / gridControl1
+                if (gridView48 != null && gridControl1 != null)
                 {
-                    txtOtherHeart,          // TYPE=31, Khác
-                    txtOtherRespiration,    // TYPE=32, Khác
-                    txtOtherEndocrineDisorders, // TYPE=33, Khác
-                    txtOtherDigestiveProblems,  // TYPE=34, Khác
-                    txtOtherUrinarySystemAndKidneys, // TYPE=35, Khác
-                    txtOtherNervousSystem,  // TYPE=36, Khác
-                    txtOtherJointAndBoneProblems, // TYPE=37, Khác
-                    txtOtherDermatology,    // TYPE=38, Khác
-                    txtOtherBloodDisorders, // TYPE=39, Khác
-                    spToothLoss,            // TYPE=40, Mất răng số lượng (NUM_ORDER_DETAIL=4)
-                    txtOtherDentalAndMaxillofacialProblems, // TYPE=40, Khác (NUM_ORDER_DETAIL=5)
-                    txtOtherEarNoseThroat,  // TYPE=41, Khác
-                    txtOtherEye,            // TYPE=42, Khác
-                    txtOtherObstetricsAndGynecology, // TYPE=43, Khác
-                    txtOtherCancer,         // TYPE=44, Khác (Ung thư các cơ quan)
-                    txtOtherDiseases        // TYPE=45, Bệnh khác
-                });
-                MapTextFieldsByOrder(3, new Control[] { txtFamilyHistoryKhac });
-                MapTextFieldsByOrder(4, new Control[] { txtTrieuChungCoNangKhac });
-                MapTextFieldsByOrder(5, new Control[] { txtTrieuChungDauKhac });
+                    UC.DiseaseDetailGridHelper.SetupGridView(gridView48);
+                    diseaseGridParent3 = UC.DiseaseDetailGridHelper.LoadToGrid(
+                        gridControl1, gridView48, diseaseDetails, 3);
+                }
+
+                // PARENT_TYPE = 4: Trieu chung co nang → gridView50 / gridControl3
+                if (gridView50 != null && gridControl3 != null)
+                {
+                    UC.DiseaseDetailGridHelper.SetupGridView(gridView50);
+                    diseaseGridParent4 = UC.DiseaseDetailGridHelper.LoadToGrid(
+                        gridControl3, gridView50, diseaseDetails, 4);
+                }
+
+                // PARENT_TYPE = 5: Trieu chung dau → gridView49 / gridControl2
+                if (gridView49 != null && gridControl2 != null)
+                {
+                    UC.DiseaseDetailGridHelper.SetupGridView(gridView49);
+                    diseaseGridParent5 = UC.DiseaseDetailGridHelper.LoadToGrid(
+                        gridControl2, gridView49, diseaseDetails, 5);
+                }
 
                 Inventec.Common.Logging.LogSystem.Debug(
-                    "BuildDiseaseCheckMapping END - diseaseCheckMapping.Count=" + diseaseCheckMapping.Count
-                    + " diseaseTextMapping.Count=" + diseaseTextMapping.Count);
+                    "GenerateDynamicDiseaseControls done. "
+                    + "checkMapping=" + diseaseCheckMapping.Count
+                    + " textMapping=" + diseaseTextMapping.Count
+                    + " gridParent3=" + diseaseGridParent3.Count
+                    + " gridParent4=" + diseaseGridParent4.Count
+                    + " gridParent5=" + diseaseGridParent5.Count);
             }
             catch (Exception ex)
             {
@@ -435,99 +383,23 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         }
 
         /// <summary>
-        /// Normalize text để so sánh: lowercase, bỏ space thừa, chuẩn hóa ký tự đặc biệt.
-        /// VD: "Cầu lông / Tennis" → "cầu lông/tennis", "≤ 8" → "≤8"
+        /// Reset toan bo trang thai disease cho tat ca 5 PARENT_TYPE.
+        /// Goi TRUOC khi load data moi — dam bao khong con data cu khi chuyen row.
         /// </summary>
-        private string NormalizeForMatch(string text)
-        {
-            if (string.IsNullOrEmpty(text)) return "";
-            return System.Text.RegularExpressions.Regex.Replace(text.Trim().ToLower(), @"\s+", "");
-        }
-
-        /// <summary>
-        /// Map checkbox cho 1 PARENT_TYPE cụ thể bằng cách so khớp NAME (DB) ↔ Caption (UI).
-        /// Normalize cả 2 bên (bỏ space, lowercase) để tránh lệch do format khác nhau.
-        /// Chỉ tìm checkbox trong container tương ứng để tránh trùng tên giữa các PARENT_TYPE.
-        /// </summary>
-        private void MapCheckboxesByCaption(long parentType, Control container)
+        private void ResetAllDiseaseStates()
         {
             try
             {
-                // Lấy tất cả CheckEdit trong container này, key = normalized caption
-                var checkEdits = GetAllCheckEdits(container);
-                var captionMap = new Dictionary<string, List<CheckEdit>>();
-                foreach (var chk in checkEdits)
-                {
-                    string key = NormalizeForMatch(chk.Properties.Caption);
-                    if (string.IsNullOrEmpty(key)) continue;
-                    if (!captionMap.ContainsKey(key))
-                        captionMap[key] = new List<CheckEdit>();
-                    captionMap[key].Add(chk);
-                }
+                // PARENT_TYPE 1,2: UC gen dong — reset qua dictionary
+                foreach (var kv in diseaseCheckMapping)
+                    kv.Value.Checked = false;
+                foreach (var kv in diseaseTextMapping)
+                    kv.Value.Text = string.Empty;
 
-                // Lấy disease details có IS_CHECKBOX=1 cho PARENT_TYPE này
-                var details = diseaseDetails
-                    .Where(d => d.PARENT_TYPE == parentType && (d.IS_CHECKBOX ?? 0) == 1)
-                    .OrderBy(d => d.NUM_ORDER_TYPE)
-                    .ThenBy(d => d.NUM_ORDER_DETAIL)
-                    .ToList();
-
-                var usedCheckboxes = new HashSet<CheckEdit>();
-                int matched = 0;
-                var sbUnmatched = new System.Text.StringBuilder();
-
-                foreach (var detail in details)
-                {
-                    string key = NormalizeForMatch(detail.NAME);
-                    if (string.IsNullOrEmpty(key)) continue;
-
-                    List<CheckEdit> candidates;
-                    if (captionMap.TryGetValue(key, out candidates))
-                    {
-                        var chk = candidates.FirstOrDefault(c => !usedCheckboxes.Contains(c));
-                        if (chk != null)
-                        {
-                            diseaseCheckMapping[detail.ID] = chk;
-                            usedCheckboxes.Add(chk);
-                            matched++;
-                            continue;
-                        }
-                    }
-                    sbUnmatched.Append(string.Format("[ID={0},NAME={1}] ", detail.ID, detail.NAME));
-                }
-
-                Inventec.Common.Logging.LogSystem.Debug(
-                    "MapCheckboxesByCaption PARENT_TYPE=" + parentType
-                    + " matched=" + matched + "/" + details.Count
-                    + " checkEditsInContainer=" + checkEdits.Count
-                    + (sbUnmatched.Length > 0 ? " UNMATCHED: " + sbUnmatched.ToString() : ""));
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Error(ex);
-            }
-        }
-
-        /// <summary>
-        /// Map text fields (IS_OTHER=1) theo thứ tự positional trong 1 PARENT_TYPE.
-        /// </summary>
-        private void MapTextFieldsByOrder(long parentType, Control[] textControls)
-        {
-            try
-            {
-                var otherDetails = diseaseDetails
-                    .Where(o => o.PARENT_TYPE == parentType && (o.IS_OTHER ?? 0) == 1)
-                    .OrderBy(o => o.NUM_ORDER_TYPE)
-                    .ThenBy(o => o.NUM_ORDER_DETAIL)
-                    .ToList();
-
-                for (int i = 0; i < otherDetails.Count && i < textControls.Length; i++)
-                {
-                    if (textControls[i] != null)
-                    {
-                        diseaseTextMapping[otherDetails[i].ID] = textControls[i];
-                    }
-                }
+                // PARENT_TYPE 3,4,5: Grid — reset qua helper
+                UC.DiseaseDetailGridHelper.ResetAll(diseaseGridParent3, gridView48);
+                UC.DiseaseDetailGridHelper.ResetAll(diseaseGridParent4, gridView50);
+                UC.DiseaseDetailGridHelper.ResetAll(diseaseGridParent5, gridView49);
             }
             catch (Exception ex)
             {
@@ -535,29 +407,6 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
             }
         }
 
-        private List<CheckEdit> GetAllCheckEdits(Control root)
-        {
-            var result = new List<CheckEdit>();
-            if (root == null) return result;
-            foreach (Control c in root.Controls)
-            {
-                if (c is CheckEdit) result.Add((CheckEdit)c);
-                result.AddRange(GetAllCheckEdits(c));
-            }
-            return result;
-        }
-
-        private List<Control> GetAllTextInputs(Control root)
-        {
-            var result = new List<Control>();
-            if (root == null) return result;
-            foreach (Control c in root.Controls)
-            {
-                if (c is TextEdit || c is TextBox) result.Add(c);
-                result.AddRange(GetAllTextInputs(c));
-            }
-            return result;
-        }
         #endregion
 
         #region Load Data
@@ -565,7 +414,9 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
         {
             try
             {
-                InitializeOfficialsDesignIfNeeded();
+                // Clear tat ca truoc khi load moi — dam bao khong con data cu khi chuyen row
+                ResetAllDiseaseStates();
+
                 LoadDiseaseResults(data != null && data.KSK_GENERAL != null ? (long?)data.KSK_GENERAL.ID : null);
 
                 var general = data != null ? data.KSK_GENERAL : null;
@@ -732,6 +583,13 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                     }
                 }
                 Inventec.Common.Logging.LogSystem.Debug(sbLoad.ToString());
+
+                // PARENT_TYPE=3: Apply results len gridView48
+                UC.DiseaseDetailGridHelper.ApplyResults(gridView48, diseaseGridParent3, diseaseResults);
+                // PARENT_TYPE=4: Apply results len gridView50
+                UC.DiseaseDetailGridHelper.ApplyResults(gridView50, diseaseGridParent4, diseaseResults);
+                // PARENT_TYPE=5: Apply results len gridView49
+                UC.DiseaseDetailGridHelper.ApplyResults(gridView49, diseaseGridParent5, diseaseResults);
             }
             catch (Exception ex)
             {
@@ -753,6 +611,11 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                     kv.Value.Checked = false;
                 foreach (var kv in diseaseTextMapping)
                     kv.Value.Text = string.Empty;
+
+                // Reset PARENT_TYPE=3,4,5 grids
+                UC.DiseaseDetailGridHelper.ResetAll(diseaseGridParent3, gridView48);
+                UC.DiseaseDetailGridHelper.ResetAll(diseaseGridParent4, gridView50);
+                UC.DiseaseDetailGridHelper.ResetAll(diseaseGridParent5, gridView49);
 
                 // Reset Tab 1 controls
                 txtMoneyWithMediFood.Text = string.Empty;
@@ -1042,6 +905,21 @@ namespace HIS.Desktop.Plugins.KskInfomantionOfficials
                         KSK_GENERAL_ID = kskGeneralId,
                         IS_CHECK = 0,
                         OTHER = !string.IsNullOrEmpty(otherText) ? otherText : null
+                    });
+                }
+
+                // PARENT_TYPE=3,4,5: Thu thap ket qua tu gridView48/gridView50/gridView49
+                var gridResults = UC.DiseaseDetailGridHelper.CollectResults(diseaseGridParent3, kskGeneralId);
+                gridResults.AddRange(UC.DiseaseDetailGridHelper.CollectResults(diseaseGridParent4, kskGeneralId));
+                gridResults.AddRange(UC.DiseaseDetailGridHelper.CollectResults(diseaseGridParent5, kskGeneralId));
+                foreach (var ado in gridResults)
+                {
+                    rows.Add(new HIS_DISEASE_DETAIL_RESULT
+                    {
+                        DISEASE_DETAIL_ID = ado.DISEASE_DETAIL_ID,
+                        KSK_GENERAL_ID = ado.KSK_GENERAL_ID,
+                        IS_CHECK = (short)(ado.IS_CHECK ?? 0),
+                        OTHER = !string.IsNullOrEmpty(ado.OTHER) ? ado.OTHER : null
                     });
                 }
 

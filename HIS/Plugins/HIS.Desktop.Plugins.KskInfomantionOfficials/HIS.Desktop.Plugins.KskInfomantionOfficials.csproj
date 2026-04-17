@@ -32,9 +32,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="ACS.EFMODEL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\HISTEST\histest\x64\ReferencedAssemblies\ACS.EFMODEL.dll</HintPath>
+    <Reference Include="ACS.EFMODEL">
+      <HintPath>..\..\..\..\lib\ACS\ACS.EFMODEL.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Charts.v15.2.Core, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.9.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
@@ -198,21 +197,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\Inventec.Desktop\Inventec.Desktop.Common.Module\Inventec.Desktop.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.Desktop.CustomControl">
-      <HintPath>D:\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Desktop.CustomControl.dll</HintPath>
-    </Reference>
     <Reference Include="Inventec.Fss.Client">
-      <HintPath>D:\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Fss.Client.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Fss.Client\Inventec.Fss.Client.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.Token.ClientSystem">
-      <HintPath>D:\HISTEST\histest\x64\ReferencedAssemblies\Inventec.Token.ClientSystem.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.Token\Inventec.Token.ClientSystem\Inventec.Token.ClientSystem.dll</HintPath>
     </Reference>
-    <Reference Include="Inventec.UC.Login, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\HISTEST\histest\x64\ReferencedAssemblies\Inventec.UC.Login.dll</HintPath>
+    <Reference Include="Inventec.UC.Login">
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Login\Inventec.UC.Login.dll</HintPath>
     </Reference>
     <Reference Include="Inventec.UC.Paging">
-      <HintPath>D:\HISTEST\histest\x64\ReferencedAssemblies\Inventec.UC.Paging.dll</HintPath>
+      <HintPath>..\..\..\..\lib\Inventec.UC\Inventec.UC.Paging\Inventec.UC.Paging.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\..\..\lib\Library packages\log4net.1.2.10\log4net.dll</HintPath>
@@ -230,14 +225,13 @@
       <HintPath>..\..\..\..\lib\MOS\MOS.SDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS">
-      <HintPath>D:\HISNGUONMO_BACKUP\lib\MPSv2\MPS\MPS.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS\MPS.dll</HintPath>
     </Reference>
-    <Reference Include="MPS.Processor.Mps000507.PDO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MPS.Processor.Mps000507.PDO\bin\Debug\MPS.Processor.Mps000507.PDO.dll</HintPath>
+    <Reference Include="MPS.Processor.Mps000507.PDO">
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.PDO\MPS.Processor.Mps000507.PDO.dll</HintPath>
     </Reference>
     <Reference Include="MPS.ProcessorBase">
-      <HintPath>D:\HISNGUONMO_BACKUP\lib\MPSv2\MPS\MPS.ProcessorBase.dll</HintPath>
+      <HintPath>..\..\..\..\lib\MPSv2\MPS.ProcessorBase\MPS.ProcessorBase.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -262,12 +256,6 @@
     <Compile Include="ADO\KSKContractADO.cs" />
     <Compile Include="ADO\ServiceReqADO.cs" />
     <Compile Include="Config\ControlStateConstant.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="KskInfomantionOfficialsProcessor.cs" />
     <Compile Include="KskInfomantionOfficials\KskInfomantionOfficialsBehavior.cs" />
     <Compile Include="KskInfomantionOfficials\KskInfomantionOfficialsFactory.cs" />
@@ -304,12 +292,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\ResourceLanguageManager.cs" />
     <Compile Include="Resources\ResourceMessage.cs" />
+    <Compile Include="UC\ucDiseaseDetailGroup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UC\ucDiseaseDetailContainer.cs" />
+    <Compile Include="UC\DiseaseDetailGridHelper.cs" />
+    <Compile Include="ADO\DiseaseDetailGridADO.cs" />
     <Compile Include="Validation\ValidateMaxlength.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmKskInfomantionOfficials.resx">
       <DependentUpon>frmKskInfomantionOfficials.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -323,6 +314,9 @@
     <EmbeddedResource Include="Resources\Message.Lang.vi.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
