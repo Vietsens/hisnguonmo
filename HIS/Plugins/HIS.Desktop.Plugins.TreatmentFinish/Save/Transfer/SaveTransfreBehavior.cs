@@ -65,6 +65,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Transfer
                     result.Advise = this.Advised;
                     result.ClinicalNote = this.ClinicalNote;
                     result.SubclinicalResult = this.Subclinical;
+                    result.EmergencyClassifyId2 = this.EmergencyClassifyId2;
 
                     //treatmetn transfer
                     result.PatientCondition = hisTreatmentFinishSDO_process.PatientCondition;

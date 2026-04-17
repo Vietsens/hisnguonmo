@@ -64,6 +64,7 @@ namespace HIS.Desktop.Plugins.TreatmentFinish.Save.Appointment
                 result.TreatmentMethod = this.Treatment_Method;
                 result.ClinicalNote = this.ClinicalNote;
                 result.SubclinicalResult = this.Subclinical;
+                result.EmergencyClassifyId2 = this.EmergencyClassifyId2;
 
                 result.AppointmentExamRoomIds = hisTreatmentFinishSDO_process.AppointmentExamRoomIds;
                 result.AppointmentPeriodId = hisTreatmentFinishSDO_process.AppointmentPeriodId;

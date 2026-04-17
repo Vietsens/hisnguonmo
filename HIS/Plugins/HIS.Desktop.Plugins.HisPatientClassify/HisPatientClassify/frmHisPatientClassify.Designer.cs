@@ -64,6 +64,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
+            this.chkIsEmergency = new DevExpress.XtraEditors.CheckEdit();
             this.chkIsPoli = new DevExpress.XtraEditors.CheckEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar2 = new DevExpress.XtraBars.Bar();
@@ -100,6 +101,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.layoutControlItem11 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem13 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem14 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem18 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem15 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem17 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -123,6 +125,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn10 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumn11 = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumn13 = new DevExpress.XtraGrid.Columns.GridColumn();
             this.btnGunlock = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.btnEnable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Root = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -140,6 +143,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsEmergency.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsPoli.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.colorDisplayColor.Properties)).BeginInit();
@@ -163,6 +167,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).BeginInit();
@@ -202,6 +207,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             // 
             // layoutControl3
             // 
+            this.layoutControl3.Controls.Add(this.chkIsEmergency);
             this.layoutControl3.Controls.Add(this.chkIsPoli);
             this.layoutControl3.Controls.Add(this.colorDisplayColor);
             this.layoutControl3.Controls.Add(this.txtPatientClassifyName);
@@ -230,7 +236,18 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.chkIsPoli.Size = new System.Drawing.Size(182, 19);
             this.chkIsPoli.StyleController = this.layoutControl3;
             this.chkIsPoli.TabIndex = 11;
-            // 
+            //
+            // chkIsEmergency
+            //
+            this.chkIsEmergency.Location = new System.Drawing.Point(107, 193);
+            this.chkIsEmergency.MenuManager = this.barManager1;
+            this.chkIsEmergency.Name = "chkIsEmergency";
+            this.chkIsEmergency.Properties.Caption = "";
+            this.chkIsEmergency.Properties.NullStyle = DevExpress.XtraEditors.Controls.StyleIndeterminate.Unchecked;
+            this.chkIsEmergency.Size = new System.Drawing.Size(182, 19);
+            this.chkIsEmergency.StyleController = this.layoutControl3;
+            this.chkIsEmergency.TabIndex = 15;
+            //
             // barManager1
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
@@ -516,6 +533,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.layoutControlItem11,
             this.layoutControlItem13,
             this.layoutControlItem14,
+            this.layoutControlItem18,
             this.layoutControlItem15,
             this.layoutControlItem16,
             this.layoutControlItem17});
@@ -542,7 +560,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnEdit;
-            this.layoutControlItem7.Location = new System.Drawing.Point(0, 191);
+            this.layoutControlItem7.Location = new System.Drawing.Point(0, 214);
             this.layoutControlItem7.Name = "layoutControlItem7";
             this.layoutControlItem7.Size = new System.Drawing.Size(97, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
@@ -551,7 +569,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.btnAdd;
-            this.layoutControlItem8.Location = new System.Drawing.Point(97, 191);
+            this.layoutControlItem8.Location = new System.Drawing.Point(97, 214);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Size = new System.Drawing.Size(97, 26);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
@@ -560,7 +578,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnReset;
-            this.layoutControlItem9.Location = new System.Drawing.Point(194, 191);
+            this.layoutControlItem9.Location = new System.Drawing.Point(194, 214);
             this.layoutControlItem9.Name = "layoutControlItem9";
             this.layoutControlItem9.Size = new System.Drawing.Size(97, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
@@ -569,9 +587,9 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 217);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 240);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(291, 325);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(291, 302);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem10
@@ -629,7 +647,20 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.layoutControlItem14.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem14.TextSize = new System.Drawing.Size(100, 13);
             this.layoutControlItem14.TextToControlDistance = 5;
-            // 
+            //
+            // layoutControlItem18
+            //
+            this.layoutControlItem18.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem18.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem18.Control = this.chkIsEmergency;
+            this.layoutControlItem18.Location = new System.Drawing.Point(0, 191);
+            this.layoutControlItem18.Name = "layoutControlItem18";
+            this.layoutControlItem18.Size = new System.Drawing.Size(291, 23);
+            this.layoutControlItem18.Text = "Cấp cứu:";
+            this.layoutControlItem18.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem18.TextSize = new System.Drawing.Size(100, 13);
+            this.layoutControlItem18.TextToControlDistance = 5;
+            //
             // layoutControlItem15
             // 
             this.layoutControlItem15.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -738,6 +769,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.gridColumn5,
             this.gridColumn6,
             this.gridColumn12,
+            this.gridColumn13,
             this.gridColumn7,
             this.gridColumn8,
             this.gridColumn9,
@@ -852,7 +884,19 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.gridColumn12.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn12.Visible = true;
             this.gridColumn12.VisibleIndex = 6;
-            // 
+            //
+            // gridColumn13
+            //
+            this.gridColumn13.Caption = "Cấp cứu";
+            this.gridColumn13.FieldName = "IS_EMERGENCY_STR";
+            this.gridColumn13.Name = "gridColumn13";
+            this.gridColumn13.OptionsColumn.AllowEdit = false;
+            this.gridColumn13.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumn13.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gridColumn13.Visible = true;
+            this.gridColumn13.VisibleIndex = 7;
+            this.gridColumn13.Width = 70;
+            //
             // gridColumn7
             // 
             this.gridColumn7.Caption = "Trạng thái";
@@ -862,7 +906,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.gridColumn7.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn7.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn7.Visible = true;
-            this.gridColumn7.VisibleIndex = 7;
+            this.gridColumn7.VisibleIndex = 8;
             this.gridColumn7.Width = 81;
             // 
             // gridColumn8
@@ -874,7 +918,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.gridColumn8.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn8.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn8.Visible = true;
-            this.gridColumn8.VisibleIndex = 8;
+            this.gridColumn8.VisibleIndex = 9;
             this.gridColumn8.Width = 130;
             // 
             // gridColumn9
@@ -885,7 +929,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.gridColumn9.OptionsColumn.AllowEdit = false;
             this.gridColumn9.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn9.Visible = true;
-            this.gridColumn9.VisibleIndex = 9;
+            this.gridColumn9.VisibleIndex = 10;
             this.gridColumn9.Width = 126;
             // 
             // gridColumn10
@@ -897,7 +941,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.gridColumn10.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn10.UnboundType = DevExpress.Data.UnboundColumnType.Object;
             this.gridColumn10.Visible = true;
-            this.gridColumn10.VisibleIndex = 10;
+            this.gridColumn10.VisibleIndex = 11;
             this.gridColumn10.Width = 130;
             // 
             // gridColumn11
@@ -908,7 +952,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.gridColumn11.OptionsColumn.AllowEdit = false;
             this.gridColumn11.OptionsColumn.AllowSort = DevExpress.Utils.DefaultBoolean.False;
             this.gridColumn11.Visible = true;
-            this.gridColumn11.VisibleIndex = 11;
+            this.gridColumn11.VisibleIndex = 12;
             this.gridColumn11.Width = 120;
             // 
             // btnGunlock
@@ -1044,6 +1088,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).EndInit();
             this.layoutControl3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chkIsEmergency.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkIsPoli.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.colorDisplayColor.Properties)).EndInit();
@@ -1067,6 +1112,7 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem11)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem13)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem14)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem18)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem15)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem17)).EndInit();
@@ -1158,8 +1204,11 @@ namespace HIS.Desktop.Plugins.HisPatientClassify.HisPatientClassify
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem13;
         private DevExpress.XtraEditors.CheckEdit chkIsPoli;
+        private DevExpress.XtraEditors.CheckEdit chkIsEmergency;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem14;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem18;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn12;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumn13;
         private DevExpress.XtraEditors.GridLookUpEdit cboPatientType;
         private DevExpress.XtraGrid.Views.Grid.GridView gridLookUpEdit1View;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem15;
