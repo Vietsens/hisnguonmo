@@ -4046,6 +4046,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     this.hisTreatmentFinishSDO_process.GestationalAge = null;
                     this.hisTreatmentFinishSDO_process.PregnancyTerminationReason = null;
                     this.hisTreatmentFinishSDO_process.PregnancyTerminationTime = null;
+                    this.hisTreatmentFinishSDO_process.CccdNumber = null;
+                    this.hisTreatmentFinishSDO_process.PassportNumber = null;
+                    this.hisTreatmentFinishSDO_process.CccdDate = null;
+                    this.hisTreatmentFinishSDO_process.PassportDate = null;
                 }
                 else
                 {
@@ -4124,6 +4128,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     data.GestationalAge = this.hisTreatmentFinishSDO_process.GestationalAge;
                     data.PregnancyTerminationReason = this.hisTreatmentFinishSDO_process.PregnancyTerminationReason;
                     data.PregnancyTerminationTime = this.hisTreatmentFinishSDO_process.PregnancyTerminationTime;
+                    data.CccdNumber = this.hisTreatmentFinishSDO_process.CccdNumber;
+                    data.PassportNumber = this.hisTreatmentFinishSDO_process.PassportNumber;
+                    data.CccdDate = this.hisTreatmentFinishSDO_process.CccdDate;
+                    data.PassportDate = this.hisTreatmentFinishSDO_process.PassportDate;
                 }
                 else if (this.hisTreatmentFinishSDO_process.SurgeryAppointmentTime.HasValue
                      || !String.IsNullOrEmpty(this.hisTreatmentFinishSDO_process.Advise)
@@ -4184,6 +4192,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                             this.hisTreatmentFinishSDO_process.GestationalAge = this.currentTreatmentEndTypeExt.GestationalAge;
                             this.hisTreatmentFinishSDO_process.PregnancyTerminationReason = this.currentTreatmentEndTypeExt.PregnancyTerminationReason;
                             this.hisTreatmentFinishSDO_process.PregnancyTerminationTime = this.currentTreatmentEndTypeExt.PregnancyTerminationTime;
+                            this.hisTreatmentFinishSDO_process.CccdNumber = this.currentTreatmentEndTypeExt.CccdNumber;
+                            this.hisTreatmentFinishSDO_process.PassportNumber = this.currentTreatmentEndTypeExt.PassportNumber;
+                            this.hisTreatmentFinishSDO_process.CccdDate = this.currentTreatmentEndTypeExt.CccdDate;
+                            this.hisTreatmentFinishSDO_process.PassportDate = this.currentTreatmentEndTypeExt.PassportDate;
                             if (this.currentTreatmentEndTypeExt.Babes != null && this.currentTreatmentEndTypeExt.Babes.Count > 0)
                             {
                                 this.hisTreatmentFinishSDO_process.Babies = new List<HisBabySDO>();
