@@ -2476,6 +2476,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 lstSereServExist = new List<HIS_SERE_SERV>();
                 this.gridViewServiceProcess.ActiveFilter.Clear();
                 this.gridViewServiceProcess.ClearColumnsFilter();
+                this.intructionTimeSelecteds.Clear();
                 this.btnSave.Enabled = false;
                 this.btnSaveAndPrint.Enabled = false;
                 this.btnCreateBill.Enabled = false;
@@ -5279,7 +5280,9 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                         isValid = isValid && ValidSereServWithOtherPaySource(serviceCheckeds__Send);
                         IsTreatmentInBedRoom = true;
                         isValid = isValid && ValidSereServWithBed(serviceCheckeds__Send);
-                        //foreach (var item in lstPatientSelect)
+                        isValid = isValid && CheckAmountDataGridAdo(serviceCheckeds__Send);
+
+                        //foisValidreach (var item in lstPatientSelect)
                         //{
                         //    //ValidConsultationReqiured(serviceCheckeds__Send, item.TREATMENT_ID);
                         //    isValid = isValid && CheckMaxAmount(serviceCheckeds__Send, new List<long>() { item.TREATMENT_ID });
@@ -5369,6 +5372,65 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 this.ChangeLockButtonWhileProcess(true);
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private bool CheckAmountDataGridAdo(List<DataGridAdo> serviceCheckeds__Send)
+        {
+            bool result = true;
+            List<string> listMessError = new List<string>();
+
+            try
+            {
+                if (serviceCheckeds__Send != null && serviceCheckeds__Send.Any())
+                {
+                    foreach (var item in serviceCheckeds__Send)
+                    {
+                        if (string.IsNullOrEmpty(item.TIME_FROM_STR) || string.IsNullOrEmpty(item.TIME_TO_STR))
+                        {
+                            continue;
+                        }
+
+                        try
+                        {
+                            DateTime timeFrom = DateTime.Parse(item.TIME_FROM_STR);
+                            DateTime timeTo = DateTime.Parse(item.TIME_TO_STR);
+
+                            TimeSpan timeSpan = timeTo - timeFrom;
+                            int calculatedDays = timeSpan.Days + 1;
+
+                            if (item.QUANTITY != calculatedDays)
+                            {
+                                if (!listMessError.Contains(item.TDL_SERVICE_CODE))
+                                {
+                                    listMessError.Add(item.TDL_SERVICE_CODE);
+                                }
+                            }
+                        }
+                        catch (FormatException)
+                        {
+                            listMessError.Add("Sai định dạng ngày: " + item.TDL_SERVICE_CODE);
+                        }
+                    }
+                }
+
+                if (listMessError.Count > 0)
+                {
+                    string listNames = string.Join(", ", listMessError);
+
+                    string message = string.Format("Các dịch vụ: {0} đang có số lượng không khớp với thời gian bắt đầu - kết thúc", listNames);
+
+                    XtraMessageBox.Show(message, "Lỗi dữ liệu", System.Windows.Forms.MessageBoxButtons.OK);
+
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+                result = false;
+            }
+
+            return result;
         }
 
         V_HIS_SERVICE_REQ vServiceReq;
@@ -6831,7 +6893,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                 serviceReqSDO.InstructionTimes = intructionTimeSelecteds;//TODO
 
                 //serviceReqSDO.UseTimes = this.USE_TIME;
-                //Trường hợp chỉ định từ màn hình xử lý pttt, cập nhật dữ liệu cùng kíp, khác kíp tương ứng
+                //Trường hợp chỉ định từ màn hình xử lý pttt, cập nhật dữ liệu cùng kíp, khác kíp tương ứng 
                 long sereservid = this.GetSereServInKip();
                 if (sereservid > 0)
                 {
@@ -7584,6 +7646,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     isValid = isValid && subIcdYhctProcessor.GetValidate(ucSecondaryIcdYhct);
                 isValid = isValid && this.Valid(serviceCheckeds__Send);
                 isValid = isValid && this.CheckIcd(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TREATMENT_ID = currentTreatment.ID, ICD_CODE = txtIcdCode.Text.Trim(), ICD_SUB_CODE = txtIcdSubCode.Text.Trim() } });
+                isValid = isValid && CheckAmountDataGridAdo(serviceCheckeds__Send);
                 bool isValidICD = true;
                 if (HisConfigCFG.IsIcdServiceHasRequireCheckPatientBHYT && !this.CheckPatientTypeBHYT(new List<V_HIS_TREATMENT_BED_ROOM> { new V_HIS_TREATMENT_BED_ROOM() { TDL_PATIENT_TYPE_ID = currentTreatment.TDL_PATIENT_TYPE_ID } }))
                 {
