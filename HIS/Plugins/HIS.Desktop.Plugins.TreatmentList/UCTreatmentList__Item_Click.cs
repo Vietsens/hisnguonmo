@@ -740,5 +740,29 @@ namespace HIS.Desktop.Plugins.TreatmentList
         {
 
         }
+
+        private void repositoryItembtnTreatmentSummery_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = (MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4)gridViewtreatmentList.GetFocusedRow();
+                if (row != null)
+                {
+                    WaitingManager.Show();
+                    List<object> listArgs = new List<object>();
+                    TreatmentHistoryADO currentInput = new TreatmentHistoryADO();
+                    currentInput.patientId = row.PATIENT_ID;
+                    currentInput.patient_code = row.TDL_PATIENT_CODE;
+                    listArgs.Add(currentInput);
+                    WaitingManager.Hide();
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TreatmentHistory", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
     }
 }
