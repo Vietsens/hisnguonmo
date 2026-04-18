@@ -4352,7 +4352,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                 }
 
                 LogSystem.Debug("Cảnh báo 2");
-                if (!String.IsNullOrEmpty(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption))
+                if (!String.IsNullOrEmpty(HIS.Desktop.Plugins.ServiceExecute.Config.AppConfigKeys.IsCheckSimulTaneityOption) && AppConfigKeys.IsCheckSimulTaneityOption != "0")
                 {
                     LogSystem.Debug("Cảnh báo 2.1");
                     HisSurgServiceReqUpdateListSDO InputSDO = new HisSurgServiceReqUpdateListSDO();

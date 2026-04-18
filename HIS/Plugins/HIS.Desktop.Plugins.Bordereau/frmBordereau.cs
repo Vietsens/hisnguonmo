@@ -192,14 +192,7 @@ namespace HIS.Desktop.Plugins.Bordereau
                 {
                      totalDepositPrice = Decimal.Parse(lblTotalDepositPrice.Text);
                 }
-                if (currentTreatment.IS_ACTIVE == 0 && totalDepositPrice > 0)
-                {
-                    picUpdateQR.Enabled = true;
-                }
-                else
-                {
-                    picUpdateQR.Enabled = false;
-                }
+                picUpdateQR.Enabled = (currentTreatment != null && currentTreatment.IS_ACTIVE == 1 && currentTreatment.IS_PAUSE == 1 && totalDepositPrice > 0);
             }
              catch (Exception ex)
             {
