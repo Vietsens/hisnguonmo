@@ -959,6 +959,24 @@
         AfABDwIACw==
 </value>
   </data>
+  <data name="repositoryItembtnTreatmentHistory.Buttons" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAA90RVh0VGl0
+        bGUAU2hvdztFeWU7SeMHJQAAArJJREFUOE+lk2lIlGEQx8fMPlhRkkenZFheiAdIpKvmyXrseqyru6uY
+        R25aiQcumVArnsV6rRaaqUmGd7JemCCikURGafilIO+jxAtd7cL4x/uiBNoX6YH/w8Mw85thZh4CQP+j
+        XYa96l9nHxFpEtF+ItLaEvNm7Bo7nemJxIYqRNZs4E2HszqFPLOEYj9TlZJnOlzCM9ks8D4/rOAad2S5
+        GcnCrAwMGHi+pxHleRj9BbBGvrm4KtRuqV+ZgM/djzH/ToXNr28x97oOI425aL8rQYmf+Woq54yIiA4w
+        1dj7KFiGZlGARWyXXILpgVo0Fd2GmOcOrqsTzptbgOvCQTDXCVV3ovCmMhXVkZzftxxORzMQFpDsYmxU
+        HWn/q1weh4jIKHDchXhQ34b+iRnYuYggTclCbtkzOHNFCAu7gpwYPpQBVoi01uewvVEKLO8lR4dBpWrD
+        0vIqXAOT0f1hFOHx6TCz9YKprRca+obgIUzB5PQCamqbIBX6Q+5s2EhE2hQvuT7Z3NoDtfob1Os/4B+e
+        hocNvYhKysY5c2cIIlJQWPMCImk6pmaXMT61iIqnrZB4SmaI6DAJgxJvpOd3Yn3jJ9bU3/G8vR/CmAxk
+        l7eitPklMktVCIiSo0HVh/HpRRZwLaUGly6KZGwFVqeO6HqLFRVlNQP4Mr+GpZUN1Lf0wDckCZb2YvBD
+        Zahr6cXY1AJGPs4iu6gLtpdlDXoHtU5u7Qt76bgLMnKCpZUbBY960TvwCYNDE5ieW8GrwVF09oxAruiA
+        W1DhhrVTYjERHd9aMA0Kjq3ehhw6YWhzwdEnLdNNoBh0FeSNuQcr4cS/P+bgnfHe2jE+V0ffxIKIjjLd
+        Z0bIjjEkrpqCpFUUeLWCATErq73ldIyI9IhIl6mQSbCd1d43jw1mATs/x161y7BX/QE10AHqvhLjjAAA
+        AABJRU5ErkJggg==
+</value>
+  </data>
   <metadata name="timerReloadMachineCounter.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>894, 57</value>
   </metadata>

@@ -92,6 +92,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject86 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject87 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject88 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject89 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject90 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject91 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject92 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.txtCallPatientCPA = new DevExpress.XtraEditors.LabelControl();
             this.ckKQCLS = new DevExpress.XtraEditors.CheckEdit();
@@ -370,6 +374,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryItemButton__Send__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryEditServiceReq__Enable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.repositoryEditServiceReq__Disable = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.repositoryItembtnTreatmentHistory = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gcTreatmentHistory = new DevExpress.XtraGrid.Columns.GridColumn();
             this.repositoryItemPictureEdit4 = new DevExpress.XtraEditors.Repository.RepositoryItemPictureEdit();
             this.repositoryItemPopupGalleryEdit1 = new DevExpress.XtraEditors.Repository.RepositoryItemPopupGalleryEdit();
             this.repositoryItembtnGoiNho = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
@@ -612,6 +618,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send__Disable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryEditServiceReq__Enable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryEditServiceReq__Disable)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnTreatmentHistory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPopupGalleryEdit1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnGoiNho)).BeginInit();
@@ -3422,7 +3429,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryItemPictureEdit7,
             this.repositoryItemTextEdit,
             this.repositoryItemPictureEdit8,
-            this.repositoryItemPictureEdit9});
+            this.repositoryItemPictureEdit9,
+            this.repositoryItembtnTreatmentHistory});
             this.gridControlServiceReq.Size = new System.Drawing.Size(569, 671);
             this.gridControlServiceReq.TabIndex = 9;
             this.gridControlServiceReq.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -3461,7 +3469,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.Gc_MedisoftHistory,
             this.gridColumn16,
             this.gridColumn23,
-            this.gridColumn24});
+            this.gridColumn24,
+            this.gcTreatmentHistory});
             this.gridViewServiceReq.GridControl = this.gridControlServiceReq;
             this.gridViewServiceReq.Name = "gridViewServiceReq";
             this.gridViewServiceReq.OptionsBehavior.EditorShowMode = DevExpress.Utils.EditorShowMode.MouseDownFocused;
@@ -3863,7 +3872,19 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.Gc_MedisoftHistory.Name = "Gc_MedisoftHistory";
             this.Gc_MedisoftHistory.OptionsColumn.ShowCaption = false;
             this.Gc_MedisoftHistory.Width = 25;
-            // 
+            //
+            // gcTreatmentHistory
+            //
+            this.gcTreatmentHistory.Caption = "Lịch sử điều trị";
+            this.gcTreatmentHistory.ColumnEdit = this.repositoryItembtnTreatmentHistory;
+            this.gcTreatmentHistory.FieldName = "TREATMENT_HISTORY";
+            this.gcTreatmentHistory.Name = "gcTreatmentHistory";
+            this.gcTreatmentHistory.OptionsColumn.ShowCaption = false;
+            this.gcTreatmentHistory.ToolTip = "Xem lịch sử điều trị";
+            this.gcTreatmentHistory.UnboundType = DevExpress.Data.UnboundColumnType.Object;
+            this.gcTreatmentHistory.Visible = false;
+            this.gcTreatmentHistory.Width = 25;
+            //
             // gridColumn16
             // 
             this.gridColumn16.Caption = "gridColumn16";
@@ -3949,7 +3970,16 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             this.repositoryEditServiceReq__Disable.Name = "repositoryEditServiceReq__Disable";
             this.repositoryEditServiceReq__Disable.ReadOnly = true;
             this.repositoryEditServiceReq__Disable.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
-            // 
+            //
+            // repositoryItembtnTreatmentHistory
+            //
+            this.repositoryItembtnTreatmentHistory.AutoHeight = false;
+            this.repositoryItembtnTreatmentHistory.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItembtnTreatmentHistory.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject89, serializableAppearanceObject90, serializableAppearanceObject91, serializableAppearanceObject92, "Lịch sử điều trị", null, null, true)});
+            this.repositoryItembtnTreatmentHistory.Name = "repositoryItembtnTreatmentHistory";
+            this.repositoryItembtnTreatmentHistory.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.repositoryItembtnTreatmentHistory.Click += new System.EventHandler(this.repositoryItembtnTreatmentHistory_Click);
+            //
             // repositoryItemPictureEdit4
             // 
             this.repositoryItemPictureEdit4.Name = "repositoryItemPictureEdit4";
@@ -4897,6 +4927,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemButton__Send__Disable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryEditServiceReq__Enable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryEditServiceReq__Disable)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnTreatmentHistory)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPictureEdit4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItemPopupGalleryEdit1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.repositoryItembtnGoiNho)).EndInit();
@@ -5104,6 +5135,8 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
         private DevExpress.XtraGrid.Columns.GridColumn gc_PatientClassify;
         private DevExpress.XtraGrid.Columns.GridColumn Gc_MedisoftHistory;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItemBtnMedisoftHistory;
+        private DevExpress.XtraGrid.Columns.GridColumn gcTreatmentHistory;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit repositoryItembtnTreatmentHistory;
         private DevExpress.XtraLayout.LayoutControlItem lciRequestAndMaxRequest;
         private DevExpress.XtraEditors.ComboBoxEdit cboInDebt;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem37;
