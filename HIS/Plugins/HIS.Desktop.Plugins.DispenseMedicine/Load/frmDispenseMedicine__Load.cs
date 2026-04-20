@@ -144,6 +144,7 @@ namespace HIS.Desktop.Plugins.DispenseMedicine
             {
                 CommonParam param = new CommonParam();
                 HisMetyProductViewFilter filter = new HisMetyProductViewFilter();
+                filter.IS_ACTIVE = 1;
                 this.MetyProductADO = new BackendAdapter(param).Get<List<MetyProductADO>>("api/HisMetyProduct/GetView", ApiConsumers.MosConsumer, filter, param);
                 if (this.MetyProductADO != null && this.MetyProductADO.Count > 0)
                 {

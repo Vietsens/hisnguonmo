@@ -1282,6 +1282,30 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
             }
         }
 
+        private void repositoryItembtnTreatmentHistory_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var row = (ServiceReqADO)gridViewServiceReq.GetFocusedRow();
+                if (row != null)
+                {
+                    WaitingManager.Show();
+                    List<object> listArgs = new List<object>();
+                    TreatmentHistoryADO currentInput = new TreatmentHistoryADO();
+                    currentInput.patientId = row.TDL_PATIENT_ID;
+                    currentInput.patient_code = row.TDL_PATIENT_CODE;
+                    listArgs.Add(currentInput);
+                    WaitingManager.Hide();
+                    HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.TreatmentHistory", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                }
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
         private void btnExecute_Click(object sender, EventArgs e)
         {
             try
