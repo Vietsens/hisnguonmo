@@ -116,6 +116,7 @@ namespace HIS.Desktop.Plugins.BedHistory
         RefeshReference refesh;
         Dictionary<long, List<V_HIS_BED_LOG>> dicBedLog = new Dictionary<long, List<V_HIS_BED_LOG>>();
         Dictionary<long, List<long>> dicTreatmentBedRoom = new Dictionary<long, List<long>>();
+        bool isInitializing = true;
         #endregion
 
         #region Construct
@@ -164,10 +165,12 @@ namespace HIS.Desktop.Plugins.BedHistory
                 CheckWarningOverTotalPatientPrice();
                 EnableControl();
                 LoadKeysFromlanguage();
+                chkSameDepartment.Checked = Properties.Settings.Default.MySameDepartmentCheckState;
                 SetDefaultValueControl();
                 ChkSplitDay.Checked = Properties.Settings.Default.MyCheckState;
                 _services = BackendDataWorker.Get<V_HIS_SERVICE>();
                 FillDataToControl();
+                isInitializing = false;
 
                 WaitingManager.Hide();
             }
@@ -313,6 +316,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                 this.ButtonDelete.Buttons[0].ToolTip = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__TOOL_TIP_BUTTON_DELETE");
                 this.ButtonEdit.Buttons[0].ToolTip = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__TOOL_TIP_BUTTON_DEIT");
                 this.LciNotCountHours.Text = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__LCI_NOT_COUNT_HOURS");
+                this.lciSameDepartment.Text = GetLanguageControl("IVT_LANGUAGE_KEY__FORM_BED_HISTORY__LCI_SAME_DEPARTMENT");
             }
             catch (Exception ex)
             {
@@ -616,7 +620,7 @@ namespace HIS.Desktop.Plugins.BedHistory
                     this.ListVBedRoom = LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.DEPARTMENT_ID == departmentId && (_TreatmentBedRoom != null && _TreatmentBedRoom.BED_ROOM_ID > 0 ? o.ID == _TreatmentBedRoom.BED_ROOM_ID : o.ROOM_ID == this.WorkPlaceSDO.RoomId)).ToList();
                 }
 
-                var allData = LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().OrderByDescending(o => o.DEPARTMENT_ID == departmentId).ToList();
+                var allData = GetBedRoomDataSource(departmentId);
 
                 SetValueBedRoom(cboBedRoom, this.ListVBedRoom, allData);
 
@@ -626,6 +630,19 @@ namespace HIS.Desktop.Plugins.BedHistory
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        /// <summary>
+        /// Get bed room data source filtered by chkSameDepartment state
+        /// </summary>
+        private List<V_HIS_BED_ROOM> GetBedRoomDataSource(long departmentId)
+        {
+            var allActive = LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
+            if (chkSameDepartment.Checked && departmentId > 0)
+            {
+                return allActive.Where(o => o.DEPARTMENT_ID == departmentId).OrderByDescending(o => o.DEPARTMENT_ID == departmentId).ToList();
+            }
+            return allActive.OrderByDescending(o => o.DEPARTMENT_ID == departmentId).ToList();
         }
 
         /// <summary>
@@ -5552,10 +5569,8 @@ namespace HIS.Desktop.Plugins.BedHistory
                 {
                     this.ListVBedRoom = LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().Where(o => o.ROOM_ID == this.WorkPlaceSDO.RoomId).ToList();
                 }
-                //Inventec.Common.Logging.LogSystem.Info(Inventec.Common.Logging.LogUtil.TraceData("this.ListVBedRoom__:", this.ListVBedRoom));
 
-
-                var allData = LocalStorage.BackendData.BackendDataWorker.Get<V_HIS_BED_ROOM>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList().OrderByDescending(o => o.DEPARTMENT_ID == departmentId).ToList();
+                var allData = GetBedRoomDataSource(departmentId);
 
                 SetValueBedRoom(cboBedRoom, this.ListVBedRoom, allData);
 
@@ -5581,6 +5596,32 @@ namespace HIS.Desktop.Plugins.BedHistory
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void chkSameDepartment_CheckedChanged(object sender, EventArgs e)
+        {
+            if (isInitializing) return;
+            try
+            {
+                Properties.Settings.Default.MySameDepartmentCheckState = chkSameDepartment.Checked;
+                Properties.Settings.Default.Save();
+
+                long departmentId = 0;
+                if (this.WorkPlaceSDO != null)
+                {
+                    departmentId = this.WorkPlaceSDO.DepartmentId;
+                }
+
+                var allData = GetBedRoomDataSource(departmentId);
+
+                SetValueBedRoom(cboBedRoom, this.ListVBedRoom, allData);
+                RefeshDataToCboBed(0, new HisBedHistoryADO(), true);
+                chkSameDepartment.Focus();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
