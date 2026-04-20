@@ -116,6 +116,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 LoadDataToGrid();
                 SetDefaultValueControl();
                 InitComboDocumentBookId();
+                InitCccdWarningProvider();
                 CboTreatmentEndTypExt.Focus();
 
             }
@@ -429,7 +430,7 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             }
         }
 
-        private void FillDataToControl(HIS_TREATMENT hisTreatment)
+        private void FillDataToControl(HIS_TREATMENT hisTreatment, bool reloadCccd = true)
         {
             try
             {
@@ -501,6 +502,14 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                     TxtRelativeName.Text = hisTreatment.TDL_PATIENT_RELATIVE_NAME;//TODO
                     LblExtraEndCode.Text = hisTreatment.EXTRA_END_CODE;
                     txtTreatmentMethod.Text = hisTreatment.TREATMENT_METHOD;
+
+                    // Load CCCD/Passport number and date — only on initial load, not after save
+                    // (to prevent overriding user-edited values with stale DB data)
+                    if (reloadCccd)
+                    {
+                        LoadCccdInfo(hisTreatment);
+                    }
+
                     txtMaBHXH.Text = hisTreatment.TDL_SOCIAL_INSURANCE_NUMBER ?? "";
                     if (!String.IsNullOrWhiteSpace(hisTreatment.SICK_HEIN_CARD_NUMBER))
                     {
@@ -597,6 +606,145 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             }
         }
 
+        private void LoadCccdInfo(HIS_TREATMENT hisTreatment)
+        {
+            try
+            {
+                if (hisTreatment == null) return;
+
+                // Priority 1: Read from HIS_PATIENT (FE updates directly, source of truth)
+                string cccdNumber = null;
+                long? cccdDate = null;
+                HIS_PATIENT patient = null;
+                if (hisTreatment.PATIENT_ID > 0)
+                {
+                    try
+                    {
+                        MOS.Filter.HisPatientFilter patientFilter = new MOS.Filter.HisPatientFilter();
+                        patientFilter.ID = hisTreatment.PATIENT_ID;
+                        patient = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                            .Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, null)
+                            ?.FirstOrDefault();
+                    }
+                    catch (Exception apiEx)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(apiEx);
+                    }
+
+                    if (patient != null)
+                    {
+                        if (!String.IsNullOrWhiteSpace(patient.CCCD_NUMBER))
+                            cccdNumber = patient.CCCD_NUMBER;
+                        else if (!String.IsNullOrWhiteSpace(patient.PASSPORT_NUMBER))
+                            cccdNumber = patient.PASSPORT_NUMBER;
+                        else if (!String.IsNullOrWhiteSpace(patient.CMND_NUMBER))
+                            cccdNumber = patient.CMND_NUMBER;
+
+                        if (patient.CCCD_DATE != null && patient.CCCD_DATE > 0)
+                            cccdDate = patient.CCCD_DATE;
+                        else if (patient.PASSPORT_DATE != null && patient.PASSPORT_DATE > 0)
+                            cccdDate = patient.PASSPORT_DATE;
+                        else if (patient.CMND_DATE != null && patient.CMND_DATE > 0)
+                            cccdDate = patient.CMND_DATE;
+                    }
+                }
+
+                // Priority 2: Fallback to HIS_TREATMENT if HIS_PATIENT has no data
+                if (String.IsNullOrWhiteSpace(cccdNumber))
+                {
+                    if (!String.IsNullOrWhiteSpace(hisTreatment.TDL_PATIENT_CCCD_NUMBER))
+                        cccdNumber = hisTreatment.TDL_PATIENT_CCCD_NUMBER;
+                    else if (!String.IsNullOrWhiteSpace(hisTreatment.TDL_PATIENT_PASSPORT_NUMBER))
+                        cccdNumber = hisTreatment.TDL_PATIENT_PASSPORT_NUMBER;
+                }
+                if (cccdDate == null)
+                {
+                    if (hisTreatment.TDL_PATIENT_CCCD_DATE != null && hisTreatment.TDL_PATIENT_CCCD_DATE > 0)
+                        cccdDate = hisTreatment.TDL_PATIENT_CCCD_DATE;
+                    else if (hisTreatment.TDL_PATIENT_CMND_DATE != null && hisTreatment.TDL_PATIENT_CMND_DATE > 0)
+                        cccdDate = hisTreatment.TDL_PATIENT_CMND_DATE;
+                    else if (hisTreatment.TDL_PATIENT_PASSPORT_DATE != null && hisTreatment.TDL_PATIENT_PASSPORT_DATE > 0)
+                        cccdDate = hisTreatment.TDL_PATIENT_PASSPORT_DATE;
+                }
+
+                // Debug trace — help diagnose data source
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "LoadCccdInfo"
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => cccdNumber), cccdNumber)
+                    + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => cccdDate), cccdDate)
+                    + Inventec.Common.Logging.LogUtil.TraceData("TDL_CCCD_NUMBER", hisTreatment.TDL_PATIENT_CCCD_NUMBER)
+                    + Inventec.Common.Logging.LogUtil.TraceData("TDL_PASSPORT_NUMBER", hisTreatment.TDL_PATIENT_PASSPORT_NUMBER)
+                    + Inventec.Common.Logging.LogUtil.TraceData("TDL_CCCD_DATE", hisTreatment.TDL_PATIENT_CCCD_DATE)
+                    + Inventec.Common.Logging.LogUtil.TraceData("patient.CCCD_NUMBER", patient?.CCCD_NUMBER)
+                    + Inventec.Common.Logging.LogUtil.TraceData("patient.PASSPORT_NUMBER", patient?.PASSPORT_NUMBER));
+
+                txtCccdNumber.Text = cccdNumber ?? "";
+                dteCccdDate.EditValue = cccdDate != null && cccdDate > 0
+                    ? Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(cccdDate ?? 0)
+                    : null;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void UpdatePatientCccdPassport()
+        {
+            try
+            {
+                if (this.hisTreatment == null || this.hisTreatment.PATIENT_ID <= 0) return;
+
+                // Load HIS_PATIENT full object
+                MOS.Filter.HisPatientFilter patientFilter = new MOS.Filter.HisPatientFilter();
+                patientFilter.ID = this.hisTreatment.PATIENT_ID;
+                HIS_PATIENT patient = new Inventec.Common.Adapter.BackendAdapter(new CommonParam())
+                    .Get<List<HIS_PATIENT>>("api/HisPatient/Get", ApiConsumers.MosConsumer, patientFilter, null)
+                    ?.FirstOrDefault();
+
+                if (patient == null) return;
+
+                string cccdInput = (txtCccdNumber.Text ?? "").Trim();
+                bool isAllDigit = cccdInput.All(char.IsDigit);
+                long? dateValue = dteCccdDate.EditValue != null
+                    ? Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteCccdDate.DateTime)
+                    : null;
+
+                if (isAllDigit)
+                {
+                    // CCCD
+                    patient.CCCD_NUMBER = cccdInput;
+                    patient.CCCD_DATE = dateValue;
+                    // Clear passport
+                    patient.PASSPORT_NUMBER = null;
+                    patient.PASSPORT_DATE = null;
+                }
+                else
+                {
+                    // Passport
+                    patient.PASSPORT_NUMBER = cccdInput;
+                    patient.PASSPORT_DATE = dateValue;
+                    // Clear CCCD
+                    patient.CCCD_NUMBER = null;
+                    patient.CCCD_DATE = null;
+                }
+
+                CommonParam paramPatient = new CommonParam();
+                var patientResult = new Inventec.Common.Adapter.BackendAdapter(paramPatient)
+                    .Post<HIS_PATIENT>("api/HisPatient/Update", ApiConsumers.MosConsumer, patient, paramPatient);
+
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "UpdatePatientCccdPassport"
+                    + Inventec.Common.Logging.LogUtil.TraceData("success", patientResult != null)
+                    + Inventec.Common.Logging.LogUtil.TraceData("CCCD", patient.CCCD_NUMBER)
+                    + Inventec.Common.Logging.LogUtil.TraceData("PASSPORT", patient.PASSPORT_NUMBER));
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void BtnSave_Click(object sender, EventArgs e)
         {
             try
@@ -641,6 +789,56 @@ namespace HIS.Desktop.Plugins.PregnancyRest
             try
             {
                 this.positionHandle = -1;
+
+                // Validate CCCD/Passport: bắt buộc nhập + kiểm tra độ dài
+                string cccdInputPreCheck = (txtCccdNumber.Text ?? "").Trim();
+                if (String.IsNullOrWhiteSpace(cccdInputPreCheck))
+                {
+                    txtCccdNumber.Focus();
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Vui lòng nhập Số CCCD/HC",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                bool isAllDigitPre = cccdInputPreCheck.All(char.IsDigit);
+                if (isAllDigitPre && cccdInputPreCheck.Length != 12)
+                {
+                    txtCccdNumber.Focus();
+                    txtCccdNumber.SelectAll();
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Số CCCD phải đủ 12 số",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+                if (!isAllDigitPre && cccdInputPreCheck.Length >= 10)
+                {
+                    txtCccdNumber.Focus();
+                    txtCccdNumber.SelectAll();
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Số hộ chiếu phải dưới 10 ký tự",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Require "Thông tin bổ sung" before save
+                if (CboTreatmentEndTypExt.EditValue == null)
+                {
+                    CboTreatmentEndTypExt.Focus();
+                    DevExpress.XtraEditors.XtraMessageBox.Show(
+                        "Vui lòng chọn Thông tin bổ sung",
+                        "Thông báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (!dxValidationProvider1.Validate()) return;
                 //save
                 bool success = false;
@@ -681,7 +879,9 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                         }
                     }
                 }
-                long typeId = Inventec.Common.TypeConvert.Parse.ToInt64(CboTreatmentEndTypExt.EditValue.ToString());
+                long typeId = CboTreatmentEndTypExt.EditValue != null
+                    ? Inventec.Common.TypeConvert.Parse.ToInt64(CboTreatmentEndTypExt.EditValue.ToString())
+                    : -99;
                 if (CboTreatmentEndTypExt.EditValue != null)
                 {
                     //if (!string.IsNullOrEmpty(txtCodeWorkPlace.Text))
@@ -758,7 +958,6 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                             sdo.GestationalAge = null;
                         }
                     }
-
                 }
 
                 if (!string.IsNullOrEmpty(txtCodeWorkPlace.Text))
@@ -766,6 +965,49 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                     sdo.WorkPlaceId = Inventec.Common.TypeConvert.Parse.ToInt32(this.cboWorkPlace.EditValue.ToString());
                 }
                 sdo.PatientWorkPlace = txtWorkPlace.Text.Trim();
+
+                // Save CCCD/Passport number and date (length already validated at top of method)
+                // Use empty string "" instead of null to force BE to clear the unused field
+                try
+                {
+                    string cccdInput = (txtCccdNumber.Text ?? "").Trim();
+                    bool isAllDigit = cccdInput.All(char.IsDigit);
+                    if (isAllDigit)
+                    {
+                        sdo.CccdNumber = cccdInput;
+                        sdo.PassportNumber = "";
+                    }
+                    else
+                    {
+                        sdo.PassportNumber = cccdInput;
+                        sdo.CccdNumber = "";
+                    }
+
+                    if (dteCccdDate.EditValue != null)
+                    {
+                        long? dateValue = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dteCccdDate.DateTime);
+                        if (isAllDigit)
+                        {
+                            sdo.CccdDate = dateValue;
+                            sdo.PassportDate = null;
+                        }
+                        else
+                        {
+                            sdo.PassportDate = dateValue;
+                            sdo.CccdDate = null;
+                        }
+                    }
+                    else
+                    {
+                        sdo.CccdDate = null;
+                        sdo.PassportDate = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+
                 sdo.MotherName = txtPatientMotherName.Text.Trim();
                 sdo.FatherName = txtPatientFatherName.Text.Trim();
                 sdo.PatientRelativeName = TxtRelativeName.Text.Trim();
@@ -795,10 +1037,13 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 CommonParam param = new CommonParam();
                 hisTreatmentResult = new Inventec.Common.Adapter.BackendAdapter(param).Post<HIS_TREATMENT>("api/HisTreatment/UpdateExtraEndInfo", ApiConsumer.ApiConsumers.MosConsumer, sdo, HIS.Desktop.Controls.Session.SessionManager.ActionLostToken, param);
                 Inventec.Common.Logging.LogSystem.Debug("API Create Result: " + Inventec.Common.Logging.LogUtil.TraceData("DataA", sdo));
-                FillDataToControl(hisTreatmentResult);
+                FillDataToControl(hisTreatmentResult, false);
                 if (hisTreatmentResult != null)
                 {
                     success = true;
+                    // Workaround: BE UpdateExtraEndInfo doesn't persist Passport/clear CCCD correctly
+                    // → Force update HIS_PATIENT directly so reload shows the right value
+                    UpdatePatientCccdPassport();
                 }
 
                 WaitingManager.Hide();
@@ -1248,11 +1493,65 @@ namespace HIS.Desktop.Plugins.PregnancyRest
                 ValidMaxLengthRequired(false, txtPregnancyTerminationReason, 1000, null);
                 ValidateRelativeType();
                 ValidateAgeRelativeName();
-
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProviderCccd;
+
+        private void InitCccdWarningProvider()
+        {
+            try
+            {
+                if (dxErrorProviderCccd == null)
+                {
+                    dxErrorProviderCccd = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
+                    dxErrorProviderCccd.ContainerControl = this;
+                }
+                txtCccdNumber.TextChanged += TxtCccdNumber_ValidateLength;
+                txtCccdNumber.Leave += TxtCccdNumber_ValidateLength;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void TxtCccdNumber_ValidateLength(object sender, EventArgs e)
+        {
+            try
+            {
+                string input = (txtCccdNumber.Text ?? "").Trim();
+                if (string.IsNullOrEmpty(input))
+                {
+                    dxErrorProviderCccd.SetError(txtCccdNumber, "");
+                    return;
+                }
+
+                bool isAllDigit = input.All(char.IsDigit);
+                if (isAllDigit && input.Length != 12)
+                {
+                    dxErrorProviderCccd.SetError(txtCccdNumber,
+                        "Số CCCD phải đủ 12 số",
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else if (!isAllDigit && input.Length >= 10)
+                {
+                    dxErrorProviderCccd.SetError(txtCccdNumber,
+                        "Số hộ chiếu phải dưới 10 ký tự",
+                        DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                }
+                else
+                {
+                    dxErrorProviderCccd.SetError(txtCccdNumber, "");
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
