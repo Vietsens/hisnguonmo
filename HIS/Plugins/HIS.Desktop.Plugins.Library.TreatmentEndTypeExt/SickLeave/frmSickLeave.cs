@@ -246,7 +246,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
         {
             try
             {
-                ValidationControlAge();
+                ValidationControlAge();   
                 if (treatment != null)
                 {
                     if (treatment.TDL_PATIENT_DOB != null)
@@ -374,6 +374,22 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     sickLeaveOut.PregnancyTerminationTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtPregnancyTerminationTime.DateTime);
                 else
                     sickLeaveOut.PregnancyTerminationTime = null;
+
+                string cccdText = (txtCCCDNumber.Text ?? string.Empty).Trim();
+                long? cccdDateValue = null;
+                if (cboDateCCCD.EditValue != null && cboDateCCCD.DateTime != DateTime.MinValue)
+                    cccdDateValue = Convert.ToInt64(cboDateCCCD.DateTime.ToString("yyyyMMdd") + "000000");
+                long cccdNumTmp;
+                if (!string.IsNullOrEmpty(cccdText) && long.TryParse(cccdText, out cccdNumTmp))
+                {
+                    sickLeaveOut.CccdNumber = cccdText.Length > 12 ? cccdText.Substring(0, 12) : cccdText;
+                    sickLeaveOut.CccdDate = cccdDateValue;
+                }
+                else if (!string.IsNullOrEmpty(cccdText))
+                {
+                    sickLeaveOut.PassportNumber = cccdText.Length > 9 ? cccdText.Substring(0, 9) : cccdText;
+                    sickLeaveOut.PassportDate = cccdDateValue;
+                }
 
                 Inventec.Common.Logging.LogSystem.Debug("TreatmentEndTypeExt.frmSickLeave.btnSave_Click____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => sickLeaveOut), sickLeaveOut));
 
@@ -791,6 +807,28 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             }
         }
 
+        private void txtCCCDNumber_EditValueChanged(object sender, EventArgs e)
+        {
+            try
+          {
+                string text = txtCCCDNumber.Text ?? string.Empty;
+                bool hasNonDigit = text.Any(c => !char.IsDigit(c));
+                int maxLength = hasNonDigit ? 9 : 12;
+                if (txtCCCDNumber.Properties.MaxLength != maxLength)
+                {
+                    txtCCCDNumber.Properties.MaxLength = maxLength;
+                    if (text.Length > maxLength)
+                    {
+                        txtCCCDNumber.Text = text.Substring(0, maxLength);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void txtSoThe_Leave(object sender, EventArgs e)
         {
             try
@@ -954,7 +992,7 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
             Patient = new Inventec.Common.Adapter.BackendAdapter(new Inventec.Core.CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, patientFilter, null).FirstOrDefault();
             if (!dxValidationProvider1.Validate(txtBhxhCode) || Patient == null) return;
             LogSystem.Debug("Bat dau check cong BHXH ");
-            CheckBhxh();
+            CheckBhxh(); 
         }
         private HIS_EMPLOYEE GetEmployee(string username)
         {

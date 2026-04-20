@@ -122,6 +122,27 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     }
                     else
                         dtPregnancyTerminationTime.EditValue = null;
+
+                    if (!string.IsNullOrEmpty(TreatmentEndTypeExtData.CccdNumber))
+                    {
+                        txtCCCDNumber.Text = TreatmentEndTypeExtData.CccdNumber;
+                        if (TreatmentEndTypeExtData.CccdDate.HasValue)
+                        {
+                            DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(TreatmentEndTypeExtData.CccdDate.Value);
+                            if (dt.HasValue && dt.Value != DateTime.MinValue)
+                                cboDateCCCD.DateTime = dt.Value;
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(TreatmentEndTypeExtData.PassportNumber))
+                    {
+                        txtCCCDNumber.Text = TreatmentEndTypeExtData.PassportNumber;
+                        if (TreatmentEndTypeExtData.PassportDate.HasValue)
+                        {
+                            DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(TreatmentEndTypeExtData.PassportDate.Value);
+                            if (dt.HasValue && dt.Value != DateTime.MinValue)
+                                cboDateCCCD.DateTime = dt.Value;
+                        }
+                    }
                 }
                 else if (this.treatment != null)
                 {
@@ -195,6 +216,27 @@ namespace HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.SickLeave
                     }
                     else
                         dtPregnancyTerminationTime.EditValue = null;
+
+                    if (!string.IsNullOrEmpty(this.treatment.TDL_PATIENT_CCCD_NUMBER))
+                    {
+                        txtCCCDNumber.Text = this.treatment.TDL_PATIENT_CCCD_NUMBER;
+                        if (this.treatment.TDL_PATIENT_CCCD_DATE.HasValue)
+                        {
+                            DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.treatment.TDL_PATIENT_CCCD_DATE.Value);
+                            if (dt.HasValue && dt.Value != DateTime.MinValue)
+                                cboDateCCCD.DateTime = dt.Value;
+                        }
+                    }
+                    else if (!string.IsNullOrEmpty(this.treatment.TDL_PATIENT_PASSPORT_NUMBER))
+                    {
+                        txtCCCDNumber.Text = this.treatment.TDL_PATIENT_PASSPORT_NUMBER;
+                        if (this.treatment.TDL_PATIENT_PASSPORT_DATE.HasValue)
+                        {
+                            DateTime? dt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.treatment.TDL_PATIENT_PASSPORT_DATE.Value);
+                            if (dt.HasValue && dt.Value != DateTime.MinValue)
+                                cboDateCCCD.DateTime = dt.Value;
+                        }
+                    }
                 }
 
                 if (type == FormEnum.TYPE.NGHI_DUONG_THAI)

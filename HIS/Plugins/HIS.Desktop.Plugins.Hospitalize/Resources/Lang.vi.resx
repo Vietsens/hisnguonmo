@@ -180,4 +180,7 @@
   <data name="FormHospitalize.GiuongThucKe" xml:space="preserve">
     <value>Giường thực kê:</value>
   </data>
+  <data name="FormHospitalize.lciEmergencyClassify2.Text" xml:space="preserve">
+    <value>PL cấp cứu 2:</value>
+  </data>
 </root>

@@ -685,16 +685,16 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         filter.TREATMENT_ID = null;
                         filter.TREATMENT_IDs = lstTreatmentID_Treatment;
                     }
-                    filter.ORDER_DIRECTION = "ASC";
-                    filter.ORDER_FIELD = "DOCUMENT_GROUP_NUM_ORDER";
+                    filter.ORDER_DIRECTION = "DESC";
+                    filter.ORDER_FIELD = "NUM_ORDER";
                     filter.ORDER_DIRECTION1 = "ASC";
-                    filter.ORDER_FIELD1 = "EXAM_CATEGORY_NUM_ORDER";
-                    filter.ORDER_DIRECTION2 = "DESC";
-                    filter.ORDER_FIELD2 = "DOCUMENT_TIME";
+                    filter.ORDER_FIELD1 = "DOCUMENT_GROUP_NUM_ORDER";
+                    filter.ORDER_DIRECTION2 = "ASC";
+                    filter.ORDER_FIELD2 = "HIS_ORDER";
                     filter.ORDER_DIRECTION3 = "ASC";
-                    filter.ORDER_FIELD3 = "PAIR_KEY";
+                    filter.ORDER_FIELD3 = "DOCUMENT_TIME";
                     filter.ORDER_DIRECTION4 = "ASC";
-                    filter.ORDER_FIELD4 = "DOC_ROLE";
+                    filter.ORDER_FIELD4 = "CREATE_TIME";
 
                     Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => filter), filter));
 
@@ -820,7 +820,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             }
                                         }
 
-                                        listByGroups = listByGroups.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.EXAM_CATEGORY_NUM_ORDER).ThenByDescending(o => o.DOCUMENT_TIME).ThenBy(o => o.PAIR_KEY).ThenBy(o => o.DOC_ROLE).ToList();
+                                        listByGroups = listByGroups.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
 
                                         listByGroups.ForEach(o =>
                                         {
@@ -897,37 +897,18 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                                 }
                                             }
 
-                                            // Tạo node loại xét nghiệm (exam category) nếu có
-                                            string oParentKey = (docGroup != null) ? strChildKeyGroup : strTypeKey;
-                                            if (!string.IsNullOrEmpty(o.EXAM_CATEGORY_NAME))
-                                            {
-                                                string examCatKey = string.Format("{0}____EXAMCAT_{1}", oParentKey, o.EXAM_CATEGORY_NAME);
-                                                if (!listData.Exists(p => p.CHILD_KEY == examCatKey))
-                                                {
-                                                    int examCatCount = listByGroups.Count(d => d.EXAM_CATEGORY_NAME == o.EXAM_CATEGORY_NAME && d.DOCUMENT_GROUP_ID == o.DOCUMENT_GROUP_ID);
-                                                    listData.Add(new EmrDocumentADO()
-                                                    {
-                                                        DOCUMENT_DISPLAY = string.Format("{0}({1})", o.EXAM_CATEGORY_NAME, examCatCount),
-                                                        CHILD_KEY = examCatKey,
-                                                        PARENT_KEY = oParentKey,
-                                                        CUSTOM_NUM_ORDER = order,
-                                                        EXAM_CATEGORY_NUM_ORDER = o.EXAM_CATEGORY_NUM_ORDER,
-                                                        CUSTOM_BY_GROUP_NUM_ORDER = o.CUSTOM_BY_GROUP_NUM_ORDER
-                                                    });
-                                                }
-                                                oParentKey = examCatKey;
-                                            }
+                                           
 
                                             o.DOCUMENT_DISPLAY = o.DOCUMENT_NAME;
                                             o.CUSTOM_NUM_ORDER = order;
-                                            o.PARENT_KEY = oParentKey;
+                                            o.PARENT_KEY = (docGroup != null) ? strChildKeyGroup : strTypeKey;
                                             o.CHILD_KEY = String.Format("{0}____{1}____{2}____{3}", o.TREATMENT_CODE, o.DOCUMENT_TYPE_CODE, o.DOCUMENT_GROUP_CODE, o.DOCUMENT_CODE);
 
                                             order++;
                                         });
                                     }
                                 }
-                                listData = listData.OrderBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.EXAM_CATEGORY_NUM_ORDER).ThenByDescending(o => o.DOCUMENT_TIME).ThenBy(o => o.PAIR_KEY).ThenBy(o => o.DOC_ROLE).ToList();
+                                listData = listData.OrderByDescending(o => o.NUM_ORDER).ThenBy(o => o.CUSTOM_BY_GROUP_NUM_ORDER).ThenBy(o => o.DOCUMENT_TIME).ThenBy(o => o.CREATE_TIME).ToList();
                             }
                         }
                         else if (listData != null && listData.Count > 0)
@@ -1004,10 +985,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                                 documents = documents
                                     .OrderBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
-                                    .ThenBy(d => d.EXAM_CATEGORY_NUM_ORDER)
-                                    .ThenByDescending(d => d.DOCUMENT_TIME)
-                                    .ThenBy(d => d.PAIR_KEY)
-                                    .ThenBy(d => d.DOC_ROLE)
+                                    .ThenBy(d => d.DOCUMENT_TIME)
+                                    .ThenBy(d => d.CREATE_TIME)
                                     .ToList();
 
                                 foreach (var doc in documents)
@@ -1045,31 +1024,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                         }
                                     }
 
-                                    // Tạo node loại xét nghiệm (exam category) nếu có
-                                    string docParentKey = docGroup != null ? groupKey : typeKey;
-                                    if (!string.IsNullOrEmpty(doc.EXAM_CATEGORY_NAME))
-                                    {
-                                        string examCatKey = string.Format("{0}____EXAMCAT_{1}", docParentKey, doc.EXAM_CATEGORY_NAME);
-                                        if (!listData.Exists(p => p.CHILD_KEY == examCatKey))
-                                        {
-                                            int examCatCount = documents.Count(d => d.EXAM_CATEGORY_NAME == doc.EXAM_CATEGORY_NAME && d.DOCUMENT_GROUP_ID == doc.DOCUMENT_GROUP_ID);
-                                            listData.Add(new EmrDocumentADO
-                                            {
-                                                DOCUMENT_DISPLAY = string.Format("{0}({1})", doc.EXAM_CATEGORY_NAME, examCatCount),
-                                                CHILD_KEY = examCatKey,
-                                                PARENT_KEY = docParentKey,
-                                                CUSTOM_NUM_ORDER = order,
-                                                EXAM_CATEGORY_NUM_ORDER = doc.EXAM_CATEGORY_NUM_ORDER,
-                                                CUSTOM_BY_GROUP_NUM_ORDER = doc.CUSTOM_BY_GROUP_NUM_ORDER
-                                            });
-                                        }
-                                        docParentKey = examCatKey;
-                                    }
+                                   
 
                                     // Cập nhật văn bản
                                     doc.DOCUMENT_DISPLAY = doc.DOCUMENT_NAME;
                                     doc.CUSTOM_NUM_ORDER = order;
-                                    doc.PARENT_KEY = docParentKey;
+                                    doc.PARENT_KEY = docGroup != null ? groupKey : typeKey;
                                     doc.CHILD_KEY = string.Format("{0}____{1}____{2}", doc.DOCUMENT_TYPE_CODE, doc.DOCUMENT_GROUP_CODE, doc.DOCUMENT_CODE);
                                     order++;
                                 }
@@ -1077,11 +1037,10 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                             // Sắp xếp lại toàn bộ
                             listData = listData
-                                .OrderBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
-                                .ThenBy(d => d.EXAM_CATEGORY_NUM_ORDER)
-                                .ThenByDescending(d => d.DOCUMENT_TIME)
-                                .ThenBy(d => d.PAIR_KEY)
-                                .ThenBy(d => d.DOC_ROLE)
+                                .OrderByDescending(d => d.NUM_ORDER)
+                                .ThenBy(d => d.CUSTOM_BY_GROUP_NUM_ORDER)
+                                .ThenBy(d => d.DOCUMENT_TIME)
+                                .ThenBy(d => d.CREATE_TIME)
                                 .ToList();
                         }
                         else if (listData != null && listData.Count > 0)
