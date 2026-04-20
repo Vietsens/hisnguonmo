@@ -318,6 +318,10 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save.Update
                     prescriptionSDO.TreatmentFinishSDO.EndTypeExtNote = this.EndTypeExtNote;
                     prescriptionSDO.TreatmentFinishSDO.MotherName = this.MotherName;
                     prescriptionSDO.TreatmentFinishSDO.FatherName = this.FatherName;
+                    prescriptionSDO.TreatmentFinishSDO.CccdNumber = this.CccdNumber;
+                    prescriptionSDO.TreatmentFinishSDO.CccdDate = this.CccdDate;
+                    prescriptionSDO.TreatmentFinishSDO.PassportNumber = this.PassportNumber;
+                    prescriptionSDO.TreatmentFinishSDO.PassportDate = this.PassportDate;
                 }
                 else
                 {

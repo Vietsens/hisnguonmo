@@ -193,4 +193,8 @@
     <value>Real this.bed Statistics:</value>
     <comment>Giường thực kê:</comment>
   </data>
+  <data name="FormHospitalize.lciEmergencyClassify2.Text" xml:space="preserve">
+    <value>Emergency classify 2:</value>
+    <comment>PL cấp cứu 2:</comment>
+  </data>
 </root>
