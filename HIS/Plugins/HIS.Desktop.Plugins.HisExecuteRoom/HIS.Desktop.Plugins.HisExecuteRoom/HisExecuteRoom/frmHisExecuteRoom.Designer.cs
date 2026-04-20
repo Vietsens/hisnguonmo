@@ -321,6 +321,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.gridView10 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboDefaultService = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView9 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.cboExpendMediStock = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.gridViewExpendMediStock = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.cboDepositBook = new DevExpress.XtraEditors.GridLookUpEdit();
             this.gridView8 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtHein_card_number = new System.Windows.Forms.TextBox();
@@ -393,6 +395,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem36 = new DevExpress.XtraLayout.LayoutControlItem();
             this.lcDefaultService = new DevExpress.XtraLayout.LayoutControlItem();
+            this.lcExpendMediStock = new DevExpress.XtraLayout.LayoutControlItem();
             this.lciAccountBook = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem59 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem56 = new DevExpress.XtraLayout.LayoutControlItem();
@@ -570,6 +573,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.gridView10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDefaultService.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExpendMediStock.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewExpendMediStock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepositBook.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spMaxPatientByDay.Properties)).BeginInit();
@@ -637,6 +642,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcDefaultService)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcExpendMediStock)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAccountBook)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).BeginInit();
@@ -1955,6 +1961,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.lcEditorInfo.Controls.Add(this.cboAccountQr);
             this.lcEditorInfo.Controls.Add(this.cboAccountBook);
             this.lcEditorInfo.Controls.Add(this.cboDefaultService);
+            this.lcEditorInfo.Controls.Add(this.cboExpendMediStock);
             this.lcEditorInfo.Controls.Add(this.cboDepositBook);
             this.lcEditorInfo.Controls.Add(this.txtHein_card_number);
             this.lcEditorInfo.Controls.Add(this.spMaxPatientByDay);
@@ -2182,6 +2189,32 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.gridView9.Name = "gridView9";
             this.gridView9.OptionsSelection.EnableAppearanceFocusedCell = false;
             this.gridView9.OptionsView.ShowGroupPanel = false;
+            // 
+            // cboExpendMediStock
+            // 
+            this.cboExpendMediStock.EditValue = "";
+            this.cboExpendMediStock.Location = new System.Drawing.Point(138, 847);
+            this.cboExpendMediStock.Margin = new System.Windows.Forms.Padding(4);
+            this.cboExpendMediStock.MenuManager = this.barManager1;
+            this.cboExpendMediStock.Name = "cboExpendMediStock";
+            this.cboExpendMediStock.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
+            this.cboExpendMediStock.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+            this.cboExpendMediStock.Properties.NullText = "";
+            this.cboExpendMediStock.Properties.View = this.gridViewExpendMediStock;
+            this.cboExpendMediStock.Size = new System.Drawing.Size(444, 22);
+            this.cboExpendMediStock.StyleController = this.lcEditorInfo;
+            this.cboExpendMediStock.TabIndex = 47;
+            this.cboExpendMediStock.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboExpendMediStock_ButtonClick);
+            this.cboExpendMediStock.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cboExpendMediStock_KeyUp);
+            // 
+            // gridViewExpendMediStock
+            // 
+            this.gridViewExpendMediStock.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridViewExpendMediStock.Name = "gridViewExpendMediStock";
+            this.gridViewExpendMediStock.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridViewExpendMediStock.OptionsView.ShowGroupPanel = false;
             // 
             // cboDepositBook
             // 
@@ -2821,6 +2854,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.layoutControlItem34,
             this.layoutControlItem36,
             this.lcDefaultService,
+            this.lcExpendMediStock,
             this.lciAccountBook,
             this.layoutControlItem59,
             this.layoutControlItem56,
@@ -3247,6 +3281,19 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             this.lcDefaultService.TextSize = new System.Drawing.Size(130, 20);
             this.lcDefaultService.TextToControlDistance = 5;
             // 
+            // lcExpendMediStock
+            // 
+            this.lcExpendMediStock.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lcExpendMediStock.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lcExpendMediStock.Control = this.cboExpendMediStock;
+            this.lcExpendMediStock.Location = new System.Drawing.Point(0, 844);
+            this.lcExpendMediStock.Name = "lcExpendMediStock";
+            this.lcExpendMediStock.Size = new System.Drawing.Size(585, 28);
+            this.lcExpendMediStock.Text = "Kho tiêu hao mặc định:";
+            this.lcExpendMediStock.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lcExpendMediStock.TextSize = new System.Drawing.Size(130, 20);
+            this.lcExpendMediStock.TextToControlDistance = 5;
+            // 
             // lciAccountBook
             // 
             this.lciAccountBook.AppearanceItemCaption.Options.UseTextOptions = true;
@@ -3346,9 +3393,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             // emptySpaceItem2
             // 
             this.emptySpaceItem2.AllowHotTrack = false;
-            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 844);
+            this.emptySpaceItem2.Location = new System.Drawing.Point(0, 872);
             this.emptySpaceItem2.Name = "emptySpaceItem2";
-            this.emptySpaceItem2.Size = new System.Drawing.Size(585, 137);
+            this.emptySpaceItem2.Size = new System.Drawing.Size(585, 109);
             this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem61
@@ -4547,6 +4594,8 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.gridView10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDefaultService.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboExpendMediStock.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridViewExpendMediStock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cboDepositBook.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spMaxPatientByDay.Properties)).EndInit();
@@ -4614,6 +4663,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem36)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lcDefaultService)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lcExpendMediStock)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lciAccountBook)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem59)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem56)).EndInit();
@@ -4877,6 +4927,9 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
         private DevExpress.XtraEditors.GridLookUpEdit cboDefaultService;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView9;
         private DevExpress.XtraLayout.LayoutControlItem lcDefaultService;
+        private DevExpress.XtraEditors.GridLookUpEdit cboExpendMediStock;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridViewExpendMediStock;
+        private DevExpress.XtraLayout.LayoutControlItem lcExpendMediStock;
         private DevExpress.XtraEditors.GridLookUpEdit cboAccountBook;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView10;
         private DevExpress.XtraLayout.LayoutControlItem lciAccountBook;
