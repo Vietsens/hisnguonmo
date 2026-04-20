@@ -263,6 +263,15 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 room.PAYER_ACCOUNT = txtPayerAccount.Text.Trim();
                 room.QR_ACCOUNT_BOOK_ID = cboAccountQr.EditValue != null ? (long?)Int64.Parse(cboAccountQr.EditValue.ToString()) : null;
                 room.QR_CONFIG_JSON = txtJsonQr.Text;
+
+                if (cboExpendMediStock.EditValue != null)
+                {
+                    room.DEFAULT_EXPEND_MEDI_STOCK_ID = Int64.Parse(cboExpendMediStock.EditValue.ToString());
+                }
+                else
+                {
+                    room.DEFAULT_EXPEND_MEDI_STOCK_ID = null;
+                }
             }
             catch (Exception ex)
             {

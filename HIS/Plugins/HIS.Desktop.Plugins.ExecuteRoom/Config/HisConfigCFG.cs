@@ -132,7 +132,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 isDisablePartExamByExecutor = GetValue(DISABLE_PART_EXAM_BY_EXECUTOR) == HIS.Desktop.LocalStorage.LocalData.GlobalVariables.CommonStringTrue;
                 MustSignBeforeStart = GetValue(KEY__MustSignBeforeStart);
                 model = GetValue(HIS_MODEL);
-                isRestoreLayout = new HashSet<string>(model.Split(','), StringComparer.OrdinalIgnoreCase).Contains("HIS.Desktop.Plugins.ExecuteRoom");
+                isRestoreLayout = !string.IsNullOrEmpty(model)
+                    && new HashSet<string>(
+                        model.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries).Select(o => o.Trim()),
+                        StringComparer.OrdinalIgnoreCase
+                    ).Contains("HIS.Desktop.Plugins.ExecuteRoom");
                 LogSystem.Debug("LoadConfig => 2");
             }
             catch (Exception ex)

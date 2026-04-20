@@ -46,6 +46,7 @@ using System.Resources;
 using Inventec.Desktop.Common.LanguageManager;
 using HIS.Desktop.Print;
 using HIS.Desktop.Plugins.Hospitalize.Resources;
+using HIS.Desktop.LocalStorage.HisConfig;
 
 namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
 {
@@ -69,6 +70,11 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
         long departmentId;
         List<V_HIS_ROOM> listRoom = new List<V_HIS_ROOM>();
         List<HIS_ICD> hisICD;
+
+        // [vCong19083] Emergency classify 2
+        DevExpress.XtraEditors.LookUpEdit cboEmergencyClassify2;
+        DevExpress.XtraLayout.LayoutControlItem lciEmergencyClassify2;
+        List<HIS_PATIENT_CLASSIFY> listEmergencyClassify = new List<HIS_PATIENT_CLASSIFY>();
         #endregion
 
         #region Construct
@@ -77,11 +83,157 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
 		:base(module)
         {
             InitializeComponent();
+            InitEmergencyClassifyControl();
             this.currentModule = module;
             this.treatmentId = treatmentid;
             this.returnSuccess = rsreturnSuccess;
             this.vserviceReq = Servicereq;
 
+        }
+
+        #endregion
+
+        #region Emergency Classify 2 — vCong19083
+
+        /// <summary>
+        /// Create combobox and layout item for emergency classify 2 at runtime.
+        /// Default visibility = Never. Shown when config ON + treatment IS_EMERGENCY = 1.
+        /// </summary>
+        private void InitEmergencyClassifyControl()
+        {
+            try
+            {
+                this.cboEmergencyClassify2 = new DevExpress.XtraEditors.LookUpEdit();
+                this.cboEmergencyClassify2.Name = "cboEmergencyClassify2";
+                this.cboEmergencyClassify2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+                    new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+                    new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)});
+                this.cboEmergencyClassify2.Properties.Buttons[1].Visible = false;
+                this.cboEmergencyClassify2.Properties.NullText = "";
+                this.cboEmergencyClassify2.StyleController = this.layoutControl1;
+                this.cboEmergencyClassify2.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboEmergencyClassify2_Closed);
+                this.cboEmergencyClassify2.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboEmergencyClassify2_ButtonClick);
+
+                this.lciEmergencyClassify2 = new DevExpress.XtraLayout.LayoutControlItem();
+                this.lciEmergencyClassify2.Control = this.cboEmergencyClassify2;
+                this.lciEmergencyClassify2.Name = "lciEmergencyClassify2";
+                this.lciEmergencyClassify2.Text = "PL cấp cứu 2:";
+                this.lciEmergencyClassify2.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+                this.lciEmergencyClassify2.TextSize = new System.Drawing.Size(90, 20);
+                this.lciEmergencyClassify2.TextToControlDistance = 5;
+                this.lciEmergencyClassify2.AppearanceItemCaption.Options.UseTextOptions = true;
+                this.lciEmergencyClassify2.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+                this.lciEmergencyClassify2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+
+                this.layoutControl1.BeginUpdate();
+                this.layoutControlGroup1.AddItem(this.lciEmergencyClassify2, this.layoutControlItem7, DevExpress.XtraLayout.Utils.InsertType.Top);
+                this.layoutControl1.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void LoadDataToEmergencyClassifyCombo()
+        {
+            try
+            {
+                var allClassify = BackendDataWorker.Get<HIS_PATIENT_CLASSIFY>();
+                if (allClassify != null)
+                {
+                    this.listEmergencyClassify = allClassify
+                        .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE)
+                        // TODO: [vCong19083] Uncomment when HIS_PATIENT_CLASSIFY.IS_EMERGENCY is available
+                        // .Where(o => o.IS_EMERGENCY == 1)
+                        .ToList();
+                }
+
+                cboEmergencyClassify2.Properties.DataSource = this.listEmergencyClassify;
+                cboEmergencyClassify2.Properties.DisplayMember = "PATIENT_CLASSIFY_NAME";
+                cboEmergencyClassify2.Properties.ValueMember = "ID";
+                cboEmergencyClassify2.Properties.ForceInitialize();
+                cboEmergencyClassify2.Properties.Columns.Clear();
+                cboEmergencyClassify2.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("PATIENT_CLASSIFY_CODE", "", 50));
+                cboEmergencyClassify2.Properties.Columns.Add(new DevExpress.XtraEditors.Controls.LookUpColumnInfo("PATIENT_CLASSIFY_NAME", "", 150));
+                cboEmergencyClassify2.Properties.ShowHeader = false;
+                cboEmergencyClassify2.Properties.ImmediatePopup = true;
+                cboEmergencyClassify2.Properties.DropDownRows = 10;
+                cboEmergencyClassify2.Properties.PopupWidth = 200;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        /// <summary>
+        /// Show/hide emergency classify combobox based on config + treatment IS_EMERGENCY.
+        /// </summary>
+        private void InitEmergencyClassifyVisibility(V_HIS_TREATMENT treatmentData)
+        {
+            try
+            {
+                bool showEmergencyClassify = false;
+
+                string configValue = HisConfigs.Get<string>("MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY");
+                if (configValue == "1" && treatmentData != null && treatmentData.IS_EMERGENCY == 1)
+                {
+                    showEmergencyClassify = true;
+                }
+
+                if (showEmergencyClassify)
+                {
+                    lciEmergencyClassify2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+
+                    // TODO: [vCong19083] Uncomment when V_HIS_TREATMENT.EMERGENCY_CLASSIFY_ID_2 is available
+                    // if (treatmentData.EMERGENCY_CLASSIFY_ID_2 != null)
+                    //     cboEmergencyClassify2.EditValue = treatmentData.EMERGENCY_CLASSIFY_ID_2;
+                }
+                else
+                {
+                    lciEmergencyClassify2.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboEmergencyClassify2_Closed(object sender, DevExpress.XtraEditors.Controls.ClosedEventArgs e)
+        {
+            try
+            {
+                if (e.CloseMode == DevExpress.XtraEditors.PopupCloseMode.Normal)
+                {
+                    if (cboEmergencyClassify2.EditValue != null)
+                    {
+                        cboEmergencyClassify2.Properties.Buttons[1].Visible = true;
+                    }
+                    btnSave.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboEmergencyClassify2_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboEmergencyClassify2.Properties.Buttons[1].Visible = false;
+                    cboEmergencyClassify2.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
         }
 
         #endregion
@@ -115,6 +267,12 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
                 this.layoutControlItem13.Text = Inventec.Common.Resource.Get.Value("FormHospitalize.GiuongThucKe", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem14.Text = Inventec.Common.Resource.Get.Value("FormHospitalize.BenhChinh", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.layoutControlItem15.Text = Inventec.Common.Resource.Get.Value("FormHospitalize.BenhPhu", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+
+                // [vCong19083] Emergency classify 2
+                if (this.lciEmergencyClassify2 != null)
+                {
+                    this.lciEmergencyClassify2.Text = Inventec.Common.Resource.Get.Value("FormHospitalize.lciEmergencyClassify2.Text", Resources.ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                }
 
             }
             catch (Exception ex)
@@ -358,6 +516,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
                 LoadDataToDepartmentComboExecute(cboDepartment, this.departmentId);
                 LoaddataToComboChuanDoanTD();
                 LoadDataToComboTreatmentType(cboTreatmentType);
+                LoadDataToEmergencyClassifyCombo();
                 LoadDefaultLoadForm();
                 ValidateForm();
                 WaitingManager.Hide();
@@ -410,7 +569,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
                 HisServiceReqFilter filter = new HisServiceReqFilter();
                 filter.TREATMENT_ID = treatmentID;
                 //test
-                filter.SERVICE_REQ_TYPE_ID = IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DON;
+                filter.SERVICE_REQ_TYPE_IDs= new List<long> { IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONK, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONDT, IMSys.DbConfig.HIS_RS.HIS_SERVICE_REQ_TYPE.ID__DONM };
                 var check = new BackendAdapter(param).Get<List<HIS_SERVICE_REQ>>(HisRequestUriStore.HIS_SERVICE_REQ_GET, ApiConsumers.MosConsumer, filter, param);
                 if (check != null && check.Count > 0)
                 {
@@ -441,8 +600,8 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
 
                 if (cboIcds.EditValue != null)
                 {
-                    var icdData = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ID == (long)cboIcds.EditValue);
-                    hospitalize.IcdId = (long)cboIcds.EditValue;
+                    var icdData = BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == (string)cboIcds.EditValue);
+                    hospitalize.IcdName = txtIcdCode.Text;
                     if (icdData != null)
                     {
                         hospitalize.IcdCode = icdData.ICD_CODE;
@@ -458,6 +617,14 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
                 hospitalize.IcdSubCode = txtSubCode.Text;
                 hospitalize.IcdText = txtIcdText.Text;
                 hospitalize.TreatmentTypeId = Inventec.Common.TypeConvert.Parse.ToInt64((cboTreatmentType.EditValue ?? "0").ToString());
+
+                // [vCong19083] Emergency classify 2
+                // TODO: Uncomment when HisDepartmentTranHospitalizeSDO.EmergencyClassifyId2 is available
+                // if (cboEmergencyClassify2 != null && cboEmergencyClassify2.EditValue != null
+                //     && lciEmergencyClassify2.Visibility == DevExpress.XtraLayout.Utils.LayoutVisibility.Always)
+                // {
+                //     hospitalize.EmergencyClassifyId2 = Inventec.Common.TypeConvert.Parse.ToInt64((cboEmergencyClassify2.EditValue).ToString());
+                // }
             }
             catch (Exception ex)
             {
@@ -1443,9 +1610,9 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
                     txtIcdText.Text = data.ICD_TEXT;
                     txtIcdCode.Text = data.ICD_CODE;
                     txtSubCode.Text = data.ICD_SUB_CODE;
-                    if (data.ICD_ID != null)
-                        cboIcds.EditValue = data.ICD_ID;
-                    if (BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ID == data.ICD_ID).ICD_NAME != data.ICD_NAME)
+                    if (data.ICD_CODE != null)
+                        cboIcds.EditValue = data.ICD_CODE;
+                    if (BackendDataWorker.Get<HIS_ICD>().FirstOrDefault(o => o.ICD_CODE == data.ICD_CODE).ICD_NAME != data.ICD_NAME)
                     {
                         txtIcds.Text = data.ICD_NAME;
                         chkIcds.Checked = true;
@@ -1454,6 +1621,9 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
                     {
                         chkIcds.Checked = false;
                     }
+
+                    // [vCong19083] Check treatment IS_EMERGENCY + config to show/hide emergency classify 2
+                    InitEmergencyClassifyVisibility(data);
                 }
             }
             catch (Exception ex)
@@ -1608,13 +1778,19 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
 
                     var currentPatient = this.resultSdo.Patient;
 
+                    // Load sere servs for print template
+                    HisSereServFilter sereServFilter = new HisSereServFilter();
+                    sereServFilter.TREATMENT_ID = treatmentId;
+                    var sereServs = new BackendAdapter(param).Get<List<HIS_SERE_SERV>>(HisRequestUriStore.HIS_SERE_SERV_GET, ApiConsumers.MosConsumer, sereServFilter, param);
+
                     MPS.Processor.Mps000007.PDO.Mps000007PDO mps000007RDO = new MPS.Processor.Mps000007.PDO.Mps000007PDO(
                         currentPatient,
                     currentHispatientTypeAlter,
-                    _departmentTrans,
+                    new List<V_HIS_DEPARTMENT_TRAN> { _departmentTrans },
                     this.vserviceReq,
                     dhst,
-                    currentTreatment,
+                    treatment,
+                    sereServs,
                     singleKeyValue
                         );
 
