@@ -1720,7 +1720,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     string desFileJoined = Utils.GenerateTempFileWithin();
                     var elementFirst = FileJoin.FirstOrDefault();
                     FileJoin.Remove(elementFirst.Key);
-                    InsertPage1Optimized(null, elementFirst.Value, FileJoin, desFileJoined, null, 0);
+                    InsertPage1Optimized(null, elementFirst.Value, FileJoin, desFileJoined, null, 0, false);
                     byte[] pdfBytes = File.ReadAllBytes(desFileJoined);
 
                     string mergedBase64 = Convert.ToBase64String(pdfBytes);
@@ -2921,31 +2921,64 @@ namespace HIS.Desktop.Plugins.EmrDocument
             }
         }
 
-        internal static void InsertPage1Optimized(Stream sourceStream, string sourceFile, Dictionary<long, string> fileListJoin, string desFileJoined, List<EMR_SIGN> signAlls, long documentId)
+        internal static void InsertPage1Optimized(Stream sourceStream, string sourceFile, Dictionary<long, string> fileListJoin, string desFileJoined, List<EMR_SIGN> signAlls, long documentId, bool isAddPatientSign = false)
         {
             var outputStream = new FileStream(desFileJoined, FileMode.Create, FileAccess.Write);
             var pdfConcat = new PdfConcatenate(outputStream);
+            string sourceSignedTemp = null;
+            List<string> signedJoinTemps = new List<string>();
             try
             {
+                bool hasSourceSign = isAddPatientSign && signAlls != null && signAlls.Count > 0;
+
                 // =========================
                 // 1️⃣ ADD FILE GỐC
                 // =========================
                 if (!string.IsNullOrEmpty(sourceFile) && File.Exists(sourceFile))
                 {
-                    using (var reader = new PdfReader(sourceFile))
+                    if (hasSourceSign)
                     {
-                        pdfConcat.AddPages(reader);
+                        sourceSignedTemp = Utils.GenerateTempFileWithin();
+                        using (var reader = new PdfReader(sourceFile))
+                        {
+                            ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+                        }
+                        using (var reader = new PdfReader(sourceSignedTemp))
+                        {
+                            pdfConcat.AddPages(reader);
+                        }
+                    }
+                    else
+                    {
+                        using (var reader = new PdfReader(sourceFile))
+                        {
+                            pdfConcat.AddPages(reader);
+                        }
                     }
                 }
                 else if (sourceStream != null)
                 {
                     sourceStream.Position = 0;
-                    using (var reader = new PdfReader(sourceStream))
+                    if (hasSourceSign)
                     {
-                        pdfConcat.AddPages(reader);
+                        sourceSignedTemp = Utils.GenerateTempFileWithin();
+                        using (var reader = new PdfReader(sourceStream))
+                        {
+                            ProcessInsertPatientSign(reader, sourceSignedTemp, documentId, signAlls);
+                        }
+                        using (var reader = new PdfReader(sourceSignedTemp))
+                        {
+                            pdfConcat.AddPages(reader);
+                        }
+                    }
+                    else
+                    {
+                        using (var reader = new PdfReader(sourceStream))
+                        {
+                            pdfConcat.AddPages(reader);
+                        }
                     }
                 }
-
                 // =========================
                 // 2️⃣ ADD FILE JOIN
                 // =========================
@@ -2991,6 +3024,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                     else
                     {
                         string pdfPath = path;
+                        bool downloadedTemp = false;
 
                         if (!File.Exists(path))
                         {
@@ -3004,14 +3038,40 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             {
                                 stream.CopyTo(fs);
                             }
+                            downloadedTemp = true;
                         }
 
-                        using (var reader = new PdfReader(pdfPath))
+                        bool needSign = isAddPatientSign
+                            && signAlls != null
+                            && signAlls.Any(o => o.IS_SIGN_ELECTRONIC == 1
+                                              && o.COOR_X_RECTANGLE > 0
+                                              && o.COOR_Y_RECTANGLE > 0
+                                              && o.DOCUMENT_ID == item.Key);
+
+                        if (needSign)
                         {
-                            pdfConcat.AddPages(reader);
+                            string signedPath = Path.Combine(
+                                Path.GetTempPath(),
+                                Guid.NewGuid().ToString("N") + ".pdf");
+                            using (var reader = new PdfReader(pdfPath))
+                            {
+                                ProcessInsertPatientSign(reader, signedPath, item.Key, signAlls);
+                            }
+                            using (var reader = new PdfReader(signedPath))
+                            {
+                                pdfConcat.AddPages(reader);
+                            }
+                            signedJoinTemps.Add(signedPath);
+                        }
+                        else
+                        {
+                            using (var reader = new PdfReader(pdfPath))
+                            {
+                                pdfConcat.AddPages(reader);
+                            }
                         }
 
-                        if (!File.Exists(path))
+                        if (downloadedTemp)
                             File.Delete(pdfPath);
                     }
                 }
@@ -3024,6 +3084,15 @@ namespace HIS.Desktop.Plugins.EmrDocument
             {
                 pdfConcat.Close();
                 outputStream.Close();
+
+                if (!string.IsNullOrEmpty(sourceSignedTemp))
+                {
+                    try { File.Delete(sourceSignedTemp); } catch { }
+                }
+                foreach (var tmp in signedJoinTemps)
+                {
+                    try { File.Delete(tmp); } catch { }
+                }
             }
         }
 
@@ -3147,7 +3216,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                         listDataTrueStatic = listDataTrue;
                         if (lst != null && lst.Count > 0)
                         {
-                            InsertPage1Optimized(streamSource, streamSourceStr, lst, output, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
+                            InsertPage1Optimized(streamSource, streamSourceStr, lst, output, apiResultEmrSign, lstURL.Keys.FirstOrDefault(), chkAddPatientSign.Checked);
                         }
                         else
                         {
@@ -3690,7 +3759,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
 
                                 if (lst != null && lst.Count > 0)
                                 {
-                                    InsertPage1Optimized(streamSource, streamSourceStr, lst, filePath, apiResultEmrSign, lstURL.Keys.FirstOrDefault());
+                                    InsertPage1Optimized(streamSource, streamSourceStr, lst, filePath, apiResultEmrSign, lstURL.Keys.FirstOrDefault(), chkAddPatientSign.Checked);
                                 }
                                 else
                                 {
@@ -4284,6 +4353,8 @@ namespace HIS.Desktop.Plugins.EmrDocument
                             foreach (var itemsignElectronic in signElectronics)
                             {
                                 int pageNum = (int)(itemsignElectronic.PAGE_NUMBER ?? 1);
+                                // Đẩy ảnh ký và tên ký xuống dưới 1 đoạn so với toạ độ cấu hình
+                                float signShiftDown = 20f;
                                 PdfContentByte cbo = stam.GetOverContent(pageNum);
                                 cbo.SetColorFill(iTextSharp.text.BaseColor.BLACK);
                                 cbo.SetFontAndSize(GetBaseFont(), DisplayConfig.SizeFont);
@@ -4340,11 +4411,12 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                     }
 
                                     float centerX = (float)itemsignElectronic.COOR_X_RECTANGLE - (image.ScaledWidth / 2);
-                                    float posY = (float)itemsignElectronic.COOR_Y_RECTANGLE + imageSpacing;
+                                    float posY = (float)itemsignElectronic.COOR_Y_RECTANGLE + imageSpacing - signShiftDown;
                                     image.SetAbsolutePosition(centerX, posY);
 
                                     var signStr = !string.IsNullOrEmpty(itemsignElectronic.RELATION_PEOPLE_NAME) ? string.Format("{0}({1})", itemsignElectronic.RELATION_PEOPLE_NAME, itemsignElectronic.RELATION_NAME) : itemsignElectronic.VIR_PATIENT_NAME;
 
+                                    float textY = (float)itemsignElectronic.COOR_Y_RECTANGLE - signShiftDown;
                                     var document = listDataTrueStatic.FirstOrDefault(o => o.ID == documentId);
                                     switch (document.PATIENT_SIGNATURE_DISPLAY_TYPE)
                                     {
@@ -4353,7 +4425,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             break;
                                         case 1:
                                             cbo.BeginText();
-                                            cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE, 0f);
+                                            cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, textY, 0f);
                                             cbo.EndText();
                                             break;
                                         case 2:
@@ -4362,7 +4434,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                         default:
                                             cbo.AddImage(image);
                                             cbo.BeginText();
-                                            cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE, 0f);
+                                            cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, textY, 0f);
                                             cbo.EndText();
                                             break;
                                     }
@@ -4370,7 +4442,7 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                 else if (itemsignElectronic != null && itemsignElectronic.COOR_X_RECTANGLE.HasValue && itemsignElectronic.COOR_Y_RECTANGLE.HasValue)
                                 {
                                     var signStr = !string.IsNullOrEmpty(itemsignElectronic.RELATION_PEOPLE_NAME) ? string.Format("{0}({1})", itemsignElectronic.RELATION_PEOPLE_NAME, itemsignElectronic.RELATION_NAME) : itemsignElectronic.VIR_PATIENT_NAME;
-                                    cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE, 0f);
+                                    cbo.ShowTextAligned(PdfContentByte.ALIGN_CENTER, String.Format("{0} đã ký", signStr, ""), (float)itemsignElectronic.COOR_X_RECTANGLE, (float)itemsignElectronic.COOR_Y_RECTANGLE - signShiftDown, 0f);
                                 }
 
                                 cbo.EndText();
