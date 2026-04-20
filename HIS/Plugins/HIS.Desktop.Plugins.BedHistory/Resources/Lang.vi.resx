@@ -192,4 +192,7 @@
   <data name="IVT_LANGUAGE_KEY__FORM_BED_HISTORY__TOOL_TIP_BUTTON_DELETE" xml:space="preserve">
     <value>Xóa</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__FORM_BED_HISTORY__LCI_SAME_DEPARTMENT" xml:space="preserve">
+    <value>Cùng khoa</value>
+  </data>
 </root>
