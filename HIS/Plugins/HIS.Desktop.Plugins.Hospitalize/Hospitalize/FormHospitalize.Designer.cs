@@ -167,7 +167,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // txtIcdText
             // 
-            this.txtIcdText.Location = new System.Drawing.Point(178, 147);
+            this.txtIcdText.Location = new System.Drawing.Point(178, 170);
             this.txtIcdText.MenuManager = this.barManager1;
             this.txtIcdText.Name = "txtIcdText";
             this.txtIcdText.Properties.NullValuePrompt = "Nhấn F1 để chọn bệnh";
@@ -263,7 +263,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // chkIcds
             // 
-            this.chkIcds.Location = new System.Drawing.Point(366, 123);
+            this.chkIcds.Location = new System.Drawing.Point(366, 146);
             this.chkIcds.MenuManager = this.barManager1;
             this.chkIcds.Name = "chkIcds";
             this.chkIcds.Properties.Caption = "Sửa";
@@ -284,7 +284,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             this.panelControl1.BorderStyle = DevExpress.XtraEditors.Controls.BorderStyles.NoBorder;
             this.panelControl1.Controls.Add(this.cboIcds);
             this.panelControl1.Controls.Add(this.txtIcds);
-            this.panelControl1.Location = new System.Drawing.Point(178, 121);
+            this.panelControl1.Location = new System.Drawing.Point(178, 144);
             this.panelControl1.Margin = new System.Windows.Forms.Padding(0);
             this.panelControl1.Name = "panelControl1";
             this.panelControl1.Size = new System.Drawing.Size(186, 24);
@@ -320,7 +320,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // txtSubCode
             // 
-            this.txtSubCode.Location = new System.Drawing.Point(97, 147);
+            this.txtSubCode.Location = new System.Drawing.Point(97, 170);
             this.txtSubCode.MenuManager = this.barManager1;
             this.txtSubCode.Name = "txtSubCode";
             this.txtSubCode.Size = new System.Drawing.Size(81, 20);
@@ -332,7 +332,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // txtIcdCode
             // 
-            this.txtIcdCode.Location = new System.Drawing.Point(97, 123);
+            this.txtIcdCode.Location = new System.Drawing.Point(97, 146);
             this.txtIcdCode.MenuManager = this.barManager1;
             this.txtIcdCode.Name = "txtIcdCode";
             this.txtIcdCode.Size = new System.Drawing.Size(81, 20);
@@ -344,7 +344,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             this.lblGiuongThucKe.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblGiuongThucKe.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblGiuongThucKe.Location = new System.Drawing.Point(97, 99);
+            this.lblGiuongThucKe.Location = new System.Drawing.Point(97, 122);
             this.lblGiuongThucKe.Name = "lblGiuongThucKe";
             this.lblGiuongThucKe.Size = new System.Drawing.Size(312, 20);
             this.lblGiuongThucKe.StyleController = this.layoutControl1;
@@ -354,7 +354,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             this.lblGiuongKeHoach.Appearance.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.lblGiuongKeHoach.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
-            this.lblGiuongKeHoach.Location = new System.Drawing.Point(97, 75);
+            this.lblGiuongKeHoach.Location = new System.Drawing.Point(97, 98);
             this.lblGiuongKeHoach.Name = "lblGiuongKeHoach";
             this.lblGiuongKeHoach.Size = new System.Drawing.Size(312, 20);
             this.lblGiuongKeHoach.StyleController = this.layoutControl1;
@@ -362,7 +362,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // lblNumHospitalize
             // 
-            this.lblNumHospitalize.Location = new System.Drawing.Point(97, -21);
+            this.lblNumHospitalize.Location = new System.Drawing.Point(97, 2);
             this.lblNumHospitalize.Name = "lblNumHospitalize";
             this.lblNumHospitalize.Size = new System.Drawing.Size(312, 20);
             this.lblNumHospitalize.TabIndex = 15;
@@ -370,7 +370,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // btnPrint
             // 
-            this.btnPrint.Location = new System.Drawing.Point(140, 195);
+            this.btnPrint.Location = new System.Drawing.Point(140, 218);
             this.btnPrint.Name = "btnPrint";
             this.btnPrint.Size = new System.Drawing.Size(126, 22);
             this.btnPrint.StyleController = this.layoutControl1;
@@ -380,7 +380,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // btnSavePrint
             // 
-            this.btnSavePrint.Location = new System.Drawing.Point(270, 195);
+            this.btnSavePrint.Location = new System.Drawing.Point(270, 218);
             this.btnSavePrint.Name = "btnSavePrint";
             this.btnSavePrint.Size = new System.Drawing.Size(139, 22);
             this.btnSavePrint.StyleController = this.layoutControl1;
@@ -390,7 +390,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(2, 195);
+            this.btnSave.Location = new System.Drawing.Point(2, 218);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(134, 22);
             this.btnSave.StyleController = this.layoutControl1;
@@ -401,7 +401,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // dtLogTime
             // 
             this.dtLogTime.EditValue = null;
-            this.dtLogTime.Location = new System.Drawing.Point(97, 3);
+            this.dtLogTime.Location = new System.Drawing.Point(97, 26);
             this.dtLogTime.MenuManager = this.barManager1;
             this.dtLogTime.Name = "dtLogTime";
             this.dtLogTime.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
@@ -421,7 +421,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // txtBedRoomCode
             // 
-            this.txtBedRoomCode.Location = new System.Drawing.Point(97, 171);
+            this.txtBedRoomCode.Location = new System.Drawing.Point(97, 194);
             this.txtBedRoomCode.Name = "txtBedRoomCode";
             this.txtBedRoomCode.Properties.MaxLength = 10;
             this.txtBedRoomCode.Size = new System.Drawing.Size(81, 20);
@@ -432,7 +432,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // txtDepartmentCode
             // 
-            this.txtDepartmentCode.Location = new System.Drawing.Point(97, 51);
+            this.txtDepartmentCode.Location = new System.Drawing.Point(97, 74);
             this.txtDepartmentCode.Name = "txtDepartmentCode";
             this.txtDepartmentCode.Properties.MaxLength = 10;
             this.txtDepartmentCode.Size = new System.Drawing.Size(81, 20);
@@ -443,7 +443,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // txtTreatmentTypeCode
             // 
-            this.txtTreatmentTypeCode.Location = new System.Drawing.Point(97, 27);
+            this.txtTreatmentTypeCode.Location = new System.Drawing.Point(97, 50);
             this.txtTreatmentTypeCode.Name = "txtTreatmentTypeCode";
             this.txtTreatmentTypeCode.Properties.MaxLength = 2;
             this.txtTreatmentTypeCode.Size = new System.Drawing.Size(81, 20);
@@ -453,7 +453,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // cboBedRoom
             // 
-            this.cboBedRoom.Location = new System.Drawing.Point(178, 171);
+            this.cboBedRoom.Location = new System.Drawing.Point(178, 194);
             this.cboBedRoom.Name = "cboBedRoom";
             this.cboBedRoom.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -467,7 +467,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // cboDepartment
             // 
-            this.cboDepartment.Location = new System.Drawing.Point(178, 51);
+            this.cboDepartment.Location = new System.Drawing.Point(178, 74);
             this.cboDepartment.Name = "cboDepartment";
             this.cboDepartment.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -480,7 +480,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             // 
             // cboTreatmentType
             // 
-            this.cboTreatmentType.Location = new System.Drawing.Point(178, 27);
+            this.cboTreatmentType.Location = new System.Drawing.Point(178, 50);
             this.cboTreatmentType.Name = "cboTreatmentType";
             this.cboTreatmentType.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -515,7 +515,7 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             this.layoutControlItem16,
             this.layoutControlItem18,
             this.layoutControlItem19});
-            this.layoutControlGroup1.Location = new System.Drawing.Point(0, -23);
+            this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "layoutControlGroup1";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
             this.layoutControlGroup1.Size = new System.Drawing.Size(411, 242);
@@ -759,6 +759,11 @@ namespace HIS.Desktop.Plugins.Hospitalize.Hospitalize
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nhập viện";
             this.Load += new System.EventHandler(this.FormHospitalize_Load);
+            this.Controls.SetChildIndex(this.barDockControlTop, 0);
+            this.Controls.SetChildIndex(this.barDockControlBottom, 0);
+            this.Controls.SetChildIndex(this.barDockControlRight, 0);
+            this.Controls.SetChildIndex(this.barDockControlLeft, 0);
+            this.Controls.SetChildIndex(this.layoutControl1, 0);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).EndInit();
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.txtIcdText.Properties)).EndInit();
