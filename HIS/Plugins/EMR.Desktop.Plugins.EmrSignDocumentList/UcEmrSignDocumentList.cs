@@ -73,6 +73,7 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
         List<EMR_DOCUMENT_TYPE> emrDocumentTypeSelecteds;
         bool isInitializeComponent = false;
         Dictionary<long, V_EMR_SIGN> dicVEmrSign = new Dictionary<long, V_EMR_SIGN>();
+        Dictionary<long, EMR_SIGN_FLOW_USER> dicSignFlowUser = new Dictionary<long, EMR_SIGN_FLOW_USER>();
         #endregion
 
         #region ctor
@@ -354,9 +355,18 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                 filter.DOCUMENT_IDs = lstDocumentId;
                 var datas = new BackendAdapter(paramCommon).Get<List<V_EMR_SIGN>>("api/EmrSign/GetView", ApiConsumers.EmrConsumer, filter, paramCommon) ?? new List<V_EMR_SIGN>();
 
+                EmrSignFlowUserFilter emrSignFlowUserFilter = new EmrSignFlowUserFilter();
+                emrSignFlowUserFilter.SIGN_IDs = datas.Select(o => o.ID).ToList();
+                var signFlowUsers = new BackendAdapter(paramCommon).Get<List<EMR_SIGN_FLOW_USER>>("api/EmrSignFlowUser/Get", ApiConsumers.EmrConsumer, emrSignFlowUserFilter, paramCommon) ?? new List<EMR_SIGN_FLOW_USER>();
+
                 if (datas != null && datas.Count > 0)
                 {
                     dicVEmrSign = datas.ToDictionary(x => x.ID, x => x);
+                }
+
+                if (signFlowUsers != null && signFlowUsers.Count > 0)
+                {
+                    dicSignFlowUser = signFlowUsers.ToDictionary(x => x.SIGN_ID ?? 0, x => x);
                 }
             }
             catch (Exception ex)
@@ -631,9 +641,10 @@ namespace EMR.Desktop.Plugins.EmrSignDocumentList
                     if (!checkUnSigners)
                     {
                         var list = data.UN_SIGNERS.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(x => { long.TryParse(x.Trim(), out var result); return result; }).ToList();
+
                         foreach (var item in list)
                         {
-                            if (dicVEmrSign[item].LOGINNAME == LoggingName)
+                            if (dicVEmrSign[item].LOGINNAME == LoggingName || dicSignFlowUser[dicVEmrSign[item].ID].LOGINNAME == LoggingName)
                             {
                                 checkUnSigners = true;
                             }
