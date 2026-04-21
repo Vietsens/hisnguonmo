@@ -51,32 +51,39 @@ namespace HIS.Desktop.Plugins.TreatmentList
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        private V_HIS_TREATMENT_4 GetClickedRow()
+        {
+            // Convert screen mouse position to the grid control's client coordinates.
+            var clientPoint = gridViewtreatmentList.GridControl.PointToClient(Control.MousePosition);
+            var hitInfo = gridViewtreatmentList.CalcHitInfo(clientPoint);
+            if (hitInfo.RowHandle >= 0)
+            {
+                return (V_HIS_TREATMENT_4)gridViewtreatmentList.GetRow(hitInfo.RowHandle);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Chi dinh dich vu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void repositoryItembtnServiceReq_Click(object sender, EventArgs e)
         {
             try
             {
-                var row = (MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4)gridViewtreatmentList.GetFocusedRow();
+                var row = GetClickedRow();
                 if (row != null)
                 {
                     WaitingManager.Show();
-                    //Inventec.Desktop.Common.Modules.Module moduleData = GlobalVariables.currentModuleRaws.Where(o => o.ModuleLink == "HIS.Desktop.Plugins.AssignService").FirstOrDefault();
-                    //if (moduleData == null) throw new NullReferenceException("Not found module by ModuleLink = 'HIS.Desktop.Plugins.AssignService'");
-                    //if (moduleData.IsPlugin && moduleData.ExtensionInfo != null)
-                    //{
                     List<object> listArgs = new List<object>();
                     AssignServiceADO AssignServiceADO = new AssignServiceADO(row.ID, 0, 0);
                     AssignServiceADO.TreatmentId = row.ID;
-                    AssignServiceADO.PatientDob = row
-                                     .TDL_PATIENT_DOB;
+                    AssignServiceADO.PatientDob = row.TDL_PATIENT_DOB;
                     AssignServiceADO.PatientName = row.TDL_PATIENT_NAME;
                     AssignServiceADO.GenderName = row.TDL_PATIENT_GENDER_NAME;
                     AssignServiceADO.IsAutoEnableEmergency = true;
                     listArgs.Add(AssignServiceADO);
-                    //    listArgs.Add(PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId));
-                    //    var extenceInstance = PluginInstance.GetPluginInstance(PluginInstance.GetModuleWithWorkingRoom(moduleData, currentModule.RoomId, currentModule.RoomTypeId), listArgs);
-                    //    if (extenceInstance == null) throw new ArgumentNullException("moduleData is null");
-                    //    ((Form)extenceInstance).ShowDialog();
-                    //}
                     WaitingManager.Hide();
                     HIS.Desktop.ModuleExt.PluginInstanceBehavior.ShowModule("HIS.Desktop.Plugins.AssignService", this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
                 }
@@ -745,7 +752,7 @@ namespace HIS.Desktop.Plugins.TreatmentList
         {
             try
             {
-                var row = (MOS.EFMODEL.DataModels.V_HIS_TREATMENT_4)gridViewtreatmentList.GetFocusedRow();
+                var row = GetClickedRow();
                 if (row != null)
                 {
                     WaitingManager.Show();
