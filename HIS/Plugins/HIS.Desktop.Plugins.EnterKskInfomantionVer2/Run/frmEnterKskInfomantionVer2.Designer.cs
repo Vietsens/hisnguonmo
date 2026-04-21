@@ -16680,18 +16680,20 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             this.labelControl47.TabIndex = 5;
             // 
             // cboLicenseClass
-            // 
+            //
             this.cboLicenseClass.Location = new System.Drawing.Point(168, 3);
             this.cboLicenseClass.Margin = new System.Windows.Forms.Padding(4);
             this.cboLicenseClass.Name = "cboLicenseClass";
             this.cboLicenseClass.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
             this.cboLicenseClass.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo),
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Plus)});
             this.cboLicenseClass.Properties.NullText = "";
             this.cboLicenseClass.Properties.View = this.gridLookUpEdit52View;
             this.cboLicenseClass.Size = new System.Drawing.Size(253, 22);
             this.cboLicenseClass.StyleController = this.layoutControl14;
             this.cboLicenseClass.TabIndex = 4;
+            this.cboLicenseClass.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboLicenseClass_ButtonClick);
             this.cboLicenseClass.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboLicenseClass_Closed);
             // 
             // gridLookUpEdit52View

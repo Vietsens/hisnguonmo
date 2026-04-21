@@ -130,6 +130,10 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
             {
                 this.currentServiceReq = hisServiceReq;
                 this.currentModule = moduleData;
+                if (this.currentModule != null)
+                {
+                    this.Text = this.currentModule.text;
+                }
                 string iconPath = System.IO.Path.Combine(HIS.Desktop.LocalStorage.Location.ApplicationStoreLocation.ApplicationStartupPath, System.Configuration.ConfigurationSettings.AppSettings["Inventec.Desktop.Icon"]);
                 this.Icon = Icon.ExtractAssociatedIcon(iconPath);
             }

@@ -928,7 +928,7 @@ namespace HIS.Desktop.Plugins.LisMachine
         {
             try
             {
-                ValidateWarningText(txtMachineCode, 10);
+                ValidateWarningText(txtMachineCode, 100);
                 ValidateWarningText(txtMachineName, 100);
             }
             catch (Exception ex)
