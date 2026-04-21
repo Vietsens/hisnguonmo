@@ -38,7 +38,7 @@ namespace MPS.Processor.Mps000007.PDO
         public List<V_HIS_EXP_MEST_BLTY_REQ> ExpMestBltyReqList { get; set; }
         public List<V_HIS_EXP_MEST_MEDICINE> ExpMestMedicineList { get; set; }
         public List<V_HIS_EXP_MEST_MATERIAL> ExpMestMaterialList { get; set; }
-        public V_HIS_SERE_SERV_VIEX SereServViex { get; set; }  
+        public V_HIS_SERE_SERV_VIEX SereServViex { get; set; }
     }
 
     public class PatientADO : V_HIS_PATIENT

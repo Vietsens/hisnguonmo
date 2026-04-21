@@ -210,6 +210,48 @@ namespace MPS.Processor.Mps000007
 
 
                 }
+                string emergencyClassify1Code = "";
+                string emergencyClassify1Name = "";
+                string emergencyClassify2Code = "";
+                string emergencyClassify2Name = "";
+
+                if (rdo.Treatment != null
+                    && (rdo.Treatment.EMERGENCY_CLASSIFY_ID_1.HasValue || rdo.Treatment.EMERGENCY_CLASSIFY_ID_2.HasValue))
+                {
+                    List<HIS_PATIENT_CLASSIFY> classifyList =
+                        HIS.Desktop.LocalStorage.BackendData.BackendDataWorker.Get<HIS_PATIENT_CLASSIFY>();
+
+                    if (classifyList != null && classifyList.Count > 0)
+                    {
+                        if (rdo.Treatment.EMERGENCY_CLASSIFY_ID_1.HasValue)
+                        {
+                            HIS_PATIENT_CLASSIFY classify1 = classifyList
+                                .FirstOrDefault(o => o.ID == rdo.Treatment.EMERGENCY_CLASSIFY_ID_1.Value);
+                            if (classify1 != null)
+                            {
+                                emergencyClassify1Code = classify1.PATIENT_CLASSIFY_CODE ?? "";
+                                emergencyClassify1Name = classify1.PATIENT_CLASSIFY_NAME ?? "";
+                            }
+                        }
+
+                        if (rdo.Treatment.EMERGENCY_CLASSIFY_ID_2.HasValue)
+                        {
+                            HIS_PATIENT_CLASSIFY classify2 = classifyList
+                                .FirstOrDefault(o => o.ID == rdo.Treatment.EMERGENCY_CLASSIFY_ID_2.Value);
+                            if (classify2 != null)
+                            {
+                                emergencyClassify2Code = classify2.PATIENT_CLASSIFY_CODE ?? "";
+                                emergencyClassify2Name = classify2.PATIENT_CLASSIFY_NAME ?? "";
+                            }
+                        }
+                    }
+                }
+
+                SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.EMERGENCY_CLASSIFY_1_CODE, emergencyClassify1Code));
+                SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.EMERGENCY_CLASSIFY_1_NAME, emergencyClassify1Name));
+                SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.EMERGENCY_CLASSIFY_2_CODE, emergencyClassify2Code));
+                SetSingleKey(new KeyValue(Mps000007ExtendSingleKey.EMERGENCY_CLASSIFY_2_NAME, emergencyClassify2Name));
+
                 AddObjectKeyIntoListkey<PatyAlterBhytADO>(patyAlter, false);
                 AddObjectKeyIntoListkey<HIS_DHST>(rdo.DHST, false);
                 if (rdo.DHST != null)
