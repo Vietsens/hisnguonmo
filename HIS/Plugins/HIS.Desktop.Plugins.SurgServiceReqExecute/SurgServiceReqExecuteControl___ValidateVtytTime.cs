@@ -72,14 +72,19 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                     return true;
                 }
 
-                // Get material links for all child VTYTs
+                // Get material links for all child VTYTs via 2 paths:
+                // Path 1: HIS_SERVICE_REQ_MATY (declared consumable materials)
+                // Path 2: HIS_EXP_MEST -> HIS_EXP_MEST_MATERIAL (actual exported materials / don trong kho)
                 var childServiceReqIds = childVtytServiceReqs.Select(o => o.ID).ToList();
                 var serviceReqMatys = GetServiceReqMatys(childServiceReqIds);
+                var expMestMaterialTypeIds = GetExpMestMaterialTypeIds(childServiceReqIds);
 
                 WaitingManager.Hide();
 
-                // Filter VTYTs that have materials requiring time validation
+                // Filter VTYTs that have materials requiring time validation (from either path)
                 var vtytIdsWithValidateMaterial = new HashSet<long>();
+
+                // Path 1: SERVICE_REQ_MATY
                 if (serviceReqMatys != null && serviceReqMatys.Count > 0)
                 {
                     foreach (var maty in serviceReqMatys)
@@ -87,6 +92,18 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         if (materialTypeIdsRequireValidate.Contains(maty.MATERIAL_TYPE_ID ?? 0))
                         {
                             vtytIdsWithValidateMaterial.Add(maty.SERVICE_REQ_ID);
+                        }
+                    }
+                }
+
+                // Path 2: EXP_MEST_MATERIAL (don trong kho)
+                if (expMestMaterialTypeIds != null && expMestMaterialTypeIds.Count > 0)
+                {
+                    foreach (var kvp in expMestMaterialTypeIds)
+                    {
+                        if (materialTypeIdsRequireValidate.Contains(kvp.Value))
+                        {
+                            vtytIdsWithValidateMaterial.Add(kvp.Key);
                         }
                     }
                 }
@@ -379,6 +396,75 @@ namespace HIS.Desktop.Plugins.SurgServiceReqExecute
                         ApiConsumers.MosConsumer,
                         filter,
                         param);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Get material type IDs from EXP_MEST_MATERIAL (don trong kho) for given service request IDs.
+        /// Returns list of (ServiceReqId, MaterialTypeId) pairs.
+        /// Chain: HIS_SERVICE_REQ -> HIS_EXP_MEST (SERVICE_REQ_ID) -> HIS_EXP_MEST_MATERIAL (EXP_MEST_ID)
+        /// </summary>
+        private List<KeyValuePair<long, long>> GetExpMestMaterialTypeIds(List<long> serviceReqIds)
+        {
+            var result = new List<KeyValuePair<long, long>>();
+            try
+            {
+                if (serviceReqIds == null || serviceReqIds.Count == 0)
+                    return result;
+
+                // Step 1: Get EXP_MEST linked to child VTYT service requests
+                CommonParam param = new CommonParam();
+                HisExpMestFilter expMestFilter = new HisExpMestFilter();
+                expMestFilter.SERVICE_REQ_IDs = serviceReqIds;
+                var expMests = new BackendAdapter(param)
+                    .Get<List<HIS_EXP_MEST>>(
+                        RequestUriStore.HIS_EXP_MEST_GET,
+                        ApiConsumers.MosConsumer,
+                        expMestFilter,
+                        param);
+
+                if (expMests == null || expMests.Count == 0)
+                    return result;
+
+                // Build lookup: ExpMestId -> ServiceReqId
+                var expMestToServiceReq = new Dictionary<long, long>();
+                foreach (var em in expMests)
+                {
+                    if (em.SERVICE_REQ_ID.HasValue && !expMestToServiceReq.ContainsKey(em.ID))
+                    {
+                        expMestToServiceReq[em.ID] = em.SERVICE_REQ_ID.Value;
+                    }
+                }
+
+                // Step 2: Get EXP_MEST_MATERIAL for those EXP_MESTs
+                var expMestIds = expMests.Select(o => o.ID).ToList();
+                HisExpMestMaterialFilter materialFilter = new HisExpMestMaterialFilter();
+                materialFilter.EXP_MEST_IDs = expMestIds;
+                var expMestMaterials = new BackendAdapter(param)
+                    .Get<List<HIS_EXP_MEST_MATERIAL>>(
+                        RequestUriStore.HIS_EXP_MEST_MATERIAL_GET,
+                        ApiConsumers.MosConsumer,
+                        materialFilter,
+                        param);
+
+                if (expMestMaterials == null || expMestMaterials.Count == 0)
+                    return result;
+
+                // Step 3: Map back to (ServiceReqId, MaterialTypeId)
+                foreach (var mat in expMestMaterials)
+                {
+                    long serviceReqId;
+                    if (mat.TDL_MATERIAL_TYPE_ID > 0
+                        && expMestToServiceReq.TryGetValue(mat.EXP_MEST_ID ?? 0, out serviceReqId))
+                    {
+                        result.Add(new KeyValuePair<long, long>(serviceReqId, mat.TDL_MATERIAL_TYPE_ID ?? 0));
+                    }
+                }
             }
             catch (Exception ex)
             {
