@@ -276,7 +276,17 @@ namespace HIS.Desktop.Plugins.BedRoomPartial
                 List<ADO.PatientFilterADO> listFilterPatient = new List<ADO.PatientFilterADO>();
 
                 listFilterPatient.Add(new ADO.PatientFilterADO(0, Resources.ResourceMessage.BNDangOTrongBuong));
-                listFilterPatient.Add(new ADO.PatientFilterADO(1, Resources.ResourceMessage.BNVaoTrongKhoang));
+
+                // [vCong21891] Hide option "BN vào trong khoảng" when config is enabled and user is not admin
+                string cfgStored = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.RESTRICT_SEARCH_STORED_RECORD");
+                string cfgOtherDept = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>("MOS.HIS_TREATMENT.RESTRICT_SEARCH_OTHER_DEPARTMENT");
+                bool isAdmin = HIS.Desktop.IsAdmin.CheckLoginAdmin.IsAdmin(Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName());
+
+                if (isAdmin || (cfgStored != "1" && cfgOtherDept != "1"))
+                {
+                    listFilterPatient.Add(new ADO.PatientFilterADO(1, Resources.ResourceMessage.BNVaoTrongKhoang));
+                }
+
                 listFilterPatient.Add(new ADO.PatientFilterADO(2, Resources.ResourceMessage.BNChuaKeDonTrongKhoang));
                 cboPatientFilter.Properties.DataSource = listFilterPatient;
                 cboPatientFilter.Properties.DisplayMember = "PatientFilter";
