@@ -3802,25 +3802,43 @@ namespace HIS.Desktop.Plugins.EmrDocument
                                             attachmentURLs.Add(att.URL);
                                     }
                                 }
+
                                 if (!string.IsNullOrEmpty(versionURL))
                                 {
                                     filePath = directoryPath + @"\" + item.CUSTOM_NUM_ORDER + "_" + documentName + ".pdf";
-                                    MemoryStream streamSource = null;
-                                    Inventec.Common.Logging.LogSystem.Info("nhận MemoryStream");
-                                    streamSource = Inventec.Fss.Client.FileDownload.GetFile(versionURL);
-                                    streamSource.Position = 0;
-                                    InsertPageOne(streamSource, null, filePath, apiResultEmrSign, item.ID);
-                                    if (attachmentURLs != null && attachmentURLs.Count > 0)
+                                    if (File.Exists(versionURL))
                                     {
-                                        count = 1;
-                                        foreach (var aURL in attachmentURLs)
+                                        using (var streamSource = new FileStream(versionURL, FileMode.Open, FileAccess.Read, FileShare.Read))
                                         {
-                                            filePath = directoryPath + @"\" + item.CUSTOM_NUM_ORDER + "_" + documentName + "_Đính kèm_" + count + aURL.Substring(aURL.LastIndexOf("."));
-                                            streamSource = Inventec.Fss.Client.FileDownload.GetFile(aURL);
                                             streamSource.Position = 0;
-                                            InsertPageOne(streamSource, null, filePath, null, 0);
+                                            //MemoryStream stream = new MemoryStream();
+                                            //streamSource.CopyTo(stream);
+                                            InsertPageOne(streamSource, null, filePath, apiResultEmrSign, item.ID);
                                         }
                                     }
+                                    else
+                                    {
+                                        MemoryStream streamSource = null;
+                                        Inventec.Common.Logging.LogSystem.Info("nhận MemoryStream");
+                                        Inventec.Common.Logging.LogSystem.Info("versionURL: " + versionURL);
+                                        Inventec.Common.Logging.LogSystem.Info("versionURL filePath: " + filePath);
+                                        streamSource = Inventec.Fss.Client.FileDownload.GetFile(versionURL);
+                                        streamSource.Position = 0;
+                                        InsertPageOne(streamSource, null, filePath, apiResultEmrSign, item.ID);
+                                        if (attachmentURLs != null && attachmentURLs.Count > 0)
+                                        {
+                                            count = 1;
+                                            foreach (var aURL in attachmentURLs)
+                                            {
+                                                filePath = directoryPath + @"\" + item.CUSTOM_NUM_ORDER + "_" + documentName + "_Đính kèm_" + count + aURL.Substring(aURL.LastIndexOf("."));
+                                                streamSource = Inventec.Fss.Client.FileDownload.GetFile(aURL);
+                                                streamSource.Position = 0;
+                                                InsertPageOne(streamSource, null, filePath, null, 0);
+                                            }
+                                        }
+
+                                    }
+                                    
                                 }
                                 if (!string.IsNullOrEmpty(versionJSON))
                                 {

@@ -2227,6 +2227,13 @@ namespace HIS.UC.TreatmentFinish.Run
                 result.SurgeryBeginTime = (treatmentFinishSDO != null && treatmentFinishSDO.SurgeryBeginTime != null) ? treatmentFinishSDO.SurgeryBeginTime : null;
                 result.SurgeryEndTime = (treatmentFinishSDO != null && treatmentFinishSDO.SurgeryEndTime != null) ? treatmentFinishSDO.SurgeryEndTime : null;
                 result.UsedMedicine = (treatmentFinishSDO != null && treatmentFinishSDO.UsedMedicine != null) ? treatmentFinishSDO.UsedMedicine : null;
+                if (this.currentTreatmentEndTypeExt != null)
+                {
+                    result.CccdNumber = this.currentTreatmentEndTypeExt.CccdNumber;
+                    result.CccdDate = this.currentTreatmentEndTypeExt.CccdDate;
+                    result.PassportNumber = this.currentTreatmentEndTypeExt.PassportNumber;
+                    result.PassportDate = this.currentTreatmentEndTypeExt.PassportDate;
+                }
                 Inventec.Common.Logging.LogSystem.Debug("GetDataOutput____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => result), result));
             }
             catch (Exception ex)

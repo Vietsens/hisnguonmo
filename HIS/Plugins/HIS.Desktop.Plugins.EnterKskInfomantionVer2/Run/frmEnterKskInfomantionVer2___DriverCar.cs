@@ -33,6 +33,7 @@ using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.Plugins.EnterKskInfomantionVer2.ADO;
 using Inventec.Common.Controls.EditorLoader;
 using DevExpress.XtraEditors.Controls;
+using HIS.Desktop.LocalStorage.BackendData;
 namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
 {
     public partial class frmEnterKskInfomantionVer2
@@ -194,24 +195,38 @@ namespace HIS.Desktop.Plugins.EnterKskInfomantionVer2.Run
         {
             try
             {
-                List<TypeADO> listData = new List<TypeADO>();
-                listData.Add(new TypeADO(1, "B1"));
-                listData.Add(new TypeADO(2, "B2"));
-                listData.Add(new TypeADO(3, "C"));
-                listData.Add(new TypeADO(4, "D"));
-                listData.Add(new TypeADO(5, "E"));
-                listData.Add(new TypeADO(6, "F"));
-                listData.Add(new TypeADO(7, "FB2"));
-                listData.Add(new TypeADO(8, "FC"));
-                listData.Add(new TypeADO(9, "FD"));
-                listData.Add(new TypeADO(10, "FE"));
-
+                var data = BackendDataWorker.Get<HIS_LICENSE_CLASS>(false, true)
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList();
                 List<ColumnInfo> columnInfos = new List<ColumnInfo>();
-                columnInfos.Add(new ColumnInfo("Name", "", 250, 2));
-                ControlEditorADO controlEditorADO = new ControlEditorADO("Name", "Name", columnInfos, false, 400);
-                ControlEditorLoader.Load(cboLicenseClass, listData, controlEditorADO);
+                columnInfos.Add(new ColumnInfo("LICENSE_CLASS_NAME", "", 250, 0));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("LICENSE_CLASS_NAME", "LICENSE_CLASS_CODE", columnInfos, false, 250);
+                ControlEditorLoader.Load(cboLicenseClass, data, controlEditorADO);
             }
             catch (System.Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboLicenseClass_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == ButtonPredefines.Plus)
+                {
+                    List<object> listArgs = new List<object>();
+                    if (this.currentModule == null)
+                    {
+                        CallModule.Run(CallModule.LicenseClass, 0, 0, listArgs);
+                    }
+                    else
+                    {
+                        CallModule.Run(CallModule.LicenseClass, this.currentModule.RoomId, this.currentModule.RoomTypeId, listArgs);
+                    }
+                    SetDataCboLicenseClass();
+                }
+            }
+            catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
