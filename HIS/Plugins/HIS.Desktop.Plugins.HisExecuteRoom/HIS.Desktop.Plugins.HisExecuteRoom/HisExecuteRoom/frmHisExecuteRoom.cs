@@ -512,6 +512,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 InitComboAccountBookQr();
                 //
                 InitComboDefaultService();
+                InitComboExpendMediStock();
                 InitComboDefaultsCLS();
                 //
                 LoadResQrInfo();
@@ -694,6 +695,27 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 columnInfos.Add(new ColumnInfo("CASHIER_ROOM_NAME", "", 250, 2));
                 ControlEditorADO controlEditorADO = new ControlEditorADO("CASHIER_ROOM_NAME", "ID", columnInfos, false, 350);
                 ControlEditorLoader.Load(cboCashRoom, data, controlEditorADO);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void InitComboExpendMediStock()
+        {
+            try
+            {
+                var allStocks = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDI_STOCK>();
+                var data = allStocks != null
+                    ? allStocks.Where(o => o.IS_EXPEND == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE).ToList()
+                    : null;
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("MEDI_STOCK_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("MEDI_STOCK_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("MEDI_STOCK_NAME", "ID", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboExpendMediStock, data, controlEditorADO);
             }
             catch (Exception ex)
             {
@@ -1146,7 +1168,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                                 txtHein_card_number.Text = "";
                             }
                             selectedOptions.Add(Option.IsSplitByPriority, bhyt.IS_SPLIT_BY_PRIORITY);
-
+                            cboExpendMediStock.EditValue = bhyt.DEFAULT_EXPEND_MEDI_STOCK_ID;
                         }
                         else
                         {
@@ -2720,6 +2742,7 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                 //
                 cboPayerBank.EditValue = null;
                 txtPayerAccount.Text = "";
+                cboExpendMediStock.EditValue = null;
                 //qtcode
                 cboDefaultDrug.EditValue = null;
 
@@ -3774,6 +3797,40 @@ namespace HIS.Desktop.Plugins.HisExecuteRoom.HisExecuteRoom
                     //cboChuyenKhoa.ShowPopup();
                     e.Handled = true;
                     //chkIsAllowNoICD.Focus();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboExpendMediStock_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (e.Button.Kind == DevExpress.XtraEditors.Controls.ButtonPredefines.Delete)
+                {
+                    cboExpendMediStock.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void cboExpendMediStock_KeyUp(object sender, KeyEventArgs e)
+        {
+            try
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    if (this.ActionType == GlobalVariables.ActionAdd)
+                        btnAdd.Focus();
+                    else
+                        btnEdit.Focus();
+                    e.Handled = true;
                 }
             }
             catch (Exception ex)
