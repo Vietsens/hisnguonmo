@@ -150,6 +150,12 @@ namespace MPS.Processor.Mps000302
                 Inventec.Common.FlexCellExport.ProcessObjectTag objectTag = new Inventec.Common.FlexCellExport.ProcessObjectTag();
 
                 store.ReadTemplate(System.IO.Path.GetFullPath(fileName));
+
+                //ghi đè PrintLogData và UniqueCodeData
+                ProcessPrintLogData();
+                //lấy số lần in
+                SetNumOrderKey(GetNumOrderPrint(ProcessUniqueCodeData()));
+
                 DataInputProcess();
                 GroupDisplayProcess();
                 ProcessSingleKey();
@@ -877,6 +883,44 @@ namespace MPS.Processor.Mps000302
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        public override string ProcessPrintLogData()
+        {
+            string log = "";
+            try
+            {
+                if (rdo != null && rdo.Treatment != null)
+                {
+                    log = String.Format("HIS_TREATMENT: {0}", rdo.Treatment.TREATMENT_CODE);
+                }
+            }
+            catch (Exception ex)
+            {
+                log = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return log;
+        }
+
+        public override string ProcessUniqueCodeData()
+        {
+            string result = "";
+            try
+            {
+                if (rdo != null && rdo.Treatment != null)
+                {
+                    result = String.Format("{0} TREATMENT_CODE: {1} TITLES: BangKeTongHop6556",
+                        printTypeCode,
+                        rdo.Treatment.TREATMENT_CODE);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+            return result;
         }
     }
 }
