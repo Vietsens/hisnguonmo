@@ -63,6 +63,13 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem6 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.chkViewXmlTT12 = new DevExpress.XtraEditors.CheckEdit();
+            this.lciChkViewXmlTT12 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.cboBhxhSample = new DevExpress.XtraEditors.GridLookUpEdit();
+            this.lciBhxhSample = new DevExpress.XtraLayout.LayoutControlItem();
+            this.cboBhxhSampleView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.btnSendBhxh = new DevExpress.XtraEditors.SimpleButton();
+            this.lciBtnSendBhxh = new DevExpress.XtraLayout.LayoutControlItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chkViewXmlCT.Properties)).BeginInit();
@@ -82,10 +89,19 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkViewXmlTT12.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkViewXmlTT12)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBhxhSample.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBhxhSample)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBhxhSampleView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSendBhxh)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
             // 
+            this.layoutControl1.Controls.Add(this.btnSendBhxh);
+            this.layoutControl1.Controls.Add(this.cboBhxhSample);
+            this.layoutControl1.Controls.Add(this.chkViewXmlTT12);
             this.layoutControl1.Controls.Add(this.chkViewXmlCT);
             this.layoutControl1.Controls.Add(this.chkViewXmlCheckIn);
             this.layoutControl1.Controls.Add(this.chkViewXml130);
@@ -215,7 +231,10 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             this.layoutControlItem3,
             this.layoutControlItem4,
             this.layoutControlItem5,
-            this.layoutControlItem6});
+            this.layoutControlItem6,
+            this.lciChkViewXmlTT12,
+            this.lciBhxhSample,
+            this.lciBtnSendBhxh});
             this.layoutControlGroup1.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup1.Name = "Root";
             this.layoutControlGroup1.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 2, 2, 2);
@@ -234,9 +253,9 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(349, 0);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(826, 0);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(611, 26);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(134, 26);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem3
@@ -274,6 +293,82 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             this.layoutControlItem6.Size = new System.Drawing.Size(92, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
+            //
+            // chkViewXmlTT12
+            //
+            this.chkViewXmlTT12.Location = new System.Drawing.Point(353, 4);
+            this.chkViewXmlTT12.Name = "chkViewXmlTT12";
+            this.chkViewXmlTT12.Properties.Caption = "XML TT12";
+            this.chkViewXmlTT12.Properties.CheckStyle = DevExpress.XtraEditors.Controls.CheckStyles.Radio;
+            this.chkViewXmlTT12.Properties.RadioGroupIndex = 1;
+            this.chkViewXmlTT12.Size = new System.Drawing.Size(73, 19);
+            this.chkViewXmlTT12.StyleController = this.layoutControl1;
+            this.chkViewXmlTT12.TabIndex = 10;
+            this.chkViewXmlTT12.TabStop = false;
+            this.chkViewXmlTT12.CheckedChanged += new System.EventHandler(this.chkViewXml130_CheckedChanged);
+            //
+            // lciChkViewXmlTT12
+            //
+            this.lciChkViewXmlTT12.Control = this.chkViewXmlTT12;
+            this.lciChkViewXmlTT12.Location = new System.Drawing.Point(349, 0);
+            this.lciChkViewXmlTT12.Name = "lciChkViewXmlTT12";
+            this.lciChkViewXmlTT12.Size = new System.Drawing.Size(77, 26);
+            this.lciChkViewXmlTT12.TextSize = new System.Drawing.Size(0, 0);
+            this.lciChkViewXmlTT12.TextVisible = false;
+            //
+            // cboBhxhSample
+            //
+            this.cboBhxhSample.Enabled = false;
+            this.cboBhxhSample.Location = new System.Drawing.Point(485, 4);
+            this.cboBhxhSample.Name = "cboBhxhSample";
+            this.cboBhxhSample.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboBhxhSample.Properties.NullText = "";
+            this.cboBhxhSample.Properties.View = this.cboBhxhSampleView;
+            this.cboBhxhSample.Size = new System.Drawing.Size(208, 20);
+            this.cboBhxhSample.StyleController = this.layoutControl1;
+            this.cboBhxhSample.TabIndex = 11;
+            //
+            // lciBhxhSample
+            //
+            this.lciBhxhSample.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.lciBhxhSample.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lciBhxhSample.Control = this.cboBhxhSample;
+            this.lciBhxhSample.Location = new System.Drawing.Point(426, 0);
+            this.lciBhxhSample.Name = "lciBhxhSample";
+            this.lciBhxhSample.Size = new System.Drawing.Size(267, 26);
+            this.lciBhxhSample.Text = "Loại mẫu:";
+            this.lciBhxhSample.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.lciBhxhSample.TextSize = new System.Drawing.Size(50, 20);
+            this.lciBhxhSample.TextToControlDistance = 5;
+            //
+            // cboBhxhSampleView
+            //
+            this.cboBhxhSampleView.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.cboBhxhSampleView.Name = "cboBhxhSampleView";
+            this.cboBhxhSampleView.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.cboBhxhSampleView.OptionsView.ShowGroupPanel = false;
+            //
+            // btnSendBhxh
+            //
+            this.btnSendBhxh.Enabled = false;
+            this.btnSendBhxh.ImageToTextAlignment = DevExpress.XtraEditors.ImageAlignToText.LeftTop;
+            this.btnSendBhxh.Location = new System.Drawing.Point(697, 4);
+            this.btnSendBhxh.Name = "btnSendBhxh";
+            this.btnSendBhxh.Size = new System.Drawing.Size(129, 22);
+            this.btnSendBhxh.StyleController = this.layoutControl1;
+            this.btnSendBhxh.TabIndex = 12;
+            this.btnSendBhxh.Text = "Gửi đến cổng BHXH";
+            this.btnSendBhxh.Click += new System.EventHandler(this.btnSendBhxh_Click);
+            //
+            // lciBtnSendBhxh
+            //
+            this.lciBtnSendBhxh.Control = this.btnSendBhxh;
+            this.lciBtnSendBhxh.Location = new System.Drawing.Point(693, 0);
+            this.lciBtnSendBhxh.Name = "lciBtnSendBhxh";
+            this.lciBtnSendBhxh.Size = new System.Drawing.Size(133, 26);
+            this.lciBtnSendBhxh.TextSize = new System.Drawing.Size(0, 0);
+            this.lciBtnSendBhxh.TextVisible = false;
             // 
             // frmXMLViewer130
             // 
@@ -305,6 +400,12 @@ namespace HIS.Desktop.Plugins.XMLViewer130
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.chkViewXmlTT12.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciChkViewXmlTT12)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBhxhSample.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBhxhSample)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboBhxhSampleView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lciBtnSendBhxh)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -330,5 +431,12 @@ namespace HIS.Desktop.Plugins.XMLViewer130
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraEditors.CheckEdit chkViewXmlCT;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem6;
+        private DevExpress.XtraEditors.CheckEdit chkViewXmlTT12;
+        private DevExpress.XtraLayout.LayoutControlItem lciChkViewXmlTT12;
+        private DevExpress.XtraEditors.GridLookUpEdit cboBhxhSample;
+        private DevExpress.XtraGrid.Views.Grid.GridView cboBhxhSampleView;
+        private DevExpress.XtraLayout.LayoutControlItem lciBhxhSample;
+        private DevExpress.XtraEditors.SimpleButton btnSendBhxh;
+        private DevExpress.XtraLayout.LayoutControlItem lciBtnSendBhxh;
     }
 }

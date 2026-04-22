@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.BhxhApiSend.Config
 {
-    class BhxhApiSendCFG
+    public class BhxhApiSendCFG
     {
         private const string CONFIG_KEY_BHXH_ADDRESS = "HIS.BHXH_API_SEND.ADDRESS";
         private const string CONFIG_KEY_BHXH_USER_PASS = "HIS.BHXH_API_SEND.USER_PASS";

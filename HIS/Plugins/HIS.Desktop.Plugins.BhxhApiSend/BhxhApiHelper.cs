@@ -30,13 +30,13 @@ using System.Threading.Tasks;
 
 namespace HIS.Desktop.Plugins.BhxhApiSend
 {
-    internal static class BhxhApiHelper
+    public static class BhxhApiHelper
     {
         private static BhxhTokenResultADO cachedToken = null;
         private static string cachedUsername = null;
         private static readonly int TIMEOUT_SECONDS = 60;
 
-        internal static string ConvertStringToMD5(string password)
+        public static string ConvertStringToMD5(string password)
         {
             string s_PasswordMD5 = string.Empty;
             try
@@ -52,7 +52,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
             return s_PasswordMD5;
         }
 
-        internal static async Task<BhxhTokenResultADO> Authenticate(string baseAddress, string username, string md5Password)
+        public static async Task<BhxhTokenResultADO> Authenticate(string baseAddress, string username, string md5Password)
         {
             BhxhTokenResultADO result = null;
             try
@@ -128,7 +128,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
             return result;
         }
 
-        internal static async Task<BhxhCategoryResultADO> SendCategory(
+        public static async Task<BhxhCategoryResultADO> SendCategory(
             string baseAddress,
             BhxhTokenResultADO token,
             CategoryTypeADO categoryType,
@@ -232,7 +232,7 @@ namespace HIS.Desktop.Plugins.BhxhApiSend
             return result;
         }
 
-        internal static void ClearTokenCache()
+        public static void ClearTokenCache()
         {
             cachedToken = null;
             cachedUsername = null;
