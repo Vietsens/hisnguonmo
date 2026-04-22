@@ -1238,59 +1238,47 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 //huannh
                 if (ListSereServ != null && ListSereServ.Count > 0)
                 {
+                    bool allowZeroPrice = HisConfigCFG.QD_130_BYT__LAY_CA_DVU_0_DONG == "1";
+                    Dictionary<long, List<HIS_EKIP_USER>> dicEkipUserByEkipId = null;
+                    if (ListEkipUser != null && ListEkipUser.Count > 0)
+                    {
+                        dicEkipUserByEkipId = new Dictionary<long, List<HIS_EKIP_USER>>();
+                        foreach (var eu in ListEkipUser)
+                        {
+                            if (!dicEkipUserByEkipId.ContainsKey(eu.EKIP_ID))
+                                dicEkipUserByEkipId[eu.EKIP_ID] = new List<HIS_EKIP_USER>();
+                            dicEkipUserByEkipId[eu.EKIP_ID].Add(eu);
+                        }
+                    }
+
                     foreach (var sereServ in ListSereServ)
                     {
-
-                        //GOC
-                        //if (sereServ.TDL_HEIN_SERVICE_TYPE_ID.HasValue && sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && ((sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0) || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_DELETE__TRUE))
-                        //{
-                        //    if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
-                        //        dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
-                        //    dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
-                        //}
-
-
-                        bool addSereServ = false;
-
-                        string allowZeroPriceKey = HisConfigCFG.QD_130_BYT__LAY_CA_DVU_0_DONG;
-
-                        if (allowZeroPriceKey == "1")
+                        bool addSereServ;
+                        if (allowZeroPrice)
                         {
-
                             addSereServ = (sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && (sereServ.PRICE > 0 || sereServ.PRICE == 0))
                                 || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("gia tri key 0 dong = 1", sereServ));
                         }
                         else
                         {
-
                             addSereServ = (sereServ.IS_NO_EXECUTE != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.PRICE > 0)
                                 || sereServ.IS_NO_EXECUTE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
-
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("gia tri key 0 dong khac 1", sereServ));
                         }
 
                         if (sereServ.AMOUNT > 0 && sereServ.IS_EXPEND != IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE && sereServ.TDL_TREATMENT_ID.HasValue && addSereServ)
                         {
                             if (!dicSereServ.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
                                 dicSereServ[sereServ.TDL_TREATMENT_ID.Value] = new List<V_HIS_SERE_SERV_2>();
-                            Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData("sereServ output: ", sereServ));
                             dicSereServ[sereServ.TDL_TREATMENT_ID.Value].Add(sereServ);
                         }
 
-                        if (sereServ.EKIP_ID.HasValue && ListEkipUser != null && ListEkipUser.Count > 0 && sereServ.TDL_TREATMENT_ID.HasValue)
+                        if (sereServ.EKIP_ID.HasValue && dicEkipUserByEkipId != null && sereServ.TDL_TREATMENT_ID.HasValue)
                         {
-                            var ekips = ListEkipUser.Where(o => o.EKIP_ID == sereServ.EKIP_ID).ToList();
-                            if (ekips != null && ekips.Count > 0)
+                            if (dicEkipUserByEkipId.TryGetValue(sereServ.EKIP_ID.Value, out var ekips) && ekips.Count > 0)
                             {
-                                foreach (var item in ekips)
-                                {
-                                    if (!dicEkipUser.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
-                                        dicEkipUser[sereServ.TDL_TREATMENT_ID.Value] = new List<HIS_EKIP_USER>();
-
-                                    dicEkipUser[sereServ.TDL_TREATMENT_ID.Value].Add(item);
-                                }
+                                if (!dicEkipUser.ContainsKey(sereServ.TDL_TREATMENT_ID.Value))
+                                    dicEkipUser[sereServ.TDL_TREATMENT_ID.Value] = new List<HIS_EKIP_USER>();
+                                dicEkipUser[sereServ.TDL_TREATMENT_ID.Value].AddRange(ekips);
                             }
                         }
                     }
@@ -1451,6 +1439,18 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     Inventec.Common.Logging.LogSystem.Error("Key cấu hình hệ thống chỉ thiết lập 3 giá trị");
                 }
+
+                var totalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
+                var totalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                var totalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
+                var totalIcdData = BackendDataWorker.Get<HIS_ICD>();
+                var totalServiceData = BackendDataWorker.Get<V_HIS_SERVICE>();
+                var totalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                var totalDepartmentData = HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1"
+                    ? BackendDataWorker.Get<HIS_DEPARTMENT>()
+                    : null;
+                var serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
+
                 foreach (var treatment in hisTreatments)
                 {
                     InputADO ado = new InputADO();
@@ -1532,13 +1532,13 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                     {
                         ado.HivTreatment = dicHivTreatment[treatment.ID];
                     }
-                    ado.TotalMaterialTypeData = BackendDataWorker.Get<HIS_MATERIAL_TYPE>();
-                    ado.TotalHeinMediOrgData = BackendDataWorker.Get<HIS_MEDI_ORG>();
+                    ado.TotalMaterialTypeData = totalMaterialTypeData;
+                    ado.TotalHeinMediOrgData = totalHeinMediOrgData;
                     ado.TotalConfigData = NewConfig;
-                    ado.TotalPatientTypeData = BackendDataWorker.Get<HIS_PATIENT_TYPE>();
-                    ado.TotalIcdData = BackendDataWorker.Get<HIS_ICD>();
-                    ado.TotalSericeData = BackendDataWorker.Get<V_HIS_SERVICE>();
-                    ado.TotalEmployeeData = BackendDataWorker.Get<HIS_EMPLOYEE>();
+                    ado.TotalPatientTypeData = totalPatientTypeData;
+                    ado.TotalIcdData = totalIcdData;
+                    ado.TotalSericeData = totalServiceData;
+                    ado.TotalEmployeeData = totalEmployeeData;
                     var usedList = new List<HIS_EXP_MEDIMATE_USED>();
 
                     if (ado.ListSereServ != null && ado.ListSereServ.Count > 0)
@@ -1566,11 +1566,11 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         .Select(g => g.First())
                         .ToList();
 
-                    if (HisConfigCFG.QD_130_BVT_XML1_MA_KHOA_OPTION == "1")
+                    if (totalDepartmentData != null)
                     {
-                        ado.ListDepartment = BackendDataWorker.Get<HIS_DEPARTMENT>();
+                        ado.ListDepartment = totalDepartmentData;
                     }
-                    ado.serverInfo = new ServerInfo() { Username = username, Password = password, Address = address, TypeXml = typeXml, Xml130Api = xml130Api, XmlGdykApi = xmlGdykApi };
+                    ado.serverInfo = serverInfo;
                     //if (!isNotFileSign)
                     //    ado.delegateSignXml = DataSignXML;
                     if (dicTuberculosisTreat.ContainsKey(treatment.ID))
@@ -1607,9 +1607,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         }
                         if (rsXmlTT != null)
                         {
-                            FileStream file = new FileStream(saveFilePathCollinearXml, FileMode.Create, FileAccess.Write);
-                            rsXmlTT.WriteTo(file);
-                            file.Close();
+                            using (FileStream file = new FileStream(saveFilePathCollinearXml, FileMode.Create, FileAccess.Write))
+                            {
+                                rsXmlTT.WriteTo(file);
+                            }
                             rsXmlTT.Close();
                             isSuccess = true;
                         }
@@ -1669,9 +1670,10 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                         if (rsXml12 != null)
                         {
                             memoryStreamXml12 = rsXml12;
-                            FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write);
-                            rsXml12.WriteTo(file12);
-                            file12.Close();
+                            using (FileStream file12 = new FileStream(saveFilePathXml12, FileMode.Create, FileAccess.Write))
+                            {
+                                rsXml12.WriteTo(file12);
+                            }
                             rsXml12.Close();
                         }
                     }
