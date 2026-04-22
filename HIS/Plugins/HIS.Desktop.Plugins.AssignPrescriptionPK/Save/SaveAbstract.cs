@@ -293,7 +293,14 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
                     this.TransportVehicle = treatDT.TransportVehicle;
                     this.TransporterLoginnames = treatDT.TransporterLoginnames;
                     this.Transporter = treatDT.Transporter;
-                    this.TreatmentMethod = treatDT.TreatmentMethod;
+                    if(treatDT.TreatmentEndTypeId == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_END_TYPE.ID__CHUYEN)
+                    {
+                        this.TreatmentMethod = treatDT.TreatmentMethod;
+                    }
+                    else
+                    {
+                        this.TreatmentMethod = frmAssignPrescription.TreatmentMethod;
+                    }
                     this.TreatmentDirection = treatDT.TreatmentDirection;
                     this.MainCause = treatDT.MainCause;
                     this.Surgery = treatDT.Surgery;
@@ -309,8 +316,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionPK.Save
 
                 }
                 this.TreatmentFinishSDO = frmAssignPrescription.treatmentFinishProcessor.GetData(frmAssignPrescription.ucTreatmentFinish);
-                if (this.TreatmentFinishSDO != null && !string.IsNullOrEmpty(this.TreatmentFinishSDO.TreatmentMethod))
-                    TreatmentFinishSDO.TreatmentMethod = frmAssignPrescription.TreatmentMethod;
+                //if (this.TreatmentFinishSDO != null && !string.IsNullOrEmpty(this.TreatmentFinishSDO.TreatmentMethod))
+                //    TreatmentFinishSDO.TreatmentMethod = frmAssignPrescription.TreatmentMethod;
             }
 
             this.IsMultiDate = frmAssignPrescription.isMultiDateState;
