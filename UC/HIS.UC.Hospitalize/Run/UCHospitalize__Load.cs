@@ -201,6 +201,51 @@ namespace HIS.UC.Hospitalize.Run
             }
         }
 
+        // PTTK_19083: Bind danh mục phân loại cấp cứu (IS_EMERGENCY=1) + visibility theo phòng cấp cứu
+        private List<HIS_PATIENT_CLASSIFY> emergencyClassifyData;
+        private void LoadDataToComboEmergencyClassify()
+        {
+            try
+            {
+                emergencyClassifyData = BackendDataWorker.Get<HIS_PATIENT_CLASSIFY>()
+                    .Where(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                                && o.IS_DELETE != 1
+                                && o.IS_EMERGENCY == 1)
+                    .OrderBy(o => o.PATIENT_CLASSIFY_NAME)
+                    .ToList();
+
+                if (emergencyClassifyData == null || emergencyClassifyData.Count == 0)
+                {
+                    CommonParam param = new CommonParam();
+                    HisPatientClassifyFilter filter = new HisPatientClassifyFilter();
+                    filter.IS_ACTIVE = IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE;
+                    filter.IS_EMERGENCY = 1;
+                    emergencyClassifyData = new BackendAdapter(param)
+                        .Get<List<HIS_PATIENT_CLASSIFY>>("api/HisPatientClassify/Get",
+                            ApiConsumers.MosConsumer, filter, param);
+                }
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("PATIENT_CLASSIFY_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("PATIENT_CLASSIFY_NAME", "", 250, 2));
+                ControlEditorADO controlEditorADO = new ControlEditorADO("PATIENT_CLASSIFY_NAME", "ID", columnInfos, false, 350);
+                ControlEditorLoader.Load(cboEmergencyClassifyId2, emergencyClassifyData, controlEditorADO);
+
+                // Load value khi edit hồ sơ cũ
+                cboEmergencyClassifyId2.EditValue = hospitalizeInitADO != null ? hospitalizeInitADO.EmergencyClassifyId2 : null;
+                Inventec.Common.Logging.LogSystem.Debug("LoadComboEmergencyClassifyId2 - IsEmergencyRoom: " + hospitalizeInitADO.IsEmergencyRoom);
+                // Ẩn combo khi phòng không phải cấp cứu
+                bool isEmergencyRoom = hospitalizeInitADO != null && hospitalizeInitADO.IsEmergencyRoom;
+                layoutControlItem34.Visibility = isEmergencyRoom
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
 		private void LoadDataToComboTreatmentType()
 		{
 			try
@@ -291,7 +336,7 @@ namespace HIS.UC.Hospitalize.Run
 				Inventec.Common.Logging.LogSystem.Warn(ex);
 			}
 		}
-
+		
 		private void LoadBedCount(V_HIS_DEPARTMENT_1 data)
 		{
 			try

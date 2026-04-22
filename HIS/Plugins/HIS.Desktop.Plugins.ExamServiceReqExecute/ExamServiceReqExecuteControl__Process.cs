@@ -89,6 +89,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 ProcessExamSereDHST(ref hisServiceReqSDO);
 
                 hisServiceReqSDO.RequestRoomId = moduleData.RoomId;
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => hisServiceReqSDO),
+                        hisServiceReqSDO));
                 HisServiceReqExamUpdateResultSDO HisServiceReqResult = await new BackendAdapter(param)
                     .PostAsync<HisServiceReqExamUpdateResultSDO>("api/HisServiceReq/ExamUpdate", ApiConsumers.MosConsumer, hisServiceReqSDO, param);
 
@@ -1794,6 +1798,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     examServiceReqUpdateSDO.PatientCaseId = Inventec.Common.TypeConvert.Parse.ToInt64(cboPatientCase.EditValue.ToString());
                 else
                     examServiceReqUpdateSDO.PatientCaseId = null;
+
+                // PTTK_19083: Phân loại cấp cứu 1 (phòng cấp cứu + config bật mới map)
+                examServiceReqUpdateSDO.EmergencyClassifyId1 = GetEmergencyClassifyId1();
+
                 var lstContraindications = contraindicationSelecteds.Select(o => o.ID).ToList();
                 if (lstContraindications != null && lstContraindications.Count > 0)
                 {
@@ -1952,6 +1960,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                             serviceReqUpdateSDO.HospitalizeSDO.Time = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.Time;
                             serviceReqUpdateSDO.HospitalizeSDO.IsEmergency = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.IsEmergency;
                             serviceReqUpdateSDO.HospitalizeSDO.IsCAPD = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.IsCAPD;
+
+                            // PTTK_19083: Phân loại cấp cứu 2 (luồng Nhập viện) — copy từ ADO của UC.Hospitalize
+                            serviceReqUpdateSDO.HospitalizeSDO.EmergencyClassifyId2 = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.EmergencyClassifyId2;
                             serviceReqUpdateSDO.FinishTime = hisDepartmentTranHospitalizeSDO.FinishTime;
                             serviceReqUpdateSDO.HospitalizeSDO.RelativeName = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.RelativeName;
                             serviceReqUpdateSDO.HospitalizeSDO.RelativePhone = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.RelativePhone;
@@ -2214,6 +2225,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                         serviceReqUpdateSDO.TreatmentFinishSDO.DoctorLoginname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                         serviceReqUpdateSDO.TreatmentFinishSDO.DoctorUsernname = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetUserName();
 
+                        // PTTK_19083: Phân loại cấp cứu 2 (luồng Kết thúc điều trị) — UC.ExamTreatmentFinish
+                        // đã set EmergencyClassifyId2 vào TreatmentFinishSDO. Dòng `serviceReqUpdateSDO.TreatmentFinishSDO = treatmentFinish.TreatmentFinishSDO;`
+                        // ở trên đã gán nguyên reference nên value được giữ — không cần code thêm.
 
                         //serviceReqUpdateSDO.TreatmentFinishSDO.EndOrderRequest = treatmentFinish.TreatmentFinishSDO.EndOrderRequest;
                         serviceReqUpdateSDO.TreatmentFinishSDO.EndRoomId = moduleData.RoomId;
@@ -2723,7 +2737,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
             {
                 WaitingManager.Show();
                 serviceReqExamUpdateSDO.RequestRoomId = moduleData.RoomId;
-                Inventec.Common.Logging.LogSystem.Info("serviceReqExamUpdateSDO: " + LogUtil.TraceData("serviceReqExamUpdateSDO: ", serviceReqExamUpdateSDO));
+                Inventec.Common.Logging.LogSystem.Debug(
+                    Inventec.Common.Logging.LogUtil.TraceData(
+                        Inventec.Common.Logging.LogUtil.GetMemberName(() => serviceReqExamUpdateSDO),
+                        serviceReqExamUpdateSDO));
                 HisServiceReqResult = new BackendAdapter(param)
                     .Post<HisServiceReqExamUpdateResultSDO>("api/HisServiceReq/ExamUpdate", ApiConsumers.MosConsumer, serviceReqExamUpdateSDO, param);
 

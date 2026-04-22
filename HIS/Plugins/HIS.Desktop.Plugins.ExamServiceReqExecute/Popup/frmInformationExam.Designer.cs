@@ -46,6 +46,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Popup
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -108,7 +109,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Popup
             this.lblCountFinger = new DevExpress.XtraEditors.LabelControl();
             this.LblKoKinhPhai = new DevExpress.XtraEditors.LabelControl();
             this.chkPartExamEyeStMinus = new DevExpress.XtraEditors.CheckEdit();
-            this.barManager1 = new DevExpress.XtraBars.BarManager();
+            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.bbtn0 = new DevExpress.XtraBars.BarButtonItem();
             this.bbtn1 = new DevExpress.XtraBars.BarButtonItem();
