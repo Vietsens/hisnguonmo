@@ -113,6 +113,8 @@ namespace HIS.UC.Sick
                     lcidtePregnancyTermination.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem15.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem16.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciCccd.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    lciCccdDay.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
                     layoutControlItem6.TextSize = new Size(100, 20);
                     layoutControlItem6.TextToControlDistance = 5;
                     dxValidationProvider1.SetValidationRule(memTreatmentMethod, null);
@@ -134,6 +136,8 @@ namespace HIS.UC.Sick
                     lciIsPregnancyTermination.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciPregnancyTerminationReason.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciGestationalAge.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciCccd.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    lciCccdDay.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
                     lciPregnancyTerminationReason.MinSize = new Size(lciIsPregnancyTermination.MinSize.Width, 50);
                     lciTreatmentMethod.MinSize = new Size(lciIsPregnancyTermination.MinSize.Width, 50);
                     lciIsPregnancyTermination.MinSize = new Size(lciIsPregnancyTermination.MinSize.Width, 50);
@@ -203,7 +207,7 @@ namespace HIS.UC.Sick
         {
             try
             {
-
+                
             }
             catch (Exception ex)
             {
@@ -561,6 +565,45 @@ namespace HIS.UC.Sick
                         dtSickLeaveToTime.EditValue = null;
                     }
 
+                    // CCCD/Hộ chiếu — chỉ áp dụng khi NGHI_OM (IsDuongThai = false).
+                    // Ưu tiên hiển thị CCCD; nếu null xét tiếp Passport; đều null → cho phép nhập mới.
+                    if (!this.IsDuongThai)
+                    {
+                        string existingNumber = null;
+                        long? existingDate = null;
+                        if (!string.IsNullOrWhiteSpace(currentTreatmentFinishSDO.TDL_PATIENT_CCCD_NUMBER))
+                        {
+                            existingNumber = currentTreatmentFinishSDO.TDL_PATIENT_CCCD_NUMBER;
+                            existingDate = currentTreatmentFinishSDO.TDL_PATIENT_CCCD_DATE;
+                        }
+                        else if (!string.IsNullOrWhiteSpace(currentTreatmentFinishSDO.TDL_PATIENT_PASSPORT_NUMBER))
+                        {
+                            existingNumber = currentTreatmentFinishSDO.TDL_PATIENT_PASSPORT_NUMBER;
+                            existingDate = currentTreatmentFinishSDO.TDL_PATIENT_PASSPORT_DATE;
+                        }
+
+                        if (!string.IsNullOrEmpty(existingNumber))
+                        {
+                            txtCccd.Text = existingNumber;
+                            txtCccd.Properties.ReadOnly = true;
+                        }
+                        else
+                        {
+                            txtCccd.Properties.ReadOnly = false;
+                        }
+
+                        if (existingDate.HasValue && existingDate.Value > 0)
+                        {
+                            DateTime? cccdDt = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(existingDate.Value);
+                            if (cccdDt.HasValue) cboCccdDay.EditValue = cccdDt.Value;
+                            cboCccdDay.Properties.ReadOnly = true;
+                        }
+                        else
+                        {
+                            cboCccdDay.Properties.ReadOnly = false;
+                        }
+                    }
+
                     MOS.Filter.HisPatientFilter patientFilter = new MOS.Filter.HisPatientFilter();
                     patientFilter.ID = currentTreatmentFinishSDO.PATIENT_ID;
                     Patient = new Inventec.Common.Adapter.BackendAdapter(new Inventec.Core.CommonParam()).Get<List<HIS_PATIENT>>("api/HisPatient/Get", HIS.Desktop.ApiConsumer.ApiConsumers.MosConsumer, patientFilter, null).FirstOrDefault();
@@ -783,6 +826,39 @@ namespace HIS.UC.Sick
                     outPut.PregnancyTerminationTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtePregnancyTermination.DateTime);
                 outPut.MotherName = txtMother.Text.Trim();
                 outPut.FatherName = txtFather.Text.Trim();
+
+                // CCCD/Hộ chiếu — chỉ áp dụng cho NGHI_OM (IsDuongThai = false), khi HIS_TREATMENT chưa có.
+                // Phân loại: toàn số → CCCD (max 12); có chữ → Passport (max 9).
+                // Gửi qua HisTreatmentFinishSDO → api/HisServiceReq/ExamUpdate → BE lưu TDL_PATIENT_CCCD_* / PASSPORT_* vào HIS_TREATMENT + HIS_PATIENT.
+                if (!this.IsDuongThai && txtCccd != null && !txtCccd.Properties.ReadOnly)
+                {
+                    string cccdInput = txtCccd.Text == null ? "" : txtCccd.Text.Trim();
+                    if (!string.IsNullOrWhiteSpace(cccdInput))
+                    {
+                        long? issueDate = null;
+                        if (cboCccdDay.EditValue != null && cboCccdDay.DateTime != DateTime.MinValue)
+                        {
+                            issueDate = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(cboCccdDay.DateTime);
+                        }
+                        if (System.Text.RegularExpressions.Regex.IsMatch(cccdInput, @"^\d+$"))
+                        {
+                            outPut.CccdNumber = cccdInput;
+                            outPut.CccdDate = issueDate;
+                        }
+                        else
+                        {
+                            if (cccdInput.Length > 9)
+                            {
+                                dxErrorProvider1.SetError(txtCccd, "Số hộ chiếu tối đa 9 ký tự", DevExpress.XtraEditors.DXErrorProvider.ErrorType.Warning);
+                                txtCccd.Focus();
+                                return null;
+                            }
+                            outPut.PassportNumber = cccdInput;
+                            outPut.PassportDate = issueDate;
+                        }
+                    }
+                }
+
                 result = outPut;
                 Inventec.Common.Logging.LogSystem.Debug("UCSick.GetValue____" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => outPut), outPut));
             }
