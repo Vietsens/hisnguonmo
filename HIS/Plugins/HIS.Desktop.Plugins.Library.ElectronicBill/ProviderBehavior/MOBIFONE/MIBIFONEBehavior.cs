@@ -330,6 +330,9 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE
                 HoaDon78Phi ph = new HoaDon78Phi();
                 ph.data = new List<HoaDon78PhiData>();
                 obj.data = new List<HoaDon78Data>() { hd78data };
+
+                hd78data.cmndmua = inv.BuyerIdentityNumber;
+                hd78data.cmnd = inv.BuyerIdentityNumber;
             }
             catch (Exception ex)
             {

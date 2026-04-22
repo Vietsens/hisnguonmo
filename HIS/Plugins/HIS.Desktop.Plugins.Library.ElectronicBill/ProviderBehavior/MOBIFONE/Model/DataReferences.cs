@@ -27,7 +27,7 @@ namespace HIS.Desktop.Plugins.Library.ElectronicBill.ProviderBehavior.MOBIFONE.M
     {
         public string qlmtke_id { get; set; }
         public string qlkhsdung_id { get; set; }
-        public int lhdon { get; set; }
+        public int? lhdon { get; set; }
         public string hthuc { get; set; }
         public string khdon { get; set; }
         public string khhdon { get; set; }
