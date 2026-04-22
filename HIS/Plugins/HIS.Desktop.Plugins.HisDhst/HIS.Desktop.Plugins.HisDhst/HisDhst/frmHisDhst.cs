@@ -32,6 +32,7 @@ using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.LocalStorage.ConfigApplication;
 using HIS.Desktop.LocalStorage.LocalData;
 using HIS.Desktop.Plugins.HisDhst.ADO;
+using HIS.Desktop.Plugins.HisDhst.Validation;
 using HIS.Desktop.Utilities.Extensions;
 using Inventec.Common.Adapter;
 using Inventec.Common.Logging;
@@ -697,27 +698,26 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
                     {
                         spinSPO2.EditValue = null;
                     }
-                    // TODO: Bỏ comment khi MOS.EFMODEL có field O2, FIO2, GCS, LOC, AVPU
-                    //if (data.O2.HasValue)
-                    //    spinO2.EditValue = data.O2;
-                    //else
-                    //    spinO2.EditValue = null;
-                    //if (data.FIO2.HasValue)
-                    //    spinFiO2.EditValue = data.FIO2;
-                    //else
-                    //    spinFiO2.EditValue = null;
-                    //if (data.GCS.HasValue)
-                    //    spinGcs.EditValue = data.GCS;
-                    //else
-                    //    spinGcs.EditValue = null;
-                    //if (data.LOC.HasValue)
-                    //    cboLoc.SelectedIndex = (int)(data.LOC.Value) - 1;
-                    //else
-                    //    cboLoc.EditValue = null;
-                    //if (data.AVPU.HasValue)
-                    //    cboAvpu.SelectedIndex = (int)(data.AVPU.Value) - 1;
-                    //else
-                    //    cboAvpu.EditValue = null;
+                    if (data.O2.HasValue)
+                        spinO2.EditValue = data.O2;
+                    else
+                        spinO2.EditValue = null;
+                    if (data.FIO2.HasValue)
+                        spinFiO2.EditValue = data.FIO2;
+                    else
+                        spinFiO2.EditValue = null;
+                    if (data.GCS.HasValue)
+                        spinGcs.EditValue = data.GCS;
+                    else
+                        spinGcs.EditValue = null;
+                    if (data.LOC.HasValue)
+                        cboLoc.SelectedIndex = (int)(data.LOC.Value) - 1;
+                    else
+                        cboLoc.EditValue = null;
+                    if (data.AVPU.HasValue)
+                        cboAvpu.SelectedIndex = (int)(data.AVPU.Value) - 1;
+                    else
+                        cboAvpu.EditValue = null;
                     if (data.EXECUTE_TIME != null)
                     {
                         dateExecuteTime.EditValue = Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(Convert.ToInt64(data.EXECUTE_TIME));
@@ -1023,6 +1023,7 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
                 UpdateDTOFromDataForm(ref updateDTO);
                 if (ActionType == GlobalVariables.ActionAdd)
                 {
+                    Inventec.Common.Logging.LogSystem.Debug("Bat dau goi api api/HisDhst/Create" + Inventec.Common.Logging.LogUtil.TraceData("updateDTO:", updateDTO));
                     var resultData = new BackendAdapter(param).Post<MOS.EFMODEL.DataModels.HIS_DHST>(HisRequestUriStore.MOSHIS_DHST_CREATE, ApiConsumers.MosConsumer, updateDTO, param);
                     if (resultData != null)
                     {
@@ -1180,27 +1181,26 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
                 {
                     currentDTO.SPO2 = null;
                 }
-                // TODO: Bỏ comment khi MOS.EFMODEL có field O2, FIO2, GCS, LOC, AVPU
-                //if (spinO2.EditValue != null && Convert.ToDecimal(spinO2.EditValue) > 0)
-                //    currentDTO.O2 = Convert.ToDecimal(spinO2.EditValue);
-                //else
-                //    currentDTO.O2 = null;
-                //if (spinFiO2.EditValue != null && Convert.ToDecimal(spinFiO2.EditValue) > 0)
-                //    currentDTO.FIO2 = Convert.ToDecimal(spinFiO2.EditValue);
-                //else
-                //    currentDTO.FIO2 = null;
-                //if (spinGcs.EditValue != null && Convert.ToInt64(spinGcs.EditValue) >= 3)
-                //    currentDTO.GCS = Convert.ToInt64(spinGcs.EditValue);
-                //else
-                //    currentDTO.GCS = null;
-                //if (cboLoc.SelectedIndex >= 0)
-                //    currentDTO.LOC = cboLoc.SelectedIndex + 1;
-                //else
-                //    currentDTO.LOC = null;
-                //if (cboAvpu.SelectedIndex >= 0)
-                //    currentDTO.AVPU = cboAvpu.SelectedIndex + 1;
-                //else
-                //    currentDTO.AVPU = null;
+                if (spinO2.EditValue != null && Convert.ToDecimal(spinO2.EditValue) > 0)
+                    currentDTO.O2 = Convert.ToDecimal(spinO2.EditValue);
+                else
+                    currentDTO.O2 = null;
+                if (spinFiO2.EditValue != null && Convert.ToDecimal(spinFiO2.EditValue) > 0)
+                    currentDTO.FIO2 = Convert.ToDecimal(spinFiO2.EditValue);
+                else
+                    currentDTO.FIO2 = null;
+                if (spinGcs.EditValue != null && Convert.ToInt64(spinGcs.EditValue) >= 3)
+                    currentDTO.GCS = (short?)Convert.ToInt64(spinGcs.EditValue);
+                else
+                    currentDTO.GCS = null;
+                if (cboLoc.SelectedIndex >= 0)
+                    currentDTO.LOC = (short?)(cboLoc.SelectedIndex + 1);
+                else
+                    currentDTO.LOC = null;
+                if (cboAvpu.SelectedIndex >= 0)
+                    currentDTO.AVPU = (short?)(cboAvpu.SelectedIndex + 1);
+                else
+                    currentDTO.AVPU = null;
                 if (!string.IsNullOrEmpty(txtNote.Text))
                 {
                     currentDTO.NOTE = txtNote.Text;
@@ -1223,8 +1223,9 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
         {
             try
             {
-                //ValidationSingleControl(txtHtuName);
-
+                ValidMaxMinLengthSpinGcs validSpinGcs = new ValidMaxMinLengthSpinGcs();
+                validSpinGcs.spinGcs = spinGcs;
+                dxValidationProviderEditorInfo.SetValidationRule(spinGcs, validSpinGcs);
             }
             catch (Exception ex)
             {
@@ -2183,6 +2184,36 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
             }
         }
 
+        private void cboLoc_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (!cboLoc.Properties.ReadOnly && e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboLoc.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void cboAvpu_Properties_ButtonClick(object sender, ButtonPressedEventArgs e)
+        {
+            try
+            {
+                if (!cboAvpu.Properties.ReadOnly && e.Button.Kind == ButtonPredefines.Delete)
+                {
+                    cboAvpu.EditValue = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void Mps0000309Process(string printTypeCode, string fileName, ref bool result)
         {
             try
@@ -2385,27 +2416,26 @@ namespace HIS.Desktop.Plugins.HisDhst.HisDhst
                         spinSPO2.Value = (data.SPO2.Value * 100);
                     else
                         spinSPO2.EditValue = null;
-                    // TODO: Bỏ comment khi MOS.EFMODEL có field O2, FIO2, GCS, LOC, AVPU
-                    //if (data.O2.HasValue)
-                    //    spinO2.EditValue = data.O2;
-                    //else
-                    //    spinO2.EditValue = null;
-                    //if (data.FIO2.HasValue)
-                    //    spinFiO2.EditValue = data.FIO2;
-                    //else
-                    //    spinFiO2.EditValue = null;
-                    //if (data.GCS.HasValue)
-                    //    spinGcs.EditValue = data.GCS;
-                    //else
-                    //    spinGcs.EditValue = null;
-                    //if (data.LOC.HasValue)
-                    //    cboLoc.SelectedIndex = (int)(data.LOC.Value) - 1;
-                    //else
-                    //    cboLoc.EditValue = null;
-                    //if (data.AVPU.HasValue)
-                    //    cboAvpu.SelectedIndex = (int)(data.AVPU.Value) - 1;
-                    //else
-                    //    cboAvpu.EditValue = null;
+                    if (data.O2.HasValue)
+                        spinO2.EditValue = data.O2;
+                    else
+                        spinO2.EditValue = null;
+                    if (data.FIO2.HasValue)
+                        spinFiO2.EditValue = data.FIO2;
+                    else
+                        spinFiO2.EditValue = null;
+                    if (data.GCS.HasValue)
+                        spinGcs.EditValue = data.GCS;
+                    else
+                        spinGcs.EditValue = null;
+                    if (data.LOC.HasValue)
+                        cboLoc.SelectedIndex = (int)(data.LOC.Value) - 1;
+                    else
+                        cboLoc.EditValue = null;
+                    if (data.AVPU.HasValue)
+                        cboAvpu.SelectedIndex = (int)(data.AVPU.Value) - 1;
+                    else
+                        cboAvpu.EditValue = null;
 
                     fillDataToBmiAndLeatherArea();
                 }
