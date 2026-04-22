@@ -46,6 +46,9 @@ namespace HIS.UC.Death
         private int positionHandle = -1;
         private string BranchName = null;
         CheckEdit[] ArrCheckEdit { get; set; }
+
+        private const string CONFIG_KEY__IS_NOT_REQUIRED_DEATH_CERT_BOOK = "HIS.UC.Death__IS_NOT_REQUIRED_DEATH_CERT_BOOK";
+        private bool isNotRequiredDeathCertBook = false;
         public UCDeath()
         {
             ArrCheckEdit = new CheckEdit[] { chkAupopsyY, chkAupopsyN, chkAupopsyYN };
@@ -145,6 +148,7 @@ namespace HIS.UC.Death
         {
             try
             {
+                LoadConfig();
                 LoadKeysFromlanguage();
 
                 ValidateForm();
@@ -152,6 +156,19 @@ namespace HIS.UC.Death
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void LoadConfig()
+        {
+            try
+            {
+                string cfg = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(CONFIG_KEY__IS_NOT_REQUIRED_DEATH_CERT_BOOK);
+                isNotRequiredDeathCertBook = (cfg == "1");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -338,6 +355,12 @@ namespace HIS.UC.Death
         {
             try
             {
+                if (isNotRequiredDeathCertBook)
+                {
+                    this.layoutControlItem2.AppearanceItemCaption.Options.UseForeColor = false;
+                    return;
+                }
+
                 ControlEditValidationRule validate = new ControlEditValidationRule();
                 validate.editor = this.cboDeathCertBook;
                 validate.ErrorText = Resources.ResourceMessage.TruongDuLieuBatBuoc;
