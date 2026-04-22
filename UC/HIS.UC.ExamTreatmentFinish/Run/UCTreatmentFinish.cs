@@ -110,6 +110,7 @@ namespace HIS.UC.ExamTreatmentFinish.Run
         CauseOfDeathADO causeResult { get; set; }
         SickInitADO sickInitADO { get; set; }
         SurgeryAppointmentInitADO surgeryInitADO { get; set; }
+        List<HIS_PATIENT_CLASSIFY> emergencyClassifyData;
         string nameModuleLink { get; set; }
         HIS.Desktop.Utility.UserControlBase userControl { get; set; }
         List<AcsUserADO> lstReAcsUserADO;
@@ -174,7 +175,8 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 UCIcdInit();
                 SetDefaultConfig();
                 ValidateForm();
-                
+
+                LoadComboEmergencyClassifyId2();
                 LoadDataToComboCareer();
                 LoadComboTreatmentEndType();
                 LoadComboTreatmentResult();
@@ -947,6 +949,16 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                 sickInitADO.CurrentHisTreatment.TDL_PATIENT_MOTHER_NAME = sickSdoResult.MotherName;
                 sickInitADO.CurrentHisTreatment.TDL_PATIENT_FATHER_NAME = sickSdoResult.FatherName;
                 sickInitADO.CurrentHisTreatment.TDL_SOCIAL_INSURANCE_NUMBER = sickSdoResult.SocialInsuranceNumber;
+                if (!string.IsNullOrWhiteSpace(sickSdoResult.CccdNumber))
+                {
+                    sickInitADO.CurrentHisTreatment.TDL_PATIENT_CCCD_NUMBER = sickSdoResult.CccdNumber;
+                    sickInitADO.CurrentHisTreatment.TDL_PATIENT_CCCD_DATE = sickSdoResult.CccdDate;
+                }
+                if (!string.IsNullOrWhiteSpace(sickSdoResult.PassportNumber))
+                {
+                    sickInitADO.CurrentHisTreatment.TDL_PATIENT_PASSPORT_NUMBER = sickSdoResult.PassportNumber;
+                    sickInitADO.CurrentHisTreatment.TDL_PATIENT_PASSPORT_DATE = sickSdoResult.PassportDate;
+                }
                 this.dlgSendTreatmentMethod(sickInitADO.CurrentHisTreatment.TREATMENT_METHOD);
             }
             catch (Exception ex)

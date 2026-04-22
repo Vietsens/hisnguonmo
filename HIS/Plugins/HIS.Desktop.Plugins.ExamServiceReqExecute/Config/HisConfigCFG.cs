@@ -122,6 +122,11 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
         internal static string NotUpdateExecuteLoginNameWhenFinishExam;
         private const string KEY_HIS_DESKTOP_PLUGINS_REGISTER_V2_REQUEST_SKIN_CARE = "HIS.Desktop.Plugins.RegisterV2.RequestSkinCare";
         internal static string HisDesktopPluginsRegisterV2RequestSkinCare;
+
+        // PTTK_19083: Bật tính năng phân loại cấp cứu tại phòng cấp cứu
+        private const string KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY = "MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY";
+        internal static bool IsEnableEmergencyClassify;
+
         internal static void LoadConfig()
         {
             try
@@ -163,6 +168,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute.Config
                 AllowManyTreatmentOpeningOption = HIS.Desktop.LocalStorage.HisConfig.HisConfigs.Get<string>(KEY__MOS_TREATMENT_ALLOW_MANY_TREATMENT_OPENING_OPTION);
                 NotUpdateExecuteLoginNameWhenFinishExam = GetValue(KEY_MOS_HIS_SERVICE_REQ_NOT_UPDATE_EXECUTE_LOGINNAME_WHEN_FINISH_EXAM);
                 HisDesktopPluginsRegisterV2RequestSkinCare = GetValue(KEY_HIS_DESKTOP_PLUGINS_REGISTER_V2_REQUEST_SKIN_CARE);
+                IsEnableEmergencyClassify = GetValue(KEY_MOS_HIS_TREATMENT_EMERGENCY_CLASSIFY) == GlobalVariables.CommonStringTrue;
 
             }
             catch (Exception ex)

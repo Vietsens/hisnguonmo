@@ -382,6 +382,12 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .8");
                 this.InitComboKsk();
                 this.InitComboPatientCase();
+
+                // PTTK_19083: Load combo phân loại cấp cứu 1 (chỉ hiện khi phòng cấp cứu + config bật)
+                this.InitComboEmergencyClassify();
+                this.UpdateEmergencyClassifyVisibility();
+                this.LoadEmergencyClassifyValues();
+
                 Inventec.Common.Logging.LogSystem.Debug("ExamServiceReqExecuteControl_Load .9");
 
                 this.LoadEmrCoverConfig();
@@ -2120,6 +2126,10 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     hospitalizeADO.dlgRefeshIcd = DlgIcdSubCode;
                     hospitalizeADO.dlgSendIcd = GetIcdSubCode;
                     hospitalizeADO.Treatment = treatment;
+                    // PTTK_19083: truyền flag phòng cấp cứu + giá trị phân loại lần 2 (nếu edit hồ sơ cũ)
+                    hospitalizeADO.IsEmergencyRoom = this.IsEmergencyClassifyRoom();
+                    Inventec.Common.Logging.LogSystem.Debug("IsEmergencyClassifyRoom: " + hospitalizeADO.IsEmergencyRoom);
+                    hospitalizeADO.EmergencyClassifyId2 = this.treatment != null ? this.treatment.EMERGENCY_CLASSIFY_ID_2 : null;
                     hospitalizeADO.TreatmentId = this.HisServiceReqView.TREATMENT_ID;
                     hospitalizeADO.FinishTime = this.HisServiceReqView.FINISH_TIME;
                     hospitalizeADO.OutTime = this.treatment.OUT_TIME;
@@ -2162,6 +2172,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     hospitalizeADO.dlgOpenFormInformation = ClickOpen;
                     hospitalizeADO.ExecutedServices = this.HisServiceReqView.EXECUTED_SERVICES;
                     hospitalizeADO.SpecialistNote = this.HisServiceReqView.SPECIALIST_NOTE;
+                    hospitalizeADO.Treatment.EMERGENCY_CLASSIFY_ID_2 = treatment != null
+                    ? treatment.EMERGENCY_CLASSIFY_ID_2
+                    : null;
                     hospitalizeProcessor = new HospitalizeProcessor();
                     this.ucHospitalize = (UserControl)hospitalizeProcessor.Run(hospitalizeADO);
                     LoadUCToPanelExecuteExt(this.ucHospitalize, chkHospitalize);
@@ -2457,6 +2470,9 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
                     treatmentFinishProcessor = new ExamTreatmentFinishProcessor();
                     HIS.UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO treatmentFinishInitADO = new UC.ExamTreatmentFinish.ADO.TreatmentFinishInitADO();
+                    // PTTK_19083: truyền flag phòng cấp cứu + giá trị phân loại lần 2 (nếu edit hồ sơ cũ)
+                    treatmentFinishInitADO.IsEmergencyRoom = this.IsEmergencyClassifyRoom();
+                    treatmentFinishInitADO.EmergencyClassifyId2 = this.treatment != null ? this.treatment.EMERGENCY_CLASSIFY_ID_2 : null;
                     HIS_TREATMENT treatmentAdDO = new HIS_TREATMENT();
                     if (txtTreatmentInstruction.Text.Trim() != null)
                     {

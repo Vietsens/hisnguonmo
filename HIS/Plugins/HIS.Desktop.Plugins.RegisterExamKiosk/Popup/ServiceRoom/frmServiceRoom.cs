@@ -66,6 +66,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ServiceRoom
         public bool? IsChroNic;
         public long PrimaryTypeId;
         long patientType;
+        public decimal? HeightValue { get; set; }
+        public decimal? WeightValue { get; set; }
         HisExamRegisterKioskSDO sdoData;
         #endregion
 
@@ -313,6 +315,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.ServiceRoom
                 HisExamRegisterKioskSDO sdo = new HisExamRegisterKioskSDO();
                 sdo.CardSDO = hisCardPatientSdo;
                 ProcessRegisterAddress.SplitAddress(sdo.CardSDO);
+                sdo.Height = this.HeightValue;
+                sdo.Weight = this.WeightValue;
                 if (this.patientType != 0)
                 {
                     sdo.PatientTypeId = this.patientType;

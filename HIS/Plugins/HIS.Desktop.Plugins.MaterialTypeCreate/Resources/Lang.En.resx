@@ -209,6 +209,14 @@
     <value>Stop Sign:</value>
     <comment>Dừng nhập:</comment>
   </data>
+  <data name="frmMaterialTypeCreate.lciIsRequireTimeValidate.Text" xml:space="preserve">
+    <value>BHYT Surgery:</value>
+    <comment>Phẫu thuật BHYT:</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.lciIsRequireTimeValidate.OptionsToolTip.ToolTip" xml:space="preserve">
+    <value>BHYT material used in surgery</value>
+    <comment>Vật tư BHYT dùng trong PT</comment>
+  </data>
   <data name="frmMaterialTypeCreate.lciManufacture.Text" xml:space="preserve">
     <value>Manufacturer:</value>
     <comment>Hãng sản xuất:</comment>
@@ -385,5 +393,9 @@
   <data name="frmMaterialTypeCreate.lciVTDichDanh.Text" xml:space="preserve">
     <value>Specific materials:</value>
     <comment>VT đích danh:</comment>
+  </data>
+  <data name="frmMaterialTypeCreate.chkIsRequireTimeValidate.ToolTip" xml:space="preserve">
+    <value>When enabled, orders containing this material must validate time against parent Surgery order.</value>
+    <comment>Khi bật, y lệnh chứa vật tư này sẽ bắt buộc validate thời gian với y lệnh Phẫu thuật cha.</comment>
   </data>
 </root>

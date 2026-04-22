@@ -48,13 +48,15 @@ namespace HIS.UC.Hospitalize.Run
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCHospitalize));
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
-            this.txtSpecialistNote = new DevExpress.XtraEditors.TextEdit();
+            this.cboEmergencyClassifyId2 = new DevExpress.XtraEditors.GridLookUpEdit();
             this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
             this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
+            this.gridView4 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.txtSpecialistNote = new DevExpress.XtraEditors.TextEdit();
             this.btnInfomationExecute = new DevExpress.XtraEditors.SimpleButton();
             this.txtServiceEx = new DevExpress.XtraEditors.TextEdit();
             this.chkCAPD = new DevExpress.XtraEditors.CheckEdit();
@@ -152,6 +154,7 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControlItem31 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem32 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem33 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem34 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
@@ -159,8 +162,10 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.txtSpecialistNote.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmergencyClassifyId2.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSpecialistNote.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtServiceEx.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCAPD.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintMps178.Properties)).BeginInit();
@@ -259,6 +264,7 @@ namespace HIS.UC.Hospitalize.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).BeginInit();
@@ -278,6 +284,7 @@ namespace HIS.UC.Hospitalize.Run
             // 
             // layoutControl2
             // 
+            this.layoutControl2.Controls.Add(this.cboEmergencyClassifyId2);
             this.layoutControl2.Controls.Add(this.txtSpecialistNote);
             this.layoutControl2.Controls.Add(this.btnInfomationExecute);
             this.layoutControl2.Controls.Add(this.txtServiceEx);
@@ -326,7 +333,7 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControl2.TabIndex = 0;
             this.layoutControl2.Text = "layoutControl2";
             // 
-            // txtSpecialistNote
+            // cboEmergencyClassifyId2
             // 
             this.txtSpecialistNote.Location = new System.Drawing.Point(108, 408);
             this.txtSpecialistNote.Margin = new System.Windows.Forms.Padding(4);
@@ -335,6 +342,16 @@ namespace HIS.UC.Hospitalize.Run
             this.txtSpecialistNote.Size = new System.Drawing.Size(550, 22);
             this.txtSpecialistNote.StyleController = this.layoutControl2;
             this.txtSpecialistNote.TabIndex = 43;
+            this.cboEmergencyClassifyId2.Location = new System.Drawing.Point(127, 412);
+            this.cboEmergencyClassifyId2.MenuManager = this.barManager1;
+            this.cboEmergencyClassifyId2.Name = "cboEmergencyClassifyId2";
+            this.cboEmergencyClassifyId2.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.cboEmergencyClassifyId2.Properties.NullText = "";
+            this.cboEmergencyClassifyId2.Properties.View = this.gridView4;
+            this.cboEmergencyClassifyId2.Size = new System.Drawing.Size(350, 20);
+            this.cboEmergencyClassifyId2.StyleController = this.layoutControl2;
+            this.cboEmergencyClassifyId2.TabIndex = 44;
             // 
             // barManager1
             // 
@@ -387,6 +404,22 @@ namespace HIS.UC.Hospitalize.Run
             this.barDockControlRight.Location = new System.Drawing.Point(667, 31);
             this.barDockControlRight.Margin = new System.Windows.Forms.Padding(4);
             this.barDockControlRight.Size = new System.Drawing.Size(0, 613);
+            // 
+            // gridView4
+            // 
+            this.gridView4.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
+            this.gridView4.Name = "gridView4";
+            this.gridView4.OptionsSelection.EnableAppearanceFocusedCell = false;
+            this.gridView4.OptionsView.ShowGroupPanel = false;
+            // 
+            // txtSpecialistNote
+            // 
+            this.txtSpecialistNote.Location = new System.Drawing.Point(107, 364);
+            this.txtSpecialistNote.MenuManager = this.barManager1;
+            this.txtSpecialistNote.Name = "txtSpecialistNote";
+            this.txtSpecialistNote.Size = new System.Drawing.Size(370, 20);
+            this.txtSpecialistNote.StyleController = this.layoutControl2;
+            this.txtSpecialistNote.TabIndex = 43;
             // 
             // btnInfomationExecute
             // 
@@ -1104,7 +1137,8 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControlItem30,
             this.layoutControlItem31,
             this.layoutControlItem32,
-            this.layoutControlItem33});
+            this.layoutControlItem33,
+            this.layoutControlItem34});
             this.Root.Location = new System.Drawing.Point(0, 0);
             this.Root.Name = "Root";
             this.Root.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -1572,6 +1606,20 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControlItem33.TextSize = new System.Drawing.Size(100, 20);
             this.layoutControlItem33.TextToControlDistance = 5;
             // 
+            // layoutControlItem34
+            // 
+            this.layoutControlItem34.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutControlItem34.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutControlItem34.Control = this.cboEmergencyClassifyId2;
+            this.layoutControlItem34.Location = new System.Drawing.Point(0, 410);
+            this.layoutControlItem34.Name = "layoutControlItem34";
+            this.layoutControlItem34.Size = new System.Drawing.Size(479, 24);
+            this.layoutControlItem34.Text = "Phân loại cấp cứu 2:";
+            this.layoutControlItem34.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutControlItem34.TextSize = new System.Drawing.Size(120, 20);
+            this.layoutControlItem34.TextToControlDistance = 5;
+            this.layoutControlItem34.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+            // 
             // layoutControlGroup1
             // 
             this.layoutControlGroup1.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -1614,8 +1662,10 @@ namespace HIS.UC.Hospitalize.Run
             this.layoutControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.txtSpecialistNote.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cboEmergencyClassifyId2.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.barManager1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.txtSpecialistNote.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.txtServiceEx.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkCAPD.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chkPrintMps178.Properties)).EndInit();
@@ -1714,6 +1764,7 @@ namespace HIS.UC.Hospitalize.Run
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem31)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem32)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem33)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem34)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider1)).EndInit();
@@ -1833,5 +1884,8 @@ namespace HIS.UC.Hospitalize.Run
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem31;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem32;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem33;
+        private DevExpress.XtraEditors.GridLookUpEdit cboEmergencyClassifyId2;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView4;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem34;
     }
 }

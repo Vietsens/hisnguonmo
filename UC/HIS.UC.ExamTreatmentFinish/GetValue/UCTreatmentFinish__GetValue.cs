@@ -223,6 +223,10 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     ExamTreatmentFinishSDO.PregnancyTerminationTime = sick.PregnancyTerminationTime;
                     ExamTreatmentFinishSDO.MotherName = sick.MotherName;
                     ExamTreatmentFinishSDO.FatherName = sick.FatherName;
+                    ExamTreatmentFinishSDO.CccdNumber = sick.CccdNumber;
+                    ExamTreatmentFinishSDO.CccdDate = sick.CccdDate;
+                    ExamTreatmentFinishSDO.PassportNumber = sick.PassportNumber;
+                    ExamTreatmentFinishSDO.PassportDate = sick.PassportDate;
                 }
 
                 ExamTreatmentFinishSDO.TreatmentFinishTime = Inventec.Common.DateTime.Convert.SystemDateTimeToTimeNumber(dtEndTime.DateTime) ?? 0;
@@ -257,6 +261,14 @@ namespace HIS.UC.ExamTreatmentFinish.Run
                     ExamTreatmentFinishSDO.EndDeptSubsHeadLoginname = cboEndDeptSubs.EditValue.ToString();
                     ExamTreatmentFinishSDO.EndDeptSubsHeadUsername = cboEndDeptSubs.Text.ToString();
                 }
+                // PTTK_19083: Phân loại cấp cứu 2 (chỉ lưu khi đang ở phòng cấp cứu) —
+                // đặt sau các khối AutoMapper (CHUYEN/CHET/HEN) để không bị ghi đè về null.
+                if (ExamTreatmentFinishInitADO != null && ExamTreatmentFinishInitADO.IsEmergencyRoom
+                    && cboEmergencyClassifyId2 != null && cboEmergencyClassifyId2.EditValue != null)
+                {
+                    ExamTreatmentFinishSDO.EmergencyClassifyId2 = Inventec.Common.TypeConvert.Parse.ToInt64(cboEmergencyClassifyId2.EditValue.ToString());
+                }
+
                 ExamTreatmentFinish.TreatmentFinishSDO = ExamTreatmentFinishSDO;
                 ExamTreatmentFinish.IsPrintBANT = chkBANT.Checked;
                 ExamTreatmentFinishSDO.CreateOutPatientMediRecord = chkCapSoLuuTruBA.CheckState == CheckState.Checked;

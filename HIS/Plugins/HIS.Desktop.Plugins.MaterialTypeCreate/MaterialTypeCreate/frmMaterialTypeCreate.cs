@@ -678,6 +678,14 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 {
                     chkIsStopImp.CheckState = CheckState.Unchecked;
                 }
+                if (hIS_MEDICINE_TYPE.IS_REQUIRE_TIME_VALIDATE == 1)
+                {
+                    chkIsRequireTimeValidate.CheckState = CheckState.Checked;
+                }
+                else
+                {
+                    chkIsRequireTimeValidate.CheckState = CheckState.Unchecked;
+                }
                 if (hIS_MEDICINE_TYPE.IS_SIZE_REQUIRED == 1)
                 {
                     ChkIsSizeRequired.CheckState = CheckState.Checked;
@@ -1391,6 +1399,10 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     materialType.IS_STOP_IMP = 1;
                 else
                     materialType.IS_STOP_IMP = null;
+                if (chkIsRequireTimeValidate.CheckState == CheckState.Checked)
+                    materialType.IS_REQUIRE_TIME_VALIDATE = 1;
+                else
+                    materialType.IS_REQUIRE_TIME_VALIDATE = null;
                 if (chkIsExprireDate.CheckState == CheckState.Checked)
                     materialType.IS_REQUIRE_HSD = 1;
                 else
@@ -1484,6 +1496,15 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 else
                 {
                     materialType.IS_STOP_IMP = null;
+                }
+
+                if (chkIsRequireTimeValidate.CheckState == CheckState.Checked)
+                {
+                    materialType.IS_REQUIRE_TIME_VALIDATE = 1;
+                }
+                else
+                {
+                    materialType.IS_REQUIRE_TIME_VALIDATE = null;
                 }
 
                 if (chkIsStent.CheckState == CheckState.Checked)
@@ -3006,6 +3027,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 chkIsStent.Checked = false;
                 chkIsRawMaterial.Checked = false;
                 chkIsStopImp.Checked = false;
+                chkIsRequireTimeValidate.Checked = false;
                 chkCPNG.Checked = false;
                 chkIsExprireDate.Checked = false;
                 chkIsAllowOdd.Checked = false;

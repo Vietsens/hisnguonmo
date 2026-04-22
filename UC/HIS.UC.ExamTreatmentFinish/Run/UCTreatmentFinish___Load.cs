@@ -105,6 +105,52 @@ namespace HIS.UC.ExamTreatmentFinish.Run
             }
         }
 
+        private void LoadComboEmergencyClassifyId2()
+        {
+            try
+            {
+                emergencyClassifyData = BackendDataWorker.Get<HIS_PATIENT_CLASSIFY>()
+                    .Where(o => o.IS_ACTIVE == 1
+                             && o.IS_DELETE != 1
+                             && o.IS_EMERGENCY == 1)
+                    .OrderBy(o => o.PATIENT_CLASSIFY_NAME)
+                    .ToList();
+
+                if (emergencyClassifyData == null || emergencyClassifyData.Count == 0)
+                {
+                    CommonParam param = new CommonParam();
+                    HisPatientClassifyFilter filter = new HisPatientClassifyFilter();
+                    filter.IS_ACTIVE = 1;
+                    filter.IS_EMERGENCY = 1;
+
+                    emergencyClassifyData = new BackendAdapter(param)
+                        .Get<List<HIS_PATIENT_CLASSIFY>>("api/HisPatientClassify/Get",
+                            ApiConsumers.MosConsumer, filter, param);
+                }
+
+                List<ColumnInfo> columnInfos = new List<ColumnInfo>();
+                columnInfos.Add(new ColumnInfo("PATIENT_CLASSIFY_CODE", "", 100, 1));
+                columnInfos.Add(new ColumnInfo("PATIENT_CLASSIFY_NAME", "", 250, 2));
+
+                ControlEditorADO controlEditorADO =
+                    new ControlEditorADO("PATIENT_CLASSIFY_NAME", "ID", columnInfos, false, 350);
+
+                ControlEditorLoader.Load(cboEmergencyClassifyId2, emergencyClassifyData, controlEditorADO);
+
+                cboEmergencyClassifyId2.EditValue = ExamTreatmentFinishInitADO.EmergencyClassifyId2;
+                Inventec.Common.Logging.LogSystem.Debug("LoadComboEmergencyClassifyId2 - IsEmergencyRoom: " + ExamTreatmentFinishInitADO.IsEmergencyRoom);
+                // PTTK_19083: ẩn combo khi không phải phòng cấp cứu
+                var vis = ExamTreatmentFinishInitADO.IsEmergencyRoom
+                    ? DevExpress.XtraLayout.Utils.LayoutVisibility.Always
+                    : DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                this.layoutControlItem37.Visibility = vis;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         internal void UpdateProgramData(List<HIS_PATIENT_PROGRAM> patientPrograms, List<V_HIS_DATA_STORE> dataStores)
         {
             try

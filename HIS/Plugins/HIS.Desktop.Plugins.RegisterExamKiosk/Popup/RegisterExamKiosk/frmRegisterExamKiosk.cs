@@ -146,6 +146,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             try
             {
                 Inventec.Common.Logging.LogSystem.Debug("hisCardPatientSdo__1_" + Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => hisCardPatientSdo), hisCardPatientSdo));
+                this.txtPhone.KeyPress += txtPhone_KeyPress;
                 LoadPatientype();
                 LoadDataGridLookUpEdit(cboCareer, "CAREER_CODE", "Mã", "CAREER_NAME", "Tên", "ID", BackendDataWorker.Get<HIS_CAREER>().Where(o => o.IS_ACTIVE == 1).ToList());
                 LoadDataGridLookUpEdit(cboNational, "NATIONAL_CODE", "Mã", "NATIONAL_NAME", "Tên", "NATIONAL_NAME", BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == 1).ToList());
@@ -633,6 +634,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                     lblCodeCardBhyt.Text = data.HeinCardNumber;
                     lblPlaceRegister.Text = data.HeinOrgName;
                     lblBorn.Text = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.Dob.ToString());
+                    txtPhone.Text = string.IsNullOrWhiteSpace(data.Phone) ? "" : data.Phone.Trim();
                     if (this.patientForKioskSDO != null && this.patientForKioskSDO.Balance != null)
                     {
                         layoutControlItem35.Visibility = layoutControlItem36.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
@@ -776,6 +778,14 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                     DevExpress.XtraEditors.XtraMessageBox.Show("Bạn chưa nhập " + (cboCareer.EditValue == null ? "nghề nghiệp" : "quốc tịch"));
                     return;
                 }
+                string phoneInput = txtPhone.Text == null ? "" : txtPhone.Text.Trim();
+                if (!string.IsNullOrEmpty(phoneInput) && (phoneInput.Length < 10 || phoneInput.Length > 11))
+                {
+                    DevExpress.XtraEditors.XtraMessageBox.Show("Số điện thoại không hợp lệ, vui lòng nhập lại", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtPhone.Focus();
+                    return;
+                }
+                hisCardPatientSdo.Phone = string.IsNullOrEmpty(phoneInput) ? null : phoneInput;
                 hisCardPatientSdo.CareerId = Int64.Parse(cboCareer.EditValue.ToString());
                 hisCardPatientSdo.NationalName = cboNational.EditValue.ToString();
                 var nal = BackendDataWorker.Get<SDA_NATIONAL>().Where(o => o.IS_ACTIVE == IMSys.DbConfig.SDA_RS.COMMON.IS_ACTIVE__TRUE).ToList().FirstOrDefault(o => o.NATIONAL_NAME == cboNational.EditValue.ToString());
@@ -812,6 +822,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                     frmServiceRoom = new frmServiceRoom((V_HIS_EXECUTE_ROOM_1)e.Item.Tag, hisCardPatientSdo, requestRoomId, null, vlistService, this.currentModule, this.PatientTypeId, sdoData);
                     frmServiceRoom.IsPriority = ChkPriority.Checked;
                     frmServiceRoom.IsChroNic = chkChronic.Checked;
+                    frmServiceRoom.HeightValue = GetNullableDecimal(txtHeight.Text);
+                    frmServiceRoom.WeightValue = GetNullableDecimal(txtWeight.Text);
                     if (radioGroup1.SelectedIndex != -1)
                     {
                         frmServiceRoom.PrimaryTypeId = GetSelectedOpionGroup();
@@ -847,6 +859,21 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
             }
         }
 
+        private void txtPhone_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+                {
+                    e.Handled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void SetDefaultControl()
         {
             try
@@ -858,6 +885,9 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 lblAddress.Text = "";
                 lblPlaceRegister.Text = "";
                 lblBorn.Text = "";
+                txtPhone.Text = "";
+                txtHeight.Text = "";
+                txtWeight.Text = "";
                 SetDefaultRecieveLater();
                 ChkPriority.Checked = false;
             }
@@ -939,6 +969,29 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+        private decimal? GetNullableDecimal(string input)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(input))
+                    return null;
+
+                decimal value;
+                input = input.Trim().Replace(',', '.');
+
+                if (decimal.TryParse(input, System.Globalization.NumberStyles.Any,
+                    System.Globalization.CultureInfo.InvariantCulture, out value))
+                {
+                    return value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+
+            return null;
+        }
 
         private void btnRegister_Click(object sender, EventArgs e, V_HIS_SERVICE vhisService, V_HIS_EXECUTE_ROOM_1 executeRoom)
         {
@@ -953,6 +1006,8 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                 HisExamRegisterKioskSDO sdo = new HisExamRegisterKioskSDO();
                 sdo.CardSDO = hisCardPatientSdo;
                 ProcessRegisterAddress.SplitAddress(sdo.CardSDO);
+                sdo.Height = GetNullableDecimal(txtHeight.Text);
+                sdo.Weight = GetNullableDecimal(txtWeight.Text);
                 Inventec.Common.Logging.LogSystem.Debug("btnRegister_Click 1 là : " + this.PatientTypeId);
                 WaitingManager.Show();
                 sdo.PatientTypeId = this.PatientTypeId;
@@ -1117,7 +1172,7 @@ namespace HIS.Desktop.Plugins.RegisterExamKiosk.Popup.RegisterExamKiosk
                     UpdatePatient(sdo.CardSDO, examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient);
                     hisCardPatientSdo.PatientId = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.ID;
                     hisCardPatientSdo.PatientCode = examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient.PATIENT_CODE;
-                    success = true;
+                    success = true; 
                     onClickPrint();
 
                     if (!ProcessRegisterAddress.CheckAddress(examServiceReqRegisterResultSDO.HisPatientProfile.HisPatient))

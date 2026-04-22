@@ -48,6 +48,7 @@ namespace HIS.UC.Hospitalize.Run
         int positionHandleControl = -1;
         List<V_HIS_DEPARTMENT_1> listDepartment { get; set; }
         List<HIS_TREATMENT_TYPE> listTreatmentType { get; set; }
+        //List<HIS_PATIENT_CLASSIFY> emergencyClassifyData;
         HospitalizeInitADO hospitalizeInitADO { get; set; }
         List<V_HIS_BED_ROOM> listBedRoom { get; set; }
         CheckEdit_CheckChange CheckSign_CheckChange = null;
@@ -142,6 +143,7 @@ namespace HIS.UC.Hospitalize.Run
                 LoadDataToComboCareer();
                 LoadDataToDepartmentComboExecute();
                 LoadDataToComboTreatmentType();
+                LoadDataToComboEmergencyClassify();
                 TimerSDO timeSync = new BackendAdapter(new CommonParam()).Get<TimerSDO>(AcsRequestUriStore.ACS_TIMER__SYNC, ApiConsumers.AcsConsumer, 1, new CommonParam());
                 if (HisConfig.IsUsingServerTime)
                 {
@@ -245,6 +247,7 @@ namespace HIS.UC.Hospitalize.Run
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
+
 
         private void LoadHospitalReason()
         {
