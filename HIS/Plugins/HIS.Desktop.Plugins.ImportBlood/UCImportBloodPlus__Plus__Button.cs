@@ -1132,6 +1132,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 btnSave.Enabled = true;
                 RemoveControlDxError1();
                 RemoveControlDxError2();
+                RefreshTotalLabels();
             }
             catch (Exception ex)
             {

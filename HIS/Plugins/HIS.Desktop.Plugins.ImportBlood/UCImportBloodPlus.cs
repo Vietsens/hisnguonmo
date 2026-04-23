@@ -1117,6 +1117,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                     gridControlImpMestBlood.DataSource = null;
                 }
                 gridControlImpMestBlood.EndUpdate();
+                RefreshTotalLabels();
             }
             catch (Exception ex)
             {
@@ -1445,6 +1446,11 @@ namespace HIS.Desktop.Plugins.ImportBlood
                 //Repository Button
                 this.repositoryItemBtnDelete.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__REPOSITORY__BTN_DELETE_BLOOD", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
                 this.repositoryItemBtnEdit.Buttons[0].ToolTip = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__REPOSITORY__BTN_EDIT_BLOOD", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+
+                //Total labels
+                this.layoutTotalPrice.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_PRICE", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                this.layoutTotalPriceSale.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_PRICE_SALE", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                this.layoutTotalVatPrice.Text = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_VAT_PRICE", Base.ResourceLangManager.LanguageUCImportBlood, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
             }
             catch (Exception ex)
             {

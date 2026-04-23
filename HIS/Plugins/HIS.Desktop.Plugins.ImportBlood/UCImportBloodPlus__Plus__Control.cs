@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
 using HIS.Desktop.ApiConsumer;
 using HIS.Desktop.LocalStorage.BackendData;
 using HIS.Desktop.Utility;
@@ -1043,9 +1044,11 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (spinDiscountRatio.EditValue != null && spinDiscountRatio.EditValue != spinDiscountRatio.OldEditValue)
                 {
-                    var totalPrice = dicBloodAdo.Sum(s => s.Value.IMP_PRICE);
+                    decimal totalPrice = CalcTotalPriceWithVat();
                     spinDiscountPrice.Value = totalPrice * (spinDiscountRatio.Value / 100);
                 }
+                ValidateDiscountPrice();
+                RefreshTotalLabels();
             }
             catch (Exception ex)
             {
@@ -1075,16 +1078,94 @@ namespace HIS.Desktop.Plugins.ImportBlood
             {
                 if (spinDiscountPrice.EditValue != null && spinDiscountPrice.EditValue != spinDiscountPrice.OldEditValue)
                 {
-                    var totalPrice = dicBloodAdo.Sum(s => s.Value.IMP_PRICE);
+                    decimal totalPrice = CalcTotalPriceWithVat();
                     if (totalPrice > 0)
                     {
                         spinDiscountRatio.Value = (spinDiscountPrice.Value / totalPrice) * 100;
                     }
                 }
+                ValidateDiscountPrice();
+                RefreshTotalLabels();
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private decimal CalcTotalPriceWithVat()
+        {
+            decimal total = 0;
+            try
+            {
+                if (dicBloodAdo != null && dicBloodAdo.Count > 0)
+                {
+                    foreach (var item in dicBloodAdo.Values)
+                    {
+                        total += item.IMP_PRICE + (item.IMP_PRICE * item.IMP_VAT_RATIO);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return total;
+        }
+
+        private void ValidateDiscountPrice()
+        {
+            try
+            {
+                if (spinDiscountPrice == null) return;
+                decimal totalPrice = CalcTotalPriceWithVat();
+                decimal discountPrice = spinDiscountPrice.EditValue != null ? spinDiscountPrice.Value : 0;
+                if (discountPrice > totalPrice)
+                {
+                    dxErrorProvider.SetError(spinDiscountPrice, Base.ResourceMessageLang.ChietKhauKhongDuocLonHonTongTien, ErrorType.Warning);
+                }
+                else
+                {
+                    dxErrorProvider.SetError(spinDiscountPrice, null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        internal void RefreshTotalLabels()
+        {
+            try
+            {
+                decimal subTotal = 0;
+                decimal totalVatPrice = 0;
+                if (dicBloodAdo != null && dicBloodAdo.Count > 0)
+                {
+                    foreach (var item in dicBloodAdo.Values)
+                    {
+                        subTotal += item.IMP_PRICE;
+                        totalVatPrice += item.IMP_PRICE * item.IMP_VAT_RATIO;
+                    }
+                }
+
+                decimal totalPrice = subTotal + totalVatPrice;
+
+                decimal discountPrice = 0;
+                if (spinDiscountPrice != null && spinDiscountPrice.EditValue != null)
+                {
+                    discountPrice = spinDiscountPrice.Value;
+                }
+                decimal totalPaySale = totalPrice > discountPrice ? (totalPrice - discountPrice) : 0;
+
+                if (lblTotalPrice != null) lblTotalPrice.Text = totalPrice.ToString("#,##0");
+                if (lblTotalPriceSale != null) lblTotalPriceSale.Text = totalPaySale.ToString("#,##0");
+                if (lblTotalVatPrice != null) lblTotalVatPrice.Text = totalVatPrice.ToString("#,##0");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

@@ -45,19 +45,20 @@ namespace HIS.Desktop.Plugins.ImportBlood
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UCImportBloodPlus));
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject13 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject14 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject15 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject16 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject3 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject4 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject5 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject6 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject7 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject8 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject9 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject10 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject11 = new DevExpress.Utils.SerializableAppearanceObject();
-            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject12 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject17 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject18 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject19 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject20 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.btnHoiDongKiemNhap = new DevExpress.XtraEditors.SimpleButton();
             this.cboPrint = new DevExpress.XtraEditors.DropDownButton();
@@ -233,6 +234,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.txtDescription = new DevExpress.XtraEditors.TextEdit();
             this.spinDiscountPrice = new DevExpress.XtraEditors.SpinEdit();
             this.spinDiscountRatio = new DevExpress.XtraEditors.SpinEdit();
+            this.lblTotalPrice = new DevExpress.XtraEditors.LabelControl();
+            this.lblTotalPriceSale = new DevExpress.XtraEditors.LabelControl();
+            this.lblTotalVatPrice = new DevExpress.XtraEditors.LabelControl();
             this.txtDeliever = new DevExpress.XtraEditors.TextEdit();
             this.panelControlDocumentDate = new DevExpress.XtraEditors.PanelControl();
             this.txtDocumentDate = new DevExpress.XtraEditors.ButtonEdit();
@@ -324,15 +328,19 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutImpSource = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutDiscountPrice = new DevExpress.XtraLayout.LayoutControlItem();
             this.emptySpaceItem10 = new DevExpress.XtraLayout.EmptySpaceItem();
+            this.layoutTotalPrice = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutTotalPriceSale = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutTotalVatPrice = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem16 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem19 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutButtonRole = new DevExpress.XtraLayout.LayoutControlItem();
-            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
-            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
-            this.dxValidationProvider3 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
+            this.dxValidationProvider1 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxValidationProvider2 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
+            this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.dxValidationProvider3 = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider(this.components);
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.emptySpaceItem2 = new DevExpress.XtraLayout.EmptySpaceItem();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl1)).BeginInit();
             this.layoutControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlBloodGiverFORM)).BeginInit();
@@ -574,6 +582,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutImpSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDiscountPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutTotalPrice)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutTotalPriceSale)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutTotalVatPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).BeginInit();
@@ -582,6 +593,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutControl1
@@ -600,6 +612,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControl1.Controls.Add(this.txtDescription);
             this.layoutControl1.Controls.Add(this.spinDiscountPrice);
             this.layoutControl1.Controls.Add(this.spinDiscountRatio);
+            this.layoutControl1.Controls.Add(this.lblTotalPrice);
+            this.layoutControl1.Controls.Add(this.lblTotalPriceSale);
+            this.layoutControl1.Controls.Add(this.lblTotalVatPrice);
             this.layoutControl1.Controls.Add(this.txtDeliever);
             this.layoutControl1.Controls.Add(this.panelControlDocumentDate);
             this.layoutControl1.Controls.Add(this.txtDocumentNumber);
@@ -747,7 +762,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlBloodGiverFORM.Name = "layoutControlBloodGiverFORM";
             this.layoutControlBloodGiverFORM.OptionsCustomizationForm.DesignTimeCustomizationFormPositionAndSize = new System.Drawing.Rectangle(688, 156, 250, 350);
             this.layoutControlBloodGiverFORM.Root = this.lcgBloodGiverFORM;
-            this.layoutControlBloodGiverFORM.Size = new System.Drawing.Size(1070, 510);
+            this.layoutControlBloodGiverFORM.Size = new System.Drawing.Size(1070, 524);
             this.layoutControlBloodGiverFORM.TabIndex = 111;
             this.layoutControlBloodGiverFORM.Text = "layoutControl2";
             // 
@@ -792,10 +807,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
             // 
             this.buttonEdit1.Location = new System.Drawing.Point(2, 484);
             this.buttonEdit1.Name = "buttonEdit1";
-            serializableAppearanceObject1.Options.UseTextOptions = true;
-            serializableAppearanceObject1.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
+            serializableAppearanceObject13.Options.UseTextOptions = true;
+            serializableAppearanceObject13.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Center;
             this.buttonEdit1.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Xóa", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xóa hồ sơ hiến máu", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Xóa", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject13, serializableAppearanceObject14, serializableAppearanceObject15, serializableAppearanceObject16, "Xóa hồ sơ hiến máu", null, null, true)});
             this.buttonEdit1.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.buttonEdit1.Size = new System.Drawing.Size(51, 20);
             this.buttonEdit1.StyleController = this.layoutControlBloodGiverFORM;
@@ -1836,7 +1851,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.lcgBloodGiverFORM.Location = new System.Drawing.Point(0, 0);
             this.lcgBloodGiverFORM.Name = "Root";
             this.lcgBloodGiverFORM.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgBloodGiverFORM.Size = new System.Drawing.Size(1070, 510);
+            this.lcgBloodGiverFORM.Size = new System.Drawing.Size(1070, 524);
             this.lcgBloodGiverFORM.TextVisible = false;
             // 
             // layoutControlItem6
@@ -2450,7 +2465,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem64.MaxSize = new System.Drawing.Size(120, 26);
             this.layoutControlItem64.MinSize = new System.Drawing.Size(50, 26);
             this.layoutControlItem64.Name = "layoutControlItem64";
-            this.layoutControlItem64.Size = new System.Drawing.Size(103, 28);
+            this.layoutControlItem64.Size = new System.Drawing.Size(103, 42);
             this.layoutControlItem64.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem64.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem64.TextVisible = false;
@@ -2462,7 +2477,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem65.MaxSize = new System.Drawing.Size(120, 26);
             this.layoutControlItem65.MinSize = new System.Drawing.Size(50, 26);
             this.layoutControlItem65.Name = "layoutControlItem65";
-            this.layoutControlItem65.Size = new System.Drawing.Size(109, 28);
+            this.layoutControlItem65.Size = new System.Drawing.Size(109, 42);
             this.layoutControlItem65.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem65.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem65.TextVisible = false;
@@ -2472,7 +2487,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem66.Control = this.btnAdd_BloodGiver;
             this.layoutControlItem66.Location = new System.Drawing.Point(745, 482);
             this.layoutControlItem66.Name = "layoutControlItem66";
-            this.layoutControlItem66.Size = new System.Drawing.Size(113, 28);
+            this.layoutControlItem66.Size = new System.Drawing.Size(113, 42);
             this.layoutControlItem66.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem66.TextVisible = false;
             // 
@@ -2483,7 +2498,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem67.MaxSize = new System.Drawing.Size(120, 26);
             this.layoutControlItem67.MinSize = new System.Drawing.Size(50, 26);
             this.layoutControlItem67.Name = "layoutControlItem67";
-            this.layoutControlItem67.Size = new System.Drawing.Size(109, 28);
+            this.layoutControlItem67.Size = new System.Drawing.Size(109, 42);
             this.layoutControlItem67.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem67.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem67.TextVisible = false;
@@ -2495,7 +2510,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem68.MaxSize = new System.Drawing.Size(120, 26);
             this.layoutControlItem68.MinSize = new System.Drawing.Size(80, 26);
             this.layoutControlItem68.Name = "layoutControlItem68";
-            this.layoutControlItem68.Size = new System.Drawing.Size(115, 28);
+            this.layoutControlItem68.Size = new System.Drawing.Size(115, 42);
             this.layoutControlItem68.SizeConstraintsType = DevExpress.XtraLayout.SizeConstraintsType.Custom;
             this.layoutControlItem68.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem68.TextVisible = false;
@@ -2505,7 +2520,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.emptySpaceItem3.AllowHotTrack = false;
             this.emptySpaceItem3.Location = new System.Drawing.Point(55, 482);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(466, 28);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(466, 42);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem46
@@ -2549,7 +2564,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem22.Control = this.buttonEdit1;
             this.layoutControlItem22.Location = new System.Drawing.Point(0, 482);
             this.layoutControlItem22.Name = "layoutControlItem22";
-            this.layoutControlItem22.Size = new System.Drawing.Size(55, 28);
+            this.layoutControlItem22.Size = new System.Drawing.Size(55, 42);
             this.layoutControlItem22.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem22.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem22.TextToControlDistance = 0;
@@ -2875,6 +2890,42 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.spinDiscountRatio.EditValueChanged += new System.EventHandler(this.spinDiscountRatio_EditValueChanged);
             this.spinDiscountRatio.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.spinDiscountRatio_PreviewKeyDown);
             // 
+            // lblTotalPrice
+            // 
+            this.lblTotalPrice.Appearance.ForeColor = System.Drawing.Color.Maroon;
+            this.lblTotalPrice.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lblTotalPrice.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblTotalPrice.Location = new System.Drawing.Point(1197, 852);
+            this.lblTotalPrice.Name = "lblTotalPrice";
+            this.lblTotalPrice.Size = new System.Drawing.Size(121, 20);
+            this.lblTotalPrice.StyleController = this.layoutControl1;
+            this.lblTotalPrice.TabIndex = 200;
+            this.lblTotalPrice.Text = "0";
+            // 
+            // lblTotalPriceSale
+            // 
+            this.lblTotalPriceSale.Appearance.ForeColor = System.Drawing.Color.Maroon;
+            this.lblTotalPriceSale.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lblTotalPriceSale.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblTotalPriceSale.Location = new System.Drawing.Point(1437, 852);
+            this.lblTotalPriceSale.Name = "lblTotalPriceSale";
+            this.lblTotalPriceSale.Size = new System.Drawing.Size(121, 20);
+            this.lblTotalPriceSale.StyleController = this.layoutControl1;
+            this.lblTotalPriceSale.TabIndex = 201;
+            this.lblTotalPriceSale.Text = "0";
+            // 
+            // lblTotalVatPrice
+            // 
+            this.lblTotalVatPrice.Appearance.ForeColor = System.Drawing.Color.Maroon;
+            this.lblTotalVatPrice.Appearance.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.lblTotalVatPrice.AutoSizeMode = DevExpress.XtraEditors.LabelAutoSizeMode.None;
+            this.lblTotalVatPrice.Location = new System.Drawing.Point(1667, 852);
+            this.lblTotalVatPrice.Name = "lblTotalVatPrice";
+            this.lblTotalVatPrice.Size = new System.Drawing.Size(115, 20);
+            this.lblTotalVatPrice.StyleController = this.layoutControl1;
+            this.lblTotalVatPrice.TabIndex = 202;
+            this.lblTotalVatPrice.Text = "0";
+            // 
             // txtDeliever
             // 
             this.txtDeliever.Location = new System.Drawing.Point(1177, 98);
@@ -3023,7 +3074,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.repositoryItemSpinImpVatRatio,
             this.repositoryItemBtnDelete,
             this.repositoryItemBtnEdit});
-            this.gridControlImpMestBlood.Size = new System.Drawing.Size(840, 754);
+            this.gridControlImpMestBlood.Size = new System.Drawing.Size(840, 730);
             this.gridControlImpMestBlood.TabIndex = 14;
             this.gridControlImpMestBlood.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridViewImpMestBlood});
@@ -3097,7 +3148,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             // 
             this.repositoryItemBtnDelete.AutoHeight = false;
             this.repositoryItemBtnDelete.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject5, serializableAppearanceObject6, serializableAppearanceObject7, serializableAppearanceObject8, "Xóa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnDelete.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject1, serializableAppearanceObject2, serializableAppearanceObject3, serializableAppearanceObject4, "Xóa", null, null, true)});
             this.repositoryItemBtnDelete.Name = "repositoryItemBtnDelete";
             this.repositoryItemBtnDelete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnDelete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnDelete_ButtonClick);
@@ -3118,7 +3169,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             // 
             this.repositoryItemBtnEdit.AutoHeight = false;
             this.repositoryItemBtnEdit.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
-            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject9, serializableAppearanceObject10, serializableAppearanceObject11, serializableAppearanceObject12, "Sửa", null, null, true)});
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, ((System.Drawing.Image)(resources.GetObject("repositoryItemBtnEdit.Buttons"))), new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject17, serializableAppearanceObject18, serializableAppearanceObject19, serializableAppearanceObject20, "Sửa", null, null, true)});
             this.repositoryItemBtnEdit.Name = "repositoryItemBtnEdit";
             this.repositoryItemBtnEdit.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.repositoryItemBtnEdit.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.repositoryItemBtnEdit_ButtonClick);
@@ -3571,10 +3622,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
             // 
             // panelControlBloodType
             // 
-            this.panelControlBloodType.Location = new System.Drawing.Point(0, 538);
+            this.panelControlBloodType.Location = new System.Drawing.Point(0, 552);
             this.panelControlBloodType.MinimumSize = new System.Drawing.Size(0, 150);
             this.panelControlBloodType.Name = "panelControlBloodType";
-            this.panelControlBloodType.Size = new System.Drawing.Size(1080, 240);
+            this.panelControlBloodType.Size = new System.Drawing.Size(1080, 226);
             this.panelControlBloodType.TabIndex = 4;
             // 
             // txtBloodAboCode
@@ -3626,10 +3677,14 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutImpSource,
             this.layoutDiscountPrice,
             this.emptySpaceItem10,
+            this.layoutTotalPrice,
+            this.layoutTotalPriceSale,
+            this.layoutTotalVatPrice,
             this.layoutControlItem1,
             this.layoutControlItem16,
             this.layoutControlItem19,
-            this.layoutButtonRole});
+            this.layoutButtonRole,
+            this.emptySpaceItem2});
             this.layoutControlGroupAllControl.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroupAllControl.Name = "Root";
             this.layoutControlGroupAllControl.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
@@ -3658,10 +3713,10 @@ namespace HIS.Desktop.Plugins.ImportBlood
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.panelControlBloodType;
-            this.layoutControlItem3.Location = new System.Drawing.Point(0, 538);
+            this.layoutControlItem3.Location = new System.Drawing.Point(0, 552);
             this.layoutControlItem3.Name = "layoutControlItem3";
             this.layoutControlItem3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem3.Size = new System.Drawing.Size(1080, 240);
+            this.layoutControlItem3.Size = new System.Drawing.Size(1080, 226);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
@@ -3843,7 +3898,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem2.Location = new System.Drawing.Point(1080, 120);
             this.layoutControlItem2.Name = "layoutControlItem2";
             this.layoutControlItem2.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlItem2.Size = new System.Drawing.Size(840, 754);
+            this.layoutControlItem2.Size = new System.Drawing.Size(840, 730);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
@@ -4013,7 +4068,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.lcgBloodGiver.Location = new System.Drawing.Point(0, 0);
             this.lcgBloodGiver.Name = "lcgBloodGiver";
             this.lcgBloodGiver.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.lcgBloodGiver.Size = new System.Drawing.Size(1080, 538);
+            this.lcgBloodGiver.Size = new System.Drawing.Size(1080, 552);
             this.lcgBloodGiver.Text = " ";
             // 
             // layoutControlItem5
@@ -4021,7 +4076,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.layoutControlItem5.Control = this.layoutControlBloodGiverFORM;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(1074, 514);
+            this.layoutControlItem5.Size = new System.Drawing.Size(1074, 528);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -4088,6 +4143,57 @@ namespace HIS.Desktop.Plugins.ImportBlood
             this.emptySpaceItem10.TextSize = new System.Drawing.Size(50, 20);
             this.emptySpaceItem10.TextVisible = true;
             // 
+            // layoutTotalPrice
+            // 
+            this.layoutTotalPrice.AppearanceItemCaption.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.layoutTotalPrice.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.layoutTotalPrice.AppearanceItemCaption.Options.UseFont = true;
+            this.layoutTotalPrice.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutTotalPrice.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutTotalPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutTotalPrice.Control = this.lblTotalPrice;
+            this.layoutTotalPrice.Location = new System.Drawing.Point(1080, 850);
+            this.layoutTotalPrice.Name = "layoutTotalPrice";
+            this.layoutTotalPrice.Size = new System.Drawing.Size(240, 24);
+            this.layoutTotalPrice.Text = "Tổng tiền:";
+            this.layoutTotalPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutTotalPrice.TextSize = new System.Drawing.Size(110, 20);
+            this.layoutTotalPrice.TextToControlDistance = 5;
+            // 
+            // layoutTotalPriceSale
+            // 
+            this.layoutTotalPriceSale.AppearanceItemCaption.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.layoutTotalPriceSale.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.layoutTotalPriceSale.AppearanceItemCaption.Options.UseFont = true;
+            this.layoutTotalPriceSale.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutTotalPriceSale.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutTotalPriceSale.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutTotalPriceSale.Control = this.lblTotalPriceSale;
+            this.layoutTotalPriceSale.Location = new System.Drawing.Point(1320, 850);
+            this.layoutTotalPriceSale.Name = "layoutTotalPriceSale";
+            this.layoutTotalPriceSale.Size = new System.Drawing.Size(240, 24);
+            this.layoutTotalPriceSale.Text = "Thanh toán:";
+            this.layoutTotalPriceSale.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutTotalPriceSale.TextSize = new System.Drawing.Size(110, 20);
+            this.layoutTotalPriceSale.TextToControlDistance = 5;
+            // 
+            // layoutTotalVatPrice
+            // 
+            this.layoutTotalVatPrice.AppearanceItemCaption.FontStyleDelta = System.Drawing.FontStyle.Bold;
+            this.layoutTotalVatPrice.AppearanceItemCaption.ForeColor = System.Drawing.Color.Black;
+            this.layoutTotalVatPrice.AppearanceItemCaption.Options.UseFont = true;
+            this.layoutTotalVatPrice.AppearanceItemCaption.Options.UseForeColor = true;
+            this.layoutTotalVatPrice.AppearanceItemCaption.Options.UseTextOptions = true;
+            this.layoutTotalVatPrice.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
+            this.layoutTotalVatPrice.Control = this.lblTotalVatPrice;
+            this.layoutTotalVatPrice.Location = new System.Drawing.Point(1560, 850);
+            this.layoutTotalVatPrice.Name = "layoutTotalVatPrice";
+            this.layoutTotalVatPrice.Size = new System.Drawing.Size(224, 24);
+            this.layoutTotalVatPrice.Text = "Tiền thuế:";
+            this.layoutTotalVatPrice.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
+            this.layoutTotalVatPrice.TextSize = new System.Drawing.Size(100, 20);
+            this.layoutTotalVatPrice.TextToControlDistance = 5;
+            // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.btnExportExcel;
@@ -4140,6 +4246,14 @@ namespace HIS.Desktop.Plugins.ImportBlood
             // 
             this.dxValidationProvider3.ValidateHiddenControls = false;
             this.dxValidationProvider3.ValidationFailed += new DevExpress.XtraEditors.DXErrorProvider.ValidationFailedEventHandler(this.dxValidationProvider3_ValidationFailed);
+            // 
+            // emptySpaceItem2
+            // 
+            this.emptySpaceItem2.AllowHotTrack = false;
+            this.emptySpaceItem2.Location = new System.Drawing.Point(1784, 850);
+            this.emptySpaceItem2.Name = "emptySpaceItem2";
+            this.emptySpaceItem2.Size = new System.Drawing.Size(136, 24);
+            this.emptySpaceItem2.TextSize = new System.Drawing.Size(0, 0);
             // 
             // UCImportBloodPlus
             // 
@@ -4390,6 +4504,9 @@ namespace HIS.Desktop.Plugins.ImportBlood
             ((System.ComponentModel.ISupportInitialize)(this.layoutImpSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutDiscountPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutTotalPrice)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutTotalPriceSale)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutTotalVatPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem16)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem19)).EndInit();
@@ -4398,6 +4515,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dxValidationProvider3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.emptySpaceItem2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -4679,5 +4797,12 @@ namespace HIS.Desktop.Plugins.ImportBlood
         private DevExpress.XtraLayout.LayoutControlItem layoutButtonRole;
         private DevExpress.XtraEditors.ToggleSwitch Switch_THX;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem26;
+        private DevExpress.XtraEditors.LabelControl lblTotalPrice;
+        private DevExpress.XtraEditors.LabelControl lblTotalPriceSale;
+        private DevExpress.XtraEditors.LabelControl lblTotalVatPrice;
+        private DevExpress.XtraLayout.LayoutControlItem layoutTotalPrice;
+        private DevExpress.XtraLayout.LayoutControlItem layoutTotalPriceSale;
+        private DevExpress.XtraLayout.LayoutControlItem layoutTotalVatPrice;
+        private DevExpress.XtraLayout.EmptySpaceItem emptySpaceItem2;
     }
 }

@@ -27,6 +27,22 @@ namespace HIS.Desktop.Plugins.ImportBlood.Base
     {
         static System.Resources.ResourceManager languageMessage = new System.Resources.ResourceManager("HIS.Desktop.Plugins.ImportBlood.Resources.Message.Lang", System.Reflection.Assembly.GetExecutingAssembly());
 
+        internal static string ChietKhauKhongDuocLonHonTongTien
+        {
+            get
+            {
+                try
+                {
+                    return Inventec.Common.Resource.Get.Value("Plugins_ImportBlood__ChietKhauKhongDuocLonHonTongTien", languageMessage, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                }
+                catch (Exception ex)
+                {
+                    Inventec.Common.Logging.LogSystem.Warn(ex);
+                }
+                return "";
+            }
+        }
+
         internal static string TruongDuLieuBatBuoc
         {
             get

@@ -54,6 +54,7 @@ namespace HIS.Desktop.Plugins.ImportBlood
                         data.IMP_VAT_RATIO = data.ImpVatRatio / 100;
                     }
                     gridControlImpMestBlood.RefreshDataSource();
+                    RefreshTotalLabels();
                 }
             }
             catch (Exception ex)
