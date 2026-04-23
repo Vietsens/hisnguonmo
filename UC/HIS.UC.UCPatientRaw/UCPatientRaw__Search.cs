@@ -1209,6 +1209,7 @@ namespace HIS.UC.UCPatientRaw
                 else
                 {
                     this.currentPatientSDO = null;
+                    this.lstSend = null;
                     this.dlgSendPatientSdo(currentPatientSDO);
                     bool isGKS = MOS.LibraryHein.Bhyt.BhytPatientTypeData.IsChild(this.dtPatientDob.DateTime);
                     if (this.isGKS == true || this.isGKS == true && this.isTemp_QN == true)
