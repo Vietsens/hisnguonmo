@@ -3706,7 +3706,7 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
                 {
                     case GlobalVariables.ActionAdd:
                         // qtcode
-                        this.isAdding = true; 
+                        this.isAdding = true;
                         // Mặc định check bảo lãnh khi thêm thuốc/vật tư
                         //if (currentMedicineTypeADOForEdit != null)
                         //{
@@ -11079,8 +11079,8 @@ o.SERVICE_ID == medi.SERVICE_ID && o.TDL_INTRUCTION_TIME.ToString().Substring(0,
             try
             {
                 return this.currentTreatment != null
-                    && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE)
-                    && this.currentTreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
+                    && !string.IsNullOrEmpty(this.currentTreatment.GUARANTEE_CODE);
+                    //&& this.currentTreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
             }
             catch
             {

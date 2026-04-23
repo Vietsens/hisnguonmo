@@ -4902,8 +4902,8 @@ namespace HIS.Desktop.Plugins.AssignPrescriptionCLS.AssignPrescription
             try
             {
                 return this.Histreatment != null
-                    && !string.IsNullOrEmpty(this.Histreatment.GUARANTEE_CODE)
-                    && this.Histreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
+                    && !string.IsNullOrEmpty(this.Histreatment.GUARANTEE_CODE);
+                    //&& this.Histreatment.TDL_PATIENT_TYPE_ID != HisConfigCFG.PatientTypeId__BHYT;
             }
             catch
             {
