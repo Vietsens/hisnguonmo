@@ -144,11 +144,7 @@
     </Reference>
     <Reference Include="HIS.Desktop.Plugins.Library.TreatmentEndTypeExt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-<<<<<<< HEAD
       <HintPath>..\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt\bin\Debug\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
-=======
-      <HintPath>..\..\..\..\..\histest\x64\ReferencedAssemblies\HIS.Desktop.Plugins.Library.TreatmentEndTypeExt.dll</HintPath>
->>>>>>> tungpd1
     </Reference>
     <Reference Include="His.EventLog">
       <HintPath>..\..\..\..\lib\HIS\His.EventLog\His.EventLog.dll</HintPath>
