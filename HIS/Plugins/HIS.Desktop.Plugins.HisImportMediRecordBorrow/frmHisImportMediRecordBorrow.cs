@@ -534,29 +534,6 @@ namespace HIS.Desktop.Plugins.HisImportMediRecordBorrow
             }
         }
 
-        private void gridViewData_CustomColumnDisplayText(object sender, DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventArgs e)
-        {
-            try
-            {
-                if (e.Column.FieldName == "BORROW_USERNAME" && e.ListSourceRowIndex >= 0)
-                {
-                    var list = gridControlData.DataSource as IList<MediRecordBorrowImportADO>;
-                    if (list != null && e.ListSourceRowIndex < list.Count)
-                    {
-                        var row = list[e.ListSourceRowIndex];
-                        if (!string.IsNullOrEmpty(row.BORROW_LOGINNAME) && !string.IsNullOrEmpty(row.BORROW_USERNAME))
-                        {
-                            e.DisplayText = row.BORROW_LOGINNAME.Trim() + " - " + row.BORROW_USERNAME;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Inventec.Common.Logging.LogSystem.Warn(ex);
-            }
-        }
-
         private void gridViewData_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
             try
@@ -607,18 +584,26 @@ namespace HIS.Desktop.Plugins.HisImportMediRecordBorrow
                 }
 
                 CommonParam param = new CommonParam();
-                var created = new BackendAdapter(param).Post<List<HIS_MEDI_RECORD_BORROW>>(
-                    "api/HisMediRecordBorrow/CreateList", ApiConsumers.MosConsumer, datas, param);
+                var createdList = new List<HIS_MEDI_RECORD_BORROW>();
+                foreach (var data in datas)
+                {
+                    var created = new BackendAdapter(param).Post<HIS_MEDI_RECORD_BORROW>(
+                        "api/HisMediRecordBorrow/Create", ApiConsumers.MosConsumer, data, param);
+                    if (created != null)
+                    {
+                        createdList.Add(created);
+                    }
+                }
 
                 WaitingManager.Hide();
 
-                bool success = created != null && created.Count > 0;
+                bool success = createdList.Count > 0;
                 if (success)
                 {
                     btnImport.Enabled = false;
-                    DevExpress.XtraEditors.XtraMessageBox.Show(
-                        string.Format("Nhập khẩu thành công {0}/{1} phiếu mượn.", created.Count, datas.Count),
-                        "Thông báo");
+                    //DevExpress.XtraEditors.XtraMessageBox.Show(
+                    //    string.Format("Nhập khẩu thành công {0}/{1} phiếu mượn.", createdList.Count, datas.Count),
+                    //    "Thông báo");
                     if (this.delegateRefresh != null)
                     {
                         this.delegateRefresh();
