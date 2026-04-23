@@ -40,6 +40,11 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 this.currentHisExamServiceReqResultSDO = null;
                 this.serviceReqDetailSDOs = null;
                 this.resultHisPatientProfileSDO = null;
+                this.lst = new List<string>();
+                this.lstSend = new List<string>();
+                this.lstPreviousDebtTreatmentsRegister = new List<string>();
+                this.EmergencyBol = false;
+                this.treatmentTypeID = 0;
                 this.dataAddressPatient = new UC.AddressCombo.ADO.UCAddressADO();
                 this.ucHeinInfo1.RefreshUserControl();
                 this.ucPatientRaw1.RefreshUserControl();

@@ -301,6 +301,7 @@ namespace HIS.UC.UCPatientRaw
 				{
 					Inventec.Common.Logging.LogSystem.Debug("FillDataPatientToControl.2");
 					this.currentPatientSDO = null;
+					this.lstSend = null;
 					this.dlgSendPatientSdo(currentPatientSDO);
 					this.isReadQrCode = true;
 					this.qrCodeBHYTHeinCardData = null;

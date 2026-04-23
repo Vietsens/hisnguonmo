@@ -1947,6 +1947,10 @@ namespace HIS.Desktop.Plugins.ExportXml3220
         {
             try
             {
+                Inventec.Common.Logging.LogSystem.Info(string.Format(
+                    "ProcessSyncTreatment.Start. listTreatmentSync.Count={0}",
+                    listTreatmentSync == null ? -1 : listTreatmentSync.Count));
+
                 listMessageError = new List<string>();
                 string connect_infor = HisConfigCFG.QD_130_BYT__CONNECTION_INFO;
                 string username = null, password = null, address = null, typeXml = null;
@@ -1954,6 +1958,7 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                 List<string> connectInfors = new List<string>();
                 if (string.IsNullOrEmpty(connect_infor))
                 {
+                    Inventec.Common.Logging.LogSystem.Warn("ProcessSyncTreatment: QD_130_BYT__CONNECTION_INFO rong -> dung xu ly");
                     WaitingManager.Hide();
                     XtraMessageBox.Show("01 - Lỗi cấu hình hệ thống");
                     return;
@@ -1963,6 +1968,9 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                     connectInfors = connect_infor.Split('|').ToList();
                     if (connectInfors.Count < 3 || string.IsNullOrEmpty(connectInfors[0]) || string.IsNullOrEmpty(connectInfors[1]) || string.IsNullOrEmpty(connectInfors[2]))
                     {
+                        Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                            "ProcessSyncTreatment: Connection info thieu thong tin. connectInfors.Count={0}",
+                            connectInfors.Count));
                         WaitingManager.Hide();
                         XtraMessageBox.Show("01 - Lỗi cấu hình hệ thống");
                         return;
@@ -1990,124 +1998,233 @@ namespace HIS.Desktop.Plugins.ExportXml3220
                 if (listTreatmentSync != null && listTreatmentSync.Count > 0)
                 {
                     listTreatmentSync = listTreatmentSync.GroupBy(o => o.TREATMENT_CODE).Select(s => s.First()).ToList();
+                    Inventec.Common.Logging.LogSystem.Info(string.Format(
+                        "ProcessSyncTreatment: Sau GroupBy TREATMENT_CODE con {0} treatment",
+                        listTreatmentSync.Count));
 
                     //------------------------------test do BackendDataWorker ko có dữ liệu---------------------------------------//
                     var listIds = listTreatmentSync.Select(x => x.ID).ToList();
                     CommonParam param = new CommonParam();
                     HisPatientTypeAlterViewFilter filter = new HisPatientTypeAlterViewFilter();
                     filter.TREATMENT_IDs = listIds;
-                    var resultPatientTypeAlter = new Inventec.Common.Adapter.BackendAdapter(param).Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, filter, param);
+
+                    List<V_HIS_PATIENT_TYPE_ALTER> resultPatientTypeAlter = null; 
+                    try
+                    {
+                        resultPatientTypeAlter = new Inventec.Common.Adapter.BackendAdapter(param)
+                            .Get<List<V_HIS_PATIENT_TYPE_ALTER>>("api/HisPatientTypeAlter/GetView", ApiConsumers.MosConsumer, filter, param);
+                    }
+                    catch (Exception exApi)
+                    {
+                        Inventec.Common.Logging.LogSystem.Error("Loi goi api/HisPatientTypeAlter/GetView: " + exApi);
+                    }
+                    if (resultPatientTypeAlter == null)
+                    {
+                        Inventec.Common.Logging.LogSystem.Warn(
+                            "api/HisPatientTypeAlter/GetView tra ve null -> dung fallback list rong. Filter: "
+                            + Inventec.Common.Logging.LogUtil.TraceData("filter", filter));
+                        resultPatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
+                    }
+                    else
+                    {
+                        Inventec.Common.Logging.LogSystem.Info(string.Format(
+                            "api/HisPatientTypeAlter/GetView tra ve {0} ban ghi",
+                            resultPatientTypeAlter.Count));
+                    }
                     //------------------------------test--------------------------------------------------------------------------//
 
+                    var employeeList = BackendDataWorker.Get<HIS_EMPLOYEE>() ?? new List<HIS_EMPLOYEE>();
+                    var branchList = BackendDataWorker.Get<HIS_BRANCH>() ?? new List<HIS_BRANCH>();
+                    var acsUserList = BackendDataWorker.Get<ACS_USER>() ?? new List<ACS_USER>();
+                    var babyList = BackendDataWorker.Get<V_HIS_BABY>() ?? new List<V_HIS_BABY>();
+                    Inventec.Common.Logging.LogSystem.Info(string.Format(
+                        "BackendDataWorker cache: HIS_EMPLOYEE={0}, HIS_BRANCH={1}, ACS_USER={2}, V_HIS_BABY={3}",
+                        employeeList.Count, branchList.Count, acsUserList.Count, babyList.Count));
+
+                    int index = 0;
+                    int total = listTreatmentSync.Count;
                     foreach (var treat in listTreatmentSync)
                     {
-                        paramUpdateXml130 = new CommonParam();
-                        #region
-                        bool sendXml12 = true;
-                        var ado = new InputADO
+                        index++;
+                        string treatLogPrefix = string.Format(
+                            "[{0}/{1}] TreatmentId={2} TreatmentCode={3}",
+                            index, total, treat != null ? treat.ID : 0, treat != null ? treat.TREATMENT_CODE : "null");
+
+                        try
                         {
-                            Treatment = treat,
-                            Employees = BackendDataWorker.Get<HIS_EMPLOYEE>(),
-                            Branch = BackendDataWorker.Get<HIS_BRANCH>().FirstOrDefault(b => b.ID == treat.BRANCH_ID),
-                            AcsUsers = BackendDataWorker.Get<ACS_USER>(),
-                            Babys = BackendDataWorker.Get<V_HIS_BABY>().Where(b => b.TREATMENT_ID == treat.ID).ToList(),
-                            PatientTypeAlter = resultPatientTypeAlter
-                                .Where(p => p.TREATMENT_ID == treat.ID)
-                                .OrderByDescending(p => p.LOG_TIME)
-                                .ThenByDescending(p => p.ID)
-                                .FirstOrDefault(),
-                            serverInfo = new ServerInfo
+                            Inventec.Common.Logging.LogSystem.Info(treatLogPrefix + " - Bat dau xu ly");
+
+                            paramUpdateXml130 = new CommonParam();
+                            #region
+                            bool sendXml12 = true;
+                            var ado = new InputADO
                             {
-                                Address = address,
-                                Username = username,
-                                Password = password
-                            }
-                        };
-                        #endregion
-                        His.Bhyt.ExportXml.XML3220.CreateXmlMain xmlMain = new His.Bhyt.ExportXml.XML3220.CreateXmlMain(ado);
-
-                        string errorMessPlus = "";
-                        MemoryStream resultSyncPlus = null;
-                        SyncResultADO syncResult = null;
-                        string saveFilePathXml = "";
-                        //string errMessage = "";
-                        //bool success = false;
-                        bool signSuccess = true;
-                        int count = 0;
-                        resultSyncPlus = xmlMain.RunXml3220Plus(ref errorMessPlus);
-                        bool isSuccess = (resultSyncPlus != null && resultSyncPlus.Length > 0);
-                        var updateInfo = new
-                        {
-                            TreatmentId = ado.Treatment.ID,
-                            XmlType = 1,
-                            XmlResult = isSuccess ? 2 : 1,
-                            Description = errorMessPlus,
-                            CheckCode = ""
-                        };
-                        var updateList = new List<object> { updateInfo };
-                        //new BackendAdapter(new CommonParam()).Post<bool>("api/HisTreatmentXml/UpdateXmlInfo", ApiConsumers.MosConsumer, updateList, null);
-                        His.Bhyt.ExportXml.XML3220.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML3220.CreateXmlProcessor(ado);
-
-                        if (resultSyncPlus != null)
-                        {
-                            if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
-                            {
-                                string fullFileName = xmlProcessor.GetFileName();
-                                saveFilePathXml = string.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
-
-                                using (FileStream fs = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write))
+                                Treatment = treat,
+                                Employees = employeeList,
+                                Branch = branchList.FirstOrDefault(b => b.ID == treat.BRANCH_ID),
+                                AcsUsers = acsUserList,
+                                Babys = babyList.Where(b => b.TREATMENT_ID == treat.ID).ToList(),
+                                PatientTypeAlter = resultPatientTypeAlter
+                                    .Where(p => p.TREATMENT_ID == treat.ID)
+                                    .OrderByDescending(p => p.LOG_TIME)
+                                    .ThenByDescending(p => p.ID)
+                                    .FirstOrDefault(),
+                                serverInfo = new ServerInfo
                                 {
-                                    resultSyncPlus.WriteTo(fs);
+                                    Address = address,
+                                    Username = username,
+                                    Password = password
                                 }
-                                resultSyncPlus.Close();
+                            };
+                            #endregion
 
-                                Inventec.Common.Logging.LogSystem.Debug("__Luu XML vao client folder thanh cong. Path: " + saveFilePathXml);
+                            if (ado.Branch == null)
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn(string.Format(
+                                    "{0} - Khong tim thay HIS_BRANCH theo BRANCH_ID={1}",
+                                    treatLogPrefix, treat.BRANCH_ID));
+                            }
+                            if (ado.PatientTypeAlter == null)
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn(treatLogPrefix + " - Khong tim thay V_HIS_PATIENT_TYPE_ALTER tuong ung");
+                            }
 
-                                if (!isNotFileSign)
+                            His.Bhyt.ExportXml.XML3220.CreateXmlMain xmlMain = new His.Bhyt.ExportXml.XML3220.CreateXmlMain(ado);
+
+                            string errorMessPlus = "";
+                            MemoryStream resultSyncPlus = null;
+                            SyncResultADO syncResult = null;
+                            string saveFilePathXml = "";
+                            //string errMessage = "";
+                            //bool success = false;
+                            bool signSuccess = true;
+                            int count = 0;
+                            resultSyncPlus = xmlMain.RunXml3220Plus(ref errorMessPlus);
+                            bool isSuccess = (resultSyncPlus != null && resultSyncPlus.Length > 0);
+                            Inventec.Common.Logging.LogSystem.Info(string.Format(
+                                "{0} - RunXml3220Plus isSuccess={1} length={2} errorMessPlus={3}",
+                                treatLogPrefix,
+                                isSuccess,
+                                resultSyncPlus == null ? -1 : resultSyncPlus.Length,
+                                errorMessPlus));
+
+                            var updateInfo = new
+                            {
+                                TreatmentId = ado.Treatment.ID,
+                                XmlType = 1,
+                                XmlResult = isSuccess ? 2 : 1,
+                                Description = errorMessPlus,
+                                CheckCode = ""
+                            };
+                            var updateList = new List<object> { updateInfo };
+                            //new BackendAdapter(new CommonParam()).Post<bool>("api/HisTreatmentXml/UpdateXmlInfo", ApiConsumers.MosConsumer, updateList, null);
+                            His.Bhyt.ExportXml.XML3220.CreateXmlProcessor xmlProcessor = new His.Bhyt.ExportXml.XML3220.CreateXmlProcessor(ado);
+
+                            if (resultSyncPlus != null)
+                            {
+                                if (this.configSync != null && !string.IsNullOrEmpty(this.configSync.folderPath))
                                 {
-                                    signSuccess = sendXMLSign(xmlProcessor, saveFilePathXml, ref syncResult, xmlMain);
+                                    string fullFileName = xmlProcessor.GetFileName();
+                                    saveFilePathXml = string.Format("{0}/{1}{2}", this.configSync.folderPath, "XML", fullFileName);
 
-                                    if (!signSuccess)
+                                    using (FileStream fs = new FileStream(saveFilePathXml, FileMode.Create, FileAccess.Write))
                                     {
-                                        if (File.Exists(saveFilePathXml))
+                                        resultSyncPlus.WriteTo(fs);
+                                    }
+                                    resultSyncPlus.Close();
+
+                                    Inventec.Common.Logging.LogSystem.Debug(treatLogPrefix + " - __Luu XML vao client folder thanh cong. Path: " + saveFilePathXml);
+
+                                    if (!isNotFileSign)
+                                    {
+                                        Inventec.Common.Logging.LogSystem.Info(treatLogPrefix + " - Bat dau ky so file XML");
+                                        signSuccess = sendXMLSign(xmlProcessor, saveFilePathXml, ref syncResult, xmlMain);
+                                        Inventec.Common.Logging.LogSystem.Info(string.Format(
+                                            "{0} - Ket qua ky so signSuccess={1} syncResult.Success={2} syncResult.Message={3}",
+                                            treatLogPrefix,
+                                            signSuccess,
+                                            syncResult == null ? "null" : syncResult.Success.ToString(),
+                                            syncResult == null ? "null" : syncResult.Message));
+
+                                        if (!signSuccess)
                                         {
-                                            try
+                                            if (File.Exists(saveFilePathXml))
                                             {
-                                                File.Delete(saveFilePathXml);
-                                                Inventec.Common.Logging.LogSystem.Warn("Ky so that bai -> da xoa file XML: " + saveFilePathXml);
+                                                try
+                                                {
+                                                    File.Delete(saveFilePathXml);
+                                                    Inventec.Common.Logging.LogSystem.Warn(treatLogPrefix + " - Ky so that bai -> da xoa file XML: " + saveFilePathXml);
+                                                }
+                                                catch (Exception ex)
+                                                {
+                                                    Inventec.Common.Logging.LogSystem.Error(treatLogPrefix + " - Khong xoa duoc file XML khi ky so loi: " + ex);
+                                                }
                                             }
-                                            catch (Exception ex)
+                                            Inventec.Common.Logging.LogSystem.Warn(treatLogPrefix + " - Ky so that bai -> dung xu ly batch (return)");
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (configSync != null && !configSync.dontSend)
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Info(treatLogPrefix + " - Gui file khong ky so. Path: " + saveFilePathXml);
+                                            SyncResultADO syncResultADO = null;
+                                            Task task = Task.Run(async () =>
+                                                syncResultADO = await xmlMain.SendXml3220(saveFilePathXml)
+                                            );
+                                            task.Wait();
+                                            syncResult = syncResultADO;
+                                            if (syncResult == null || !syncResult.Success)
                                             {
-                                                Inventec.Common.Logging.LogSystem.Error("Khong xoa duoc file XML khi ky so loi: " + ex);
+                                                Inventec.Common.Logging.LogSystem.Warn(treatLogPrefix + " - Gui file khong ky so that bai: " + (syncResult == null ? "null" : syncResult.Message));
+                                            }
+                                            else
+                                            {
+                                                Inventec.Common.Logging.LogSystem.Info(treatLogPrefix + " - Gui file khong ky so thanh cong");
                                             }
                                         }
-                                        return;
+                                        else
+                                        {
+                                            Inventec.Common.Logging.LogSystem.Info(treatLogPrefix + " - Bo qua gui file (configSync.dontSend=true hoac configSync=null)");
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    if (configSync != null && !configSync.dontSend)
-                                    {
-                                        Inventec.Common.Logging.LogSystem.Info("Gui file khong ky so. Path: " + saveFilePathXml);
-                                        SyncResultADO syncResultADO = null;
-                                        Task task = Task.Run(async () =>
-                                            syncResultADO = await xmlMain.SendXml3220(saveFilePathXml)
-                                        );
-                                        task.Wait();
-                                        syncResult = syncResultADO;
-                                        if (syncResult == null || !syncResult.Success)
-                                        {
-                                            Inventec.Common.Logging.LogSystem.Warn("Gui file khong ky so that bai: " + syncResult?.Message);
-                                        }
-                                    }
+                                    Inventec.Common.Logging.LogSystem.Warn(treatLogPrefix + " - configSync/folderPath rong -> khong luu va khong gui file XML");
+                                }
+
+                                //Nếu có check ký thì ký thành công mới cập nhật trạng thái
+                                try
+                                {
+                                    new BackendAdapter(new CommonParam()).Post<bool>("api/HisTreatmentXml/UpdateXmlInfo", ApiConsumers.MosConsumer, updateList, null);
+                                    Inventec.Common.Logging.LogSystem.Info(treatLogPrefix + " - UpdateXmlInfo thanh cong");
+                                }
+                                catch (Exception exUpdate)
+                                {
+                                    Inventec.Common.Logging.LogSystem.Error(treatLogPrefix + " - Loi goi api/HisTreatmentXml/UpdateXmlInfo: " + exUpdate);
                                 }
                             }
-
-                            //Nếu có check ký thì ký thành công mới cập nhật trạng thái
-                            new BackendAdapter(new CommonParam()).Post<bool>("api/HisTreatmentXml/UpdateXmlInfo", ApiConsumers.MosConsumer, updateList, null);
+                            else
+                            {
+                                Inventec.Common.Logging.LogSystem.Warn(treatLogPrefix + " - resultSyncPlus = null -> bo qua luu/gui/update");
+                            }
+                            count++;
                         }
-                        count++;
+                        catch (Exception exTreat)
+                        {
+                            Inventec.Common.Logging.LogSystem.Error(treatLogPrefix + " - Loi xu ly treatment: " + exTreat);
+                        }
                     }
+
+                    Inventec.Common.Logging.LogSystem.Info(string.Format(
+                        "ProcessSyncTreatment.End. Da xu ly {0}/{1} treatment",
+                        index, total));
+                }
+                else
+                {
+                    Inventec.Common.Logging.LogSystem.Info("ProcessSyncTreatment: listTreatmentSync null hoac rong -> bo qua");
                 }
             }
 
@@ -2650,9 +2767,13 @@ namespace HIS.Desktop.Plugins.ExportXml3220
         {
             try
             {
-                if (btnAutoSyncClick == true && configSync.isXML3176 == true)
+                LogSystem.Info("Task XML130 Begin");
+                LogSystem.Info("Giá trị đầu vào: " + isAutoSync + " " + btnAutoSyncClick + " " + configSync.isXML3176);
+                if ((isAutoSync == true || btnAutoSyncClick == true) && configSync.isXML3176 == true)
                 {
+                    LogSystem.Info("Task XML130 - Lấy danh sách đồng bộ XML3176");
                     listSelection = this.GetTreatment();
+                    LogSystem.Info("Task XML130 - Số lượng hồ sơ cần đồng bộ: " + listSelection.Count);
                 }
                 if ((listSelection == null || listSelection.Count == 0))
                 {
