@@ -283,10 +283,13 @@
     <value>Nhà cung cấp:</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_PRICE" xml:space="preserve">
-    <value>Tổng thành tiền:</value>
+    <value>Tổng tiền:</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_PRICE_SALE" xml:space="preserve">
     <value>Thanh toán:</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LAYOUT_TOTAL_VAT_PRICE" xml:space="preserve">
+    <value>Tiền thuế:</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_IMPORT_BLOOD__LBL_BID_INFO__HAS_IN_BID" xml:space="preserve">
     <value>Có trong gói thầu</value>

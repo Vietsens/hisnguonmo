@@ -102,10 +102,6 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.bbtnAdd = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnReset = new DevExpress.XtraBars.BarButtonItem();
             this.bbtnFocusDefault = new DevExpress.XtraBars.BarButtonItem();
-            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
-            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.gridLookUpEdit1View = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.txtExecuteRoom = new DevExpress.XtraEditors.TextEdit();
             this.btnRefresh = new DevExpress.XtraEditors.SimpleButton();
@@ -127,6 +123,10 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.layoutControlGroup3 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlBottom = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlLeft = new DevExpress.XtraBars.BarDockControl();
+            this.barDockControlRight = new DevExpress.XtraBars.BarDockControl();
             this.dxValidationProviderEditorInfo = new DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl4)).BeginInit();
@@ -179,11 +179,10 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.layoutControl4.Controls.Add(this.layoutControl7);
             this.layoutControl4.Controls.Add(this.lcEditorInfo);
             this.layoutControl4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layoutControl4.Location = new System.Drawing.Point(0, 38);
-            this.layoutControl4.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl4.Location = new System.Drawing.Point(0, 29);
             this.layoutControl4.Name = "layoutControl4";
             this.layoutControl4.Root = this.layoutControlGroup3;
-            this.layoutControl4.Size = new System.Drawing.Size(1483, 613);
+            this.layoutControl4.Size = new System.Drawing.Size(1112, 500);
             this.layoutControl4.TabIndex = 2;
             this.layoutControl4.Text = "layoutControl4";
             // 
@@ -193,20 +192,18 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.layoutControl7.Controls.Add(this.btnSearch);
             this.layoutControl7.Controls.Add(this.panelControl1);
             this.layoutControl7.Controls.Add(this.txtKeyword);
-            this.layoutControl7.Location = new System.Drawing.Point(3, 3);
-            this.layoutControl7.Margin = new System.Windows.Forms.Padding(4);
+            this.layoutControl7.Location = new System.Drawing.Point(2, 2);
             this.layoutControl7.Name = "layoutControl7";
             this.layoutControl7.Root = this.layoutControlGroup6;
-            this.layoutControl7.Size = new System.Drawing.Size(1108, 607);
+            this.layoutControl7.Size = new System.Drawing.Size(831, 496);
             this.layoutControl7.TabIndex = 5;
             this.layoutControl7.Text = "layoutControl7";
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(617, 3);
-            this.btnImport.Margin = new System.Windows.Forms.Padding(4);
+            this.btnImport.Location = new System.Drawing.Point(463, 2);
             this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(109, 27);
+            this.btnImport.Size = new System.Drawing.Size(82, 22);
             this.btnImport.StyleController = this.layoutControl7;
             this.btnImport.TabIndex = 37;
             this.btnImport.Text = "Import";
@@ -214,10 +211,9 @@ namespace HIS.Desktop.Plugins.LisMachine
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(480, 3);
-            this.btnSearch.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSearch.Location = new System.Drawing.Point(360, 2);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(131, 27);
+            this.btnSearch.Size = new System.Drawing.Size(99, 22);
             this.btnSearch.StyleController = this.layoutControl7;
             this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "Tìm (Ctrl F)";
@@ -227,19 +223,17 @@ namespace HIS.Desktop.Plugins.LisMachine
             // 
             this.panelControl1.Controls.Add(this.ucPaging);
             this.panelControl1.Controls.Add(this.gridControlFormList);
-            this.panelControl1.Location = new System.Drawing.Point(3, 36);
-            this.panelControl1.Margin = new System.Windows.Forms.Padding(4);
+            this.panelControl1.Location = new System.Drawing.Point(2, 28);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(1102, 568);
+            this.panelControl1.Size = new System.Drawing.Size(827, 466);
             this.panelControl1.TabIndex = 36;
             // 
             // ucPaging
             // 
             this.ucPaging.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ucPaging.Location = new System.Drawing.Point(2, 540);
-            this.ucPaging.Margin = new System.Windows.Forms.Padding(4);
+            this.ucPaging.Location = new System.Drawing.Point(2, 443);
             this.ucPaging.Name = "ucPaging";
-            this.ucPaging.Size = new System.Drawing.Size(1098, 26);
+            this.ucPaging.Size = new System.Drawing.Size(823, 21);
             this.ucPaging.TabIndex = 9;
             // 
             // gridControlFormList
@@ -251,18 +245,16 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.gridControlFormList.EmbeddedNavigator.Buttons.Edit.Visible = false;
             this.gridControlFormList.EmbeddedNavigator.Buttons.EndEdit.Visible = false;
             this.gridControlFormList.EmbeddedNavigator.Buttons.Remove.Visible = false;
-            this.gridControlFormList.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlFormList.EmbeddedNavigator.TextStringFormat = "Bản ghi {0} của {1}";
             this.gridControlFormList.Location = new System.Drawing.Point(2, 2);
             this.gridControlFormList.MainView = this.gridviewFormList;
-            this.gridControlFormList.Margin = new System.Windows.Forms.Padding(4);
             this.gridControlFormList.Name = "gridControlFormList";
             this.gridControlFormList.RepositoryItems.AddRange(new DevExpress.XtraEditors.Repository.RepositoryItem[] {
             this.btnGEdit,
             this.btnGunLock,
             this.btnGLock,
             this.repositoryItemButtonEdit1});
-            this.gridControlFormList.Size = new System.Drawing.Size(1098, 564);
+            this.gridControlFormList.Size = new System.Drawing.Size(823, 462);
             this.gridControlFormList.TabIndex = 8;
             this.gridControlFormList.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridviewFormList});
@@ -460,13 +452,12 @@ namespace HIS.Desktop.Plugins.LisMachine
             // 
             // txtKeyword
             // 
-            this.txtKeyword.Location = new System.Drawing.Point(3, 3);
-            this.txtKeyword.Margin = new System.Windows.Forms.Padding(4);
+            this.txtKeyword.Location = new System.Drawing.Point(2, 2);
             this.txtKeyword.Name = "txtKeyword";
             this.txtKeyword.Properties.NullValuePrompt = "Từ khóa tìm kiếm";
             this.txtKeyword.Properties.NullValuePromptShowForEmptyValue = true;
             this.txtKeyword.Properties.ShowNullValuePromptWhenFocused = true;
-            this.txtKeyword.Size = new System.Drawing.Size(471, 22);
+            this.txtKeyword.Size = new System.Drawing.Size(354, 20);
             this.txtKeyword.StyleController = this.layoutControl7;
             this.txtKeyword.TabIndex = 1;
             this.txtKeyword.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtKeyword_KeyUp);
@@ -484,7 +475,7 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.layoutControlGroup6.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup6.Name = "layoutControlGroup6";
             this.layoutControlGroup6.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup6.Size = new System.Drawing.Size(1108, 607);
+            this.layoutControlGroup6.Size = new System.Drawing.Size(831, 496);
             this.layoutControlGroup6.TextVisible = false;
             // 
             // layoutControlItem2
@@ -492,42 +483,42 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.layoutControlItem2.Control = this.txtKeyword;
             this.layoutControlItem2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem2.Name = "layoutControlItem2";
-            this.layoutControlItem2.Size = new System.Drawing.Size(477, 33);
+            this.layoutControlItem2.Size = new System.Drawing.Size(358, 26);
             this.layoutControlItem2.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem2.TextVisible = false;
             // 
             // layoutControlItem1
             // 
             this.layoutControlItem1.Control = this.panelControl1;
-            this.layoutControlItem1.Location = new System.Drawing.Point(0, 33);
+            this.layoutControlItem1.Location = new System.Drawing.Point(0, 26);
             this.layoutControlItem1.Name = "layoutControlItem1";
-            this.layoutControlItem1.Size = new System.Drawing.Size(1108, 574);
+            this.layoutControlItem1.Size = new System.Drawing.Size(831, 470);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
             // layoutControlItem3
             // 
             this.layoutControlItem3.Control = this.btnSearch;
-            this.layoutControlItem3.Location = new System.Drawing.Point(477, 0);
+            this.layoutControlItem3.Location = new System.Drawing.Point(358, 0);
             this.layoutControlItem3.Name = "layoutControlItem3";
-            this.layoutControlItem3.Size = new System.Drawing.Size(137, 33);
+            this.layoutControlItem3.Size = new System.Drawing.Size(103, 26);
             this.layoutControlItem3.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem3.TextVisible = false;
             // 
             // emptySpaceItem3
             // 
             this.emptySpaceItem3.AllowHotTrack = false;
-            this.emptySpaceItem3.Location = new System.Drawing.Point(729, 0);
+            this.emptySpaceItem3.Location = new System.Drawing.Point(547, 0);
             this.emptySpaceItem3.Name = "emptySpaceItem3";
-            this.emptySpaceItem3.Size = new System.Drawing.Size(379, 33);
+            this.emptySpaceItem3.Size = new System.Drawing.Size(284, 26);
             this.emptySpaceItem3.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem11
             // 
             this.layoutControlItem11.Control = this.btnImport;
-            this.layoutControlItem11.Location = new System.Drawing.Point(614, 0);
+            this.layoutControlItem11.Location = new System.Drawing.Point(461, 0);
             this.layoutControlItem11.Name = "layoutControlItem11";
-            this.layoutControlItem11.Size = new System.Drawing.Size(115, 33);
+            this.layoutControlItem11.Size = new System.Drawing.Size(86, 26);
             this.layoutControlItem11.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem11.TextVisible = false;
             // 
@@ -541,19 +532,17 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.lcEditorInfo.Controls.Add(this.txtMachineCode);
             this.lcEditorInfo.Controls.Add(this.txtMachineName);
             this.lcEditorInfo.Controls.Add(this.imageLogoIso);
-            this.lcEditorInfo.Location = new System.Drawing.Point(1117, 3);
-            this.lcEditorInfo.Margin = new System.Windows.Forms.Padding(4);
+            this.lcEditorInfo.Location = new System.Drawing.Point(837, 2);
             this.lcEditorInfo.Name = "lcEditorInfo";
             this.lcEditorInfo.OptionsFocus.EnableAutoTabOrder = false;
             this.lcEditorInfo.Root = this.layoutControlGroup4;
-            this.lcEditorInfo.Size = new System.Drawing.Size(363, 607);
+            this.lcEditorInfo.Size = new System.Drawing.Size(273, 496);
             this.lcEditorInfo.TabIndex = 4;
             this.lcEditorInfo.Text = "layoutControl5";
             // 
             // cboExecuteRoom
             // 
-            this.cboExecuteRoom.Location = new System.Drawing.Point(156, 58);
-            this.cboExecuteRoom.Margin = new System.Windows.Forms.Padding(4);
+            this.cboExecuteRoom.Location = new System.Drawing.Point(147, 50);
             this.cboExecuteRoom.MenuManager = this.barManager1;
             this.cboExecuteRoom.Name = "cboExecuteRoom";
             this.cboExecuteRoom.Properties.AllowNullInput = DevExpress.Utils.DefaultBoolean.True;
@@ -565,7 +554,7 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.cboExecuteRoom.Properties.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.Standard;
             this.cboExecuteRoom.Properties.View = this.gridLookUpEdit1View;
             this.cboExecuteRoom.Properties.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.gridLookUpEdit1_Properties_ButtonClick);
-            this.cboExecuteRoom.Size = new System.Drawing.Size(205, 22);
+            this.cboExecuteRoom.Size = new System.Drawing.Size(124, 20);
             this.cboExecuteRoom.StyleController = this.lcEditorInfo;
             this.cboExecuteRoom.TabIndex = 35;
             this.cboExecuteRoom.Closed += new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboExecuteRoom_Closed);
@@ -574,10 +563,6 @@ namespace HIS.Desktop.Plugins.LisMachine
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
-            this.barManager1.DockControls.Add(this.barDockControlTop);
-            this.barManager1.DockControls.Add(this.barDockControlBottom);
-            this.barManager1.DockControls.Add(this.barDockControlLeft);
-            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.bbtnSearch,
@@ -642,34 +627,6 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.bbtnFocusDefault.Name = "bbtnFocusDefault";
             this.bbtnFocusDefault.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.bbtnFocusDefault_ItemClick);
             // 
-            // barDockControlTop
-            // 
-            this.barDockControlTop.CausesValidation = false;
-            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
-            this.barDockControlTop.Size = new System.Drawing.Size(1483, 38);
-            // 
-            // barDockControlBottom
-            // 
-            this.barDockControlBottom.CausesValidation = false;
-            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.barDockControlBottom.Location = new System.Drawing.Point(0, 651);
-            this.barDockControlBottom.Size = new System.Drawing.Size(1483, 0);
-            // 
-            // barDockControlLeft
-            // 
-            this.barDockControlLeft.CausesValidation = false;
-            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.barDockControlLeft.Location = new System.Drawing.Point(0, 38);
-            this.barDockControlLeft.Size = new System.Drawing.Size(0, 613);
-            // 
-            // barDockControlRight
-            // 
-            this.barDockControlRight.CausesValidation = false;
-            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.barDockControlRight.Location = new System.Drawing.Point(1483, 38);
-            this.barDockControlRight.Size = new System.Drawing.Size(0, 613);
-            // 
             // gridLookUpEdit1View
             // 
             this.gridLookUpEdit1View.FocusRectStyle = DevExpress.XtraGrid.Views.Grid.DrawFocusRectStyle.RowFocus;
@@ -679,22 +636,20 @@ namespace HIS.Desktop.Plugins.LisMachine
             // 
             // txtExecuteRoom
             // 
-            this.txtExecuteRoom.Location = new System.Drawing.Point(97, 58);
-            this.txtExecuteRoom.Margin = new System.Windows.Forms.Padding(4);
+            this.txtExecuteRoom.Location = new System.Drawing.Point(97, 50);
             this.txtExecuteRoom.MenuManager = this.barManager1;
             this.txtExecuteRoom.Name = "txtExecuteRoom";
             this.txtExecuteRoom.Properties.MaxLength = 10;
-            this.txtExecuteRoom.Size = new System.Drawing.Size(59, 22);
+            this.txtExecuteRoom.Size = new System.Drawing.Size(50, 20);
             this.txtExecuteRoom.StyleController = this.lcEditorInfo;
             this.txtExecuteRoom.TabIndex = 34;
             this.txtExecuteRoom.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtExecuteRoom_KeyUp);
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(225, 240);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRefresh.Location = new System.Drawing.Point(169, 198);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(135, 27);
+            this.btnRefresh.Size = new System.Drawing.Size(102, 22);
             this.btnRefresh.StyleController = this.lcEditorInfo;
             this.btnRefresh.TabIndex = 28;
             this.btnRefresh.Text = "Làm lại (Ctrl R)";
@@ -702,10 +657,9 @@ namespace HIS.Desktop.Plugins.LisMachine
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(114, 240);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(4);
+            this.btnAdd.Location = new System.Drawing.Point(85, 198);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(105, 27);
+            this.btnAdd.Size = new System.Drawing.Size(80, 22);
             this.btnAdd.StyleController = this.lcEditorInfo;
             this.btnAdd.TabIndex = 27;
             this.btnAdd.Text = "Thêm (Ctrl N)";
@@ -713,10 +667,9 @@ namespace HIS.Desktop.Plugins.LisMachine
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(3, 240);
-            this.btnEdit.Margin = new System.Windows.Forms.Padding(4);
+            this.btnEdit.Location = new System.Drawing.Point(2, 198);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(105, 27);
+            this.btnEdit.Size = new System.Drawing.Size(79, 22);
             this.btnEdit.StyleController = this.lcEditorInfo;
             this.btnEdit.TabIndex = 26;
             this.btnEdit.Text = "Sửa (Ctrl S)";
@@ -724,35 +677,32 @@ namespace HIS.Desktop.Plugins.LisMachine
             // 
             // txtMachineCode
             // 
-            this.txtMachineCode.Location = new System.Drawing.Point(98, 3);
-            this.txtMachineCode.Margin = new System.Windows.Forms.Padding(4);
+            this.txtMachineCode.Location = new System.Drawing.Point(97, 2);
             this.txtMachineCode.Name = "txtMachineCode";
-            this.txtMachineCode.Properties.MaxLength = 10;
-            this.txtMachineCode.Size = new System.Drawing.Size(262, 22);
+            this.txtMachineCode.Properties.MaxLength = 100;
+            this.txtMachineCode.Size = new System.Drawing.Size(174, 20);
             this.txtMachineCode.StyleController = this.lcEditorInfo;
             this.txtMachineCode.TabIndex = 0;
             this.txtMachineCode.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMachineCode_KeyUp);
             // 
             // txtMachineName
             // 
-            this.txtMachineName.Location = new System.Drawing.Point(98, 31);
-            this.txtMachineName.Margin = new System.Windows.Forms.Padding(4);
+            this.txtMachineName.Location = new System.Drawing.Point(97, 26);
             this.txtMachineName.Name = "txtMachineName";
             this.txtMachineName.Properties.MaxLength = 100;
-            this.txtMachineName.Size = new System.Drawing.Size(262, 22);
+            this.txtMachineName.Size = new System.Drawing.Size(174, 20);
             this.txtMachineName.StyleController = this.lcEditorInfo;
             this.txtMachineName.TabIndex = 1;
             this.txtMachineName.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtMachineName_KeyUp);
             // 
             // imageLogoIso
             // 
-            this.imageLogoIso.Location = new System.Drawing.Point(98, 85);
-            this.imageLogoIso.Margin = new System.Windows.Forms.Padding(4);
+            this.imageLogoIso.Location = new System.Drawing.Point(97, 74);
             this.imageLogoIso.MenuManager = this.barManager1;
             this.imageLogoIso.Name = "imageLogoIso";
             this.imageLogoIso.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
             this.imageLogoIso.Properties.SizeMode = DevExpress.XtraEditors.Controls.PictureSizeMode.Stretch;
-            this.imageLogoIso.Size = new System.Drawing.Size(262, 149);
+            this.imageLogoIso.Size = new System.Drawing.Size(174, 120);
             this.imageLogoIso.StyleController = this.lcEditorInfo;
             this.imageLogoIso.TabIndex = 36;
             this.imageLogoIso.TabStop = true;
@@ -774,7 +724,7 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.layoutControlGroup4.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup4.Name = "layoutControlGroup4";
             this.layoutControlGroup4.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup4.Size = new System.Drawing.Size(363, 607);
+            this.layoutControlGroup4.Size = new System.Drawing.Size(273, 496);
             this.layoutControlGroup4.TextVisible = false;
             // 
             // lciBedTypeCode
@@ -786,7 +736,7 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.lciBedTypeCode.Control = this.txtMachineCode;
             this.lciBedTypeCode.Location = new System.Drawing.Point(0, 0);
             this.lciBedTypeCode.Name = "lciBedTypeCode";
-            this.lciBedTypeCode.Size = new System.Drawing.Size(363, 28);
+            this.lciBedTypeCode.Size = new System.Drawing.Size(273, 24);
             this.lciBedTypeCode.Text = "Mã:";
             this.lciBedTypeCode.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBedTypeCode.TextSize = new System.Drawing.Size(90, 20);
@@ -799,9 +749,9 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.lciBedTypeName.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciBedTypeName.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciBedTypeName.Control = this.txtMachineName;
-            this.lciBedTypeName.Location = new System.Drawing.Point(0, 28);
+            this.lciBedTypeName.Location = new System.Drawing.Point(0, 24);
             this.lciBedTypeName.Name = "lciBedTypeName";
-            this.lciBedTypeName.Size = new System.Drawing.Size(363, 28);
+            this.lciBedTypeName.Size = new System.Drawing.Size(273, 24);
             this.lciBedTypeName.Text = "Tên:";
             this.lciBedTypeName.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciBedTypeName.TextSize = new System.Drawing.Size(90, 20);
@@ -810,35 +760,35 @@ namespace HIS.Desktop.Plugins.LisMachine
             // emptySpaceItem1
             // 
             this.emptySpaceItem1.AllowHotTrack = false;
-            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 270);
+            this.emptySpaceItem1.Location = new System.Drawing.Point(0, 222);
             this.emptySpaceItem1.Name = "emptySpaceItem1";
-            this.emptySpaceItem1.Size = new System.Drawing.Size(363, 337);
+            this.emptySpaceItem1.Size = new System.Drawing.Size(273, 274);
             this.emptySpaceItem1.TextSize = new System.Drawing.Size(0, 0);
             // 
             // layoutControlItem6
             // 
             this.layoutControlItem6.Control = this.btnEdit;
-            this.layoutControlItem6.Location = new System.Drawing.Point(0, 237);
+            this.layoutControlItem6.Location = new System.Drawing.Point(0, 196);
             this.layoutControlItem6.Name = "layoutControlItem6";
-            this.layoutControlItem6.Size = new System.Drawing.Size(111, 33);
+            this.layoutControlItem6.Size = new System.Drawing.Size(83, 26);
             this.layoutControlItem6.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem6.TextVisible = false;
             // 
             // layoutControlItem7
             // 
             this.layoutControlItem7.Control = this.btnAdd;
-            this.layoutControlItem7.Location = new System.Drawing.Point(111, 237);
+            this.layoutControlItem7.Location = new System.Drawing.Point(83, 196);
             this.layoutControlItem7.Name = "layoutControlItem7";
-            this.layoutControlItem7.Size = new System.Drawing.Size(111, 33);
+            this.layoutControlItem7.Size = new System.Drawing.Size(84, 26);
             this.layoutControlItem7.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem7.TextVisible = false;
             // 
             // layoutControlItem9
             // 
             this.layoutControlItem9.Control = this.btnRefresh;
-            this.layoutControlItem9.Location = new System.Drawing.Point(222, 237);
+            this.layoutControlItem9.Location = new System.Drawing.Point(167, 196);
             this.layoutControlItem9.Name = "layoutControlItem9";
-            this.layoutControlItem9.Size = new System.Drawing.Size(141, 33);
+            this.layoutControlItem9.Size = new System.Drawing.Size(106, 26);
             this.layoutControlItem9.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem9.TextVisible = false;
             // 
@@ -847,10 +797,10 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.layoutControlItem16.AppearanceItemCaption.Options.UseTextOptions = true;
             this.layoutControlItem16.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.layoutControlItem16.Control = this.txtExecuteRoom;
-            this.layoutControlItem16.Location = new System.Drawing.Point(0, 56);
+            this.layoutControlItem16.Location = new System.Drawing.Point(0, 48);
             this.layoutControlItem16.Name = "layoutControlItem16";
             this.layoutControlItem16.Padding = new DevExpress.XtraLayout.Utils.Padding(2, 0, 2, 2);
-            this.layoutControlItem16.Size = new System.Drawing.Size(156, 26);
+            this.layoutControlItem16.Size = new System.Drawing.Size(147, 24);
             this.layoutControlItem16.Text = "Phòng khám/cls:";
             this.layoutControlItem16.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.layoutControlItem16.TextSize = new System.Drawing.Size(90, 20);
@@ -859,10 +809,10 @@ namespace HIS.Desktop.Plugins.LisMachine
             // layoutControlItem10
             // 
             this.layoutControlItem10.Control = this.cboExecuteRoom;
-            this.layoutControlItem10.Location = new System.Drawing.Point(156, 56);
+            this.layoutControlItem10.Location = new System.Drawing.Point(147, 48);
             this.layoutControlItem10.Name = "layoutControlItem10";
             this.layoutControlItem10.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 2, 2, 2);
-            this.layoutControlItem10.Size = new System.Drawing.Size(207, 26);
+            this.layoutControlItem10.Size = new System.Drawing.Size(126, 24);
             this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem10.TextVisible = false;
             // 
@@ -871,10 +821,10 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.lciLogoIso.AppearanceItemCaption.Options.UseTextOptions = true;
             this.lciLogoIso.AppearanceItemCaption.TextOptions.HAlignment = DevExpress.Utils.HorzAlignment.Far;
             this.lciLogoIso.Control = this.imageLogoIso;
-            this.lciLogoIso.Location = new System.Drawing.Point(0, 82);
+            this.lciLogoIso.Location = new System.Drawing.Point(0, 72);
             this.lciLogoIso.Name = "lciLogoIso";
             this.lciLogoIso.OptionsToolTip.IconToolTip = "Ảnh logo ISO";
-            this.lciLogoIso.Size = new System.Drawing.Size(363, 155);
+            this.lciLogoIso.Size = new System.Drawing.Size(273, 124);
             this.lciLogoIso.Text = "Logo ISO:";
             this.lciLogoIso.TextAlignMode = DevExpress.XtraLayout.TextAlignModeItem.CustomSize;
             this.lciLogoIso.TextSize = new System.Drawing.Size(90, 100);
@@ -890,15 +840,15 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.layoutControlGroup3.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup3.Name = "layoutControlGroup3";
             this.layoutControlGroup3.Padding = new DevExpress.XtraLayout.Utils.Padding(0, 0, 0, 0);
-            this.layoutControlGroup3.Size = new System.Drawing.Size(1483, 613);
+            this.layoutControlGroup3.Size = new System.Drawing.Size(1112, 500);
             this.layoutControlGroup3.TextVisible = false;
             // 
             // layoutControlItem4
             // 
             this.layoutControlItem4.Control = this.lcEditorInfo;
-            this.layoutControlItem4.Location = new System.Drawing.Point(1114, 0);
+            this.layoutControlItem4.Location = new System.Drawing.Point(835, 0);
             this.layoutControlItem4.Name = "layoutControlItem4";
-            this.layoutControlItem4.Size = new System.Drawing.Size(369, 613);
+            this.layoutControlItem4.Size = new System.Drawing.Size(277, 500);
             this.layoutControlItem4.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem4.TextVisible = false;
             // 
@@ -907,9 +857,41 @@ namespace HIS.Desktop.Plugins.LisMachine
             this.layoutControlItem5.Control = this.layoutControl7;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 0);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(1114, 613);
+            this.layoutControlItem5.Size = new System.Drawing.Size(835, 500);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
+            // 
+            // barDockControlTop
+            // 
+            this.barDockControlTop.CausesValidation = false;
+            this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlTop.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barDockControlTop.Size = new System.Drawing.Size(1112, 0);
+            // 
+            // barDockControlBottom
+            // 
+            this.barDockControlBottom.CausesValidation = false;
+            this.barDockControlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.barDockControlBottom.Location = new System.Drawing.Point(0, 529);
+            this.barDockControlBottom.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barDockControlBottom.Size = new System.Drawing.Size(1112, 0);
+            // 
+            // barDockControlLeft
+            // 
+            this.barDockControlLeft.CausesValidation = false;
+            this.barDockControlLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            this.barDockControlLeft.Location = new System.Drawing.Point(0, 29);
+            this.barDockControlLeft.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barDockControlLeft.Size = new System.Drawing.Size(0, 500);
+            // 
+            // barDockControlRight
+            // 
+            this.barDockControlRight.CausesValidation = false;
+            this.barDockControlRight.Dock = System.Windows.Forms.DockStyle.Right;
+            this.barDockControlRight.Location = new System.Drawing.Point(1112, 29);
+            this.barDockControlRight.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.barDockControlRight.Size = new System.Drawing.Size(0, 500);
             // 
             // dxValidationProviderEditorInfo
             // 
@@ -921,16 +903,15 @@ namespace HIS.Desktop.Plugins.LisMachine
             // 
             // frmLisMachine
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1483, 651);
+            this.ClientSize = new System.Drawing.Size(1112, 529);
             this.Controls.Add(this.layoutControl4);
             this.Controls.Add(this.barDockControlLeft);
             this.Controls.Add(this.barDockControlRight);
             this.Controls.Add(this.barDockControlBottom);
             this.Controls.Add(this.barDockControlTop);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frmLisMachine";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Danh mục";

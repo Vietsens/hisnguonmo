@@ -34,7 +34,6 @@ namespace HIS.Desktop.Plugins.HisImportMediRecordBorrow
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmHisImportMediRecordBorrow));
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject1 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject2 = new DevExpress.Utils.SerializableAppearanceObject();
@@ -69,7 +68,7 @@ namespace HIS.Desktop.Plugins.HisImportMediRecordBorrow
             this.layoutControlItem4 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem3 = new DevExpress.XtraLayout.LayoutControlItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.barManager1 = new DevExpress.XtraBars.BarManager(this.components);
+            this.barManager1 = new DevExpress.XtraBars.BarManager();
             this.bar1 = new DevExpress.XtraBars.Bar();
             this.barButtonItem1 = new DevExpress.XtraBars.BarButtonItem();
             this.barDockControlTop = new DevExpress.XtraBars.BarDockControl();
@@ -180,7 +179,6 @@ namespace HIS.Desktop.Plugins.HisImportMediRecordBorrow
             this.gridViewData.OptionsView.ShowGroupPanel = false;
             this.gridViewData.CustomRowCellEdit += new DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventHandler(this.gridViewData_CustomRowCellEdit);
             this.gridViewData.CustomUnboundColumnData += new DevExpress.XtraGrid.Views.Base.CustomColumnDataEventHandler(this.gridViewData_CustomUnboundColumnData);
-            this.gridViewData.CustomColumnDisplayText += new DevExpress.XtraGrid.Views.Base.CustomColumnDisplayTextEventHandler(this.gridViewData_CustomColumnDisplayText);
             // 
             // colSTT
             // 
@@ -277,7 +275,7 @@ namespace HIS.Desktop.Plugins.HisImportMediRecordBorrow
             // colBorrowUsername
             // 
             this.colBorrowUsername.Caption = "Người mượn";
-            this.colBorrowUsername.FieldName = "BORROW_USERNAME";
+            this.colBorrowUsername.FieldName = "BORROW_LOGINNAME";
             this.colBorrowUsername.Name = "colBorrowUsername";
             this.colBorrowUsername.OptionsColumn.AllowEdit = false;
             this.colBorrowUsername.Visible = true;
@@ -397,6 +395,10 @@ namespace HIS.Desktop.Plugins.HisImportMediRecordBorrow
             // 
             this.barManager1.Bars.AddRange(new DevExpress.XtraBars.Bar[] {
             this.bar1});
+            this.barManager1.DockControls.Add(this.barDockControlTop);
+            this.barManager1.DockControls.Add(this.barDockControlBottom);
+            this.barManager1.DockControls.Add(this.barDockControlLeft);
+            this.barManager1.DockControls.Add(this.barDockControlRight);
             this.barManager1.Form = this;
             this.barManager1.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.barButtonItem1});
@@ -425,8 +427,8 @@ namespace HIS.Desktop.Plugins.HisImportMediRecordBorrow
             // 
             this.barDockControlTop.CausesValidation = false;
             this.barDockControlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.barDockControlTop.Location = new System.Drawing.Point(0, 29);
-            this.barDockControlTop.Size = new System.Drawing.Size(1040, 0);
+            this.barDockControlTop.Location = new System.Drawing.Point(0, 0);
+            this.barDockControlTop.Size = new System.Drawing.Size(1040, 29);
             // 
             // barDockControlBottom
             // 

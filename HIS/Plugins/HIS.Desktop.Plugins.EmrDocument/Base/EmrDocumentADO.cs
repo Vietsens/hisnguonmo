@@ -32,6 +32,14 @@ namespace HIS.Desktop.Plugins.EmrDocument.Base
         public string PARENT_KEY { get; set; }
         public string CHILD_KEY { get; set; }
         public bool IsChecked { get; set; }
-        
+
+
+        public long? EXAM_CATEGORY_ID { get; set; }
+        public long? EXAM_CATEGORY_NUM_ORDER { get; set; }
+        public string EXAM_CATEGORY_CODE { get; set; }
+        public string EXAM_CATEGORY_NAME { get; set; }
+        public string PAIR_KEY { get; set; }
+        public string DOC_ROLE { get; set; }
+
     }
 }
