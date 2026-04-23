@@ -1771,6 +1771,11 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                         currentServiceReq.EXECUTE_LOGINNAME = lstAcsUser.Where(o => o.ID == Convert.ToInt64(cboUserAssign.EditValue)).FirstOrDefault().LOGINNAME;
                         currentServiceReq.EXECUTE_USERNAME = lstAcsUser.Where(o => o.ID == Convert.ToInt64(cboUserAssign.EditValue)).FirstOrDefault().USERNAME;
                     }
+                    if (AppConfigKeys.NgayThYlOption == "1" && dtTime.EditValue != null)
+                    {
+                        currentServiceReq.START_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
+                            Convert.ToDateTime(dtTime.EditValue).ToString("yyyyMMddHHmmss"));
+                    }
                     if (dtTimeReturn.EditValue != null)
                     {
                         currentServiceReq.FINISH_TIME = Inventec.Common.TypeConvert.Parse.ToInt64(
