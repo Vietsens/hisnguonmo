@@ -143,7 +143,19 @@ namespace HIS.UC.UCPatientRaw
 				{
 					dataGet.POSITION_ID = currentPosition.ID;
 				}
-				dataGet.lstPreviousDebtTreatments = lstSend;
+				if (this.currentPatientSDO != null
+					&& this.currentPatientSDO.LastTreatmentFee != null
+					&& !string.IsNullOrEmpty(this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE)
+					&& lstSend != null
+					&& lstSend.Contains(this.currentPatientSDO.LastTreatmentFee.TREATMENT_CODE))
+				{
+					dataGet.lstPreviousDebtTreatments = lstSend;
+				}
+				else
+				{
+					dataGet.lstPreviousDebtTreatments = null;
+					this.lstSend = null;
+				}
                 dataGet.ReceptionForm = this.typeReceptionForm;
 				if(cardSearch!= null)
                 {
@@ -532,6 +544,7 @@ namespace HIS.UC.UCPatientRaw
 				if (!AlertTreatmentInOutInDayForTreatmentMessage(patient))
 				{
 					this.currentPatientSDO = null;
+					this.lstSend = null;
 					this.dlgSendPatientSdo(currentPatientSDO);
 					//Reset form TODO
 					this.dlgResetRegisterForm();
