@@ -267,6 +267,9 @@
   <data name="frmServiceReqList.gridColumn_Execute_Username.Caption" xml:space="preserve">
     <value>Người thực hiện</value>
   </data>
+  <data name="frmServiceReqList.gridColumn_Secretary_Username.Caption" xml:space="preserve">
+    <value>Thư ký</value>
+  </data>
   <data name="frmServiceReqList.gridColumn_Request_Username.Caption" xml:space="preserve">
     <value>Người yêu cầu</value>
   </data>
