@@ -1447,7 +1447,13 @@ namespace HIS.Desktop.Plugins.TestServiceReqExcute
                         var timeReturn = Convert.ToDateTime(dtTimeReturn.EditValue);
                         if (this.currentServiceReq != null && this.currentServiceReq.START_TIME > 0)
                         {
-                            processTime = timeReturn - (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentServiceReq.START_TIME ?? 0));
+                            long? startTimeForProcess = this.currentServiceReq.START_TIME;
+                            if (AppConfigKeys.NgayThYlOption == "1" && dtTime.EditValue != null)
+                            {
+                                startTimeForProcess = Inventec.Common.TypeConvert.Parse.ToInt64(
+                                    Convert.ToDateTime(dtTime.EditValue).ToString("yyyyMMddHHmmss"));
+                            }
+                            processTime = timeReturn - (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(startTimeForProcess ?? 0));
                             processTimeService = timeReturn - (Inventec.Common.DateTime.Convert.TimeNumberToSystemDateTime(this.currentServiceReq.INTRUCTION_TIME));
                         }
                     }
