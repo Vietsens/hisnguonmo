@@ -81,6 +81,9 @@ namespace HIS.Desktop.Plugins.BaseCompensationCreate
         List<MetyMatyADO> _KhoXuatADOiSelecteds = new List<MetyMatyADO>();
         private Inventec.Desktop.Common.Modules.Module _currentModule = null;
 
+        private Dictionary<long, string> dicMedicineTypeDescription = new Dictionary<long, string>();
+        private Dictionary<long, string> dicMaterialTypeDescription = new Dictionary<long, string>();
+
 
         public UCBaseCompensationCreate(Inventec.Desktop.Common.Modules.Module moduleData)
             : base(moduleData)
@@ -115,6 +118,9 @@ namespace HIS.Desktop.Plugins.BaseCompensationCreate
                     cboKhoXuat.Enabled = false;
                 }
                 this.gridControlExpMestBcs.ToolTipController = this.toolTipController1;
+
+                InitDescriptionColumn();
+
                 this.mediStockMatys = BackendDataWorker.Get<V_HIS_MEDI_STOCK_MATY>();
                 this.mediStockMetys = BackendDataWorker.Get<V_HIS_MEDI_STOCK_METY>();
                 this.mediStockMatys = this.mediStockMatys != null ? this.mediStockMatys.Where(o => o.MEDI_STOCK_ID == this.stock.ID).ToList() : null;
@@ -1216,7 +1222,14 @@ namespace HIS.Desktop.Plugins.BaseCompensationCreate
         {
             try
             {
-
+                if (!e.IsGetData) return;
+                var dataSource = ((BaseView)sender).DataSource as IList;
+                if (dataSource == null || e.ListSourceRowIndex < 0 || e.ListSourceRowIndex >= dataSource.Count) return;
+                MetyMatyADO row = dataSource[e.ListSourceRowIndex] as MetyMatyADO;
+                if (row != null && e.Column.FieldName == "DESCRIPTION_NOTE")
+                {
+                    e.Value = GetDescriptionByMetyMaty(row);
+                }
             }
             catch (Exception ex)
             {
@@ -1455,12 +1468,87 @@ namespace HIS.Desktop.Plugins.BaseCompensationCreate
                     {
                         e.Value = e.ListSourceRowIndex + 1;
                     }
+                    else if (e.Column.FieldName == "DESCRIPTION_NOTE")
+                    {
+                        e.Value = GetDescriptionByMetyMaty(row);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
+        }
+
+        private void InitDescriptionColumn()
+        {
+            try
+            {
+                dicMedicineTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+                dicMaterialTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MATERIAL_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+
+                AddDescriptionColumn(this.gridViewBcsDetail, "METY_MATY_NAME");
+                AddDescriptionColumn(this.gridViewExpMestDetail, "METY_MATY_NAME");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void AddDescriptionColumn(DevExpress.XtraGrid.Views.Grid.GridView gv, string afterFieldName)
+        {
+            try
+            {
+                if (gv == null) return;
+                if (gv.Columns["DESCRIPTION_NOTE"] != null) return;
+
+                var col = new DevExpress.XtraGrid.Columns.GridColumn();
+                col.Caption = "Ghi chú";
+                col.FieldName = "DESCRIPTION_NOTE";
+                col.Name = gv.Name + "_gcDescription";
+                col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+                col.OptionsColumn.AllowEdit = false;
+                col.Width = 150;
+                col.Visible = true;
+
+                var afterCol = gv.Columns[afterFieldName];
+                col.VisibleIndex = afterCol != null ? afterCol.VisibleIndex + 1 : gv.Columns.Count;
+
+                gv.Columns.Add(col);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private string GetDescriptionByMetyMaty(MetyMatyADO row)
+        {
+            try
+            {
+                if (row == null) return "";
+                string desc;
+                if (row.TYPE == TYPE_METY && dicMedicineTypeDescription != null
+                    && dicMedicineTypeDescription.TryGetValue(row.METY_MATY_ID, out desc))
+                {
+                    return desc ?? "";
+                }
+                if (row.TYPE == TYPE_MATY && dicMaterialTypeDescription != null
+                    && dicMaterialTypeDescription.TryGetValue(row.METY_MATY_ID, out desc))
+                {
+                    return desc ?? "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return "";
         }
 
         private void LoadBcsDetail(HIS_EXP_MEST row)

@@ -306,6 +306,17 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 Model.Format.FormatType = DevExpress.Utils.FormatType.Custom;
                 ado.MaterialTypeColumns.Add(Model);
 
+                //Column Ngày tạo (format từ long sang string)
+                MaterialTypeColumn createTimeCol = new MaterialTypeColumn("Ngày tạo", "CREATE_TIME_STR", 130, false);
+                createTimeCol.VisibleIndex = 13;
+                createTimeCol.UnboundColumnType = DevExpress.XtraTreeList.Data.UnboundColumnType.Object;
+                ado.MaterialTypeColumns.Add(createTimeCol);
+
+                //Column Người tạo
+                MaterialTypeColumn creatorCol = new MaterialTypeColumn("Người tạo", "CREATOR", 100, false);
+                creatorCol.VisibleIndex = 14;
+                ado.MaterialTypeColumns.Add(creatorCol);
+
                 //Column Giá tiền
                 MaterialTypeColumn impPriceCol = new MaterialTypeColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MATERIAL_TYPE__TREE_MATERIAL_TYPE__COLUMN_IMP_PRICE", ResourceLangManager.LanguageUCMaterialType, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "IMP_PRICE", 120, false);
                 impPriceCol.VisibleIndex = -1;
@@ -422,6 +433,10 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                         else if (e.Column.FieldName == "IMP_VAT_RATIO_DISPLAY")
                         {
                             e.Value = (data.IMP_VAT_RATIO * 100);
+                        }
+                        else if (e.Column.FieldName == "CREATE_TIME_STR")
+                        {
+                            e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString(data.CREATE_TIME ?? 0);
                         }
                     }
                 }
@@ -704,7 +719,7 @@ namespace HIS.Desktop.Plugins.MaterialType.MaterialTypeList
                 List<String> ColnParams = new List<string> {"ID", "MATERIAL_TYPE_CODE", "MATERIAL_TYPE_NAME", "SERVICE_UNIT_NAME", "CONCENTRA",
                 "NATIONAL_NAME", "MANUFACTURER_NAME", "LAST_IMP_PRICE", "LAST_IMP_VAT_RATIO","LAST_EXP_PRICE","HEIN_SERVICE_BHYT_CODE","HEIN_SERVICE_BHYT_NAME", "LAST_EXP_VAT_RATIO",
                 "IS_LEAF", "PARENT_ID", "IS_ACTIVE", "REGISTER_NUMBER","IMP_VAT_RATIO","IMP_PRICE","PACKING_TYPE_NAME","IS_BUSINESS", "IS_DRUG_STORE",
-                "LOCKING_REASON", "IS_STOP_IMP", "IS_REUSABLE", "MODEL_CODE"};
+                "LOCKING_REASON", "IS_STOP_IMP", "IS_REUSABLE", "MODEL_CODE", "CREATE_TIME", "CREATOR"};
 
                 filter.ColumnParams = ColnParams;
                 this.materialTypes = new BackendAdapter(param).Get<List<V_HIS_MATERIAL_TYPE>>(HisRequestUri.HIS_MATERIAL_TYPE_GETVIEWDynamic, ApiConsumers.MosConsumer, filter, param);
