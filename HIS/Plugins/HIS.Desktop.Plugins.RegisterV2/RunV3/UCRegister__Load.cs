@@ -58,6 +58,7 @@ namespace HIS.Desktop.Plugins.RegisterV2.Run2
                 LogSystem.Debug("Tiep don: Cau hinh co kiem tra dot dieu tri truoc cua BN con thuoc chua uong het hay khong: IsCheckPreviousPrescription = " + HisConfigCFG.IsCheckPreviousPrescription);
                 string message = "";
                 lstPreviousDebtTreatmentsRegister = new List<string>();
+                lstSend = new List<string>();
                 if (HisConfigCFG.IsCheckPreviousPrescription)
                 {
                     if (this.currentPatientSDO.PreviousPrescriptions != null
