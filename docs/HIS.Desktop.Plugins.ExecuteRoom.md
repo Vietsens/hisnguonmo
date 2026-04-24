@@ -69,6 +69,7 @@ Tham khao UCExecuteRoom___Print.cs
 |------|-----------|-----------------|
 | 17/04/2026 | phuongnm | Them icon mat xem lich su dieu tri (gcTreatmentHistory) - goi HIS.Desktop.Plugins.TreatmentHistory voi patient_code, patient_id. Mac dinh an, bac si tu dua ra ngoai giao dien. |
 | 18/04/2026 | phuongnm | Fix HisConfigCFG.isRestoreLayout split bang ca ',' va ';' (config tester dung ';' phan tach). Note: source code ExecuteRoom da co san goi InitRestoreLayoutGridViewFromXml(gridViewServiceReq) tai dau FillDataToGridServiceReq va InitRestoreLayoutGridViewFromXml(gridViewSereServServiceReq) tai dau LoadSereServServiceReq → trung pattern voi DLL histest, base class UserControlBase tu xu ly check config + hook events + restore/save. |
+| 22/04/2026 | phuongnm | GP5 — PTTK_19083: To mau y lenh theo phan loai cap cuu. Config-gated boi MOS.HIS_TREATMENT.EMERGENCY_CLASSIFY. Batch load HIS_TREATMENT theo TREATMENT_IDs, cache Dictionary<long, Color?> emergencyClassifyColorDict. Chi ap dung mau khi EMERGENCY_CLASSIFY_ID_1 != NULL va EMERGENCY_CLASSIFY_ID_2 = NULL. Uu tien hon DISPLAY_COLOR / Blue (BHYT) / Green (KSK) trong gridViewServiceReq_RowStyle. |
 
 ## 9. Test Cases
 

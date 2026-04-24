@@ -158,12 +158,38 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 {
                     lbHopitalizeDepartment.Text = currentTreatment4.HOPITALIZE_DEPARTMENT_NAME;
                     lbTransferInMediOrg.Text = currentTreatment4.MEDI_ORG_NAME;
+                    SetHeinPatientTypeCodeDisplay(currentTreatment4.HEIN_PATIENT_TYPE_CODE);
                 }
                 else
                 {
                     lbHopitalizeDepartment.Text = "";
                     lbTransferInMediOrg.Text = "";
+                    SetHeinPatientTypeCodeDisplay(null);
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetHeinPatientTypeCodeDisplay(string heinPatientTypeCode)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(heinPatientTypeCode))
+                {
+                    lblHeinPatientTypeCode.Text = "";
+                    lblHeinPatientTypeCode.ToolTip = "";
+                    return;
+                }
+
+                lblHeinPatientTypeCode.Text = heinPatientTypeCode;
+
+                var heinPatientType = BackendDataWorker.Get<HIS_HEIN_PATIENT_TYPE>()
+                    .FirstOrDefault(o => o.IS_ACTIVE == IMSys.DbConfig.HIS_RS.COMMON.IS_ACTIVE__TRUE
+                        && o.HEIN_PATIENT_TYPE_CODE == heinPatientTypeCode);
+                lblHeinPatientTypeCode.ToolTip = heinPatientType != null ? heinPatientType.DESCRIPTION : "";
             }
             catch (Exception ex)
             {

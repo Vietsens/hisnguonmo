@@ -69,6 +69,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 this.btnDepositReq.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnDepositReq.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.btnBordereau.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnBordereau.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.btnExecute.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.btnExecute.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
+                this.lciSecretary.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.lciSecretary.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.layoutControl3.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControl3.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.layoutControl5.Text = Inventec.Common.Resource.Get.Value("UCExecuteRoom.layoutControl5.Text", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());
                 this.gridColumn3.Caption = Inventec.Common.Resource.Get.Value("UCExecuteRoom.gridColumn3.Caption", ResourceLangManager.LanguageUCExecuteRoom, LanguageManager.GetCulture());

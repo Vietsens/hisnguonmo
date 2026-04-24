@@ -109,6 +109,10 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 this.btnDepositReq.Click -= new System.EventHandler(this.btnDepositReq_Click);
                 this.btnBordereau.Click -= new System.EventHandler(this.btnBordereau_Click);
                 this.btnExecute.Click -= new System.EventHandler(this.btnExecute_Click);
+                this.cboSecretaryUserName.Closed -= new DevExpress.XtraEditors.Controls.ClosedEventHandler(this.cboSecretaryUserName_Closed);
+                this.cboSecretaryUserName.KeyUp -= new System.Windows.Forms.KeyEventHandler(this.cboSecretaryUserName_KeyUp);
+                this.cboSecretaryUserName.Properties.ButtonClick -= new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.cboSecretaryUserName_Properties_ButtonClick);
+                this.txtSecretaryLoginName.PreviewKeyDown -= new System.Windows.Forms.PreviewKeyDownEventHandler(this.txtSecretaryLoginName_PreviewKeyDown);
                 this.layoutControl3.GroupExpandChanged -= new DevExpress.XtraLayout.Utils.LayoutGroupEventHandler(this.layoutControl3_GroupExpandChanged);
                 this.xtraTabControl1.SelectedPageChanged -= new DevExpress.XtraTab.TabPageChangedEventHandler(this.xtraTabControl1_SelectedPageChanged);
                 this.xtraTabControl1.TabIndexChanged -= new System.EventHandler(this.xtraTabControl1_TabIndexChanged);
@@ -419,6 +423,11 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 toolTipController1 = null;
                 layoutControlItem11 = null;
                 btnExecute = null;
+                lciSecretary = null;
+                cboSecretaryUserName = null;
+                txtSecretaryLoginName = null;
+                gridViewSecretary = null;
+                pnlSecretary = null;
                 gridColumn7 = null;
                 layoutControlItem19 = null;
                 layoutControlItem18 = null;
