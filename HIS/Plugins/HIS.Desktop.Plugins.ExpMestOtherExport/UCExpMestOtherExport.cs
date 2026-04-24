@@ -81,6 +81,9 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
         List<HIS_BLOOD_GIVER> lstBloodGiver = new List<HIS_BLOOD_GIVER>();
 
         Dictionary<long, Dictionary<long, MediMateTypeADO>> dicTypeAdo = new Dictionary<long, Dictionary<long, MediMateTypeADO>>();
+
+        Dictionary<long, string> dicMedicineTypeDescription = new Dictionary<long, string>();
+        Dictionary<long, string> dicMaterialTypeDescription = new Dictionary<long, string>();
         MediMateTypeADO currentMediMate = null;
 
         MediMateTypeADO mediMateRow = null;
@@ -151,6 +154,8 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
 
                 InitExpMestMateGrid();
                 InitExpMestMediGrid();
+
+                InitDescriptionColumn();
 
                 this.Action = GlobalDataStore.ActionAdd;
 
@@ -1504,6 +1509,59 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
 
         }
 
+        private void InitDescriptionColumn()
+        {
+            try
+            {
+                dicMedicineTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+                dicMaterialTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MATERIAL_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+
+                string caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__UC_EXP_MEST_OTHER_EXPORT__GRID_COLUMN_DESCRIPTION",
+                    Resources.ResourceLanguageManager.LanguageUCExpMestOtherExport,
+                    Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                if (string.IsNullOrWhiteSpace(caption)) caption = "Ghi chú";
+
+                AddDescriptionColumn(this.gridViewMedicineInStock, caption, "MEDICINE_TYPE_NAME");
+                AddDescriptionColumn(this.gridViewMaterialInStock, caption, "MATERIAL_TYPE_NAME");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void AddDescriptionColumn(DevExpress.XtraGrid.Views.Grid.GridView gv, string caption, string afterFieldName)
+        {
+            try
+            {
+                if (gv == null) return;
+                if (gv.Columns["DESCRIPTION_NOTE"] != null) return;
+
+                var col = new DevExpress.XtraGrid.Columns.GridColumn();
+                col.Caption = caption;
+                col.FieldName = "DESCRIPTION_NOTE";
+                col.Name = gv.Name + "_gcDescription";
+                col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+                col.OptionsColumn.AllowEdit = false;
+                col.Width = 150;
+                col.Visible = true;
+
+                var afterCol = gv.Columns[afterFieldName];
+                col.VisibleIndex = afterCol != null ? afterCol.VisibleIndex + 1 : gv.Columns.Count;
+
+                gv.Columns.Add(col);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void gridViewMedicineInStock_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
         {
             try
@@ -1524,6 +1582,19 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
                         if (dataRow.CONCENTRA != null)
                         {
                             e.Value = dataRow.CONCENTRA;
+                        }
+                    }
+                    if (e.Column.FieldName == "DESCRIPTION_NOTE" && dataRow != null)
+                    {
+                        string desc;
+                        if (dicMedicineTypeDescription != null
+                            && dicMedicineTypeDescription.TryGetValue(dataRow.MEDICINE_TYPE_ID, out desc))
+                        {
+                            e.Value = desc;
+                        }
+                        else
+                        {
+                            e.Value = "";
                         }
                     }
                 }
@@ -1551,6 +1622,19 @@ namespace HIS.Desktop.Plugins.ExpMestOtherExport
                         if (data.EXPIRED_DATE.HasValue)
                         {
                             e.Value = Inventec.Common.DateTime.Convert.TimeNumberToTimeString((long)data.EXPIRED_DATE.Value);
+                        }
+                    }
+                    if (e.Column.FieldName == "DESCRIPTION_NOTE" && data != null)
+                    {
+                        string desc;
+                        if (dicMaterialTypeDescription != null
+                            && dicMaterialTypeDescription.TryGetValue(data.MATERIAL_TYPE_ID, out desc))
+                        {
+                            e.Value = desc;
+                        }
+                        else
+                        {
+                            e.Value = "";
                         }
                     }
                 }

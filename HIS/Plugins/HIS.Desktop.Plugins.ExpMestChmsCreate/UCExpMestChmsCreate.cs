@@ -70,6 +70,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
 
         Dictionary<long, MediMateTypeADO> dicMediMateAdo = new Dictionary<long, MediMateTypeADO>();
 
+        Dictionary<long, string> dicMedicineTypeDescription = new Dictionary<long, string>();
+        Dictionary<long, string> dicMaterialTypeDescription = new Dictionary<long, string>();
+
         MediMateTypeADO currentMediMate = null;
         List<MediMateTypeADO> currentMediMate_ = new List<MediMateTypeADO>();
         HisExpMestResultSDO resultSdo = null;
@@ -137,6 +140,7 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate
                 KeyOddPolicyOption = HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__ODDPOLICY);
                 IsReasonRequired = HisConfigs.Get<string>(AppConfigKeys.CONFIG_KEY__IS_REASON_REQUIRED) == "1";
                 LoadKeyUCLanguage();
+                InitDescriptionColumn();
                 ValidControl();
                 //qtcode
                 LoadDataToComboImpMediStock(medi);
@@ -1854,6 +1858,59 @@ ApiConsumers.MosConsumer, medicineFilter, param);
             }
         }
 
+        private void InitDescriptionColumn()
+        {
+            try
+            {
+                dicMedicineTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+                dicMaterialTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MATERIAL_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+
+                var cul = Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture();
+                string caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_DESCRIPTION",
+                    Base.ResourceLangManager.LanguageUCExpMestChmsCreate, cul);
+                if (string.IsNullOrWhiteSpace(caption)) caption = "Ghi chú";
+
+                AddDescriptionColumn(this.gridViewMedicine, caption, "MEDICINE_TYPE_NAME");
+                AddDescriptionColumn(this.gridViewMaterial, caption, "MATERIAL_TYPE_NAME");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void AddDescriptionColumn(DevExpress.XtraGrid.Views.Grid.GridView gv, string caption, string afterFieldName)
+        {
+            try
+            {
+                if (gv == null) return;
+                if (gv.Columns["DESCRIPTION_NOTE"] != null) return;
+
+                var col = new DevExpress.XtraGrid.Columns.GridColumn();
+                col.Caption = caption;
+                col.FieldName = "DESCRIPTION_NOTE";
+                col.Name = gv.Name + "_gcDescription";
+                col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+                col.OptionsColumn.AllowEdit = false;
+                col.Width = 150;
+                col.Visible = true;
+
+                var afterCol = gv.Columns[afterFieldName];
+                col.VisibleIndex = afterCol != null ? afterCol.VisibleIndex + 1 : gv.Columns.Count;
+
+                gv.Columns.Add(col);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void LoadKeyUCLanguage()
         {
             try
@@ -2197,6 +2254,20 @@ ApiConsumers.MosConsumer, medicineFilter, param);
 
 
                     }
+
+                    if (e.Column.FieldName == "DESCRIPTION_NOTE" && data != null)
+                    {
+                        string desc;
+                        if (dicMedicineTypeDescription != null
+                            && dicMedicineTypeDescription.TryGetValue(data.MEDICINE_TYPE_ID, out desc))
+                        {
+                            e.Value = desc;
+                        }
+                        else
+                        {
+                            e.Value = "";
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -2260,6 +2331,20 @@ ApiConsumers.MosConsumer, medicineFilter, param);
                         //}
 
 
+                    }
+
+                    if (e.Column.FieldName == "DESCRIPTION_NOTE" && data != null)
+                    {
+                        string desc;
+                        if (dicMaterialTypeDescription != null
+                            && dicMaterialTypeDescription.TryGetValue(data.MATERIAL_TYPE_ID, out desc))
+                        {
+                            e.Value = desc;
+                        }
+                        else
+                        {
+                            e.Value = "";
+                        }
                     }
                 }
             }

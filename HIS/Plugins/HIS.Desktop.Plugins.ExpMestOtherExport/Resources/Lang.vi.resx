@@ -528,4 +528,7 @@
   <data name="UCExpMestOtherExport.layoutControlItem6.Text" xml:space="preserve">
     <value>VAT (%):</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_OTHER_EXPORT__GRID_COLUMN_DESCRIPTION" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
 </root>

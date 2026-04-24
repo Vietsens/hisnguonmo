@@ -282,4 +282,7 @@
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__XTRA_TAB_MEDICINE" xml:space="preserve">
     <value>Thuốc</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_DESCRIPTION" xml:space="preserve">
+    <value>Ghi chú</value>
+  </data>
 </root>

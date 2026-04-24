@@ -212,6 +212,19 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         {
                             e.Value = data.BaseAmount;
                         }
+                        else if (e.Column.FieldName == "DESCRIPTION_NOTE")
+                        {
+                            string desc;
+                            if (dicMedicineTypeDescription != null
+                                && dicMedicineTypeDescription.TryGetValue(data.MEDICINE_TYPE_ID, out desc))
+                            {
+                                e.Value = desc;
+                            }
+                            else
+                            {
+                                e.Value = "";
+                            }
+                        }
                     }
                 }
             }
@@ -540,6 +553,19 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                         else
                         {
                             e.Value = null;
+                        }
+                    }
+                    else if (e.Column.FieldName == "DESCRIPTION_NOTE")
+                    {
+                        string desc;
+                        if (data != null && dicMaterialTypeDescription != null
+                            && dicMaterialTypeDescription.TryGetValue(data.MATERIAL_TYPE_ID, out desc))
+                        {
+                            e.Value = desc;
+                        }
+                        else
+                        {
+                            e.Value = "";
                         }
                     }
                 }

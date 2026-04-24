@@ -66,6 +66,9 @@ namespace HIS.Desktop.Plugins.MediStockSummary
         HisMaterialInStockProcessor hisMateInStockProcessor;
         HisBloodTypeInStockProcessor hisBloodProcessor;
 
+        Dictionary<long, string> dicMedicineTypeDescription = new Dictionary<long, string>();
+        Dictionary<long, string> dicMaterialTypeDescription = new Dictionary<long, string>();
+
         UserControl ucMedicineInfo;
         UserControl ucMaterialInfo;
         UserControl ucBloodInfo;
@@ -135,6 +138,7 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             try
             {
                 SetCaptionByLanguageKey();
+                InitDescriptionDictionaries();
                 LoadDataGridMediStock();
                 InitCboIsActive();
                 InitCboPatientType();
@@ -153,6 +157,23 @@ namespace HIS.Desktop.Plugins.MediStockSummary
             {
 
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitDescriptionDictionaries()
+        {
+            try
+            {
+                dicMedicineTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+                dicMaterialTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MATERIAL_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 
@@ -356,6 +377,13 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 mediTypeCodeNameCol.AllowEdit = true;//thêm thuộc tính
                 mediTypeCodeNameCol.ReadOnly = true;
                 ado.HisMedicineInStockColumns.Add(mediTypeNameCol);
+
+                //Column ghi chú
+                string descriptionCaption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_DESCRIPTION", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                if (string.IsNullOrWhiteSpace(descriptionCaption)) descriptionCaption = "Ghi chú";
+                HisMedicineInStockColumn descriptionCol = new HisMedicineInStockColumn(descriptionCaption, "DESCRIPTION_NOTE", 150, false, false);
+                descriptionCol.VisibleIndex = 100;
+                ado.HisMedicineInStockColumns.Add(descriptionCol);
 
                 //Column hoạt chất
                 HisMedicineInStockColumn hoatChatCol = new HisMedicineInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_ACTIVE_INGR_BHYT_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "ACTIVE_INGR_BHYT_NAME", 150, false, false);
@@ -588,6 +616,12 @@ namespace HIS.Desktop.Plugins.MediStockSummary
                 HisMaterialInStockColumn mediTypeNameCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_MEDICINE_TYPE_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "MATERIAL_TYPE_NAME", 200, false);
                 mediTypeNameCol.VisibleIndex = 2;
                 ado.HisMaterialInStockColumns.Add(mediTypeNameCol);
+                //Column ghi chú
+                string materialDescriptionCaption = Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_DESCRIPTION", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture());
+                if (string.IsNullOrWhiteSpace(materialDescriptionCaption)) materialDescriptionCaption = "Ghi chú";
+                HisMaterialInStockColumn materialDescriptionCol = new HisMaterialInStockColumn(materialDescriptionCaption, "DESCRIPTION_NOTE", 150, false);
+                materialDescriptionCol.VisibleIndex = 100;
+                ado.HisMaterialInStockColumns.Add(materialDescriptionCol);
                 //Column đơn vị tính
                 HisMaterialInStockColumn serviceUnitNameCol = new HisMaterialInStockColumn(Inventec.Common.Resource.Get.Value("IVT_LANGUAGE_KEY__UC_MEDI_STOCK_SUMMARY__MEDICINE_IN_STOCK__COLUMN_SERVICE_UNIT_NAME", Base.ResourceLangManager.LanguageUCMediStockSummary, Inventec.Desktop.Common.LanguageManager.LanguageManager.GetCulture()), "SERVICE_UNIT_NAME", 100, false);
                 serviceUnitNameCol.VisibleIndex = 3;

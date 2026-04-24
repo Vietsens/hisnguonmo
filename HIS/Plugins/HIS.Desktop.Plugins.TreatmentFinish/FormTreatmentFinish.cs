@@ -4106,6 +4106,10 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                     || this.hisTreatmentFinishSDO_process.SickLeaveTo.HasValue
                     || this.hisTreatmentFinishSDO_process.DocumentBookId.HasValue
                     || !String.IsNullOrEmpty(this.hisTreatmentFinishSDO_process.SickLoginname)
+                    || !String.IsNullOrEmpty(this.hisTreatmentFinishSDO_process.CccdNumber)
+                    || !String.IsNullOrEmpty(this.hisTreatmentFinishSDO_process.PassportNumber)
+                    || this.hisTreatmentFinishSDO_process.CccdDate.HasValue
+                    || this.hisTreatmentFinishSDO_process.PassportDate.HasValue
                     ))
                 {
                     data = new TreatmentEndTypeExtData();

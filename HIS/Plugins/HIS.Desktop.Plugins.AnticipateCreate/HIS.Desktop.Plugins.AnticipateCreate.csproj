@@ -47,16 +47,16 @@
       <HintPath>..\HIS.Desktop.Library.CacheClient\bin\Debug\HIS.Desktop.Library.CacheClient.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.BidBloodType">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.BidBloodType.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.BidBloodType.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.BidBloodTypeGrid">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.BidBloodTypeGrid.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.BidBloodTypeGrid.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.BidMaterialTypeGrid">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.BidMaterialTypeGrid.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.BidMaterialTypeGrid.dll</HintPath>
     </Reference>
     <Reference Include="HIS.UC.BidMedicineTypeGrid">
-      <HintPath>..\..\..\TEST\HIS\x64\ReferencedAssemblies\HIS.UC.BidMedicineTypeGrid.dll</HintPath>
+      <HintPath>..\..\..\..\..\HISTEST\histest\x64\ReferencedAssemblies\HIS.UC.BidMedicineTypeGrid.dll</HintPath>
     </Reference>
     <Reference Include="IMSys.DbConfig.HIS_RS">
       <HintPath>..\..\..\..\LIB\IMSys.DbConfig\IMSys.DbConfig.HIS_RS\IMSys.DbConfig.HIS_RS.dll</HintPath>
@@ -211,7 +211,6 @@
     <EmbeddedResource Include="frmAnticipateUpdate.resx">
       <DependentUpon>frmAnticipateUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -249,4 +249,7 @@
   <data name="IVT_LANGUAGE_KEY__UC_HIS_ANTICIPATE_CREATE__XTRA_TAB_MEDICINE" xml:space="preserve">
     <value>Medicine</value>
   </data>
+  <data name="IVT_LANGUAGE_KEY__UC_HIS_ANTICIPATE_CREATE__GC_DESCRIPTION" xml:space="preserve">
+    <value>Description</value>
+  </data>
 </root>

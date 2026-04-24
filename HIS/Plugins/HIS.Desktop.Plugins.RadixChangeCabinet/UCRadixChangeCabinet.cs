@@ -74,6 +74,9 @@ namespace HIS.Desktop.Plugins.RadixChangeCabinet
 
         V_HIS_EXP_MEST_4 _currentExpMest { get; set; }
 
+        Dictionary<long, string> dicMedicineTypeDescription = new Dictionary<long, string>();
+        Dictionary<long, string> dicMaterialTypeDescription = new Dictionary<long, string>();
+
         enum ActionType
         {
             Edit,
@@ -123,6 +126,8 @@ namespace HIS.Desktop.Plugins.RadixChangeCabinet
                 SetDataCbo();
 
                 ValidateControlCbo();
+
+                InitDescriptionColumn();
 
                 LoadDataByExpMest();
 
@@ -288,6 +293,112 @@ namespace HIS.Desktop.Plugins.RadixChangeCabinet
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        private void InitDescriptionColumn()
+        {
+            try
+            {
+                dicMedicineTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MEDICINE_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+                dicMaterialTypeDescription = BackendDataWorker.Get<MOS.EFMODEL.DataModels.HIS_MATERIAL_TYPE>()
+                    .GroupBy(o => o.ID)
+                    .ToDictionary(g => g.Key, g => g.FirstOrDefault() != null ? g.FirstOrDefault().DESCRIPTION : null);
+
+                AddDescriptionColumn(this.gridViewMedicine, "MEDICINE_TYPE_NAME");
+                AddDescriptionColumn(this.gridViewMaterial, "MATERIAL_TYPE_NAME");
+                AddDescriptionColumn(this.gridViewMediMaty, "MEDICINE_TYPE_NAME");
+                AddDescriptionColumn(this.gridViewADO, "MEDICINE_TYPE_NAME");
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void AddDescriptionColumn(DevExpress.XtraGrid.Views.Grid.GridView gv, string afterFieldName)
+        {
+            try
+            {
+                if (gv == null) return;
+                if (gv.Columns["DESCRIPTION_NOTE"] != null) return;
+
+                var col = new DevExpress.XtraGrid.Columns.GridColumn();
+                col.Caption = "Ghi chú";
+                col.FieldName = "DESCRIPTION_NOTE";
+                col.Name = gv.Name + "_gcDescription";
+                col.UnboundType = DevExpress.Data.UnboundColumnType.String;
+                col.OptionsColumn.AllowEdit = false;
+                col.Width = 150;
+                col.Visible = true;
+
+                var afterCol = gv.Columns[afterFieldName];
+                col.VisibleIndex = afterCol != null ? afterCol.VisibleIndex + 1 : gv.Columns.Count;
+
+                gv.Columns.Add(col);
+
+                gv.CustomUnboundColumnData -= DescriptionColumn_CustomUnboundColumnData;
+                gv.CustomUnboundColumnData += DescriptionColumn_CustomUnboundColumnData;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void DescriptionColumn_CustomUnboundColumnData(object sender, CustomColumnDataEventArgs e)
+        {
+            try
+            {
+                if (!e.IsGetData) return;
+                if (e.Column == null || e.Column.FieldName != "DESCRIPTION_NOTE") return;
+
+                var dataSource = ((BaseView)sender).DataSource as IList;
+                if (dataSource == null || e.ListSourceRowIndex < 0 || e.ListSourceRowIndex >= dataSource.Count) return;
+
+                var row = dataSource[e.ListSourceRowIndex];
+                string desc = null;
+
+                var medicineAdo = row as ADO.MedicineADO;
+                if (medicineAdo != null && dicMedicineTypeDescription != null
+                    && dicMedicineTypeDescription.TryGetValue(medicineAdo.Id, out desc))
+                {
+                    e.Value = desc;
+                    return;
+                }
+
+                var materialAdo = row as ADO.MaterialADO;
+                if (materialAdo != null && dicMaterialTypeDescription != null
+                    && dicMaterialTypeDescription.TryGetValue(materialAdo.Id, out desc))
+                {
+                    e.Value = desc;
+                    return;
+                }
+
+                var mediMaty = row as ADO.MediMatyTypeADO;
+                if (mediMaty != null)
+                {
+                    if (mediMaty.IsMedicine && dicMedicineTypeDescription != null
+                        && dicMedicineTypeDescription.TryGetValue(mediMaty.ID, out desc))
+                    {
+                        e.Value = desc;
+                        return;
+                    }
+                    if (!mediMaty.IsMedicine && dicMaterialTypeDescription != null
+                        && dicMaterialTypeDescription.TryGetValue(mediMaty.ID, out desc))
+                    {
+                        e.Value = desc;
+                        return;
+                    }
+                }
+
+                e.Value = "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
             }
         }
 

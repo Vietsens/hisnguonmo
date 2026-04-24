@@ -153,6 +153,8 @@ namespace HIS.Desktop.Plugins.AnticipateUpdate
                 //Gan ngon ngu
                 LoadKeysFromlanguage();
 
+                InitDescriptionColumn();
+
                 //load cob nha thau
                 LoadDataToCboSupplier();
 
@@ -184,6 +186,38 @@ namespace HIS.Desktop.Plugins.AnticipateUpdate
         #endregion
 
         #region Private method
+        private void InitDescriptionColumn()
+        {
+            try
+            {
+                if (this.gridViewProcess == null) return;
+                if (this.gridViewProcess.Columns["DESCRIPTION"] != null) return;
+
+                var gcDescription = new DevExpress.XtraGrid.Columns.GridColumn();
+                string caption = Inventec.Common.Resource.Get.Value(
+                    "IVT_LANGUAGE_KEY__UC_HIS_ANTICIPATE_CREATE__GC_DESCRIPTION",
+                    Resources.ResourceLanguageManager.LanguageUCAnticipateUpdate,
+                    cultureLang);
+                gcDescription.Caption = string.IsNullOrWhiteSpace(caption) ? "Ghi chú" : caption;
+                gcDescription.FieldName = "DESCRIPTION";
+                gcDescription.Name = "GvProcess_GcDescription";
+                gcDescription.OptionsColumn.AllowEdit = false;
+                gcDescription.Width = 150;
+                gcDescription.Visible = true;
+
+                var afterColumn = this.gridViewProcess.Columns["MEDICINE_TYPE_NAME"];
+                gcDescription.VisibleIndex = afterColumn != null
+                    ? afterColumn.VisibleIndex + 1
+                    : this.gridViewProcess.Columns.Count;
+
+                this.gridViewProcess.Columns.Add(gcDescription);
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
         private void LoadKeysFromlanguage()
         {
             try

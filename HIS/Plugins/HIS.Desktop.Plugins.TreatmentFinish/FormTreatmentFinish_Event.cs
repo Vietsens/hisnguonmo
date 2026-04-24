@@ -765,7 +765,8 @@ namespace HIS.Desktop.Plugins.TreatmentFinish
                 currentTreatmentFinishSDO.PregnancyTerminationTime = data.PREGNANCY_TERMINATION_TIME;
                 currentTreatmentFinishSDO.CccdNumber = data.TDL_PATIENT_CCCD_NUMBER;
                 currentTreatmentFinishSDO.PassportNumber = data.TDL_PATIENT_PASSPORT_NUMBER;
-                currentTreatmentFinishSDO.CccdDate = data.TDL_PATIENT_CCCD_DATE;
+                // Uu tien CCCD_DATE, fallback CMND_DATE (ten cu)
+                currentTreatmentFinishSDO.CccdDate = data.TDL_PATIENT_CCCD_DATE ?? data.TDL_PATIENT_CMND_DATE;
                 currentTreatmentFinishSDO.PassportDate = data.TDL_PATIENT_PASSPORT_DATE;
                 if (!string.IsNullOrEmpty(data.APPOINTMENT_EXAM_ROOM_IDS))
                 {
