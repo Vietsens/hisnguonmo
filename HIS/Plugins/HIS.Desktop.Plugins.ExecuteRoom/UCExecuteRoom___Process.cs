@@ -196,8 +196,12 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                 string loginName = Inventec.UC.Login.Base.ClientTokenManagerStore.ClientTokenManager.GetLoginName();
                 WaitingManager.Show();
                 CommonParam param = new CommonParam();
+                HIS.Desktop.Plugins.ExecuteRoom.ADO.HisServiceReqStartSecretarySDO startSdo = new HIS.Desktop.Plugins.ExecuteRoom.ADO.HisServiceReqStartSecretarySDO();
+                startSdo.ID = serviceReqInput.ID;
+                startSdo.SECRETARY_LOGINNAME = GetSecretaryLoginName();
+                startSdo.SECRETARY_USERNAME = GetSecretaryUserName();
                 L_HIS_SERVICE_REQ serviceReqResult = new BackendAdapter(param)
-                .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, serviceReqInput.ID, param);
+                .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, startSdo, param);
                 WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Debug(Inventec.Common.Logging.LogUtil.TraceData(Inventec.Common.Logging.LogUtil.GetMemberName(() => param), param));
 
@@ -285,7 +289,7 @@ namespace HIS.Desktop.Plugins.ExecuteRoom
                                             richEditorMain.RunPrintTemplate(PrintTypeCodeWorker.PRINT_TYPE_CODE__MPS000102, ProcessPrintMps000102);
                                             param = new CommonParam();
                                             serviceReqResult = new BackendAdapter(param)
-                .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, serviceReqInput.ID, param);
+                .Post<MOS.EFMODEL.DataModels.L_HIS_SERVICE_REQ>(HisRequestUriStore.HIS_SERVICE_REQ_START, ApiConsumers.MosConsumer, startSdo, param);
                                         }
                                         else
                                         {

@@ -405,6 +405,10 @@
     <Compile Include="UCExecuteRoom___Load.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCExecuteRoom___SecretaryCombo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ADO\HisServiceReqStartSecretarySDO.cs" />
     <Compile Include="ExecuteRoomProcessor.cs" />
     <Compile Include="Delegate\DelegateUC.cs" />
     <Compile Include="ExecuteRoom\ExecuteRoomBehavior.cs" />
