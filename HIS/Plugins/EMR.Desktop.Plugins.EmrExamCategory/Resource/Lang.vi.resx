@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EmrExamCategoryForm.Text" xml:space="preserve">
+    <value>Quản lý Phân loại Xét nghiệm &amp; Cấu hình ghép cặp</value>
+  </data>
+  <data name="EmrExamCategoryForm.lblCatTitle.Text" xml:space="preserve">
+    <value>Loại xét nghiệm</value>
+  </data>
+  <data name="EmrExamCategoryForm.lblRuleTitle.Text" xml:space="preserve">
+    <value>Cấu hình ghép cặp văn bản</value>
+  </data>
+  <data name="EmrExamCategoryForm.btnRefresh.Text" xml:space="preserve">
+    <value>Làm mới</value>
+  </data>
+  <data name="EmrExamCategoryForm.btnSave.Text" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="EmrExamCategoryForm.bbtnSave.Caption" xml:space="preserve">
+    <value>Lưu (Ctrl S)</value>
+  </data>
+  <data name="EmrExamCategoryForm.bbtnRefresh.Caption" xml:space="preserve">
+    <value>Làm mới (Ctrl R)</value>
+  </data>
+  <data name="EmrExamCategoryForm.btnCatAdd.ToolTip" xml:space="preserve">
+    <value>Thêm loại xét nghiệm</value>
+  </data>
+  <data name="EmrExamCategoryForm.btnRuleAdd.ToolTip" xml:space="preserve">
+    <value>Thêm rule ghép cặp</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolCatNumOrder.Caption" xml:space="preserve">
+    <value>Thứ tự</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolCatCode.Caption" xml:space="preserve">
+    <value>Mã</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolCatName.Caption" xml:space="preserve">
+    <value>Tên loại xét nghiệm</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolCatCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolCatCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolCatModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolCatModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolRuleNumOrder.Caption" xml:space="preserve">
+    <value>Ưu tiên</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolRulePattern.Caption" xml:space="preserve">
+    <value>Pattern</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolRuleMatchType.Caption" xml:space="preserve">
+    <value>Kiểu match</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolRuleKeyExtractor.Caption" xml:space="preserve">
+    <value>Extract key</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolRuleCreateTime.Caption" xml:space="preserve">
+    <value>Thời gian tạo</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolRuleCreator.Caption" xml:space="preserve">
+    <value>Người tạo</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolRuleModifyTime.Caption" xml:space="preserve">
+    <value>Thời gian sửa</value>
+  </data>
+  <data name="EmrExamCategoryForm.gcolRuleModifier.Caption" xml:space="preserve">
+    <value>Người sửa</value>
+  </data>
+</root>
