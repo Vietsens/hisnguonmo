@@ -336,6 +336,9 @@
   <data name="frmMedicineTypeCreate.btnRefresh.Text" xml:space="preserve">
     <value>Làm lại (Ctrl R)</value>
   </data>
+  <data name="frmMedicineTypeCreate.btnCopy.Text" xml:space="preserve">
+    <value>Sao chép</value>
+  </data>
   <data name="frmMedicineTypeCreate.btnSave.Text" xml:space="preserve">
     <value>Lưu (Ctrl S)</value>
   </data>
