@@ -569,7 +569,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                     DateTime inTime = Inventec.Common.DateTime.Convert
                                         .TimeNumberToSystemDateTime(lstStartTime) ?? DateTime.Now;
 
-                                    if (inTime.Date == DateTime.Now.Date)
+                                    if (inTime.Date != null)
                                     {
                                         valueToSet = inTime;
                                     }
@@ -583,7 +583,7 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                     DateTime inTime = Inventec.Common.DateTime.Convert
                                         .TimeNumberToSystemDateTime(currentTreatment.CLINICAL_IN_TIME ?? 0) ?? DateTime.Now;
 
-                                    if (inTime.Date == DateTime.Now.Date)
+                                    if (inTime.Date != null)
                                     {
                                         valueToSet = inTime;
                                     }
@@ -3283,8 +3283,8 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                     {
                         if (isSelected)
                         {
-                            // Cảnh báo nếu QUANTITY = 0
-                            if (e.Column.FieldName == "QUANTITY" && isSelected) 
+                            // Cảnh báo nếu QUANTITY = 0 
+                            if (e.Column.FieldName == "QUANTITY" && isSelected)
                             {
                                 decimal qty = 0;
                                 decimal.TryParse((e.Value ?? "0").ToString(), out qty);
@@ -3304,6 +3304,17 @@ namespace HIS.Desktop.Plugins.AssignBed.AssignBed
                                         this.gridViewServiceProcess.ShowEditor();
                                     }));
                                     return;
+                                }
+
+                                if (qty > 0 && view != null)
+                                {
+                                    var timeFromValue = view.GetRowCellValue(e.RowHandle, "TIME_FROM");
+                                    if (timeFromValue is DateTime timeFrom)
+                                    {
+                                        int daysToAdd = (int)qty - 1;
+                                        DateTime timeTo = timeFrom.AddDays(daysToAdd);
+                                        view.SetRowCellValue(e.RowHandle, "TIME_TO", timeTo);
+                                    }
                                 }
                             }
                             //Phân biệt giá trị TEST_SAMPLE_TYPE_CODE mặc định bởi TEST_SAMPLE_TYPE_ID = 0;

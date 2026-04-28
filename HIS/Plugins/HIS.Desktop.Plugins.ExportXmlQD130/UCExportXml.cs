@@ -1012,6 +1012,7 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                             btnSavePath_Click(null, null);
                     }
                     xuatXml12 = !string.IsNullOrEmpty(this.savePathADO.pathXmlGDYK);
+
                     //if (string.IsNullOrEmpty(SerialNumber))
                     //{
                     //    MessageBox.Show("Không có thông tin Usb Token ký số");
@@ -5202,30 +5203,30 @@ namespace HIS.Desktop.Plugins.ExportXmlQD130
                 {
                     listSelection = listSelection.GroupBy(o => o.TREATMENT_CODE).Select(s => s.First()).ToList();
                     this.NewConfig = GetNewConfig();
-                    int skip = 0;
 
+                    // Khởi tạo list 1 lần, các batch sẽ AddRange dồn vào
+                    ListPatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
+                    ListSereServ = new List<V_HIS_SERE_SERV_2>();
+                    HisTreatments = new List<V_HIS_TREATMENT_12>();
+                    HisSereServPttts = new List<V_HIS_SERE_SERV_PTTT>();
+
+                    int skip = 0;
                     while (listSelection.Count - skip > 0)
                     {
                         var limit = listSelection.Skip(skip).Take(GlobalVariables.MAX_REQUEST_LENGTH_PARAM).ToList();
                         skip = skip + GlobalVariables.MAX_REQUEST_LENGTH_PARAM;
 
-                        // Khởi tạo lại list để Thread fill data vào
-                        ListPatientTypeAlter = new List<V_HIS_PATIENT_TYPE_ALTER>();
-                        ListSereServ = new List<V_HIS_SERE_SERV_2>();
-                        HisTreatments = new List<V_HIS_TREATMENT_12>();
-                        HisSereServPttts = new List<V_HIS_SERE_SERV_PTTT>();
-
                         isExportXml = true;
                         CreateThreadGetData(limit); // Gọi Thread lấy Data song song
                         isExportXml = false;
+                    }
 
-                        // Pass Data xuống hàm xử lý chi tiết
-                        string message = ProcessExportXmlTT12Detail(ref result, HisTreatments, ListPatientTypeAlter, ListSereServ, HisSereServPttts);
+                    // Pass Data xuống hàm xử lý chi tiết
+                    string message = ProcessExportXmlTT12Detail(ref result, HisTreatments, ListPatientTypeAlter, ListSereServ, HisSereServPttts);
 
-                        if (!String.IsNullOrEmpty(message))
-                        {
-                            paramExport.Messages.Add(message);
-                        }
+                    if (!String.IsNullOrEmpty(message))
+                    {
+                        paramExport.Messages.Add(message);
                     }
                 }
             }
