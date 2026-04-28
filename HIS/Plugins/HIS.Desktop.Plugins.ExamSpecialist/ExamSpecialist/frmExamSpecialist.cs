@@ -70,6 +70,7 @@ namespace HIS.Desktop.Plugins.ExamSpecialist.ExamSpecialist
                 this.KeyPreview = true;
                 LoadComboHisDepartment();
                 SetDefaultValueControl();
+                InitRightClickMenu();
                 FillDataToGrid();
             }
             catch (Exception ex)
