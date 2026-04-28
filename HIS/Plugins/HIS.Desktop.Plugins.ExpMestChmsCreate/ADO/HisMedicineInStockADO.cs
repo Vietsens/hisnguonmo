@@ -35,6 +35,14 @@ namespace HIS.Desktop.Plugins.ExpMestChmsCreate.ADO
         public string EXPIRED_DATE_STRS { get; set; }
         public virtual ICollection<HisMedicineInStockADO> MedicineInStocks { get; set; }
 
+        // PTTK 36619 (BV HAGL): Số lượng xuất chuyển user nhập trực tiếp trên grid
+        // FieldName trên GridColumn: "AMOUNT_TRANSFER_MEDICINE" — không auto-fill (BR04)
+        public decimal? AMOUNT_TRANSFER_MEDICINE { get; set; }
+
+        // PTTK 36619 (BV HAGL): Ghi chú xuất chuyển kho user nhập trực tiếp trên grid
+        // FieldName trên GridColumn: "NOTE_TRANSFER_MEDICINE"
+        public string NOTE_TRANSFER_MEDICINE { get; set; }
+
         public HisMedicineInStockADO()
         { }
 
