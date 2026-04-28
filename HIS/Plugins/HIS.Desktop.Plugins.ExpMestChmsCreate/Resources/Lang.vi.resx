@@ -216,9 +216,6 @@
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__MATERIAL_TREE__COLUMN_AVAILABLE_AMOUNT" xml:space="preserve">
     <value>Khả dụng</value>
   </data>
-  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__MATERIAL_TREE__COLUMN_CONCENTRA" xml:space="preserve">
-    <value>Hàm lượng</value>
-  </data>
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__MATERIAL_TREE__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
     <value>Hãng sản xuất</value>
   </data>
@@ -239,9 +236,6 @@
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__MEDICINE_TREE__COLUMN_AVAILABLE_AMOUNT" xml:space="preserve">
     <value>Khả dụng</value>
-  </data>
-  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__MEDICINE_TREE__COLUMN_CONCENTRA" xml:space="preserve">
-    <value>Hàm lượng</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__MEDICINE_TREE__COLUMN_MANUFACTURER_NAME" xml:space="preserve">
     <value>Hãng sản xuất</value>
@@ -283,6 +277,12 @@
     <value>Thuốc</value>
   </data>
   <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__GRID_CONTROL__COLUMN_DESCRIPTION" xml:space="preserve">
-    <value>Ghi chú</value>
+    <value>Ghi chú thuốc</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__MATERIAL_TREE__COLUMN_CONCENTRA" xml:space="preserve">
+    <value>Hàm lượng</value>
+  </data>
+  <data name="IVT_LANGUAGE_KEY__UC_EXP_MEST_CHMS_CREATE__MEDICINE_TREE__COLUMN_CONCENTRA" xml:space="preserve">
+    <value>Hàm lượng</value>
   </data>
 </root>

@@ -62,6 +62,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                 this.simpleButton1.Text = Get.Value("frmMaterialTypeCreate.simpleButton1.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnSave.Text = Get.Value("frmMaterialTypeCreate.btnSave.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.btnRefresh.Text = Get.Value("frmMaterialTypeCreate.btnRefresh.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
+                this.btnCopy.Text = Get.Value("frmMaterialTypeCreate.btnCopy.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcHeinLimitRatio.Text = Get.Value("frmMaterialTypeCreate.lcHeinLimitRatio.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcHeinLimitRatioOld.Text = Get.Value("frmMaterialTypeCreate.lcHeinLimitRatioOld.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());
                 this.lcHeinLimitPriceInTime.Text = Get.Value("frmMaterialTypeCreate.lcHeinLimitPriceInTime.Text", ResourceLanguageManager.LanguageResource, LanguageManager.GetCulture());

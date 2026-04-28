@@ -83,8 +83,9 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
 
         //mau
         List<HisBloodTypeInStockSDO> listBloodTypeInStock { get; set; }
-        List<HisMedicineInStockSDO> listMediInStock { get; set; }
-        List<HisMaterialInStockSDO> listMateInStock { get; set; }
+        // PTTK 36619: Đổi sang ADO để hỗ trợ nhập trực tiếp AMOUNT_TRANSFER_MEDI/NOTE_TRANSFER_MEDI trên grid
+        List<ADO.HisMedicineInStockADO> listMediInStock { get; set; }
+        List<ADO.HisMaterialInStockADO> listMateInStock { get; set; }
 
         public frmExpMestChmsUpdate(Inventec.Desktop.Common.Modules.Module currentModule, V_HIS_EXP_MEST expMest)
             : base(currentModule)
@@ -121,6 +122,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                 InitComboRespositoryBloodRH();
                 ValidControlMaxLength1();
                 ValidControlMaxLength2();
+                // PTTK 36619: Đăng ký event đồng bộ 2 chiều spin/text ⇄ grid
+                RegisterTransferSyncEvents();
                 if (this.hisExpMest != null)
                 {
                     LoadDataToComboImpMediStock();
@@ -433,7 +436,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                 medicineFilter.ORDER_DIRECTION = "ASC";
                 medicineFilter.ORDER_FIELD = "MEDICINE_TYPE_NAME";
 
-                this.listMediInStock = new List<HisMedicineInStockSDO>();
+                // PTTK 36619: Đổi sang ADO để hỗ trợ cột AMOUNT_TRANSFER_MEDI/NOTE_TRANSFER_MEDI nhập trực tiếp
+                this.listMediInStock = new List<ADO.HisMedicineInStockADO>();
                 List<HisMedicineInStockSDO> _datas = new BackendAdapter(param).Get<List<HisMedicineInStockSDO>>("/api/HisMedicine/GetInStockMedicine", ApiConsumers.MosConsumer, medicineFilter, param);
 
                 if (_datas != null && _datas.Count > 0 && this.hisExpMest.IS_REQUEST_BY_PACKAGE != 1)
@@ -455,7 +459,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                             ado.EXPIRED_DATE = null;
                             ado.PACKAGE_NUMBER = null;
                             ado.ID = 0;
-                            this.listMediInStock.Add(ado);
+                            // PTTK 36619: Wrap sang ADO
+                            this.listMediInStock.Add(new ADO.HisMedicineInStockADO(ado));
                         }
                     }
                 }
@@ -463,11 +468,12 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                 {
                     _datas = _datas.Where(o =>
                        //o.AvailableAmount > 0
-                       //&& 
+                       //&&
                        IS_GOODS_RESTRICT(o)
                        && IsCheckMedicine(medicineTypeList, this.mestRoom.IS_BUSINESS == 1 ? true : false, o.MEDICINE_TYPE_ID)
                        ).ToList();
-                    this.listMediInStock = _datas;
+                    // PTTK 36619: Wrap từng SDO sang ADO
+                    this.listMediInStock = _datas.Select(o => new ADO.HisMedicineInStockADO(o)).ToList();
                 }
             }
             catch (Exception ex)
@@ -543,7 +549,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                 mateFilter.ORDER_FIELD = "MATERIAL_TYPE_NAME";
 
                 CommonParam param = new CommonParam();
-                this.listMateInStock = new List<HisMaterialInStockSDO>();
+                // PTTK 36619: Đổi sang ADO để hỗ trợ cột AMOUNT_TRANSFER_MATE/NOTE_TRANSFER_MATE nhập trực tiếp
+                this.listMateInStock = new List<ADO.HisMaterialInStockADO>();
                 List<HisMaterialInStockSDO> _datas = new BackendAdapter(param).Get<List<HisMaterialInStockSDO>>("/api/HisMaterial/GetInStockMaterial", ApiConsumers.MosConsumer, mateFilter, param);
 
                 if (_datas != null && _datas.Count > 0 && this.hisExpMest.IS_REQUEST_BY_PACKAGE != 1)
@@ -565,7 +572,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                             ado.EXPIRED_DATE = null;
                             ado.PACKAGE_NUMBER = null;
                             ado.ID = 0;
-                            this.listMateInStock.Add(ado);
+                            // PTTK 36619: Wrap sang ADO
+                            this.listMateInStock.Add(new ADO.HisMaterialInStockADO(ado));
                         }
                     }
                 }
@@ -573,11 +581,12 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
                 {
                     _datas = _datas.Where(o =>
                        //o.AvailableAmount > 0
-                       //&& 
+                       //&&
                        IS_GOODS_RESTRICT(o)
                        && IsCheckMaterial(materialTypeList, this.mestRoom.IS_BUSINESS == 1 ? true : false, o.MATERIAL_TYPE_ID)
                        ).ToList();
-                    this.listMateInStock = _datas;
+                    // PTTK 36619: Wrap từng SDO sang ADO
+                    this.listMateInStock = _datas.Select(o => new ADO.HisMaterialInStockADO(o)).ToList();
                 }
 
             }
@@ -1439,7 +1448,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    HisMedicineInStockSDO data = (HisMedicineInStockSDO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    // PTTK 36619: Đổi sang ADO để giữ cột nhập trực tiếp
+                    ADO.HisMedicineInStockADO data = (ADO.HisMedicineInStockADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (e.Column.FieldName == "EXPIRED_DATE_STR" && data != null && data.EXPIRED_DATE > 0)
                     {
                         e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString((long)data.EXPIRED_DATE);
@@ -1456,13 +1466,16 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         {
             try
             {
-                var isCheckedHienThiLo = chkHienThiLo.Checked; 
+                var isCheckedHienThiLo = chkHienThiLo.Checked;
                 this.currentMediMate = null;
-                var row = (HisMedicineInStockSDO)gridViewMedicine.GetFocusedRow();
+                // PTTK 36619: Đổi sang ADO; MediMateTypeADO nhận HisMedicineInStockSDO (ADO kế thừa SDO nên OK)
+                var row = (ADO.HisMedicineInStockADO)gridViewMedicine.GetFocusedRow();
                 if (row != null)
                 {
                     this.currentMediMate = new ADO.MediMateTypeADO(row, isCheckedHienThiLo);
                     ResetValueControlDetail();
+                    // PTTK 36619 BR06: Đồng bộ giá trị đang có trên grid xuống spinExpAmount/txtNote
+                    SyncRowTransferToInput_Medi(row);
                 }
             }
             catch (Exception ex)
@@ -1477,7 +1490,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             {
                 if (e.IsGetData && e.Column.UnboundType != UnboundColumnType.Bound)
                 {
-                    HisMaterialInStockSDO data = (HisMaterialInStockSDO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
+                    // PTTK 36619: Đổi sang ADO để giữ cột nhập trực tiếp
+                    ADO.HisMaterialInStockADO data = (ADO.HisMaterialInStockADO)((IList)((BaseView)sender).DataSource)[e.ListSourceRowIndex];
                     if (e.Column.FieldName == "EXPIRED_DATE_STR" && data != null && data.EXPIRED_DATE > 0)
                     {
                         e.Value = Inventec.Common.DateTime.Convert.TimeNumberToDateString(data.EXPIRED_DATE.ToString());
@@ -1496,16 +1510,61 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             {
                 var isCheckedHienThiLo = chkHienThiLo.Checked;
                 this.currentMediMate = null;
-                var row = (HisMaterialInStockSDO)gridViewMaterial.GetFocusedRow();
+                // PTTK 36619: Đổi sang ADO
+                var row = (ADO.HisMaterialInStockADO)gridViewMaterial.GetFocusedRow();
                 if (row != null)
                 {
                     this.currentMediMate = new ADO.MediMateTypeADO(row, isCheckedHienThiLo);
                     ResetValueControlDetail();
+                    // PTTK 36619 BR06: Đồng bộ giá trị đang có trên grid xuống spinExpAmount/txtNote
+                    SyncRowTransferToInput_Mate(row);
                 }
             }
             catch (Exception ex)
             {
                 Inventec.Common.Logging.LogSystem.Error(ex);
+            }
+        }
+
+        // PTTK 36619 BR06: Đồng bộ từ dòng grid -> spin/text
+        private bool isSyncingInputFromGrid = false;
+        private bool isSyncingGridFromInput = false;
+
+        private void SyncRowTransferToInput_Medi(ADO.HisMedicineInStockADO row)
+        {
+            try
+            {
+                if (row == null) return;
+                isSyncingInputFromGrid = true;
+                spinExpAmount.EditValue = row.AMOUNT_TRANSFER_MEDI ?? (decimal?)null;
+                txtNote.Text = row.NOTE_TRANSFER_MEDI ?? "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                isSyncingInputFromGrid = false;
+            }
+        }
+
+        private void SyncRowTransferToInput_Mate(ADO.HisMaterialInStockADO row)
+        {
+            try
+            {
+                if (row == null) return;
+                isSyncingInputFromGrid = true;
+                spinExpAmount.EditValue = row.AMOUNT_TRANSFER_MATE ?? (decimal?)null;
+                txtNote.Text = row.NOTE_TRANSFER_MATE ?? "";
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            finally
+            {
+                isSyncingInputFromGrid = false;
             }
         }
 
@@ -1558,7 +1617,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         {
             try
             {
-                List<HisMedicineInStockSDO> rearchResult = new List<HisMedicineInStockSDO>();
+                // PTTK 36619: Đổi sang ADO
+                List<ADO.HisMedicineInStockADO> rearchResult = new List<ADO.HisMedicineInStockADO>();
                 if (!String.IsNullOrEmpty(keyword.Trim()))
                 {
                     rearchResult = this.listMediInStock.Where(o =>
@@ -1587,7 +1647,8 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
         {
             try
             {
-                List<HisMaterialInStockSDO> rearchResult = new List<HisMaterialInStockSDO>();
+                // PTTK 36619: Đổi sang ADO
+                List<ADO.HisMaterialInStockADO> rearchResult = new List<ADO.HisMaterialInStockADO>();
                 if (!String.IsNullOrEmpty(keyword.Trim()))
                 {
                     rearchResult = this.listMateInStock.Where(o =>

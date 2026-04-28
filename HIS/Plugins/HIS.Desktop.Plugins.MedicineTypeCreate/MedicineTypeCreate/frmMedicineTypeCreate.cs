@@ -294,6 +294,7 @@ namespace HIS.Desktop.Plugins.MedicineTypeCreate.MedicineTypeCreate
                 FillBlockDepartment();
                 FillContraindication();
                 FillDataToGridConrolServicePaty();
+                WireBtnCopy();
                 RegisterTimer(this.module.ModuleLink, timerInitForm, 1000, timerInitForm_Tick);
                 StartTimer(this.module.ModuleLink, timerInitForm);
                 if(this.ActionType == GlobalVariables.ActionAdd)

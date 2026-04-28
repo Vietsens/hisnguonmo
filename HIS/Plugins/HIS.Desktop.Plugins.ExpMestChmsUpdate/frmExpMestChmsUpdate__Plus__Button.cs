@@ -65,6 +65,31 @@ namespace HIS.Desktop.Plugins.ExpMestChmsUpdate
             try
             {
                 positionHandleControl = -1;
+
+                // PTTK 36619 BR02+BR03: Batch mode — duyệt grid tab hiện tại, lấy tất cả dòng có AMOUNT_TRANSFER > 0
+                int addedByBatch = TryBatchAddFromGrid();
+                if (addedByBatch > 0)
+                {
+                    Inventec.Common.Logging.LogSystem.Info(
+                        "PTTK 36619 (Update) batch added: " + addedByBatch
+                        + " | dicMediMateAdo.Count=" + (dicMediMateAdo != null ? dicMediMateAdo.Count : 0));
+
+                    // Nếu batch đã xử lý ≥ 1 dòng → cập nhật grid bên phải + focus lại và kết thúc (không chạy single-item mode)
+                    gridControlExpMestChmsDetail.BeginUpdate();
+                    gridControlExpMestChmsDetail.DataSource = null;
+                    gridControlExpMestChmsDetail.DataSource = dicMediMateAdo != null && dicMediMateAdo.Count > 0
+                        ? dicMediMateAdo.Select(s => s.Value).ToList()
+                        : null;
+                    gridControlExpMestChmsDetail.EndUpdate();
+                    gridControlExpMestChmsDetail.Refresh();
+                    ResetValueControlDetail();
+                    this.currentMediMate = null;
+                    if (xtraTabControlMain.SelectedTabPageIndex == 0) txtSearchMedicine.Focus();
+                    else if (xtraTabControlMain.SelectedTabPageIndex == 1) txtSearchMaterial.Focus();
+                    return;
+                }
+
+                // PTTK 36619: Giữ nguyên logic single-item mode cũ khi không có dòng batch hợp lệ
                 if (!btnAddd.Enabled || !dxValidationProvider2.Validate() || this.currentMediMate == null)
                     return;
 

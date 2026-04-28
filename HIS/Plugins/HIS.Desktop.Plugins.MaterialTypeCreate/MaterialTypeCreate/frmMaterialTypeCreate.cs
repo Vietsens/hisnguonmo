@@ -207,6 +207,7 @@ namespace HIS.Desktop.Plugins.MaterialTypeCreate.MaterialTypeCreate
                     var mediStock = BackendDataWorker.Get<HIS_MEDI_STOCK>().FirstOrDefault(o => o.ROOM_ID == this.module.RoomId);
                     chkIsBusiness.Checked = mediStock != null && mediStock.IS_BUSINESS == 1;
                 }
+                WireBtnCopy();
                 WaitingManager.Hide();
             }
 
