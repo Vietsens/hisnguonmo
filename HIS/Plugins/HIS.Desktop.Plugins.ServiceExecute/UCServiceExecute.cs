@@ -4347,6 +4347,7 @@ namespace HIS.Desktop.Plugins.ServiceExecute
                             message = string.Format("{0} Bạn có muốn tiếp tục?", paramCheckEx.GetMessage());
                             if (XtraMessageBox.Show(message, "", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                 return;
+                            haveWarn = false;
                         }
                     }
                 }
