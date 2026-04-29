@@ -264,4 +264,7 @@
   <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
     <value>ထည့်သွင်းမှုအကွက်သည် ရှည်လွန်းသည်။</value>
   </data>
+  <data name="BanCoMuonKhoiPhucLayoutMacDinh" xml:space="preserve">
+    <value>မူရင်း layout ကို ပြန်လည်တည်ဆောက်လိုပါသလား? ပြုပြင်ထားသော layout ကို ဖျက်ပစ်ပါမည်။</value>
+  </data>
 </root>

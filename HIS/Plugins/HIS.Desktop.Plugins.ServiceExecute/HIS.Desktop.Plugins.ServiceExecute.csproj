@@ -467,6 +467,9 @@
     <Compile Include="UCServiceExecute_PlusValidation.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="UCServiceExecute___RestoreLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="UcWord.cs">
       <SubType>UserControl</SubType>
     </Compile>
