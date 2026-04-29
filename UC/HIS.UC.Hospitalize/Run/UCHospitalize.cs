@@ -240,7 +240,34 @@ namespace HIS.UC.Hospitalize.Run
                 ValidateForm();
                 UpdateCheckPrintAndSign();
                 checkIcdManager = new Desktop.Plugins.Library.CheckIcd.CheckIcdManager(dlgRefeshIcd, treatment);
+                ApplyGenerateNewInCodeState(this.hospitalizeInitADO);
                 IsFirstLoad = false;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void ApplyGenerateNewInCodeState(HospitalizeInitADO ado)
+        {
+            try
+            {
+                Inventec.Common.Logging.LogSystem.Debug(
+                    "[GenerateNewInCode-UC] ApplyGenerateNewInCodeState called. ado=" + (ado == null ? "NULL" : "notnull")
+                    + ", IsVisibleGenerateNewInCode=" + (ado == null ? "N/A" : ado.IsVisibleGenerateNewInCode.ToString())
+                    + ", IsAutoCheckGenerateNewInCode=" + (ado == null ? "N/A" : ado.IsAutoCheckGenerateNewInCode.ToString()));
+                if (ado == null) return;
+                if (ado.IsVisibleGenerateNewInCode)
+                {
+                    lciGenerateNewInCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Always;
+                    chkGenerateNewInCode.Checked = ado.IsAutoCheckGenerateNewInCode;
+                }
+                else
+                {
+                    lciGenerateNewInCode.Visibility = DevExpress.XtraLayout.Utils.LayoutVisibility.Never;
+                    chkGenerateNewInCode.Checked = false;
+                }
             }
             catch (Exception ex)
             {

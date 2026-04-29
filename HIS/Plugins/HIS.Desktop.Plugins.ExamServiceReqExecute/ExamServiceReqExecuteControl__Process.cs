@@ -1950,6 +1950,7 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     if (hisDepartmentTranHospitalizeSDO != null)
                     {
                         serviceReqUpdateSDO.HospitalizeSDO = new HisDepartmentTranHospitalizeSDO();
+                        SetIsGenerateNewInCodeIfSupported(serviceReqUpdateSDO.HospitalizeSDO, hisDepartmentTranHospitalizeSDO.IsGenerateNewInCode);
                         if (hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO != null)
                         {
                             serviceReqUpdateSDO.HospitalizeSDO.BedRoomId = hisDepartmentTranHospitalizeSDO.HisDepartmentTranHospitalizeSDO.BedRoomId;
@@ -2013,6 +2014,23 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
 
 
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void SetIsGenerateNewInCodeIfSupported(HisDepartmentTranHospitalizeSDO sdo, bool value)
+        {
+            try
+            {
+                if (sdo == null) return;
+                var property = sdo.GetType().GetProperty("IsGenerateNewInCode");
+                if (property != null && property.CanWrite)
+                {
+                    property.SetValue(sdo, value, null);
                 }
             }
             catch (Exception ex)
@@ -3417,6 +3435,5 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                 Inventec.Common.Logging.LogSystem.Error(ex);
             }
         }
-
     }
 }

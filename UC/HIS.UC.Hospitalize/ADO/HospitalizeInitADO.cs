@@ -67,11 +67,13 @@ namespace HIS.UC.Hospitalize.ADO
         public BtnInformationEx_Click dlgOpenFormInformation { get; set; }
         public string ExecutedServices { get; set; }
         public bool IsNoReloadIcd { get; set; }
+        public bool IsVisibleGenerateNewInCode { get; set; }
 
-        // PTTK_19083: Phân loại cấp cứu 2 (luồng Nhập viện tại phòng cấp cứu)
-        /// <summary>Flag phòng cấp cứu — plugin cha truyền vào để bật/ẩn combo</summary>
+        public bool IsAutoCheckGenerateNewInCode { get; set; }
+        // PTTK_19083: Ph�n lo?i c?p c?u 2 (lu?ng Nh?p vi?n t?i ph�ng c?p c?u)
+        /// <summary>Flag ph�ng c?p c?u � plugin cha truy?n v�o d? b?t/?n combo</summary>
         public bool IsEmergencyRoom { get; set; }
-        /// <summary>Giá trị phân loại cấp cứu 2 khi edit hồ sơ cũ (HIS_TREATMENT.EMERGENCY_CLASSIFY_ID_2)</summary>
+        /// <summary>Gi� tr? ph�n lo?i c?p c?u 2 khi edit h? so cu (HIS_TREATMENT.EMERGENCY_CLASSIFY_ID_2)</summary>
         public long? EmergencyClassifyId2 { get; set; }
     }
 }

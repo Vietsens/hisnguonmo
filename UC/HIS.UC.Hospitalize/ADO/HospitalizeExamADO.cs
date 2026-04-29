@@ -41,6 +41,7 @@ namespace HIS.UC.Hospitalize.ADO
         public string Note { get; set; }
         public string SpecialistNote { get; set; }
         public string ExecutedServices { get; set; }
+        public bool IsGenerateNewInCode { get; set; }
 
     }
 }

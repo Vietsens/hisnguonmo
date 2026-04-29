@@ -2175,6 +2175,17 @@ namespace HIS.Desktop.Plugins.ExamServiceReqExecute
                     hospitalizeADO.Treatment.EMERGENCY_CLASSIFY_ID_2 = treatment != null
                     ? treatment.EMERGENCY_CLASSIFY_ID_2
                     : null;
+                    hospitalizeADO.InCode = this.treatment != null ? this.treatment.IN_CODE : null;
+                    hospitalizeADO.IsVisibleGenerateNewInCode = this.treatment != null
+                        && this.treatment.TDL_TREATMENT_TYPE_ID == IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                        && !string.IsNullOrWhiteSpace(this.treatment.IN_CODE);
+                    hospitalizeADO.IsAutoCheckGenerateNewInCode = hospitalizeADO.IsVisibleGenerateNewInCode;
+                    Inventec.Common.Logging.LogSystem.Debug(
+                        "GenerateNewInCode trace - TreatmentId=" + (this.treatment != null ? this.treatment.ID.ToString() : "null")
+                        + ", TDL_TREATMENT_TYPE_ID=" + (this.treatment != null ? (this.treatment.TDL_TREATMENT_TYPE_ID.ToString()) : "null")
+                        + ", ID__KHAM=" + IMSys.DbConfig.HIS_RS.HIS_TREATMENT_TYPE.ID__KHAM
+                        + ", IN_CODE=" + (this.treatment != null ? ("'" + (this.treatment.IN_CODE ?? "") + "'") : "null")
+                        + ", IsVisibleGenerateNewInCode=" + hospitalizeADO.IsVisibleGenerateNewInCode);
                     hospitalizeProcessor = new HospitalizeProcessor();
                     this.ucHospitalize = (UserControl)hospitalizeProcessor.Run(hospitalizeADO);
                     LoadUCToPanelExecuteExt(this.ucHospitalize, chkHospitalize);
