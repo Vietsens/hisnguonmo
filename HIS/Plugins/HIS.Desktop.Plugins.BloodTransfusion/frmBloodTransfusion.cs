@@ -726,8 +726,16 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
                     CommonParam param = new CommonParam();
                     bool success = false;
                     HIS_TRANSFUSION data = new HIS_TRANSFUSION();
-                    data.MEASURE_TIME = this.clickTransfusionSum.START_TIME ?? (Inventec.Common.DateTime.Get.Now() ?? 0);
+                    data.MEASURE_TIME = Inventec.Common.DateTime.Get.Now() ?? 0;
                     data.TRANSFUSION_SUM_ID = this.clickTransfusionSum.ID;
+
+                    HIS_TRANSFUSION sourceTransfusion = GetLatestTransfusionInCurrentSum();
+                    if (sourceTransfusion == null)
+                    {
+                        sourceTransfusion = GetLatestTransfusionInTreatment();
+                    }
+                    CopyTransfusionMeasures(sourceTransfusion, data);
+
                     var rsApi = new BackendAdapter(param).Post<HIS_TRANSFUSION>("api/HisTransfusion/Create", ApiConsumers.MosConsumer, data, param);
                     if (rsApi != null)
                     {
@@ -740,8 +748,134 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             }
             catch (Exception ex)
             {
+                WaitingManager.Hide();
                 Inventec.Common.Logging.LogSystem.Warn(ex);
             }
+        }
+
+        private void CopyItemTransfusion(TransfusionADO source)
+        {
+            try
+            {
+                if (source == null || this.clickTransfusionSum == null) return;
+
+                WaitingManager.Show();
+                CommonParam param = new CommonParam();
+                bool success = false;
+                HIS_TRANSFUSION data = new HIS_TRANSFUSION();
+                data.MEASURE_TIME = Inventec.Common.DateTime.Get.Now() ?? 0;
+                data.TRANSFUSION_SUM_ID = this.clickTransfusionSum.ID;
+                CopyTransfusionMeasures(source, data);
+
+                var rsApi = new BackendAdapter(param).Post<HIS_TRANSFUSION>("api/HisTransfusion/Create", ApiConsumers.MosConsumer, data, param);
+                if (rsApi != null)
+                {
+                    success = true;
+                    LoadDataToGridTransfusion(this.clickTransfusionSum.ID);
+                }
+                WaitingManager.Hide();
+                MessageManager.Show(this, param, success);
+            }
+            catch (Exception ex)
+            {
+                WaitingManager.Hide();
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void CopyTransfusionMeasures(HIS_TRANSFUSION source, HIS_TRANSFUSION target)
+        {
+            try
+            {
+                if (source == null || target == null) return;
+
+                target.SPEED = source.SPEED;
+                target.SKIN = source.SKIN;
+                target.BREATH_RATE = source.BREATH_RATE;
+                target.PULSE = source.PULSE;
+                target.BLOOD_PRESSURE_MAX = source.BLOOD_PRESSURE_MAX;
+                target.BLOOD_PRESSURE_MIN = source.BLOOD_PRESSURE_MIN;
+                target.TEMPERATURE = source.TEMPERATURE;
+                target.NOTE = source.NOTE;
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private HIS_TRANSFUSION GetLatestTransfusionInCurrentSum()
+        {
+            try
+            {
+                if (this.listTranfusionAdos != null && this.listTranfusionAdos.Count > 0)
+                {
+                    return this.listTranfusionAdos
+                        .OrderByDescending(o => o.MEASURE_TIME)
+                        .FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return null;
+        }
+
+        private HIS_TRANSFUSION GetLatestTransfusionInTreatment()
+        {
+            HIS_TRANSFUSION latest = null;
+            try
+            {
+                if (this.currentTransfusionSums == null || this.currentTransfusionSums.Count == 0)
+                    return null;
+
+                long latestTime = 0;
+                long currentSumId = this.clickTransfusionSum != null ? this.clickTransfusionSum.ID : 0;
+
+                foreach (var sum in this.currentTransfusionSums)
+                {
+                    if (sum.ID == currentSumId) continue;
+
+                    var transfusions = GetTransfusionByTransfusionSumId(sum.ID);
+                    if (transfusions != null && transfusions.Count > 0)
+                    {
+                        var localLatest = transfusions
+                            .OrderByDescending(o => o.MEASURE_TIME)
+                            .FirstOrDefault();
+                        if (localLatest != null && localLatest.MEASURE_TIME > latestTime)
+                        {
+                            latest = localLatest;
+                            latestTime = localLatest.MEASURE_TIME;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return latest;
+        }
+
+        private bool IsCanModifyCurrentTreatment()
+        {
+            try
+            {
+                if (this.currentTreatment == null || this.currentRoom == null) return false;
+                if (this.currentTreatment.IS_PAUSE == 1) return false;
+                if (this.currentTreatment.LAST_DEPARTMENT_ID == this.currentRoom.DEPARTMENT_ID) return true;
+                if (!string.IsNullOrEmpty(this.currentTreatment.CO_TREAT_DEPARTMENT_IDS)
+                    && ("," + this.currentTreatment.CO_TREAT_DEPARTMENT_IDS + ",").Contains("," + this.currentRoom.DEPARTMENT_ID + ","))
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+            return false;
         }
 
         #region Event grid ExpMest Blood
@@ -1051,6 +1185,10 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
                     {
                         e.RepositoryItem = Rep_Button_Delete;
                     }
+                    else if (e.Column.FieldName == "Copy")
+                    {
+                        e.RepositoryItem = Rep_Button_Copy;
+                    }
                 }
             }
             catch (Exception ex)
@@ -1102,6 +1240,23 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
                     MessageManager.Show(this, param, rsApi);
 
                 }
+            }
+            catch (Exception ex)
+            {
+                Inventec.Common.Logging.LogSystem.Warn(ex);
+            }
+        }
+
+        private void Rep_Button_Copy_ButtonClick(object sender, DevExpress.XtraEditors.Controls.ButtonPressedEventArgs e)
+        {
+            try
+            {
+                var row = (TransfusionADO)gridViewTransfusion.GetFocusedRow();
+                if (row == null) return;
+
+                if (!IsCanModifyCurrentTreatment()) return;
+
+                CopyItemTransfusion(row);
             }
             catch (Exception ex)
             {

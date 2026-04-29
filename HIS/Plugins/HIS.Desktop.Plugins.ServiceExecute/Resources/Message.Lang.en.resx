@@ -264,4 +264,7 @@
   <data name="TruongDuLieuVuotQuaKyTu" xml:space="preserve">
     <value>Input field is too long</value>
   </data>
+  <data name="BanCoMuonKhoiPhucLayoutMacDinh" xml:space="preserve">
+    <value>Do you want to restore the default layout? Customized layout will be removed.</value>
+  </data>
 </root>

@@ -71,6 +71,10 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject22 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject23 = new DevExpress.Utils.SerializableAppearanceObject();
             DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject24 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject25 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject26 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject27 = new DevExpress.Utils.SerializableAppearanceObject();
+            DevExpress.Utils.SerializableAppearanceObject serializableAppearanceObject28 = new DevExpress.Utils.SerializableAppearanceObject();
             this.layoutControl1 = new DevExpress.XtraLayout.LayoutControl();
             this.ucPaging = new Inventec.UC.Paging.UcPaging();
             this.btnFind = new DevExpress.XtraEditors.SimpleButton();
@@ -174,6 +178,8 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             this.Rep_TextEdit_Note = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             this.Rep_Button_Add = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.Rep_Button_Delete = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
+            this.gridColumnCopy = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.Rep_Button_Copy = new DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit();
             this.gridControlTransfusionSum = new DevExpress.XtraGrid.GridControl();
             this.gridViewTransfusionSum = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.gridColumn9 = new DevExpress.XtraGrid.Columns.GridColumn();
@@ -286,6 +292,7 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             ((System.ComponentModel.ISupportInitialize)(this.Rep_TextEdit_Note)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Rep_Button_Add)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Rep_Button_Delete)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Rep_Button_Copy)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransfusionSum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransfusionSum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_DeleteSum_Enable)).BeginInit();
@@ -1358,7 +1365,8 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             this.Rep_Spin_Pulse,
             this.Rep_Date_Measure,
             this.Rep_Button_Add,
-            this.Rep_Button_Delete});
+            this.Rep_Button_Delete,
+            this.Rep_Button_Copy});
             this.gridControlTransfusion.Size = new System.Drawing.Size(624, 330);
             this.gridControlTransfusion.TabIndex = 6;
             this.gridControlTransfusion.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
@@ -1377,7 +1385,8 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             this.gridColumn23,
             this.gridColumn26,
             this.gridColumn24,
-            this.gridColumn25});
+            this.gridColumn25,
+            this.gridColumnCopy});
             this.gridViewTransfusion.GridControl = this.gridControlTransfusion;
             this.gridViewTransfusion.Name = "gridViewTransfusion";
             this.gridViewTransfusion.OptionsView.ColumnAutoWidth = false;
@@ -1625,7 +1634,34 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             this.Rep_Button_Delete.Name = "Rep_Button_Delete";
             this.Rep_Button_Delete.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
             this.Rep_Button_Delete.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Rep_Button_Delete_ButtonClick);
-            // 
+            //
+            // gridColumnCopy
+            //
+            this.gridColumnCopy.Caption = "Sao chép";
+            this.gridColumnCopy.ColumnEdit = this.Rep_Button_Copy;
+            this.gridColumnCopy.FieldName = "Copy";
+            this.gridColumnCopy.Name = "gridColumnCopy";
+            this.gridColumnCopy.OptionsColumn.AllowEdit = true;
+            this.gridColumnCopy.OptionsColumn.ShowCaption = false;
+            this.gridColumnCopy.OptionsFilter.AllowAutoFilter = false;
+            this.gridColumnCopy.OptionsFilter.AllowFilter = false;
+            this.gridColumnCopy.OptionsFilter.AllowFilterModeChanging = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnCopy.OptionsFilter.FilterBySortField = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnCopy.OptionsFilter.ShowBlanksFilterItems = DevExpress.Utils.DefaultBoolean.False;
+            this.gridColumnCopy.ToolTip = "Sao chép thành lần theo dõi mới";
+            this.gridColumnCopy.Visible = true;
+            this.gridColumnCopy.VisibleIndex = 10;
+            this.gridColumnCopy.Width = 70;
+            //
+            // Rep_Button_Copy
+            //
+            this.Rep_Button_Copy.AutoHeight = false;
+            this.Rep_Button_Copy.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Glyph, "Sao chép", -1, true, true, false, DevExpress.XtraEditors.ImageLocation.MiddleCenter, null, new DevExpress.Utils.KeyShortcut(System.Windows.Forms.Keys.None), serializableAppearanceObject25, serializableAppearanceObject26, serializableAppearanceObject27, serializableAppearanceObject28, "Sao chép thành lần theo dõi mới", null, null, true)});
+            this.Rep_Button_Copy.Name = "Rep_Button_Copy";
+            this.Rep_Button_Copy.TextEditStyle = DevExpress.XtraEditors.Controls.TextEditStyles.HideTextEditor;
+            this.Rep_Button_Copy.ButtonClick += new DevExpress.XtraEditors.Controls.ButtonPressedEventHandler(this.Rep_Button_Copy_ButtonClick);
+            //
             // gridControlTransfusionSum
             // 
             this.gridControlTransfusionSum.Location = new System.Drawing.Point(2, 342);
@@ -2173,6 +2209,7 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
             ((System.ComponentModel.ISupportInitialize)(this.Rep_TextEdit_Note)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Rep_Button_Add)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Rep_Button_Delete)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Rep_Button_Copy)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControlTransfusionSum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridViewTransfusionSum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Btn_DeleteSum_Enable)).EndInit();
@@ -2333,6 +2370,8 @@ namespace HIS.Desktop.Plugins.BloodTransfusion
         private DevExpress.XtraGrid.Columns.GridColumn gridColumn27;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Rep_Button_Add;
         private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Rep_Button_Delete;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnCopy;
+        private DevExpress.XtraEditors.Repository.RepositoryItemButtonEdit Rep_Button_Copy;
         private DevExpress.XtraEditors.DXErrorProvider.DXValidationProvider dxValidationProvider1;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider1;
         private DevExpress.XtraEditors.TextEdit txtPhanUngCheo;

@@ -279,4 +279,7 @@
   <data name="PhanTichHinhAnhYKhoa" xml:space="preserve">
     <value>Phân tích hình ảnh y khoa</value>
   </data>
+  <data name="BanCoMuonKhoiPhucLayoutMacDinh" xml:space="preserve">
+    <value>Bạn có muốn khôi phục layout về mặc định? Layout đã chỉnh sửa sẽ bị xóa.</value>
+  </data>
 </root>
