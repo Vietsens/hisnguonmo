@@ -45,6 +45,7 @@ namespace HIS.UC.Hospitalize.Run
                         return;
                     }
                     lblNumHospitalize.Text = hospitalize.InCode;
+                    ApplyGenerateNewInCodeState(hospitalize);
                     chkPrintHospitalizeExam.CheckState = hospitalize.isAutoCheckChkHospitalizeExam ? CheckState.Checked : CheckState.Unchecked;
                     if (hospitalize.FinishTime.HasValue)
                     {
